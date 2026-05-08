@@ -1,6 +1,7 @@
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; min-height: 100vh; background: #F5F0E5; }
+html, body { margin: 0; padding: 0; min-height: 100vh; background: #F5F0E5; overflow-x: hidden; }
 #root { min-height: 100vh; display: flex; flex-direction: column; }
+img, svg, video { max-width: 100%; }
 .app-root { --jade: #0F3D2E; --jade-soft: #1a5640; --gold: #C9A961; --gold-soft: #d4b97a; --cream: #F5F0E5; --cream-warm: #FAF6EC; --brick: #A03B2C; --ink: #1a2820; --ink-soft: #4a5550; --stone: #8a8275; --line: rgba(15,61,46,0.12); --line-strong: rgba(15,61,46,0.25); --header-bg: rgba(245, 240, 229, 0.92); --card-bg: white; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; letter-spacing: -0.005em; }
 .app-root[data-theme="dark"] { --jade: #5BAF7C; --jade-soft: #4a9a6b; --gold: #E0BD7A; --gold-soft: #ebcc8e; --cream: #1a1d1c; --cream-warm: #242827; --brick: #E07A6E; --ink: #E8E4D9; --ink-soft: #B0AAA0; --stone: #7a7569; --line: rgba(232, 228, 217, 0.12); --line-strong: rgba(232, 228, 217, 0.25); --header-bg: rgba(26, 29, 28, 0.92); --card-bg: #242827; }
 .app-root[data-theme="dark"] .srs-card,
@@ -329,6 +330,10 @@ html, body { margin: 0; padding: 0; min-height: 100vh; background: #F5F0E5; }
 .browse-tab { flex: 1; background: none; border: none; padding: 10px 12px; border-radius: 7px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
 .browse-tab:hover { color: var(--jade); }
 .browse-tab-active { background: white; color: var(--jade); font-weight: 600; box-shadow: 0 1px 3px rgba(15, 61, 46, 0.08); }
+.browse-sticky { position: sticky; top: 50px; z-index: 40; background: var(--cream); padding: 12px 0 8px; margin: -20px -4px 8px; padding-left: 4px; padding-right: 4px; }
+.app-root[data-theme="dark"] .browse-sticky { background: var(--cream); }
+@media (min-width: 768px) { .browse-sticky { top: 96px; } }
+.browse-sticky .search-bar { margin-bottom: 0; }
 .search-bar { position: relative; margin-bottom: 16px; }
 .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--stone); pointer-events: none; }
 .search-input { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 12px; padding: 12px 40px; font-family: inherit; font-size: 14px; color: var(--ink); transition: border-color 0.2s; }
@@ -363,6 +368,19 @@ html, body { margin: 0; padding: 0; min-height: 100vh; background: #F5F0E5; }
 .vocab-item-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
 .vocab-item-cat { font-size: 16px; opacity: 0.7; }
 .vocab-item-status { font-size: 14px; font-weight: 700; }
+.vocab-item-thai, .vocab-item-ph, .vocab-item-en, .vocab-item-note { overflow-wrap: anywhere; word-break: break-word; }
+.browse-load-more-row { display: flex; justify-content: center; margin-top: 18px; }
+.browse-load-more-btn { background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; padding: 10px 22px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--jade); cursor: pointer; transition: all 0.15s; }
+.browse-load-more-btn:hover { border-color: var(--jade); background: var(--jade); color: var(--gold); }
+.browse-load-more-btn:active { transform: scale(0.98); }
+.app-root[data-theme="dark"] .browse-load-more-btn { background: var(--card-bg); }
+.browse-empty { text-align: center; padding: 36px 16px; border: 1px dashed var(--line-strong); border-radius: 14px; background: var(--cream-warm); margin-top: 8px; }
+.app-root[data-theme="dark"] .browse-empty { background: var(--card-bg); }
+.browse-empty-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.7; }
+.browse-empty-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--jade); margin-bottom: 6px; overflow-wrap: anywhere; }
+.browse-empty-sub { font-size: 13px; color: var(--ink-soft); line-height: 1.5; max-width: 360px; margin: 0 auto 14px; }
+.browse-empty-reset { background: var(--jade); color: var(--gold); border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.browse-empty-reset:hover { background: var(--jade-soft); color: white; }
 .vis-learning { color: var(--brick); }
 .vis-young { color: var(--gold); }
 .vis-mature { color: var(--jade); }

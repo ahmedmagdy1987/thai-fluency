@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Volume2, BookOpen, MessageSquare, Layers, X } from 'lucide-react';
+
+const PAGE_SIZE = 60;
 import { CARDS } from '../data/cards.js';
 import { DIALOGUES } from '../data/reference.js';
 import { CATEGORIES, STAGES } from '../data/taxonomy.js';
@@ -12,6 +14,9 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
   const [activeCat, setActiveCat] = useState(null);
   const [activeStage, setActiveStage] = useState(null);
   const [section, setSection] = useState('vocab'); // vocab | dialogues
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [search, activeCat, activeStage, section]);
 
   const filtered = useMemo(() => {
     let items = CARDS;
@@ -59,16 +64,18 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
 
       {section === 'vocab' && (
         <>
-          <div className="search-bar">
-            <Search size={16} className="search-icon" />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search Thai, phonetic, or English..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-            {search && <button className="search-clear" onClick={() => setSearch('')}><X size={14} /></button>}
+          <div className="browse-sticky">
+            <div className="search-bar">
+              <Search size={16} className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search Thai, phonetic, or English..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear search"><X size={14} /></button>}
+            </div>
           </div>
 
           {!search && (
@@ -102,42 +109,75 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
           )}
 
           <div className="browse-results-meta">
-            {filtered.length} {filtered.length === 1 ? 'item' : 'items'}
+            {filtered.length === 0
+              ? '0 items'
+              : (filtered.length > visibleCount
+                  ? `Showing ${visibleCount} of ${filtered.length}`
+                  : `${filtered.length} ${filtered.length === 1 ? 'item' : 'items'}`)}
           </div>
 
-          <div className="vocab-list">
-            {filtered.map(rawC => {
-              const c = displayCard(rawC, voice);
-              const state = progress[c.id];
-              const cat = CATEGORIES.find(cc => cc.id === c.cat);
-              return (
-                <div key={c.id} className="vocab-item">
-                  <div className="vocab-item-main">
-                    <div className="vocab-item-thai">{c.thai}</div>
-                    <div className="vocab-item-ph">{c.ph}</div>
-                    <div className="vocab-item-en">{c.en}</div>
-                    {c.note && <div className="vocab-item-note">{c.note}</div>}
+          {filtered.length > 0 && (
+            <div className="vocab-list">
+              {filtered.slice(0, visibleCount).map(rawC => {
+                const c = displayCard(rawC, voice);
+                const state = progress[c.id];
+                const cat = CATEGORIES.find(cc => cc.id === c.cat);
+                return (
+                  <div key={c.id} className="vocab-item">
+                    <div className="vocab-item-main">
+                      <div className="vocab-item-thai">{c.thai}</div>
+                      <div className="vocab-item-ph">{c.ph}</div>
+                      <div className="vocab-item-en">{c.en}</div>
+                      {c.note && <div className="vocab-item-note">{c.note}</div>}
+                    </div>
+                    <div className="vocab-item-meta">
+                      {ttsAvailable() && c.thai && (
+                        <button className="speaker-btn speaker-btn-inline" onClick={(e) => { e.stopPropagation(); speakThai(c.thai, audioRate); }} title="Hear pronunciation" aria-label="Play pronunciation">
+                          <Volume2 size={14} />
+                        </button>
+                      )}
+                      {cat && <div className="vocab-item-cat" style={{ color: cat.color }}>{cat.icon}</div>}
+                      {state && (
+                        <div className={`vocab-item-status ${state.learning ? 'vis-learning' : (state.interval >= 21 ? 'vis-mature' : 'vis-young')}`}>
+                          {state.learning ? '◐' : (state.interval >= 21 ? '●' : '◑')}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="vocab-item-meta">
-                    {ttsAvailable() && c.thai && (
-                      <button className="speaker-btn speaker-btn-inline" onClick={(e) => { e.stopPropagation(); speakThai(c.thai, audioRate); }} title="Hear pronunciation" aria-label="Play pronunciation">
-                        <Volume2 size={14} />
-                      </button>
-                    )}
-                    {cat && <div className="vocab-item-cat" style={{ color: cat.color }}>{cat.icon}</div>}
-                    {state && (
-                      <div className={`vocab-item-status ${state.learning ? 'vis-learning' : (state.interval >= 21 ? 'vis-mature' : 'vis-young')}`}>
-                        {state.learning ? '◐' : (state.interval >= 21 ? '●' : '◑')}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
+
+          {filtered.length > visibleCount && (
+            <div className="browse-load-more-row">
+              <button
+                className="browse-load-more-btn"
+                onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
+              >
+                Load more · {Math.min(PAGE_SIZE, filtered.length - visibleCount)} more
+              </button>
+            </div>
+          )}
 
           {filtered.length === 0 && (
-            <div className="empty-state-small">No results. Try another search.</div>
+            <div className="browse-empty">
+              <div className="browse-empty-icon">🔍</div>
+              <div className="browse-empty-title">
+                {search ? `No results for "${search}"` : 'No items match your filters'}
+              </div>
+              <div className="browse-empty-sub">
+                {search ? 'Try a different search term, or browse by category.' : 'Try a different category or stage.'}
+              </div>
+              {(search || activeCat || activeStage) && (
+                <button
+                  className="browse-empty-reset"
+                  onClick={() => { setSearch(''); setActiveCat(null); setActiveStage(null); }}
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
           )}
         </>
       )}
