@@ -91,6 +91,17 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
                 Auto-play new cards
               </button>
             </div>
+            {ttsAvailable() && (
+              <button
+                type="button"
+                className="setting-test-audio-btn"
+                style={{ marginTop: 10 }}
+                onClick={() => speakThai('สวัสดี', audioRate)}
+                aria-label="Test audio — speak สวัสดี"
+              >
+                🔊 Test audio (สวัสดี · sàwàtdee)
+              </button>
+            )}
           </div>
 
           <div className="setting-group">
