@@ -216,9 +216,9 @@ img, svg, video { max-width: 100%; }
 .nav-btn-label { font-size: 10px; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
 .nav-btn-active .nav-btn-label { font-weight: 600; }
 .nav-badge { position: absolute; top: -4px; right: -8px; background: var(--brick); color: var(--cream); font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 999px; min-width: 16px; text-align: center; line-height: 1.4; }
-@media (min-width: 768px) { .app-nav { position: sticky; top: 51px; bottom: auto; border-top: none; border-bottom: 1px solid var(--line); background: rgba(245, 240, 229, 0.92); padding: 4px; max-width: 900px; margin: 0 auto; border-radius: 0; justify-content: flex-start; gap: 4px; } .nav-btn { flex: 0 0 auto; flex-direction: row; gap: 8px; padding: 10px 16px; }
+@media (min-width: 768px) { .app-nav { background: rgba(245, 240, 229, 0.92); justify-content: center; gap: 4px; } .nav-btn { flex: 0 0 auto; flex-direction: row; gap: 8px; padding: 10px 16px; }
 .nav-btn-label { font-size: 13px; text-transform: none; letter-spacing: 0; }
-.app-main { padding-bottom: 60px; }
+.app-main { padding-bottom: 100px; }
 }
 .dash-greeting { margin-bottom: 24px; }
 .dash-greeting-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 32px; font-weight: 600; color: var(--jade); margin-bottom: 4px; }

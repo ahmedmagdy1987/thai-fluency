@@ -52,7 +52,7 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
   }, []);
 
   return (
-    <div className="tab-content browse-tab">
+    <div className="tab-content">
       <div className="browse-tabs">
         <button className={`browse-tab ${section === 'vocab' ? 'browse-tab-active' : ''}`} onClick={() => setSection('vocab')}>
           <Layers size={14} /> Words & Phrases
