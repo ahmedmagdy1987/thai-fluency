@@ -10,8 +10,8 @@ export function getStageState(stats, progress) {
     const seen = stageCards.filter(c => progress[c.id]).length;
     const mature = stageCards.filter(c => progress[c.id] && progress[c.id].interval >= 21).length;
     const complete = total > 0 && mature >= Math.floor(total * 0.8); // 80% mature = stage complete
-    const overall = total === 0 ? 0 : Math.round((mature / total) * 100);
-    return { ...S, total, seen, mature, complete, overall };
+    const maturePct = total === 0 ? 0 : Math.round((mature / total) * 100);
+    return { ...S, total, seen, mature, complete, maturePct };
   });
 
   // Determine current stage (first incomplete stage at or after user's startedStage)

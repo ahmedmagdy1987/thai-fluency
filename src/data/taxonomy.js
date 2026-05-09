@@ -47,7 +47,7 @@ export const STAGES = [
     name:'Survival Thai',
     icon:'🌱',
     color:'#5BAF7C',
-    desc:'Function immediately:greetings,numbers,food,taxi,"I want","Where is".',
+    desc:'Function immediately: greetings, numbers, food, taxi, "I want", "Where is".',
     cats:['pronouns','verbs','greetings','questions','numbers','time','grammar'],
 },
   {
@@ -55,7 +55,7 @@ export const STAGES = [
     name:'Food & Daily Errands',
     icon:'🍜',
     color:'#E0823B',
-    desc:'Order food,shop,buy things,navigate flavors and quantities.',
+    desc:'Order food, shop, buy things, navigate flavors and quantities.',
     cats:['food','food-phrases','shopping','sentences-food','sentences-want','colors','adjectives'],
 },
   {
@@ -63,7 +63,7 @@ export const STAGES = [
     name:'Transport & Travel',
     icon:'🛺',
     color:'#2563A8',
-    desc:'Taxis,motorbikes,hotels,airports. Get anywhere.',
+    desc:'Taxis, motorbikes, hotels, airports. Get anywhere.',
     cats:['places','directions','sentences-travel'],
 },
   {
@@ -79,7 +79,7 @@ export const STAGES = [
     name:'Home & Services',
     icon:'🏠',
     color:'#7B5BA3',
-    desc:'Condo,internet,AC,repairs,deliveries. Adult life problems.',
+    desc:'Condo, internet, AC, repairs, deliveries. Adult life problems.',
     cats:['things','home','sentences-home'],
 },
   {
@@ -87,7 +87,7 @@ export const STAGES = [
     name:'Health & Body',
     icon:'🩺',
     color:'#A03B2C',
-    desc:'Pharmacy,doctor,massage,pain,emergencies.',
+    desc:'Pharmacy, doctor, massage, pain, emergencies.',
     cats:['body','emergency','health','sentences-health'],
 },
   {
@@ -95,7 +95,7 @@ export const STAGES = [
     name:'Money & Admin',
     icon:'💳',
     color:'#5B7C99',
-    desc:'Bank,ATM,visa,phone plans,immigration,paperwork.',
+    desc:'Bank, ATM, visa, phone plans, immigration, paperwork.',
     cats:['admin','sentences-admin'],
 },
   {
@@ -103,7 +103,7 @@ export const STAGES = [
     name:'Real-Life Fluency',
     icon:'👑',
     color:'#0F3D2E',
-    desc:'Connectors,opinions,slang,particles. Sound less robotic.',
+    desc:'Connectors, opinions, slang, particles. Sound less robotic.',
     cats:['fluency','sentences-fluency'],
 },
 ];

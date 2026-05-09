@@ -551,7 +551,7 @@ img, svg, video { max-width: 100%; }
 .level-card-icon { font-size: 44px; line-height: 1; flex-shrink: 0; width: 60px; height: 60px; background: var(--level-color); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
 .level-card-body { flex: 1; min-width: 0; }
 .level-card-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--jade); letter-spacing: -0.02em; margin-bottom: 4px; }
-.level-card-desc { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.5; }
+.level-card-desc { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .level-card-overall { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .level-card-overall-bar { flex: 1; height: 6px; background: rgba(15,61,46,0.08); border-radius: 999px; overflow: hidden; }
 .level-card-overall-fill { height: 100%; background: var(--level-color); border-radius: 999px; transition: width 0.6s ease; }
