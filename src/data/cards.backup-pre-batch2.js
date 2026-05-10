@@ -1,6 +1,5 @@
 // Auto-generated from artifact source
 import { IMPORTED_CARDS } from './cards-imported.js';
-import { IMPORTED_CARDS_BATCH2 } from './cards-imported-batch2.js';
 
 export const CARDS = [
   {id:1,thai:'ผม',ph:'phǒm',en:'I / me (male)',type:'w',stage:1,cat:'pronouns'},
@@ -690,5 +689,4 @@ export const CARDS = [
   {id:1591,thai:'แพงเกินไปสำหรับผม',ph:'phaeng geun bpai sǎm-ràp phǒm',en:"That's too expensive for me",type:'s',stage:8,cat:'sentences-fluency'},
   { id: 1592, thai: 'ลดให้หน่อยได้ไหม', ph: 'lót hâi nàwy dâai mǎi?', en: 'Can you make it a little cheaper?', type: 's', stage: 8, cat: 'sentences-fluency', breakdown: [{thai:'ลด',ph:'lót',en:'reduce'},{thai:'ให้',ph:'hâi',en:'for me'},{thai:'หน่อย',ph:'nàwy',en:'a little'},{thai:'ได้ไหม',ph:'dâai mǎi',en:'can?'}] },
   ...IMPORTED_CARDS,
-  ...IMPORTED_CARDS_BATCH2,
 ];

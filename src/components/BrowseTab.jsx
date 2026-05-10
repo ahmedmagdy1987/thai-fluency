@@ -79,32 +79,61 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
           </div>
 
           {!search && (
-            <div className="stage-chips">
-              <button className={`stage-chip ${activeStage === null ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(null)}>
-                All stages
-              </button>
-              {STAGES.map(s => (
-                <button key={s.id} className={`stage-chip ${activeStage === s.id ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(s.id)} style={{ '--chip-color': s.color }}>
-                  <span className="stage-chip-icon">{s.icon}</span>
-                  Stage {s.id}
-                  <span className="stage-chip-count">{cardsByStage[s.id] || 0}</span>
+            <section className="browse-filter-section" aria-labelledby="filter-stage-label">
+              <header className="browse-filter-header">
+                <h3 id="filter-stage-label" className="browse-filter-title">📚 Filter by Stage</h3>
+                <span className="browse-filter-hint">Difficulty level — start with Stage 1</span>
+              </header>
+              <div className="stage-chips">
+                <button className={`stage-chip ${activeStage === null ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(null)}>
+                  All stages
                 </button>
-              ))}
-            </div>
+                {STAGES.map(s => (
+                  <button key={s.id} className={`stage-chip ${activeStage === s.id ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(s.id)} style={{ '--chip-color': s.color }}>
+                    <span className="stage-chip-icon">{s.icon}</span>
+                    Stage {s.id}
+                    <span className="stage-chip-count">{cardsByStage[s.id] || 0}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
           )}
 
           {!search && (
-            <div className="cat-chips">
-              <button className={`cat-chip ${activeCat === null ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(null)}>
-                All ({CARDS.length})
-              </button>
-              {CATEGORIES.map(c => (
-                <button key={c.id} className={`cat-chip ${activeCat === c.id ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(c.id)} style={{ '--chip-color': c.color }}>
-                  <span className="cat-chip-icon">{c.icon}</span>
-                  {c.name}
-                  <span className="cat-chip-count">{cardsByCategory[c.id] || 0}</span>
+            <section className="browse-filter-section" aria-labelledby="filter-cat-label">
+              <header className="browse-filter-header">
+                <h3 id="filter-cat-label" className="browse-filter-title">🏷️ Filter by Category</h3>
+                <span className="browse-filter-hint">Topic — food, body, time, and more</span>
+              </header>
+              <div className="cat-chips">
+                <button className={`cat-chip ${activeCat === null ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(null)}>
+                  All ({CARDS.length})
                 </button>
-              ))}
+                {CATEGORIES.map(c => (
+                  <button key={c.id} className={`cat-chip ${activeCat === c.id ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(c.id)} style={{ '--chip-color': c.color }}>
+                    <span className="cat-chip-icon">{c.icon}</span>
+                    {c.name}
+                    <span className="cat-chip-count">{cardsByCategory[c.id] || 0}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {(activeStage || activeCat) && (
+            <div className="browse-active-filters">
+              <span className="browse-active-label">Active filter{activeStage && activeCat ? 's' : ''}:</span>
+              {activeStage && (() => {
+                const s = STAGES.find(st => st.id === activeStage);
+                return <span className="browse-active-pill" style={{ '--pill-color': s?.color }}>{s?.icon} Stage {activeStage}</span>;
+              })()}
+              {activeCat && (() => {
+                const c = CATEGORIES.find(cc => cc.id === activeCat);
+                return <span className="browse-active-pill" style={{ '--pill-color': c?.color }}>{c?.icon} {c?.name}</span>;
+              })()}
+              <button className="browse-active-clear" onClick={() => { setActiveStage(null); setActiveCat(null); }}>
+                <X size={12} /> Clear
+              </button>
             </div>
           )}
 

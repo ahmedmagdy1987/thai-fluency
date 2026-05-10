@@ -1,0 +1,1284 @@
+#separator:tab
+#html:true
+#guid column:1
+#notetype column:2
+#deck column:3
+#tags column:7
+Anc&lrNGyW	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	nineteen (counting)	"สิบเก้า<br>
+sìp’ gâo’<br>
+"	[sound:Thai_1_9781797141800_FC_142.mp3]	
+Q*b:r2nQF@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	eighteen (counting)	"สิบแปด<br>
+sìp’ pàird’<br>
+"	[sound:Thai_1_9781797141800_FC_143.mp3]	
+K)S5jJbuyM	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	you can (f)	"คุณ ได้ค่ะ<br>
+koon’ dâi’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_144.mp3]	
+o=8}L%]jpJ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	I can (m)	"ได้ครับ<br>
+dâi’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_145.mp3]	
+tgzh9=}v8X	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	I can't (m)	"ไม่ได้ครับ<br>
+mâi’ dâi’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_146.mp3]	
+J1kf=AQG~7	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	per (one)	"ละ<br>
+lá’<br>
+"	[sound:Thai_1_9781797141800_FC_147.mp3]	
+JBdL*lzGu^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	glass	"แก้ว<br>
+gâir-o’<br>
+"	[sound:Thai_1_9781797141800_FC_148.mp3]	
+PX2h,($bxe	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	give	"ให้<br>
+hâi’<br>
+"	[sound:Thai_1_9781797141800_FC_149.mp3]	
+"tE0QdA#wBs"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	can you	"ได้ไม๊<br>
+dâi’ mái’<br>
+"	[sound:Thai_1_9781797141800_FC_150.mp3]	
+S.AzJa^Y1	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	cost	"ราคา<br>
+rah-kah’<br>
+"	[sound:Thai_1_9781797141800_FC_151.mp3]	
+e{azn3dhXX	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	eight hundred	"แปดร้อย<br>
+pàird’ róry’<br>
+"	[sound:Thai_1_9781797141800_FC_152.mp3]	
+x!@CB@?Qu<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	eight hundred eighteen	"แปดร้อยสิบแปด<br>
+pàird’ róry’ sìp’ pàird’<br>
+"	[sound:Thai_1_9781797141800_FC_153.mp3]	
+By!?3n{{O%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	Bangkok	"กรุงเทพฯ<br>
+grung-tâpe’<br>
+"	[sound:Thai_1_9781797141800_FC_218.mp3]	
+pAM*)|0>Q)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	going to	"จะ<br>
+jà’<br>
+"	[sound:Thai_1_9781797141800_FC_219.mp3]	
+b868mH5,A@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	going to go	"จะไป<br>
+jà’ pai’<br>
+"	[sound:Thai_1_9781797141800_FC_220.mp3]	
+y$nl%ta_t8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	airplane	"เครื่องบิน<br>
+krêung-bin’<br>
+"	[sound:Thai_1_9781797141800_FC_221.mp3]	
+b[NgG9*/SU	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	long (time)	"นาน<br>
+nahn’<br>
+"	[sound:Thai_1_9781797141800_FC_222.mp3]	
+HNOez(q%7E	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	go by	"ไปทาง<br>
+pai’ tahng’<br>
+"	[sound:Thai_1_9781797141800_FC_223.mp3]	
+rBC>MN;nK,	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	in Bangkok	"ที่กรุงเทพฯ<br>
+têe’ grung-tâpe’<br>
+"	[sound:Thai_1_9781797141800_FC_235.mp3]	
+"{Xh]<.K#n"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	straight ahead	"ตรงไป<br>
+dtrong’ pai’<br>
+"	[sound:Thai_1_9781797141800_FC_236.mp3]	
+A9MB]u7@e.	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	bathroom	"ห้องน้ำ<br>
+hông’ náhm’<br>
+"	[sound:Thai_1_9781797141800_FC_237.mp3]	
+O|<NudeS)r	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	right (direction)	"ขวา<br>
+kwäh’<br>
+"	[sound:Thai_1_9781797141800_FC_238.mp3]	
+izq5L$loRU	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	turn	"เลี้ยว<br>
+líaw’<br>
+"	[sound:Thai_1_9781797141800_FC_239.mp3]	
+xrP_u@RhE5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	which	"ไหน<br>
+näi’<br>
+"	[sound:Thai_1_9781797141800_FC_240.mp3]	
+ku,cUGc{o8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	that is	"นั่น<br>
+nân’<br>
+"	[sound:Thai_1_9781797141800_FC_241.mp3]	
+t2@se3Xgp8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	left	"ซ้าย<br>
+sáhy’<br>
+"	[sound:Thai_1_9781797141800_FC_242.mp3]	
+kF*F&?cy@n	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	which road	"ถนนไหน<br>
+ta-nön’ näi’<br>
+"	[sound:Thai_1_9781797141800_FC_243.mp3]	
+Bw2M_)%dtY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	straight	"ตรง<br>
+dtrong’<br>
+"	[sound:Thai_1_9781797141800_FC_244.mp3]	
+DCA~tQG(u+	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 24	turn right	"เลี้ยวขวา<br>
+líaw’ kwäh’<br>
+"	[sound:Thai_1_9781797141800_FC_245.mp3]	
+GUr~qwnVOX	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	this	"นี้<br>
+née’<br>
+"	[sound:Thai_1_9781797141800_FC_246.mp3]	
+Gffm<S!>e`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	open	"เปิด<br>
+pèrd’<br>
+"	[sound:Thai_1_9781797141800_FC_247.mp3]	
+qIEP8wwA-V	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	closed	"ปิด<br>
+pìd’<br>
+"	[sound:Thai_1_9781797141800_FC_248.mp3]	
+q=(^c:MVnc	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	because	"เพราะว่า<br>
+pró-wâh’<br>
+"	[sound:Thai_1_9781797141800_FC_249.mp3]	
+"C#j82;:a1?"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	the stores	"ร้าน<br>
+ráhn’<br>
+"	[sound:Thai_1_9781797141800_FC_250.mp3]	
+uIE$6`NLBg	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	that road	"ถนนนั้น<br>
+ta-nön’ nán’<br>
+"	[sound:Thai_1_9781797141800_FC_251.mp3]	
+q9e/SnGJdI	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	this road	"ถนนนี้<br>
+ta-nön’ née’<br>
+"	[sound:Thai_1_9781797141800_FC_252.mp3]	
+QjNnA4P99A	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	every	"ทุก<br>
+tóok’<br>
+"	[sound:Thai_1_9781797141800_FC_253.mp3]	
+"KMtL9#mNAL"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	work	"งาน<br>
+ngahn’<br>
+"	[sound:Thai_1_9781797141800_FC_258.mp3]	
+qXz6RHSBtv	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	to go visit	"ไปหา<br>
+pai’ häh’<br>
+"	[sound:Thai_1_9781797141800_FC_259.mp3]	
+rIbWDT&qn4	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	to stay / rest (a short period)	"พัก<br>
+pák’<br>
+"	[sound:Thai_1_9781797141800_FC_260.mp3]	
+u0%XY8+h5M	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	friend, friends	"เพื่อน<br>
+pêun’<br>
+"	[sound:Thai_1_9781797141800_FC_261.mp3]	
+MtN-~wP<8%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	a few friends	"เพื่อนสองสามคน<br>
+pêun’ sörng’-sähm’-kon’<br>
+"	[sound:Thai_1_9781797141800_FC_262.mp3]	
+v^$fk@%6za	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	a few, two-three	"สองสาม<br>
+sörng’-sähm’<br>
+"	[sound:Thai_1_9781797141800_FC_263.mp3]	
+e_1GipZA{r	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	a few people	"สองสามคน<br>
+sörng’-sähm’-kon’<br>
+"	[sound:Thai_1_9781797141800_FC_264.mp3]	
+MK05H27k0`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	nine thousand eighteen	"เก้าพันสิบแปด<br>
+gâo’ pan’ sìp’ pàird’<br>
+"	[sound:Thai_1_9781797141800_FC_134.mp3]	
+"BAL;2VcS#Y"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	nine hundred twelve	"เก้าร้อยสิบสอง<br>
+gâo’ róry’ sìp’ sörng’<br>
+"	[sound:Thai_1_9781797141800_FC_135.mp3]	
+(-uzUj)~:	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	nine (counting)	"เก้า<br>
+gâo’<br>
+"	[sound:Thai_1_9781797141800_FC_136.mp3]	
+cLVDh,DSs@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	a lot	"มาก<br>
+mâhk’<br>
+"	[sound:Thai_1_9781797141800_FC_137.mp3]	
+b,x_W]2g(%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	here	"นี่<br>
+nêe’<br>
+"	[sound:Thai_1_9781797141800_FC_138.mp3]	
+Nz|E$+-/|3	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	Thai money	"เงินไทย<br>
+ngern’ tai’<br>
+"	[sound:Thai_1_9781797141800_FC_139.mp3]	
+Hnl-oIMcg7	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	eight (counting)	"แปด<br>
+pàird’<br>
+"	[sound:Thai_1_9781797141800_FC_140.mp3]	
+x{><@S>om;	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 14	three thousand	"สามพัน<br>
+sähm’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_141.mp3]	
+hy01u0-bdx	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Not a big deal.	"มันไม่ใช่เรื่องใหญ่<br>
+man mâi châi rêuuang yài."	[sound:Thai_1_9781797141800_BP_169.mp3]	
+L5$=Q/_IyE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	How are you going?	"เธอจะไปยังไง<br>
+ter jà bpai yang nga?"	[sound:Thai_1_9781797141800_BP_170.mp3]	
+p$jgn:H8>A	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Won’t you go back together with me? (casual)	"กลับไปด้วยกันมั้ย<br>
+glàp bpai dûuay gan mái?"	[sound:Thai_1_9781797141800_BP_171.mp3]	
+D7d~l9Pak^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Since a little while ago.	"เมื่อไม่นานมานี้เอง<br>
+mêuua mâi naan maa née eng."	[sound:Thai_1_9781797141800_BP_172.mp3]	
+"mo^G#`{,r`"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Since a little while ago. (casual)	"ไม่นานเท่าไร<br>
+mâi naan tâo rai."	[sound:Thai_1_9781797141800_BP_173.mp3]	
+Btp95on6pO	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	What does that mean? (casual)	"นั่นหมายความว่ายังไง<br>
+nân măai kwaam wâa yang ngai?"	[sound:Thai_1_9781797141800_BP_174.mp3]	
+C}SN?E?q8u	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Do you like Thailand? (casual)	"ชอบเมืองไทยมั้ย<br>
+chôp meuuang tai mái?"	[sound:Thai_1_9781797141800_BP_175.mp3]	
+f$qwT&R}h/	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I don’t need anything. (casual)	"ไม่อยากได้อะไร<br>
+mâi yàak dâai à-rai."	[sound:Thai_1_9781797141800_BP_176.mp3]	
+Jn=hYpM6__	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	When are you leaving Bangkok?	"ออกจากกรุงเทพเมื่อไหร่<br>
+òk jàak grung têp mêuua rài?"	[sound:Thai_1_9781797141800_BP_177.mp3]	
+yP/j@Y]TD	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I ate alone.	"กินข้าวคนเดียว<br>
+gin kâao kon diieow."	[sound:Thai_1_9781797141800_BP_178.mp3]	
+PfQT^t(Z-]	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I haven't eaten yet.	"ยังไม่ได้กินอะไรเลย<br>
+yang mâi dâai gin à-rai loiie."	[sound:Thai_1_9781797141800_BP_179.mp3]	
+jJc%Ablq,=	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Won’t you eat together with me? (casual)	"กินข้าวด้วยกันมั้ย<br>
+gin kâao dûuay gan mái?"	[sound:Thai_1_9781797141800_BP_180.mp3]	
+x!nvBAnR$X	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15	eight hundred nineteen	"แปด ร้อยสิบเก้า<br>
+pàird’ róry’ sìp’ gâo’<br>
+"	[sound:Thai_1_9781797141800_FC_154.mp3]	
+d7&.r?c{q!	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	not a lot, not much	"ไม่มาก<br>
+mâi’ mâhk’<br>
+"	[sound:Thai_1_9781797141800_FC_155.mp3]	
+eYxQ[EJ1IO	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	not enough	"ไม่พอ<br>
+mâi’ por’<br>
+"	[sound:Thai_1_9781797141800_FC_156.mp3]	
+B[Q-V029o5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	my husband	"สามีดิฉัน<br>
+säh-mee’ dee’chán’<br>
+"	[sound:Thai_1_9781797141800_FC_182.mp3]	
+sT^{QVnr.G	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	your husband	"สามีคุณ<br>
+säh-mee’ koon’<br>
+"	[sound:Thai_1_9781797141800_FC_183.mp3]	
+"w/G:u6B(#$"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	forty thousand	"สี่หมื่น<br>
+sèe’ mèun’<br>
+"	[sound:Thai_1_9781797141800_FC_184.mp3]	
+uKD)=4)?kC	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	America	"อเมริกา<br>
+a’may’ri’ga’<br>
+"	[sound:Thai_1_9781797141800_FC_185.mp3]	
+yJD2n~qm7>	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	to invite	"เชิญ<br>
+chern’<br>
+"	[sound:Thai_1_9781797141800_FC_186.mp3]	
+zxt{h;`4:M	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	fifty-one	"ห้าสิบเอ็ด<br>
+hâh’ sìp’ èt’<br>
+"	[sound:Thai_1_9781797141800_FC_187.mp3]	
+dWWlWRh!h?	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	come in	"เข้ามา<br>
+kâo’ maa’<br>
+"	[sound:Thai_1_9781797141800_FC_188.mp3]	
+boza3`]6!1	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	country	"ประเทศ<br>
+prà-tâte’<br>
+"	[sound:Thai_1_9781797141800_FC_189.mp3]	
+i?}K9Y4G>)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	country America	"ประเทศอเมริกา<br>
+prà-tâte’ a’may’ri’ga’<br>
+"	[sound:Thai_1_9781797141800_FC_190.mp3]	
+pn7HBPgU:1	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	children	"ลูก<br>
+lôog’<br>
+"	[sound:Thai_1_9781797141800_FC_197.mp3]	
+D4.wj%B:]P	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	Thailand	"ประเทศไทย<br>
+prà-tâte’ tai’<br>
+"	[sound:Thai_1_9781797141800_FC_198.mp3]	
+e1,24~mxuG	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	three children	"ลูกสามคน<br>
+lôog’ sähm’ kon’<br>
+"	[sound:Thai_1_9781797141800_FC_199.mp3]	
+c[Fy=8wqMb	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	your family	"ครอบครัวคุณ<br>
+krôrp-krua’ koon’<br>
+"	[sound:Thai_1_9781797141800_FC_200.mp3]	
+PN>|JVT<]Z	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	we have	"เรามี<br>
+rao’ mee’<br>
+"	[sound:Thai_1_9781797141800_FC_201.mp3]	
+csvm6N?9Dm	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	more expensive	"แพงกว่า<br>
+pairng’ kwùa’<br>
+"	[sound:Thai_1_9781797141800_FC_202.mp3]	
+PsMTz!N*wa	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	my family	"ครอบครัวผม<br>
+krôrp-krua’ pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_203.mp3]	
+j23~hHaBYF	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	two children	"ลูกสองคน<br>
+lôog’ sörng’ kon’<br>
+"	[sound:Thai_1_9781797141800_FC_204.mp3]	
+AN{J=%W2W8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	how many children	"ลูกกี่คน<br>
+lôog’ gèe’ kon’<br>
+"	[sound:Thai_1_9781797141800_FC_205.mp3]	
+Hy<{<anKTb	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	male (son)	"ชาย<br>
+chahy’<br>
+"	[sound:Thai_1_9781797141800_FC_206.mp3]	
+Rg()w+3|$(	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	big (grown-up)	"โต<br>
+dtoh’<br>
+"	[sound:Thai_1_9781797141800_FC_207.mp3]	
+lhWNJp2VAm	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	grown-up (big already)	"โตแล้ว<br>
+dtoh’ láir-o’<br>
+"	[sound:Thai_1_9781797141800_FC_208.mp3]	
+xwbd8(E~ic	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	little	"เล็ก<br>
+lék’<br>
+"	[sound:Thai_1_9781797141800_FC_209.mp3]	
+DpgI0)e4k=	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	son (male child)	"ลูกชาย<br>
+lôog’ chahy’<br>
+"	[sound:Thai_1_9781797141800_FC_210.mp3]	
+g7}k>*`oaP	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	daughter (female child)	"ลูกสาว<br>
+lôog’ sähw’<br>
+"	[sound:Thai_1_9781797141800_FC_211.mp3]	
+QB2+sp|V:+	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	female	"สาว<br>
+sähw’<br>
+"	[sound:Thai_1_9781797141800_FC_212.mp3]	
+s-ypl4NA+`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	still	"ยัง<br>
+yang’<br>
+"	[sound:Thai_1_9781797141800_FC_213.mp3]	
+C$wnh~PWN<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	this is	"นี่<br>
+nêe’<br>
+"	[sound:Thai_1_9781797141800_FC_214.mp3]	
+Oi6mNpTsMu	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 21	still little	"ยังเล็ก<br>
+yang’ lék’<br>
+"	[sound:Thai_1_9781797141800_FC_215.mp3]	
+DQ([{zE(^0	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	takes	"ใช้<br>
+chái’<br>
+"	[sound:Thai_1_9781797141800_FC_216.mp3]	
+AX=zK%9Hwr	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	take time	"ใช้เวลา<br>
+chái’ way-lah’<br>
+"	[sound:Thai_1_9781797141800_FC_217.mp3]	
+A5%^J4BK{e	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	fly	"ไปทางเครื่องบิน<br>
+pai’ tahng’ krêung-bin’<br>
+"	[sound:Thai_1_9781797141800_FC_224.mp3]	
+n)sfg/w_CE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 22	time	"เวลา<br>
+way-lah’<br>
+"	[sound:Thai_1_9781797141800_FC_225.mp3]	
+e|KaIpp:?P	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	far	"ไกล<br>
+glai’<br>
+"	[sound:Thai_1_9781797141800_FC_226.mp3]	
+w0Q=QWU?8u	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	sixty thousand	"หกหมื่น<br>
+hòg’ mèun’<br>
+"	[sound:Thai_1_9781797141800_FC_227.mp3]	
+"i|T0#N^V^L"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	province	"จังหวัด<br>
+jang-wàt’<br>
+"	[sound:Thai_1_9781797141800_FC_228.mp3]	
+H3}[9[E<0r	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	airport	"สนามบิน<br>
+sa-nähm’bin’<br>
+"	[sound:Thai_1_9781797141800_FC_229.mp3]	
+xH(n2F57Ai	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	hour, hours	"ชั่วโมง<br>
+chûa’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_230.mp3]	
+stYE5;c=en	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	how long	"นานเท่าไหร่<br>
+nahn’ tâo-rài’<br>
+"	[sound:Thai_1_9781797141800_FC_231.mp3]	
+K0wOxF-cNJ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	by	"ทาง<br>
+tahng’<br>
+"	[sound:Thai_1_9781797141800_FC_232.mp3]	
+KqeB,,tKPV	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	by plane	"ทางเครื่องบิน<br>
+tahng’ krêung-bin’<br>
+"	[sound:Thai_1_9781797141800_FC_233.mp3]	
+Bpo{^6i7|B	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 23	very expensive	"แพงมาก<br>
+pairng’ mâhk’<br>
+"	[sound:Thai_1_9781797141800_FC_234.mp3]	
+i+CQ9ZG}lY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	every store	"ทุกร้าน<br>
+tóok’ ráhn’<br>
+"	[sound:Thai_1_9781797141800_FC_254.mp3]	
+o{TX5U{~k>	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	turn left	"เลี้ยว ซ้าย<br>
+líaw’ sáhy’<br>
+"	[sound:Thai_1_9781797141800_FC_255.mp3]	
+rD/EZ1c%UP	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25	too late	"สายเกินไป<br>
+sähy’ gern’ pai’<br>
+"	[sound:Thai_1_9781797141800_FC_256.mp3]	
+HBRi69d{0p	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	visit	"หา<br>
+häh’<br>
+"	[sound:Thai_1_9781797141800_FC_257.mp3]	
+E{1hA]00K2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	there	"ที่นั่น<br>
+têe-nân’<br>
+"	[sound:Thai_1_9781797141800_FC_265.mp3]	
+cMLUdmpVb{	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 26	to do some work	"ทำงาน<br>
+tum’ ngahn’<br>
+"	[sound:Thai_1_9781797141800_FC_266.mp3]	
+BT;<oN%/[5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	together / also one another	"ด้วยกัน<br>
+dôo-ay’gan’<br>
+"	[sound:Thai_1_9781797141800_FC_267.mp3]	
+oA1_ZpgIda	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	one another	"กัน<br>
+gan’<br>
+"	[sound:Thai_1_9781797141800_FC_268.mp3]	
+I0`}T*b3*p	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	alone	"คนเดียว<br>
+kon’diaw’<br>
+"	[sound:Thai_1_9781797141800_FC_269.mp3]	
+OW^1[PUI3,	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	a few days	"สองสามวัน<br>
+sörng’-sähm’ wan’<br>
+"	[sound:Thai_1_9781797141800_FC_270.mp3]	
+pK&ML<DA$Z	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	day, days	"วัน<br>
+wan’<br>
+"	[sound:Thai_1_9781797141800_FC_271.mp3]	
+x<L6E~a&1*	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	two days	"สองวัน<br>
+sörng’ wan’<br>
+"	[sound:Thai_1_9781797141800_FC_272.mp3]	
+"m_%#*8S0}i"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	three days	"สามวัน<br>
+sähm’ wan’<br>
+"	[sound:Thai_1_9781797141800_FC_273.mp3]	
+zC)6iH=|mv	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	my son	"ลูกชายผม<br>
+lôog’ chahy’ pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_274.mp3]	
+Q>so)veIU3	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	my friends	"เพื่อนผม<br>
+pêun’ pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_275.mp3]	
+ig8iH:Hj4W	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 27	to leave alone	"ไปคนเดียว<br>
+pai’kon’diaw’<br>
+"	[sound:Thai_1_9781797141800_FC_276.mp3]	
+lQ%w,is72P	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	to think	"คิด<br>
+kít’<br>
+"	[sound:Thai_1_9781797141800_FC_277.mp3]	
+ywo%9n[0Ig	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	think that	"คิดว่า<br>
+kít’ wâh’<br>
+"	[sound:Thai_1_9781797141800_FC_278.mp3]	
+C&(?rHN{]u	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	that means	"นั่นแปลว่า<br>
+nân’ plair’ wâh’<br>
+"	[sound:Thai_1_9781797141800_FC_279.mp3]	
+uW]}|{5s}=	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	to mean / means	"แปลว่า<br>
+plair’ wâh’<br>
+"	[sound:Thai_1_9781797141800_FC_280.mp3]	
+P_w.PNft|{	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	a few hours	"สองสามชั่วโมง<br>
+sörng’-sähm’- chûa’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_281.mp3]	
+gu39@}eB?c	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	free time	"เวลาว่าง<br>
+way-lah’ wâhng’<br>
+"	[sound:Thai_1_9781797141800_FC_282.mp3]	
+O,1&3{W<5a	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	I think	"ผมคิด<br>
+pöm’ kít’<br>
+"	[sound:Thai_1_9781797141800_FC_283.mp3]	
+E?kk]g5EA&	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	I think that	"ผมคิดว่า<br>
+pöm’ kít’ wâh’<br>
+"	[sound:Thai_1_9781797141800_FC_284.mp3]	
+Pkn{)2pDj9	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	eight days	"แปดวัน<br>
+pàird’ wan’<br>
+"	[sound:Thai_1_9781797141800_FC_285.mp3]	
+QZ:H42U7V|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 28	to leave together	"ไปด้วยกัน<br>
+pai’ dôo-ay’gan’<br>
+"	[sound:Thai_1_9781797141800_FC_286.mp3]	
+MTlQa^iHvb	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	week, weeks	"อาทิตย์<br>
+ah’tít’<br>
+"	[sound:Thai_1_9781797141800_FC_287.mp3]	
+f?~EI;]<So	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	like	"ชอบ<br>
+chôrp’<br>
+"	[sound:Thai_1_9781797141800_FC_288.mp3]	
+Jne~f1yH>M	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	souvenir	"ของที่ระลึก<br>
+körng’ têe’ rá-lúek’<br>
+"	[sound:Thai_1_9781797141800_FC_289.mp3]	
+Qv{o0o*It/	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	arrive, arrived	"มาถึง<br>
+mah’tërng’<br>
+"	[sound:Thai_1_9781797141800_FC_290.mp3]	
+w@[@Iwvi_)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	yesterday	"เมื่อวานนี้<br>
+mêu’wahn’née’<br>
+"	[sound:Thai_1_9781797141800_FC_291.mp3]	
+N-NN&.jlwW	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	a few weeks	"สองสามอาทิตย์<br>
+sörng’-sähm’- ah’tít’<br>
+"	[sound:Thai_1_9781797141800_FC_292.mp3]	
+j`vseB4~eY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	arrived yesterday	"มาถึง เมื่อวานนี้<br>
+mah’tërng’ mêu’wahn’née’<br>
+"	[sound:Thai_1_9781797141800_FC_293.mp3]	
+"lZFfSKQ<#v"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	I bought	"ผมซื้อ<br>
+pöm’ séu’<br>
+"	[sound:Thai_1_9781797141800_FC_294.mp3]	
+L^%ECM!C`A	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	I like	"ผมชอบ<br>
+pöm’ chôrp’<br>
+"	[sound:Thai_1_9781797141800_FC_295.mp3]	
+q89D`KYgXx	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 29	you bought	"คุณซื้อ<br>
+koon’ séu’<br>
+"	[sound:Thai_1_9781797141800_FC_296.mp3]	
+tT/x2PVPpS	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	morning	"เช้า<br>
+cháhw’<br>
+"	[sound:Thai_1_9781797141800_FC_297.mp3]	
+N$/]HHAK56	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	this morning	"เช้านี้<br>
+cháhw’ née’<br>
+"	[sound:Thai_1_9781797141800_FC_298.mp3]	
+e0@&LO};~I	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	in the morning	"ตอนเช้า<br>
+dtorn’ cháhw’<br>
+"	[sound:Thai_1_9781797141800_FC_299.mp3]	
+"C[v!Xg#v<5"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	yesterday morning	"เมื่อวานนี้ตอนเช้า<br>
+mêu’wahn’née’ dtorn’ cháhw’<br>
+"	[sound:Thai_1_9781797141800_FC_300.mp3]	
+ce=v0[);E/	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	yesterday evening	"เมื่อวานนี้ตอนเย็น<br>
+mêu’wahn’née’ dtorn’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_301.mp3]	
+o~GAVuhAln	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	my three sons	"กับลูกชายผมสามคน<br>
+lôog’ chahy’ pöm’ sähm’ kon’<br>
+"	[sound:Thai_1_9781797141800_FC_302.mp3]	
+cpfp}-1Xw_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	one week	"หนึ่งอาทิตย์<br>
+nèrng’ ah’tít’<br>
+"	[sound:Thai_1_9781797141800_FC_303.mp3]	
+"KHlh6alp#]"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	you are	"เป็น<br>
+koon’ pen’<br>
+"	[sound:Thai_1_9781797141800_FC_010.mp3]	
+lTA{a<ttDw	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	hello / goodbye (f)	"สวัสดีค่ะ<br>
+sa’wùt’dee’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_011.mp3]	
+ia6LXuJ>$l	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	thank you (f)	"ขอบคุณค่ะ<br>
+kòrp’ koon’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_012.mp3]	
+P{9P/`veEU	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	I am (f)	"ดิฉันเป็น<br>
+dee’ chàn’ pen’<br>
+"	[sound:Thai_1_9781797141800_FC_013.mp3]	
+":q{+U7x#1"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	hello, goodbye (m)	"สวัสดีครับ<br>
+sa’wùt’dee’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_014.mp3]	
+HQyM^F^l7g	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	thank you (m)	"ขอบคุณครับ<br>
+kòrp’ koon’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_015.mp3]	
+P/g>Zys+uB	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	I am (m)	"ผมเป็น<br>
+pöm’ pen’<br>
+"	[sound:Thai_1_9781797141800_FC_016.mp3]	
+lQbh<;w8LQ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	"yes (m, response to ""Are you?"")"	"ใช่ครับ<br>
+châi’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_017.mp3]	
+r>qT}1w.u{	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	"no (m, response to ""Are you?"")"	"ไม่ใช่ครับ<br>
+mâi’ châi’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_018.mp3]	
+cA1@S_u;rh	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	very	"มาก<br>
+mâhk’<br>
+"	[sound:Thai_1_9781797141800_FC_019.mp3]	
+QE+u}q=R|A	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 02	well	"ดี<br>
+dee’<br>
+"	[sound:Thai_1_9781797141800_FC_020.mp3]	
+NtD<Kos4bZ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	I’m not (f)	"ดิฉันไม่ใช่<br>
+dee’chán’ mâi’ châi’<br>
+"	[sound:Thai_1_9781797141800_FC_021.mp3]	
+LA,@.LMMw<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	very well (m)	"ดีมากครับ<br>
+dee’ mâhk’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_022.mp3]	
+y%~9/|Ty7u	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	yes (m)	"ครับ<br>
+krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_023.mp3]	
+sj$)r3JIf1	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	not quite that well (m)	"ไม่ค่อยดีเท่าไหร่ครับ<br>
+mâi’ kôy’ dee’ tâo-rài’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_024.mp3]	
+x~JEK>~[8(	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	not that much	"ไม่เท่าไหร่<br>
+mâi’ tâo-rài’<br>
+"	[sound:Thai_1_9781797141800_FC_025.mp3]	
+y|y+},CGb8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	quite	"ค่อย<br>
+kôy’<br>
+"	[sound:Thai_1_9781797141800_FC_026.mp3]	
+hwNc`2^9e}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	that much	"เท่าไหร่<br>
+tâo-rài’<br>
+"	[sound:Thai_1_9781797141800_FC_027.mp3]	
+u8PP=Xz/O2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	but	"แต่<br>
+dtàir’<br>
+"	[sound:Thai_1_9781797141800_FC_028.mp3]	
+g<&,5F^(@~	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	one thousand fourteen	"หนึ่งพันสิบสี่<br>
+nèrng’ pan’ sìp’ sèe’<br>
+"	[sound:Thai_1_9781797141800_FC_129.mp3]	
+"C^#A[:d]Jz"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	money	"เงิน<br>
+ngern’<br>
+"	[sound:Thai_1_9781797141800_FC_130.mp3]	
+er|wD_bjKC	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	hundred	"ร้อย<br>
+róry’<br>
+"	[sound:Thai_1_9781797141800_FC_131.mp3]	
+KYUf7Y%k{;	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	ten (counting)	"สิบ<br>
+sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_132.mp3]	
+nHL{-Nt%pa	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	fifteen (counting)	"สิบห้า<br>
+sìp’ hâh’<br>
+"	[sound:Thai_1_9781797141800_FC_133.mp3]	
+xJf@ZpO5^6	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I want to return. (m, casual)	"ผมอยากลับละ<br>
+pŏm yàak láp lá."	[sound:Thai_1_9781797141800_BP_161.mp3]	
+"HM$g#fG`/k"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m all alone. / I feel lonely. (m)	"ผมเหงา<br>
+pŏm ngăo."	[sound:Thai_1_9781797141800_BP_162.mp3]	
+f)]P[=`CGK	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m in a hurry. (m)	"ผมรีบ<br>
+pŏm rêep."	[sound:Thai_1_9781797141800_BP_163.mp3]	
+fKBn5/*mY{	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I bought a gift. (m)	"ผมซื้อของขวัญ<br>
+pŏm séu kŏng kwăn."	[sound:Thai_1_9781797141800_BP_164.mp3]	
+pvkB7,^d,m	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Can I order something? (m)	"ผมขอสั่งอาหารละนะ<br>
+pŏm kŏr sàng aa-hăan lá ná?"	[sound:Thai_1_9781797141800_BP_165.mp3]	
+AzldZ.(tfA	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I want to stay a little more. (m)	"ผมจะอยู่ต่ออีกสักหน่อย<br>
+pŏm jà yòo dtòr èek sàk nòi."	[sound:Thai_1_9781797141800_BP_166.mp3]	
+y]hj>/X!+W	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Not a big deal. (casual)	"ไม่เป็นไรหรอก<br>
+mâi bpen rai ròk."	[sound:Thai_1_9781797141800_BP_167.mp3]	
+hzzHMKwA(q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Are you going by bus?	"เธอจะนั่งรถบัสเหรอ<br>
+ter jà nâng rót bàt rĕr?"	[sound:Thai_1_9781797141800_BP_168.mp3]	
+"y#A^,nrHf^"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	ten thousand	"หนึ่งหมื่น<br>
+nèrng’ mèun’<br>
+"	[sound:Thai_1_9781797141800_FC_157.mp3]	
+Mc.0cZg>+m	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	ten thousand twenty	"หนึ่งหมื่นยี่สิบ<br>
+nèrng’ mèun’ yêe’ sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_158.mp3]	
+v2%+!t2+eY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	eleven thousand	"หนึ่งหมื่นหนึ่งพัน<br>
+nèrng’ mèun’ nèrng’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_159.mp3]	
+qV(8[SJeXX	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	enough	"พอ<br>
+por’<br>
+"	[sound:Thai_1_9781797141800_FC_160.mp3]	
+N3wRFZ,>t@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	thirty	"สามสิบ<br>
+sähm’ sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_161.mp3]	
+stL]Qn5gKE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	thirty-four	"สามสิบสี่<br>
+sähm’ sìp’ sèe’<br>
+"	[sound:Thai_1_9781797141800_FC_162.mp3]	
+j?.|.[8@GK	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	eleven	"สิบเอ็ด<br>
+sìp’ èt’<br>
+"	[sound:Thai_1_9781797141800_FC_163.mp3]	
+xV:%v<K;&u	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 16	twenty	"ยี่สิบ<br>
+yêe’ sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_164.mp3]	
+Jh=nxXSxyT	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	intend (set heart on)	"ตั้งใจ<br>
+dtâng’jai’<br>
+"	[sound:Thai_1_9781797141800_FC_165.mp3]	
+rq;YFRi?gr	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	intend to	"ตั้งใจจะ<br>
+dtâng’jai’ jà’<br>
+"	[sound:Thai_1_9781797141800_FC_166.mp3]	
+l>LxS]Ec}[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	too	"เกินไป<br>
+gern’ pai’<br>
+"	[sound:Thai_1_9781797141800_FC_167.mp3]	
+dSb.{=2Br%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	expensive	"แพง<br>
+pairng’<br>
+"	[sound:Thai_1_9781797141800_FC_168.mp3]	
+z+i5~4`4^w	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	quickly	"เร็ว<br>
+rew’<br>
+"	[sound:Thai_1_9781797141800_FC_169.mp3]	
+"Cd/.Bal#-j"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	thirty-one	"สามสิบเอ็ด<br>
+sähm’ sìp’ èt’<br>
+"	[sound:Thai_1_9781797141800_FC_170.mp3]	
+N@^YHTOd_8	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	twenty thousand	"สองหมื่น<br>
+sörng’ mèun’<br>
+"	[sound:Thai_1_9781797141800_FC_171.mp3]	
+y8EfQ*v6cR	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	twenty-three thousand	"สองหมื่นสามพัน<br>
+sörng’ mèun’ sähm’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_172.mp3]	
+bh48&]}b)q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	one thousand twenty-three	"หนึ่งพันยี่สิบสาม<br>
+nèrng’ pan’ yêe’ sìp’ sähm’<br>
+"	[sound:Thai_1_9781797141800_FC_173.mp3]	
+F+sdzAQ@XE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 17	thirty-one thousand	"สามหมื่นหนึ่งพัน<br>
+sähm’ mèun’ nèrng’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_174.mp3]	
+"s#.Y+F,o%,"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	fifty	"ห้าสิบ<br>
+hâh’ sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_175.mp3]	
+v!tRn7@+$W	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	fifty-five	"ห้าสิบห้า<br>
+hâh’ sìp’ hâh’<br>
+"	[sound:Thai_1_9781797141800_FC_176.mp3]	
+rv$WH-4^f<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	sixty	"หกสิบ<br>
+hòg’ sìp’<br>
+"	[sound:Thai_1_9781797141800_FC_177.mp3]	
+Q!ApIcXFJt	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	wife	"ภรรยา<br>
+pan-yah’<br>
+"	[sound:Thai_1_9781797141800_FC_178.mp3]	
+QbO(,[WCzu	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	your wife	"ภรรยาคุณ<br>
+pan-yah’ koon’<br>
+"	[sound:Thai_1_9781797141800_FC_179.mp3]	
+CNM&rf3v%7	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	my wife	"ภรรยาผม<br>
+pan-yah’ pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_180.mp3]	
+i&Ay$)z3*X	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 18	husband	"สามี<br>
+säh-mee’<br>
+"	[sound:Thai_1_9781797141800_FC_181.mp3]	
+D-QGqM*cb|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	we	"เรา<br>
+rao’<br>
+"	[sound:Thai_1_9781797141800_FC_191.mp3]	
+Q)rD^7)6hY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	sixty-three thousand	"หกหมื่นสามพัน<br>
+hòg’ mèun’ sähm’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_192.mp3]	
+t$@8p}{N4G	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	live at	"อยู่ที่<br>
+yòo’ têe’<br>
+"	[sound:Thai_1_9781797141800_FC_193.mp3]	
+P?ss1uF)C|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 19	fifty-three thousand	"ห้าหมื่นสามพัน<br>
+hâh’ mèun’ sähm’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_194.mp3]	
+rXM@T(ZA^|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	fifty-one thousand	"ห้าหมื่นหนึ่งพัน<br>
+hâh’ mèun’ nèrng’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_195.mp3]	
+f-Ly^WWE!>	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20	family	"ครอบครัว<br>
+krôrp-krua’<br>
+"	[sound:Thai_1_9781797141800_FC_196.mp3]	
+eZ6eYkjw`:	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	we arrived	"เรามาถึง<br>
+rao’ mah’tërng’<br>
+"	[sound:Thai_1_9781797141800_FC_304.mp3]	
+AB?Tfym4[?	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Where are you from? (f, polite)	"คุณมาจากไหนคะ<br>
+koon’ maa jàak năi ká?"	[sound:Thai_1_9781797141800_BP_001.mp3]	
+LEVQ%nC^xh	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I am not very good at it. (f)	"ฉันไม่ค่อยเก่งเท่าไหร่<br>
+chăn mâi kôi gèng tâo rài."	[sound:Thai_1_9781797141800_BP_002.mp3]	
+k>G.+k*w|w	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Yes, I can. (m)	"ผมทำได้<br>
+pŏm tam dâai."	[sound:Thai_1_9781797141800_BP_003.mp3]	
+CjOFhA/4Sg	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	No, I can't. (casual)	"ไม่ได้<br>
+mâi dâai."	[sound:Thai_1_9781797141800_BP_004.mp3]	
+Bh^^G;g7h:	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Yes, I can. (casual)	"ได้สิ<br>
+dâai sì."	[sound:Thai_1_9781797141800_BP_005.mp3]	
+k66KtkTCYT	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Are you hungry? (casual)	"หิวมั้ย<br>
+hĭw mái?"	[sound:Thai_1_9781797141800_BP_023.mp3]	
+FyYxDF|,k|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Why don’t we have some tea and talk?	"ไปหากินชากันเถอะ<br>
+bpai hăa gin chaa gan tùh?"	[sound:Thai_1_9781797141800_BP_024.mp3]	
+o}ITkaR8!N	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Why don’t we have some tea and talk? (casual)	"ไปกินชากันไป<br>
+bpai gin chaa gan bpai?"	[sound:Thai_1_9781797141800_BP_025.mp3]	
+t-njRgc&Qh	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	No, thank you. / I don't need it.	"ไม่ดีกว่าขอบคุณ<br>
+mâi dee gwàa kòp kun."	[sound:Thai_1_9781797141800_BP_026.mp3]	
+xVjiTToRVM	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I know. / I understand. (casual)	"รู้แล้ว<br>
+róo láew."	[sound:Thai_1_9781797141800_BP_027.mp3]	
+z?{8G6ke:^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	no (f)	"ไม่ค่ะ<br>
+mâi’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_001.mp3]	
+n``z~*Kmo6	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	person	"คน<br>
+kon’<br>
+"	[sound:Thai_1_9781797141800_FC_002.mp3]	
+JO}@l/cY:2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	you understand (m)	"คุณเข้าใจครับ<br>
+koon’ kâo’jai’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_003.mp3]	
+"h*#yu7{]/C"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	American	"อเมริกัน<br>
+a’may’ri’gun’<br>
+"	[sound:Thai_1_9781797141800_FC_004.mp3]	
+"kR#7JdW&w$"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	a little	"นิดหน่อย<br>
+nít’nòy’<br>
+"	[sound:Thai_1_9781797141800_FC_005.mp3]	
+GZkvMx4M26	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	understand	"เข้าใจ<br>
+kâo’jai’<br>
+"	[sound:Thai_1_9781797141800_FC_006.mp3]	
+wiKp~Be`?F	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	English (language)	"ภาษาอังกฤษ<br>
+pah’säh’ ung’grìt’<br>
+"	[sound:Thai_1_9781797141800_FC_007.mp3]	
+Jaom5T)b*Q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	American person (m)	"คน อเมริกัน<br>
+kon’ a’may’ri’gun’<br>
+"	[sound:Thai_1_9781797141800_FC_008.mp3]	
+m&fmD+*6jx	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 01	Thai (language)	"ภาษาไทย<br>
+pah’säh’ tai’<br>
+"	[sound:Thai_1_9781797141800_FC_009.mp3]	
+H+6br|+Kvg	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	At the same place as always.	"เจอกันที่เดิม<br>
+jer gan têe derm."	[sound:Thai_1_9781797141800_BP_037.mp3]	
+"lh*!&/#^ec"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	At my place.	"ที่บ้านเรา<br>
+têe bâan-rao."	[sound:Thai_1_9781797141800_BP_038.mp3]	
+du?yOK{JaZ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Is it inexpensive?	"มันไม่แพงใช่มั้ย<br>
+man mâi paeng châi mái?"	[sound:Thai_1_9781797141800_BP_039.mp3]	
+"pXErgm#SgQ"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Is it all right? (casual)	"ทุกอย่างโอเคมั้ย<br>
+túk yàang oh kay mái?"	[sound:Thai_1_9781797141800_BP_040.mp3]	
+z|*jZi;mtX	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Same here.	"เหมือนกัน<br>
+mĕuuan gan."	[sound:Thai_1_9781797141800_BP_041.mp3]	
+d>3vQcPmq_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Do you know? / Do you understand? (casual)	"เข้าใจมั้ย<br>
+kâo jai mái?"	[sound:Thai_1_9781797141800_BP_042.mp3]	
+IDx{-wGJcL	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	When are you going to have a meal?	"เมื่อไหร่จะกินข้าว<br>
+mêuua rài jà gin kâao?"	[sound:Thai_1_9781797141800_BP_043.mp3]	
+mmBGc4UxxC	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	When are you going to have a meal? (casual)	"เมื่อไหร่จะกินซักที<br>
+mêuua rài jà gin sák tee?"	[sound:Thai_1_9781797141800_BP_044.mp3]	
+K-tSxt28Yz	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Soon? (casual)	"เร็วๆนี้แหละ<br>
+reo reo née làe?"	[sound:Thai_1_9781797141800_BP_045.mp3]	
+ti|T-K^vvO	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I’m sorry. (casual)	"โทษที<br>
+tôht tee."	[sound:Thai_1_9781797141800_BP_046.mp3]	
+b)D&6:V{7i	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I want a non-alcoholic drink.	"อยากดื่มอะไรที่ไม่ใช่เหล้า<br>
+yàak dèum à-rai têe mâi châi lâo."	[sound:Thai_1_9781797141800_BP_047.mp3]	
+"n*_GwW`#hE"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Yes, all right. (casual)	"ได้สิ<br>
+dâai sì."	[sound:Thai_1_9781797141800_BP_048.mp3]	
+lHSdqlvHRL	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I don't have an appetite. (casual)	"ไม่หิวอะไรเลย<br>
+mâi hĭw à-rai loiie."	[sound:Thai_1_9781797141800_BP_049.mp3]	
+bRES->o6b}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	What are you going to eat? (casual)	"กินอะไรดี<br>
+gin à-rai dee?"	[sound:Thai_1_9781797141800_BP_050.mp3]	
+Ek;YzCy~(a	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	You don’t know? (casual)	"เธอไม่รู้หรอก<br>
+ter mâi róo ròk?"	[sound:Thai_1_9781797141800_BP_051.mp3]	
+n6I>},V^<t	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Where is the restroom?	"ห้องน้ำอยู่ไหน<br>
+hông náam yòo năi?"	[sound:Thai_1_9781797141800_BP_052.mp3]	
+zvPBDhQ[/S	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Yes, I know. (casual)	"รู้น่า<br>
+róo nâa."	[sound:Thai_1_9781797141800_BP_053.mp3]	
+f=`aahSRl?	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Do you have any plans?	"คุณมีแผนอะไรมั้ย<br>
+kun mee păen à-rai mái?"	[sound:Thai_1_9781797141800_BP_054.mp3]	
+pV!{0-a)L+	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Do you have any plans? (casual)	"คุณจะทำอะไรมั้ย<br>
+kun jà tam à-rai mái?"	[sound:Thai_1_9781797141800_BP_055.mp3]	
+"I!v%#$*8zK"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	you are not	"คุณไม่ใช่<br>
+koon’ mâi’ châi’<br>
+"	[sound:Thai_1_9781797141800_FC_029.mp3]	
+mza*,6{KF5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 03	Thai person	"คนไทย<br>
+kon’ tai’<br>
+"	[sound:Thai_1_9781797141800_FC_030.mp3]	
+QTq-%pjc>9	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	you can speak (f)	"คุณพูดได้ค่ะ<br>
+koon’ pôot’ dâi’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_031.mp3]	
+"ebOe#do~t["	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	I can speak (m)	"ผมพูดได้ครับ<br>
+pöm’ pôot’ dâi’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_032.mp3]	
+s;Y%jze@V[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	I (m)	"ผม<br>
+pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_033.mp3]	
+HkCy8WXELt	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	can	"ได้<br>
+dâi’<br>
+"	[sound:Thai_1_9781797141800_FC_034.mp3]	
+kFh<Onv_sk	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	speak	"พูด<br>
+pôot’<br>
+"	[sound:Thai_1_9781797141800_FC_035.mp3]	
+OOvS*7=|U^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	road	"ถนน<br>
+ta-nön’<br>
+"	[sound:Thai_1_9781797141800_FC_036.mp3]	
+MIe2oB/EF&	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	where	"ที่ไหน<br>
+têe-näi’<br>
+"	[sound:Thai_1_9781797141800_FC_037.mp3]	
+CF29(&EX.:	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	over here	"ที่นี่<br>
+têe-nêe’<br>
+"	[sound:Thai_1_9781797141800_FC_038.mp3]	
+C+wWYNF.p=	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	over there	"ที่โน่น<br>
+têe-nôhn’<br>
+"	[sound:Thai_1_9781797141800_FC_039.mp3]	
+L|Lk-Rqiuq	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 04	to be located	"อยู่<br>
+yòo’<br>
+"	[sound:Thai_1_9781797141800_FC_040.mp3]	
+Cb3}cU2M,}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	you would like (f)	"คุณอยากค่ะ<br>
+koon’ yàhk’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_041.mp3]	
+E5S&g:|=(t	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	I would like (m)	"ผมอยากครับ<br>
+pöm’ yàhk’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_042.mp3]	
+h/]~1iY}P|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	I know (m)	"ผมทราบครับ<br>
+pöm’ sâhp’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_043.mp3]	
+b$d8j:>S/5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	you know (m)	"คุณทราบครับ<br>
+koon’ sâhp’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_044.mp3]	
+"Irm6N#Jc0|"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	what	"อะไร<br>
+a-rai’<br>
+"	[sound:Thai_1_9781797141800_FC_045.mp3]	
+"G`#f?dYW_("	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	rice	"ข้าว<br>
+kâhw’<br>
+"	[sound:Thai_1_9781797141800_FC_046.mp3]	
+j>x%1![axC	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	to have	"กิน<br>
+gin’<br>
+"	[sound:Thai_1_9781797141800_FC_047.mp3]	
+E>McDcO;?W	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	what about you	"แล้วคุณล่ะ<br>
+láir-o’ koon’ lâ’<br>
+"	[sound:Thai_1_9781797141800_FC_048.mp3]	
+t2O>03Qz4Q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	you	"คุณ<br>
+koon’<br>
+"	[sound:Thai_1_9781797141800_FC_049.mp3]	
+G81$&GCtw9	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	water	"น้ำ<br>
+náhm’<br>
+"	[sound:Thai_1_9781797141800_FC_050.mp3]	
+hY2kekR3WJ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	know	"ทราบ<br>
+sâhp’<br>
+"	[sound:Thai_1_9781797141800_FC_051.mp3]	
+"n#dCg]I%xV"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05	would like	"อยาก<br>
+yàhk’<br>
+"	[sound:Thai_1_9781797141800_FC_052.mp3]	
+tG;ZmJ=D@2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	ice tea	"ชาเย็น<br>
+chah’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_053.mp3]	
+pyrN_+zi!Y	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	also	"ด้วย<br>
+dôo-ay’<br>
+"	[sound:Thai_1_9781797141800_FC_054.mp3]	
+G{wo1S2HTi	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	restaurant	"ร้านอาหาร<br>
+ráhn-ah-härn’<br>
+"	[sound:Thai_1_9781797141800_FC_055.mp3]	
+MkXo7YN<9t	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	Is it?	"หรือ<br>
+rër’?<br>
+"	[sound:Thai_1_9781797141800_FC_056.mp3]	
+iAxlFW.=41	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	at	"ที่<br>
+têe’<br>
+"	[sound:Thai_1_9781797141800_FC_057.mp3]	
+sPa2GEbQsK	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	cold	"เย็น<br>
+yen’<br>
+"	[sound:Thai_1_9781797141800_FC_058.mp3]	
+N4ILH(YcN0	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	on (a street)	"อยู่ที่<br>
+yòo’ têe’<br>
+"	[sound:Thai_1_9781797141800_FC_059.mp3]	
+fUBW<9F5vm	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	tea	"ชา<br>
+chah’<br>
+"	[sound:Thai_1_9781797141800_FC_060.mp3]	
+L:1<b<h69	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	not here	"ไม่ใช่ที่นี่<br>
+mâi’ châi’ têe’nêe’<br>
+"	[sound:Thai_1_9781797141800_FC_061.mp3]	
+KR01l$R%=B	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 06	at a restaurant	"ที่ร้านอาหาร<br>
+têe’ ráhn-ah-härn’<br>
+"	[sound:Thai_1_9781797141800_FC_062.mp3]	
+iN_bViCG;d	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	another time (f)	"ทีหลังค่ะ<br>
+tee-lüng’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_063.mp3]	
+toJI-.RWe5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	now (m)	"ตอนนี้ครับ<br>
+dtorn’née’ krúp’<br>
+"	[sound:Thai_1_9781797141800_FC_064.mp3]	
+ha5zyIR?Pz	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	beer	"เบียร์<br>
+beer’<br>
+"	[sound:Thai_1_9781797141800_FC_065.mp3]	
+qbhD3!1y}%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	now	"ตอนนี้<br>
+dtorn’née’<br>
+"	[sound:Thai_1_9781797141800_FC_066.mp3]	
+BE!3XI>~z%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	wine	"เหล้าไวน์<br>
+lâo’ wine’<br>
+"	[sound:Thai_1_9781797141800_FC_067.mp3]	
+lH%@>~cFA*	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	when	"เมื่อไหร่<br>
+mêu’rài’<br>
+"	[sound:Thai_1_9781797141800_FC_068.mp3]	
+cj@Svik~!X	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	another time	"ทีหลัง<br>
+tee-lüng’<br>
+"	[sound:Thai_1_9781797141800_FC_069.mp3]	
+FqzaJzL;bE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	not now	"ไม่ใช่ตอนนี้<br>
+mâi’ châi’ dtorn’née’<br>
+"	[sound:Thai_1_9781797141800_FC_070.mp3]	
+&Yz%9pB81	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	it’s not located here	"ไม่อยู่ที่นี่<br>
+mâi’ yòo’ têe’nêe’<br>
+"	[sound:Thai_1_9781797141800_FC_071.mp3]	
+"g5D=O#|y,%"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	to have lunch	"อาหารกลางวัน<br>
+ah-hähn’ klahng-won’<br>
+"	[sound:Thai_1_9781797141800_FC_074.mp3]	
+ev},kl</xz	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	with	"กับ<br>
+gùp’<br>
+"	[sound:Thai_1_9781797141800_FC_075.mp3]	
+bIZ3_=3{XV	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	bottles	"ขวด<br>
+kòo-ut’<br>
+"	[sound:Thai_1_9781797141800_FC_076.mp3]	
+keVtvSt8?j	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	may I have	"ขอ<br>
+kör’<br>
+"	[sound:Thai_1_9781797141800_FC_077.mp3]	
+rw{LiixPx^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	whom	"ใคร<br>
+krai’<br>
+"	[sound:Thai_1_9781797141800_FC_078.mp3]	
+s8U^`NMtwy	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	to go	"ไป<br>
+pai’<br>
+"	[sound:Thai_1_9781797141800_FC_079.mp3]	
+kf-EzRlvTo	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	or	"หรือ<br>
+rër’<br>
+"	[sound:Thai_1_9781797141800_FC_080.mp3]	
+b;kW1QPX}N	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	two	"สอง<br>
+sörng’<br>
+"	[sound:Thai_1_9781797141800_FC_081.mp3]	
+PO-uBE/c_>	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	lunch	"กลางวัน<br>
+klahng-won’<br>
+"	[sound:Thai_1_9781797141800_FC_082.mp3]	
+"j#m1tSIbu2"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	one in the afternoon	"บ่ายหนึ่งโมง<br>
+bài’ nèrng’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_083.mp3]	
+hE_>x!W8kE	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	at [a certain time]	"ตอน<br>
+dtorn’<br>
+"	[sound:Thai_1_9781797141800_FC_084.mp3]	
+QKUZAIkmRB	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	one	"หนึ่ง<br>
+nèrng’<br>
+"	[sound:Thai_1_9781797141800_FC_085.mp3]	
+spi)%<eTU>	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	hotel	"โรงแรม<br>
+rohng-rairm’<br>
+"	[sound:Thai_1_9781797141800_FC_086.mp3]	
+y?x;C]CU5C	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	[to] have	"มี<br>
+mee’<br>
+"	[sound:Thai_1_9781797141800_FC_125.mp3]	
+gg/}E.(;VJ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	one thousand fifteen	"หนึ่งพันสิบห้า<br>
+nèrng’ pan’ sìp’ hâh’<br>
+"	[sound:Thai_1_9781797141800_FC_126.mp3]	
+"n#:8MB:Vq}"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	one thousand seventeen	"หนึ่งพันสิบเจ็ด<br>
+nèrng’ pan’ sìp’ jèt’<br>
+"	[sound:Thai_1_9781797141800_FC_127.mp3]	
+dWe9JgfPhB	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	one hundred seventeen	"หนึ่งร้อยสิบเจ็ด<br>
+nèrng’ róry’ sìp’ jèt’<br>
+"	[sound:Thai_1_9781797141800_FC_128.mp3]	
+Fj8`0_Y|O~	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’ve been here since last week. (f)	"ฉันอยู่นี่ตั้งแต่อาทิตย์ที่แล้ว<br>
+chăn yòo nêe dtâng dtàe aa-tít têe láew."	[sound:Thai_1_9781797141800_BP_156.mp3]	
+v[sh9H}n|f	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m going to return home. (f)	"ฉันจะกลับบ้าน<br>
+chăn jà glàp bâan."	[sound:Thai_1_9781797141800_BP_157.mp3]	
+OZztsx!}N(	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I want to stay a little more. (f, casual)	"ฉันจะอยู่ต่ออีกนิด<br>
+chăn jà yòo dtòr èek nít."	[sound:Thai_1_9781797141800_BP_158.mp3]	
+BRbL2$@b%!	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	Not that much.	"ไม่ต้องเยอะขนาดนั้น<br>
+mâi dtông yúh kà-nàat nán."	[sound:Thai_1_9781797141800_BP_159.mp3]	
+K[K},;R?X$	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m going to study a little. (m, casual)	"ผมจะท่องหนังสือสักหน่อย<br>
+pŏm jà tông năng-sĕu sàk nòi."	[sound:Thai_1_9781797141800_BP_160.mp3]	
+A?8PYn/A,k	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	we intend	"เราตั้งใจ<br>
+rao’ dtâng’jai’<br>
+"	[sound:Thai_1_9781797141800_FC_305.mp3]	
+"y81.XC#ak&"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30	we bought	"เราซื้อ<br>
+rao’ séu’<br>
+"	[sound:Thai_1_9781797141800_FC_306.mp3]	
+"D_#OwkB;Go"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Where are you from?	"มาจากไหน<br>
+maa jàak năi?"	[sound:Thai_1_9781797141800_BP_006.mp3]	
+mT$,<S;kwo	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Where are you from? (casual)	"มาจากไหนเหรอ<br>
+maa jàak năi rĕr?"	[sound:Thai_1_9781797141800_BP_007.mp3]	
+pC{G.l,O^@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I came from Canada.	"มาจากแคนาดา<br>
+maa jàak kae-naa-daa."	[sound:Thai_1_9781797141800_BP_008.mp3]	
+GW{p5dGT}!	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Thank you! (very casual)	"ขอบคุณนะ<br>
+kòp kun ná!"	[sound:Thai_1_9781797141800_BP_009.mp3]	
+D.Bo4BW76c	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	How are you doing? (casual)	"ว่าไง<br>
+wâa ngai?"	[sound:Thai_1_9781797141800_BP_010.mp3]	
+bGMuD+ba)z	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	It is so, isn’t it? (casual)	"เป็นแบบนี้ใช่มั้ย<br>
+bpen bàep née châi mái?"	[sound:Thai_1_9781797141800_BP_011.mp3]	
+st)bL>5(a$	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	See you next time. (casual)	"เจอกันวันหน้า<br>
+jer gan wan nâa."	[sound:Thai_1_9781797141800_BP_012.mp3]	
+gOgfq_!tTh	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	You are skilled. (casual)	"เก่งนะ<br>
+gèng ná."	[sound:Thai_1_9781797141800_BP_013.mp3]	
+q@QTA||k!B	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Thank you. (casual)	"ขอบคุณ<br>
+kòp kun."	[sound:Thai_1_9781797141800_BP_014.mp3]	
+n|tO(A6}>f	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I see. / I understand.	"เข้าใจ<br>
+kâo jai."	[sound:Thai_1_9781797141800_BP_015.mp3]	
+wK)21&w6D2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I still have a long way to go.	"อีกนานกว่าจะเสร็จ<br>
+èek naan gwàa jà sèt."	[sound:Thai_1_9781797141800_BP_016.mp3]	
+NqG6mejnKT	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	No, that isn’t the case. (response when complimented on your skill)	"ไม่ได้เก่งขนาดนั้นหรอก<br>
+mâi dâai gèng kà-nàat nán ròk."	[sound:Thai_1_9781797141800_BP_017.mp3]	
+O$x*IOeuDM	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	It’s bad weather, isn’t it? (casual)	"อากาศไม่ค่อยดีเลยเนาะ<br>
+aa-gàat mâi kôi dee loiie nór?"	[sound:Thai_1_9781797141800_BP_018.mp3]	
+"e}n<5#wR`5"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	It is there. (closer to the listener)	"อยู่ตรงนั้น<br>
+yòo dtrong nán."	[sound:Thai_1_9781797141800_BP_019.mp3]	
+qxG!L>z,AI	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Are you thirsty?	"อยากกินน้ำมั้ย<br>
+yàak gin náam mái?"	[sound:Thai_1_9781797141800_BP_020.mp3]	
+zXEzB8Fso,	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Are you thirsty? (casual)	"หิวน้ำมั้ย<br>
+hĭw náam mái?"	[sound:Thai_1_9781797141800_BP_021.mp3]	
+Qk{-sZ(yFr	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	Are you hungry?	"หิวหรือเปล่า<br>
+hĭw rĕu bplào?"	[sound:Thai_1_9781797141800_BP_022.mp3]	
+Pr&9;7e.wq	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I don’t know. (casual)	"ไม่รู้<br>
+mâi róo."	[sound:Thai_1_9781797141800_BP_028.mp3]	
+B:|lk)BkjT	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	I don’t know. (casual, colloquial)	"ไม่รู้สิ<br>
+mâi róo sì."	[sound:Thai_1_9781797141800_BP_029.mp3]	
+"Qp?UR#HH@a"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 05 Bonus Pack	See you later. (casual)	"ไว้เจอกันใหม่<br>
+wái jer gan mài."	[sound:Thai_1_9781797141800_BP_030.mp3]	
+EVPgJ?/,w?	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Tea or juice, please. (f)	"ขอชาหรือไม่ก็น้ำผลไม้ค่ะ<br>
+kŏr chaa rĕu mâi gôr náam pŏn lá mái kâ."	[sound:Thai_1_9781797141800_BP_031.mp3]	
+rMleQeaw%N	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	It’s not here. (f)	"ฉันไม่อยู่นี่<br>
+chăn mâi yòo nêe."	[sound:Thai_1_9781797141800_BP_032.mp3]	
+Iy:2p@wnS$	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I totally understand. / I feel the same. (m)	"ผมเข้าใจดี<br>
+pŏm kâo jai dee."	[sound:Thai_1_9781797141800_BP_033.mp3]	
+"L#o)uwK!ZG"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	As for now, I’m good. (m)	"ตอนนี้ผมไม่เป็นไร<br>
+dton-née pŏm mâi bpen rai."	[sound:Thai_1_9781797141800_BP_034.mp3]	
+H_F$tyUE]o	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	As for now, I’m good. (m, casual)	"ตอนนี้ผมโอเค<br>
+dton-née pŏm ok."	[sound:Thai_1_9781797141800_BP_035.mp3]	
+d_ve.PN)T<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I'm on a diet. (m)	"ผมกำลังลดน้ำหนักอยู่<br>
+pŏm gam-lang lót náam nàk yòo."	[sound:Thai_1_9781797141800_BP_036.mp3]	
+n+_5mU]~9X	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	I’m going to have lunch.	"จะไปกินข้าวเที่ยง<br>
+jà bpai gin kâao tîiang."	[sound:Thai_1_9781797141800_BP_056.mp3]	
+bt;T>W+`+H	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Are you going to have lunch? (casual)	"จะไปกินข้าวเที่ยงมั้ย<br>
+jà bpai gin kâao tîiang mái?"	[sound:Thai_1_9781797141800_BP_057.mp3]	
+`By_9TNdY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Understood. (casual)	"เข้าใจละ<br>
+kâo jai lá."	[sound:Thai_1_9781797141800_BP_058.mp3]	
+rSqPSvy>[L	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Got it. (casual)	"รู้ละ<br>
+róo lá."	[sound:Thai_1_9781797141800_BP_059.mp3]	
+Qc!EZj>C}%	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10 Bonus Pack	Exactly! (casual)	"นั่นแหละ<br>
+nân làe!"	[sound:Thai_1_9781797141800_BP_060.mp3]	
+pv]=H*bB!^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I have cash. (f)	"ฉันมีเงินสด<br>
+chăn mee ngern sòt."	[sound:Thai_1_9781797141800_BP_061.mp3]	
+N/1.|+S3sP	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Give me in bills, please. (f)	"ขอเป็นแบงค์นะคะ<br>
+kŏr bpen báeng ná ká."	[sound:Thai_1_9781797141800_BP_062.mp3]	
+LPT0r7-TPB	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	You can buy souvenirs. (f)	"คุณซื้อของที่ระลึกได้นะ<br>
+kun séu kŏng têe rá-léuk dâai ná."	[sound:Thai_1_9781797141800_BP_063.mp3]	
+A2*_bN}HU*	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I’m going to have breakfast. (m)	"ผมจะกินข้าวเช้า<br>
+pŏm jà gin kâao cháo."	[sound:Thai_1_9781797141800_BP_064.mp3]	
+zBQ8C9f}+&	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I don’t have cash. (m)	"ผมไม่มีเงินสด<br>
+pŏm mâi mee ngern sòt."	[sound:Thai_1_9781797141800_BP_065.mp3]	
+"FX4Uta(#;r"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I have some cash. (m)	"ผมพอจะมีเงินสดอยู่บ้าง<br>
+pŏm por jà mee ngern sòt yòo bâang."	[sound:Thai_1_9781797141800_BP_066.mp3]	
+qL>,2{%t1/	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Give me in coins, please. (m)	"ขอเป็นเงินเหรียญนะครับ<br>
+kŏr bpen ngern rĭian ná kráp."	[sound:Thai_1_9781797141800_BP_067.mp3]	
+F6+PDC^nV]	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Can I buy a gift? (m)	"ผมซื้อของขวัญได้มั้ย<br>
+pŏm séu kŏng kwăn dâai mái?"	[sound:Thai_1_9781797141800_BP_068.mp3]	
+x;mj@sf*5f	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I’m not Thai. (m)	"ผมไม่ใช่คนไทย<br>
+ pŏm mâi châi kon tai."	[sound:Thai_1_9781797141800_BP_069.mp3]	
+DXa@Pj8|ZA	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I want a little. (casual)	"เอานิดเดียวพอ<br>
+ao nít diieow por."	[sound:Thai_1_9781797141800_BP_070.mp3]	
+Bv9E:YV}]^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	How about next week?	"แล้วอาทิตย์หน้าล่ะ<br>
+láew aa-tít nâa lâ?"	[sound:Thai_1_9781797141800_BP_071.mp3]	
+hb!SYwrb,`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Listen. (casual)	"ฟังก่อน<br>
+fang gòn."	[sound:Thai_1_9781797141800_BP_072.mp3]	
+K`Qdehdrx<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	See you next time.	"แล้วเจอกัน<br>
+láew jer gan."	[sound:Thai_1_9781797141800_BP_073.mp3]	
+xP(A6}!axO	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	See you later.	"ไว้เจอกัน<br>
+wái jer gan."	[sound:Thai_1_9781797141800_BP_074.mp3]	
+P^3/AfxRX<	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I’m OK.	"ไหวอยู่<br>
+wăi yòo."	[sound:Thai_1_9781797141800_BP_075.mp3]	
+n[8nuGii=p	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	How much is it? (casual)	"เท่าไหร่นะ<br>
+tâo rài ná?"	[sound:Thai_1_9781797141800_BP_076.mp3]	
+"JZ#bm&*%x&"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	As for today, what are you going to do? (casual)	"วันนี้เราจะทำอะไรกัน<br>
+wan née rao jà tam à-rai gan?"	[sound:Thai_1_9781797141800_BP_077.mp3]	
+kcVujGnK-+	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	How much cash do you have?	"คุณมีเงินสดเท่าไหร่<br>
+kun mee ngern sòt tâo rài?"	[sound:Thai_1_9781797141800_BP_078.mp3]	
+Q}si]lmT(e	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I don't need change. / You may keep the change.	"ไม่ต้องทอน<br>
+mâi dtông ton."	[sound:Thai_1_9781797141800_BP_079.mp3]	
+huKoM+9uXj	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	In cash?	"จ่ายสดเหรอ<br>
+jàai sòt rĕr?"	[sound:Thai_1_9781797141800_BP_080.mp3]	
+M3!)T}oVg]	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Or with credit card?	"หรือจะใช้บัตรเครดิต<br>
+rĕu jà chái bàt kray-dìt?"	[sound:Thai_1_9781797141800_BP_081.mp3]	
+"OV=a#n|[~C"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I don't feel like eating.	"ไม่ค่อยหิวเท่าไหร่<br>
+mâi kôi hĭw tâo rài."	[sound:Thai_1_9781797141800_BP_082.mp3]	
+v1a5HlyG>S	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I don't feel like eating. (casual)	"ไม่อยากกินอะไร<br>
+mâi yàak gin à-rai."	[sound:Thai_1_9781797141800_BP_083.mp3]	
+E!}^2nZ0rt	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Then give me coffee please.	"ถ้างั้นขอกาแฟก็แล้วกัน<br>
+tâa ngán kŏr gaa-fae gôr láew gan."	[sound:Thai_1_9781797141800_BP_084.mp3]	
+bb-X,LG%&Q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Then how about this week?	"อาทิตย์นี้ล่ะว่าไง<br>
+aa-tít née lâ wâa ngai?"	[sound:Thai_1_9781797141800_BP_085.mp3]	
+CB?&j;t.V^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	I’ll see you later. (response)	"ไว้เจอกัน<br>
+wái jer gan."	[sound:Thai_1_9781797141800_BP_086.mp3]	
+Dx6>`Llx|e	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Can you talk now?	"คุยได้ไหมตอนนี้<br>
+kui dâai măi dton-née?"	[sound:Thai_1_9781797141800_BP_087.mp3]	
+D>Oxu>tbDa	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	Yes, I can eat. (casual)	"กินได้สิ<br>
+gin dâai sì."	[sound:Thai_1_9781797141800_BP_088.mp3]	
+?=A2eC{dJ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	No, I can’t eat. (casual)	"กินไม่ได้หรอก<br>
+gin mâi dâai ròk."	[sound:Thai_1_9781797141800_BP_089.mp3]	
+rGUP}P@D%`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 15 Bonus Pack	You can’t eat? (casual)	"กินไม่ได้เหรอ<br>
+gin mâi dâai rĕr?"	[sound:Thai_1_9781797141800_BP_090.mp3]	
+lV%=YRL-.f	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I would like to shop. (f, casual)	"ฉันอยากไปซื้อของ<br>
+chăn yàak bpai séu kŏng."	[sound:Thai_1_9781797141800_BP_091.mp3]	
+iT-D(t%8e7	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I can’t afford it. (f)	"ฉันจ่ายไม่ไหวหรอก<br>
+chăn jàai mâi wăi ròk."	[sound:Thai_1_9781797141800_BP_092.mp3]	
+Dze;BbzJQs	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	A little bit more slowly, could you please? (f)	"ช้าลงกว่านี้หน่อยนะคะ<br>
+cháa long gwàa née nòi ná ká?"	[sound:Thai_1_9781797141800_BP_093.mp3]	
+f|H]]RrJ^p	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Please come in. (f)	"เชิญเข้ามาข้างในค่ะ<br>
+chern kâo maa kâang nai kâ."	[sound:Thai_1_9781797141800_BP_094.mp3]	
+LHO_&Z?Oj$	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	May I have some water? (f, polite)	"ขอน้ำหน่อยได้ไหมคะ<br>
+kŏr náam nòi dâai măi ká?"	[sound:Thai_1_9781797141800_BP_095.mp3]	
+v@FJx&;_tD	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	That’s my girlfriend. (informal)	"คนนั้นแฟนของผมครับ<br>
+kon nán faen kŏng pŏm kráp."	[sound:Thai_1_9781797141800_BP_096.mp3]	
+e]~mw$H,`D	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I have a big dog. (f)	"ฉันมีหมาตัวใหญ่<br>
+chăn mee măa dtuua yài."	[sound:Thai_1_9781797141800_BP_097.mp3]	
+Py?tS%j9-s	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I don’t have a significant other. (f)	"ฉันยังไม่มีคู่รัก<br>
+chăn yang mâi mee kôo rák."	[sound:Thai_1_9781797141800_BP_098.mp3]	
+wGTU[=4G(-	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 07	not over there	"ไม่ใช่ที่โน่น<br>
+mâi’ châi’ têe-nôhn’<br>
+"	[sound:Thai_1_9781797141800_FC_072.mp3]	
+G@7IsfbZhH	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 08	me (m)	"ผม<br>
+pöm’<br>
+"	[sound:Thai_1_9781797141800_FC_073.mp3]	
+HY!D+<{80q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I didn’t catch what you said. (m)	"ผมฟังที่คุณพูดไม่ชัดเท่าไหร่<br>
+pŏm fang têe kun pôot mâi chát tâo rài."	[sound:Thai_1_9781797141800_BP_101.mp3]	
+KfAg/JA*%)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	May I have some water? (m, casual)	"ผมขอน้ำหน่อยนะครับ<br>
+pŏm kŏr náam nòi ná kráp?"	[sound:Thai_1_9781797141800_BP_102.mp3]	
+K>;e_VH//r	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I’m single. (m)	"ผมยังโสด<br>
+pŏm yang sòht."	[sound:Thai_1_9781797141800_BP_103.mp3]	
+mkKZZziWSu	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Tomorrow, I’m planning to go to Bangkok. (m)	"พรุ่งนี้ผมจะไปกรุงเทพ<br>
+prûng-née pŏm jà bpai grung têp."	[sound:Thai_1_9781797141800_BP_104.mp3]	
+iL!~f0hy~E	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	That’s a lot, isn’t it? (casual)	"เยอะมากเลยเนาะ<br>
+yúh mâak loiie nór?"	[sound:Thai_1_9781797141800_BP_105.mp3]	
+M+N!~<F^x0	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	It’s too little.	"น้อยไปนะ<br>
+nói bpai ná."	[sound:Thai_1_9781797141800_BP_106.mp3]	
+"G=g#b*|{#u"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	No worries.	"ไม่ต้องคิดมาก<br>
+mâi dtông kít mâak."	[sound:Thai_1_9781797141800_BP_107.mp3]	
+Bm)4vuY-tL	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Clearly, could you please.	"พูดชัดๆกว่านี้หน่อยได้มั้ย<br>
+pôot chát chát gwàa née nòi dâai mái."	[sound:Thai_1_9781797141800_BP_108.mp3]	
+nuKBHWFmH_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Then I’m going to speak slowly. (casual)	"ถ้างั้นจะพูดช้าๆ<br>
+tâa ngán jà pôot cháa cháa."	[sound:Thai_1_9781797141800_BP_109.mp3]	
+OFn8$SG`5[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	It’s inexpensive.	"มันไม่แพงหรอก<br>
+man mâi paeng ròk."	[sound:Thai_1_9781797141800_BP_110.mp3]	
+K0`pg;!,%)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	No, it’s not inexpensive.	"ไม่ๆมันไม่แพง<br>
+mâi man mâi paeng."	[sound:Thai_1_9781797141800_BP_111.mp3]	
+"td&i<g#l2^"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Here, it’s less expensive.	"นี่ๆอันนี้ถูกกว่า<br>
+nêe nêe an née tòok gwàa."	[sound:Thai_1_9781797141800_BP_112.mp3]	
+7-mnLHfV/	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	In easier Thai, could you please?	"ขอเป็นภาษาไทยแบบง่ายๆได้มั้ย<br>
+kŏr bpen paa-săa tai bàep ngâai ngâai dâai mái?"	[sound:Thai_1_9781797141800_BP_113.mp3]	
+I!,w7I+&/E	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	nine at night	"สาม ทุ่ม<br>
+sähm’ tôom’<br>
+"	[sound:Thai_1_9781797141800_FC_087.mp3]	
+NS|(m&aU97	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	eight at night	"สองทุ่ม<br>
+sörng’ tôom’<br>
+"	[sound:Thai_1_9781797141800_FC_088.mp3]	
+"q^E-ETf#n;"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	at night (time between 7pm-11pm)	"ทุ่ม<br>
+tôom’<br>
+"	[sound:Thai_1_9781797141800_FC_089.mp3]	
+g_zxu17u=^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	to do	"ทำ<br>
+tum’<br>
+"	[sound:Thai_1_9781797141800_FC_090.mp3]	
+mDPRFH.B=p	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	two in the afternoon	"บ่ายสองโมง<br>
+bài’ sörng’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_091.mp3]	
+h?aH(SS>?H	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 09	go with you	"ไปกับคุณ<br>
+pai’ gùp’ koon’<br>
+"	[sound:Thai_1_9781797141800_FC_092.mp3]	
+yTWhD~]!8`	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	three	"สาม<br>
+sähm’<br>
+"	[sound:Thai_1_9781797141800_FC_093.mp3]	
+CABsq!]!U|	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	five in the evening	"ห้าโมงเย็น<br>
+hâh’ mohng’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_094.mp3]	
+bN7&eMYd<i	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	five	"ห้า<br>
+hâh’<br>
+"	[sound:Thai_1_9781797141800_FC_095.mp3]	
+s`fAl.4<(.	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	something	"ของ<br>
+körng’<br>
+"	[sound:Thai_1_9781797141800_FC_096.mp3]	
+d~-6mU_v)h	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	already	"แล้ว<br>
+láir-o’<br>
+"	[sound:Thai_1_9781797141800_FC_097.mp3]	
+"s,[yE5f#Jy"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	four	"สี่<br>
+sèe’<br>
+"	[sound:Thai_1_9781797141800_FC_098.mp3]	
+Rc4*SGIHBn	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	to buy	"ซื้อ<br>
+séu’<br>
+"	[sound:Thai_1_9781797141800_FC_099.mp3]	
+wMiPk<<Z0=	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	in the evening (4pm-6pm)	"เย็น<br>
+yen’<br>
+"	[sound:Thai_1_9781797141800_FC_100.mp3]	
+()<n{fv{o	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	how much / many	"กี่โมง<br>
+gèe’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_101.mp3]	
+Q-1Iq%Qgc}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	three in the afternoon	"บ่ายสามโมง<br>
+bài’ sähm’ mohng’<br>
+"	[sound:Thai_1_9781797141800_FC_102.mp3]	
+uYID=Gput3	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 10	four in the evening	"สี่โมงเย็น<br>
+sèe’ mohng’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_103.mp3]	
+rq?t^X9[Ya	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	dinner	"อาหารเย็น<br>
+ah-hähn’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_104.mp3]	
+OYdGYD]]WH	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	six	"หก<br>
+hòg’<br>
+"	[sound:Thai_1_9781797141800_FC_105.mp3]	
+Pm_R8EaX2^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	six in the evening	"หกโมงเย็น<br>
+hòg’ mohng’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_106.mp3]	
+I+fGM}R^FK	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	not today	"ไม่ใช่วันนี้ค่ะ<br>
+mâi’ châi’ wan’née’ kâ’<br>
+"	[sound:Thai_1_9781797141800_FC_107.mp3]	
+st.-hBeHtI	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	seven at night	"หนึ่งทุ่ม<br>
+nèrng’ tôom’<br>
+"	[sound:Thai_1_9781797141800_FC_108.mp3]	
+oYDEY!s|L)	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	tomorrow	"พรุ่งนี้<br>
+prûng’née’<br>
+"	[sound:Thai_1_9781797141800_FC_109.mp3]	
+GZ:k=lBW_2	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	tomorrow evening	"พรุ่งนี้ ตอนเย็น<br>
+prûng’née’ dtorn’ yen’<br>
+"	[sound:Thai_1_9781797141800_FC_110.mp3]	
+le_`)/eqz@	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	ten o’clock at night	"สี่ทุ่ม<br>
+sèe’ tôom’<br>
+"	[sound:Thai_1_9781797141800_FC_111.mp3]	
+lYh/C(xre!	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	today	"วันนี้<br>
+wan’née’<br>
+"	[sound:Thai_1_9781797141800_FC_112.mp3]	
+F9CIq+I~:Q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 11	this evening	"เย็นนี้<br>
+yen’ née’<br>
+"	[sound:Thai_1_9781797141800_FC_113.mp3]	
+OP),QS;w;!	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	baht (Thai currency)	"บาท<br>
+bàht’<br>
+"	[sound:Thai_1_9781797141800_FC_114.mp3]	
+O/v4ty(R3m	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	OK? (Can it be?)	"ได้ไม๊คะ<br>
+dâi’ mái’ ká’?<br>
+"	[sound:Thai_1_9781797141800_FC_115.mp3]	
+"MC|Ra+%aY#"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	have to	"ต้อง<br>
+dtôrng’<br>
+"	[sound:Thai_1_9781797141800_FC_116.mp3]	
+Bz$?i[*c_z	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	five thousand	"ห้าพัน<br>
+hâh’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_117.mp3]	
+Dz?<u/})w+	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	seven (counting)	"เจ็ด<br>
+jèt’<br>
+"	[sound:Thai_1_9781797141800_FC_118.mp3]	
+u[E;8s2&yU	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	pay	"จ่าย<br>
+jàhy’<br>
+"	[sound:Thai_1_9781797141800_FC_119.mp3]	
+l^l,yf@NM5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	seven thousand	"เจ็ดพัน<br>
+jèt’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_120.mp3]	
+fKMgR0OCJj	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	that	"นั้น<br>
+nán’<br>
+"	[sound:Thai_1_9781797141800_FC_121.mp3]	
+O,<MC>]T@q	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	one thousand	"หนึ่งพัน<br>
+nèrng’ pan’<br>
+"	[sound:Thai_1_9781797141800_FC_122.mp3]	
+g!/z_7QP:P	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 12	thousand	"พัน<br>
+pan’<br>
+"	[sound:Thai_1_9781797141800_FC_123.mp3]	
+qKs~|A,Uga	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 13	five thousand fifteen	"ห้าพันสิบห้า<br>
+hâh’ pan’ sìp’ hâh’<br>
+"	[sound:Thai_1_9781797141800_FC_124.mp3]	
+JjfXo0w-<[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m going to work a little. (f, casual)	"ฉันจะทำงานสักนิด<br>
+chăn jà tam ngaan sàk nít."	[sound:Thai_1_9781797141800_BP_152.mp3]	
+I^eakJ~<QQ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m going to read. (f)	"ฉันจะอ่านหนังสือ<br>
+chăn jà àan năng-sĕu."	[sound:Thai_1_9781797141800_BP_153.mp3]	
+t,-/E=L:-[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m homesick. (f)	"ฉันคิดถึงบ้านมากๆ<br>
+chăn kít tĕung bâan mâak mâak."	[sound:Thai_1_9781797141800_BP_154.mp3]	
+pO/@O2;g>k	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I don’t understand the meaning. (f)	"ฉันไม่ค่อยเข้าใจ<br>
+chăn mâi kôi kâo jai."	[sound:Thai_1_9781797141800_BP_155.mp3]	
+v([n=w,N,7	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I’m not so sure. (f)	"ฉันไม่ค่อยแน่ใจเท่าไหร่<br>
+chăn mâi kôi nâe jai tâo rài."	[sound:Thai_1_9781797141800_BP_099.mp3]	
+y`]6sVAP6_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	I’m broke. (m)	"ผมไม่มีตังค์<br>
+pŏm mâi mee dtang."	[sound:Thai_1_9781797141800_BP_100.mp3]	
+s5%4WK{2nY	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	My friend would like to drink coffee. (casual)	"เพื่อนจะเอากาแฟ<br>
+pêuuan jà ao gaa-fae."	[sound:Thai_1_9781797141800_BP_114.mp3]	
+"OAw#n#jLYn"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Is the coffee hot?	"กาแฟร้อนไหม<br>
+gaa-fae rón măi?"	[sound:Thai_1_9781797141800_BP_115.mp3]	
+imSa/V*%IZ	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Come in. (casual)	"เข้ามาได้<br>
+kâo maa dâai."	[sound:Thai_1_9781797141800_BP_116.mp3]	
+B]{&>FO(p]	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Pleased to meet you. (casual)	"ยินดีที่ได้รู้จัก<br>
+yin dee têe dâai róo jàk."	[sound:Thai_1_9781797141800_BP_117.mp3]	
+lK;EbpQq!^	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Oh, is that so? (casual)	"จริงเหรอ<br>
+jing rĕr?"	[sound:Thai_1_9781797141800_BP_118.mp3]	
+AmOC|Hs<Pa	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Do you have a significant other?	"มีคู่รักรึยัง<br>
+mee kôo rák réu yang?"	[sound:Thai_1_9781797141800_BP_119.mp3]	
+:BBkc.?>*	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 20 Bonus Pack	Yes, I have. (casual)	"มีแล้ว<br>
+mee láew."	[sound:Thai_1_9781797141800_BP_120.mp3]	
+"e(#O1rA5Cw"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Wait a minute, please. (f, casual)	"รอเดี๋ยวนะคะ<br>
+ror dĭieow ná ká."	[sound:Thai_1_9781797141800_BP_121.mp3]	
+d3Xkf*A7<T	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	I have a few friends there. (f, casual)	"ฉันมีเพื่อนไม่กี่คนที่นั่น<br>
+chăn mee pêuuan mâi gèe kon têe nân."	[sound:Thai_1_9781797141800_BP_122.mp3]	
+KBCor$=JCM	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	It’s already late, I’m sure. (m, casual)	"ผมคิดว่าเราน่าจะสายไปนะ<br>
+pŏm kít wâa rao nâa jà săai bpai ná."	[sound:Thai_1_9781797141800_BP_123.mp3]	
+m}vR^in,0}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Because I have to get up early tomorrow. (m, casual)	"ผมต้องตื่นแต่เช้าพรุ่งนี้<br>
+pŏm dtông dtèun dtàe cháo prûng-née."	[sound:Thai_1_9781797141800_BP_124.mp3]	
+fb|9(6zS2k	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	I’m going to study a little. (m)	"ผมจะไปท่องตำราสักหน่อย<br>
+pŏm jà bpai tông dtam-raa sàk nòi."	[sound:Thai_1_9781797141800_BP_125.mp3]	
+gqfkY+NwL_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	My parents are far.	"พ่อกับแม่อยู่ไกล<br>
+pôr gàp mâe yòo glai."	[sound:Thai_1_9781797141800_BP_126.mp3]	
+"w5_wYxG#PU"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Our dog is not so big.	"หมาของพวกเราตัวไม่ค่อยใหญ่เท่าไหร่<br>
+măa kŏng pûuak rao dtuua mâi kôi yài tâo rài."	[sound:Thai_1_9781797141800_BP_127.mp3]	
+v[(ry`YaR~	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Our apartment is small.	"อพาร์ทเมนท์ของพวกเราเล็ก<br>
+à-pâat-men kŏng pûuak rao lék."	[sound:Thai_1_9781797141800_BP_128.mp3]	
+ed/2b+cl1U	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is there a gas station near here? (casual)	"ในย่านนี้มีปั๊มมั้ย<br>
+nai yâan née mee bpám mái?"	[sound:Thai_1_9781797141800_BP_129.mp3]	
+F{/fP5sBq5	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	It’s a rental car.	"มันเป็นรถเช่า<br>
+man bpen rót châo."	[sound:Thai_1_9781797141800_BP_130.mp3]	
+cYCMGh[YoT	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	It’s a nice car, isn’t it!	"มันเป็นรถที่ดีเนอะ<br>
+man bpen rót têe dee núh!"	[sound:Thai_1_9781797141800_BP_131.mp3]	
+sbU2bO^u~.	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Our car is a Japanese car.	"รถคันนี้เป็นรถญี่ปุ่น<br>
+rót kan née bpen rót yêe-bpùn."	[sound:Thai_1_9781797141800_BP_132.mp3]	
+oN@Yk?zPoz	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is there a gas station near here?	"แถวนี้มีปั๊มน้ำมันมั้ย<br>
+tăew née mee bpám náam man mái?"	[sound:Thai_1_9781797141800_BP_133.mp3]	
+wKqUIkLsdq	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Yes, they are open. (casual)	"ใช่ร้านเปิด<br>
+châi ráan bpèrt."	[sound:Thai_1_9781797141800_BP_134.mp3]	
+bWGG9CaU8e	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is this diesel?	"นี่ใช่น้ำมันดีเซลมั้ย<br>
+nêe châi náam man dee-seo mái?"	[sound:Thai_1_9781797141800_BP_135.mp3]	
+r]gfdYRv6S	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Tomorrow, I’m planning to go to Bangkok. (casual)	"พรุ่งนี้จะไปกรุงเทพ<br>
+prûng-née jà bpai grung têp."	[sound:Thai_1_9781797141800_BP_136.mp3]	
+p=f6myo!rl	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	It’s not far. (casual)	"มันไม่ไกลเท่าไหร่<br>
+man mâi glai tâo rài."	[sound:Thai_1_9781797141800_BP_137.mp3]	
+gxX;71smc:	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Go straight ahead. (casual)	"ตรงไปเรื่อยๆ<br>
+dtrong bpai rêuuay rêuuay."	[sound:Thai_1_9781797141800_BP_138.mp3]	
+B&2}zheCu]	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Go along the road, please.	"ตามทางนี้ไปเรื่อยๆ<br>
+dtaam taang née bpai rêuuay."	[sound:Thai_1_9781797141800_BP_139.mp3]	
+lbJxlnFi1[	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Which is the Bangkok route? (casual)	"กรุงเทพไปทางไหน<br>
+grung têp bpai taang năi?"	[sound:Thai_1_9781797141800_BP_140.mp3]	
+b?Z=k(:I/{	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is it this one? (casual)	"ทางนี้หรือเปล่า<br>
+taang née rĕu bplào?"	[sound:Thai_1_9781797141800_BP_141.mp3]	
+o>Ny1+LUy_	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is it that one over there? (casual)	"ใช่ทางนั้นมั้ย<br>
+châi taang nán mái?"	[sound:Thai_1_9781797141800_BP_142.mp3]	
+v]tOA9Az1}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Or is it straight ahead? (casual)	"ตรงไปข้างหน้าใช่มั้ย<br>
+dtrong bpai kâang nâa châi mái?"	[sound:Thai_1_9781797141800_BP_143.mp3]	
+px>.GC>yVD	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	That’s it!	"ใช่เลย<br>
+châi loiie!"	[sound:Thai_1_9781797141800_BP_144.mp3]	
+rBqB}a|rV}	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	And then, go to the right. (casual)	"แล้วก็ไปทางขวา<br>
+láew gôr bpai taang kwăa."	[sound:Thai_1_9781797141800_BP_145.mp3]	
+"b%S=a#vugE"	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is it early? (casual)	"ถึงเร็วไปมั้ย<br>
+tĕung reo bpai mái?"	[sound:Thai_1_9781797141800_BP_146.mp3]	
+en4Q-Z!wtF	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	And then, turn to the right. (casual)	"แล้วก็เลี้ยวขวา<br>
+láew gôr líieow kwăa."	[sound:Thai_1_9781797141800_BP_147.mp3]	
+hVwgZ2R9:i	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Why? (casual)	"ทำไมเนี่ย<br>
+tam-mai nîia?"	[sound:Thai_1_9781797141800_BP_148.mp3]	
+JxTu>XxOP	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Why is it? (casual)	"ทำไมเป็นอย่างงั้นล่ะ<br>
+tam-mai bpen yàang ngán lâ?"	[sound:Thai_1_9781797141800_BP_149.mp3]	
+e1LoILekc0	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 25 Bonus Pack	Is it late? (casual)	"มันดึกรึยัง<br>
+man dèuk réu yang?"	[sound:Thai_1_9781797141800_BP_150.mp3]	
+w@x*o,T~yA	Basic (and reversed card) (genanki)	Pimsleur Thai::Level 1::Lesson 30 Bonus Pack	I’m going to see friends. (f)	"ฉันจะไปหาเพื่อน<br>
+chăn jà bpai hăa pêuuan."	[sound:Thai_1_9781797141800_BP_151.mp3]	
