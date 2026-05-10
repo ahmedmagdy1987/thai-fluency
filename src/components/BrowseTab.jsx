@@ -155,7 +155,7 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
                   <div key={c.id} className="vocab-item">
                     <div className="vocab-item-main">
                       <div className="vocab-item-thai">{c.thai}</div>
-                      <div className="vocab-item-ph">{c.ph}</div>
+                      <div className="vocab-item-ph">{c.ph || <span className="vocab-item-ph-pending">phonetic coming soon</span>}</div>
                       <div className="vocab-item-en">{c.en}</div>
                       {c.note && <div className="vocab-item-note">{c.note}</div>}
                     </div>

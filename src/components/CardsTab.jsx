@@ -117,21 +117,22 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
             </div>
           </div>
 
-          {/* Render order depends on view mode */}
+          {/* Render order depends on view mode. Empty ph (cards flagged phNeedsGen)
+              would otherwise render a blank line — show a "coming soon" placeholder. */}
           {viewMode === 'read' ? (
             <>
               <div className="srs-card-thai srs-card-thai-primary">{card.thai}</div>
-              {revealed && <div className="srs-card-ph-front">{card.ph}</div>}
+              {revealed && <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>}
             </>
           ) : viewMode === 'both' ? (
             <>
               <div className="srs-card-thai">{card.thai}</div>
-              <div className="srs-card-ph-front">{card.ph}</div>
+              <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
             </>
           ) : (
             <>
               {/* speak mode: phonetic primary, Thai script small/secondary */}
-              <div className="srs-card-ph-primary">{card.ph}</div>
+              <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
               <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
             </>
           )}

@@ -11,9 +11,22 @@ export default function QuizTab({ onComplete, voice }) {
   const [done, setDone] = useState(false);
   const [direction, setDirection] = useState('thai-to-en'); // or en-to-thai
 
+  const [poolError, setPoolError] = useState(null);
+
   const startQuiz = (dir) => {
+    // Need both phonetic and English non-empty: speak-mode hides Thai script in
+    // option cells, so an empty ph renders the option as a blank button.
+    const pool = CARDS.filter(c =>
+      c.cat !== 'numbers' && c.type !== 'g' &&
+      c.ph && c.ph.trim() &&
+      c.en && c.en.trim()
+    );
+    if (pool.length < 20) {
+      setPoolError(`Not enough cards yet for this quiz mode (only ${pool.length} cards have both Thai and phonetic). Add more cards or wait for the next phonetic generation pass.`);
+      return;
+    }
+    setPoolError(null);
     setDirection(dir);
-    const pool = CARDS.filter(c => c.cat !== 'numbers' && c.type !== 'g');
     const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 15);
     const qs = shuffled.map(correct => {
       const distractors = pool.filter(c => c.id !== correct.id && c.cat !== correct.cat).sort(() => Math.random() - 0.5).slice(0, 3);
@@ -46,6 +59,7 @@ export default function QuizTab({ onComplete, voice }) {
           <div className="quiz-intro-icon"><Award size={36} /></div>
           <h2 className="quiz-intro-title">Quiz Yourself</h2>
           <p className="quiz-intro-sub">15 random questions from your deck. Pick a direction:</p>
+          {poolError && <p className="quiz-pool-error">{poolError}</p>}
           <div className="quiz-direction-grid">
             <button className="quiz-direction-btn" onClick={() => startQuiz('thai-to-en')}>
               <div className="quiz-dir-thai-wrap">
