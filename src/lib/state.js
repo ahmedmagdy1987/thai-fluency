@@ -30,11 +30,12 @@ export function getStageState(stats, progress) {
   return { stages: stagesWithLock, currentStage };
 }
 
-// Build a placement test by sampling 2 cards per stage
+// Build a placement test by sampling 2 cards per stage. Skip cards with empty
+// phonetic (user can't assess "do you know this" without it).
 export function buildPlacementCards() {
   const out = [];
   for (let stage = 1; stage <= 8; stage++) {
-    const stageCards = CARDS.filter(c => (c.stage || 1) === stage);
+    const stageCards = CARDS.filter(c => (c.stage || 1) === stage && c.ph && c.ph.trim());
     if (stageCards.length === 0) continue;
     const shuffled = [...stageCards].sort(() => Math.random() - 0.5);
     const word = shuffled.find(c => c.type === 'w');

@@ -12,7 +12,7 @@ export default function IdiomsSection() {
           <div key={i} className="ref-card">
             <div className="ref-card-body">
               <div className="ref-card-thai">{it.thai}</div>
-              <div className="ref-card-ph">{it.ph}</div>
+              <div className="ref-card-ph">{it.ph || <span className="ph-pending">phonetic coming soon</span>}</div>
               <div className="ref-card-en">{it.en}</div>
               <div className="ref-card-note">{it.note}</div>
             </div>

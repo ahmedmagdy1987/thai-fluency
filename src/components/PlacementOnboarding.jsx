@@ -105,7 +105,7 @@ export default function PlacementOnboarding({ onComplete }) {
           <div className="onboard-eyebrow">Do you know this?</div>
           <div className="onboard-placement-card">
             <div className="onboard-placement-thai">{transformThai(card.thai, voice)}</div>
-            <div className="onboard-placement-ph">{transformPh(card.ph, voice)}</div>
+            <div className="onboard-placement-ph">{card.ph && card.ph.trim() ? transformPh(card.ph, voice) : <span className="ph-pending">phonetic coming soon</span>}</div>
             <div className="onboard-placement-en">{transformEn(card.en, voice)}</div>
           </div>
           <div className="onboard-rate-row">
