@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
-import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
+import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, transformThai } from '../lib/voice.js';
+import { speakThai } from '../lib/audio.js';
 import PrivacyPolicy from './legal/PrivacyPolicy.jsx';
 import TermsOfService from './legal/TermsOfService.jsx';
 
@@ -84,6 +85,20 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               </button>
               <button className={`setting-toggle-btn ${audioRate === 1 ? 'setting-toggle-active' : ''}`} onClick={() => updateSettings({ audioRate: 1 })}>
                 <span className="setting-toggle-icon">🏃</span> Fast <span className="setting-toggle-sub">native pace</span>
+              </button>
+            </div>
+            <div className="setting-sub" style={{ marginTop: 10, marginBottom: 6 }}>
+              Preview voice speeds — tap to hear "{transformThai('สวัสดีครับ', voice)}":
+            </div>
+            <div className="setting-toggle">
+              <button type="button" className="setting-toggle-btn" onClick={() => speakThai(transformThai('สวัสดีครับ', voice), 0.7)}>
+                <span className="setting-toggle-icon">🐢</span> Slow <span className="setting-toggle-sub">Best for learning tones</span>
+              </button>
+              <button type="button" className="setting-toggle-btn" onClick={() => speakThai(transformThai('สวัสดีครับ', voice), 0.85)}>
+                <span className="setting-toggle-icon">🚶</span> Natural <span className="setting-toggle-sub">Native conversation pace</span>
+              </button>
+              <button type="button" className="setting-toggle-btn" onClick={() => speakThai(transformThai('สวัสดีครับ', voice), 1)}>
+                <span className="setting-toggle-icon">🏃</span> Fast <span className="setting-toggle-sub">Real-world speed</span>
               </button>
             </div>
             <div className="setting-toggle" style={{ marginTop: 8 }}>
