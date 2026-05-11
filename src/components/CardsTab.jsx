@@ -9,18 +9,24 @@ import { reviewCard, getDueCards, getNewCards, getStats, intervalLabel, DAY_MS }
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
 import RateBtn from './RateBtn.jsx';
 
-export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, audioRate, audioAutoPlay, undoLastReview, lastReviewSnapshot }) {
+export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, undoLastReview, lastReviewSnapshot }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
 
   const queue = useMemo(() => {
     const now = Date.now();
-    const filteredCards = CARDS.filter(c => (c.stage || 1) >= (startedStage || 1));
+    // Sequential unlock: SRS pool is constrained to unlocked stages.
+    const lower = startedStage || 1;
+    const upper = maxUnlockedStage || 1;
+    const filteredCards = CARDS.filter(c => {
+      const s = c.stage || 1;
+      return s >= lower && s <= upper;
+    });
     const due = getDueCards(progress, filteredCards, now);
     const newOnes = getNewCards(progress, filteredCards, dailyNewLimit);
     return [...due, ...newOnes];
-  }, [progress, dailyNewLimit, startedStage]);
+  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage]);
 
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);

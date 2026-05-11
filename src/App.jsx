@@ -8,8 +8,9 @@ import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamificatio
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
-import { getStageState, checkAchievements } from './lib/state.js';
+import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, migrateStats, startStudyDay } from './lib/stats.js';
+import { MISSIONS } from './data/taxonomy.js';
 
 import TodayTab from './components/TodayTab.jsx';
 import CardsTab from './components/CardsTab.jsx';
@@ -19,6 +20,8 @@ import GuideTab from './components/GuideTab.jsx';
 import NavBtn from './components/NavBtn.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import StageUpToast from './components/StageUpToast.jsx';
+import MissionCompleteToast from './components/MissionCompleteToast.jsx';
+import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 
@@ -31,6 +34,8 @@ export default function TukTalkThaiApp() {
   const [achievementQueue, setAchievementQueue] = useState([]);
   const [stageUpToast, setStageUpToast] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [missionToast, setMissionToast] = useState(null);
+  const [showStage1Celebration, setShowStage1Celebration] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -65,15 +70,46 @@ export default function TukTalkThaiApp() {
   }, [stats.streak, loaded]);
 
   const stageState = useMemo(() => loaded ? getStageState(stats, progress) : null, [stats, progress, loaded]);
+  const missionState = useMemo(() => loaded ? getMissionState(progress) : null, [progress, loaded]);
 
   useEffect(() => {
     if (!loaded || !stageState) return;
     if (stageState.currentStage > (stats.currentStage || 1)) {
-      const advancedTo = STAGES.find(S => S.id === stageState.currentStage);
-      if (advancedTo) setStageUpToast(advancedTo);
+      // Moving past Stage 1 → the big Stage1CompleteCelebration modal handles
+      // that transition. Suppress the small toast in that case so the user
+      // doesn't see two celebrations stacked.
+      const movingPastS1 = (stats.currentStage || 1) === 1;
+      if (!movingPastS1) {
+        const advancedTo = STAGES.find(S => S.id === stageState.currentStage);
+        if (advancedTo) setStageUpToast(advancedTo);
+      }
       setStats(s => ({ ...s, currentStage: stageState.currentStage }));
     }
   }, [stageState, loaded]);
+
+  // Mission advancement: when currentMission increases past lastSeenMission,
+  // celebrate the mission that just finished. The "just finished" mission is
+  // currentMission - 1 (or M6 if everything is done).
+  useEffect(() => {
+    if (!loaded || !missionState) return;
+    const lastSeen = stats.lastSeenMission || 1;
+    const cur = missionState.currentMission;
+    if (cur > lastSeen) {
+      // Mission(s) finished in between. Toast the one that just completed.
+      const justFinished = MISSIONS.find(m => m.id === cur - 1);
+      if (justFinished) setMissionToast(justFinished);
+      setStats(s => ({ ...s, lastSeenMission: cur }));
+    }
+  }, [missionState, loaded]);
+
+  // Stage 1 complete: one-time big celebration. Reveals the full deck.
+  useEffect(() => {
+    if (!loaded || !missionState) return;
+    if (missionState.stage1Complete && !stats.stage1CelebrationShown) {
+      setShowStage1Celebration(true);
+      setStats(s => ({ ...s, stage1CelebrationShown: true }));
+    }
+  }, [missionState, loaded, stats.stage1CelebrationShown]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -240,7 +276,16 @@ export default function TukTalkThaiApp() {
     setStats(s => ({ ...s, ...updates }));
   }, []);
 
-  const dashboardStats = useMemo(() => getStats(progress, CARDS), [progress]);
+  // Sequential stage unlock: only stages ≤ maxUnlockedStage are accessible.
+  // Stage N+1 unlocks when Stage N reaches 70% mastery. dashboardStats, the
+  // Cards tab SRS pool, Browse listing, and the Quiz pool all filter to the
+  // unlocked window. The mission view (S1 only) is a special case within this.
+  const maxUnlockedStage = stageState ? stageState.maxUnlockedStage : 1;
+  const eligibleCards = useMemo(
+    () => CARDS.filter(c => (c.stage || 1) <= maxUnlockedStage),
+    [maxUnlockedStage]
+  );
+  const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
 
@@ -289,10 +334,10 @@ export default function TukTalkThaiApp() {
       </header>
 
       <main className="app-main">
-        {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
-        {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} audioRate={stats.audioRate || 0.85} audioAutoPlay={!!stats.audioAutoPlay} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
-        {tab === 'browse' && <BrowseTab progress={progress} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.85} />}
-        {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} voice={voice} viewMode={viewMode} />}
+        {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
+        {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.85} audioAutoPlay={!!stats.audioAutoPlay} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
+        {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.85} />}
+        {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} />}
         {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
       </main>
 
@@ -301,6 +346,12 @@ export default function TukTalkThaiApp() {
       )}
       {stageUpToast && (
         <StageUpToast stage={stageUpToast} onClose={() => setStageUpToast(null)} />
+      )}
+      {missionToast && (
+        <MissionCompleteToast mission={missionToast} onClose={() => setMissionToast(null)} />
+      )}
+      {showStage1Celebration && (
+        <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
         <SettingsModal stats={stats} updateSettings={updateSettings} onClose={() => setShowSettings(false)} resetAll={resetAll} />

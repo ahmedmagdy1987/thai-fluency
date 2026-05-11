@@ -45,8 +45,9 @@ export function getDueCards(progress, allCards, now) {
 }
 
 export function getNewCards(progress, allCards, limit = 10) {
-  // Cards user hasn't seen yet — group by stage so earlier stages come first,
-  // shuffled within stage with a daily seed for variety.
+  // Cards user hasn't seen yet — group by stage so earlier stages come first.
+  // Within a stage, prioritize by mission ascending (so M1 cards deliver before
+  // M2 cards in Stage 1), then by a daily seed for variety.
   const unseen = allCards.filter(c => !progress[c.id]);
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
@@ -58,11 +59,14 @@ export function getNewCards(progress, allCards, limit = 10) {
   unseen.forEach(c => {
     const st = c.stage || 1;
     if (!byStage[st]) byStage[st] = [];
-    byStage[st].push({ c, key: seededRand(c.id) });
+    byStage[st].push({ c, mission: c.mission || 999, key: seededRand(c.id) });
   });
   const ordered = [];
   Object.keys(byStage).map(Number).sort((a, b) => a - b).forEach(st => {
-    byStage[st].sort((a, b) => a.key - b.key).forEach(x => ordered.push(x.c));
+    byStage[st].sort((a, b) => {
+      if (a.mission !== b.mission) return a.mission - b.mission;
+      return a.key - b.key;
+    }).forEach(x => ordered.push(x.c));
   });
   return ordered.slice(0, limit);
 }

@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { ChevronRight, Target, Star, BookOpen, Award, Compass, Check, BarChart3, Zap } from 'lucide-react';
+import { ChevronRight, Target, Star, BookOpen, Award, Compass, Check, BarChart3, Zap, Lock } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
 import AchievementsModal from './AchievementsModal.jsx';
 
-export default function TodayTab({ stats, fullStats, setTab, stageState, resetAll, voice, viewMode }) {
+export default function TodayTab({ stats, fullStats, setTab, stageState, missionState, resetAll, voice, viewMode }) {
   const [showAchievements, setShowAchievements] = useState(false);
   const ctaText = stats.due > 0 ? `Review ${stats.due} card${stats.due === 1 ? '' : 's'}` : (stats.seen === 0 ? 'Start learning' : 'Learn new cards');
-  const subtitle = stats.due > 0 ? `${stats.due} due now${stats.newAvail > 0 ? ` · ${stats.newAvail} new available` : ''}` : `${stats.newAvail} new cards ready`;
+  // In mission view, scope the "new cards ready" count to the user's current
+  // mission instead of the full S1 deck (avoids "150 new" for a fresh user;
+  // shows "29 new" instead).
+  const inMissionViewPre = !!(missionState && stageState && stageState.currentStage === 1 && !missionState.stage1Complete);
+  const _currentMissionForSubtitle = missionState ? missionState.missions.find(m => m.id === missionState.currentMission) : null;
+  const newCount = (inMissionViewPre && _currentMissionForSubtitle)
+    ? Math.max(0, _currentMissionForSubtitle.total - _currentMissionForSubtitle.seen)
+    : stats.newAvail;
+  const subtitle = stats.due > 0
+    ? `${stats.due} due now${newCount > 0 ? ` · ${newCount} new available` : ''}`
+    : (inMissionViewPre && _currentMissionForSubtitle ? `Mission ${_currentMissionForSubtitle.id}: ${newCount} cards` : `${newCount} new cards ready`);
   const goal = fullStats.dailyGoal || DEFAULT_DAILY_GOAL;
   const todayXp = fullStats.todayXp || 0;
   const goalPct = Math.min(100, Math.round((todayXp / goal) * 100));
@@ -17,6 +27,13 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, resetAl
   const allAchievements = checkAchievements(fullStats, {});
   const unlockedCount = allAchievements.filter(a => fullStats.unlockedAchievements && fullStats.unlockedAchievements.includes(a.id)).length;
   const currentStage = stageState ? stageState.stages.find(S => S.id === stageState.currentStage) || stageState.stages[stageState.stages.length - 1] : null;
+
+  // Mission view kicks in while user is in Stage 1 and S1 isn't complete.
+  // Past S1 (or S1 complete): show normal stage view. This hides "4,752"
+  // from beginners until they've earned the reveal.
+  const inMissionView = !!(missionState && stageState && stageState.currentStage === 1 && !missionState.stage1Complete);
+  const currentMission = missionState ? missionState.missions.find(m => m.id === missionState.currentMission) : null;
+  const s1Stage = stageState ? stageState.stages.find(s => s.id === 1) : null;
 
   const greetingThai = voice === 'female' ? 'สวัสดีค่ะ' : 'สวัสดีครับ';
   const greetingPh = voice === 'female' ? 'sàwàtdee khâ' : 'sàwàtdee khráp';
@@ -67,8 +84,51 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, resetAl
         </div>
       </div>
 
-      {/* Current stage */}
-      {currentStage && (
+      {/* Mission view for Stage 1 beginners (hides the full deck until S1 complete) */}
+      {inMissionView && currentMission && (
+        <div className="dash-section">
+          <div className="dash-section-header">
+            <div className="dash-section-title">Your mission</div>
+            <div className="dash-section-meta">Mission {currentMission.id} of 6 · Survival Thai</div>
+          </div>
+          <div className="level-card-current" style={{ '--level-color': currentMission.color }}>
+            <div className="level-card-icon">{currentMission.icon}</div>
+            <div className="level-card-body">
+              <div className="level-card-name">Mission {currentMission.id} · {currentMission.name}</div>
+              <div className="level-card-desc">{currentMission.goal}</div>
+              <div className="level-card-overall">
+                <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentMission.maturePct + '%' }} /></div>
+                <div className="level-card-overall-pct">{Math.round(currentMission.maturePct)}%</div>
+              </div>
+              <div className="stage-stats-row">
+                <div className="stage-stats-item"><div className="ssi-num">{currentMission.seen}<span className="ssi-of">/{currentMission.total}</span></div><div className="ssi-label">seen</div></div>
+                <div className="stage-stats-item"><div className="ssi-num">{currentMission.mature}<span className="ssi-of">/{currentMission.total}</span></div><div className="ssi-label">mastered</div></div>
+                <div className="stage-stats-item"><div className="ssi-num">{Math.max(0, currentMission.total - currentMission.mature)}</div><div className="ssi-label">to go</div></div>
+              </div>
+            </div>
+          </div>
+
+          {/* 6 missions overview */}
+          <div className="levels-overview stages-overview">
+            {missionState.missions.map(M => {
+              const isCurrent = M.id === currentMission.id;
+              const isLocked = !M.unlocked;
+              const isDone = M.complete;
+              return (
+                <div key={M.id} className={`level-pill ${isCurrent ? 'level-pill-current' : ''} ${isDone ? 'level-pill-done' : ''} ${isLocked ? 'level-pill-locked' : ''}`} style={{ '--lp-color': M.color }} title={isLocked ? `Unlocks when Mission ${M.id - 1} is 70% mastered` : M.name}>
+                  <div className="level-pill-icon">{isDone ? '✓' : (isLocked ? '🔒' : M.icon)}</div>
+                  <div className="level-pill-name">{M.name}</div>
+                  <div className="level-pill-meta">{M.mature}/{M.total}</div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mission-footnote">Finish Survival Thai and the full 4,752-card path unlocks.</div>
+        </div>
+      )}
+
+      {/* Stage view (default after S1 complete, or for users placed past S1) */}
+      {!inMissionView && currentStage && (
         <div className="dash-section">
           <div className="dash-section-header">
             <div className="dash-section-title">Your path</div>
@@ -110,19 +170,19 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, resetAl
         </div>
       )}
 
-      {/* Stats grid */}
+      {/* Stats grid — show S1-only numbers in mission view to avoid leaking the 4,752 total */}
       <div className="stat-grid">
         <div className="stat-card">
           <div className="stat-icon"><Target size={18} /></div>
-          <div className="stat-num">{stats.seen}<span className="stat-num-of">/{stats.total}</span></div>
+          <div className="stat-num">{inMissionView ? (s1Stage ? s1Stage.seen : 0) : stats.seen}<span className="stat-num-of">/{inMissionView ? 150 : stats.total}</span></div>
           <div className="stat-label">Cards seen</div>
-          <div className="stat-bar"><div className="stat-bar-fill" style={{ width: Math.round((stats.seen / stats.total) * 100) + '%' }} /></div>
+          <div className="stat-bar"><div className="stat-bar-fill" style={{ width: Math.round(((inMissionView ? (s1Stage ? s1Stage.seen : 0) : stats.seen) / (inMissionView ? 150 : stats.total)) * 100) + '%' }} /></div>
         </div>
         <div className="stat-card">
           <div className="stat-icon"><Star size={18} /></div>
-          <div className="stat-num">{stats.mature}</div>
+          <div className="stat-num">{inMissionView ? (s1Stage ? s1Stage.mature : 0) : stats.mature}</div>
           <div className="stat-label">Mastered</div>
-          <div className="stat-bar"><div className="stat-bar-fill stat-bar-fill-gold" style={{ width: Math.round((stats.mature / stats.total) * 100) + '%' }} /></div>
+          <div className="stat-bar"><div className="stat-bar-fill stat-bar-fill-gold" style={{ width: Math.round(((inMissionView ? (s1Stage ? s1Stage.mature : 0) : stats.mature) / (inMissionView ? 150 : stats.total)) * 100) + '%' }} /></div>
         </div>
         <div className="stat-card">
           <div className="stat-icon"><BarChart3 size={18} /></div>
@@ -143,7 +203,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, resetAl
             <BookOpen size={20} />
             <div>
               <div className="quick-title">Browse content</div>
-              <div className="quick-sub">{CARDS.length} cards · 6 dialogues</div>
+              <div className="quick-sub">{inMissionView ? '150 cards in Survival Thai' : `${CARDS.length} cards`} · 6 dialogues</div>
             </div>
           </button>
           <button className="quick-card" onClick={() => setTab('quiz')}>

@@ -63,3 +63,10 @@ export const XP_REWARDS = {
 
 export const DEFAULT_DAILY_GOAL = 50;
 
+// % of a mission's cards that must be mature (interval ≥ 21d) before the next
+// mission unlocks. Beginner-friendly threshold — keeps momentum, prevents wall.
+export const MISSION_UNLOCK_THRESHOLD = 0.70;
+
+// % of Stage 1 mission cards mastered = Survival Thai complete (reveals full deck)
+export const STAGE_1_COMPLETE_THRESHOLD = 0.70;
+

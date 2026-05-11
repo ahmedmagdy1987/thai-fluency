@@ -3,7 +3,7 @@ import { ChevronRight, Award, Check, X, RotateCcw } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
 
-export default function QuizTab({ onComplete, voice }) {
+export default function QuizTab({ onComplete, voice, maxUnlockedStage }) {
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -16,7 +16,10 @@ export default function QuizTab({ onComplete, voice }) {
   const startQuiz = (dir) => {
     // Need both phonetic and English non-empty: speak-mode hides Thai script in
     // option cells, so an empty ph renders the option as a blank button.
-    const pool = CARDS.filter(c =>
+    // Quiz draws only from unlocked stages (sequential unlock).
+    const upper = maxUnlockedStage || 1;
+    const eligible = CARDS.filter(c => (c.stage || 1) <= upper);
+    const pool = eligible.filter(c =>
       c.cat !== 'numbers' && c.type !== 'g' &&
       c.ph && c.ph.trim() &&
       c.en && c.en.trim()

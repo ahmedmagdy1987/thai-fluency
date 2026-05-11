@@ -52,7 +52,7 @@ export const STAGES = [
 },
   {
     id:2,
-    name:'Food & Daily Errands',
+    name:'Daily Essentials',
     icon:'🍜',
     color:'#E0823B',
     desc:'Order food, shop, buy things, navigate flavors and quantities.',
@@ -60,7 +60,7 @@ export const STAGES = [
 },
   {
     id:3,
-    name:'Transport & Travel',
+    name:'Getting Around',
     icon:'🛺',
     color:'#2563A8',
     desc:'Taxis, motorbikes, hotels, airports. Get anywhere.',
@@ -68,7 +68,7 @@ export const STAGES = [
 },
   {
     id:4,
-    name:'Social Thai',
+    name:'Real Conversations',
     icon:'🤝',
     color:'#C9A961',
     desc:'Make friends. Small talk. Compliments. Daily chat.',
@@ -76,7 +76,7 @@ export const STAGES = [
 },
   {
     id:5,
-    name:'Home & Services',
+    name:'Social Confidence',
     icon:'🏠',
     color:'#7B5BA3',
     desc:'Condo, internet, AC, repairs, deliveries. Adult life problems.',
@@ -84,7 +84,7 @@ export const STAGES = [
 },
   {
     id:6,
-    name:'Health & Body',
+    name:'Intermediate Power',
     icon:'🩺',
     color:'#A03B2C',
     desc:'Pharmacy, doctor, massage, pain, emergencies.',
@@ -92,7 +92,7 @@ export const STAGES = [
 },
   {
     id:7,
-    name:'Money & Admin',
+    name:'Natural Thai',
     icon:'💳',
     color:'#5B7C99',
     desc:'Bank, ATM, visa, phone plans, immigration, paperwork.',
@@ -100,10 +100,64 @@ export const STAGES = [
 },
   {
     id:8,
-    name:'Real-Life Fluency',
+    name:'Thai Mastery',
     icon:'👑',
     color:'#0F3D2E',
     desc:'Connectors, opinions, slang, particles. Sound less robotic.',
     cats:['fluency','sentences-fluency'],
 },
+];
+
+// Stage 1 missions — progressive unlock structure. Each mission is a topical
+// sub-bundle of the 150 Survival Thai cards. Designed so new users see "Mission
+// 1 of 6: Hello & Politeness" rather than the intimidating full deck.
+export const MISSIONS = [
+  {
+    id: 1,
+    name: 'Hello & Politeness',
+    icon: '👋',
+    color: '#5BAF7C',
+    goal: 'Be polite, identify yourself, basic yes/no.',
+    celebration: '🎉 You spoke your first Thai words! Mission 2 unlocked.',
+  },
+  {
+    id: 2,
+    name: 'At the Restaurant',
+    icon: '🍜',
+    color: '#E0823B',
+    goal: 'Order food and drinks. Express wants. Basic taste/quality vocab.',
+    celebration: '🍜 You can order food! Try it at the next restaurant. Mission 3 unlocked.',
+  },
+  {
+    id: 3,
+    name: 'Getting Around',
+    icon: '🛺',
+    color: '#2563A8',
+    goal: 'Ask where, navigate, find places, get on/off transport.',
+    celebration: '🛺 You can find your way! Try ห้องน้ำอยู่ที่ไหน in real Bangkok. Mission 4 unlocked.',
+  },
+  {
+    id: 4,
+    name: 'Numbers & Prices',
+    icon: '💰',
+    color: '#C9A961',
+    goal: 'Ask "how much", understand prices and time, count.',
+    celebration: '💰 You can bargain! เท่าไหร่ครับ → ลดได้ไหม. Mission 5 unlocked.',
+  },
+  {
+    id: 5,
+    name: 'Help & Communication',
+    icon: '❤️',
+    color: '#A03B2C',
+    goal: "Ask for help, express that you don't understand, talk about pain/needs.",
+    celebration: '❤️ You can ask for help! ช่วยด้วย, ผมไม่เข้าใจ — three lifelines mastered. Mission 6 unlocked.',
+  },
+  {
+    id: 6,
+    name: 'Survival Test',
+    icon: '👑',
+    color: '#0F3D2E',
+    goal: 'Review challenge. Connectors, common verbs, fluency particles to lock in mastery before Stage 2.',
+    celebration: '👑 Survival Thai complete! You can handle real Thailand. The full path is now unlocked — 4,752 cards await.',
+  },
 ];

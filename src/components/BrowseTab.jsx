@@ -9,17 +9,27 @@ import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFA
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import DialoguesView from './DialoguesView.jsx';
 
-export default function BrowseTab({ progress, recordDialogueComplete, dialoguesCompleted, voice, viewMode, audioRate }) {
+export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueComplete, dialoguesCompleted, voice, viewMode, audioRate }) {
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState(null);
   const [activeStage, setActiveStage] = useState(null);
   const [section, setSection] = useState('vocab'); // vocab | dialogues
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  // Sequential unlock: only show stages ≤ maxUnlockedStage. The next stage is
+  // surfaced as a locked "preview" chip to tease what's coming.
+  const upper = maxUnlockedStage || 1;
+  const visibleDeck = useMemo(
+    () => CARDS.filter(c => (c.stage || 1) <= upper),
+    [upper]
+  );
+  const unlockedStages = useMemo(() => STAGES.filter(s => s.id <= upper), [upper]);
+  const nextLockedStage = useMemo(() => STAGES.find(s => s.id === upper + 1), [upper]);
+
   useEffect(() => { setVisibleCount(PAGE_SIZE); }, [search, activeCat, activeStage, section]);
 
   const filtered = useMemo(() => {
-    let items = CARDS;
+    let items = visibleDeck;
     if (activeStage) items = items.filter(c => (c.stage || 1) === activeStage);
     if (activeCat) items = items.filter(c => c.cat === activeCat);
     if (search.trim()) {
@@ -31,25 +41,25 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
       );
     }
     return items;
-  }, [search, activeCat, activeStage]);
+  }, [search, activeCat, activeStage, visibleDeck]);
 
   const cardsByCategory = useMemo(() => {
     const map = {};
-    CARDS.forEach(c => {
+    visibleDeck.forEach(c => {
       if (!map[c.cat]) map[c.cat] = 0;
       map[c.cat]++;
     });
     return map;
-  }, []);
+  }, [visibleDeck]);
 
   const cardsByStage = useMemo(() => {
     const map = {};
-    CARDS.forEach(c => {
+    visibleDeck.forEach(c => {
       const s = c.stage || 1;
       map[s] = (map[s] || 0) + 1;
     });
     return map;
-  }, []);
+  }, [visibleDeck]);
 
   return (
     <div className="tab-content">
@@ -78,25 +88,36 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
             </div>
           </div>
 
-          {!search && (
+          {!search && unlockedStages.length > 1 && (
             <section className="browse-filter-section" aria-labelledby="filter-stage-label">
               <header className="browse-filter-header">
                 <h3 id="filter-stage-label" className="browse-filter-title">📚 Filter by Stage</h3>
-                <span className="browse-filter-hint">Difficulty level — start with Stage 1</span>
+                <span className="browse-filter-hint">{unlockedStages.length} stage{unlockedStages.length === 1 ? '' : 's'} unlocked</span>
               </header>
               <div className="stage-chips">
                 <button className={`stage-chip ${activeStage === null ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(null)}>
-                  All stages
+                  All unlocked
                 </button>
-                {STAGES.map(s => (
+                {unlockedStages.map(s => (
                   <button key={s.id} className={`stage-chip ${activeStage === s.id ? 'stage-chip-active' : ''}`} onClick={() => setActiveStage(s.id)} style={{ '--chip-color': s.color }}>
                     <span className="stage-chip-icon">{s.icon}</span>
                     Stage {s.id}
                     <span className="stage-chip-count">{cardsByStage[s.id] || 0}</span>
                   </button>
                 ))}
+                {nextLockedStage && (
+                  <div className="stage-chip stage-chip-locked-preview" style={{ '--chip-color': nextLockedStage.color }} title={`Unlocks when Stage ${upper} is 70% mastered`}>
+                    🔒 Stage {nextLockedStage.id} · {nextLockedStage.name} (next)
+                  </div>
+                )}
               </div>
             </section>
+          )}
+          {!search && unlockedStages.length === 1 && (
+            <div className="browse-s1-only-notice">
+              📖 Browsing <strong>{unlockedStages[0].name}</strong> · {visibleDeck.length} cards
+              {nextLockedStage ? ` · ${nextLockedStage.name} unlocks at 70% mastery` : ''}
+            </div>
           )}
 
           {!search && (
@@ -107,7 +128,7 @@ export default function BrowseTab({ progress, recordDialogueComplete, dialoguesC
               </header>
               <div className="cat-chips">
                 <button className={`cat-chip ${activeCat === null ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(null)}>
-                  All ({CARDS.length})
+                  All ({visibleDeck.length})
                 </button>
                 {CATEGORIES.map(c => (
                   <button key={c.id} className={`cat-chip ${activeCat === c.id ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(c.id)} style={{ '--chip-color': c.color }}>
