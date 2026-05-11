@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Thai Fluency',
-        short_name: 'Thai',
-        description: 'Practical Thai for expats. Speak first, polish later.',
+        name: 'Tuk Talk Thai',
+        short_name: 'Tuk Talk',
+        description: 'Real Thai for real life in Thailand. Speak from day one.',
         theme_color: '#0F3D2E',
         background_color: '#F5F0E5',
         display: 'standalone',

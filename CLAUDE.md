@@ -1,4 +1,4 @@
-# Thai Fluency — Claude Code Context
+# Tuk Talk Thai — Claude Code Context
 
 This file is read automatically by Claude Code when working in this project. It tells Claude what this project is, conventions, and patterns to follow.
 

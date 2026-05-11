@@ -22,7 +22,7 @@ import StageUpToast from './components/StageUpToast.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 
-export default function ThaiFluencyApp() {
+export default function TukTalkThaiApp() {
   const [tab, setTab] = useState('today');
   const [progress, setProgress] = useState({});
   const [stats, setStats] = useState(DEFAULT_STATS);
@@ -260,9 +260,9 @@ export default function ThaiFluencyApp() {
       <header className="app-header">
         <div className="header-inner">
           <div className="brand">
-            <span className="brand-thai">ภาษาไทย</span>
-            <span className="brand-thai-ph">phaa-sǎa thai</span>
-            <span className="brand-en">Fluency</span>
+            <span className="brand-thai">ตุ๊กตุ๊ก</span>
+            <span className="brand-thai-ph">dtúk dtúk</span>
+            <span className="brand-en">Tuk Talk Thai</span>
           </div>
           <div className="header-stats">
             {dashboardStats.due > 0 && (

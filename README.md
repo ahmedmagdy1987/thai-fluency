@@ -1,4 +1,4 @@
-# Thai Fluency
+# Tuk Talk Thai
 
 A practical Thai-language learning app for expats. Speak first, polish later.
 
