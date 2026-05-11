@@ -3324,7 +3324,7 @@ export const STEP2_OVERRIDES = {
   4525: {stage:6},
   4526: {stage:7},
   4527: {stage:2},
-  4528: {type:'w'},
+  4528: {type:'w',en:'can\'t / not able to'},
   4529: {stage:2},
   4530: {stage:2},
   4531: {stage:7},
