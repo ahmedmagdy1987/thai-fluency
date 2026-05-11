@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, LogOut } from 'lucide-react';
+import { ChevronDown, LogOut, User } from 'lucide-react';
 
-export default function UserMenu({ profile, session, onSignOut }) {
+export default function UserMenu({ profile, session, onSignOut, onProfile }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -26,6 +26,11 @@ export default function UserMenu({ profile, session, onSignOut }) {
       {open && (
         <div className="user-menu-dropdown" role="menu">
           <div className="user-menu-email">{session?.user?.email}</div>
+          {onProfile && (
+            <button className="user-menu-item" onClick={() => { setOpen(false); onProfile(); }}>
+              <User size={14} /> Profile
+            </button>
+          )}
           <button className="user-menu-item" onClick={() => { setOpen(false); onSignOut(); }}>
             <LogOut size={14} /> Sign out
           </button>

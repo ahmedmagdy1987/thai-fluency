@@ -691,6 +691,51 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .pending-signout:hover { color: var(--brick); }
 .pending-resend-error { font-size: 12px; padding: 8px 10px; }
 
+/* Profile page — full-screen view accessed from header user menu */
+.profile-root { min-height: 100vh; padding: 24px 20px 40px; background: var(--cream); display: flex; justify-content: center; }
+.profile-page { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 18px; }
+.profile-back-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; background: transparent; border: none; color: var(--ink-soft); cursor: pointer; padding: 6px 4px; font-family: inherit; font-size: 13px; font-weight: 500; }
+.profile-back-btn:hover { color: var(--jade); }
+
+.profile-header-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 24px 20px; display: flex; gap: 18px; align-items: flex-start; }
+.profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--jade); color: var(--cream); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; flex-shrink: 0; letter-spacing: -0.01em; }
+.profile-identity { flex: 1; min-width: 0; }
+.profile-name-row { display: flex; align-items: center; gap: 8px; }
+.profile-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--ink); margin: 0; line-height: 1.2; word-break: break-word; }
+.profile-name-edit-btn { background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; cursor: pointer; color: var(--ink-soft); display: inline-flex; align-items: center; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+.profile-name-edit-btn:hover { color: var(--jade); border-color: var(--jade); }
+
+.profile-name-edit { display: flex; flex-direction: column; gap: 8px; }
+.profile-name-input { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+.profile-name-edit-row { display: flex; gap: 8px; }
+.profile-name-cancel, .profile-name-save { padding: 8px 14px; font-size: 13px; }
+
+.profile-email { font-size: 14px; color: var(--ink-soft); margin-top: 4px; word-break: break-all; }
+.profile-field-hint { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.profile-field-hint-warn { color: var(--brick); }
+.profile-meta { font-size: 12px; color: var(--ink-soft); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+
+.profile-section { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+.profile-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-soft); font-weight: 700; margin-bottom: 14px; }
+
+.profile-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.profile-stat { padding: 14px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 12px; text-align: center; }
+.profile-stat-num { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 600; color: var(--jade); line-height: 1; }
+.profile-stat-of { font-size: 16px; color: var(--ink-soft); margin-left: 2px; }
+.profile-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-top: 6px; font-weight: 500; }
+
+.profile-actions { display: flex; flex-direction: column; gap: 8px; }
+.profile-action-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--ink); cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; }
+.profile-action-btn:hover { border-color: var(--jade); background: var(--card-bg); }
+.profile-action-label { flex: 1; }
+.profile-action-chevron { transform: rotate(180deg); color: var(--ink-soft); }
+.profile-action-disabled { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 1px dashed var(--line); border-radius: 10px; font-size: 14px; color: var(--ink-soft); }
+.profile-action-coming { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--ink-soft); }
+
+.profile-success-body { font-size: 14px; line-height: 1.5; color: var(--ink); margin: 0 0 16px; }
+.change-password-modal { max-width: 440px; }
+.change-password-modal .modal-eyebrow { display: inline-flex; align-items: center; gap: 4px; }
+
 /* Footer on AuthGate welcome with Terms + Privacy links */
 .auth-welcome-footer { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
 .auth-footer-link { background: transparent; border: none; color: var(--ink-soft); cursor: pointer; padding: 0; font-family: inherit; font-size: 11px; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 2px; }

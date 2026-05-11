@@ -39,6 +39,7 @@ import UserMenu from './components/auth/UserMenu.jsx';
 import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
+import ProfilePage from './components/ProfilePage.jsx';
 
 export default function TukTalkThaiApp() {
   const [tab, setTab] = useState('today');
@@ -49,6 +50,7 @@ export default function TukTalkThaiApp() {
   const [achievementQueue, setAchievementQueue] = useState([]);
   const [stageUpToast, setStageUpToast] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
 
@@ -65,6 +67,7 @@ export default function TukTalkThaiApp() {
   const [authInitialScreen, setAuthInitialScreen] = useState('welcome');
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
   const [showMigration, setShowMigration] = useState(false);
+  const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
   const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
 
@@ -92,28 +95,54 @@ export default function TukTalkThaiApp() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Load profile when session changes. If display_name is missing on the
-  // profile row but present in user_metadata (this happens after email
-  // confirmation, when SignUp couldn't update profiles before the session
-  // existed), backfill it here.
+  // Load profile when session changes. Three things happen here:
+  // 1. display_name backfill: if the profile row's display_name is empty but
+  //    user_metadata has one (happens after email-confirmation signup, where
+  //    SignUp couldn't write to profiles before the session existed), copy it.
+  // 2. onboarding_completed sync (cloud → local): if cloud says the user has
+  //    onboarded on any device, set local stats.hasOnboarded = true. This
+  //    fixes the cross-device bug where users re-saw placement onboarding.
+  // 3. profileChecked flag: gates the onboarding render decision so we don't
+  //    flash placement onboarding before the cloud check completes.
   useEffect(() => {
-    if (!session || !hasSupabaseConfig) { setProfile(null); return; }
-    if (!session.user?.email_confirmed_at) { setProfile(null); return; }
+    if (!session || !hasSupabaseConfig) {
+      setProfile(null);
+      setProfileChecked(true);
+      return;
+    }
+    if (!session.user?.email_confirmed_at) {
+      setProfile(null);
+      setProfileChecked(true);
+      return;
+    }
+    setProfileChecked(false);
     let cancelled = false;
     (async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .maybeSingle();
-      if (cancelled || !data) return;
-      const metaName = session.user.user_metadata?.display_name;
-      if (!data.display_name && metaName) {
-        const trimmed = String(metaName).trim();
-        await supabase.from('profiles').update({ display_name: trimmed }).eq('id', session.user.id);
-        if (!cancelled) setProfile({ ...data, display_name: trimmed });
-      } else {
-        setProfile(data);
+      try {
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        if (cancelled) return;
+        if (data) {
+          // (1) display_name backfill
+          const metaName = session.user.user_metadata?.display_name;
+          if (!data.display_name && metaName) {
+            const trimmed = String(metaName).trim();
+            await supabase.from('profiles').update({ display_name: trimmed }).eq('id', session.user.id);
+            if (cancelled) return;
+            setProfile({ ...data, display_name: trimmed });
+          } else {
+            setProfile(data);
+          }
+          // (2) onboarding_completed sync: cloud → local
+          if (data.onboarding_completed) {
+            setStats(s => s.hasOnboarded ? s : { ...s, hasOnboarded: true });
+          }
+        }
+      } finally {
+        if (!cancelled) setProfileChecked(true);
       }
     })();
     return () => { cancelled = true; };
@@ -490,7 +519,18 @@ export default function TukTalkThaiApp() {
       currentStage: startedStage,
       voice: voiceChoice || s.voice || DEFAULT_VOICE,
     }));
-  }, [markCardsKnown]);
+    // Cloud write (fire-and-forget). Persists onboarding_completed + voice
+    // on profiles so the user doesn't re-see placement onboarding on another
+    // device or after sign-out.
+    if (session && hasSupabaseConfig && session.user?.email_confirmed_at) {
+      supabase.from('profiles').update({
+        onboarding_completed: true,
+        selected_voice: voiceChoice || DEFAULT_VOICE,
+      }).eq('id', session.user.id).then(({ error }) => {
+        if (error) console.warn('[App] failed to write onboarding state to cloud', error);
+      });
+    }
+  }, [markCardsKnown, session]);
 
   const updateSettings = useCallback((updates) => {
     setStats(s => ({ ...s, ...updates }));
@@ -596,11 +636,40 @@ export default function TukTalkThaiApp() {
     );
   }
 
+  // Wait for the cloud profile check to resolve before deciding to show
+  // placement onboarding. Without this, signed-in users on a new device
+  // would briefly see the onboarding flow before the cloud sync corrects
+  // stats.hasOnboarded — a confusing flash.
+  if (loaded && session && isEmailConfirmed && !profileChecked) {
+    return <div className="app-root" data-theme={stats.theme || 'light'} />;
+  }
+
   if (loaded && !stats.hasOnboarded) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
 
         <PlacementOnboarding onComplete={completeOnboarding} />
+      </div>
+    );
+  }
+
+  // Profile page renders full-screen on top of the main app when opened
+  // from the user menu. Closing returns to whatever tab was active.
+  if (showProfile && session && profile) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
+        <ProfilePage
+          profile={profile}
+          fullStats={stats}
+          session={session}
+          stageState={stageState}
+          onClose={() => setShowProfile(false)}
+          onSignOut={() => { setShowProfile(false); handleSignOut(); }}
+          onProfileRefresh={async () => {
+            const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+            if (data) setProfile(data);
+          }}
+        />
       </div>
     );
   }
@@ -634,7 +703,12 @@ export default function TukTalkThaiApp() {
               <span>{stats.totalXp || 0}</span>
             </div>
             {hasSupabaseConfig && session && (
-              <UserMenu profile={profile} session={session} onSignOut={handleSignOut} />
+              <UserMenu
+                profile={profile}
+                session={session}
+                onSignOut={handleSignOut}
+                onProfile={() => setShowProfile(true)}
+              />
             )}
             {hasSupabaseConfig && !session && (
               <button className="header-signin-btn" onClick={handleHeaderSignInClick} title="Sign in to save progress">

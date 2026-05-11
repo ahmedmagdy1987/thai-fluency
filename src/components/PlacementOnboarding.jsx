@@ -19,7 +19,7 @@ export default function PlacementOnboarding({ onComplete }) {
     { id: 'few', stage: 1, icon: '👋', name: 'I know a few words', desc: 'sàwàtdee, khàwp khun, the basics' },
     { id: 'survival', stage: 2, icon: '🍜', name: 'I can survive (food, taxis)', desc: 'Can order food, ask basic questions' },
     { id: 'casual', stage: 4, icon: '💬', name: 'I can hold short conversations', desc: 'Daily life mostly works in Thai' },
-    { id: 'confident', stage: 5, icon: '🥷', name: "I'm conversational", desc: 'Comfortable, want to fill gaps' },
+    { id: 'confident', stage: 5, icon: '🌟', name: "I'm conversational", desc: 'Comfortable, want to fill gaps' },
   ];
 
   if (step === 'welcome') {
