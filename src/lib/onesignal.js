@@ -38,10 +38,10 @@ async function ensureLoaded() {
       }
       await OneSignal.init({
         appId: APP_ID,
-        // Reuse the PWA service worker — workbox imports OneSignal's worker
-        // code via importScripts (configured in vite.config.js).
-        serviceWorkerPath: 'sw.js',
-        serviceWorkerParam: { scope: '/' },
+        // Worker lives at /OneSignalSDKWorker.js (public/ folder, copied to
+        // dist root by Vite). That's OneSignal v16's default path, so no
+        // serviceWorkerPath override is needed. OneSignal's SW coexists with
+        // our vite-plugin-pwa SW — separate scripts, both at scope '/'.
         promptOptions: {
           slidedown: {
             prompts: [{

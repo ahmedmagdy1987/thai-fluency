@@ -8,13 +8,11 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
-      workbox: {
-        // OneSignal needs a service worker to deliver push notifications. Rather
-        // than register a second SW (which would compete for scope / with this
-        // one), we import OneSignal's worker code into our existing SW. This is
-        // OneSignal's recommended pattern for sites with an existing SW.
-        importScripts: ['https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'],
-      },
+      // OneSignal's worker lives at public/OneSignalSDKWorker.js — it ships
+      // separately from this PWA SW. Merging it via workbox.importScripts
+      // didn't work in production (OneSignal v16 still tried to fetch its own
+      // worker path and 404'd). Two SWs coexist: OneSignal owns push, ours
+      // owns offline caching.
       manifest: {
         name: 'Tuk Talk Thai',
         short_name: 'Tuk Talk',
