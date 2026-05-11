@@ -354,6 +354,17 @@ export default function TukTalkThaiApp() {
     }
   }, [stageState, loaded]);
 
+  // Email confirmation gate: a session whose user has not confirmed their
+  // email must NOT be treated as fully authenticated, regardless of what
+  // Supabase returned. Defense in depth for the "anyone can sign up with
+  // a fake email" attack — even if Supabase mis-issues a session, the
+  // client refuses to render the main app.
+  //
+  // MUST be declared above the useEffects below that reference it in their
+  // dep arrays — dep arrays are evaluated immediately and `const` hoists to
+  // TDZ, so a later declaration crashes the whole render at module init.
+  const isEmailConfirmed = !!(session?.user?.email_confirmed_at);
+
   // OneSignal: link the device subscription to the Supabase user once the
   // user is signed in and confirmed. Persist the player_id + timezone on
   // profiles so the server-side worker can target this device by Supabase
@@ -639,13 +650,6 @@ export default function TukTalkThaiApp() {
   const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
-
-  // Email confirmation gate: a session whose user has not confirmed their
-  // email must NOT be treated as fully authenticated, regardless of what
-  // Supabase returned. Defense in depth for the "anyone can sign up with
-  // a fake email" attack — even if Supabase mis-issues a session, the
-  // client refuses to render the main app.
-  const isEmailConfirmed = !!(session?.user?.email_confirmed_at);
 
   // Hard-fail when Supabase env vars are missing — never silently degrade to
   // a no-auth main app. Security audit HIGH-1: previously, an unconfigured
