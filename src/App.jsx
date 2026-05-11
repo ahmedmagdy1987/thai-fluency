@@ -425,6 +425,20 @@ export default function TukTalkThaiApp() {
       const justFinished = MISSIONS.find(m => m.id === cur - 1);
       if (justFinished) setMissionToast(justFinished);
       setStats(s => ({ ...s, lastSeenMission: cur }));
+      // Record completion in user_missions so the database webhook can
+      // fan out a milestone notification via the send-notification Edge
+      // Function. Best-effort; failure is silent.
+      if (session && hasSupabaseConfig && session.user?.email_confirmed_at && cur > 1) {
+        supabase.from('user_missions').upsert({
+          user_id: session.user.id,
+          stage: 1, // S1 missions for now; multi-stage missions are future work
+          mission: cur - 1,
+          completed: true,
+          completed_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,stage,mission' }).then(({ error }) => {
+          if (error) console.warn('[App] failed to record mission completion', error);
+        });
+      }
     }
   }, [missionState, loaded]);
 

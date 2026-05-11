@@ -166,6 +166,29 @@ Claude will edit the files directly and the dev server will hot-reload.
 
 **My progress disappeared** — Check that you're using the same browser/profile. localStorage is per-browser. To export/backup, use the Settings panel (when added).
 
+## Push notifications
+
+Tuk Talk Thai sends daily reminders, streak warnings, milestone celebrations,
+and re-engagement nudges via [OneSignal](https://onesignal.com). Setup steps,
+architecture, message templates, and an admin broadcast guide live in
+[NOTIFICATIONS.md](NOTIFICATIONS.md).
+
+In short:
+- **Client** picks up the `VITE_ONESIGNAL_APP_ID` env var, initializes the SDK
+  after the user signs in + completes onboarding, and saves the subscription
+  ID to `profiles.onesignal_player_id`.
+- **Backend** is a Supabase Edge Function (`supabase/functions/send-notification`)
+  triggered by Database Webhooks (milestone events) and a pg_cron hourly tick
+  (scheduled notifications).
+- **REST API Key** lives only in Supabase Edge Function secrets — never in Git,
+  never on Vercel.
+
+## Security audit + data isolation
+
+Pre-launch security audit is in [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md).
+Data isolation review (every read/write tabulated, RLS verified) is in
+[DATA_ISOLATION_AUDIT.md](DATA_ISOLATION_AUDIT.md).
+
 ## Next steps
 
 - Use it daily, find what frustrates you
