@@ -1,8 +1,105 @@
 # Anki Import Summary
 
-**Last updated:** 2026-05-10 (batch 2 added)
+**Last updated:** 2026-05-11 (Phase 2 redistribution applied)
 
-**Total cards in app:** 4752 (645 hand-curated + 2801 batch1 + 1306 batch2, ids 1–5699)
+**Total cards in app:** 4791 (645 hand-curated + 2801 batch1 + 1306 batch2 + 39 Phase 2 additions, ids 1–5738)
+
+**Stage distribution (post-Phase 2):** 150 / 275 / 425 / 575 / 700 / 800 / 875 / 991
+
+---
+
+# Phase 2 — Stage redistribution + critical vocab additions
+
+**Date:** 2026-05-11
+**Scripts:** `scripts/analyze-redistribution.js`, `scripts/find-next-vocab.js`, `scripts/apply-redistribution.js`, `scripts/verify-redistribution.js`
+**Output:** `src/data/cards-step2.js` (39 new cards + 4355 stage/type/data overrides)
+**Verification:** `VERIFICATION_REPORT.md`
+
+## Why
+
+Pre-Phase 2 distribution was front-loaded:
+
+| Stage | Pre | Target | Final |
+|---:|---:|---:|---:|
+| 1 | 1290 | 150 | **150** |
+| 2 | 1183 | 275 | **275** |
+| 3 | 262 | 425 | **425** |
+| 4 | 1238 | 575 | **575** |
+| 5 | 595 | 700 | **700** |
+| 6 | 106 | 800 | **800** |
+| 7 | 43 | 875 | **875** |
+| 8 | 35 | 952 | **991** (+39 overflow within ±10% tolerance) |
+
+Each stage now sits inside the ±10% tolerance band, and **0 sentences violate the dependency rule** ("a sentence's stage must be ≥ every constituent word's stage").
+
+## What
+
+**1. Hand-curated 10 essential Stage 1 sentences:**
+
+| # | id | Thai | English |
+|---|---:|---|---|
+| 1 | 310 | สวัสดีครับ | Hello |
+| 2 | 330 | ผมชื่อ ___ ครับ | My name is ___ |
+| 3 | 853 | ห้องน้ำอยู่ที่ไหนครับ | Where is the bathroom? |
+| 4 | 850 | อันนี้เท่าไหร่ครับ | How much is this? |
+| 5 | 5700 (NEW) | ผมพูดภาษาไทยไม่ได้ครับ | I can't speak Thai |
+| 6 | 312 | ขอบคุณมากครับ | Thank you very much |
+| 7 | 313 | ไม่เป็นไรครับ | You're welcome |
+| 8 | 314 | ขอโทษครับ | Sorry / Excuse me |
+| 9 | 431 | ผมไม่เข้าใจครับ | I don't understand |
+| 10 | 430 | ช่วยด้วย | Help! |
+
+**2. New cards (39 total, ids 5700–5738):**
+- 1 new sentence (id 5700: I can't speak Thai)
+- 38 new word cards covering high-impact missing vocabulary: `ไม่ใช่`, `อันนี้`, `เจอกัน`, `มั้ย`, `ได้ไหม`, `กินข้าว`, `จากไหน`, `สักครู่`, `เหรอ`, `เช็คบิล`, `เมนู`, `หลงทาง`, `หรือยัง`, `งี้`, `รวย`, `เด็ด`, `อิจฉา`, `ยืด`, `น่ะ`, `อ่ะ`, `ไม๊`, `รู้สึก`, `เซ็น`, `บัส`, `แผน`, `แบงค์`, `ตังค์`, `เนอะ`, `คุ้ม`, `โกง`, `ท้อ`, `ไส้`, `มั้ง`, `ฉี่`, `ปั่น`, `หุบ`, `มิเตอร์`, `อพาร์ทเมนท์`
+
+**3. Type/field changes to existing cards:**
+
+| id | Thai | Change |
+|---:|---|---|
+| 4528 | ไม่ได้ | type s→w (idiomatic chunk, not sentence) |
+| 5361 | ไม่เป็นไร | type s→w (idiomatic chunk), stage S3→S1 |
+| 4474 | มาถึง | type p→w, ph fix `mahtërng` → `maa thǔeng` |
+| 5344 | ช้าๆ | type s→w (adverb, not sentence) |
+| 4671 | กี่โมง | type s→w, en fix "how much / many" → "what time" |
+| 4732 | แป๊บนึง | type s→p (idiomatic expression, not free sentence) |
+| 4733 | อะไรอย่างเงี้ยะ | type s→p |
+
+**4. Architectural fix:** `type='p'` (phrase) cards now count as vocabulary units in the dependency analyzer alongside `w`/`g`. Phrases are by definition idiomatic chunks — treating them as opaque vocabulary is the correct model.
+
+**5. Quarantined sentences:** 95 sentences contain Thai tokens not in any vocab card and were placed in Stage 8 as "review needed." These can be unblocked by adding the missing words in a future content pass. The top remaining blockers are single-char fragments (`เ`, `ะ`, `น` — from words like `เยอะ`, `โอเค`, `แคนาดา` that we deliberately skipped per scope).
+
+## How the data is structured
+
+To avoid mass-editing 3 source files (4,000+ lines of card data), all Phase 2 changes live in **one new file**: `src/data/cards-step2.js`. It exports:
+
+- `STEP2_ADDITIONS`: the 39 new cards
+- `STEP2_OVERRIDES`: a map `{ id → { stage?, type?, en?, ph? } }` for the 4,355 existing cards whose stage/type/data changed
+
+`src/data/cards.js` was modified (~6 lines) to import + apply these. Original card data in `cards.js`, `cards-imported.js`, and `cards-imported-batch2.js` is **byte-for-byte unchanged**. Backups exist as `*.backup-pre-redistribution-2026-05-11.js`.
+
+## How to re-run / extend
+
+```bash
+# Regenerate cards-step2.js with updated patches:
+# 1. Edit NEW_CARDS / RETYPE_TO_W / RETYPE_TO_P / FIELD_FIXES / ESSENTIAL_S1_SENTENCE_IDS in scripts/apply-redistribution.js
+# 2. Restore baseline cards.js (required — the script needs unmodified baseline):
+cp src/data/cards.js.backup-pre-redistribution-2026-05-11 src/data/cards.js
+# 3. Run the script:
+node scripts/apply-redistribution.js
+# 4. Re-wire cards.js (add import + RAW_CARDS rename + map at bottom)
+# 5. Verify:
+node scripts/verify-redistribution.js
+```
+
+## How to rollback Phase 2
+
+```bash
+cp src/data/cards.js.backup-pre-redistribution-2026-05-11 src/data/cards.js
+rm src/data/cards-step2.js
+```
+
+`cards-imported.js` and `cards-imported-batch2.js` were never modified, so no restore needed.
 
 ---
 

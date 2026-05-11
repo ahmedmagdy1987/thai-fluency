@@ -1,9 +1,8 @@
 // Auto-generated from artifact source
 import { IMPORTED_CARDS } from './cards-imported.js';
 import { IMPORTED_CARDS_BATCH2 } from './cards-imported-batch2.js';
-import { STEP2_ADDITIONS, STEP2_OVERRIDES } from './cards-step2.js';
 
-const RAW_CARDS = [
+export const CARDS = [
   {id:1,thai:'ผม',ph:'phǒm',en:'I / me (male)',type:'w',stage:1,cat:'pronouns'},
   {id:2,thai:'ครับ',ph:'khráp',en:'polite particle (male)',type:'w',stage:1,cat:'pronouns',note:'End every sentence with this. Marks you as polite + male.'},
   {id:3,thai:'คุณ',ph:'khun',en:'you (polite)',type:'w',stage:1,cat:'pronouns',note:'Universal "you." Also used before names like "Mr."'},
@@ -692,12 +691,4 @@ const RAW_CARDS = [
   { id: 1592, thai: 'ลดให้หน่อยได้ไหม', ph: 'lót hâi nàwy dâai mǎi?', en: 'Can you make it a little cheaper?', type: 's', stage: 8, cat: 'sentences-fluency', breakdown: [{thai:'ลด',ph:'lót',en:'reduce'},{thai:'ให้',ph:'hâi',en:'for me'},{thai:'หน่อย',ph:'nàwy',en:'a little'},{thai:'ได้ไหม',ph:'dâai mǎi',en:'can?'}] },
   ...IMPORTED_CARDS,
   ...IMPORTED_CARDS_BATCH2,
-  ...STEP2_ADDITIONS,
 ];
-
-// Apply Step 2 (Phase 2) field overrides — stage redistribution + type/data
-// fixes from scripts/apply-redistribution.js. Originals unchanged.
-export const CARDS = RAW_CARDS.map(c => {
-  const ov = STEP2_OVERRIDES[c.id];
-  return ov ? { ...c, ...ov } : c;
-});
