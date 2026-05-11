@@ -2,8 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
-import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
-import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
 
 export default function SettingsModal({ stats, updateSettings, onClose, resetAll }) {
   const voice = stats.voice || DEFAULT_VOICE;
@@ -91,17 +90,6 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
                 Auto-play new cards
               </button>
             </div>
-            {ttsAvailable() && (
-              <button
-                type="button"
-                className="setting-test-audio-btn"
-                style={{ marginTop: 10 }}
-                onClick={() => speakThai('สวัสดี', audioRate)}
-                aria-label="Test audio — speak สวัสดี"
-              >
-                🔊 Test audio (สวัสดี · sàwàtdee)
-              </button>
-            )}
           </div>
 
           <div className="setting-group">
@@ -117,24 +105,14 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
           </div>
 
           <div className="setting-group">
-            <div className="setting-label">Starting stage</div>
-            <div className="setting-sub">Change your skill level. Cards from earlier stages won't appear in reviews.</div>
-            <div className="setting-stage-picker">
-              {STAGES.map(S => (
-                <button
-                  key={S.id}
-                  className={`setting-stage-btn ${(stats.startedStage || 1) === S.id ? 'setting-stage-active' : ''}`}
-                  style={{ '--stage-color': S.color }}
-                  onClick={() => updateSettings({ startedStage: S.id })}
-                  title={S.name}
-                >
-                  <div className="setting-stage-icon">{S.icon}</div>
-                  <div className="setting-stage-num">{S.id}</div>
-                </button>
-              ))}
-            </div>
-            <div className="setting-stage-current">
-              Currently: Stage {stats.startedStage || 1} · {(STAGES.find(s => s.id === (stats.startedStage || 1)) || {}).name}
+            <div className="setting-label">Current stage</div>
+            <div className="setting-sub">Stages unlock as you progress — earned through learning, not selected.</div>
+            <div className="setting-stage-current-readonly">
+              <span className="setting-stage-current-icon">{(STAGES.find(s => s.id === (stats.currentStage || stats.startedStage || 1)) || {}).icon}</span>
+              <div>
+                <div className="setting-stage-current-num">Stage {stats.currentStage || stats.startedStage || 1}</div>
+                <div className="setting-stage-current-name">{(STAGES.find(s => s.id === (stats.currentStage || stats.startedStage || 1)) || {}).name}</div>
+              </div>
             </div>
           </div>
 

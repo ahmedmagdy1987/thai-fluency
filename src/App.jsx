@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Home, Layers, BookOpen, Award, Compass, Flame, Settings, Zap } from 'lucide-react';
 
 import { CARDS } from './data/cards.js';
@@ -6,11 +6,21 @@ import { STAGES } from './data/taxonomy.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState } from './lib/storage.js';
+import { loadState, saveState, clearState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, migrateStats, startStudyDay } from './lib/stats.js';
 import { MISSIONS } from './data/taxonomy.js';
+import { supabase, hasSupabaseConfig } from './lib/supabase.js';
+import {
+  uploadProgress,
+  uploadStats,
+  uploadAchievements,
+  uploadFullState,
+  downloadProgress,
+  downloadStats,
+  downloadAchievements,
+} from './lib/cloudStorage.js';
 
 import TodayTab from './components/TodayTab.jsx';
 import CardsTab from './components/CardsTab.jsx';
@@ -24,6 +34,10 @@ import MissionCompleteToast from './components/MissionCompleteToast.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
+import AuthGate from './components/auth/AuthGate.jsx';
+import UserMenu from './components/auth/UserMenu.jsx';
+import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
+import DemoMode from './components/DemoMode.jsx';
 
 export default function TukTalkThaiApp() {
   const [tab, setTab] = useState('today');
@@ -37,6 +51,22 @@ export default function TukTalkThaiApp() {
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
 
+  // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
+  // only paths to the full app are sign-in or sign-up.
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [authReady, setAuthReady] = useState(!hasSupabaseConfig);
+  const [demoMode, setDemoMode] = useState(() => {
+    try { return localStorage.getItem('tuk-talk-thai-demo-mode') === 'true'; }
+    catch { return false; }
+  });
+  const [forceAuthGate, setForceAuthGate] = useState(false);
+  const [authInitialScreen, setAuthInitialScreen] = useState('welcome');
+  const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
+  const [showMigration, setShowMigration] = useState(false);
+  const cloudSyncTimer = useRef(null);
+  const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
+
   useEffect(() => {
     (async () => {
       const saved = await loadState();
@@ -48,9 +78,176 @@ export default function TukTalkThaiApp() {
     })();
   }, []);
 
+  // Supabase session detection
   useEffect(() => {
-    if (loaded) saveState({ progress, stats });
-  }, [progress, stats, loaded]);
+    if (!hasSupabaseConfig) return;
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session || null);
+      setAuthReady(true);
+    }).catch(() => setAuthReady(true));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load profile when session changes
+  useEffect(() => {
+    if (!session || !hasSupabaseConfig) { setProfile(null); return; }
+    let cancelled = false;
+    supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle()
+      .then(({ data }) => { if (!cancelled && data) setProfile(data); });
+    return () => { cancelled = true; };
+  }, [session?.user?.id]);
+
+  const startDemo = useCallback(() => {
+    try { localStorage.setItem('tuk-talk-thai-demo-mode', 'true'); } catch { /* ignore */ }
+    setDemoMode(true);
+    setForceAuthGate(false);
+  }, []);
+
+  const handleDemoSignUp = useCallback(() => {
+    setAuthInitialScreen('signup');
+    setForceAuthGate(true);
+  }, []);
+
+  const handleDemoSignIn = useCallback(() => {
+    setAuthInitialScreen('signin');
+    setForceAuthGate(true);
+  }, []);
+
+  const handleAuthSuccess = useCallback(() => {
+    setForceAuthGate(false);
+    setAuthInitialScreen('welcome');
+    // Demo flags become irrelevant once signed in; clear them so a future
+    // sign-out lands the user back on the welcome screen, not the demo.
+    try {
+      localStorage.removeItem('tuk-talk-thai-demo-mode');
+      localStorage.removeItem('tuk-talk-thai-demo-idx');
+    } catch { /* ignore */ }
+    setDemoMode(false);
+    // onAuthStateChange fires and updates session; cloud sync effect runs next.
+  }, []);
+
+  const handleSignOut = useCallback(async () => {
+    if (!hasSupabaseConfig) return;
+    await supabase.auth.signOut();
+    setProfile(null);
+    setCloudReady(false);
+    // Server-of-truth: this device is no longer authorized. Wipe local cache
+    // so the next session starts clean from the cloud (or from a fresh demo).
+    await clearState();
+    try {
+      localStorage.removeItem('tuk-talk-thai-demo-mode');
+      localStorage.removeItem('tuk-talk-thai-demo-idx');
+    } catch { /* ignore */ }
+    setProgress({});
+    setStats(DEFAULT_STATS);
+    setDemoMode(false);
+    setForceAuthGate(false);
+    setAuthInitialScreen('welcome');
+  }, []);
+
+  const handleHeaderSignInClick = useCallback(() => {
+    setAuthInitialScreen('signin');
+    setForceAuthGate(true);
+  }, []);
+
+  // Cloud init: when a user is signed in and local state is loaded, decide
+  // whether to upload local-only progress (migration prompt) or just download
+  // whatever's on the cloud. Runs exactly once per session.
+  useEffect(() => {
+    if (!session || !loaded || cloudReady || cloudInitInFlight.current || !hasSupabaseConfig) return;
+    cloudInitInFlight.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const cloudProgress = await downloadProgress(session.user.id);
+        const cloudHasData = Object.keys(cloudProgress).length > 0;
+        const localHasData = Object.keys(progress).length > 0;
+        if (cancelled) return;
+        if (localHasData && !cloudHasData) {
+          // Conflict: local has work, cloud is empty. Ask the user.
+          setShowMigration(true);
+          // cloudReady stays false until migration resolves.
+        } else {
+          const [cloudStatsData, cloudAchs] = await Promise.all([
+            downloadStats(session.user.id),
+            downloadAchievements(session.user.id),
+          ]);
+          if (cancelled) return;
+          if (cloudHasData) setProgress(cloudProgress);
+          if (cloudStatsData) {
+            setStats(s => ({ ...s, ...cloudStatsData, unlockedAchievements: cloudAchs || s.unlockedAchievements || [] }));
+          } else if (cloudAchs && cloudAchs.length > 0) {
+            setStats(s => ({ ...s, unlockedAchievements: cloudAchs }));
+          }
+          setCloudReady(true);
+        }
+      } catch (e) {
+        console.warn('[App] cloud init failed', e);
+        // Fall back to local-only mode; user can retry by signing out and back in.
+      } finally {
+        cloudInitInFlight.current = false;
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [session, loaded, cloudReady]);
+
+  // Periodic cloud sync: debounced uploads of progress + stats + achievements
+  // whenever local state changes. Only fires after cloud init has resolved.
+  useEffect(() => {
+    if (!session || !cloudReady || !loaded || !hasSupabaseConfig) return;
+    if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current);
+    cloudSyncTimer.current = setTimeout(async () => {
+      try {
+        await uploadProgress(session.user.id, progress);
+        await uploadStats(session.user.id, stats);
+        const achs = stats.unlockedAchievements || [];
+        if (achs.length > 0) await uploadAchievements(session.user.id, achs);
+      } catch (e) {
+        console.warn('[App] cloud sync failed', e);
+      }
+    }, 2500);
+    return () => { if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current); };
+  }, [progress, stats, session, cloudReady, loaded]);
+
+  const handleMigrateLocal = useCallback(async () => {
+    if (!session) return;
+    await uploadFullState(session.user.id, progress, stats);
+    setShowMigration(false);
+    setCloudReady(true);
+  }, [session, progress, stats]);
+
+  const handleSkipMigration = useCallback(async () => {
+    if (!session) return;
+    // Discard local progress; load whatever's on the cloud (likely defaults
+    // since the user just signed up).
+    try {
+      const [cloudStatsData, cloudAchs] = await Promise.all([
+        downloadStats(session.user.id),
+        downloadAchievements(session.user.id),
+      ]);
+      setProgress({});
+      setStats(s => ({
+        ...DEFAULT_STATS,
+        ...(cloudStatsData || {}),
+        // Preserve a couple of local-only fields we don't want to clobber.
+        voice: s.voice || DEFAULT_VOICE,
+        viewMode: s.viewMode || DEFAULT_VIEW_MODE,
+        theme: s.theme || 'light',
+        unlockedAchievements: cloudAchs || [],
+        hasOnboarded: false, // fresh start → re-run placement
+      }));
+    } finally {
+      setShowMigration(false);
+      setCloudReady(true);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (loaded && !demoMode) saveState({ progress, stats });
+  }, [progress, stats, loaded, demoMode]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -289,10 +486,52 @@ export default function TukTalkThaiApp() {
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
 
+  // Auth gate: every anonymous visitor must either sign in/up or pick the
+  // 5-card demo. forceAuthGate wins over demoMode so a demo user can convert
+  // by clicking the header "Sign in" button or the demo's end-CTA buttons.
+  const showAuthGate = hasSupabaseConfig && authReady && !session && (forceAuthGate || !demoMode);
+  if (showAuthGate) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <AuthGate
+          initialScreen={authInitialScreen}
+          onTryDemo={startDemo}
+          onAuthSuccess={handleAuthSuccess}
+        />
+      </div>
+    );
+  }
+
+  // Demo mode: 5 curated cards, read-only, no progress saved.
+  const showDemo = hasSupabaseConfig && authReady && !session && demoMode && !forceAuthGate;
+  if (showDemo) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <DemoMode onSignUp={handleDemoSignUp} onSignIn={handleDemoSignIn} />
+      </div>
+    );
+  }
+
+  // Migration prompt: shown when newly signed-in user has local-only progress
+  // and the cloud is empty. Blocks the rest of the app until resolved.
+  if (showMigration) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <MigrationPrompt
+          cardCount={Object.keys(progress).length}
+          totalXp={stats.totalXp || 0}
+          streak={stats.streak || 0}
+          onMigrate={handleMigrateLocal}
+          onSkip={handleSkipMigration}
+        />
+      </div>
+    );
+  }
+
   if (loaded && !stats.hasOnboarded) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
-        
+
         <PlacementOnboarding onComplete={completeOnboarding} />
       </div>
     );
@@ -326,6 +565,14 @@ export default function TukTalkThaiApp() {
               <Zap size={12} />
               <span>{stats.totalXp || 0}</span>
             </div>
+            {hasSupabaseConfig && session && (
+              <UserMenu profile={profile} session={session} onSignOut={handleSignOut} />
+            )}
+            {hasSupabaseConfig && !session && (
+              <button className="header-signin-btn" onClick={handleHeaderSignInClick} title="Sign in to save progress">
+                Sign in
+              </button>
+            )}
             <button className="settings-btn" onClick={() => setShowSettings(true)} title="Settings">
               <Settings size={16} />
             </button>
