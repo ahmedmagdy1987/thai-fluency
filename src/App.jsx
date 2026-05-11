@@ -486,6 +486,30 @@ export default function TukTalkThaiApp() {
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
 
+  // Hard-fail when Supabase env vars are missing — never silently degrade to
+  // a no-auth main app. Security audit HIGH-1: previously, an unconfigured
+  // build would render the full UI without an AuthGate, exposing the deck.
+  if (!hasSupabaseConfig) {
+    return (
+      <div className="app-root" data-theme="light">
+        <div className="config-error-root">
+          <div className="config-error-card">
+            <div className="config-error-icon">⚠️</div>
+            <div className="config-error-eyebrow">Configuration error</div>
+            <h1 className="config-error-title">App not properly configured</h1>
+            <p className="config-error-body">
+              This Tuk Talk Thai instance is missing its Supabase connection
+              details. Contact the administrator.
+            </p>
+            <div className="config-error-hint">
+              Missing environment variables: <code>VITE_SUPABASE_URL</code>, <code>VITE_SUPABASE_KEY</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Auth gate: every anonymous visitor must either sign in/up or pick the
   // 5-card demo. forceAuthGate wins over demoMode so a demo user can convert
   // by clicking the header "Sign in" button or the demo's end-CTA buttons.

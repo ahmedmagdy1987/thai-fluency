@@ -683,6 +683,16 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .user-menu-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; background: transparent; border: none; border-radius: 6px; font-family: inherit; font-size: 13px; color: var(--ink); cursor: pointer; text-align: left; }
 .user-menu-item:hover { background: var(--cream-warm); }
 
+/* Config error screen — shown when VITE_SUPABASE_* env vars are missing */
+.config-error-root { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--cream); }
+.config-error-card { background: var(--card-bg); border: 1px solid var(--line); border-left: 4px solid var(--brick); border-radius: 0 14px 14px 0; padding: 28px 24px; max-width: 480px; width: 100%; text-align: center; }
+.config-error-icon { font-size: 36px; line-height: 1; margin-bottom: 8px; }
+.config-error-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--brick); font-weight: 700; margin-bottom: 4px; }
+.config-error-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--ink); margin: 0 0 10px; }
+.config-error-body { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 16px; }
+.config-error-hint { font-size: 12px; color: var(--ink-soft); padding-top: 14px; border-top: 1px solid var(--line); margin-top: 14px; }
+.config-error-hint code { font-family: 'JetBrains Mono', monospace; background: var(--cream-warm); padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+
 /* Header "Sign in" button for anonymous users */
 .header-signin-btn { display: inline-flex; align-items: center; background: transparent; border: 1px solid var(--jade); color: var(--jade); border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.15s, color 0.15s; }
 .header-signin-btn:hover { background: var(--jade); color: var(--cream); }
