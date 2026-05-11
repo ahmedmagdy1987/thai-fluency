@@ -37,7 +37,7 @@ export default function DemoMode({ onSignUp, onSignIn }) {
           <h1 className="onboard-title">Loved it?</h1>
           <p className="demo-end-thai">เก่งมาก — gèng mâak</p>
           <p className="onboard-sub">
-            Sign up to save your progress and unlock the full {CARDS.length}-card path —
+            Sign up to save your progress and unlock the full Thai learning path —
             from Survival Thai through Thai Mastery. Free forever.
           </p>
           <button className="btn-primary auth-cta demo-end-cta" onClick={onSignUp}>

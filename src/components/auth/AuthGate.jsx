@@ -56,11 +56,11 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
           </div>
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon">🔄</span>
-            <div><strong>Sync across devices.</strong> Your progress follows you from laptop to phone.</div>
+            <div><strong>Sync across devices</strong> — your progress follows you from laptop to phone.</div>
           </div>
           <div className="auth-welcome-bullet">
-            <span className="auth-welcome-bullet-icon">🇹🇭</span>
-            <div><strong>4,791 cards total</strong> — all the way to natural fluency, one stage at a time.</div>
+            <span className="auth-welcome-bullet-icon">🎯</span>
+            <div><strong>Speak from day one</strong> — real phrases for Thailand, not textbook drills.</div>
           </div>
         </div>
 

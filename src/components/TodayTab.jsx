@@ -123,7 +123,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
               );
             })}
           </div>
-          <div className="mission-footnote">Finish Survival Thai and the full 4,752-card path unlocks.</div>
+          <div className="mission-footnote">Finish Survival Thai to unlock the next stage.</div>
         </div>
       )}
 
