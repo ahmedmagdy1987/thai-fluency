@@ -91,12 +91,29 @@ export default function TukTalkThaiApp() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Load profile when session changes
+  // Load profile when session changes. If display_name is missing on the
+  // profile row but present in user_metadata (this happens after email
+  // confirmation, when SignUp couldn't update profiles before the session
+  // existed), backfill it here.
   useEffect(() => {
     if (!session || !hasSupabaseConfig) { setProfile(null); return; }
     let cancelled = false;
-    supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle()
-      .then(({ data }) => { if (!cancelled && data) setProfile(data); });
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .maybeSingle();
+      if (cancelled || !data) return;
+      const metaName = session.user.user_metadata?.display_name;
+      if (!data.display_name && metaName) {
+        const trimmed = String(metaName).trim();
+        await supabase.from('profiles').update({ display_name: trimmed }).eq('id', session.user.id);
+        if (!cancelled) setProfile({ ...data, display_name: trimmed });
+      } else {
+        setProfile(data);
+      }
+    })();
     return () => { cancelled = true; };
   }, [session?.user?.id]);
 

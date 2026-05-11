@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
+import PrivacyPolicy from './legal/PrivacyPolicy.jsx';
+import TermsOfService from './legal/TermsOfService.jsx';
 
 export default function SettingsModal({ stats, updateSettings, onClose, resetAll }) {
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
   const dailyGoal = stats.dailyGoal || DEFAULT_DAILY_GOAL;
@@ -121,11 +125,22 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
             <div className="setting-sub">You have <strong>{stats.streakFreezes || 0}</strong> freeze{(stats.streakFreezes || 0) === 1 ? '' : 's'} available. Auto-grants every 7 study days.</div>
           </div>
 
+          <div className="setting-group">
+            <div className="setting-label">Legal</div>
+            <div className="settings-legal-links">
+              <button type="button" className="settings-legal-link" onClick={() => setShowPrivacy(true)}>Privacy Policy</button>
+              <span className="settings-legal-divider" aria-hidden="true">·</span>
+              <button type="button" className="settings-legal-link" onClick={() => setShowTerms(true)}>Terms of Service</button>
+            </div>
+          </div>
+
           <div className="setting-group setting-group-danger">
             <button className="dash-reset-btn" onClick={() => { onClose(); resetAll(); }}>Reset all progress</button>
           </div>
         </div>
       </div>
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
+      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
     </div>
   );
 }

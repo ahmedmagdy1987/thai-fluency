@@ -1,6 +1,19 @@
-import React, { useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ChevronLeft, Mail, Check, Circle } from 'lucide-react';
 import { supabase } from '../../lib/supabase.js';
+
+// Server-side password policy (set in Supabase dashboard):
+//   - 12 chars min
+//   - at least one lowercase, one uppercase, one digit
+// Client-side validation mirrors these so users get inline feedback instead
+// of a confusing post-submit error from the API.
+const MIN_LEN = 12;
+const PWD_CHECKS = [
+  { id: 'length',    label: '12 characters or more', test: p => p.length >= MIN_LEN },
+  { id: 'lowercase', label: 'Lowercase letter',      test: p => /[a-z]/.test(p) },
+  { id: 'uppercase', label: 'Uppercase letter',      test: p => /[A-Z]/.test(p) },
+  { id: 'digit',     label: 'Number',                test: p => /\d/.test(p) },
+];
 
 export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) {
   const [name, setName] = useState('');
@@ -8,12 +21,21 @@ export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) 
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resent, setResent] = useState(false);
+
+  const checks = useMemo(
+    () => PWD_CHECKS.map(c => ({ ...c, ok: c.test(password) })),
+    [password]
+  );
+  const passwordValid = checks.every(c => c.ok);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.');
+    if (!passwordValid) {
+      setError('Password must meet all four requirements.');
       return;
     }
     setLoading(true);
@@ -21,26 +43,88 @@ export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) 
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: { data: { display_name: name.trim() } },
+        options: {
+          data: { display_name: name.trim() },
+          emailRedirectTo: window.location.origin + '/',
+        },
       });
       if (signUpError) {
         setError(signUpError.message);
         return;
       }
-      // The handle_new_user trigger created the profile row; set display_name on it.
-      if (data.user) {
+      // Branch on whether Supabase returned a session.
+      // - With "Confirm email" OFF: session is set immediately → set display_name now and proceed.
+      // - With "Confirm email" ON: session is null → show "check your inbox" screen.
+      //   display_name lives in user_metadata and is back-filled into profiles.display_name
+      //   by App.jsx's profile-load effect after the user clicks the confirmation link.
+      if (data.user && data.session) {
         await supabase
           .from('profiles')
           .update({ display_name: name.trim() })
           .eq('id', data.user.id);
+        onSuccess && onSuccess(data);
+      } else if (data.user && !data.session) {
+        setNeedsConfirmation(true);
+      } else {
+        setError('Unexpected response from auth service. Try again.');
       }
-      onSuccess && onSuccess(data);
     } catch (err) {
       setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleResend = async () => {
+    setResending(true);
+    setResent(false);
+    try {
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email: email.trim(),
+        options: { emailRedirectTo: window.location.origin + '/' },
+      });
+      if (!resendError) setResent(true);
+    } catch { /* ignore */ }
+    setResending(false);
+  };
+
+  // "Check your inbox" screen — only renders when email confirmation is ON server-side.
+  if (needsConfirmation) {
+    return (
+      <div className="onboard-root">
+        <div className="onboard-card auth-card">
+          <div className="auth-sent-icon"><Mail size={36} /></div>
+          <div className="onboard-eyebrow">One more step</div>
+          <h1 className="onboard-title">Check your email</h1>
+          <p className="onboard-sub">
+            We sent a confirmation link to <strong>{email.trim()}</strong>. Click the
+            link to activate your account.
+          </p>
+          <p className="auth-confirm-note">
+            The link expires in 24 hours. Don't forget to check your spam folder.
+          </p>
+          <button className="btn-primary auth-submit" onClick={onSignIn} type="button">
+            Go to sign in
+          </button>
+          <div className="auth-resend-row">
+            {resent ? (
+              <span className="auth-resend-confirm">✓ Sent again. Check your inbox.</span>
+            ) : (
+              <button
+                type="button"
+                className="auth-link"
+                onClick={handleResend}
+                disabled={resending}
+              >
+                {resending ? 'Resending…' : "Didn't get it? Resend the email"}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="onboard-root">
@@ -86,13 +170,26 @@ export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) 
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              minLength={8}
-              placeholder="8 characters or more"
               autoComplete="new-password"
+              aria-describedby="password-requirements"
             />
+            {password.length > 0 && (
+              <ul className="password-strength" id="password-requirements" aria-live="polite">
+                {checks.map(c => (
+                  <li key={c.id} className={c.ok ? 'pwd-check pwd-check-ok' : 'pwd-check'}>
+                    {c.ok ? <Check size={14} /> : <Circle size={14} />}
+                    <span>{c.label}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </label>
           {error && <div className="auth-error">{error}</div>}
-          <button type="submit" className="btn-primary auth-submit" disabled={loading || !name.trim() || !email.trim() || password.length < 8}>
+          <button
+            type="submit"
+            className="btn-primary auth-submit"
+            disabled={loading || !name.trim() || !email.trim() || !passwordValid}
+          >
             {loading ? 'Creating account…' : 'Create account'}
           </button>
         </form>

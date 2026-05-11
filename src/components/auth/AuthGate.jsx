@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
 import ForgotPassword from './ForgotPassword.jsx';
+import PrivacyPolicy from '../legal/PrivacyPolicy.jsx';
+import TermsOfService from '../legal/TermsOfService.jsx';
 
 // Three-button entry: Create account, Sign in, or Try a quick demo.
 // "Try a quick demo" is the only anonymous path — limited to 5 cards via
@@ -10,6 +12,8 @@ import ForgotPassword from './ForgotPassword.jsx';
 export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome' }) {
   const [screen, setScreen] = useState(initialScreen);
   const [prefilledEmail, setPrefilledEmail] = useState('');
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const goToSignUp = (email) => {
     if (typeof email === 'string' && email) setPrefilledEmail(email);
@@ -75,7 +79,15 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
         <button className="auth-guest-link" onClick={onTryDemo}>
           Try a quick demo (5 cards) →
         </button>
+        <div className="auth-welcome-footer">
+          By continuing you agree to our{' '}
+          <button type="button" className="auth-footer-link" onClick={() => setShowTerms(true)}>Terms</button>
+          {' '}and{' '}
+          <button type="button" className="auth-footer-link" onClick={() => setShowPrivacy(true)}>Privacy Policy</button>.
+        </div>
       </div>
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
+      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
     </div>
   );
 }
