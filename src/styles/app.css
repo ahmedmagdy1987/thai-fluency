@@ -682,6 +682,15 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .auth-resend-row { margin-top: 14px; text-align: center; font-size: 13px; }
 .auth-resend-confirm { color: var(--jade); font-weight: 600; }
 
+/* Pending email confirmation gate — shown when a session exists but
+   email_confirmed_at is null. Blocks access to the main app. */
+.pending-confirmation-card { text-align: center; }
+.pending-actions { display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 6px; }
+.pending-actions .auth-submit { width: 100%; }
+.pending-signout { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 4px; color: var(--ink-soft); text-decoration: none; }
+.pending-signout:hover { color: var(--brick); }
+.pending-resend-error { font-size: 12px; padding: 8px 10px; }
+
 /* Footer on AuthGate welcome with Terms + Privacy links */
 .auth-welcome-footer { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
 .auth-footer-link { background: transparent; border: none; color: var(--ink-soft); cursor: pointer; padding: 0; font-family: inherit; font-size: 11px; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 2px; }

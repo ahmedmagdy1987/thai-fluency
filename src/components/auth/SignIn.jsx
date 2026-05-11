@@ -6,8 +6,24 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  // error is either null OR { kind: 'wrong-password' | 'no-account' | 'other', message: string }
+  // error: null OR { kind: 'wrong-password' | 'no-account' | 'unconfirmed' | 'other', message }
   const [error, setError] = useState(null);
+  const [resending, setResending] = useState(false);
+  const [resent, setResent] = useState(false);
+
+  const handleResendConfirmation = async () => {
+    setResending(true);
+    setResent(false);
+    try {
+      await supabase.auth.resend({
+        type: 'signup',
+        email: email.trim(),
+        options: { emailRedirectTo: window.location.origin + '/' },
+      });
+      setResent(true);
+    } catch { /* ignore */ }
+    setResending(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +35,12 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
         password,
       });
       if (signInError) {
+        // Supabase's "Email not confirmed" message is returned when the user
+        // tries to sign in before clicking the confirmation link.
+        if (/email\s*not\s*confirmed/i.test(signInError.message)) {
+          setError({ kind: 'unconfirmed', message: 'Please confirm your email before signing in. Check your inbox for the link we sent when you signed up.' });
+          return;
+        }
         // Supabase returns the same "Invalid login credentials" for both
         // wrong password and no account, by design. We probe the public
         // email_exists RPC to give the user the right next step.
@@ -38,6 +60,14 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
         } else {
           setError({ kind: 'other', message: signInError.message });
         }
+        return;
+      }
+      // Defense: if Supabase let an unconfirmed user sign in (it shouldn't
+      // when Confirm Email is ON, but project settings vary), reject the
+      // session client-side and prompt the user to confirm their email.
+      if (data.user && !data.user.email_confirmed_at) {
+        try { await supabase.auth.signOut(); } catch { /* ignore */ }
+        setError({ kind: 'unconfirmed', message: 'Please confirm your email before signing in. Check your inbox for the confirmation link.' });
         return;
       }
       onSuccess && onSuccess(data);
@@ -101,6 +131,23 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
               <button type="button" className="auth-link auth-error-link" onClick={onForgot}>
                 Forgot password? →
               </button>
+            </div>
+          )}
+          {error && error.kind === 'unconfirmed' && (
+            <div className="auth-error-block">
+              <div className="auth-error">{error.message}</div>
+              {resent ? (
+                <span className="auth-resend-confirm">✓ Sent again. Check your inbox.</span>
+              ) : (
+                <button
+                  type="button"
+                  className="auth-link auth-error-link"
+                  onClick={handleResendConfirmation}
+                  disabled={resending}
+                >
+                  {resending ? 'Resending…' : 'Resend confirmation email →'}
+                </button>
+              )}
             </div>
           )}
           {error && error.kind === 'other' && (

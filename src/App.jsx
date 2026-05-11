@@ -37,6 +37,7 @@ import SettingsModal from './components/SettingsModal.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
 import UserMenu from './components/auth/UserMenu.jsx';
 import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
+import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 
 export default function TukTalkThaiApp() {
@@ -97,6 +98,7 @@ export default function TukTalkThaiApp() {
   // existed), backfill it here.
   useEffect(() => {
     if (!session || !hasSupabaseConfig) { setProfile(null); return; }
+    if (!session.user?.email_confirmed_at) { setProfile(null); return; }
     let cancelled = false;
     (async () => {
       const { data } = await supabase
@@ -170,11 +172,13 @@ export default function TukTalkThaiApp() {
     setForceAuthGate(true);
   }, []);
 
-  // Cloud init: when a user is signed in and local state is loaded, decide
-  // whether to upload local-only progress (migration prompt) or just download
-  // whatever's on the cloud. Runs exactly once per session.
+  // Cloud init: when a user is signed in AND email-confirmed, decide whether
+  // to upload local-only progress (migration prompt) or just download whatever's
+  // on the cloud. Unconfirmed users are blocked at the PendingConfirmation gate
+  // above and never reach cloud sync.
   useEffect(() => {
     if (!session || !loaded || cloudReady || cloudInitInFlight.current || !hasSupabaseConfig) return;
+    if (!session.user?.email_confirmed_at) return;
     cloudInitInFlight.current = true;
     let cancelled = false;
     (async () => {
@@ -212,9 +216,11 @@ export default function TukTalkThaiApp() {
   }, [session, loaded, cloudReady]);
 
   // Periodic cloud sync: debounced uploads of progress + stats + achievements
-  // whenever local state changes. Only fires after cloud init has resolved.
+  // whenever local state changes. Only fires after cloud init has resolved
+  // (which itself only fires for email-confirmed users).
   useEffect(() => {
     if (!session || !cloudReady || !loaded || !hasSupabaseConfig) return;
+    if (!session.user?.email_confirmed_at) return;
     if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current);
     cloudSyncTimer.current = setTimeout(async () => {
       try {
@@ -503,6 +509,13 @@ export default function TukTalkThaiApp() {
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
 
+  // Email confirmation gate: a session whose user has not confirmed their
+  // email must NOT be treated as fully authenticated, regardless of what
+  // Supabase returned. Defense in depth for the "anyone can sign up with
+  // a fake email" attack — even if Supabase mis-issues a session, the
+  // client refuses to render the main app.
+  const isEmailConfirmed = !!(session?.user?.email_confirmed_at);
+
   // Hard-fail when Supabase env vars are missing — never silently degrade to
   // a no-auth main app. Security audit HIGH-1: previously, an unconfigured
   // build would render the full UI without an AuthGate, exposing the deck.
@@ -523,6 +536,20 @@ export default function TukTalkThaiApp() {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // Pending confirmation: session exists but email isn't confirmed. Sits
+  // between AuthGate and the main app — the user has signed up but can't
+  // proceed until they click the email link.
+  if (hasSupabaseConfig && authReady && session && !isEmailConfirmed) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <PendingConfirmation
+          email={session.user.email}
+          onSignOut={handleSignOut}
+        />
       </div>
     );
   }

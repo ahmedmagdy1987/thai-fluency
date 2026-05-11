@@ -52,18 +52,25 @@ export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) 
         setError(signUpError.message);
         return;
       }
-      // Branch on whether Supabase returned a session.
-      // - With "Confirm email" OFF: session is set immediately → set display_name now and proceed.
-      // - With "Confirm email" ON: session is null → show "check your inbox" screen.
-      //   display_name lives in user_metadata and is back-filled into profiles.display_name
-      //   by App.jsx's profile-load effect after the user clicks the confirmation link.
-      if (data.user && data.session) {
+      // Branch on whether the user's email is confirmed. Three cases:
+      // 1. Confirmed user + session  → fully signed in (Confirm Email OFF, normal happy path)
+      // 2. Unconfirmed user + null session → show "check your inbox" (Confirm Email ON, expected)
+      // 3. Unconfirmed user + session    → DEFENSE: sign out and show "check your inbox" anyway.
+      //    This guards against a Supabase quirk where signUp() returns a session despite
+      //    Confirm Email being ON server-side. Without this, the unconfirmed user would
+      //    appear "signed in" and bypass the email gate.
+      const userConfirmed = !!(data.user?.email_confirmed_at);
+      if (data.user && data.session && userConfirmed) {
         await supabase
           .from('profiles')
           .update({ display_name: name.trim() })
           .eq('id', data.user.id);
         onSuccess && onSuccess(data);
-      } else if (data.user && !data.session) {
+      } else if (data.user && !userConfirmed) {
+        // If Supabase erroneously gave us a session for an unconfirmed user, drop it.
+        if (data.session) {
+          try { await supabase.auth.signOut(); } catch { /* ignore */ }
+        }
         setNeedsConfirmation(true);
       } else {
         setError('Unexpected response from auth service. Try again.');
