@@ -1,32 +1,47 @@
-// OneSignal Web SDK wrapper. The SDK is a singleton; we lazy-init the first
-// time any helper is called and reuse the same promise on subsequent calls.
+// OneSignal Web SDK wrapper. The SDK is loaded LAZILY via dynamic import the
+// first time any helper is called — NOT at module top level. Reason:
+// statically importing `react-onesignal` at the top of this file triggered
+// a "Cannot access 'qa' before initialization" TDZ error in production
+// builds, which crashed the whole app to a blank screen. The error came
+// from a circular dependency inside react-onesignal's bundling that
+// Vite's tree-shaking exposed. Dynamic import isolates the SDK chunk and
+// avoids the static-import init order entirely.
 //
-// The App ID is public by design (security comes from domain restriction in
-// the OneSignal dashboard). The REST API Key NEVER appears in client code —
-// it lives only in Supabase Edge Function secrets and is used server-side.
-
-import OneSignal from 'react-onesignal';
+// The App ID is public by design (security comes from domain restriction
+// in the OneSignal dashboard). The REST API Key NEVER appears in client
+// code — it lives only in Supabase Edge Function secrets and is used
+// server-side.
 
 const APP_ID = import.meta.env.VITE_ONESIGNAL_APP_ID || '';
 export const hasOneSignalConfig = !!APP_ID;
 
+let OneSignal = null;
 let initPromise = null;
 let initialized = false;
 
-export async function initOneSignal() {
-  if (!hasOneSignalConfig) return null;
-  if (initPromise) return initPromise;
+// Lazy-loads react-onesignal AND calls OneSignal.init() on first invocation.
+// Subsequent calls return the cached promise. Returns true if the SDK is
+// usable, false otherwise (missing config, init error, network error).
+async function ensureLoaded() {
+  if (!hasOneSignalConfig) return false;
+  if (initialized) return true;
+  if (initPromise) {
+    await initPromise;
+    return initialized;
+  }
   initPromise = (async () => {
     try {
+      const mod = await import('react-onesignal');
+      OneSignal = (mod && mod.default) || mod;
+      if (!OneSignal || typeof OneSignal.init !== 'function') {
+        throw new Error('react-onesignal did not expose an init() method');
+      }
       await OneSignal.init({
         appId: APP_ID,
-        // Reuse the existing PWA service worker — workbox imports OneSignal's
-        // worker code via importScripts (configured in vite.config.js), so a
-        // single SW handles both PWA caching and push.
+        // Reuse the PWA service worker — workbox imports OneSignal's worker
+        // code via importScripts (configured in vite.config.js).
         serviceWorkerPath: 'sw.js',
         serviceWorkerParam: { scope: '/' },
-        // We trigger the slide-down prompt manually after onboarding. No
-        // auto-prompt on first visit.
         promptOptions: {
           slidedown: {
             prompts: [{
@@ -40,30 +55,29 @@ export async function initOneSignal() {
             }],
           },
         },
-        // Localhost is HTTP — the SDK refuses to register a SW unless we opt in.
         allowLocalhostAsSecureOrigin: true,
-        // Welcome notification is turned off in the dashboard; redundant but explicit.
         welcomeNotification: { disable: true },
-        // Hide the OneSignal-branded floating bell — we have our own UI in Profile.
         notifyButton: { enable: false },
       });
       initialized = true;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('[onesignal] init failed', e);
-      initPromise = null;
+      OneSignal = null;
       initialized = false;
+      initPromise = null;
     }
   })();
-  return initPromise;
+  await initPromise;
+  return initialized;
 }
 
-// Show OneSignal's slide-down asking permission. If the user accepts in the
-// slide-down, the SDK then triggers the browser's native permission dialog.
+export async function initOneSignal() {
+  return ensureLoaded();
+}
+
 export async function promptForPushPermission() {
-  if (!hasOneSignalConfig) return false;
-  await initOneSignal();
-  if (!initialized) return false;
+  if (!(await ensureLoaded())) return false;
   try {
     await OneSignal.Slidedown.promptPush();
     return true;
@@ -73,12 +87,9 @@ export async function promptForPushPermission() {
   }
 }
 
-// Read the current subscription state. id is the "OneSignal player ID" — the
-// stable identifier we store on profiles.onesignal_player_id.
 export async function getPushSubscription() {
-  if (!hasOneSignalConfig) return { id: null, optedIn: false, permission: 'unsupported' };
-  await initOneSignal();
-  if (!initialized) return { id: null, optedIn: false, permission: 'unsupported' };
+  const fallback = { id: null, optedIn: false, permission: 'unsupported' };
+  if (!(await ensureLoaded())) return fallback;
   try {
     const sub = OneSignal.User.PushSubscription;
     const permission = typeof Notification !== 'undefined' ? Notification.permission : 'unsupported';
@@ -88,16 +99,13 @@ export async function getPushSubscription() {
       permission,
     };
   } catch {
-    return { id: null, optedIn: false, permission: 'unsupported' };
+    return fallback;
   }
 }
 
-// Link the OneSignal subscription to the Supabase user. Lets us target the
-// right device from the server using the Supabase user_id as external_id.
 export async function setExternalUserId(userId) {
-  if (!hasOneSignalConfig || !userId) return;
-  await initOneSignal();
-  if (!initialized) return;
+  if (!userId) return;
+  if (!(await ensureLoaded())) return;
   try {
     await OneSignal.login(String(userId));
   } catch (e) {
@@ -105,12 +113,8 @@ export async function setExternalUserId(userId) {
   }
 }
 
-// Unlink on sign-out so this device stops receiving notifications for the
-// previously-signed-in user.
 export async function clearExternalUserId() {
-  if (!hasOneSignalConfig) return;
-  await initOneSignal();
-  if (!initialized) return;
+  if (!(await ensureLoaded())) return;
   try {
     await OneSignal.logout();
   } catch (e) {
@@ -118,12 +122,8 @@ export async function clearExternalUserId() {
   }
 }
 
-// Subscribe to subscription-id changes (fires when the user grants/revokes
-// permission, or when the SDK rotates the token). Returns an unsubscribe fn.
 export async function onSubscriptionChange(callback) {
-  if (!hasOneSignalConfig) return () => {};
-  await initOneSignal();
-  if (!initialized) return () => {};
+  if (!(await ensureLoaded())) return () => {};
   const handler = (event) => {
     try {
       callback({
@@ -142,13 +142,8 @@ export async function onSubscriptionChange(callback) {
   }
 }
 
-// Opt the user out of push without revoking browser permission. Useful for the
-// per-type toggles when the user wants to keep notifications but mute one type
-// — though we use server-side per-type gating via notification_preferences.
 export async function setPushOptIn(optIn) {
-  if (!hasOneSignalConfig) return;
-  await initOneSignal();
-  if (!initialized) return;
+  if (!(await ensureLoaded())) return;
   try {
     if (optIn) await OneSignal.User.PushSubscription.optIn();
     else await OneSignal.User.PushSubscription.optOut();
@@ -157,8 +152,8 @@ export async function setPushOptIn(optIn) {
   }
 }
 
-// Detect the user's IANA timezone from the browser (e.g. "Asia/Bangkok").
-// Used by the smart-timing logic to schedule notifications in local time.
+// Browser-side IANA timezone detection. Synchronous; safe to call without
+// loading the SDK. Used by the smart-timing logic when saving the user's TZ.
 export function detectTimezone() {
   try {
     return Intl.DateTimeFormat().resolvedOptions().timeZone || null;
