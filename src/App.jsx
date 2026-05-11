@@ -13,6 +13,16 @@ import { DEFAULT_STATS, migrateStats, startStudyDay } from './lib/stats.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import {
+  hasOneSignalConfig,
+  initOneSignal,
+  setExternalUserId,
+  clearExternalUserId,
+  getPushSubscription,
+  onSubscriptionChange,
+  promptForPushPermission,
+  detectTimezone,
+} from './lib/onesignal.js';
+import {
   uploadProgress,
   uploadStats,
   uploadAchievements,
@@ -70,6 +80,8 @@ export default function TukTalkThaiApp() {
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
   const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
+  const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
+  const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
 
   useEffect(() => {
     (async () => {
@@ -179,6 +191,11 @@ export default function TukTalkThaiApp() {
 
   const handleSignOut = useCallback(async () => {
     if (!hasSupabaseConfig) return;
+    // Unlink OneSignal first so a future sign-in re-links cleanly.
+    if (hasOneSignalConfig) {
+      try { await clearExternalUserId(); } catch { /* ignore */ }
+      oneSignalLinked.current = false;
+    }
     await supabase.auth.signOut();
     setProfile(null);
     setCloudReady(false);
@@ -194,6 +211,7 @@ export default function TukTalkThaiApp() {
     setDemoMode(false);
     setForceAuthGate(false);
     setAuthInitialScreen('welcome');
+    notificationPromptFired.current = false;
   }, []);
 
   const handleHeaderSignInClick = useCallback(() => {
@@ -335,6 +353,65 @@ export default function TukTalkThaiApp() {
       setStats(s => ({ ...s, currentStage: stageState.currentStage }));
     }
   }, [stageState, loaded]);
+
+  // OneSignal: link the device subscription to the Supabase user once the
+  // user is signed in and confirmed. Persist the player_id + timezone on
+  // profiles so the server-side worker can target this device by Supabase
+  // user_id. Also subscribes to subscription-change events to keep the
+  // stored player_id current if it rotates.
+  useEffect(() => {
+    if (!session || !isEmailConfirmed || !hasOneSignalConfig || !hasSupabaseConfig) return;
+    if (oneSignalLinked.current) return;
+    oneSignalLinked.current = true;
+    let cancelled = false;
+    let unsubChange = () => {};
+    (async () => {
+      try {
+        await initOneSignal();
+        await setExternalUserId(session.user.id);
+        const sub = await getPushSubscription();
+        if (cancelled) return;
+        // Persist subscription ID + timezone on the profile (best-effort).
+        const tz = detectTimezone();
+        const patch = {};
+        if (sub.id && sub.id !== profile?.onesignal_player_id) patch.onesignal_player_id = sub.id;
+        if (tz && tz !== profile?.timezone) patch.timezone = tz;
+        if (Object.keys(patch).length > 0) {
+          await supabase.from('profiles').update(patch).eq('id', session.user.id);
+        }
+        unsubChange = await onSubscriptionChange(async (s) => {
+          if (cancelled) return;
+          if (s.id && s.id !== profile?.onesignal_player_id) {
+            try {
+              await supabase.from('profiles').update({ onesignal_player_id: s.id }).eq('id', session.user.id);
+            } catch { /* ignore */ }
+          }
+        });
+      } catch (e) {
+        console.warn('[App] OneSignal link failed', e);
+      }
+    })();
+    return () => { cancelled = true; unsubChange(); };
+  }, [session?.user?.id, isEmailConfirmed, profile?.onesignal_player_id, profile?.timezone]);
+
+  // Smart permission prompt: ask AFTER the user has completed placement
+  // onboarding (so it doesn't fire on first visit while they're still
+  // figuring out the app). Fires at most once per session via a ref guard.
+  useEffect(() => {
+    if (!session || !isEmailConfirmed || !hasOneSignalConfig || !stats.hasOnboarded) return;
+    if (notificationPromptFired.current) return;
+    if (profile?.onesignal_player_id) return; // already subscribed
+    notificationPromptFired.current = true;
+    // Tiny delay so the user lands on the main app first, then sees the prompt.
+    const t = setTimeout(async () => {
+      try {
+        const sub = await getPushSubscription();
+        if (sub.permission === 'granted' || sub.permission === 'denied') return;
+        await promptForPushPermission();
+      } catch { /* ignore */ }
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [session?.user?.id, isEmailConfirmed, stats.hasOnboarded, profile?.onesignal_player_id]);
 
   // Mission advancement: when currentMission increases past lastSeenMission,
   // celebrate the mission that just finished. The "just finished" mission is

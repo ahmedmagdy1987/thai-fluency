@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
+import NotificationSettings from './profile/NotificationSettings.jsx';
 
 // Profile view — accessible from the header user menu. Edit display name
 // inline, view account info, change password, sign out.
@@ -160,6 +161,12 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
             </div>
           </div>
         </div>
+
+        <NotificationSettings
+          session={session}
+          profile={profile}
+          onProfileRefresh={onProfileRefresh}
+        />
 
         <div className="profile-section">
           <div className="profile-section-title">Account</div>
