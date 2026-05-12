@@ -1,0 +1,3817 @@
+{
+  "total": 4791,
+  "byCategory": {
+    "duplicate-thai-conflicting-en": 14,
+    "duplicate-thai-identical": 14,
+    "missing-ph-sentence": 332,
+    "thai-in-english": 1
+  },
+  "issues": [
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 217,
+      "stage": 2,
+      "cat": "time",
+      "type": "w",
+      "thai": "เย็น",
+      "ph": "yen",
+      "en": "evening (4-6pm)",
+      "otherCard": {
+        "id": 65,
+        "en": "cool / cold (drinks/AC)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 270,
+      "stage": 1,
+      "mission": 2,
+      "cat": "grammar",
+      "type": "g",
+      "thai": "คน",
+      "ph": "khon",
+      "en": "classifier:people",
+      "note": "\"sǎam khon\" = three people.",
+      "otherCard": {
+        "id": 190,
+        "en": "person"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 510,
+      "stage": 1,
+      "mission": 6,
+      "cat": "verbs",
+      "type": "w",
+      "thai": "อยู่",
+      "ph": "yùu",
+      "en": "to stay",
+      "otherCard": {
+        "id": 11,
+        "en": "to be at / to live / to stay"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 572,
+      "stage": 4,
+      "cat": "body",
+      "type": "w",
+      "thai": "หลัง",
+      "ph": "lǎng",
+      "en": "back",
+      "otherCard": {
+        "id": 297,
+        "en": "after"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 573,
+      "stage": 1,
+      "mission": 5,
+      "cat": "body",
+      "type": "w",
+      "thai": "ผม",
+      "ph": "phǒm",
+      "en": "hair",
+      "note": "Same word as \"I\" (male). Context tells which.",
+      "otherCard": {
+        "id": 1,
+        "en": "I / me (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 609,
+      "stage": 4,
+      "cat": "weather",
+      "type": "w",
+      "thai": "หาด",
+      "ph": "hàat",
+      "en": "beach",
+      "otherCard": {
+        "id": 173,
+        "en": "beach"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 156,
+      "stage": 7,
+      "cat": "food",
+      "type": "w",
+      "thai": "น้ำแข็ง",
+      "ph": "náam khǎeng",
+      "en": "ice",
+      "otherCard": {
+        "id": 133,
+        "en": "ice"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 520,
+      "stage": 7,
+      "cat": "food",
+      "type": "w",
+      "thai": "น้ำตาล",
+      "ph": "náam taan",
+      "en": "sugar",
+      "otherCard": {
+        "id": 550,
+        "en": "brown"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 800,
+      "stage": 2,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "ผมหิวครับ",
+      "ph": "phǒm hǐu khráp",
+      "en": "I am hungry (male)",
+      "otherCard": {
+        "id": 355,
+        "en": "I am hungry (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 806,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "ผมอิ่มแล้วครับ",
+      "ph": "phǒm ìm láew khráp",
+      "en": "I am full (already) (male)",
+      "otherCard": {
+        "id": 356,
+        "en": "I am full (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 851,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "มีไหมครับ",
+      "ph": "mii mǎi khráp?",
+      "en": "Do you have (any)? (male)",
+      "otherCard": {
+        "id": 414,
+        "en": "Do you have (it)? (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 871,
+      "stage": 8,
+      "cat": "sentences-polite",
+      "type": "s",
+      "thai": "ไม่เป็นไรครับ",
+      "ph": "mâi pen rai khráp",
+      "en": "No worries / it is fine (male)",
+      "otherCard": {
+        "id": 313,
+        "en": "No worries / You are welcome (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 872,
+      "stage": 4,
+      "cat": "sentences-polite",
+      "type": "s",
+      "thai": "ขอบคุณมากครับ",
+      "ph": "khàwp khun mâak khráp",
+      "en": "Thank you very much (male)",
+      "otherCard": {
+        "id": 312,
+        "en": "Thank you very much (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 910,
+      "stage": 4,
+      "cat": "sentences-food",
+      "type": "s",
+      "thai": "อร่อยมากครับ",
+      "ph": "aròi mâak khráp",
+      "en": "It is very delicious (male)",
+      "otherCard": {
+        "id": 354,
+        "en": "Very delicious (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 916,
+      "stage": 8,
+      "cat": "sentences-food",
+      "type": "s",
+      "thai": "อันนี้คืออะไรครับ",
+      "ph": "annǐi khue àrai khráp?",
+      "en": "What is this dish? (male)",
+      "otherCard": {
+        "id": 351,
+        "en": "What is this? (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 939,
+      "stage": 8,
+      "cat": "sentences-travel",
+      "type": "s",
+      "thai": "ผมหลงทางครับ",
+      "ph": "phǒm lǒng thaang khráp",
+      "en": "I am lost (male)",
+      "otherCard": {
+        "id": 389,
+        "en": "I am lost (male)"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1007,
+      "stage": 2,
+      "cat": "home",
+      "type": "w",
+      "thai": "ห้อง",
+      "ph": "hông",
+      "en": "room",
+      "otherCard": {
+        "id": 165,
+        "en": "room"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1030,
+      "stage": 6,
+      "cat": "home",
+      "type": "w",
+      "thai": "สะอาด",
+      "ph": "sà-àat",
+      "en": "clean",
+      "otherCard": {
+        "id": 86,
+        "en": "clean"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1031,
+      "stage": 5,
+      "cat": "home",
+      "type": "w",
+      "thai": "สกปรก",
+      "ph": "sòk-gà-bpròk",
+      "en": "dirty",
+      "otherCard": {
+        "id": 87,
+        "en": "dirty"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1038,
+      "stage": 3,
+      "cat": "home",
+      "type": "w",
+      "thai": "จ่าย",
+      "ph": "jàai",
+      "en": "to pay",
+      "otherCard": {
+        "id": 38,
+        "en": "to pay"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1213,
+      "stage": 8,
+      "cat": "health",
+      "type": "w",
+      "thai": "ร้านขายยา",
+      "ph": "ráan khǎai yaa",
+      "en": "pharmacy",
+      "otherCard": {
+        "id": 171,
+        "en": "pharmacy"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1214,
+      "stage": 3,
+      "cat": "health",
+      "type": "w",
+      "thai": "หมอ",
+      "ph": "mǎw",
+      "en": "doctor",
+      "otherCard": {
+        "id": 198,
+        "en": "doctor"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1216,
+      "stage": 7,
+      "cat": "health",
+      "type": "w",
+      "thai": "โรงพยาบาล",
+      "ph": "rohng phá-yaa-baan",
+      "en": "hospital",
+      "otherCard": {
+        "id": 170,
+        "en": "hospital"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1100,
+      "stage": 6,
+      "cat": "admin",
+      "type": "w",
+      "thai": "ธนาคาร",
+      "ph": "thá-naa-khaan",
+      "en": "bank",
+      "otherCard": {
+        "id": 169,
+        "en": "bank"
+      }
+    },
+    {
+      "category": "duplicate-thai-identical",
+      "id": 1264,
+      "stage": 6,
+      "cat": "fluency",
+      "type": "w",
+      "thai": "จริงๆ",
+      "ph": "jing jing",
+      "en": "really / truly",
+      "otherCard": {
+        "id": 105,
+        "en": "really / truly"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 1276,
+      "stage": 1,
+      "mission": 6,
+      "cat": "fluency",
+      "type": "w",
+      "thai": "เลย",
+      "ph": "loei",
+      "en": "really / at all (emphatic)",
+      "otherCard": {
+        "id": 103,
+        "en": "really / so / at all"
+      }
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 1277,
+      "stage": 1,
+      "mission": 6,
+      "cat": "fluency",
+      "type": "w",
+      "thai": "จัง",
+      "ph": "jang",
+      "en": "really / so much (casual)",
+      "otherCard": {
+        "id": 104,
+        "en": "so / very (casual)"
+      }
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4732,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "แป๊บนึง",
+      "ph": "",
+      "en": "Just one moment"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4733,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "อะไรอย่างเงี้ยะ",
+      "ph": "",
+      "en": "Something like that",
+      "note": "Other variations: \"อะไรแบบเนี้ยะ\" or \"อะไรทำนองนี้\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4734,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ทำปุ๊บ เสร็จปั๊บ",
+      "ph": "",
+      "en": "As soon as I do it, it's done"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4735,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "มันไม่คุ้ม",
+      "ph": "",
+      "en": "It's not worth it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4737,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "พอดีเอกับเขา",
+      "ph": "",
+      "en": "I just happened to run into him"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4752,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "เขาพูดภาษาพื้นๆ",
+      "ph": "",
+      "en": "He uses basic, common language"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4753,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ทำไปเรื่อยๆ",
+      "ph": "",
+      "en": "Keep doing it",
+      "note": "Other usage: \"กินไปเรื่อยๆ\" \"Keep eating\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4755,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "thai": "เราจะเหมารถไป",
+      "ph": "",
+      "en": "We will rent a car and a driver",
+      "note": "เหมา\" means \"to take or buy all of something"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4756,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "ผมเป็นหนี้บุคุณเขา",
+      "ph": "",
+      "en": "I'm indebted to him (male)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4770,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "ขอหลับแป๊บนึง",
+      "ph": "",
+      "en": "I'd like to take a little nap"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4772,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "โอ้โห",
+      "ph": "",
+      "en": "Wow!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4777,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"อย่ายุ่งได้มั้ย",
+      "ph": "",
+      "en": "Can you not interfere?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4778,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "บอกตรงๆ",
+      "ph": "",
+      "en": "I'll be straight with you",
+      "note": "Literally: \"To drive a vehicle while drunk\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4781,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "คุณนอนละเมอ",
+      "ph": "",
+      "en": "You talked in your sleep"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4783,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "อย่างอนไปหน่อยเลย",
+      "ph": "",
+      "en": "Don't get too upset",
+      "note": "Usually used between lovers."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4796,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "ไปเแป๊บเดียวก็ถึง",
+      "ph": "",
+      "en": "We can get there in no time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4804,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "คืออย่างงี้นะ",
+      "ph": "",
+      "en": "Let me say it this way"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4806,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ขับรถปาดซ้าย ปาดขวา",
+      "ph": "",
+      "en": "To fishtail on the road"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4808,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ทุกซอก ทุกมุม",
+      "ph": "",
+      "en": "Every nook and cranny"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4810,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "นั่นน่ะสิ",
+      "ph": "",
+      "en": "I agree with you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4815,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "เรารู้จักกันมาก่อนรึเปล่า",
+      "ph": "",
+      "en": "Have we met before?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4817,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ไม่ทำเด็ดขาด",
+      "ph": "",
+      "en": "I won't do it by any means"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4822,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ต้องดีแน่ๆ",
+      "ph": "",
+      "en": "It must be good"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4825,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "หาไม่ได้ง่ายๆ",
+      "ph": "",
+      "en": "It's not that easy to find"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4827,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "เขาชอบพูดเพ้อเจ้อ",
+      "ph": "",
+      "en": "He likes to babble"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4842,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "รวมหัวกันโกง",
+      "ph": "",
+      "en": "They got together to cheat"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4855,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "ไม่เอาได้มั้ย",
+      "ph": "",
+      "en": "I don't want it",
+      "note": "Literally: \"Can I not take it?\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4858,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ไม่ย่อท้อ",
+      "ph": "",
+      "en": "Not giving up"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4872,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "หมั่นไส้",
+      "ph": "",
+      "en": "I dislike it",
+      "note": "Note: Use this when you are repelled by what someone says or does. It can also be used as sarcasm."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4873,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "เรื่องมันเป็นยังงี้",
+      "ph": "",
+      "en": "This is how the story goes"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4880,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ไม่มีเงินดาวน์",
+      "ph": "",
+      "en": "I have no down payment"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4882,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ไม่ดีมั้ง",
+      "ph": "",
+      "en": "I don't think that's a good idea"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4891,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "หุบปาก",
+      "ph": "",
+      "en": "Shut up"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4895,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "หูอื้อ",
+      "ph": "",
+      "en": "Stuffed up ears (e.g. in an airplane, high altitude)",
+      "note": "Other 'ear' words: \"หูตึง\" - Hard of hearing, \"หูหนวก\" - Deaf, and \"หูเบา\" - To believe easily"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4896,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "พูดดังๆหน่อย",
+      "ph": "",
+      "en": "Can you speak up?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4897,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "เคลียงานอยู่",
+      "ph": "",
+      "en": "I'm finishing up work"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4898,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "มีลางสังหรณ์",
+      "ph": "",
+      "en": "I have a hunch"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4900,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "มีเยอะแยะ",
+      "ph": "",
+      "en": "There's plenty"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4916,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "คิดแล้วกลุ้ม",
+      "ph": "",
+      "en": "I'm depressed thinking about it",
+      "note": "Other usage: \"ทำแล้วดี\" (Do then good) \"It's good after I do it\" or \"กินแล้วไม่สบาย\" (Eat then sick) \"I got sick after eating it\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4928,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "thai": "“คนหลายใจ”",
+      "ph": "",
+      "en": "An unfaithful person",
+      "note": "Literally: \"A person with many hearts\" (mostly for lovers)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4929,
+      "stage": 7,
+      "cat": "body",
+      "type": "s",
+      "thai": "“คิดจนหัวปั่น”",
+      "ph": "",
+      "en": "My head is spinning from thinking too much",
+      "note": "Literally: \"Think till head spins\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4930,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“คุณฝีมือดี”",
+      "ph": "",
+      "en": "You have good skills"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4931,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "“ห้ามเข้า”",
+      "ph": "",
+      "en": "No entry"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4932,
+      "stage": 7,
+      "cat": "food",
+      "type": "s",
+      "thai": "“เราแย่งกันกิน”",
+      "ph": "",
+      "en": "We fight to get the food"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4933,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "“ยังไม่ถึงเดือน”",
+      "ph": "",
+      "en": "It hasn't been a month"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4934,
+      "stage": 6,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "“ทำกับมือ”",
+      "ph": "",
+      "en": "I made (did) it with my own hands"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4935,
+      "stage": 7,
+      "cat": "home",
+      "type": "s",
+      "thai": "“จ่ายค่าเช่า”",
+      "ph": "",
+      "en": "To pay rent",
+      "note": "Also: \"ค่าเช่าบ้าน\" \"rent for a home\" and \"ค่าเช่าห้อง\" \"rent for a room\" (Not to be confused with \"บ้านให้เช่า\" \"house for rent\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4936,
+      "stage": 8,
+      "cat": "colors",
+      "type": "s",
+      "thai": "“ดำปิ๊ดปี๋”",
+      "ph": "",
+      "en": "As black as charcoal",
+      "note": "Other usage: \"แดงแจ๊ดแจ๋\" \"Very red\" or \"เหลิองอ๋อย\" \"Very yellow\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4937,
+      "stage": 5,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "“ปวดฉี่”",
+      "ph": "",
+      "en": "I need to pee",
+      "note": "Other usage: \"ปวดเยี๋ยว\" \"I need to pee*\" or \"ปวดอึ\" \"I need to poop\" or \"ปวดขี้\" \"I need to poop*\" (*=These senteces should be used with close friends only)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4938,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“นึกว่าคุณไม่ชอบ”",
+      "ph": "",
+      "en": "I thought you didn't like it",
+      "note": "Other usage: \"นึกว่าคุณจะไม่มา\" \"I thought you wouldn't come\" or \"นึกว่าคุณโกรธผม\" \"I thought you were angry at me\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4939,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไม่นานขนาดนั้น”",
+      "ph": "",
+      "en": "It doesn't take that long"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4940,
+      "stage": 7,
+      "cat": "home",
+      "type": "s",
+      "thai": "“อยู่เฝ้าบ้าน”",
+      "ph": "",
+      "en": "I'm staying home to guard the house"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4941,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“บอกแล้วไง”",
+      "ph": "",
+      "en": "I told you so",
+      "note": "Also: \"บอกแล้วไม่เชื่อ\" \"I already told you, but you didn't believe me\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4942,
+      "stage": 6,
+      "cat": "health",
+      "type": "s",
+      "thai": "“คุณตัวร้อน”",
+      "ph": "",
+      "en": "You have a fever",
+      "note": "Literally:\"Your body is hot\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4943,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "“ว่าแต่คุณล่ะ”",
+      "ph": "",
+      "en": "And what about yourself?",
+      "note": "Short form: \"คุณล่ะ\" (After this phrase you can ask questions like: \"จะทำยังไง\" \"What will you do?\" or \"คิดว่าดีมั้ย\" \"Do you think it's good?\" or \"ชอบรึไม่ชอบ\" \"Do you like it or not?\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4944,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "“ไม่อยากลองดี”",
+      "ph": "",
+      "en": "I don't want to try it",
+      "note": "This phrase implies that the outcome is bad."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4945,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไม่บอกก็รู้”",
+      "ph": "",
+      "en": "I knew it without being told"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4946,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "“ขอแก้แค้น”",
+      "ph": "",
+      "en": "I want revenge"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4947,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "“เธอเป็นลม”",
+      "ph": "",
+      "en": "She fainted",
+      "note": "Literally: \"To become wind\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4948,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "“ก่าเขาจะมาก็ดึกแล้ว”",
+      "ph": "",
+      "en": "It's going to be late by the time he arrives",
+      "note": "Other usage: “กว่าจะรู้ ก็สายเล้ว” “It was too late before we knew it”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4949,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไม่เห็นจริงๆ”",
+      "ph": "",
+      "en": "I really didn't see it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4950,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“น่าสงสาร”",
+      "ph": "",
+      "en": "He is pitiful"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4951,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "“ดีขนาดนั้นเลยเหรอ”",
+      "ph": "",
+      "en": "Is it really that good?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4952,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“รู้ไม่ทันคุณ”",
+      "ph": "",
+      "en": "You tricked me",
+      "note": "Literally: \"I can't catch up with your knowledge\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4953,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไว้ใจไม่ได้”",
+      "ph": "",
+      "en": "He can't be trusted"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4954,
+      "stage": 6,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "“หนีไปเที่ยว”",
+      "ph": "",
+      "en": "She sneaked out to have fun"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4955,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“กลางวันแสกๆ”",
+      "ph": "",
+      "en": "During broad daylight"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4956,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "thai": "“ได้เวลาแล้ว”",
+      "ph": "",
+      "en": "It's time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4957,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“สอบตก”",
+      "ph": "",
+      "en": "To fail the exam"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4958,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ยกมือขึ้น”",
+      "ph": "",
+      "en": "Hands up!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4959,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“เขาเพึ่งจะไป”",
+      "ph": "",
+      "en": "He just left",
+      "note": "Also: “เขาเพิ่งจะไป”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4960,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“นักพนันมืออาชีพ”",
+      "ph": "",
+      "en": "A professional gambler",
+      "note": "Other usage: “นักกีฬามือสมัครเล่น” “An amateur athlete”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4961,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“แอบดู”",
+      "ph": "",
+      "en": "To peek at something"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4962,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "“ยังไม่เข็ด”",
+      "ph": "",
+      "en": "“I haven't learned my lesson yet”",
+      "note": "Other usage: “เข็ดแล้ว” “I’ve learned my lesson”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4963,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไม่รู้จะทำไง”",
+      "ph": "",
+      "en": "I don't know what I should do"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4964,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ทำแรงเกินไป”",
+      "ph": "",
+      "en": "You did it too harshly"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4965,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“หัวเด็ดตีนขาด ยังไงก็ไม่ทำ\"",
+      "ph": "",
+      "en": "I won't do it no matter what",
+      "note": "Literally: \"I won't do it even if my head and feet are cut off\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4966,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ทำหลบๆซ่อนๆ\"",
+      "ph": "",
+      "en": "To do something secretly"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4967,
+      "stage": 5,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "“ตามใจคุณ”",
+      "ph": "",
+      "en": "I'll let you do what you want",
+      "note": "Literally: \"I follow your heart\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4968,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "thai": "“กินไม่ได้ นอนไม่หลับ”",
+      "ph": "",
+      "en": "I can't eat"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4969,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ขึ้นๆ ลงๆ”",
+      "ph": "",
+      "en": "Up and down"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4970,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไหนๆ ก็ไหนๆ”",
+      "ph": "",
+      "en": "Let's get over it (Let bygones be bygones)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4971,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ปากหวาน”",
+      "ph": "",
+      "en": "You're very complimentary",
+      "note": "Literally: \"You have a sweet mouth\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4972,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“ไม่มียางอาย”",
+      "ph": "",
+      "en": "You have no shame at all"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4973,
+      "stage": 6,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "“ฝีมือตก”",
+      "ph": "",
+      "en": "My skill level dropped"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4974,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "thai": "“สักวัน”",
+      "ph": "",
+      "en": "One day"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4975,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "“จะทำให้ได้”",
+      "ph": "",
+      "en": "I will make it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4976,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"เขาเองเหรอ”",
+      "ph": "",
+      "en": "Oh, is it him?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4977,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อดไม่ได้”",
+      "ph": "",
+      "en": "I can't help it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4978,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"คืนดีกันแล้ว”",
+      "ph": "",
+      "en": "They reconciled"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4979,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตามคุณไม่ทัน”",
+      "ph": "",
+      "en": "I can't keep up with you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4980,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อยู่กันสองต่อสอง”",
+      "ph": "",
+      "en": "To be alone just the two of us (them)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4981,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ขอแก้ตัว”",
+      "ph": "",
+      "en": "Give me a chance to correct myself",
+      "note": "Not to be confused with “ข้อแก้ตัว” (An excuse)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4982,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"นอนทั้งวันทั้งคืน”",
+      "ph": "",
+      "en": "To sleep all day and all night",
+      "note": "Other usage: “ทำงานทั้งวันทั้งคืน” “To work all day all night”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4983,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"แกล้งโง่หรือโง่จริงๆ”",
+      "ph": "",
+      "en": "Are you pretending or are you really stupid?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4984,
+      "stage": 7,
+      "cat": "body",
+      "type": "s",
+      "thai": "\"รีบไปรีบมา”",
+      "ph": "",
+      "en": "Go and come back soon",
+      "note": "Literally: \"Hurry go. Hurry come.\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4985,
+      "stage": 7,
+      "cat": "colors",
+      "type": "s",
+      "thai": "\"อิจฉาตาร้อน”",
+      "ph": "",
+      "en": "Green with envy",
+      "note": "Literally: \"Envy, hot eyes\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4986,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ดูท่าทางไม่ค่อยดี”",
+      "ph": "",
+      "en": "It doesn't look very good"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4987,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ผมไม่เกี่ยว”",
+      "ph": "",
+      "en": "I have nothing to do with this (male)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4988,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มีเรื่องด่วน”",
+      "ph": "",
+      "en": "There is an urgent matter"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4989,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เอาเป็นว่า...”",
+      "ph": "",
+      "en": "So let's decide that..."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4990,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ขอบอกก่อนว่า...”",
+      "ph": "",
+      "en": "I want to tell you ahead of time that..."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4991,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ไม่อยากคบกับเขา”",
+      "ph": "",
+      "en": "I don't want to associate with him"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4992,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาชอบนินทา”",
+      "ph": "",
+      "en": "She likes to gossip"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4993,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "เป็นใบ้",
+      "ph": "",
+      "en": "To be dumb"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4996,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"กำลังแพ้ท้อง”",
+      "ph": "",
+      "en": "She is having morning sickness"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4997,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ขอนั่งด้วยคนได้มั้ย”",
+      "ph": "",
+      "en": "May I sit here with you?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4998,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ปรับความเข้าใจ”",
+      "ph": "",
+      "en": "To try to make up",
+      "note": "Literally: \"To adjust understanding\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 4999,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาไม่พูดสักคำ”",
+      "ph": "",
+      "en": "He didn't even say a word"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5000,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"ชอบใจลอย”",
+      "ph": "",
+      "en": "I'm often absent minded",
+      "note": "Literally: \"My heart likes to float\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5001,
+      "stage": 5,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"จริงเหรอ”",
+      "ph": "",
+      "en": "Is it really?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5002,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"แล้วทีนี้่จะทำยังไง”",
+      "ph": "",
+      "en": "What should I do then?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5003,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"มีพิรุธ”",
+      "ph": "",
+      "en": "That's suspicious"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5004,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ยังมีอีกเยอะ”",
+      "ph": "",
+      "en": "There's still plenty left"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5005,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"ที่เหลือ”",
+      "ph": "",
+      "en": "The remaining",
+      "note": "Other usage: “ของที่เหลือ” “The remaining items/things/stuff” or “คนที่เหลือ” “”The remaining people”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5006,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"บ้ารึเปล่า”",
+      "ph": "",
+      "en": "Are you crazy?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5007,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"ท่าทางมีความสุข”",
+      "ph": "",
+      "en": "She looks happy",
+      "note": "Other usage: “ท่าทางรวย” “She looks like a rich person”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5008,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ใช้ได้มั้ย”",
+      "ph": "",
+      "en": "Will this work?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5009,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"หายป่วยแล้ว”",
+      "ph": "",
+      "en": "I'm over my sickness"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5010,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ถ้าไม่ได้คุณ ฉันคงแย่”",
+      "ph": "",
+      "en": "Without you, I would have been in real trouble (female)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5011,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มันธรรมดา”",
+      "ph": "",
+      "en": "This is normal"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5012,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"โสดแต่ไม่สด”",
+      "ph": "",
+      "en": "She (I/You/They/He) is single, but not a virgin"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5013,
+      "stage": 8,
+      "cat": "greetings",
+      "type": "s",
+      "thai": "\"เสียแรงที่ไว้ใจคุณ”",
+      "ph": "",
+      "en": "I'm sorry I trusted you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5014,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ขอสงบสติอารมณ์”",
+      "ph": "",
+      "en": "Give me time to calm down"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5015,
+      "stage": 8,
+      "cat": "greetings",
+      "type": "s",
+      "thai": "\"ยินดีรับใช้”",
+      "ph": "",
+      "en": "I'm happy to see you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5016,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มันเป็นกฏ”",
+      "ph": "",
+      "en": "It's a rule"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5017,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาไม่สมประกอบ”",
+      "ph": "",
+      "en": "He's not all there"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5018,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ไปไหนกันมา”",
+      "ph": "",
+      "en": "Where have you all been?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5019,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ไม่อยากยุ่งเรื่องชาวบ้าน”",
+      "ph": "",
+      "en": "I don't want to intrude into people's business"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5020,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "thai": "\"ไปคุยกันที่บ้านดีกว่า”",
+      "ph": "",
+      "en": "Let's discuss it at home"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5021,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ทำไมพึ่งจะบอก”",
+      "ph": "",
+      "en": "Why didn't you tell me before?",
+      "note": "Literally: \"Why did you just tell me?\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5022,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "thai": "\"อยากคบคุณเป็นเพื่อน”",
+      "ph": "",
+      "en": "I want to have you as a friend"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5023,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มีแต่ปัญหา”",
+      "ph": "",
+      "en": "There's nothing, but problems"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5024,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เดือนหน้านายจะขึ้นเงินให้”",
+      "ph": "",
+      "en": "Next month my boss will give me a raise"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5025,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"เปิดอีเมล์ดูรึยัง”",
+      "ph": "",
+      "en": "Have you opened your email?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5026,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"กลัวถูกแม่ด่า”",
+      "ph": "",
+      "en": "I'm afraid my mom will yell at me",
+      "note": "Short form: \"กลัวแม่ด่า\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5027,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"อยากเจอคนที่รู้ใจ”",
+      "ph": "",
+      "en": "I want to meet someone that understands me"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5028,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เรื่องอยู่บนข่าวหน้าหนึ่ง”",
+      "ph": "",
+      "en": "The story is on the front page"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5029,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ดูแลตัวเองให้ดี”",
+      "ph": "",
+      "en": "Take good care of yourself"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5030,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "thai": "\"หนีตามแฟน”",
+      "ph": "",
+      "en": "She ran off with her boyfriend"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5031,
+      "stage": 7,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"เบื่อชีวิต”",
+      "ph": "",
+      "en": "I'm tired of life"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5032,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"อยากหารายได้เสริม”",
+      "ph": "",
+      "en": "I want to have additional income"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5033,
+      "stage": 5,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"สวยไปหมด”",
+      "ph": "",
+      "en": "She is beautiful all over",
+      "note": "Recent slang: \"Her beauty is all gone\" (No beauty left) - Other usage: \"ดีไปหมด\" \"All is good\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5034,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เผลอไม่ได้”",
+      "ph": "",
+      "en": "You can't be careless"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5035,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่ไหวแล้ว”",
+      "ph": "",
+      "en": "I can't take it anymore"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5036,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เรียนต่อ”",
+      "ph": "",
+      "en": "To continue one's study"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5037,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องมีอะไรแน่ๆ”",
+      "ph": "",
+      "en": "There must be something (going on) for sure"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5038,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"แทบจะบ้า”",
+      "ph": "",
+      "en": "I almost went crazy"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5039,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"เร็วๆเข้า”",
+      "ph": "",
+      "en": "Hurry up"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5040,
+      "stage": 6,
+      "cat": "numbers",
+      "type": "s",
+      "thai": "\"ทีละคน”",
+      "ph": "",
+      "en": "One by one"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5042,
+      "stage": 5,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ทำได้ไง”",
+      "ph": "",
+      "en": "How did you do it?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5043,
+      "stage": 7,
+      "cat": "directions",
+      "type": "s",
+      "thai": "\"เข้ากันไม่ได้”",
+      "ph": "",
+      "en": "They don't get along"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5044,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตื่นได้แล้ว”",
+      "ph": "",
+      "en": "Wake up!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5045,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "thai": "\"ถูกแฟนทิ้ง”",
+      "ph": "",
+      "en": "She has been dumped (by her boyfriend)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5046,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำตามสัญญา”",
+      "ph": "",
+      "en": "To do as promised"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5047,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เราเป็นเนื้อคู่กัน”",
+      "ph": "",
+      "en": "We are soulmates"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5048,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ขอปิดเป็นความลับ”",
+      "ph": "",
+      "en": "I want to keep it a secret"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5049,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"กล้าพูด”",
+      "ph": "",
+      "en": "Dare to speak"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5051,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"มันจะดีเหรอ”",
+      "ph": "",
+      "en": "Do you think it will be good?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5052,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"เก็บแรงไว้”",
+      "ph": "",
+      "en": "I want to build up my strength"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5053,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"ดูแต่ตา”",
+      "ph": "",
+      "en": "Just look"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5055,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าหลงเชื่อ”",
+      "ph": "",
+      "en": "Don't fall for it and believe them"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5056,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่รู้จะทำยังไง”",
+      "ph": "",
+      "en": "I don't know what to do"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5057,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"หัวอกเดียวกัน”",
+      "ph": "",
+      "en": "To be in the same boat",
+      "note": "Literally: \"To have the same heart\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5058,
+      "stage": 7,
+      "cat": "greetings",
+      "type": "s",
+      "thai": "\"ว่างๆ จะมาหา”",
+      "ph": "",
+      "en": "I will come to see you when I get a chance"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5059,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"พูดอย่าง ทำอย่าง”",
+      "ph": "",
+      "en": "Say one thing, but do another"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5060,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เขามาตั้งแต่หัวค่ำ”",
+      "ph": "",
+      "en": "He's been here since early evening"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5061,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตายเป็นตาย”",
+      "ph": "",
+      "en": "I don't care if I have to die for it",
+      "note": "Literally: \"Death is death\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5062,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "thai": "\"จะพาไปส่งบ้าน”",
+      "ph": "",
+      "en": "I will take you home"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5063,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ปฎิเสธไม่ได้”",
+      "ph": "",
+      "en": "I can't refuse"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5064,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เขาไม่โทรหาตั้งนาน”",
+      "ph": "",
+      "en": "He hasn't called in a long time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5065,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่น่าพูดเลย”",
+      "ph": "",
+      "en": "I shouldn't have said that",
+      "note": "Other usage: “ไม่น่าทำเลย” “I shouldn’t have done that”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5066,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"นี่มันเรื่องส่วนตัว”",
+      "ph": "",
+      "en": "This is a personal matter",
+      "note": "You can add “คุณไม่เกี่ยว” “You don’t have anything to do with it” after this phrase."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5067,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่ได้ตั้งใจ”",
+      "ph": "",
+      "en": "I didn't mean it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5068,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คุณเป็นต้นเหตุ”",
+      "ph": "",
+      "en": "You are the cause"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5069,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"หาทางแก้ไข”",
+      "ph": "",
+      "en": "To find a way to solve the problem"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5070,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "thai": "\"เมียขอหย่า”",
+      "ph": "",
+      "en": "My wife asked for a divorce"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5071,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เกือบไปแล้ว”",
+      "ph": "",
+      "en": "That was close!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5072,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เรื่องน่าขำ”",
+      "ph": "",
+      "en": "A funny story"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5073,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"เป็นเมนส์ \" มีประจำเดือน”",
+      "ph": "",
+      "en": "I'm having my period",
+      "note": "Also: “มีประจำเดือน”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5074,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จะเล่าคามจริงให้ฟัง”",
+      "ph": "",
+      "en": "I will tell you the truth"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5075,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าไปโทษเขา”",
+      "ph": "",
+      "en": "Don't blame him",
+      "note": "Other usage: “อย่าโทษตัวเอง” “Don’t blame yourself”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5076,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ลองจินตนาการดู”",
+      "ph": "",
+      "en": "Try to imagine it",
+      "note": "Other usage: “ลองคิดดู” “Think about it” or “” “Try it”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5077,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำยังงี้ไม่ถูก”",
+      "ph": "",
+      "en": "Doing this is not right"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5078,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ผมผิดข้อหาอะไร”",
+      "ph": "",
+      "en": "What are the charges against me? (male)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5079,
+      "stage": 6,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"โมโหหิว”",
+      "ph": "",
+      "en": "Angry from hunger",
+      "note": "e.g. “เขาเป็นคนโมโหหิว” “He gets angry when he is hungry”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5080,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เราเสียลูกค้า”",
+      "ph": "",
+      "en": "We lost a customer"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5081,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จะไม่ยอมให้คุณทำกับฉันยังงี้”",
+      "ph": "",
+      "en": "I won't let you do this to me (female)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5082,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ซึ้งแล้วใช่มั้ย”",
+      "ph": "",
+      "en": "You appreciate it now, don't you?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5083,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาติดคุกอยู่”",
+      "ph": "",
+      "en": "He is in jail"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5084,
+      "stage": 8,
+      "cat": "shopping",
+      "type": "s",
+      "thai": "\"พยยามรวบรวมเงิน”",
+      "ph": "",
+      "en": "I'm trying to gather money"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5085,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ครานี้ซวยแน่”",
+      "ph": "",
+      "en": "You won't be lucky this time",
+      "note": "Literally: \"This time, unlucky for sure\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5086,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คุณชอบเถียง”",
+      "ph": "",
+      "en": "You like to argue"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5087,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องจัดการให้เร็วที่สุด”",
+      "ph": "",
+      "en": "This has to be taken care of as soon as possible"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5088,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มักมากในกาม”",
+      "ph": "",
+      "en": "To be lustful"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5089,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"แค้นต้องชำระ”",
+      "ph": "",
+      "en": "Revenge that must by paid"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5090,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"งานต้องมาก่อน”",
+      "ph": "",
+      "en": "Work must come first"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5091,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ค่าจ้างงวดแรก”",
+      "ph": "",
+      "en": "First payment for the work"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5092,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ผมต้องลงโทษคุณ”",
+      "ph": "",
+      "en": "I have to punish you (male)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5093,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คุณหวังมากเกินไป”",
+      "ph": "",
+      "en": "You expect too much",
+      "note": "Similar usage: “อย่าหวังเลย” “Don’t hope for it” and “อย่าพึ่งหมดหวัง” “Don’t give your hope up”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5094,
+      "stage": 8,
+      "cat": "weather",
+      "type": "s",
+      "thai": "\"เดินทางข้ามน้ำข้ามทะเล”",
+      "ph": "",
+      "en": "To travel across the ocean",
+      "note": "Other usage: “ทำงานข้ามวันข้ามคืน” “To work all day and all night”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5095,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อะไรกันนักกันหนา”",
+      "ph": "",
+      "en": "What are you all doing this for\"!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5096,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ผมโดนหักหลัง”",
+      "ph": "",
+      "en": "I have been double\"crossed (male)",
+      "note": "Also: “ผมถูกหักหลัง”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5097,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"หายโกรธรึยัง”",
+      "ph": "",
+      "en": "Have you stopped being mad?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5098,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เธอท้องได้สามเดือน”",
+      "ph": "",
+      "en": "She is three months pregnant"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5099,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ฉันจะไม่ลืมบุญคุณ”",
+      "ph": "",
+      "en": "I will not forget your kindness (female)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5100,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"คุณเป็นใครกันแน่”",
+      "ph": "",
+      "en": "Who are you really?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5101,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่มีอะไรสำคัญกว่านี้”",
+      "ph": "",
+      "en": "There's nothing more important that this"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5102,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"พนักงานชั่วคราว”",
+      "ph": "",
+      "en": "A temporary worker\"employee",
+      "note": "Related words: “พนักงานประจำ” (Permanent worker) and “พนักงานดีเด่น” (Excellent worker)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5103,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"คุณหมายถึงอะไร”",
+      "ph": "",
+      "en": "What do you mean?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5104,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ทำไมไม่บอกให้รู้ก่อน”",
+      "ph": "",
+      "en": "Why didn't you let me know first?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5105,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ได้ประโยชน์อะไร”",
+      "ph": "",
+      "en": "What good will come of this?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5106,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ใครรับผิดชอบ”",
+      "ph": "",
+      "en": "Who is responsible?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5107,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"ฉันเป็นคนช่างฝัน”",
+      "ph": "",
+      "en": "I'm a dreamer (female)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5108,
+      "stage": 8,
+      "cat": "emergency",
+      "type": "s",
+      "thai": "\"เขตอันตราย”",
+      "ph": "",
+      "en": "It's a danger zone"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5109,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาทำงานแบบไม่ลืมหูลืมตา”",
+      "ph": "",
+      "en": "He works as if he didn't care about anything else",
+      "note": "Literally: \"He works without open his ears and his eyes\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5110,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"อยากได้อะไร บอกได้เลย”",
+      "ph": "",
+      "en": "If you want anything, just let me know"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5111,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เลยเวลานัดแล้ว”",
+      "ph": "",
+      "en": "It's past the appointment time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5112,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"จะอธิบายยังไงดี”",
+      "ph": "",
+      "en": "How can I explain?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5113,
+      "stage": 7,
+      "cat": "health",
+      "type": "s",
+      "thai": "\"รองเท้ากัด”",
+      "ph": "",
+      "en": "My shoes hurt my feet",
+      "note": "Literally: \"My shoes bite\" - Similar usage: “ยุงกัด” “Mosquitos bit me”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5114,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำแล้วก็ไม่ดีขึ้น”",
+      "ph": "",
+      "en": "It won't get any better (even if I do it)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5115,
+      "stage": 6,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ขอลองหน่อย”",
+      "ph": "",
+      "en": "I want to try it a little"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5116,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ไม่อยากมีเรื่อง”",
+      "ph": "",
+      "en": "I don't want to make a scene"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5117,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"หวงไว้ทำไม”",
+      "ph": "",
+      "en": "Why are you possessive of that?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5118,
+      "stage": 7,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"งานนี้สนุกแน่”",
+      "ph": "",
+      "en": "It's going to be a fun party"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5119,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไปก่อนนะ”",
+      "ph": "",
+      "en": "I have to go now"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5120,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"มานานรึยัง”",
+      "ph": "",
+      "en": "Have you been here long?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5121,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ทีหลังอย่าทำ”",
+      "ph": "",
+      "en": "Don't do it next time",
+      "note": "You can add \"จำไว้\" (remember) before that."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5122,
+      "stage": 5,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ไปได้แล้ว”",
+      "ph": "",
+      "en": "You may go now"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5123,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องพิสูจน์ให้เห็น”",
+      "ph": "",
+      "en": "I have to prove it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5124,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตั้งหน้าตั้งตารอ”",
+      "ph": "",
+      "en": "To look forward to seeing someone or something",
+      "note": "Literally: \"To set face and eye waiting\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5125,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตัวแทนจากบริษัท”",
+      "ph": "",
+      "en": "A representative from the company"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5126,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"แบบนี้แหล่ะ ดีแล้ว”",
+      "ph": "",
+      "en": "It's good the way it is"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5127,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คิดถึงใจจะขาด”",
+      "ph": "",
+      "en": "I miss you so much it hurts",
+      "note": "Literally: \"My heart is about to be torn from missing you\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5128,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"เดินเร็วๆ หน่อยไม่ได้เหรอ”",
+      "ph": "",
+      "en": "Can't you walk a little faster?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5129,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ติดลม”",
+      "ph": "",
+      "en": "To get carried away doing something",
+      "note": "Literally: \"To be stuck with the wind\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5130,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"ชื่นใจจังเลย”",
+      "ph": "",
+      "en": "That's refreshing",
+      "note": "Refreshing to the body, the nose or the mind."
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5131,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่ต้องบอกก็รู้”",
+      "ph": "",
+      "en": "I know it without you telling me"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5132,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำใจไม่ได้”",
+      "ph": "",
+      "en": "I can't accept what happened",
+      "note": "Literally: \"I can't make my mind\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5133,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มีแค่นี้เอง”",
+      "ph": "",
+      "en": "That's all we have"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5134,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"ได้ยินกับหู”",
+      "ph": "",
+      "en": "I heard it with my own ears",
+      "note": "Other usage: “เห็นกับตาดัวเอง” “I saw it with my own eyes”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5135,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ได้เสียกันแล้ว”",
+      "ph": "",
+      "en": "They already had sex",
+      "note": "Literally: \"They already gained and lost of each other"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5136,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มันไม่เหมาะ”",
+      "ph": "",
+      "en": "It's not appropriate"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5137,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"ไม่ใช่ความผิดฉัน”",
+      "ph": "",
+      "en": "It's not my fault (female)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5138,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"มาตั้งแต่เมื่อไร”",
+      "ph": "",
+      "en": "When did you get here?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5139,
+      "stage": 8,
+      "cat": "people",
+      "type": "p",
+      "thai": "\"ผู้ชายหน้าโง่”",
+      "ph": "",
+      "en": "Stupid man",
+      "note": "Literally: \"A man with a stupid face\" Other usage: “ผู้หญิงหน้าเงิน” “A material woman. / A woman who cares about nothing, but money”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5140,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มันไม่ใช่ของง่าย”",
+      "ph": "",
+      "en": "It's not an easy thing"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5141,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "thai": "\"จะพาแฟนไปด้วย”",
+      "ph": "",
+      "en": "I will take my boyfriend with me"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5142,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "thai": "\"แน่นะ”",
+      "ph": "",
+      "en": "It's time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5143,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "thai": "\"ถึงเวลาแล้ว”",
+      "ph": "",
+      "en": "It's time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5144,
+      "stage": 4,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ออกรถ”",
+      "ph": "",
+      "en": "Drive!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5145,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"จะอยู่อีกนานมั้ย”",
+      "ph": "",
+      "en": "Are you staying here much longer?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5146,
+      "stage": 6,
+      "cat": "shopping",
+      "type": "s",
+      "thai": "\"ขอให้รวยๆ”",
+      "ph": "",
+      "en": "I wish you lots of money",
+      "note": "Other usage: “ขอให้ได้แฟนสวยๆ” “I wish you a beautiful girlfriend” or “ขอให้ผ่านสอบได้” “I wish you pass the test”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5147,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เป็นคนละคน”",
+      "ph": "",
+      "en": "She is a different person from before"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5148,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"เสียวไส้”",
+      "ph": "",
+      "en": "That's scary"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5149,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"จะให้ทำยังไง”",
+      "ph": "",
+      "en": "How do you want me to do it?",
+      "note": "Less polite: “จะเอายังไง”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5150,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"นอนก่อนเลย”",
+      "ph": "",
+      "en": "\"Go ahead and sleep\" (I will follow you later)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5151,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "ต้องรีบท",
+      "ph": "",
+      "en": "\"I have to finish it quickly”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5152,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เลือกไม่ถูก”",
+      "ph": "",
+      "en": "I can't choose"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5153,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตายเป็นผี”",
+      "ph": "",
+      "en": "To die and become a ghost"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5154,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาทนอยู่”",
+      "ph": "",
+      "en": "He forces himself to stay",
+      "note": "Don’t confuse with: “เขาอยู่ทน” “He stays for a long time”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5155,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "p",
+      "thai": "\"กำลังยืดเส้นยืดสาย”",
+      "ph": "",
+      "en": "I'm stretching"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5156,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"เอาไว้คราวหน้าก็แล้วกัน”",
+      "ph": "",
+      "en": "Let's do it next time"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5157,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทีละเล็ก ทีละน้อย”",
+      "ph": "",
+      "en": "Little by little",
+      "note": "Short form: “ทีละน้อย” - Other form: “ทีละนิด ทีละหน่อย”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5158,
+      "stage": 7,
+      "cat": "shopping",
+      "type": "s",
+      "thai": "\"เงินล่วงหน้า”",
+      "ph": "",
+      "en": "Money in advance"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5159,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"รับไม่ได้”",
+      "ph": "",
+      "en": "It's not acceptable"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5160,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "thai": "\"เสร็จธุระแล้วรีบกลับบ้าน”",
+      "ph": "",
+      "en": "Hurry home after you are done (with business, etc)?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5161,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำเป็นไม่รู้ไม่ชี้”",
+      "ph": "",
+      "en": "To pretend not to know"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5162,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "thai": "\"ไม่ต้องรอทานข้าว”",
+      "ph": "",
+      "en": "Don't wait for me for dinner (lunch, etc)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5163,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มองตาค้าง”",
+      "ph": "",
+      "en": "To look at something and be stunned",
+      "note": "Literally: \"Look eye stay\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5164,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"สักพักใหญ่ๆ”",
+      "ph": "",
+      "en": "\"In a long while\" (As opposed to ‘a little while’)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5165,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ธุรกิจเฟื่องฟู”",
+      "ph": "",
+      "en": "The business is flourishing"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5166,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องทำให้ได้”",
+      "ph": "",
+      "en": "I have to make it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5167,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าหาเรื่อง”",
+      "ph": "",
+      "en": "Don't cause yourself trouble"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5168,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทำเปนไม่รูู้ไม่เห็น”",
+      "ph": "",
+      "en": "To pretend that one can't see and doesn't know"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5169,
+      "stage": 7,
+      "cat": "numbers",
+      "type": "s",
+      "thai": "\"อันเดียวพอ”",
+      "ph": "",
+      "en": "One is enough"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5170,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่ชอบนั่งเฉยๆ”",
+      "ph": "",
+      "en": "I don't to sit doing nothing"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5171,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จะดูลายมือให้”",
+      "ph": "",
+      "en": "I will read your palm"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5172,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่เข้ากับบรรยากาศ”",
+      "ph": "",
+      "en": "It's not appropriate for the location",
+      "note": "Literally: \"It doesn't fit with the atmosphere\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5173,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "thai": "\"ชอบนั่งริมหน้าต่าง”",
+      "ph": "",
+      "en": "I like to sit by the window"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5174,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"โดนเล่นงาน”",
+      "ph": "",
+      "en": "To be reprimanded, criticized or attacked",
+      "note": "Literally: \"To be 'play-work'ed\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5175,
+      "stage": 8,
+      "cat": "emergency",
+      "type": "s",
+      "thai": "\"จู่ๆ ก็ได้เจอ”",
+      "ph": "",
+      "en": "I met him (it/you/they/etc) by accident"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5176,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าไปกวนเขา”",
+      "ph": "",
+      "en": "Don't bother him"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5177,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องระวังเป็นพิเศษ”",
+      "ph": "",
+      "en": "We have to be especially careful"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5178,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"บริการที่ยอดเยี่ยม”",
+      "ph": "",
+      "en": "An excellent service"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5179,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ให้รางวัลกับตัวเอง”",
+      "ph": "",
+      "en": "To give oneself a reward"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5180,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "thai": "\"ซ้อมร้องเพลงอยู่”",
+      "ph": "",
+      "en": "I'm practicing singing"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5181,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เล่นละครเก่ง”",
+      "ph": "",
+      "en": "She is good at faking it",
+      "note": "Literally: \"She is good at acting in a play\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5182,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่ใช่ความผิดของใคร”",
+      "ph": "",
+      "en": "It's nobody's fault"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5183,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ดวงเป็นตัวกำหนด”",
+      "ph": "",
+      "en": "Destiny sets it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5184,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จำเป็นต้องทำ”",
+      "ph": "",
+      "en": "It was necessary that I did it",
+      "note": "Also: \"It's necessary that I do it\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5185,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "thai": "\"ไม่อยากบอก กลัวคุณจะเสียใจ”",
+      "ph": "",
+      "en": "I don't want to tell you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5186,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ทุกอย่างจะจบลงด้วยดี”",
+      "ph": "",
+      "en": "It's all going to work out fine"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5187,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"เล่าให้ฟังหน่อย”",
+      "ph": "",
+      "en": "Can you tell me about it?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5188,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จะไปไหนก็ไป”",
+      "ph": "",
+      "en": "Go fly a kite"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5189,
+      "stage": 8,
+      "cat": "health",
+      "type": "s",
+      "thai": "\"จะเอาเงินไปรักษาแม่”",
+      "ph": "",
+      "en": "I will take the money to cure my mother"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5190,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ดูหมอ”",
+      "ph": "",
+      "en": "To have one's fortune told",
+      "note": "Don’t confuse with: “หมอดู” (Foretune teller)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5191,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องหาวิธี”",
+      "ph": "",
+      "en": "I have to find a way"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5192,
+      "stage": 8,
+      "cat": "body",
+      "type": "s",
+      "thai": "\"อย่าเผลอก็แล้วกัน”",
+      "ph": "",
+      "en": "Watch your back"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5193,
+      "stage": 7,
+      "cat": "food",
+      "type": "s",
+      "thai": "\"ทำตามคำสั่ง”",
+      "ph": "",
+      "en": "To follow the order",
+      "note": "Other usage: “ทำตามคำแนะนำ” “To follow the advice” or “ทำตามที่บอก” “To do as told”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5194,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าให้ใครรู้”",
+      "ph": "",
+      "en": "Don't let anyone know"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5195,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เอาแต่ใจตัวเอง”",
+      "ph": "",
+      "en": "She only wants it her way",
+      "note": "Literally: \"She only takes her own heart\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5196,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"แกล้งทำ”",
+      "ph": "",
+      "en": "To pretend to do something"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5197,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาเป็นปอดบวม”",
+      "ph": "",
+      "en": "He has pneumonia"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5198,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"อย่าให้มันเกินเลย”",
+      "ph": "",
+      "en": "Don't go overboard"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5199,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"แน่ใจหรือว่าดี”",
+      "ph": "",
+      "en": "Are you sure it's good?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5200,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เบาๆด้วย”",
+      "ph": "",
+      "en": "Keep it quiet"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5201,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คุณตบตาฉัน”",
+      "ph": "",
+      "en": "You tricked me (female)",
+      "note": "Literally: \"You slapped my eye\""
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5202,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"บรรยากาศเป็นใจ”",
+      "ph": "",
+      "en": "\"The condition inspires it\" (sexual contact or act)"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5203,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"บอกมาเดี๋ยวนี้นะ”",
+      "ph": "",
+      "en": "Tell me now!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5204,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ท้องเสีย”",
+      "ph": "",
+      "en": "To have diarrhea"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5205,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตัวใครตัวมัน”",
+      "ph": "",
+      "en": "To be on one's own"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5206,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ตอแหล”",
+      "ph": "",
+      "en": "Liar!"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5207,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ท่าทางไม่ดี”",
+      "ph": "",
+      "en": "It doesn't look good"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5208,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"คงไม่ใช่เรื่องสำคัญ”",
+      "ph": "",
+      "en": "It shouldn't be that important"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5209,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ท่าดี ทีเลว”",
+      "ph": "",
+      "en": "Good look, bad performance"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5210,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ต้องเปิดตำรา”",
+      "ph": "",
+      "en": "I have to consult the book"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5211,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เขาหน้าเหมือนคุณ”",
+      "ph": "",
+      "en": "He looks like you"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5212,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"รอนานมั้ย”",
+      "ph": "",
+      "en": "Have you waited long?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5213,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"จะไม่ให้ใครรู้”",
+      "ph": "",
+      "en": "I won't let anyone know"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5214,
+      "stage": 7,
+      "cat": "places",
+      "type": "s",
+      "thai": "\"ไปทำบุญที่วัด”",
+      "ph": "",
+      "en": "I go to make merit at the temple"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5215,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "thai": "\"ถามอะไรหน่อยได้มั้ย”",
+      "ph": "",
+      "en": "Can I ask you something?"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5216,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"เปิเเผยความลับ”",
+      "ph": "",
+      "en": "To tell a secret"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5217,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "thai": "\"ทำแล้วสบายใจ”",
+      "ph": "",
+      "en": "I feel good after I do it"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5218,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ไม่นึกเลย”",
+      "ph": "",
+      "en": "I never thought so"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5219,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"พูดอีก ก็ถูกอีก”",
+      "ph": "",
+      "en": "You say it again, you are right again"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5220,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "thai": "\"ทะลึ่ง”",
+      "ph": "",
+      "en": "That's impertinent"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5221,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"ลืมหมดแล้ว”",
+      "ph": "",
+      "en": "I forgot everything"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5222,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "thai": "\"รสนิยมสูง รายได้ต่ำ”",
+      "ph": "",
+      "en": "High taste, low income"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5223,
+      "stage": 7,
+      "cat": "greetings",
+      "type": "s",
+      "thai": "\"ขอโทษที่มาสาย”",
+      "ph": "",
+      "en": "I'm sorry I'm late"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5224,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "thai": "\"หนังเรื่องนี้มันมาก”",
+      "ph": "",
+      "en": "This movie is really fun",
+      "note": "Other usage: “หนังเรื่องนี้ห่วยมาก” “This movie sucks”"
+    },
+    {
+      "category": "missing-ph-sentence",
+      "id": 5225,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "thai": "\"มันไม่ยากอย่างที่คิด”",
+      "ph": "",
+      "en": "It's not as difficult as you think"
+    },
+    {
+      "category": "thai-in-english",
+      "id": 5721,
+      "stage": 5,
+      "cat": "grammar",
+      "type": "w",
+      "thai": "ไม๊",
+      "ph": "mái",
+      "en": "variant of มั้ย/ไหม (question)"
+    },
+    {
+      "category": "duplicate-thai-conflicting-en",
+      "id": 5722,
+      "stage": 6,
+      "cat": "verbs",
+      "type": "w",
+      "thai": "รู้สึก",
+      "ph": "rúu sùek",
+      "en": "to feel",
+      "otherCard": {
+        "id": 1759,
+        "en": "feel"
+      }
+    }
+  ]
+}

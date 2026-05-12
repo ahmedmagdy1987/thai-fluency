@@ -34,7 +34,10 @@ export function transformPh(ph, voice) {
 
 export function transformEn(en, voice) {
   if (!en || voice !== 'female') return en;
-  return en.replace(/\(male\)/g, '(female)').replace(/I \/ me \(male\)/g, 'I / me (female)');
+  // Match "(male" that is immediately followed by ")", "," or whitespace so
+  // both "(male)" and "(male, casual)" / "(male, response …)" flip, while
+  // "(male/female)" stays untouched (the trailing "/" prevents the match).
+  return en.replace(/\(male(?=[\),\s])/g, '(female');
 }
 
 // Apply all transforms to a card object

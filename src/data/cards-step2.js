@@ -5,7 +5,7 @@
 // regenerate with new inputs.
 
 export const STEP2_ADDITIONS = [
-  {id:5700,thai:'ผมพูดภาษาไทยไม่ได้ครับ',ph:'phǒm phûut phaa-sǎa thai mâi dâai khráp',en:'I can\'t speak Thai',type:'s',stage:1,cat:'sentences-self'},
+  {id:5700,thai:'ผมพูดภาษาไทยไม่ได้ครับ',ph:'phǒm phûut phaa-sǎa thai mâi dâai khráp',en:'I can\'t speak Thai (male)',type:'s',stage:1,cat:'sentences-self'},
   {id:5701,thai:'อันนี้',ph:'an níi',en:'this one / this thing',type:'w',stage:1,cat:'pronouns'},
   {id:5702,thai:'เจอกัน',ph:'jer gan',en:'see you',type:'w',stage:1,cat:'greetings'},
   {id:5703,thai:'ไม่ใช่',ph:'mâi châi',en:'no / not so / that\'s not it',type:'w',stage:1,cat:'grammar'},

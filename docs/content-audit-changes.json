@@ -1,0 +1,2879 @@
+[
+  {
+    "file": "src/data/cards.js",
+    "id": 310,
+    "type": "en",
+    "before": "  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye',type:'p',stage:1,cat:'greetings',note:'Universal greeting. Time of day does not matter.'},",
+    "after": "  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye (male)',type:'p',stage:1,cat:'greetings',note:'Universal greeting. Time of day does not matter.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 311,
+    "type": "en",
+    "before": "  {id:311,thai:'ขอบคุณครับ',ph:'khàwp khun khráp',en:'Thank you',type:'p',stage:1,cat:'greetings'},",
+    "after": "  {id:311,thai:'ขอบคุณครับ',ph:'khàwp khun khráp',en:'Thank you (male)',type:'p',stage:1,cat:'greetings'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 312,
+    "type": "en",
+    "before": "  {id:312,thai:'ขอบคุณมากครับ',ph:'khàwp khun mâak khráp',en:'Thank you very much',type:'p',stage:1,cat:'greetings'},",
+    "after": "  {id:312,thai:'ขอบคุณมากครับ',ph:'khàwp khun mâak khráp',en:'Thank you very much (male)',type:'p',stage:1,cat:'greetings'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 313,
+    "type": "en",
+    "before": "  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome',type:'p',stage:1,cat:'greetings',note:'The unofficial Thai national motto.'},",
+    "after": "  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome (male)',type:'p',stage:1,cat:'greetings',note:'The unofficial Thai national motto.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 314,
+    "type": "en",
+    "before": "  {id:314,thai:'ขอโทษครับ',ph:'khǎw thôht khráp',en:'Excuse me / Sorry',type:'p',stage:1,cat:'greetings'},",
+    "after": "  {id:314,thai:'ขอโทษครับ',ph:'khǎw thôht khráp',en:'Excuse me / Sorry (male)',type:'p',stage:1,cat:'greetings'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 315,
+    "type": "en",
+    "before": "  {id:315,thai:'สบายดีไหมครับ',ph:'sàbaai dee mǎi khráp?',en:'How are you?',type:'p',stage:1,cat:'greetings'},",
+    "after": "  {id:315,thai:'สบายดีไหมครับ',ph:'sàbaai dee mǎi khráp?',en:'How are you? (male)',type:'p',stage:1,cat:'greetings'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 316,
+    "type": "en",
+    "before": "  {id:316,thai:'สบายดีครับ',ph:'sàbaai dee khráp',en:'I am fine',type:'p',stage:1,cat:'greetings'},",
+    "after": "  {id:316,thai:'สบายดีครับ',ph:'sàbaai dee khráp',en:'I am fine (male)',type:'p',stage:1,cat:'greetings'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 330,
+    "type": "en",
+    "before": "  {id:330,thai:'ผมชื่อ ___ ครับ',ph:'phǒm chûe ___ khráp',en:'My name is ___',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:330,thai:'ผมชื่อ ___ ครับ',ph:'phǒm chûe ___ khráp',en:'My name is ___ (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 331,
+    "type": "en",
+    "before": "  {id:331,thai:'คุณชื่ออะไรครับ',ph:'khun chûe àrai khráp?',en:'What is your name?',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:331,thai:'คุณชื่ออะไรครับ',ph:'khun chûe àrai khráp?',en:'What is your name? (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 332,
+    "type": "en",
+    "before": "  {id:332,thai:'ผมเป็นคนอเมริกัน',ph:'phǒm bpen khon ameerikan',en:'I am American',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:332,thai:'ผมเป็นคนอเมริกัน',ph:'phǒm bpen khon ameerikan',en:'I am American (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 333,
+    "type": "en",
+    "before": "  {id:333,thai:'ผมมาจากอเมริกา',ph:'phǒm maa jàak ameerikaa',en:'I am from America',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:333,thai:'ผมมาจากอเมริกา',ph:'phǒm maa jàak ameerikaa',en:'I am from America (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 334,
+    "type": "en",
+    "before": "  {id:334,thai:'คุณมาจากไหนครับ',ph:'khun maa jàak nǎi khráp?',en:'Where are you from?',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:334,thai:'คุณมาจากไหนครับ',ph:'khun maa jàak nǎi khráp?',en:'Where are you from? (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 335,
+    "type": "en",
+    "before": "  {id:335,thai:'ผมพูดไทยได้นิดหน่อย',ph:'phǒm phûut thai dâai nít nàwy',en:'I speak a little Thai',type:'p',stage:4,cat:'intro'},",
+    "after": "  {id:335,thai:'ผมพูดไทยได้นิดหน่อย',ph:'phǒm phûut thai dâai nít nàwy',en:'I speak a little Thai (male)',type:'p',stage:4,cat:'intro'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 350,
+    "type": "en",
+    "before": "  {id:350,thai:'ขอเมนูครับ',ph:'khǎw meh-nuu khráp',en:'Menu please',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:350,thai:'ขอเมนูครับ',ph:'khǎw meh-nuu khráp',en:'Menu please (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 351,
+    "type": "en",
+    "before": "  {id:351,thai:'อันนี้คืออะไรครับ',ph:'annǐi khue àrai khráp?',en:'What is this?',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:351,thai:'อันนี้คืออะไรครับ',ph:'annǐi khue àrai khráp?',en:'What is this? (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 352,
+    "type": "en",
+    "before": "  {id:352,thai:'ไม่เผ็ดครับ',ph:'mâi phèt khráp',en:'Not spicy please',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:352,thai:'ไม่เผ็ดครับ',ph:'mâi phèt khráp',en:'Not spicy please (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 353,
+    "type": "en",
+    "before": "  {id:353,thai:'เผ็ดน้อยๆครับ',ph:'phèt náwy náwy khráp',en:'A little spicy please',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:353,thai:'เผ็ดน้อยๆครับ',ph:'phèt náwy náwy khráp',en:'A little spicy please (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 354,
+    "type": "en",
+    "before": "  {id:354,thai:'อร่อยมากครับ',ph:'aròi mâak khráp',en:'Very delicious',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:354,thai:'อร่อยมากครับ',ph:'aròi mâak khráp',en:'Very delicious (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 355,
+    "type": "en",
+    "before": "  {id:355,thai:'ผมหิวครับ',ph:'phǒm hǐu khráp',en:'I am hungry',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:355,thai:'ผมหิวครับ',ph:'phǒm hǐu khráp',en:'I am hungry (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 356,
+    "type": "en",
+    "before": "  {id:356,thai:'ผมอิ่มแล้วครับ',ph:'phǒm ìm láew khráp',en:'I am full',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:356,thai:'ผมอิ่มแล้วครับ',ph:'phǒm ìm láew khráp',en:'I am full (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 357,
+    "type": "en",
+    "before": "  {id:357,thai:'เช็คบิลด้วยครับ',ph:'chék bin dûai khráp',en:'The bill please',type:'p',stage:2,cat:'food-phrases'},",
+    "after": "  {id:357,thai:'เช็คบิลด้วยครับ',ph:'chék bin dûai khráp',en:'The bill please (male)',type:'p',stage:2,cat:'food-phrases'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 358,
+    "type": "en",
+    "before": "  {id:358,thai:'ผมแพ้กุ้งครับ',ph:'phǒm pháe gûng khráp',en:'I am allergic to shrimp',type:'p',stage:2,cat:'food-phrases',note:'Swap \"gûng\" for any allergen.'},",
+    "after": "  {id:358,thai:'ผมแพ้กุ้งครับ',ph:'phǒm pháe gûng khráp',en:'I am allergic to shrimp (male)',type:'p',stage:2,cat:'food-phrases',note:'Swap \"gûng\" for any allergen.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 381,
+    "type": "en",
+    "before": "  {id:381,thai:'ไปไหนครับ',ph:'bpai nǎi khráp?',en:'Where to? (taxi opener)',type:'p',stage:3,cat:'directions'},",
+    "after": "  {id:381,thai:'ไปไหนครับ',ph:'bpai nǎi khráp?',en:'Where to? (taxi opener) (male)',type:'p',stage:3,cat:'directions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 382,
+    "type": "en",
+    "before": "  {id:382,thai:'จอดที่นี่ครับ',ph:'jàwt thîi nîi khráp',en:'Stop here',type:'p',stage:3,cat:'directions'},",
+    "after": "  {id:382,thai:'จอดที่นี่ครับ',ph:'jàwt thîi nîi khráp',en:'Stop here (male)',type:'p',stage:3,cat:'directions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 386,
+    "type": "en",
+    "before": "  {id:386,thai:'ใกล้ไหมครับ',ph:'glâi mǎi khráp?',en:'Is it close?',type:'p',stage:3,cat:'directions'},",
+    "after": "  {id:386,thai:'ใกล้ไหมครับ',ph:'glâi mǎi khráp?',en:'Is it close? (male)',type:'p',stage:3,cat:'directions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 387,
+    "type": "en",
+    "before": "  {id:387,thai:'เปิดมิเตอร์ครับ',ph:'bpòet mí-tôe khráp',en:'Use the meter please',type:'p',stage:3,cat:'directions',note:'CRUCIAL for taxis. Insist or walk away.'},",
+    "after": "  {id:387,thai:'เปิดมิเตอร์ครับ',ph:'bpòet mí-tôe khráp',en:'Use the meter please (male)',type:'p',stage:3,cat:'directions',note:'CRUCIAL for taxis. Insist or walk away.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 389,
+    "type": "en",
+    "before": "  {id:389,thai:'ผมหลงทางครับ',ph:'phǒm lǒng thaang khráp',en:'I am lost',type:'p',stage:3,cat:'directions'},",
+    "after": "  {id:389,thai:'ผมหลงทางครับ',ph:'phǒm lǒng thaang khráp',en:'I am lost (male)',type:'p',stage:3,cat:'directions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 410,
+    "type": "en",
+    "before": "  {id:410,thai:'เท่าไหร่ครับ',ph:'thâo rài khráp?',en:'How much?',type:'p',stage:2,cat:'shopping'},",
+    "after": "  {id:410,thai:'เท่าไหร่ครับ',ph:'thâo rài khráp?',en:'How much? (male)',type:'p',stage:2,cat:'shopping'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 412,
+    "type": "en",
+    "before": "  {id:412,thai:'ลดได้ไหมครับ',ph:'lót dâai mǎi khráp?',en:'Can you discount?',type:'p',stage:2,cat:'shopping'},",
+    "after": "  {id:412,thai:'ลดได้ไหมครับ',ph:'lót dâai mǎi khráp?',en:'Can you discount? (male)',type:'p',stage:2,cat:'shopping'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 413,
+    "type": "en",
+    "before": "  {id:413,thai:'ผมจะซื้อครับ',ph:'phǒm jà súe khráp',en:'I will buy it',type:'p',stage:2,cat:'shopping'},",
+    "after": "  {id:413,thai:'ผมจะซื้อครับ',ph:'phǒm jà súe khráp',en:'I will buy it (male)',type:'p',stage:2,cat:'shopping'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 414,
+    "type": "en",
+    "before": "  {id:414,thai:'มีไหมครับ',ph:'mii mǎi khráp?',en:'Do you have (it)?',type:'p',stage:2,cat:'shopping'},",
+    "after": "  {id:414,thai:'มีไหมครับ',ph:'mii mǎi khráp?',en:'Do you have (it)? (male)',type:'p',stage:2,cat:'shopping'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 415,
+    "type": "en",
+    "before": "  {id:415,thai:'ขอดูหน่อยครับ',ph:'khǎw duu nàwy khráp',en:'Can I see it?',type:'p',stage:2,cat:'shopping'},",
+    "after": "  {id:415,thai:'ขอดูหน่อยครับ',ph:'khǎw duu nàwy khráp',en:'Can I see it? (male)',type:'p',stage:2,cat:'shopping'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 431,
+    "type": "en",
+    "before": "  {id:431,thai:'ผมไม่เข้าใจครับ',ph:'phǒm mâi khâo jai khráp',en:'I do not understand',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:431,thai:'ผมไม่เข้าใจครับ',ph:'phǒm mâi khâo jai khráp',en:'I do not understand (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 432,
+    "type": "en",
+    "before": "  {id:432,thai:'พูดช้าๆครับ',ph:'phûut cháa cháa khráp',en:'Please speak slowly',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:432,thai:'พูดช้าๆครับ',ph:'phûut cháa cháa khráp',en:'Please speak slowly (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 433,
+    "type": "en",
+    "before": "  {id:433,thai:'พูดอีกทีครับ',ph:'phûut ìik thii khráp',en:'Say it again please',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:433,thai:'พูดอีกทีครับ',ph:'phûut ìik thii khráp',en:'Say it again please (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 436,
+    "type": "en",
+    "before": "  {id:436,thai:'ผมปวดหัว',ph:'phǒm bpùat hǔa',en:'I have a headache',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:436,thai:'ผมปวดหัว',ph:'phǒm bpùat hǔa',en:'I have a headache (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 437,
+    "type": "en",
+    "before": "  {id:437,thai:'ผมปวดท้อง',ph:'phǒm bpùat tháwng',en:'I have a stomachache',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:437,thai:'ผมปวดท้อง',ph:'phǒm bpùat tháwng',en:'I have a stomachache (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 438,
+    "type": "en",
+    "before": "  {id:438,thai:'ผมไม่สบาย',ph:'phǒm mâi sàbaai',en:'I am not feeling well',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:438,thai:'ผมไม่สบาย',ph:'phǒm mâi sàbaai',en:'I am not feeling well (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 439,
+    "type": "en",
+    "before": "  {id:439,thai:'ผมเสียของ',ph:'phǒm sǐa khǎwng',en:'I lost something',type:'p',stage:6,cat:'emergency'},",
+    "after": "  {id:439,thai:'ผมเสียของ',ph:'phǒm sǐa khǎwng',en:'I lost something (male)',type:'p',stage:6,cat:'emergency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 800,
+    "type": "en",
+    "before": "  { id: 800, thai: 'ผมหิวครับ', ph: 'phǒm hǐu khráp', en: 'I am hungry', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'หิว',ph:'hǐu',en:'hungry'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 800, thai: 'ผมหิวครับ', ph: 'phǒm hǐu khráp', en: 'I am hungry (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'หิว',ph:'hǐu',en:'hungry'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 801,
+    "type": "en",
+    "before": "  { id: 801, thai: 'ผมหิวน้ำครับ', ph: 'phǒm hǐu náam khráp', en: 'I am thirsty', type: 's', stage: 4, cat: 'sentences-self', note: 'Literally \"I hungry water.\"', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'หิว',ph:'hǐu',en:'hungry'},{thai:'น้ำ',ph:'náam',en:'water'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 801, thai: 'ผมหิวน้ำครับ', ph: 'phǒm hǐu náam khráp', en: 'I am thirsty (male)', type: 's', stage: 4, cat: 'sentences-self', note: 'Literally \"I hungry water.\"', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'หิว',ph:'hǐu',en:'hungry'},{thai:'น้ำ',ph:'náam',en:'water'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 802,
+    "type": "en",
+    "before": "  { id: 802, thai: 'ผมเหนื่อยครับ', ph: 'phǒm nùeai khráp', en: 'I am tired', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'เหนื่อย',ph:'nùeai',en:'tired'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 802, thai: 'ผมเหนื่อยครับ', ph: 'phǒm nùeai khráp', en: 'I am tired (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'เหนื่อย',ph:'nùeai',en:'tired'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 803,
+    "type": "en",
+    "before": "  {id:803,thai:'ผมง่วงครับ',ph:'phǒm ngûang khráp',en:'I am sleepy',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:803,thai:'ผมง่วงครับ',ph:'phǒm ngûang khráp',en:'I am sleepy (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 804,
+    "type": "en",
+    "before": "  {id:804,thai:'ผมร้อนครับ',ph:'phǒm ráwn khráp',en:'I am hot',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:804,thai:'ผมร้อนครับ',ph:'phǒm ráwn khráp',en:'I am hot (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 805,
+    "type": "en",
+    "before": "  {id:805,thai:'ผมหนาวครับ',ph:'phǒm nǎao khráp',en:'I am cold',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:805,thai:'ผมหนาวครับ',ph:'phǒm nǎao khráp',en:'I am cold (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 806,
+    "type": "en",
+    "before": "  {id:806,thai:'ผมอิ่มแล้วครับ',ph:'phǒm ìm láew khráp',en:'I am full (already)',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:806,thai:'ผมอิ่มแล้วครับ',ph:'phǒm ìm láew khráp',en:'I am full (already) (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 807,
+    "type": "en",
+    "before": "  { id: 807, thai: 'ผมไม่สบายครับ', ph: 'phǒm mâi sàbaai khráp', en: 'I am not feeling well', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ไม่',ph:'mâi',en:'not'},{thai:'สบาย',ph:'sàbaai',en:'well'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 807, thai: 'ผมไม่สบายครับ', ph: 'phǒm mâi sàbaai khráp', en: 'I am not feeling well (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ไม่',ph:'mâi',en:'not'},{thai:'สบาย',ph:'sàbaai',en:'well'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 808,
+    "type": "en",
+    "before": "  {id:808,thai:'ผมเหนื่อยมาก',ph:'phǒm nùeai mâak',en:'I am very tired',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:808,thai:'ผมเหนื่อยมาก',ph:'phǒm nùeai mâak',en:'I am very tired (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 809,
+    "type": "en",
+    "before": "  {id:809,thai:'ผมว่างครับ',ph:'phǒm wâang khráp',en:'I am free / available',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:809,thai:'ผมว่างครับ',ph:'phǒm wâang khráp',en:'I am free / available (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 810,
+    "type": "en",
+    "before": "  {id:810,thai:'ผมยุ่งครับ',ph:'phǒm yûng khráp',en:'I am busy',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:810,thai:'ผมยุ่งครับ',ph:'phǒm yûng khráp',en:'I am busy (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 811,
+    "type": "en",
+    "before": "  {id:811,thai:'ผมดีใจมาก',ph:'phǒm dee jai mâak',en:'I am very happy',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:811,thai:'ผมดีใจมาก',ph:'phǒm dee jai mâak',en:'I am very happy (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 812,
+    "type": "en",
+    "before": "  {id:812,thai:'ผมชอบมากเลย',ph:'phǒm chôp mâak loei',en:'I really like it',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:812,thai:'ผมชอบมากเลย',ph:'phǒm chôp mâak loei',en:'I really like it (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 813,
+    "type": "en",
+    "before": "  {id:813,thai:'ผมไม่ชอบ',ph:'phǒm mâi chôp',en:'I do not like it',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:813,thai:'ผมไม่ชอบ',ph:'phǒm mâi chôp',en:'I do not like it (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 814,
+    "type": "en",
+    "before": "  { id: 814, thai: 'ผมรักคุณ', ph: 'phǒm rák khun', en: 'I love you', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'รัก',ph:'rák',en:'love'},{thai:'คุณ',ph:'khun',en:'you'}] },",
+    "after": "  { id: 814, thai: 'ผมรักคุณ', ph: 'phǒm rák khun', en: 'I love you (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'รัก',ph:'rák',en:'love'},{thai:'คุณ',ph:'khun',en:'you'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 815,
+    "type": "en",
+    "before": "  { id: 815, thai: 'ผมคิดถึงคุณ', ph: 'phǒm khít thǔeng khun', en: 'I miss you', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'คิดถึง',ph:'khít thǔeng',en:'miss'},{thai:'คุณ',ph:'khun',en:'you'}] },",
+    "after": "  { id: 815, thai: 'ผมคิดถึงคุณ', ph: 'phǒm khít thǔeng khun', en: 'I miss you (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'คิดถึง',ph:'khít thǔeng',en:'miss'},{thai:'คุณ',ph:'khun',en:'you'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 816,
+    "type": "en",
+    "before": "  {id:816,thai:'ผมเข้าใจ',ph:'phǒm khâo jai',en:'I understand',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:816,thai:'ผมเข้าใจ',ph:'phǒm khâo jai',en:'I understand (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 817,
+    "type": "en",
+    "before": "  { id: 817, thai: 'ผมไม่เข้าใจ', ph: 'phǒm mâi khâo jai', en: 'I do not understand', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ไม่',ph:'mâi',en:'not'},{thai:'เข้าใจ',ph:'khâo jai',en:'understand'}] },",
+    "after": "  { id: 817, thai: 'ผมไม่เข้าใจ', ph: 'phǒm mâi khâo jai', en: 'I do not understand (male)', type: 's', stage: 4, cat: 'sentences-self', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ไม่',ph:'mâi',en:'not'},{thai:'เข้าใจ',ph:'khâo jai',en:'understand'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 818,
+    "type": "en",
+    "before": "  {id:818,thai:'ผมไม่รู้',ph:'phǒm mâi rúu',en:'I do not know',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:818,thai:'ผมไม่รู้',ph:'phǒm mâi rúu',en:'I do not know (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 819,
+    "type": "en",
+    "before": "  {id:819,thai:'ผมลืมแล้ว',ph:'phǒm luem láew',en:'I forgot (already)',type:'s',stage:4,cat:'sentences-self'},",
+    "after": "  {id:819,thai:'ผมลืมแล้ว',ph:'phǒm luem láew',en:'I forgot (already) (male)',type:'s',stage:4,cat:'sentences-self'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 820,
+    "type": "en",
+    "before": "  { id: 820, thai: 'ผมอยากกินข้าว', ph: 'phǒm yàak gin khâao', en: 'I want to eat', type: 's', stage: 2, cat: 'sentences-want', note: 'yàak + verb = want to do something.', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'กิน',ph:'gin',en:'eat'},{thai:'ข้าว',ph:'khâao',en:'rice/food'}] },",
+    "after": "  { id: 820, thai: 'ผมอยากกินข้าว', ph: 'phǒm yàak gin khâao', en: 'I want to eat (male)', type: 's', stage: 2, cat: 'sentences-want', note: 'yàak + verb = want to do something.', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'กิน',ph:'gin',en:'eat'},{thai:'ข้าว',ph:'khâao',en:'rice/food'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 821,
+    "type": "en",
+    "before": "  {id:821,thai:'ผมอยากนอน',ph:'phǒm yàak nawn',en:'I want to sleep',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:821,thai:'ผมอยากนอน',ph:'phǒm yàak nawn',en:'I want to sleep (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 822,
+    "type": "en",
+    "before": "  { id: 822, thai: 'ผมอยากกลับบ้าน', ph: 'phǒm yàak glàp bâan', en: 'I want to go home', type: 's', stage: 2, cat: 'sentences-want', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'กลับ',ph:'glàp',en:'return'},{thai:'บ้าน',ph:'bâan',en:'home'}] },",
+    "after": "  { id: 822, thai: 'ผมอยากกลับบ้าน', ph: 'phǒm yàak glàp bâan', en: 'I want to go home (male)', type: 's', stage: 2, cat: 'sentences-want', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'กลับ',ph:'glàp',en:'return'},{thai:'บ้าน',ph:'bâan',en:'home'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 823,
+    "type": "en",
+    "before": "  {id:823,thai:'ผมอยากไปที่นั่น',ph:'phǒm yàak bpai thîi nân',en:'I want to go there',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:823,thai:'ผมอยากไปที่นั่น',ph:'phǒm yàak bpai thîi nân',en:'I want to go there (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 824,
+    "type": "en",
+    "before": "  {id:824,thai:'ผมอยากเรียนภาษาไทย',ph:'phǒm yàak rian phaa-sǎa thai',en:'I want to learn Thai',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:824,thai:'ผมอยากเรียนภาษาไทย',ph:'phǒm yàak rian phaa-sǎa thai',en:'I want to learn Thai (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 825,
+    "type": "en",
+    "before": "  {id:825,thai:'ผมอยากพูดไทยได้',ph:'phǒm yàak phûut thai dâai',en:'I want to be able to speak Thai',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:825,thai:'ผมอยากพูดไทยได้',ph:'phǒm yàak phûut thai dâai',en:'I want to be able to speak Thai (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 826,
+    "type": "en",
+    "before": "  {id:826,thai:'ผมอยากดื่มกาแฟ',ph:'phǒm yàak dùem gaafae',en:'I want to drink coffee',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:826,thai:'ผมอยากดื่มกาแฟ',ph:'phǒm yàak dùem gaafae',en:'I want to drink coffee (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 827,
+    "type": "en",
+    "before": "  {id:827,thai:'ผมอยากพักผ่อน',ph:'phǒm yàak phák-phàwn',en:'I want to rest',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:827,thai:'ผมอยากพักผ่อน',ph:'phǒm yàak phák-phàwn',en:'I want to rest (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 828,
+    "type": "en",
+    "before": "  { id: 828, thai: 'ผมเอาอันนี้ครับ', ph: 'phǒm ao annǐi khráp', en: 'I will take this one', type: 's', stage: 2, cat: 'sentences-want', note: 'For ordering or shopping. ao = take/want a thing.', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'เอา',ph:'ao',en:'take/want'},{thai:'อันนี้',ph:'annǐi',en:'this one'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 828, thai: 'ผมเอาอันนี้ครับ', ph: 'phǒm ao annǐi khráp', en: 'I will take this one (male)', type: 's', stage: 2, cat: 'sentences-want', note: 'For ordering or shopping. ao = take/want a thing.', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'เอา',ph:'ao',en:'take/want'},{thai:'อันนี้',ph:'annǐi',en:'this one'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 829,
+    "type": "en",
+    "before": "  {id:829,thai:'ไม่เอาครับ',ph:'mâi ao khráp',en:'I do not want it / no thanks',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:829,thai:'ไม่เอาครับ',ph:'mâi ao khráp',en:'I do not want it / no thanks (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 830,
+    "type": "en",
+    "before": "  {id:830,thai:'ผมต้องการความช่วยเหลือ',ph:'phǒm tâwng-gaan khwaam chûai-lǔea',en:'I need help',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:830,thai:'ผมต้องการความช่วยเหลือ',ph:'phǒm tâwng-gaan khwaam chûai-lǔea',en:'I need help (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 831,
+    "type": "en",
+    "before": "  { id: 831, thai: 'ขอน้ำหน่อยครับ', ph: 'khǎw náam nàwy khráp', en: 'May I have some water', type: 's', stage: 2, cat: 'sentences-want', note: 'khǎw + thing + nàwy = polite request.', breakdown: [{thai:'ขอ',ph:'khǎw',en:'may I have'},{thai:'น้ำ',ph:'náam',en:'water'},{thai:'หน่อย',ph:'nàwy',en:'a little'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 831, thai: 'ขอน้ำหน่อยครับ', ph: 'khǎw náam nàwy khráp', en: 'May I have some water (male)', type: 's', stage: 2, cat: 'sentences-want', note: 'khǎw + thing + nàwy = polite request.', breakdown: [{thai:'ขอ',ph:'khǎw',en:'may I have'},{thai:'น้ำ',ph:'náam',en:'water'},{thai:'หน่อย',ph:'nàwy',en:'a little'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 832,
+    "type": "en",
+    "before": "  {id:832,thai:'ขอเมนูหน่อยครับ',ph:'khǎw meh-nuu nàwy khráp',en:'May I have the menu',type:'s',stage:2,cat:'sentences-want'},",
+    "after": "  {id:832,thai:'ขอเมนูหน่อยครับ',ph:'khǎw meh-nuu nàwy khráp',en:'May I have the menu (male)',type:'s',stage:2,cat:'sentences-want'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 850,
+    "type": "en",
+    "before": "  { id: 850, thai: 'อันนี้เท่าไหร่ครับ', ph: 'annǐi thâo rài khráp?', en: 'How much is this?', type: 's', stage: 4, cat: 'sentences-questions', breakdown: [{thai:'อันนี้',ph:'annǐi',en:'this'},{thai:'เท่าไหร่',ph:'thâo rài',en:'how much?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 850, thai: 'อันนี้เท่าไหร่ครับ', ph: 'annǐi thâo rài khráp?', en: 'How much is this? (male)', type: 's', stage: 4, cat: 'sentences-questions', breakdown: [{thai:'อันนี้',ph:'annǐi',en:'this'},{thai:'เท่าไหร่',ph:'thâo rài',en:'how much?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 851,
+    "type": "en",
+    "before": "  {id:851,thai:'มีไหมครับ',ph:'mii mǎi khráp?',en:'Do you have (any)?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:851,thai:'มีไหมครับ',ph:'mii mǎi khráp?',en:'Do you have (any)? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 852,
+    "type": "en",
+    "before": "  {id:852,thai:'อยู่ที่ไหนครับ',ph:'yùu thîi nǎi khráp?',en:'Where is it?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:852,thai:'อยู่ที่ไหนครับ',ph:'yùu thîi nǎi khráp?',en:'Where is it? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 853,
+    "type": "en",
+    "before": "  { id: 853, thai: 'ห้องน้ำอยู่ที่ไหนครับ', ph: 'hông náam yùu thîi nǎi khráp?', en: 'Where is the bathroom?', type: 's', stage: 4, cat: 'sentences-questions', breakdown: [{thai:'ห้องน้ำ',ph:'hông náam',en:'bathroom'},{thai:'อยู่',ph:'yùu',en:'is at'},{thai:'ที่ไหน',ph:'thîi nǎi',en:'where?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 853, thai: 'ห้องน้ำอยู่ที่ไหนครับ', ph: 'hông náam yùu thîi nǎi khráp?', en: 'Where is the bathroom? (male)', type: 's', stage: 4, cat: 'sentences-questions', breakdown: [{thai:'ห้องน้ำ',ph:'hông náam',en:'bathroom'},{thai:'อยู่',ph:'yùu',en:'is at'},{thai:'ที่ไหน',ph:'thîi nǎi',en:'where?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 856,
+    "type": "en",
+    "before": "  {id:856,thai:'ทำไมครับ',ph:'tham mai khráp?',en:'Why?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:856,thai:'ทำไมครับ',ph:'tham mai khráp?',en:'Why? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 857,
+    "type": "en",
+    "before": "  {id:857,thai:'ใครครับ',ph:'khrai khráp?',en:'Who?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:857,thai:'ใครครับ',ph:'khrai khráp?',en:'Who? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 858,
+    "type": "en",
+    "before": "  {id:858,thai:'เมื่อไหร่ครับ',ph:'mêua rài khráp?',en:'When?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:858,thai:'เมื่อไหร่ครับ',ph:'mêua rài khráp?',en:'When? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 859,
+    "type": "en",
+    "before": "  {id:859,thai:'อย่างไรครับ',ph:'yàang rai khráp?',en:'How?',type:'s',stage:4,cat:'sentences-questions'},",
+    "after": "  {id:859,thai:'อย่างไรครับ',ph:'yàang rai khráp?',en:'How? (male)',type:'s',stage:4,cat:'sentences-questions'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 870,
+    "type": "en",
+    "before": "  {id:870,thai:'ขอโทษนะครับ',ph:'khǎw thôht ná khráp',en:'Excuse me / sorry',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:870,thai:'ขอโทษนะครับ',ph:'khǎw thôht ná khráp',en:'Excuse me / sorry (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 871,
+    "type": "en",
+    "before": "  {id:871,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / it is fine',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:871,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / it is fine (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 872,
+    "type": "en",
+    "before": "  { id: 872, thai: 'ขอบคุณมากครับ', ph: 'khàwp khun mâak khráp', en: 'Thank you very much', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'ขอบคุณ',ph:'khàwp khun',en:'thank you'},{thai:'มาก',ph:'mâak',en:'very'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 872, thai: 'ขอบคุณมากครับ', ph: 'khàwp khun mâak khráp', en: 'Thank you very much (male)', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'ขอบคุณ',ph:'khàwp khun',en:'thank you'},{thai:'มาก',ph:'mâak',en:'very'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 873,
+    "type": "en",
+    "before": "  {id:873,thai:'ยินดีที่ได้รู้จักครับ',ph:'yindee thîi dâai rúujàk khráp',en:'Nice to meet you',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:873,thai:'ยินดีที่ได้รู้จักครับ',ph:'yindee thîi dâai rúujàk khráp',en:'Nice to meet you (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 874,
+    "type": "en",
+    "before": "  { id: 874, thai: 'พูดช้าๆได้ไหมครับ', ph: 'phûut cháa cháa dâai mǎi khráp?', en: 'Could you speak slowly please?', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'พูด',ph:'phûut',en:'speak'},{thai:'ช้าๆ',ph:'cháa cháa',en:'slowly'},{thai:'ได้ไหม',ph:'dâai mǎi',en:'can?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 874, thai: 'พูดช้าๆได้ไหมครับ', ph: 'phûut cháa cháa dâai mǎi khráp?', en: 'Could you speak slowly please? (male)', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'พูด',ph:'phûut',en:'speak'},{thai:'ช้าๆ',ph:'cháa cháa',en:'slowly'},{thai:'ได้ไหม',ph:'dâai mǎi',en:'can?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 875,
+    "type": "en",
+    "before": "  {id:875,thai:'พูดอีกทีได้ไหมครับ',ph:'phûut ìik thii dâai mǎi khráp?',en:'Could you say it again please?',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:875,thai:'พูดอีกทีได้ไหมครับ',ph:'phûut ìik thii dâai mǎi khráp?',en:'Could you say it again please? (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 876,
+    "type": "en",
+    "before": "  {id:876,thai:'รอสักครู่นะครับ',ph:'raw sàk khrûu ná khráp',en:'Please wait a moment',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:876,thai:'รอสักครู่นะครับ',ph:'raw sàk khrûu ná khráp',en:'Please wait a moment (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 879,
+    "type": "en",
+    "before": "  {id:879,thai:'ผมขอโทษจริงๆ',ph:'phǒm khǎw thôht jing jing',en:'I am really sorry',type:'s',stage:4,cat:'sentences-polite'},",
+    "after": "  {id:879,thai:'ผมขอโทษจริงๆ',ph:'phǒm khǎw thôht jing jing',en:'I am really sorry (male)',type:'s',stage:4,cat:'sentences-polite'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 892,
+    "type": "en",
+    "before": "  {id:892,thai:'พรุ่งนี้ผมจะไปทำงาน',ph:'phrûng níi phǒm jà bpai tham-ngaan',en:'Tomorrow I will go to work',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:892,thai:'พรุ่งนี้ผมจะไปทำงาน',ph:'phrûng níi phǒm jà bpai tham-ngaan',en:'Tomorrow I will go to work (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 893,
+    "type": "en",
+    "before": "  {id:893,thai:'เมื่อวานผมไปตลาด',ph:'mêua waan phǒm bpai talàat',en:'Yesterday I went to the market',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:893,thai:'เมื่อวานผมไปตลาด',ph:'mêua waan phǒm bpai talàat',en:'Yesterday I went to the market (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 894,
+    "type": "en",
+    "before": "  {id:894,thai:'ตอนนี้ผมกำลังกินข้าว',ph:'tawn níi phǒm gamlang gin khâao',en:'Right now I am eating',type:'s',stage:4,cat:'sentences-daily',note:'gamlang = present continuous \"-ing\".'},",
+    "after": "  {id:894,thai:'ตอนนี้ผมกำลังกินข้าว',ph:'tawn níi phǒm gamlang gin khâao',en:'Right now I am eating (male)',type:'s',stage:4,cat:'sentences-daily',note:'gamlang = present continuous \"-ing\".'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 895,
+    "type": "en",
+    "before": "  {id:895,thai:'ผมเพิ่งมาถึง',ph:'phǒm phêung maa thǔeng',en:'I just arrived',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:895,thai:'ผมเพิ่งมาถึง',ph:'phǒm phêung maa thǔeng',en:'I just arrived (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 896,
+    "type": "en",
+    "before": "  {id:896,thai:'ผมจะไปแล้ว',ph:'phǒm jà bpai láew',en:'I am going to go now',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:896,thai:'ผมจะไปแล้ว',ph:'phǒm jà bpai láew',en:'I am going to go now (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 897,
+    "type": "en",
+    "before": "  {id:897,thai:'เจอกันใหม่นะครับ',ph:'jer gan mài ná khráp',en:'See you again',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:897,thai:'เจอกันใหม่นะครับ',ph:'jer gan mài ná khráp',en:'See you again (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 899,
+    "type": "en",
+    "before": "  {id:899,thai:'โชคดีครับ',ph:'chôhk dee khráp',en:'Good luck',type:'s',stage:4,cat:'sentences-daily'},",
+    "after": "  {id:899,thai:'โชคดีครับ',ph:'chôhk dee khráp',en:'Good luck (male)',type:'s',stage:4,cat:'sentences-daily'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 910,
+    "type": "en",
+    "before": "  { id: 910, thai: 'อร่อยมากครับ', ph: 'aròi mâak khráp', en: 'It is very delicious', type: 's', stage: 2, cat: 'sentences-food', breakdown: [{thai:'อร่อย',ph:'aròi',en:'delicious'},{thai:'มาก',ph:'mâak',en:'very'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 910, thai: 'อร่อยมากครับ', ph: 'aròi mâak khráp', en: 'It is very delicious (male)', type: 's', stage: 2, cat: 'sentences-food', breakdown: [{thai:'อร่อย',ph:'aròi',en:'delicious'},{thai:'มาก',ph:'mâak',en:'very'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 913,
+    "type": "en",
+    "before": "  {id:913,thai:'ขอเพิ่มหน่อยครับ',ph:'khǎw phôem nàwy khráp',en:'May I have some more',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:913,thai:'ขอเพิ่มหน่อยครับ',ph:'khǎw phôem nàwy khráp',en:'May I have some more (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 914,
+    "type": "en",
+    "before": "  {id:914,thai:'ผมแพ้อาหารทะเล',ph:'phǒm pháe aahǎan thá-leh',en:'I am allergic to seafood',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:914,thai:'ผมแพ้อาหารทะเล',ph:'phǒm pháe aahǎan thá-leh',en:'I am allergic to seafood (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 915,
+    "type": "en",
+    "before": "  {id:915,thai:'ผมไม่กินเนื้อ',ph:'phǒm mâi gin núea',en:'I do not eat beef',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:915,thai:'ผมไม่กินเนื้อ',ph:'phǒm mâi gin núea',en:'I do not eat beef (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 916,
+    "type": "en",
+    "before": "  {id:916,thai:'อันนี้คืออะไรครับ',ph:'annǐi khue àrai khráp?',en:'What is this dish?',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:916,thai:'อันนี้คืออะไรครับ',ph:'annǐi khue àrai khráp?',en:'What is this dish? (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 917,
+    "type": "en",
+    "before": "  {id:917,thai:'แนะนำอะไรดีครับ',ph:'náe-nam àrai dee khráp?',en:'What do you recommend?',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:917,thai:'แนะนำอะไรดีครับ',ph:'náe-nam àrai dee khráp?',en:'What do you recommend? (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 918,
+    "type": "en",
+    "before": "  { id: 918, thai: 'เช็คบิลครับ', ph: 'chék bin khráp', en: 'The bill please', type: 's', stage: 2, cat: 'sentences-food', breakdown: [{thai:'เช็คบิล',ph:'chék bin',en:'check the bill'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 918, thai: 'เช็คบิลครับ', ph: 'chék bin khráp', en: 'The bill please (male)', type: 's', stage: 2, cat: 'sentences-food', breakdown: [{thai:'เช็คบิล',ph:'chék bin',en:'check the bill'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 919,
+    "type": "en",
+    "before": "  {id:919,thai:'แยกบิลได้ไหมครับ',ph:'yâek bin dâai mǎi khráp?',en:'Can we split the bill?',type:'s',stage:2,cat:'sentences-food'},",
+    "after": "  {id:919,thai:'แยกบิลได้ไหมครับ',ph:'yâek bin dâai mǎi khráp?',en:'Can we split the bill? (male)',type:'s',stage:2,cat:'sentences-food'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 930,
+    "type": "en",
+    "before": "  {id:930,thai:'ไปสนามบินครับ',ph:'bpai sà-nǎam bin khráp',en:'To the airport please',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:930,thai:'ไปสนามบินครับ',ph:'bpai sà-nǎam bin khráp',en:'To the airport please (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 931,
+    "type": "en",
+    "before": "  {id:931,thai:'ไปโรงแรมเรเนซองส์ครับ',ph:'bpai rohng raem rehnehsâng khráp',en:'To the Renaissance hotel please',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:931,thai:'ไปโรงแรมเรเนซองส์ครับ',ph:'bpai rohng raem rehnehsâng khráp',en:'To the Renaissance hotel please (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 932,
+    "type": "en",
+    "before": "  {id:932,thai:'จอดข้างหน้าครับ',ph:'jàwt khâang nâa khráp',en:'Stop up ahead please',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:932,thai:'จอดข้างหน้าครับ',ph:'jàwt khâang nâa khráp',en:'Stop up ahead please (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 933,
+    "type": "en",
+    "before": "  {id:933,thai:'รอที่นี่ได้ไหมครับ',ph:'raw thîi nîi dâai mǎi khráp?',en:'Can you wait here?',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:933,thai:'รอที่นี่ได้ไหมครับ',ph:'raw thîi nîi dâai mǎi khráp?',en:'Can you wait here? (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 934,
+    "type": "en",
+    "before": "  {id:934,thai:'ไกลไหมครับ',ph:'glai mǎi khráp?',en:'Is it far?',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:934,thai:'ไกลไหมครับ',ph:'glai mǎi khráp?',en:'Is it far? (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 936,
+    "type": "en",
+    "before": "  {id:936,thai:'ผมจะไปเที่ยว',ph:'phǒm jà bpai thîao',en:'I am going traveling',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:936,thai:'ผมจะไปเที่ยว',ph:'phǒm jà bpai thîao',en:'I am going traveling (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 937,
+    "type": "en",
+    "before": "  {id:937,thai:'ผมจะอยู่หนึ่งอาทิตย์',ph:'phǒm jà yùu nèung aa-thít',en:'I will stay for one week',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:937,thai:'ผมจะอยู่หนึ่งอาทิตย์',ph:'phǒm jà yùu nèung aa-thít',en:'I will stay for one week (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 938,
+    "type": "en",
+    "before": "  {id:938,thai:'พาผมไปที่นี่ได้ไหม',ph:'phaa phǒm bpai thîi nîi dâai mǎi?',en:'Can you take me here?',type:'s',stage:3,cat:'sentences-travel',note:'Show address on phone.'},",
+    "after": "  {id:938,thai:'พาผมไปที่นี่ได้ไหม',ph:'phaa phǒm bpai thîi nîi dâai mǎi?',en:'Can you take me here? (male)',type:'s',stage:3,cat:'sentences-travel',note:'Show address on phone.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 939,
+    "type": "en",
+    "before": "  {id:939,thai:'ผมหลงทางครับ',ph:'phǒm lǒng thaang khráp',en:'I am lost',type:'s',stage:3,cat:'sentences-travel'},",
+    "after": "  {id:939,thai:'ผมหลงทางครับ',ph:'phǒm lǒng thaang khráp',en:'I am lost (male)',type:'s',stage:3,cat:'sentences-travel'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 951,
+    "type": "en",
+    "before": "  {id:951,thai:'คุณสวยมากครับ',ph:'khun sǔai mâak khráp',en:'You are very beautiful',type:'s',stage:4,cat:'sentences-social'},",
+    "after": "  {id:951,thai:'คุณสวยมากครับ',ph:'khun sǔai mâak khráp',en:'You are very beautiful (male)',type:'s',stage:4,cat:'sentences-social'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 953,
+    "type": "en",
+    "before": "  {id:953,thai:'ผมชอบเมืองไทย',ph:'phǒm chôp mueang thai',en:'I love Thailand',type:'s',stage:4,cat:'sentences-social'},",
+    "after": "  {id:953,thai:'ผมชอบเมืองไทย',ph:'phǒm chôp mueang thai',en:'I love Thailand (male)',type:'s',stage:4,cat:'sentences-social'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 956,
+    "type": "en",
+    "before": "  {id:956,thai:'ผมมาเป็นครั้งแรก',ph:'phǒm maa bpen khráng râek',en:'This is my first time here',type:'s',stage:4,cat:'sentences-social'},",
+    "after": "  {id:956,thai:'ผมมาเป็นครั้งแรก',ph:'phǒm maa bpen khráng râek',en:'This is my first time here (male)',type:'s',stage:4,cat:'sentences-social'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 957,
+    "type": "en",
+    "before": "  {id:957,thai:'ผมจะกลับมาอีก',ph:'phǒm jà glàp maa ìik',en:'I will come back again',type:'s',stage:4,cat:'sentences-social'},",
+    "after": "  {id:957,thai:'ผมจะกลับมาอีก',ph:'phǒm jà glàp maa ìik',en:'I will come back again (male)',type:'s',stage:4,cat:'sentences-social'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1505,
+    "type": "en",
+    "before": "  {id:1505,thai:'มาวันนี้ได้ไหมครับ',ph:'maa wan níi dâai mǎi khráp?',en:'Can you come today?',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1505,thai:'มาวันนี้ได้ไหมครับ',ph:'maa wan níi dâai mǎi khráp?',en:'Can you come today? (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1506,
+    "type": "en",
+    "before": "  {id:1506,thai:'ห้องผมเสียงดังเกินไป',ph:'hông phǒm sǐang dang geun bpai',en:'My room is too noisy',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1506,thai:'ห้องผมเสียงดังเกินไป',ph:'hông phǒm sǐang dang geun bpai',en:'My room is too noisy (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1507,
+    "type": "en",
+    "before": "  {id:1507,thai:'ผมอยากได้แม่บ้านครับ',ph:'phǒm yàak dâai mâe-bâan khráp',en:'I would like a cleaner',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1507,thai:'ผมอยากได้แม่บ้านครับ',ph:'phǒm yàak dâai mâe-bâan khráp',en:'I would like a cleaner (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1509,
+    "type": "en",
+    "before": "  {id:1509,thai:'จะมาถึงกี่โมงครับ',ph:'jà maa thǔeng gìi mohng khráp?',en:'What time will you arrive?',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1509,thai:'จะมาถึงกี่โมงครับ',ph:'jà maa thǔeng gìi mohng khráp?',en:'What time will you arrive? (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1510,
+    "type": "en",
+    "before": "  {id:1510,thai:'โทรหาผมก่อนได้ไหม',ph:'thoh hǎa phǒm gàwn dâai mǎi?',en:'Can you call me first?',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1510,thai:'โทรหาผมก่อนได้ไหม',ph:'thoh hǎa phǒm gàwn dâai mǎi?',en:'Can you call me first? (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1511,
+    "type": "en",
+    "before": "  {id:1511,thai:'ผมจ่ายแล้วครับ',ph:'phǒm jàai láew khráp',en:'I already paid',type:'s',stage:5,cat:'sentences-home'},",
+    "after": "  {id:1511,thai:'ผมจ่ายแล้วครับ',ph:'phǒm jàai láew khráp',en:'I already paid (male)',type:'s',stage:5,cat:'sentences-home'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1530,
+    "type": "en",
+    "before": "  { id: 1530, thai: 'ผมปวดหัวครับ', ph: 'phǒm bpùat hǔa khráp', en: 'I have a headache', type: 's', stage: 6, cat: 'sentences-health', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ปวด',ph:'bpùat',en:'ache'},{thai:'หัว',ph:'hǔa',en:'head'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 1530, thai: 'ผมปวดหัวครับ', ph: 'phǒm bpùat hǔa khráp', en: 'I have a headache (male)', type: 's', stage: 6, cat: 'sentences-health', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ปวด',ph:'bpùat',en:'ache'},{thai:'หัว',ph:'hǔa',en:'head'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1531,
+    "type": "en",
+    "before": "  {id:1531,thai:'ผมปวดท้องครับ',ph:'phǒm bpùat tháwng khráp',en:'My stomach hurts',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1531,thai:'ผมปวดท้องครับ',ph:'phǒm bpùat tháwng khráp',en:'My stomach hurts (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1532,
+    "type": "en",
+    "before": "  {id:1532,thai:'ผมเป็นไข้',ph:'phǒm bpen khâi',en:'I have a fever',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1532,thai:'ผมเป็นไข้',ph:'phǒm bpen khâi',en:'I have a fever (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1533,
+    "type": "en",
+    "before": "  {id:1533,thai:'ผมต้องการยาครับ',ph:'phǒm tâwng-gaan yaa khráp',en:'I need medicine',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1533,thai:'ผมต้องการยาครับ',ph:'phǒm tâwng-gaan yaa khráp',en:'I need medicine (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1534,
+    "type": "en",
+    "before": "  {id:1534,thai:'ผมแพ้อันนี้ครับ',ph:'phǒm pháe annǐi khráp',en:'I am allergic to this',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1534,thai:'ผมแพ้อันนี้ครับ',ph:'phǒm pháe annǐi khráp',en:'I am allergic to this (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1535,
+    "type": "en",
+    "before": "  {id:1535,thai:'ผมต้องไปหาหมอ',ph:'phǒm tâwng bpai hǎa mǎw',en:'I need to see a doctor',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1535,thai:'ผมต้องไปหาหมอ',ph:'phǒm tâwng bpai hǎa mǎw',en:'I need to see a doctor (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1538,
+    "type": "en",
+    "before": "  {id:1538,thai:'เบาๆหน่อยครับ',ph:'bao bao nàwy khráp',en:'Softer please (massage)',type:'s',stage:6,cat:'sentences-health'},",
+    "after": "  {id:1538,thai:'เบาๆหน่อยครับ',ph:'bao bao nàwy khráp',en:'Softer please (massage) (male)',type:'s',stage:6,cat:'sentences-health'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1560,
+    "type": "en",
+    "before": "  { id: 1560, thai: 'ผมอยากเปิดบัญชีครับ', ph: 'phǒm yàak bpòet ban-chii khráp', en: 'I want to open an account', type: 's', stage: 7, cat: 'sentences-admin', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'เปิด',ph:'bpòet',en:'open'},{thai:'บัญชี',ph:'ban-chii',en:'account'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },",
+    "after": "  { id: 1560, thai: 'ผมอยากเปิดบัญชีครับ', ph: 'phǒm yàak bpòet ban-chii khráp', en: 'I want to open an account (male)', type: 's', stage: 7, cat: 'sentences-admin', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'อยาก',ph:'yàak',en:'want to'},{thai:'เปิด',ph:'bpòet',en:'open'},{thai:'บัญชี',ph:'ban-chii',en:'account'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1561,
+    "type": "en",
+    "before": "  {id:1561,thai:'ผมต้องใช้เอกสารอะไรบ้าง',ph:'phǒm tâwng chái èhk-gà-sǎan àrai bâang?',en:'What documents do I need?',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1561,thai:'ผมต้องใช้เอกสารอะไรบ้าง',ph:'phǒm tâwng chái èhk-gà-sǎan àrai bâang?',en:'What documents do I need? (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1562,
+    "type": "en",
+    "before": "  {id:1562,thai:'จ่ายโอนได้ไหมครับ',ph:'jàai ohn dâai mǎi khráp?',en:'Can I pay by bank transfer?',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1562,thai:'จ่ายโอนได้ไหมครับ',ph:'jàai ohn dâai mǎi khráp?',en:'Can I pay by bank transfer? (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1563,
+    "type": "en",
+    "before": "  {id:1563,thai:'เอทีเอ็มกินบัตรผม',ph:'eh-thii-em gin bàt phǒm',en:'The ATM ate my card',type:'s',stage:7,cat:'sentences-admin',note:'Literally \"ATM ate.\"'},",
+    "after": "  {id:1563,thai:'เอทีเอ็มกินบัตรผม',ph:'eh-thii-em gin bàt phǒm',en:'The ATM ate my card (male)',type:'s',stage:7,cat:'sentences-admin',note:'Literally \"ATM ate.\"'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1564,
+    "type": "en",
+    "before": "  {id:1564,thai:'ผมมีนัดครับ',ph:'phǒm mii nát khráp',en:'I have an appointment',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1564,thai:'ผมมีนัดครับ',ph:'phǒm mii nát khráp',en:'I have an appointment (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1565,
+    "type": "en",
+    "before": "  { id: 1565, thai: 'วีซ่าผมจะหมดเดือนหน้า', ph: 'wii-sâa phǒm jà mòt duean nâa', en: 'My visa expires next month', type: 's', stage: 7, cat: 'sentences-admin', breakdown: [{thai:'วีซ่า',ph:'wii-sâa',en:'visa'},{thai:'ผม',ph:'phǒm',en:'my'},{thai:'จะ',ph:'jà',en:'will'},{thai:'หมด',ph:'mòt',en:'expire'},{thai:'เดือนหน้า',ph:'duean nâa',en:'next month'}] },",
+    "after": "  { id: 1565, thai: 'วีซ่าผมจะหมดเดือนหน้า', ph: 'wii-sâa phǒm jà mòt duean nâa', en: 'My visa expires next month (male)', type: 's', stage: 7, cat: 'sentences-admin', breakdown: [{thai:'วีซ่า',ph:'wii-sâa',en:'visa'},{thai:'ผม',ph:'phǒm',en:'my'},{thai:'จะ',ph:'jà',en:'will'},{thai:'หมด',ph:'mòt',en:'expire'},{thai:'เดือนหน้า',ph:'duean nâa',en:'next month'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1566,
+    "type": "en",
+    "before": "  {id:1566,thai:'เซ็นตรงไหนครับ',ph:'sen trong nǎi khráp?',en:'Where do I sign?',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1566,thai:'เซ็นตรงไหนครับ',ph:'sen trong nǎi khráp?',en:'Where do I sign? (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1567,
+    "type": "en",
+    "before": "  {id:1567,thai:'ขอใบเสร็จด้วยครับ',ph:'khǎw bai sèt dûai khráp',en:'May I have a receipt please',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1567,thai:'ขอใบเสร็จด้วยครับ',ph:'khǎw bai sèt dûai khráp',en:'May I have a receipt please (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1568,
+    "type": "en",
+    "before": "  {id:1568,thai:'พริ้นท์ให้ผมหน่อยได้ไหม',ph:'príng hâi phǒm nàwy dâai mǎi?',en:'Can you print this for me?',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1568,thai:'พริ้นท์ให้ผมหน่อยได้ไหม',ph:'príng hâi phǒm nàwy dâai mǎi?',en:'Can you print this for me? (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1569,
+    "type": "en",
+    "before": "  {id:1569,thai:'ผมอยากเติมเงิน',ph:'phǒm yàak tem ngern',en:'I want to top up (phone)',type:'s',stage:7,cat:'sentences-admin'},",
+    "after": "  {id:1569,thai:'ผมอยากเติมเงิน',ph:'phǒm yàak tem ngern',en:'I want to top up (phone) (male)',type:'s',stage:7,cat:'sentences-admin'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1580,
+    "type": "en",
+    "before": "  { id: 1580, thai: 'ผมว่าใช่', ph: 'phǒm wâa châi', en: 'I think so', type: 's', stage: 8, cat: 'sentences-fluency', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ว่า',ph:'wâa',en:'say/think'},{thai:'ใช่',ph:'châi',en:'yes'}] },",
+    "after": "  { id: 1580, thai: 'ผมว่าใช่', ph: 'phǒm wâa châi', en: 'I think so (male)', type: 's', stage: 8, cat: 'sentences-fluency', breakdown: [{thai:'ผม',ph:'phǒm',en:'I'},{thai:'ว่า',ph:'wâa',en:'say/think'},{thai:'ใช่',ph:'châi',en:'yes'}] },"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1581,
+    "type": "en",
+    "before": "  {id:1581,thai:'ผมว่าไม่ใช่',ph:'phǒm wâa mâi châi',en:\"I don't think so\",type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1581,thai:'ผมว่าไม่ใช่',ph:'phǒm wâa mâi châi',en:\"I don't think so (male)\",type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1583,
+    "type": "en",
+    "before": "  {id:1583,thai:'แล้วแต่คุณครับ',ph:'láew tàe khun khráp',en:\"It's up to you\",type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1583,thai:'แล้วแต่คุณครับ',ph:'láew tàe khun khráp',en:\"It's up to you (male)\",type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1584,
+    "type": "en",
+    "before": "  {id:1584,thai:'มีเหตุผลครับ',ph:'mii hèht-phǒn khráp',en:'That makes sense',type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1584,thai:'มีเหตุผลครับ',ph:'mii hèht-phǒn khráp',en:'That makes sense (male)',type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1585,
+    "type": "en",
+    "before": "  {id:1585,thai:'ยังไม่แน่ใจครับ',ph:'yang mâi nâe-jai khráp',en:\"I'm not sure yet\",type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1585,thai:'ยังไม่แน่ใจครับ',ph:'yang mâi nâe-jai khráp',en:\"I'm not sure yet (male)\",type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1586,
+    "type": "en",
+    "before": "  {id:1586,thai:'ผมเปลี่ยนใจแล้ว',ph:'phǒm plìan jai láew',en:'I changed my mind',type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1586,thai:'ผมเปลี่ยนใจแล้ว',ph:'phǒm plìan jai láew',en:'I changed my mind (male)',type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1587,
+    "type": "en",
+    "before": "  {id:1587,thai:'ผมลืมไปครับ',ph:'phǒm luem bpai khráp',en:'I forgot',type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1587,thai:'ผมลืมไปครับ',ph:'phǒm luem bpai khráp',en:'I forgot (male)',type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1588,
+    "type": "en",
+    "before": "  {id:1588,thai:'ผมแค่ดูเฉยๆครับ',ph:'phǒm khâe duu chǒei chǒei khráp',en:\"I'm just looking\",type:'s',stage:8,cat:'sentences-fluency',note:'Useful in shops.'},",
+    "after": "  {id:1588,thai:'ผมแค่ดูเฉยๆครับ',ph:'phǒm khâe duu chǒei chǒei khráp',en:\"I'm just looking (male)\",type:'s',stage:8,cat:'sentences-fluency',note:'Useful in shops.'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1590,
+    "type": "en",
+    "before": "  {id:1590,thai:'ผมเข้าใจแล้ว',ph:'phǒm khâo jai láew',en:'I understand now',type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1590,thai:'ผมเข้าใจแล้ว',ph:'phǒm khâo jai láew',en:'I understand now (male)',type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 1591,
+    "type": "en",
+    "before": "  {id:1591,thai:'แพงเกินไปสำหรับผม',ph:'phaeng geun bpai sǎm-ràp phǒm',en:\"That's too expensive for me\",type:'s',stage:8,cat:'sentences-fluency'},",
+    "after": "  {id:1591,thai:'แพงเกินไปสำหรับผม',ph:'phaeng geun bpai sǎm-ràp phǒm',en:\"That's too expensive for me (male)\",type:'s',stage:8,cat:'sentences-fluency'},"
+  },
+  {
+    "file": "src/data/cards.js",
+    "id": 2,
+    "type": "note",
+    "before": "  {id:2,thai:'ครับ',ph:'khráp',en:'polite particle (male)',type:'w',stage:1,cat:'pronouns',note:'End every sentence with this. Marks you as polite + male.'},",
+    "after": "  {id:2,thai:'ครับ',ph:'khráp',en:'polite particle (male)',type:'w',stage:1,cat:'pronouns',note:'End every sentence with this. Marks you as polite (male).'},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 1712,
+    "type": "en",
+    "before": "  {id:1712,thai:\"ฉัน\",ph:\"chăn\",en:\"I\",type:\"w\",stage:1,cat:\"pronouns\"},",
+    "after": "  {id:1712,thai:\"ฉัน\",ph:\"chăn\",en:\"I (female)\",type:\"w\",stage:1,cat:\"pronouns\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 3883,
+    "type": "en",
+    "before": "  {id:3883,thai:\"ของฉัน\",ph:\"kŏng chăn\",en:\"my\",type:\"w\",stage:1,cat:\"pronouns\"},",
+    "after": "  {id:3883,thai:\"ของฉัน\",ph:\"kŏng chăn\",en:\"my (female)\",type:\"w\",stage:1,cat:\"pronouns\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 3884,
+    "type": "en",
+    "before": "  {id:3884,thai:\"ตัวของฉันเอง\",ph:\"dtua kŏng chăn ayng\",en:\"myself\",type:\"w\",stage:1,cat:\"pronouns\"},",
+    "after": "  {id:3884,thai:\"ตัวของฉันเอง\",ph:\"dtua kŏng chăn ayng\",en:\"myself (female)\",type:\"w\",stage:1,cat:\"pronouns\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 4033,
+    "type": "en",
+    "before": "  {id:4033,thai:\"คะ\",ph:\"khá\",en:\"particle / would\",type:\"w\",stage:1,cat:\"grammar\"},",
+    "after": "  {id:4033,thai:\"คะ\",ph:\"khá\",en:\"particle / would (female)\",type:\"w\",stage:1,cat:\"grammar\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 4034,
+    "type": "en",
+    "before": "  {id:4034,thai:\"ค่ะ\",ph:\"khâ\",en:\"okay / yes\",type:\"w\",stage:1,cat:\"grammar\"},",
+    "after": "  {id:4034,thai:\"ค่ะ\",ph:\"khâ\",en:\"okay / yes (female)\",type:\"w\",stage:1,cat:\"grammar\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 4079,
+    "type": "en",
+    "before": "  {id:4079,thai:\"ฉันท์\",ph:\"chǎn\",en:\"poem / metrical composition\",type:\"w\",stage:2,cat:\"adjectives\"},",
+    "after": "  {id:4079,thai:\"ฉันท์\",ph:\"chǎn\",en:\"poem / metrical composition (female)\",type:\"w\",stage:2,cat:\"adjectives\"},"
+  },
+  {
+    "file": "src/data/cards-imported.js",
+    "id": 4380,
+    "type": "en",
+    "before": "  {id:4380,thai:\"กระผม\",ph:\"grà phǒhm\",en:\"me / I\",type:\"w\",stage:1,cat:\"pronouns\"},",
+    "after": "  {id:4380,thai:\"กระผม\",ph:\"grà phǒhm\",en:\"me / I (male)\",type:\"w\",stage:1,cat:\"pronouns\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4395,
+    "type": "en",
+    "before": "  {id:4395,thai:\"คุณ ได้ค่ะ\",ph:\"koon dâi kâ\",en:\"you can (f)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4395,thai:\"คุณ ได้ค่ะ\",ph:\"koon dâi kâ\",en:\"you can (female)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4431,
+    "type": "en",
+    "before": "  {id:4431,thai:\"สามีดิฉัน\",ph:\"saah-mee deechán\",en:\"my husband\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4431,thai:\"สามีดิฉัน\",ph:\"saah-mee deechán\",en:\"my husband (female, formal)\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4443,
+    "type": "en",
+    "before": "  {id:4443,thai:\"ครอบครัวผม\",ph:\"krôrp-krua poem\",en:\"my family\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4443,thai:\"ครอบครัวผม\",ph:\"krôrp-krua poem\",en:\"my family (male)\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4461,
+    "type": "en",
+    "before": "  {id:4461,thai:\"ลูกชายผม\",ph:\"lôog chahy poem\",en:\"my son\",type:\"p\",stage:4,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4461,thai:\"ลูกชายผม\",ph:\"lôog chahy poem\",en:\"my son (male)\",type:\"p\",stage:4,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4462,
+    "type": "en",
+    "before": "  {id:4462,thai:\"เพื่อนผม\",ph:\"pêun poem\",en:\"my friends\",type:\"p\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4462,thai:\"เพื่อนผม\",ph:\"pêun poem\",en:\"my friends (male)\",type:\"p\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4469,
+    "type": "en",
+    "before": "  {id:4469,thai:\"ผมคิด\",ph:\"poem kít\",en:\"I think\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4469,thai:\"ผมคิด\",ph:\"poem kít\",en:\"I think (male)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4470,
+    "type": "en",
+    "before": "  {id:4470,thai:\"ผมคิดว่า\",ph:\"poem kít wâh\",en:\"I think that\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4470,thai:\"ผมคิดว่า\",ph:\"poem kít wâh\",en:\"I think that (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4477,
+    "type": "en",
+    "before": "  {id:4477,thai:\"ผมซื้อ\",ph:\"poem séu\",en:\"I bought\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4477,thai:\"ผมซื้อ\",ph:\"poem séu\",en:\"I bought (male)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4478,
+    "type": "en",
+    "before": "  {id:4478,thai:\"ผมชอบ\",ph:\"poem chôrp\",en:\"I like\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4478,thai:\"ผมชอบ\",ph:\"poem chôrp\",en:\"I like (male)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4483,
+    "type": "en",
+    "before": "  {id:4483,thai:\"กับลูกชายผมสามคน\",ph:\"lôog chahy poem saahm kon\",en:\"my three sons\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4483,thai:\"กับลูกชายผมสามคน\",ph:\"lôog chahy poem saahm kon\",en:\"my three sons (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4485,
+    "type": "en",
+    "before": "  {id:4485,thai:\"สวัสดีค่ะ\",ph:\"sawùtdee kâ\",en:\"hello / goodbye (f)\",type:\"s\",stage:1,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4485,thai:\"สวัสดีค่ะ\",ph:\"sawùtdee kâ\",en:\"hello / goodbye (female)\",type:\"s\",stage:1,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4486,
+    "type": "en",
+    "before": "  {id:4486,thai:\"ขอบคุณค่ะ\",ph:\"kòrp koon kâ\",en:\"thank you (f)\",type:\"p\",stage:1,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4486,thai:\"ขอบคุณค่ะ\",ph:\"kòrp koon kâ\",en:\"thank you (female)\",type:\"p\",stage:1,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4487,
+    "type": "en",
+    "before": "  {id:4487,thai:\"ดิฉันเป็น\",ph:\"dee chàn pen\",en:\"I am (f)\",type:\"p\",stage:1,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4487,thai:\"ดิฉันเป็น\",ph:\"dee chàn pen\",en:\"I am (female)\",type:\"p\",stage:1,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4489,
+    "type": "en",
+    "before": "  {id:4489,thai:\"ใช่ครับ\",ph:\"châi krúp\",en:\"yes (m, response to \\\"Are you?\\\")\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4489,thai:\"ใช่ครับ\",ph:\"châi krúp\",en:\"yes (m, response to \\\"Are you?\\\") (male)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4490,
+    "type": "en",
+    "before": "  {id:4490,thai:\"ไม่ใช่ครับ\",ph:\"mâi châi krúp\",en:\"no (m, response to \\\"Are you?\\\")\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4490,thai:\"ไม่ใช่ครับ\",ph:\"mâi châi krúp\",en:\"no (m, response to \\\"Are you?\\\") (male)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4491,
+    "type": "en",
+    "before": "  {id:4491,thai:\"ดิฉันไม่ใช่\",ph:\"deechán mâi châi\",en:\"I’m not (f)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4491,thai:\"ดิฉันไม่ใช่\",ph:\"deechán mâi châi\",en:\"I’m not (female)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4497,
+    "type": "en",
+    "before": "  {id:4497,thai:\"ผมอยากลับละ\",ph:\"pŏm yàak láp lá.\",en:\"I want to return. (m, casual)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:4497,thai:\"ผมอยากลับละ\",ph:\"pŏm yàak láp lá.\",en:\"I want to return. (m, casual) (male)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4519,
+    "type": "en",
+    "before": "  {id:4519,thai:\"ภรรยาผม\",ph:\"pan-yah poem\",en:\"my wife\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4519,thai:\"ภรรยาผม\",ph:\"pan-yah poem\",en:\"my wife (male)\",type:\"p\",stage:3,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4525,
+    "type": "en",
+    "before": "  {id:4525,thai:\"คุณมาจากไหนคะ\",ph:\"koon maa jàak năi ká?\",en:\"Where are you from? (f, polite)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4525,thai:\"คุณมาจากไหนคะ\",ph:\"koon maa jàak năi ká?\",en:\"Where are you from? (female, polite)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4526,
+    "type": "en",
+    "before": "  {id:4526,thai:\"ฉันไม่ค่อยเก่งเท่าไหร่\",ph:\"chăn mâi kôi gèng tâo rài.\",en:\"I am not very good at it. (f)\",type:\"s\",stage:1,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4526,thai:\"ฉันไม่ค่อยเก่งเท่าไหร่\",ph:\"chăn mâi kôi gèng tâo rài.\",en:\"I am not very good at it. (female)\",type:\"s\",stage:1,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4535,
+    "type": "en",
+    "before": "  {id:4535,thai:\"ไม่ค่ะ\",ph:\"mâi kâ\",en:\"no (f)\",type:\"w\",stage:1,cat:\"things\"}, // phReview: true, catReview: true",
+    "after": "  {id:4535,thai:\"ไม่ค่ะ\",ph:\"mâi kâ\",en:\"no (female)\",type:\"w\",stage:1,cat:\"things\"}, // phReview: true, catReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4560,
+    "type": "en",
+    "before": "  {id:4560,thai:\"คุณพูดได้ค่ะ\",ph:\"koon pôot dâi kâ\",en:\"you can speak (f)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4560,thai:\"คุณพูดได้ค่ะ\",ph:\"koon pôot dâi kâ\",en:\"you can speak (female)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4563,
+    "type": "en",
+    "before": "  {id:4563,thai:\"คุณอยากค่ะ\",ph:\"koon yàhk kâ\",en:\"you would like (f)\",type:\"s\",stage:1,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:4563,thai:\"คุณอยากค่ะ\",ph:\"koon yàhk kâ\",en:\"you would like (female)\",type:\"s\",stage:1,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4571,
+    "type": "en",
+    "before": "  {id:4571,thai:\"ทีหลังค่ะ\",ph:\"tee-leung kâ\",en:\"another time (f)\",type:\"p\",stage:1,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4571,thai:\"ทีหลังค่ะ\",ph:\"tee-leung kâ\",en:\"another time (female)\",type:\"p\",stage:1,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4581,
+    "type": "en",
+    "before": "  {id:4581,thai:\"ฉันอยู่นี่ตั้งแต่อาทิตย์ที่แล้ว\",ph:\"chăn yòo nêe dtâng dtàe aa-tít têe láew.\",en:\"I’ve been here since last week. (f)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4581,thai:\"ฉันอยู่นี่ตั้งแต่อาทิตย์ที่แล้ว\",ph:\"chăn yòo nêe dtâng dtàe aa-tít têe láew.\",en:\"I’ve been here since last week. (female)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4582,
+    "type": "en",
+    "before": "  {id:4582,thai:\"ฉันจะกลับบ้าน\",ph:\"chăn jà glàp bâan.\",en:\"I’m going to return home. (f)\",type:\"s\",stage:4,cat:\"home\"}, // phReview: true",
+    "after": "  {id:4582,thai:\"ฉันจะกลับบ้าน\",ph:\"chăn jà glàp bâan.\",en:\"I’m going to return home. (female)\",type:\"s\",stage:4,cat:\"home\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4583,
+    "type": "en",
+    "before": "  {id:4583,thai:\"ฉันจะอยู่ต่ออีกนิด\",ph:\"chăn jà yòo dtòr èek nít.\",en:\"I want to stay a little more. (f, casual)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:4583,thai:\"ฉันจะอยู่ต่ออีกนิด\",ph:\"chăn jà yòo dtòr èek nít.\",en:\"I want to stay a little more. (female, casual)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4585,
+    "type": "en",
+    "before": "  {id:4585,thai:\"ผมจะท่องหนังสือสักหน่อย\",ph:\"pŏm jà tông năng-sĕu sàk nòi.\",en:\"I’m going to study a little. (m, casual)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4585,thai:\"ผมจะท่องหนังสือสักหน่อย\",ph:\"pŏm jà tông năng-sĕu sàk nòi.\",en:\"I’m going to study a little. (m, casual) (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4606,
+    "type": "en",
+    "before": "  {id:4606,thai:\"ขอชาหรือไม่ก็น้ำผลไม้ค่ะ\",ph:\"kŏr chaa rĕu mâi gôr náam pŏn lá mái kâ.\",en:\"Tea or juice, please. (f)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4606,thai:\"ขอชาหรือไม่ก็น้ำผลไม้ค่ะ\",ph:\"kŏr chaa rĕu mâi gôr náam pŏn lá mái kâ.\",en:\"Tea or juice, please. (female)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4607,
+    "type": "en",
+    "before": "  {id:4607,thai:\"ฉันไม่อยู่นี่\",ph:\"chăn mâi yòo nêe.\",en:\"It’s not here. (f)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4607,thai:\"ฉันไม่อยู่นี่\",ph:\"chăn mâi yòo nêe.\",en:\"It’s not here. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4610,
+    "type": "en",
+    "before": "  {id:4610,thai:\"ตอนนี้ผมโอเค\",ph:\"dton-née pŏm ok.\",en:\"As for now, I’m good. (m, casual)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4610,thai:\"ตอนนี้ผมโอเค\",ph:\"dton-née pŏm ok.\",en:\"As for now, I’m good. (m, casual) (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4616,
+    "type": "en",
+    "before": "  {id:4616,thai:\"ฉันมีเงินสด\",ph:\"chăn mee ngern sòt.\",en:\"I have cash. (f)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:4616,thai:\"ฉันมีเงินสด\",ph:\"chăn mee ngern sòt.\",en:\"I have cash. (female)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4617,
+    "type": "en",
+    "before": "  {id:4617,thai:\"ขอเป็นแบงค์นะคะ\",ph:\"kŏr bpen báeng ná ká.\",en:\"Give me in bills, please. (f)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4617,thai:\"ขอเป็นแบงค์นะคะ\",ph:\"kŏr bpen báeng ná ká.\",en:\"Give me in bills, please. (female)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4644,
+    "type": "en",
+    "before": "  {id:4644,thai:\"ฉันอยากไปซื้อของ\",ph:\"chăn yàak bpai séu kŏng.\",en:\"I would like to shop. (f, casual)\",type:\"s\",stage:3,cat:\"places\"}, // phReview: true",
+    "after": "  {id:4644,thai:\"ฉันอยากไปซื้อของ\",ph:\"chăn yàak bpai séu kŏng.\",en:\"I would like to shop. (female, casual)\",type:\"s\",stage:3,cat:\"places\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4645,
+    "type": "en",
+    "before": "  {id:4645,thai:\"ฉันจ่ายไม่ไหวหรอก\",ph:\"chăn jàai mâi wăi ròk.\",en:\"I can’t afford it. (f)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4645,thai:\"ฉันจ่ายไม่ไหวหรอก\",ph:\"chăn jàai mâi wăi ròk.\",en:\"I can’t afford it. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4646,
+    "type": "en",
+    "before": "  {id:4646,thai:\"ช้าลงกว่านี้หน่อยนะคะ\",ph:\"cháa long gwàa née nòi ná ká?\",en:\"A little bit more slowly, could you please? (f)\",type:\"s\",stage:3,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4646,thai:\"ช้าลงกว่านี้หน่อยนะคะ\",ph:\"cháa long gwàa née nòi ná ká?\",en:\"A little bit more slowly, could you please? (female)\",type:\"s\",stage:3,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4647,
+    "type": "en",
+    "before": "  {id:4647,thai:\"เชิญเข้ามาข้างในค่ะ\",ph:\"chern kâo maa kâang nai kâ.\",en:\"Please come in. (f)\",type:\"s\",stage:3,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4647,thai:\"เชิญเข้ามาข้างในค่ะ\",ph:\"chern kâo maa kâang nai kâ.\",en:\"Please come in. (female)\",type:\"s\",stage:3,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4648,
+    "type": "en",
+    "before": "  {id:4648,thai:\"ขอน้ำหน่อยได้ไหมคะ\",ph:\"kŏr náam nòi dâai măi ká?\",en:\"May I have some water? (f, polite)\",type:\"s\",stage:3,cat:\"food\"}, // phReview: true",
+    "after": "  {id:4648,thai:\"ขอน้ำหน่อยได้ไหมคะ\",ph:\"kŏr náam nòi dâai măi ká?\",en:\"May I have some water? (female, polite)\",type:\"s\",stage:3,cat:\"food\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4649,
+    "type": "en",
+    "before": "  {id:4649,thai:\"คนนั้นแฟนของผมครับ\",ph:\"kon nán faen kŏng pŏm kráp.\",en:\"That’s my girlfriend. (informal)\",type:\"s\",stage:3,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4649,thai:\"คนนั้นแฟนของผมครับ\",ph:\"kon nán faen kŏng pŏm kráp.\",en:\"That’s my girlfriend. (informal) (male)\",type:\"s\",stage:3,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4650,
+    "type": "en",
+    "before": "  {id:4650,thai:\"ฉันมีหมาตัวใหญ่\",ph:\"chăn mee măa dtuua yài.\",en:\"I have a big dog. (f)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4650,thai:\"ฉันมีหมาตัวใหญ่\",ph:\"chăn mee măa dtuua yài.\",en:\"I have a big dog. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4651,
+    "type": "en",
+    "before": "  {id:4651,thai:\"ฉันยังไม่มีคู่รัก\",ph:\"chăn yang mâi mee kôo rák.\",en:\"I don’t have a significant other. (f)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4651,thai:\"ฉันยังไม่มีคู่รัก\",ph:\"chăn yang mâi mee kôo rák.\",en:\"I don’t have a significant other. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4654,
+    "type": "en",
+    "before": "  {id:4654,thai:\"ผมขอน้ำหน่อยนะครับ\",ph:\"pŏm kŏr náam nòi ná kráp?\",en:\"May I have some water? (m, casual)\",type:\"s\",stage:3,cat:\"food\"}, // phReview: true",
+    "after": "  {id:4654,thai:\"ผมขอน้ำหน่อยนะครับ\",ph:\"pŏm kŏr náam nòi ná kráp?\",en:\"May I have some water? (m, casual) (male)\",type:\"s\",stage:3,cat:\"food\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4675,
+    "type": "en",
+    "before": "  {id:4675,thai:\"ไม่ใช่วันนี้ค่ะ\",ph:\"mâi châi wannée kâ\",en:\"not today\",type:\"p\",stage:2,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4675,thai:\"ไม่ใช่วันนี้ค่ะ\",ph:\"mâi châi wannée kâ\",en:\"not today (female)\",type:\"p\",stage:2,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4680,
+    "type": "en",
+    "before": "  {id:4680,thai:\"ได้ไม๊คะ\",ph:\"dâi mái ká?\",en:\"OK? (Can it be?)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4680,thai:\"ได้ไม๊คะ\",ph:\"dâi mái ká?\",en:\"OK? (Can it be?) (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4685,
+    "type": "en",
+    "before": "  {id:4685,thai:\"ฉันจะทำงานสักนิด\",ph:\"chăn jà tam ngaan sàk nít.\",en:\"I’m going to work a little. (f, casual)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4685,thai:\"ฉันจะทำงานสักนิด\",ph:\"chăn jà tam ngaan sàk nít.\",en:\"I’m going to work a little. (female, casual)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4686,
+    "type": "en",
+    "before": "  {id:4686,thai:\"ฉันจะอ่านหนังสือ\",ph:\"chăn jà àan năng-sĕu.\",en:\"I’m going to read. (f)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4686,thai:\"ฉันจะอ่านหนังสือ\",ph:\"chăn jà àan năng-sĕu.\",en:\"I’m going to read. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4687,
+    "type": "en",
+    "before": "  {id:4687,thai:\"ฉันคิดถึงบ้านมากๆ\",ph:\"chăn kít tĕung bâan mâak mâak.\",en:\"I’m homesick. (f)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4687,thai:\"ฉันคิดถึงบ้านมากๆ\",ph:\"chăn kít tĕung bâan mâak mâak.\",en:\"I’m homesick. (female)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4688,
+    "type": "en",
+    "before": "  {id:4688,thai:\"ฉันไม่ค่อยเข้าใจ\",ph:\"chăn mâi kôi kâo jai.\",en:\"I don’t understand the meaning. (f)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4688,thai:\"ฉันไม่ค่อยเข้าใจ\",ph:\"chăn mâi kôi kâo jai.\",en:\"I don’t understand the meaning. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4689,
+    "type": "en",
+    "before": "  {id:4689,thai:\"ฉันไม่ค่อยแน่ใจเท่าไหร่\",ph:\"chăn mâi kôi nâe jai tâo rài.\",en:\"I’m not so sure. (f)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4689,thai:\"ฉันไม่ค่อยแน่ใจเท่าไหร่\",ph:\"chăn mâi kôi nâe jai tâo rài.\",en:\"I’m not so sure. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4697,
+    "type": "en",
+    "before": "  {id:4697,thai:\"รอเดี๋ยวนะคะ\",ph:\"ror dĭieow ná ká.\",en:\"Wait a minute, please. (f, casual)\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4697,thai:\"รอเดี๋ยวนะคะ\",ph:\"ror dĭieow ná ká.\",en:\"Wait a minute, please. (female, casual)\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4698,
+    "type": "en",
+    "before": "  {id:4698,thai:\"ฉันมีเพื่อนไม่กี่คนที่นั่น\",ph:\"chăn mee pêuuan mâi gèe kon têe nân.\",en:\"I have a few friends there. (f, casual)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4698,thai:\"ฉันมีเพื่อนไม่กี่คนที่นั่น\",ph:\"chăn mee pêuuan mâi gèe kon têe nân.\",en:\"I have a few friends there. (female, casual)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4699,
+    "type": "en",
+    "before": "  {id:4699,thai:\"ผมคิดว่าเราน่าจะสายไปนะ\",ph:\"pŏm kít wâa rao nâa jà săai bpai ná.\",en:\"It’s already late, I’m sure. (m, casual)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4699,thai:\"ผมคิดว่าเราน่าจะสายไปนะ\",ph:\"pŏm kít wâa rao nâa jà săai bpai ná.\",en:\"It’s already late, I’m sure. (m, casual) (male)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4700,
+    "type": "en",
+    "before": "  {id:4700,thai:\"ผมต้องตื่นแต่เช้าพรุ่งนี้\",ph:\"pŏm dtông dtèun dtàe cháo prûng-née.\",en:\"Because I have to get up early tomorrow. (m, casual)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4700,thai:\"ผมต้องตื่นแต่เช้าพรุ่งนี้\",ph:\"pŏm dtông dtèun dtàe cháo prûng-née.\",en:\"Because I have to get up early tomorrow. (m, casual) (male)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4727,
+    "type": "en",
+    "before": "  {id:4727,thai:\"ฉันจะไปหาเพื่อน\",ph:\"chăn jà bpai hăa pêuuan.\",en:\"I’m going to see friends. (f)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4727,thai:\"ฉันจะไปหาเพื่อน\",ph:\"chăn jà bpai hăa pêuuan.\",en:\"I’m going to see friends. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4756,
+    "type": "en",
+    "before": "  {id:4756,thai:\"ผมเป็นหนี้บุคุณเขา\",ph:\"\",en:\"I'm indebted to him\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:4756,thai:\"ผมเป็นหนี้บุคุณเขา\",ph:\"\",en:\"I'm indebted to him (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4794,
+    "type": "en",
+    "before": "  {id:4794,thai:\"เรื่องนี้ผมถนัด\",ph:\"rêuuang née phǒm thà nàt\",en:\"I'm good at this\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4794,thai:\"เรื่องนี้ผมถนัด\",ph:\"rêuuang née phǒm thà nàt\",en:\"I'm good at this (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4836,
+    "type": "en",
+    "before": "  {id:4836,thai:\"ผมผิดหวังในตัวคุณ\",ph:\"phǒm pìt wăng nai tua khun\",en:\"I'm disappointed in you\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:4836,thai:\"ผมผิดหวังในตัวคุณ\",ph:\"phǒm pìt wăng nai tua khun\",en:\"I'm disappointed in you (male)\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4848,
+    "type": "en",
+    "before": "  {id:4848,thai:\"คุณเข้าใจผมผิด\",ph:\"khun khâo jai phǒm pìt\",en:\"You misunderstood me\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4848,thai:\"คุณเข้าใจผมผิด\",ph:\"khun khâo jai phǒm pìt\",en:\"You misunderstood me (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4852,
+    "type": "en",
+    "before": "  {id:4852,thai:\"ฉันไม่พอใจคุณ\",ph:\"chăn mâi phaw jai khun\",en:\"I'm not pleased about what you did\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4852,thai:\"ฉันไม่พอใจคุณ\",ph:\"chăn mâi phaw jai khun\",en:\"I'm not pleased about what you did (female)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4874,
+    "type": "en",
+    "before": "  {id:4874,thai:\"ผมผิดเอง\",ph:\"phǒm pìt aehng\",en:\"I'm the one at fault\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4874,thai:\"ผมผิดเอง\",ph:\"phǒm pìt aehng\",en:\"I'm the one at fault (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4878,
+    "type": "en",
+    "before": "  {id:4878,thai:\"ผมซื้อเงินสด\",ph:\"phǒm súe ngern sòt\",en:\"I bought it with cash\",type:\"s\",stage:4,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:4878,thai:\"ผมซื้อเงินสด\",ph:\"phǒm súe ngern sòt\",en:\"I bought it with cash (male)\",type:\"s\",stage:4,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4890,
+    "type": "en",
+    "before": "  {id:4890,thai:\"ผมไม่ค่อยถนัด\",ph:\"phǒm mâi khâawy thà nàt\",en:\"I'm not very skilled at this\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4890,thai:\"ผมไม่ค่อยถนัด\",ph:\"phǒm mâi khâawy thà nàt\",en:\"I'm not very skilled at this (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4914,
+    "type": "en",
+    "before": "  {id:4914,thai:\"คุณจะให้ฉันทำยังไง\",ph:\"khun jà hâi chăn tham yang ngai\",en:\"How do you want me to do it?\",type:\"s\",stage:4,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:4914,thai:\"คุณจะให้ฉันทำยังไง\",ph:\"khun jà hâi chăn tham yang ngai\",en:\"How do you want me to do it? (female)\",type:\"s\",stage:4,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4927,
+    "type": "en",
+    "before": "  {id:4927,thai:\"เห็นใจผมหน่อย\",ph:\"hěn jai phǒm nàawy\",en:\"Please have sympathy for me\",type:\"s\",stage:1,cat:\"greetings\",note:\"Literally: \\\"Please see my heart\\\"\"}, // phReview: true",
+    "after": "  {id:4927,thai:\"เห็นใจผมหน่อย\",ph:\"hěn jai phǒm nàawy\",en:\"Please have sympathy for me (male)\",type:\"s\",stage:1,cat:\"greetings\",note:\"Literally: \\\"Please see my heart\\\"\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4987,
+    "type": "en",
+    "before": "  {id:4987,thai:\"\\\"ผมไม่เกี่ยว”\",ph:\"\",en:\"I have nothing to do with this\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:4987,thai:\"\\\"ผมไม่เกี่ยว”\",ph:\"\",en:\"I have nothing to do with this (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5010,
+    "type": "en",
+    "before": "  {id:5010,thai:\"\\\"ถ้าไม่ได้คุณ ฉันคงแย่”\",ph:\"\",en:\"Without you, I would have been in real trouble\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5010,thai:\"\\\"ถ้าไม่ได้คุณ ฉันคงแย่”\",ph:\"\",en:\"Without you, I would have been in real trouble (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5078,
+    "type": "en",
+    "before": "  {id:5078,thai:\"\\\"ผมผิดข้อหาอะไร”\",ph:\"\",en:\"What are the charges against me?\",type:\"s\",stage:4,cat:\"sentences-questions\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5078,thai:\"\\\"ผมผิดข้อหาอะไร”\",ph:\"\",en:\"What are the charges against me? (male)\",type:\"s\",stage:4,cat:\"sentences-questions\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5081,
+    "type": "en",
+    "before": "  {id:5081,thai:\"\\\"จะไม่ยอมให้คุณทำกับฉันยังงี้”\",ph:\"\",en:\"I won't let you do this to me\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5081,thai:\"\\\"จะไม่ยอมให้คุณทำกับฉันยังงี้”\",ph:\"\",en:\"I won't let you do this to me (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5092,
+    "type": "en",
+    "before": "  {id:5092,thai:\"\\\"ผมต้องลงโทษคุณ”\",ph:\"\",en:\"I have to punish you\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5092,thai:\"\\\"ผมต้องลงโทษคุณ”\",ph:\"\",en:\"I have to punish you (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5096,
+    "type": "en",
+    "before": "  {id:5096,thai:\"\\\"ผมโดนหักหลัง”\",ph:\"\",en:\"I have been double\\\"crossed\",type:\"s\",stage:4,cat:\"sentences-daily\",note:\"Also: “ผมถูกหักหลัง”\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5096,thai:\"\\\"ผมโดนหักหลัง”\",ph:\"\",en:\"I have been double\\\"crossed (male)\",type:\"s\",stage:4,cat:\"sentences-daily\",note:\"Also: “ผมถูกหักหลัง”\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5099,
+    "type": "en",
+    "before": "  {id:5099,thai:\"\\\"ฉันจะไม่ลืมบุญคุณ”\",ph:\"\",en:\"I will not forget your kindness\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5099,thai:\"\\\"ฉันจะไม่ลืมบุญคุณ”\",ph:\"\",en:\"I will not forget your kindness (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5107,
+    "type": "en",
+    "before": "  {id:5107,thai:\"\\\"ฉันเป็นคนช่างฝัน”\",ph:\"\",en:\"I'm a dreamer\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5107,thai:\"\\\"ฉันเป็นคนช่างฝัน”\",ph:\"\",en:\"I'm a dreamer (female)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5137,
+    "type": "en",
+    "before": "  {id:5137,thai:\"\\\"ไม่ใช่ความผิดฉัน”\",ph:\"\",en:\"It's not my fault\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5137,thai:\"\\\"ไม่ใช่ความผิดฉัน”\",ph:\"\",en:\"It's not my fault (female)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5201,
+    "type": "en",
+    "before": "  {id:5201,thai:\"\\\"คุณตบตาฉัน”\",ph:\"\",en:\"You tricked me\",type:\"s\",stage:4,cat:\"sentences-daily\",note:\"Literally: \\\"You slapped my eye\\\"\"}, // phReview: true, phNeedsGen: true",
+    "after": "  {id:5201,thai:\"\\\"คุณตบตาฉัน”\",ph:\"\",en:\"You tricked me (female)\",type:\"s\",stage:4,cat:\"sentences-daily\",note:\"Literally: \\\"You slapped my eye\\\"\"}, // phReview: true, phNeedsGen: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5235,
+    "type": "en",
+    "before": "  {id:5235,thai:\"เชิญครับ\",ph:\"choen kráp\",en:\"Go ahead. / After you. / Please… / Come on in.\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5235,thai:\"เชิญครับ\",ph:\"choen kráp\",en:\"Go ahead. / After you. / Please… / Come on in. (male)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5236,
+    "type": "en",
+    "before": "  {id:5236,thai:\"ขอโทษค่ะ\",ph:\"kǎaw-tôot kà\",en:\"I’m sorry. / Excuse me. / Pardon me.\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5236,thai:\"ขอโทษค่ะ\",ph:\"kǎaw-tôot kà\",en:\"I’m sorry. / Excuse me. / Pardon me. (female)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5248,
+    "type": "en",
+    "before": "  {id:5248,thai:\"ผมเมามาก\",ph:\"pom mao mâak\",en:\"I’m really drunk.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5248,thai:\"ผมเมามาก\",ph:\"pom mao mâak\",en:\"I’m really drunk. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5254,
+    "type": "en",
+    "before": "  {id:5254,thai:\"สุขสันต์วันเกิด(นะคะ)\",ph:\"sùk-sǎn wan-gòe oet (ná ká)\",en:\"Happy Birthday!\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5254,thai:\"สุขสันต์วันเกิด(นะคะ)\",ph:\"sùk-sǎn wan-gòe oet (ná ká)\",en:\"Happy Birthday! (female)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5255,
+    "type": "en",
+    "before": "  {id:5255,thai:\"เชิญนั่ง(ก่อน)(ครับ)\",ph:\"choen nâng (gàawn) (kráp)\",en:\"Have a seat.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5255,thai:\"เชิญนั่ง(ก่อน)(ครับ)\",ph:\"choen nâng (gàawn) (kráp)\",en:\"Have a seat. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5257,
+    "type": "en",
+    "before": "  {id:5257,thai:\"อย่าทิ้งฉัน\",ph:\"yàa tíng chǎn\",en:\"Don’t leave me! / Don’t throw me away!\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5257,thai:\"อย่าทิ้งฉัน\",ph:\"yàa tíng chǎn\",en:\"Don’t leave me! / Don’t throw me away! (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5261,
+    "type": "en",
+    "before": "  {id:5261,thai:\"(ฉัน)ดูไม่ออก\",ph:\"(chǎn) duu mâi-àawk\",en:\"I can’t tell. / I can’t make out who it is. / I can’t make it out.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5261,thai:\"(ฉัน)ดูไม่ออก\",ph:\"(chǎn) duu mâi-àawk\",en:\"I can’t tell. / I can’t make out who it is. / I can’t make it out. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5265,
+    "type": "en",
+    "before": "  {id:5265,thai:\"อย่าทำแบบนี้กับฉัน\",ph:\"yàa tam bàaep-níi gàp chǎn\",en:\"Don’t do this to me.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5265,thai:\"อย่าทำแบบนี้กับฉัน\",ph:\"yàa tam bàaep-níi gàp chǎn\",en:\"Don’t do this to me. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5269,
+    "type": "en",
+    "before": "  {id:5269,thai:\"โชคดีนะ(ค่ะ/ครับ)\",ph:\"chôok-dii ná (kà / kráp)\",en:\"Good luck. / Take care.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5269,thai:\"โชคดีนะ(ค่ะ/ครับ)\",ph:\"chôok-dii ná (kà / kráp)\",en:\"Good luck. / Take care. (male/female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5274,
+    "type": "en",
+    "before": "  {id:5274,thai:\"เขาเป็นเพื่อนฉัน\",ph:\"kǎo bpen pêuan chǎn\",en:\"He’s my friend.\",type:\"s\",stage:2,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5274,thai:\"เขาเป็นเพื่อนฉัน\",ph:\"kǎo bpen pêuan chǎn\",en:\"He’s my friend. (female)\",type:\"s\",stage:2,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5276,
+    "type": "en",
+    "before": "  {id:5276,thai:\"นี่ครับ/ค่ะ\",ph:\"nîi kráp / nîi kà\",en:\"Here you are. (hands something to the listener)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5276,thai:\"นี่ครับ/ค่ะ\",ph:\"nîi kráp / nîi kà\",en:\"Here you are. (hands something to the listener) (male/female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5286,
+    "type": "en",
+    "before": "  {id:5286,thai:\"ผมไปส่ง\",ph:\"pǒm bpai sòng\",en:\"I’ll see you out. / I’ll walk you out. / I’ll see you to the (door, car, etc. ).\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5286,thai:\"ผมไปส่ง\",ph:\"pǒm bpai sòng\",en:\"I’ll see you out. / I’ll walk you out. / I’ll see you to the (door, car, etc. ). (male)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5287,
+    "type": "en",
+    "before": "  {id:5287,thai:\"ฉันได้ยินมาว่า...\",ph:\"chǎn dâi-yin maa wâa...\",en:\"I heard that… / I hear that…\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5287,thai:\"ฉันได้ยินมาว่า...\",ph:\"chǎn dâi-yin maa wâa...\",en:\"I heard that… / I hear that… (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5291,
+    "type": "en",
+    "before": "  {id:5291,thai:\"สวัสดีค่ะ / สวัสดีครับ\",ph:\"sà-wàt-dii kà / sà-wàt-dii kráp\",en:\"Good-bye (or Hello)\",type:\"p\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5291,thai:\"สวัสดีค่ะ / สวัสดีครับ\",ph:\"sà-wàt-dii kà / sà-wàt-dii kráp\",en:\"Good-bye (or Hello) (male/female)\",type:\"p\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5293,
+    "type": "en",
+    "before": "  {id:5293,thai:\"รอสักครู่(ครับ)\",ph:\"raaw-sàk-krûu (kráp)\",en:\"(Please) wait a moment/minute. / Just a moment (please).\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5293,thai:\"รอสักครู่(ครับ)\",ph:\"raaw-sàk-krûu (kráp)\",en:\"(Please) wait a moment/minute. / Just a moment (please). (male)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5294,
+    "type": "en",
+    "before": "  {id:5294,thai:\"กรุณารอสักครู่(ค่ะ)\",ph:\"gà-rú-naa raaw-sàk-krûu (kà)\",en:\"FORMAL - (Please) wait a moment/minute. / Just a moment (please).\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5294,thai:\"กรุณารอสักครู่(ค่ะ)\",ph:\"gà-rú-naa raaw-sàk-krûu (kà)\",en:\"FORMAL - (Please) wait a moment/minute. / Just a moment (please). (female)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5295,
+    "type": "en",
+    "before": "  {id:5295,thai:\"เดี๋ยวฉันกลับมา(ค่ะ)\",ph:\"dǐao chǎn glàp-maa (kà)\",en:\"I’ll be right back.\",type:\"s\",stage:2,cat:\"body\"}, // phReview: true",
+    "after": "  {id:5295,thai:\"เดี๋ยวฉันกลับมา(ค่ะ)\",ph:\"dǐao chǎn glàp-maa (kà)\",en:\"I’ll be right back. (female)\",type:\"s\",stage:2,cat:\"body\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5296,
+    "type": "en",
+    "before": "  {id:5296,thai:\"เสียงอะไร(คะ)\",ph:\"sǐang à-rai ká\",en:\"What’s that sound? / What was that?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5296,thai:\"เสียงอะไร(คะ)\",ph:\"sǐang à-rai ká\",en:\"What’s that sound? / What was that? (female)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5299,
+    "type": "en",
+    "before": "  {id:5299,thai:\"ฉันชอบ... เหมือนกัน\",ph:\"chǎn châawp... měuan-gan\",en:\"I like... too.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5299,thai:\"ฉันชอบ... เหมือนกัน\",ph:\"chǎn châawp... měuan-gan\",en:\"I like... too. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5300,
+    "type": "en",
+    "before": "  {id:5300,thai:\"ไม่มีปัญหาหรอก(ค่ะ)\",ph:\"mâi mii bpàn-hǎa ràawk (kà)\",en:\"It’s not a problem at all. / I don’t have a problem with it. / No problem at all.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5300,thai:\"ไม่มีปัญหาหรอก(ค่ะ)\",ph:\"mâi mii bpàn-hǎa ràawk (kà)\",en:\"It’s not a problem at all. / I don’t have a problem with it. / No problem at all. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5304,
+    "type": "en",
+    "before": "  {id:5304,thai:\"เธอเป็นแฟนคนแรก(ของผม)\",ph:\"toe bpen faaen kon-râaek (kǎawng pǒm)\",en:\"She was my first girlfriend.\",type:\"s\",stage:2,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5304,thai:\"เธอเป็นแฟนคนแรก(ของผม)\",ph:\"toe bpen faaen kon-râaek (kǎawng pǒm)\",en:\"She was my first girlfriend. (male)\",type:\"s\",stage:2,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5307,
+    "type": "en",
+    "before": "  {id:5307,thai:\"นั่นอะไร(ครับ)\",ph:\"nân à-rai (kráp)\",en:\"What’s that?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5307,thai:\"นั่นอะไร(ครับ)\",ph:\"nân à-rai (kráp)\",en:\"What’s that? (male)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5308,
+    "type": "en",
+    "before": "  {id:5308,thai:\"ฉันกลัวผีอ่ะ\",ph:\"chǎn glua pǐi (à)\",en:\"I’m afraid of ghosts.\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5308,thai:\"ฉันกลัวผีอ่ะ\",ph:\"chǎn glua pǐi (à)\",en:\"I’m afraid of ghosts. (female)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5309,
+    "type": "en",
+    "before": "  {id:5309,thai:\"ผมไม่กลัวผี(หรอก)\",ph:\"pǒm mâi glua pǐi (ràawk)\",en:\"I’m not afraid of ghosts (at all).\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5309,thai:\"ผมไม่กลัวผี(หรอก)\",ph:\"pǒm mâi glua pǐi (ràawk)\",en:\"I’m not afraid of ghosts (at all). (male)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5310,
+    "type": "en",
+    "before": "  {id:5310,thai:\"ฉัน(ก็)ไม่คิดว่า...\",ph:\"chǎn (gâaw) mâi kít wâa...\",en:\"I didn’t think (that)… / I don’t think (that)…\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5310,thai:\"ฉัน(ก็)ไม่คิดว่า...\",ph:\"chǎn (gâaw) mâi kít wâa...\",en:\"I didn’t think (that)… / I don’t think (that)… (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5313,
+    "type": "en",
+    "before": "  {id:5313,thai:\"ผมเห็นกับตา\",ph:\"pǒm hěn-gàp-dtaa\",en:\"I saw it myself. / I saw it with my own eyes.\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5313,thai:\"ผมเห็นกับตา\",ph:\"pǒm hěn-gàp-dtaa\",en:\"I saw it myself. / I saw it with my own eyes. (male)\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5317,
+    "type": "en",
+    "before": "  {id:5317,thai:\"ผม(ก็)ตัดสินใจแล้ว\",ph:\"pǒm (gâaw) dtàt-sǐn-jai láaeo\",en:\"I’ve decided. / I’ve made up my mind.\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5317,thai:\"ผม(ก็)ตัดสินใจแล้ว\",ph:\"pǒm (gâaw) dtàt-sǐn-jai láaeo\",en:\"I’ve decided. / I’ve made up my mind. (male)\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5320,
+    "type": "en",
+    "before": "  {id:5320,thai:\"(ผม)จะโทรไป(หา)\",ph:\"(pǒm) jà too-bpai (hǎa)\",en:\"I’ll call you.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5320,thai:\"(ผม)จะโทรไป(หา)\",ph:\"(pǒm) jà too-bpai (hǎa)\",en:\"I’ll call you. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5322,
+    "type": "en",
+    "before": "  {id:5322,thai:\"ฉันรักคุณ\",ph:\"chǎn rák kun\",en:\"I love you.\",type:\"s\",stage:2,cat:\"emotions\"},",
+    "after": "  {id:5322,thai:\"ฉันรักคุณ\",ph:\"chǎn rák kun\",en:\"I love you. (female)\",type:\"s\",stage:2,cat:\"emotions\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5323,
+    "type": "en",
+    "before": "  {id:5323,thai:\"ผมก็รักคุณ\",ph:\"pǒm gâaw rák kun\",en:\"I love you too.\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5323,thai:\"ผมก็รักคุณ\",ph:\"pǒm gâaw rák kun\",en:\"I love you too. (male)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5324,
+    "type": "en",
+    "before": "  {id:5324,thai:\"ฉันรักเขา\",ph:\"chǎn rák kǎo\",en:\"I love him. / I’m in love with him.\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5324,thai:\"ฉันรักเขา\",ph:\"chǎn rák kǎo\",en:\"I love him. / I’m in love with him. (female)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5325,
+    "type": "en",
+    "before": "  {id:5325,thai:\"ฉันกำลังมีความรัก\",ph:\"chǎn gam-lang mii kwaam-rák\",en:\"I’m in love.\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5325,thai:\"ฉันกำลังมีความรัก\",ph:\"chǎn gam-lang mii kwaam-rák\",en:\"I’m in love. (female)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5326,
+    "type": "en",
+    "before": "  {id:5326,thai:\"ผมตกหลุมรักเธอ\",ph:\"pǒm dtòk-lǔm-rák toe\",en:\"I fell in love with her.\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5326,thai:\"ผมตกหลุมรักเธอ\",ph:\"pǒm dtòk-lǔm-rák toe\",en:\"I fell in love with her. (male)\",type:\"s\",stage:2,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5329,
+    "type": "en",
+    "before": "  {id:5329,thai:\"ฉันยังไม่แต่งงาน\",ph:\"chǎn yang mâi dtàeng-ngaan\",en:\"I’m not married (yet).\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5329,thai:\"ฉันยังไม่แต่งงาน\",ph:\"chǎn yang mâi dtàeng-ngaan\",en:\"I’m not married (yet). (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5330,
+    "type": "en",
+    "before": "  {id:5330,thai:\"ผมหย่าแล้ว\",ph:\"pǒm yàa láaeo\",en:\"I’m divorced.\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5330,thai:\"ผมหย่าแล้ว\",ph:\"pǒm yàa láaeo\",en:\"I’m divorced. (male)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5332,
+    "type": "en",
+    "before": "  {id:5332,thai:\"แต่งงานกับผมนะ\",ph:\"dtàeng-ngaan gàp pǒm ná\",en:\"INFORMAL - Marry me. / Will you marry me?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5332,thai:\"แต่งงานกับผมนะ\",ph:\"dtàeng-ngaan gàp pǒm ná\",en:\"INFORMAL - Marry me. / Will you marry me? (male)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5334,
+    "type": "en",
+    "before": "  {id:5334,thai:\"ฉันเลิกกับเขาแล้ว\",ph:\"chǎn lôek gàp kǎo láaeo\",en:\"I broke up with him.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5334,thai:\"ฉันเลิกกับเขาแล้ว\",ph:\"chǎn lôek gàp kǎo láaeo\",en:\"I broke up with him. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5336,
+    "type": "en",
+    "before": "  {id:5336,thai:\"เขาทิ้งฉัน\",ph:\"kǎo tíng chǎn\",en:\"He left me. / He dumped me.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5336,thai:\"เขาทิ้งฉัน\",ph:\"kǎo tíng chǎn\",en:\"He left me. / He dumped me. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5345,
+    "type": "en",
+    "before": "  {id:5345,thai:\"คุณชื่ออะไร(ครับ)\",ph:\"kun chêu à-rai (kráp)\",en:\"What’s your name?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5345,thai:\"คุณชื่ออะไร(ครับ)\",ph:\"kun chêu à-rai (kráp)\",en:\"What’s your name? (male)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5346,
+    "type": "en",
+    "before": "  {id:5346,thai:\"ผมเกิด(เมื่อ)วันที่(5)(ธันวาคม)\",ph:\"pǒm gòe oet (mêua) wan-tîi (hâa) (tan-waa-kom)\",en:\"I was born on (December 5th).\",type:\"s\",stage:2,cat:\"time\"}, // phReview: true",
+    "after": "  {id:5346,thai:\"ผมเกิด(เมื่อ)วันที่(5)(ธันวาคม)\",ph:\"pǒm gòe oet (mêua) wan-tîi (hâa) (tan-waa-kom)\",en:\"I was born on (December 5th). (male)\",type:\"s\",stage:2,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5350,
+    "type": "en",
+    "before": "  {id:5350,thai:\"ตอนฉันอายุ(เจ็ด)ขวบ...\",ph:\"dtaawn chǎn aa-yú (jèt) kùap\",en:\"When I was (seven) years old…\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5350,thai:\"ตอนฉันอายุ(เจ็ด)ขวบ...\",ph:\"dtaawn chǎn aa-yú (jèt) kùap\",en:\"When I was (seven) years old… (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5353,
+    "type": "en",
+    "before": "  {id:5353,thai:\"ฉันชอบอยู่คนเดียว\",ph:\"chǎn châawp yùu kon-diao\",en:\"I like being alone.\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5353,thai:\"ฉันชอบอยู่คนเดียว\",ph:\"chǎn châawp yùu kon-diao\",en:\"I like being alone. (female)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5359,
+    "type": "en",
+    "before": "  {id:5359,thai:\"ราคาเท่าไหร่(ครับ)\",ph:\"raa-kaa tâo-rài (kráp)\",en:\"How much is it? / How much is this?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5359,thai:\"ราคาเท่าไหร่(ครับ)\",ph:\"raa-kaa tâo-rài (kráp)\",en:\"How much is it? / How much is this? (male)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5360,
+    "type": "en",
+    "before": "  {id:5360,thai:\"…ไปทางไหนครับ/คะ\",ph:\"…bpai taang-nǎi kráp/ká\",en:\"Which way is…? / How do I get to…?\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5360,thai:\"…ไปทางไหนครับ/คะ\",ph:\"…bpai taang-nǎi kráp/ká\",en:\"Which way is…? / How do I get to…? (male/female)\",type:\"s\",stage:2,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5362,
+    "type": "en",
+    "before": "  {id:5362,thai:\"คุณล่ะ(คะ)\",ph:\"kun lâ (ká)\",en:\"And you? / How about you?\",type:\"s\",stage:3,cat:\"sentences-questions\"},",
+    "after": "  {id:5362,thai:\"คุณล่ะ(คะ)\",ph:\"kun lâ (ká)\",en:\"And you? / How about you? (female)\",type:\"s\",stage:3,cat:\"sentences-questions\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5365,
+    "type": "en",
+    "before": "  {id:5365,thai:\"คุณครับ... / คุณคะ...\",ph:\"kun kráp…/ kun ká…\",en:\"FORMAL - Excuse me (sir/madam)… / Sir? / Madam? (used to call attention to a stranger).\",type:\"s\",stage:3,cat:\"greetings\"},",
+    "after": "  {id:5365,thai:\"คุณครับ... / คุณคะ...\",ph:\"kun kráp…/ kun ká…\",en:\"FORMAL - Excuse me (sir/madam)… / Sir? / Madam? (used to call attention to a stranger). (male/female)\",type:\"s\",stage:3,cat:\"greetings\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5366,
+    "type": "en",
+    "before": "  {id:5366,thai:\"ทำไม่ได้(ครับ)\",ph:\"tam mâi-dâi (kráp)\",en:\"(I) can’t (do it). / It can’t be done.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5366,thai:\"ทำไม่ได้(ครับ)\",ph:\"tam mâi-dâi (kráp)\",en:\"(I) can’t (do it). / It can’t be done. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5367,
+    "type": "en",
+    "before": "  {id:5367,thai:\"คุณจะแนะนำ(คอร์ส)ไหน(คะ)\",ph:\"kun jà náe-nam (káawt) nǎi (ká)\",en:\"Which (course) do you recommend?\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5367,thai:\"คุณจะแนะนำ(คอร์ส)ไหน(คะ)\",ph:\"kun jà náe-nam (káawt) nǎi (ká)\",en:\"Which (course) do you recommend? (female)\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5370,
+    "type": "en",
+    "before": "  {id:5370,thai:\"ยินดีต้อนรับค่ะ\",ph:\"yin-dii dtaawn-ráp kà\",en:\"Welcome.\",type:\"w\",stage:3,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5370,thai:\"ยินดีต้อนรับค่ะ\",ph:\"yin-dii dtaawn-ráp kà\",en:\"Welcome. (female)\",type:\"w\",stage:3,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5373,
+    "type": "en",
+    "before": "  {id:5373,thai:\"ผมมีปัญหานิดหน่อย\",ph:\"pǒm mii bpan-hǎa nít-nàwi\",en:\"I have a bit of a problem.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5373,thai:\"ผมมีปัญหานิดหน่อย\",ph:\"pǒm mii bpan-hǎa nít-nàwi\",en:\"I have a bit of a problem. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5374,
+    "type": "en",
+    "before": "  {id:5374,thai:\"ฉันรู้สึกไม่ดี\",ph:\"chǎn rúu-sèuk mâi-dii\",en:\"I have bad feelings (about that). / I feel bad.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5374,thai:\"ฉันรู้สึกไม่ดี\",ph:\"chǎn rúu-sèuk mâi-dii\",en:\"I have bad feelings (about that). / I feel bad. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5377,
+    "type": "en",
+    "before": "  {id:5377,thai:\"ฉันชินแล้ว\",ph:\"pǒm chin láaeo\",en:\"I’m used to it.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5377,thai:\"ฉันชินแล้ว\",ph:\"pǒm chin láaeo\",en:\"I’m used to it. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5379,
+    "type": "en",
+    "before": "  {id:5379,thai:\"ฉันชื่อ...\",ph:\"chǎn chêu...\",en:\"My name’s...\",type:\"p\",stage:3,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5379,thai:\"ฉันชื่อ...\",ph:\"chǎn chêu...\",en:\"My name’s... (female)\",type:\"p\",stage:3,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5380,
+    "type": "en",
+    "before": "  {id:5380,thai:\"ฉันเป็นลูกคนเดียว\",ph:\"chǎn bpen lûuk-kon-diao\",en:\"I’m an only child.\",type:\"s\",stage:3,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5380,thai:\"ฉันเป็นลูกคนเดียว\",ph:\"chǎn bpen lûuk-kon-diao\",en:\"I’m an only child. (female)\",type:\"s\",stage:3,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5381,
+    "type": "en",
+    "before": "  {id:5381,thai:\"คุณมีลูกไหม(ครับ)\",ph:\"kun mii lûuk mǎi (kráp)\",en:\"Do you have any children/kids?\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5381,thai:\"คุณมีลูกไหม(ครับ)\",ph:\"kun mii lûuk mǎi (kráp)\",en:\"Do you have any children/kids? (male)\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5383,
+    "type": "en",
+    "before": "  {id:5383,thai:\"ผมอายุมากกว่าคุณ\",ph:\"pǒm aa-yú mâak-gwàa kun\",en:\"I’m older than you.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5383,thai:\"ผมอายุมากกว่าคุณ\",ph:\"pǒm aa-yú mâak-gwàa kun\",en:\"I’m older than you. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5384,
+    "type": "en",
+    "before": "  {id:5384,thai:\"ฉันอายุน้อยกว่าคุณ\",ph:\"pǒm aa-yú náawi-gwàa kun\",en:\"I’m younger than you.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5384,thai:\"ฉันอายุน้อยกว่าคุณ\",ph:\"pǒm aa-yú náawi-gwàa kun\",en:\"I’m younger than you. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5386,
+    "type": "en",
+    "before": "  {id:5386,thai:\"วันนี้(เป็น)วันเกิด(ของ)ฉัน\",ph:\"wan-níi (bpen) wan-gòe oet (kǎawng) chǎn\",en:\"Today’s my birthday.\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true",
+    "after": "  {id:5386,thai:\"วันนี้(เป็น)วันเกิด(ของ)ฉัน\",ph:\"wan-níi (bpen) wan-gòe oet (kǎawng) chǎn\",en:\"Today’s my birthday. (female)\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5387,
+    "type": "en",
+    "before": "  {id:5387,thai:\"ใคร(ครับ)\",ph:\"krai (kráp)\",en:\"Who? Who is/was it?\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5387,thai:\"ใคร(ครับ)\",ph:\"krai (kráp)\",en:\"Who? Who is/was it? (male)\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5390,
+    "type": "en",
+    "before": "  {id:5390,thai:\"ผมรู้ว่า...\",ph:\"pǒm rúu wâa...\",en:\"I know…\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5390,thai:\"ผมรู้ว่า...\",ph:\"pǒm rúu wâa...\",en:\"I know… (male)\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5392,
+    "type": "en",
+    "before": "  {id:5392,thai:\"ขอยืม(ปากกา)ได้ไหม(คะ/ครับ)\",ph:\"kǎaw yeum (bpàak-gaa) dâi-mǎi (ká/kráp)\",en:\"Can I borrow (a/your pen)?\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5392,thai:\"ขอยืม(ปากกา)ได้ไหม(คะ/ครับ)\",ph:\"kǎaw yeum (bpàak-gaa) dâi-mǎi (ká/kráp)\",en:\"Can I borrow (a/your pen)? (male/female)\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5396,
+    "type": "en",
+    "before": "  {id:5396,thai:\"กี่โมงแล้ว(ครับ)\",ph:\"gìi-moong-láaeo (kráp)\",en:\"What time is it? / Do you have the time?\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true",
+    "after": "  {id:5396,thai:\"กี่โมงแล้ว(ครับ)\",ph:\"gìi-moong-láaeo (kráp)\",en:\"What time is it? / Do you have the time? (male)\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5400,
+    "type": "en",
+    "before": "  {id:5400,thai:\"ฉันรู้\",ph:\"chǎn rúu\",en:\"I know.\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5400,thai:\"ฉันรู้\",ph:\"chǎn rúu\",en:\"I know. (female)\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5407,
+    "type": "en",
+    "before": "  {id:5407,thai:\"เอาอันนี้(นะครับ)\",ph:\"ao an-níi (ná kráp)\",en:\"I’ll take this/that one. (shopping, etc.)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5407,thai:\"เอาอันนี้(นะครับ)\",ph:\"ao an-níi (ná kráp)\",en:\"I’ll take this/that one. (shopping, etc.) (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5408,
+    "type": "en",
+    "before": "  {id:5408,thai:\"เหมือนฉันเลย\",ph:\"měuan chǎn loei\",en:\"Just like me! / Same as me!\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5408,thai:\"เหมือนฉันเลย\",ph:\"měuan chǎn loei\",en:\"Just like me! / Same as me! (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5411,
+    "type": "en",
+    "before": "  {id:5411,thai:\"ฉันอยู่ในห้อง (751)\",ph:\"chǎn yùu nai hâwng (jèt-hâa-nèung)\",en:\"I’m in room (751).\",type:\"s\",stage:3,cat:\"home\"}, // phReview: true",
+    "after": "  {id:5411,thai:\"ฉันอยู่ในห้อง (751)\",ph:\"chǎn yùu nai hâwng (jèt-hâa-nèung)\",en:\"I’m in room (751). (female)\",type:\"s\",stage:3,cat:\"home\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5413,
+    "type": "en",
+    "before": "  {id:5413,thai:\"ผมจะคิดถึงคุณ\",ph:\"pǒm jà kít-těung kun\",en:\"I’m gonna miss you.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5413,thai:\"ผมจะคิดถึงคุณ\",ph:\"pǒm jà kít-těung kun\",en:\"I’m gonna miss you. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5414,
+    "type": "en",
+    "before": "  {id:5414,thai:\"ฉันลืมไป\",ph:\"chǎn leum bpai\",en:\"I forgot.\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5414,thai:\"ฉันลืมไป\",ph:\"chǎn leum bpai\",en:\"I forgot. (female)\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5415,
+    "type": "en",
+    "before": "  {id:5415,thai:\"ฉันลืมไปเลย\",ph:\"chǎn leum bpai loei\",en:\"I completely forgot! / I totally forgot about it!\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5415,thai:\"ฉันลืมไปเลย\",ph:\"chǎn leum bpai loei\",en:\"I completely forgot! / I totally forgot about it! (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5420,
+    "type": "en",
+    "before": "  {id:5420,thai:\"ฉันกลัว\",ph:\"chǎn glua\",en:\"I’m scared/afraid.\",type:\"p\",stage:3,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5420,thai:\"ฉันกลัว\",ph:\"chǎn glua\",en:\"I’m scared/afraid. (female)\",type:\"p\",stage:3,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5421,
+    "type": "en",
+    "before": "  {id:5421,thai:\"ฉันไม่ได้กลัว\",ph:\"chǎn mâi-dâi glua\",en:\"I’m not scared/afraid.\",type:\"s\",stage:3,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5421,thai:\"ฉันไม่ได้กลัว\",ph:\"chǎn mâi-dâi glua\",en:\"I’m not scared/afraid. (female)\",type:\"s\",stage:3,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5423,
+    "type": "en",
+    "before": "  {id:5423,thai:\"มองผมสิ\",ph:\"maawng pǒm sì\",en:\"Look at me.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5423,thai:\"มองผมสิ\",ph:\"maawng pǒm sì\",en:\"Look at me. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5427,
+    "type": "en",
+    "before": "  {id:5427,thai:\"ลดหน่อยได้ไหมคะ\",ph:\"lót nàwi dâi mǎi ká\",en:\"Can you give me a discount? / Can you lower the price?\",type:\"s\",stage:3,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:5427,thai:\"ลดหน่อยได้ไหมคะ\",ph:\"lót nàwi dâi mǎi ká\",en:\"Can you give me a discount? / Can you lower the price? (female)\",type:\"s\",stage:3,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5428,
+    "type": "en",
+    "before": "  {id:5428,thai:\"ฉันไม่ได้ทำนะ\",ph:\"chǎn mâi-dâi tam ná\",en:\"I didn’t do it!\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5428,thai:\"ฉันไม่ได้ทำนะ\",ph:\"chǎn mâi-dâi tam ná\",en:\"I didn’t do it! (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5433,
+    "type": "en",
+    "before": "  {id:5433,thai:\"ขอฉันดูหน่อย\",ph:\"kǎaw chǎn duu nàwi\",en:\"Let me see (it). / Let me have a look.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5433,thai:\"ขอฉันดูหน่อย\",ph:\"kǎaw chǎn duu nàwi\",en:\"Let me see (it). / Let me have a look. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5436,
+    "type": "en",
+    "before": "  {id:5436,thai:\"ผมเลี้ยงเอง\",ph:\"pǒm líang eeng\",en:\"It’s my treat. / My treat.\",type:\"s\",stage:3,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5436,thai:\"ผมเลี้ยงเอง\",ph:\"pǒm líang eeng\",en:\"It’s my treat. / My treat. (male)\",type:\"s\",stage:3,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5440,
+    "type": "en",
+    "before": "  {id:5440,thai:\"เอาไหม(ครับ/คะ)\",ph:\"ao mǎi (kráp/ká)\",en:\"Do you want one? / Do you want some? / Want some?\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5440,thai:\"เอาไหม(ครับ/คะ)\",ph:\"ao mǎi (kráp/ká)\",en:\"Do you want one? / Do you want some? / Want some? (male/female)\",type:\"s\",stage:3,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5443,
+    "type": "en",
+    "before": "  {id:5443,thai:\"ผมมีนัดกับ(คุณ...)\",ph:\"pǒm mii nát gàp (kun…)\",en:\"I have an appointment with…\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5443,thai:\"ผมมีนัดกับ(คุณ...)\",ph:\"pǒm mii nát gàp (kun…)\",en:\"I have an appointment with… (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5444,
+    "type": "en",
+    "before": "  {id:5444,thai:\"เป็นผมเอง\",ph:\"bpen pǒm eeng\",en:\"That’s me. / That was me.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5444,thai:\"เป็นผมเอง\",ph:\"bpen pǒm eeng\",en:\"That’s me. / That was me. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5446,
+    "type": "en",
+    "before": "  {id:5446,thai:\"ผมชอบกิน(มะม่วง)\",ph:\"pǒm châawp gin (má-mûang\",en:\"I like (mangoes).\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5446,thai:\"ผมชอบกิน(มะม่วง)\",ph:\"pǒm châawp gin (má-mûang\",en:\"I like (mangoes). (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5449,
+    "type": "en",
+    "before": "  {id:5449,thai:\"ผมไม่ชอบกิน(มะม่วง)\",ph:\"pǒm mâi châawp gin (má-mûang)\",en:\"I don’t like (mangoes).\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5449,thai:\"ผมไม่ชอบกิน(มะม่วง)\",ph:\"pǒm mâi châawp gin (má-mûang)\",en:\"I don’t like (mangoes). (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5451,
+    "type": "en",
+    "before": "  {id:5451,thai:\"(ฉัน)ไม่อยากไป\",ph:\"(chǎn) mâi-yàak bpai\",en:\"(I) don’t wanna go.\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5451,thai:\"(ฉัน)ไม่อยากไป\",ph:\"(chǎn) mâi-yàak bpai\",en:\"(I) don’t wanna go. (female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5453,
+    "type": "en",
+    "before": "  {id:5453,thai:\"นี่(ครับ/ค่ะ)\",ph:\"nîi (kráp/kà)\",en:\"Here you are. / Here you go. (handing something to someone)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5453,thai:\"นี่(ครับ/ค่ะ)\",ph:\"nîi (kráp/kà)\",en:\"Here you are. / Here you go. (handing something to someone) (male/female)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5456,
+    "type": "en",
+    "before": "  {id:5456,thai:\"ฉันท้อง\",ph:\"chǎn táawng\",en:\"I’m pregnant!\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5456,thai:\"ฉันท้อง\",ph:\"chǎn táawng\",en:\"I’m pregnant! (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5466,
+    "type": "en",
+    "before": "  {id:5466,thai:\"ขอบคุณ(มาก)นะคะคุณหมอ\",ph:\"kàawp-kun (mâak) ná-ká kun mǎaw\",en:\"Thank you (very much) Doctor.\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5466,thai:\"ขอบคุณ(มาก)นะคะคุณหมอ\",ph:\"kàawp-kun (mâak) ná-ká kun mǎaw\",en:\"Thank you (very much) Doctor. (female)\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5467,
+    "type": "en",
+    "before": "  {id:5467,thai:\"สัญญากับผม(ว่า...)\",ph:\"sǎn-yaa gàp pǒm (wâa…)\",en:\"Promise me (that...)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5467,thai:\"สัญญากับผม(ว่า...)\",ph:\"sǎn-yaa gàp pǒm (wâa…)\",en:\"Promise me (that...) (male)\",type:\"p\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5472,
+    "type": "en",
+    "before": "  {id:5472,thai:\"ฉัน(ก็)ไม่รู้\",ph:\"chǎn âaw mâi-rúu\",en:\"I don’t know.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5472,thai:\"ฉัน(ก็)ไม่รู้\",ph:\"chǎn âaw mâi-rúu\",en:\"I don’t know. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5477,
+    "type": "en",
+    "before": "  {id:5477,thai:\"ฉันเลี้ยง(แมว)(สอง)ตัว\",ph:\"chǎn líang (maaeo) (sǎawng) dtua\",en:\"I have (two) (cats).\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5477,thai:\"ฉันเลี้ยง(แมว)(สอง)ตัว\",ph:\"chǎn líang (maaeo) (sǎawng) dtua\",en:\"I have (two) (cats). (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5484,
+    "type": "en",
+    "before": "  {id:5484,thai:\"มีสิ(ครับ)\",ph:\"mii sì (kráp)\",en:\"Yes, (I have one/some). / Sure.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5484,thai:\"มีสิ(ครับ)\",ph:\"mii sì (kráp)\",en:\"Yes, (I have one/some). / Sure. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5485,
+    "type": "en",
+    "before": "  {id:5485,thai:\"ฉันทำงานทุกวัน(เลย)\",ph:\"chǎn tam-ngaan túk-wan (loei)\",en:\"I work every day.\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true",
+    "after": "  {id:5485,thai:\"ฉันทำงานทุกวัน(เลย)\",ph:\"chǎn tam-ngaan túk-wan (loei)\",en:\"I work every day. (female)\",type:\"s\",stage:4,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5490,
+    "type": "en",
+    "before": "  {id:5490,thai:\"มาหาฉันหน่อยสิ\",ph:\"maa-hǎa chǎn nàwi sì\",en:\"Come and see me. / Come and visit me.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5490,thai:\"มาหาฉันหน่อยสิ\",ph:\"maa-hǎa chǎn nàwi sì\",en:\"Come and see me. / Come and visit me. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5491,
+    "type": "en",
+    "before": "  {id:5491,thai:\"ฉันรู้สึกเหนื่อย\",ph:\"chǎn rúu-sèuk nèuai\",en:\"I feel tired.\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5491,thai:\"ฉันรู้สึกเหนื่อย\",ph:\"chǎn rúu-sèuk nèuai\",en:\"I feel tired. (female)\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5495,
+    "type": "en",
+    "before": "  {id:5495,thai:\"คุณเป็นฮีโร่ของผม\",ph:\"kun bpen hii-rôo kǎawng pǒm\",en:\"You’re my hero!\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5495,thai:\"คุณเป็นฮีโร่ของผม\",ph:\"kun bpen hii-rôo kǎawng pǒm\",en:\"You’re my hero! (male)\",type:\"s\",stage:4,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5496,
+    "type": "en",
+    "before": "  {id:5496,thai:\"ฉันทำได้\",ph:\"chǎn tam-dâi\",en:\"I can do it.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5496,thai:\"ฉันทำได้\",ph:\"chǎn tam-dâi\",en:\"I can do it. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5499,
+    "type": "en",
+    "before": "  {id:5499,thai:\"เหนื่อยไหมคะ\",ph:\"nèuai mǎi ká\",en:\"Are you tired?\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5499,thai:\"เหนื่อยไหมคะ\",ph:\"nèuai mǎi ká\",en:\"Are you tired? (female)\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5501,
+    "type": "en",
+    "before": "  {id:5501,thai:\"ผมปวดฟัน\",ph:\"pǒm bpùat-fan\",en:\"I have a toothache.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5501,thai:\"ผมปวดฟัน\",ph:\"pǒm bpùat-fan\",en:\"I have a toothache. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5502,
+    "type": "en",
+    "before": "  {id:5502,thai:\"ฉันปวดหลัง\",ph:\"chǎn bpùat-lǎng\",en:\"I have a backache.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5502,thai:\"ฉันปวดหลัง\",ph:\"chǎn bpùat-lǎng\",en:\"I have a backache. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5507,
+    "type": "en",
+    "before": "  {id:5507,thai:\"ฉันจะรอนะ\",ph:\"chǎn jà raaw ná\",en:\"I’ll be waiting. / I’ll wait.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5507,thai:\"ฉันจะรอนะ\",ph:\"chǎn jà raaw ná\",en:\"I’ll be waiting. / I’ll wait. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5508,
+    "type": "en",
+    "before": "  {id:5508,thai:\"เช็คบิลด้วย(ครับ)\",ph:\"chék-bin dûai (kráp)\",en:\"Check please. / Can I have the check, please?\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5508,thai:\"เช็คบิลด้วย(ครับ)\",ph:\"chék-bin dûai (kráp)\",en:\"Check please. / Can I have the check, please? (male)\",type:\"s\",stage:4,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5509,
+    "type": "en",
+    "before": "  {id:5509,thai:\"ฉันไม่ได้ถาม\",ph:\"chǎn mâi-dâi tǎam\",en:\"I didn’t ask. / I didn’t ask him.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5509,thai:\"ฉันไม่ได้ถาม\",ph:\"chǎn mâi-dâi tǎam\",en:\"I didn’t ask. / I didn’t ask him. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5517,
+    "type": "en",
+    "before": "  {id:5517,thai:\"ฉันรักคุณมาก\",ph:\"chǎn rák kun mâak\",en:\"I love you so much. / I love you very much.\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5517,thai:\"ฉันรักคุณมาก\",ph:\"chǎn rák kun mâak\",en:\"I love you so much. / I love you very much. (female)\",type:\"s\",stage:4,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5518,
+    "type": "en",
+    "before": "  {id:5518,thai:\"ไม่ได้สั่งค่ะ\",ph:\"mâi-dâi sàng kà\",en:\"I didn’t order (that).\",type:\"s\",stage:4,cat:\"food\"}, // phReview: true",
+    "after": "  {id:5518,thai:\"ไม่ได้สั่งค่ะ\",ph:\"mâi-dâi sàng kà\",en:\"I didn’t order (that). (female)\",type:\"s\",stage:4,cat:\"food\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5523,
+    "type": "en",
+    "before": "  {id:5523,thai:\"ฉันสอบผ่าน\",ph:\"chǎn sàawp-pàan\",en:\"I passed the test. / I passed.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5523,thai:\"ฉันสอบผ่าน\",ph:\"chǎn sàawp-pàan\",en:\"I passed the test. / I passed. (female)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5527,
+    "type": "en",
+    "before": "  {id:5527,thai:\"ผมไม่ถนัด\",ph:\"pǒm mâi tà-nàt\",en:\"I’m not good at (it). / I’m no good.\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5527,thai:\"ผมไม่ถนัด\",ph:\"pǒm mâi tà-nàt\",en:\"I’m not good at (it). / I’m no good. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5534,
+    "type": "en",
+    "before": "  {id:5534,thai:\"(...)ทำให้ผมมีความสุข(...)\",ph:\"(...)tam-hâi pǒm mii-kwaam-sùk (...)\",en:\"It makes me happy. / You make me happy.\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5534,thai:\"(...)ทำให้ผมมีความสุข(...)\",ph:\"(...)tam-hâi pǒm mii-kwaam-sùk (...)\",en:\"It makes me happy. / You make me happy. (male)\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5538,
+    "type": "en",
+    "before": "  {id:5538,thai:\"ฉันจะมาใหม่\",ph:\"chǎn jà maa mài\",en:\"I’ll be back. / I’ll come back.\",type:\"s\",stage:5,cat:\"body\"}, // phReview: true",
+    "after": "  {id:5538,thai:\"ฉันจะมาใหม่\",ph:\"chǎn jà maa mài\",en:\"I’ll be back. / I’ll come back. (female)\",type:\"s\",stage:5,cat:\"body\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5543,
+    "type": "en",
+    "before": "  {id:5543,thai:\"คุณมีฉัน\",ph:\"kun mii chǎn\",en:\"You have me. / You got me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5543,thai:\"คุณมีฉัน\",ph:\"kun mii chǎn\",en:\"You have me. / You got me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5544,
+    "type": "en",
+    "before": "  {id:5544,thai:\"ผมอธิบายได้\",ph:\"pǒm à-tí-baai dâi\",en:\"I can explain.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5544,thai:\"ผมอธิบายได้\",ph:\"pǒm à-tí-baai dâi\",en:\"I can explain. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5545,
+    "type": "en",
+    "before": "  {id:5545,thai:\"บอกฉันได้นะ\",ph:\"bàawk chǎn dâi ná\",en:\"(You) can tell me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5545,thai:\"บอกฉันได้นะ\",ph:\"bàawk chǎn dâi ná\",en:\"(You) can tell me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5546,
+    "type": "en",
+    "before": "  {id:5546,thai:\"ฉันเจ็บนะ\",ph:\"chǎn jèp ná\",en:\"You’re hurting me! / That hurts!\",type:\"s\",stage:5,cat:\"sentences-daily\"},",
+    "after": "  {id:5546,thai:\"ฉันเจ็บนะ\",ph:\"chǎn jèp ná\",en:\"You’re hurting me! / That hurts! (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5551,
+    "type": "en",
+    "before": "  {id:5551,thai:\"ไม่ต้องรอ(ฉัน)\",ph:\"mâi-dtâwng raaw (chǎn)\",en:\"You don’t need to wait (for me). / No need to wait up (for me).\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:5551,thai:\"ไม่ต้องรอ(ฉัน)\",ph:\"mâi-dtâwng raaw (chǎn)\",en:\"You don’t need to wait (for me). / No need to wait up (for me). (female)\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5552,
+    "type": "en",
+    "before": "  {id:5552,thai:\"นี่มัน(ห้อง)ผม\",ph:\"nîi man (hâwng) pǒm\",en:\"STRONG - This is MY (room)!\",type:\"s\",stage:5,cat:\"home\"}, // phReview: true",
+    "after": "  {id:5552,thai:\"นี่มัน(ห้อง)ผม\",ph:\"nîi man (hâwng) pǒm\",en:\"STRONG - This is MY (room)! (male)\",type:\"s\",stage:5,cat:\"home\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5559,
+    "type": "en",
+    "before": "  {id:5559,thai:\"ครับ(พ่อ) / ค่ะ(พ่อ)\",ph:\"kráp (pâaw) / kà (pâaw)\",en:\"Yes, (Dad).  (acknowledging, agreeing, etc.)\",type:\"p\",stage:5,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5559,thai:\"ครับ(พ่อ) / ค่ะ(พ่อ)\",ph:\"kráp (pâaw) / kà (pâaw)\",en:\"Yes, (Dad).  (acknowledging, agreeing, etc.) (male/female)\",type:\"p\",stage:5,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5564,
+    "type": "en",
+    "before": "  {id:5564,thai:\"ฉันคุยกับแม่แล้ว\",ph:\"chǎn kui gàp (mâae) láaeo\",en:\"I spoke with (mom) already. / I already spoke with (my mother).\",type:\"s\",stage:5,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5564,thai:\"ฉันคุยกับแม่แล้ว\",ph:\"chǎn kui gàp (mâae) láaeo\",en:\"I spoke with (mom) already. / I already spoke with (my mother). (female)\",type:\"s\",stage:5,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5567,
+    "type": "en",
+    "before": "  {id:5567,thai:\"รถผมเสีย\",ph:\"rót pǒm sǐa\",en:\"My car broke down.\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5567,thai:\"รถผมเสีย\",ph:\"rót pǒm sǐa\",en:\"My car broke down. (male)\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5571,
+    "type": "en",
+    "before": "  {id:5571,thai:\"ฟังฉันนะ\",ph:\"fang chǎn ná\",en:\"Listen to me.\",type:\"s\",stage:5,cat:\"sentences-daily\"},",
+    "after": "  {id:5571,thai:\"ฟังฉันนะ\",ph:\"fang chǎn ná\",en:\"Listen to me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5572,
+    "type": "en",
+    "before": "  {id:5572,thai:\"หันหลัง(สิ)(ค่ะ)\",ph:\"hǎn-lǎng (sì)(kà)\",en:\"Turn around.\",type:\"p\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5572,thai:\"หันหลัง(สิ)(ค่ะ)\",ph:\"hǎn-lǎng (sì)(kà)\",en:\"Turn around. (female)\",type:\"p\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5575,
+    "type": "en",
+    "before": "  {id:5575,thai:\"พอไหม(คะ)\",ph:\"paaw mǎi (ká)\",en:\"Is that enough? / Will that do?\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5575,thai:\"พอไหม(คะ)\",ph:\"paaw mǎi (ká)\",en:\"Is that enough? / Will that do? (female)\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5579,
+    "type": "en",
+    "before": "  {id:5579,thai:\"ฉันชอบมากกว่า\",ph:\"chǎn châawp (X) mâak-gwàa (Y)\",en:\"I like (X) more than (Y).\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5579,thai:\"ฉันชอบมากกว่า\",ph:\"chǎn châawp (X) mâak-gwàa (Y)\",en:\"I like (X) more than (Y). (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5582,
+    "type": "en",
+    "before": "  {id:5582,thai:\"ขอบคุณมาก(นะคะ)\",ph:\"kàawp-kun mâak (ná-ká)\",en:\"Thank you very much.\",type:\"s\",stage:5,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5582,thai:\"ขอบคุณมาก(นะคะ)\",ph:\"kàawp-kun mâak (ná-ká)\",en:\"Thank you very much. (female)\",type:\"s\",stage:5,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5585,
+    "type": "en",
+    "before": "  {id:5585,thai:\"ผมรอได้\",ph:\"pǒm raaw dâi\",en:\"I can wait.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5585,thai:\"ผมรอได้\",ph:\"pǒm raaw dâi\",en:\"I can wait. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5586,
+    "type": "en",
+    "before": "  {id:5586,thai:\"ไม่ได้บอก(ค่ะ)\",ph:\"mâi-dâi bàawk (kà)\",en:\"He didn’t say. / He didn’t tell me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5586,thai:\"ไม่ได้บอก(ค่ะ)\",ph:\"mâi-dâi bàawk (kà)\",en:\"He didn’t say. / He didn’t tell me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5587,
+    "type": "en",
+    "before": "  {id:5587,thai:\"ฉันสับสน\",ph:\"chǎn sàp-sǒn\",en:\"I’m confused.\",type:\"p\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5587,thai:\"ฉันสับสน\",ph:\"chǎn sàp-sǒn\",en:\"I’m confused. (female)\",type:\"p\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5596,
+    "type": "en",
+    "before": "  {id:5596,thai:\"ฉันอยากเจอเขา\",ph:\"chǎn yàak joe kǎo\",en:\"I want to meet him/her.\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:5596,thai:\"ฉันอยากเจอเขา\",ph:\"chǎn yàak joe kǎo\",en:\"I want to meet him/her. (female)\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5600,
+    "type": "en",
+    "before": "  {id:5600,thai:\"ฉันไม่กลัว(หรอก)\",ph:\"chǎn mâi-glûa (ràawk)\",en:\"I’m not afraid (at all).\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5600,thai:\"ฉันไม่กลัว(หรอก)\",ph:\"chǎn mâi-glûa (ràawk)\",en:\"I’m not afraid (at all). (female)\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5611,
+    "type": "en",
+    "before": "  {id:5611,thai:\"ไม่เหมือนผม\",ph:\"mâi-měuan pǒm\",en:\"Not like me. / Unlike me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5611,thai:\"ไม่เหมือนผม\",ph:\"mâi-měuan pǒm\",en:\"Not like me. / Unlike me. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5616,
+    "type": "en",
+    "before": "  {id:5616,thai:\"ฉันไปด้วย\",ph:\"chǎn bpai dûai\",en:\"I’m going too! / I’m going with you.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5616,thai:\"ฉันไปด้วย\",ph:\"chǎn bpai dûai\",en:\"I’m going too! / I’m going with you. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5618,
+    "type": "en",
+    "before": "  {id:5618,thai:\"อะไรหรือ(ครับ)\",ph:\"à-rai rěu (kráp)\",en:\"What (is it)?\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5618,thai:\"อะไรหรือ(ครับ)\",ph:\"à-rai rěu (kráp)\",en:\"What (is it)? (male)\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5631,
+    "type": "en",
+    "before": "  {id:5631,thai:\"ผมจะไปเดินเล่น\",ph:\"pǒm jà bpai doen-lên\",en:\"I’m going for a walk. / I’m gonna go out for a walk.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5631,thai:\"ผมจะไปเดินเล่น\",ph:\"pǒm jà bpai doen-lên\",en:\"I’m going for a walk. / I’m gonna go out for a walk. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5637,
+    "type": "en",
+    "before": "  {id:5637,thai:\"ฉันกำลังจะมีลูก\",ph:\"chǎn gam-lang-jà mii lûuk\",en:\"I’m gonna have a baby.\",type:\"s\",stage:5,cat:\"people\"}, // phReview: true",
+    "after": "  {id:5637,thai:\"ฉันกำลังจะมีลูก\",ph:\"chǎn gam-lang-jà mii lûuk\",en:\"I’m gonna have a baby. (female)\",type:\"s\",stage:5,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5640,
+    "type": "en",
+    "before": "  {id:5640,thai:\"ฉันหลงรักเขา\",ph:\"chǎn lǒng-rák kǎo\",en:\"I fell in love with him.\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5640,thai:\"ฉันหลงรักเขา\",ph:\"chǎn lǒng-rák kǎo\",en:\"I fell in love with him. (female)\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5642,
+    "type": "en",
+    "before": "  {id:5642,thai:\"(มัน)เป็นของโปรดของผม\",ph:\"(man) bpen kǎawng-bpròot kǎawng pǒm\",en:\"It’s my favorite. / That’s my favorite.\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5642,thai:\"(มัน)เป็นของโปรดของผม\",ph:\"(man) bpen kǎawng-bpròot kǎawng pǒm\",en:\"It’s my favorite. / That’s my favorite. (male)\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5645,
+    "type": "en",
+    "before": "  {id:5645,thai:\"ผมอยู่นี่แล้ว\",ph:\"pǒm yùu nîi láaeo\",en:\"I’m here. / I’m here now.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5645,thai:\"ผมอยู่นี่แล้ว\",ph:\"pǒm yùu nîi láaeo\",en:\"I’m here. / I’m here now. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5655,
+    "type": "en",
+    "before": "  {id:5655,thai:\"ตอบฉันหน่อย\",ph:\"dtàawp chǎn nàwi\",en:\"INFORMAL - Answer me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5655,thai:\"ตอบฉันหน่อย\",ph:\"dtàawp chǎn nàwi\",en:\"INFORMAL - Answer me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5656,
+    "type": "en",
+    "before": "  {id:5656,thai:\"ผมไม่ได้ยิน(คุณ)\",ph:\"pǒm mâi dâi-yin (kun)\",en:\"I didn’t hear (you). / I couldn’t hear (you).\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5656,thai:\"ผมไม่ได้ยิน(คุณ)\",ph:\"pǒm mâi dâi-yin (kun)\",en:\"I didn’t hear (you). / I couldn’t hear (you). (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5657,
+    "type": "en",
+    "before": "  {id:5657,thai:\"ฉันโตแล้ว\",ph:\"chǎn dtoo (láaeo)\",en:\"I’m grown up now. / I’m a grown-up.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5657,thai:\"ฉันโตแล้ว\",ph:\"chǎn dtoo (láaeo)\",en:\"I’m grown up now. / I’m a grown-up. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5661,
+    "type": "en",
+    "before": "  {id:5661,thai:\"เอาอีก(ค่ะ)\",ph:\"ao iìk (kà)\",en:\"More. / I want more. / Give me more.\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:5661,thai:\"เอาอีก(ค่ะ)\",ph:\"ao iìk (kà)\",en:\"More. / I want more. / Give me more. (female)\",type:\"s\",stage:5,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5668,
+    "type": "en",
+    "before": "  {id:5668,thai:\"ฉันท้องเสีย\",ph:\"chǎn táawng-sǐa\",en:\"I have diarrhea.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5668,thai:\"ฉันท้องเสีย\",ph:\"chǎn táawng-sǐa\",en:\"I have diarrhea. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5679,
+    "type": "en",
+    "before": "  {id:5679,thai:\"รอผมหน่อยนะ\",ph:\"raaw pǒm nàwi ná\",en:\"Wait for me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5679,thai:\"รอผมหน่อยนะ\",ph:\"raaw pǒm nàwi ná\",en:\"Wait for me. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5680,
+    "type": "en",
+    "before": "  {id:5680,thai:\"ฉันจำได้\",ph:\"chǎn jam dâi\",en:\"I remember (it).\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5680,thai:\"ฉันจำได้\",ph:\"chǎn jam dâi\",en:\"I remember (it). (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5681,
+    "type": "en",
+    "before": "  {id:5681,thai:\"ผมอยู่คนเดียว\",ph:\"pǒm yùu kon-diao\",en:\"I live alone.  OR   I’m alone.\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:5681,thai:\"ผมอยู่คนเดียว\",ph:\"pǒm yùu kon-diao\",en:\"I live alone.  OR   I’m alone. (male)\",type:\"s\",stage:5,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5685,
+    "type": "en",
+    "before": "  {id:5685,thai:\"มันไม่ใช่ของผม\",ph:\"man mâi-châi kǎawng pom\",en:\"It’s not mine.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5685,thai:\"มันไม่ใช่ของผม\",ph:\"man mâi-châi kǎawng pom\",en:\"It’s not mine. (male)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5686,
+    "type": "en",
+    "before": "  {id:5686,thai:\"ขอบคุณสำหรับ(เค้ก)(นะคะ)\",ph:\"kàawp-kun sǎm-ràp (kéek) (ná-ká)\",en:\"Thank you for (the cake).\",type:\"s\",stage:5,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:5686,thai:\"ขอบคุณสำหรับ(เค้ก)(นะคะ)\",ph:\"kàawp-kun sǎm-ràp (kéek) (ná-ká)\",en:\"Thank you for (the cake). (female)\",type:\"s\",stage:5,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5688,
+    "type": "en",
+    "before": "  {id:5688,thai:\"มีลูกกี่คนครับ\",ph:\"mii lûuk gìi kon kráp\",en:\"How many kids/children do you have?\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5688,thai:\"มีลูกกี่คนครับ\",ph:\"mii lûuk gìi kon kráp\",en:\"How many kids/children do you have? (male)\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5696,
+    "type": "en",
+    "before": "  {id:5696,thai:\"เบื่อไหม(คะ)\",ph:\"bèua mǎi (ká)\",en:\"Do you get bored? / Are you bored?\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true",
+    "after": "  {id:5696,thai:\"เบื่อไหม(คะ)\",ph:\"bèua mǎi (ká)\",en:\"Do you get bored? / Are you bored? (female)\",type:\"s\",stage:5,cat:\"emotions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5697,
+    "type": "en",
+    "before": "  {id:5697,thai:\"รอฉันก่อน(นะ)\",ph:\"raaw chǎn gàawn (ná)\",en:\"Wait for me.\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:5697,thai:\"รอฉันก่อน(นะ)\",ph:\"raaw chǎn gàawn (ná)\",en:\"Wait for me. (female)\",type:\"s\",stage:5,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 5698,
+    "type": "en",
+    "before": "  {id:5698,thai:\"ไม่ร้อนหรือ(คะ)\",ph:\"mâi ráawn rěu (ká)\",en:\"Aren’t you hot?\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true",
+    "after": "  {id:5698,thai:\"ไม่ร้อนหรือ(คะ)\",ph:\"mâi ráawn rěu (ká)\",en:\"Aren’t you hot? (female)\",type:\"s\",stage:5,cat:\"sentences-questions\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4396,
+    "type": "en",
+    "before": "  {id:4396,thai:\"ได้ครับ\",ph:\"dâi krúp\",en:\"I can (m)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4396,thai:\"ได้ครับ\",ph:\"dâi krúp\",en:\"I can (male)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4397,
+    "type": "en",
+    "before": "  {id:4397,thai:\"ไม่ได้ครับ\",ph:\"mâi dâi krúp\",en:\"I can't (m)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4397,thai:\"ไม่ได้ครับ\",ph:\"mâi dâi krúp\",en:\"I can't (male)\",type:\"p\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4488,
+    "type": "en",
+    "before": "  {id:4488,thai:\"ผมเป็น\",ph:\"poem pen\",en:\"I am (m)\",type:\"p\",stage:1,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4488,thai:\"ผมเป็น\",ph:\"poem pen\",en:\"I am (male)\",type:\"p\",stage:1,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4492,
+    "type": "en",
+    "before": "  {id:4492,thai:\"ดีมากครับ\",ph:\"dee mâhk krúp\",en:\"very well (m)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4492,thai:\"ดีมากครับ\",ph:\"dee mâhk krúp\",en:\"very well (male)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4493,
+    "type": "en",
+    "before": "  {id:4493,thai:\"ไม่ค่อยดีเท่าไหร่ครับ\",ph:\"mâi kôy dee tâo-rài krúp\",en:\"not quite that well (m)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4493,thai:\"ไม่ค่อยดีเท่าไหร่ครับ\",ph:\"mâi kôy dee tâo-rài krúp\",en:\"not quite that well (male)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4498,
+    "type": "en",
+    "before": "  {id:4498,thai:\"ผมเหงา\",ph:\"pŏm ngăo.\",en:\"I’m all alone. / I feel lonely. (m)\",type:\"s\",stage:4,cat:\"emotions\"},",
+    "after": "  {id:4498,thai:\"ผมเหงา\",ph:\"pŏm ngăo.\",en:\"I’m all alone. / I feel lonely. (male)\",type:\"s\",stage:4,cat:\"emotions\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4499,
+    "type": "en",
+    "before": "  {id:4499,thai:\"ผมรีบ\",ph:\"pŏm rêep.\",en:\"I’m in a hurry. (m)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4499,thai:\"ผมรีบ\",ph:\"pŏm rêep.\",en:\"I’m in a hurry. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4500,
+    "type": "en",
+    "before": "  {id:4500,thai:\"ผมซื้อของขวัญ\",ph:\"pŏm séu kŏng kwăn.\",en:\"I bought a gift. (m)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4500,thai:\"ผมซื้อของขวัญ\",ph:\"pŏm séu kŏng kwăn.\",en:\"I bought a gift. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4501,
+    "type": "en",
+    "before": "  {id:4501,thai:\"ผมขอสั่งอาหารละนะ\",ph:\"pŏm kŏr sàng aa-hăan lá ná?\",en:\"Can I order something? (m)\",type:\"s\",stage:4,cat:\"food\"}, // phReview: true",
+    "after": "  {id:4501,thai:\"ผมขอสั่งอาหารละนะ\",ph:\"pŏm kŏr sàng aa-hăan lá ná?\",en:\"Can I order something? (male)\",type:\"s\",stage:4,cat:\"food\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4502,
+    "type": "en",
+    "before": "  {id:4502,thai:\"ผมจะอยู่ต่ออีกสักหน่อย\",ph:\"pŏm jà yòo dtòr èek sàk nòi.\",en:\"I want to stay a little more. (m)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:4502,thai:\"ผมจะอยู่ต่ออีกสักหน่อย\",ph:\"pŏm jà yòo dtòr èek sàk nòi.\",en:\"I want to stay a little more. (male)\",type:\"s\",stage:4,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4527,
+    "type": "en",
+    "before": "  {id:4527,thai:\"ผมทำได้\",ph:\"pŏm tam dâai.\",en:\"Yes, I can. (m)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4527,thai:\"ผมทำได้\",ph:\"pŏm tam dâai.\",en:\"Yes, I can. (male)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4536,
+    "type": "en",
+    "before": "  {id:4536,thai:\"คุณเข้าใจครับ\",ph:\"koon kâojai krúp\",en:\"you understand (m)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4536,thai:\"คุณเข้าใจครับ\",ph:\"koon kâojai krúp\",en:\"you understand (male)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4539,
+    "type": "en",
+    "before": "  {id:4539,thai:\"คน อเมริกัน\",ph:\"kon amayrigun\",en:\"American person (m)\",type:\"p\",stage:1,cat:\"people\"}, // phReview: true",
+    "after": "  {id:4539,thai:\"คน อเมริกัน\",ph:\"kon amayrigun\",en:\"American person (male)\",type:\"p\",stage:1,cat:\"people\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4561,
+    "type": "en",
+    "before": "  {id:4561,thai:\"ผมพูดได้ครับ\",ph:\"poem pôot dâi krúp\",en:\"I can speak (m)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4561,thai:\"ผมพูดได้ครับ\",ph:\"poem pôot dâi krúp\",en:\"I can speak (male)\",type:\"s\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4564,
+    "type": "en",
+    "before": "  {id:4564,thai:\"ผมอยากครับ\",ph:\"poem yàhk krúp\",en:\"I would like (m)\",type:\"s\",stage:1,cat:\"sentences-want\"}, // phReview: true",
+    "after": "  {id:4564,thai:\"ผมอยากครับ\",ph:\"poem yàhk krúp\",en:\"I would like (male)\",type:\"s\",stage:1,cat:\"sentences-want\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4565,
+    "type": "en",
+    "before": "  {id:4565,thai:\"ผมทราบครับ\",ph:\"poem sâhp krúp\",en:\"I know (m)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4565,thai:\"ผมทราบครับ\",ph:\"poem sâhp krúp\",en:\"I know (male)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4566,
+    "type": "en",
+    "before": "  {id:4566,thai:\"คุณทราบครับ\",ph:\"koon sâhp krúp\",en:\"you know (m)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4566,thai:\"คุณทราบครับ\",ph:\"koon sâhp krúp\",en:\"you know (male)\",type:\"p\",stage:1,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4572,
+    "type": "en",
+    "before": "  {id:4572,thai:\"ตอนนี้ครับ\",ph:\"dtornnée krúp\",en:\"now (m)\",type:\"w\",stage:1,cat:\"things\"}, // phReview: true, catReview: true",
+    "after": "  {id:4572,thai:\"ตอนนี้ครับ\",ph:\"dtornnée krúp\",en:\"now (male)\",type:\"w\",stage:1,cat:\"things\"}, // phReview: true, catReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4608,
+    "type": "en",
+    "before": "  {id:4608,thai:\"ผมเข้าใจดี\",ph:\"pŏm kâo jai dee.\",en:\"I totally understand. / I feel the same. (m)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4608,thai:\"ผมเข้าใจดี\",ph:\"pŏm kâo jai dee.\",en:\"I totally understand. / I feel the same. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4609,
+    "type": "en",
+    "before": "  {id:4609,thai:\"ตอนนี้ผมไม่เป็นไร\",ph:\"dton-née pŏm mâi bpen rai.\",en:\"As for now, I’m good. (m)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4609,thai:\"ตอนนี้ผมไม่เป็นไร\",ph:\"dton-née pŏm mâi bpen rai.\",en:\"As for now, I’m good. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4611,
+    "type": "en",
+    "before": "  {id:4611,thai:\"ผมกำลังลดน้ำหนักอยู่\",ph:\"pŏm gam-lang lót náam nàk yòo.\",en:\"I'm on a diet. (m)\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true",
+    "after": "  {id:4611,thai:\"ผมกำลังลดน้ำหนักอยู่\",ph:\"pŏm gam-lang lót náam nàk yòo.\",en:\"I'm on a diet. (male)\",type:\"s\",stage:2,cat:\"sentences-self\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4619,
+    "type": "en",
+    "before": "  {id:4619,thai:\"ผมจะกินข้าวเช้า\",ph:\"pŏm jà gin kâao cháo.\",en:\"I’m going to have breakfast. (m)\",type:\"s\",stage:2,cat:\"food\"}, // phReview: true",
+    "after": "  {id:4619,thai:\"ผมจะกินข้าวเช้า\",ph:\"pŏm jà gin kâao cháo.\",en:\"I’m going to have breakfast. (male)\",type:\"s\",stage:2,cat:\"food\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4620,
+    "type": "en",
+    "before": "  {id:4620,thai:\"ผมไม่มีเงินสด\",ph:\"pŏm mâi mee ngern sòt.\",en:\"I don’t have cash. (m)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:4620,thai:\"ผมไม่มีเงินสด\",ph:\"pŏm mâi mee ngern sòt.\",en:\"I don’t have cash. (male)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4621,
+    "type": "en",
+    "before": "  {id:4621,thai:\"ผมพอจะมีเงินสดอยู่บ้าง\",ph:\"pŏm por jà mee ngern sòt yòo bâang.\",en:\"I have some cash. (m)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:4621,thai:\"ผมพอจะมีเงินสดอยู่บ้าง\",ph:\"pŏm por jà mee ngern sòt yòo bâang.\",en:\"I have some cash. (male)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4622,
+    "type": "en",
+    "before": "  {id:4622,thai:\"ขอเป็นเงินเหรียญนะครับ\",ph:\"kŏr bpen ngern rĭian ná kráp.\",en:\"Give me in coins, please. (m)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true",
+    "after": "  {id:4622,thai:\"ขอเป็นเงินเหรียญนะครับ\",ph:\"kŏr bpen ngern rĭian ná kráp.\",en:\"Give me in coins, please. (male)\",type:\"s\",stage:2,cat:\"greetings\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4623,
+    "type": "en",
+    "before": "  {id:4623,thai:\"ผมซื้อของขวัญได้มั้ย\",ph:\"pŏm séu kŏng kwăn dâai mái?\",en:\"Can I buy a gift? (m)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true",
+    "after": "  {id:4623,thai:\"ผมซื้อของขวัญได้มั้ย\",ph:\"pŏm séu kŏng kwăn dâai mái?\",en:\"Can I buy a gift? (male)\",type:\"s\",stage:2,cat:\"shopping\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4624,
+    "type": "en",
+    "before": "  {id:4624,thai:\"ผมไม่ใช่คนไทย\",ph:\"pŏm mâi châi kon tai.\",en:\"I’m not Thai. (m)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4624,thai:\"ผมไม่ใช่คนไทย\",ph:\"pŏm mâi châi kon tai.\",en:\"I’m not Thai. (male)\",type:\"s\",stage:2,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4653,
+    "type": "en",
+    "before": "  {id:4653,thai:\"ผมฟังที่คุณพูดไม่ชัดเท่าไหร่\",ph:\"pŏm fang têe kun pôot mâi chát tâo rài.\",en:\"I didn’t catch what you said. (m)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4653,thai:\"ผมฟังที่คุณพูดไม่ชัดเท่าไหร่\",ph:\"pŏm fang têe kun pôot mâi chát tâo rài.\",en:\"I didn’t catch what you said. (male)\",type:\"s\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4655,
+    "type": "en",
+    "before": "  {id:4655,thai:\"ผมยังโสด\",ph:\"pŏm yang sòht.\",en:\"I’m single. (m)\",type:\"p\",stage:3,cat:\"sentences-daily\"},",
+    "after": "  {id:4655,thai:\"ผมยังโสด\",ph:\"pŏm yang sòht.\",en:\"I’m single. (male)\",type:\"p\",stage:3,cat:\"sentences-daily\"},"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4656,
+    "type": "en",
+    "before": "  {id:4656,thai:\"พรุ่งนี้ผมจะไปกรุงเทพ\",ph:\"prûng-née pŏm jà bpai grung têp.\",en:\"Tomorrow, I’m planning to go to Bangkok. (m)\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true",
+    "after": "  {id:4656,thai:\"พรุ่งนี้ผมจะไปกรุงเทพ\",ph:\"prûng-née pŏm jà bpai grung têp.\",en:\"Tomorrow, I’m planning to go to Bangkok. (male)\",type:\"s\",stage:3,cat:\"time\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4690,
+    "type": "en",
+    "before": "  {id:4690,thai:\"ผมไม่มีตังค์\",ph:\"pŏm mâi mee dtang.\",en:\"I’m broke. (m)\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4690,thai:\"ผมไม่มีตังค์\",ph:\"pŏm mâi mee dtang.\",en:\"I’m broke. (male)\",type:\"p\",stage:3,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-imported-batch2.js",
+    "id": 4701,
+    "type": "en",
+    "before": "  {id:4701,thai:\"ผมจะไปท่องตำราสักหน่อย\",ph:\"pŏm jà bpai tông dtam-raa sàk nòi.\",en:\"I’m going to study a little. (m)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true",
+    "after": "  {id:4701,thai:\"ผมจะไปท่องตำราสักหน่อย\",ph:\"pŏm jà bpai tông dtam-raa sàk nòi.\",en:\"I’m going to study a little. (male)\",type:\"s\",stage:4,cat:\"sentences-daily\"}, // phReview: true"
+  },
+  {
+    "file": "src/data/cards-step2.js",
+    "id": 5700,
+    "type": "en",
+    "before": "  {id:5700,thai:'ผมพูดภาษาไทยไม่ได้ครับ',ph:'phǒm phûut phaa-sǎa thai mâi dâai khráp',en:'I can\\'t speak Thai',type:'s',stage:1,cat:'sentences-self'},",
+    "after": "  {id:5700,thai:'ผมพูดภาษาไทยไม่ได้ครับ',ph:'phǒm phûut phaa-sǎa thai mâi dâai khráp',en:'I can\\'t speak Thai (male)',type:'s',stage:1,cat:'sentences-self'},"
+  }
+]

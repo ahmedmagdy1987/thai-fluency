@@ -124,7 +124,7 @@ export const IMPORTED_CARDS = [
   {id:1709,thai:"กลุ่ม",ph:"glùm",en:"group",type:"w",stage:1,cat:"things"},
   {id:1710,thai:"ช่วง",ph:"chûaang",en:"phase",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:1711,thai:"รวม",ph:"ruaam",en:"including",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:1712,thai:"ฉัน",ph:"chăn",en:"I",type:"w",stage:1,cat:"pronouns"},
+  {id:1712,thai:"ฉัน",ph:"chăn",en:"I (female)",type:"w",stage:1,cat:"pronouns"},
   {id:1713,thai:"ชาย",ph:"chaai",en:"man",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:1714,thai:"โอกาส",ph:"o:h gàat",en:"chance",type:"w",stage:1,cat:"things"}, // phReview: true
   {id:1715,thai:"เสมอ",ph:"sà-mĕr",en:"always",type:"w",stage:1,cat:"time"},
@@ -556,7 +556,7 @@ export const IMPORTED_CARDS = [
   {id:2141,thai:"บังคับ",ph:"bang kháp",en:"force; compel; command",type:"w",stage:1,cat:"verbs"},
   {id:2142,thai:"เน้น",ph:"nén",en:"emphasize; stress",type:"w",stage:1,cat:"verbs"},
   {id:2143,thai:"อุตสาหกรรม",ph:"òot sǎa hà gam",en:"industry",type:"w",stage:2,cat:"things"}, // phReview: true
-  {id:2144,thai:"ดิฉัน",ph:"dì chǎn",en:"I (female)",type:"w",stage:1,cat:"pronouns"},
+  {id:2144,thai:"ดิฉัน",ph:"dì chǎn",en:"I (female, formal)",type:"w",stage:1,cat:"pronouns"},
   {id:2145,thai:"ถ่าย",ph:"thàai",en:"to photograph; discharge; to transfer",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2146,thai:"กอง",ph:"gong",en:"pile",type:"w",stage:2,cat:"things"},
   {id:2147,thai:"ปลอดภัย",ph:"bplàawt phai",en:"safe",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -2295,8 +2295,8 @@ export const IMPORTED_CARDS = [
   {id:3880,thai:"มากกว่า",ph:"mâak gwàa",en:"more",type:"w",stage:2,cat:"adjectives"},
   {id:3881,thai:"มอเตอร์",ph:"mor-dtêr",en:"motor",type:"w",stage:5,cat:"things"},
   {id:3882,thai:"รถมอเตอร์ไซค์",ph:"rót mor-dtêr-sai",en:"motorcycle",type:"w",stage:5,cat:"things"},
-  {id:3883,thai:"ของฉัน",ph:"kŏng chăn",en:"my",type:"w",stage:1,cat:"pronouns"},
-  {id:3884,thai:"ตัวของฉันเอง",ph:"dtua kŏng chăn ayng",en:"myself",type:"w",stage:1,cat:"pronouns"},
+  {id:3883,thai:"ของฉัน",ph:"kŏng chăn",en:"my (female)",type:"w",stage:1,cat:"pronouns"},
+  {id:3884,thai:"ตัวของฉันเอง",ph:"dtua kŏng chăn ayng",en:"myself (female)",type:"w",stage:1,cat:"pronouns"},
   {id:3885,thai:"ซน",ph:"son",en:"naughty",type:"w",stage:2,cat:"adjectives"},
   {id:3886,thai:"ไม่เคย",ph:"mâi koie",en:"never",type:"w",stage:1,cat:"time"},
   {id:3887,thai:"ถัดไป",ph:"tàt bpai",en:"next",type:"w",stage:5,cat:"things"},
@@ -2445,8 +2445,8 @@ export const IMPORTED_CARDS = [
   {id:4030,thai:"รุ่นหนุ่มสาว",ph:"rûn nùm săao",en:"young",type:"w",stage:2,cat:"adjectives"},
   {id:4031,thai:"สวนสัตว์",ph:"sŭan sàt",en:"zoo",type:"w",stage:5,cat:"things"},
   {id:4032,thai:"ไทย",ph:"thai",en:"emancipation / freedom",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:4033,thai:"คะ",ph:"khá",en:"particle / would",type:"w",stage:1,cat:"grammar"},
-  {id:4034,thai:"ค่ะ",ph:"khâ",en:"okay / yes",type:"w",stage:1,cat:"grammar"},
+  {id:4033,thai:"คะ",ph:"khá",en:"particle / would (female)",type:"w",stage:1,cat:"grammar"},
+  {id:4034,thai:"ค่ะ",ph:"khâ",en:"okay / yes (female)",type:"w",stage:1,cat:"grammar"},
   {id:4035,thai:"ซี",ph:"see",en:"C language / C",type:"w",stage:1,cat:"grammar"}, // phReview: true
   {id:4036,thai:"เถิด",ph:"thèert",en:"let's",type:"w",stage:1,cat:"grammar"}, // phReview: true
   {id:4037,thai:"ซิ",ph:"sí",en:"particle",type:"w",stage:1,cat:"grammar"},
@@ -2491,7 +2491,7 @@ export const IMPORTED_CARDS = [
   {id:4076,thai:"บิดามารดา",ph:"bì daa maan daa",en:"parents",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4077,thai:"ร้อยกรอง",ph:"ráawy graawng",en:"poem / verse",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4078,thai:"ทันใด",ph:"than dai",en:"instant / instantly",type:"w",stage:4,cat:"adverbs"}, // phReview: true
-  {id:4079,thai:"ฉันท์",ph:"chǎn",en:"poem / metrical composition",type:"w",stage:2,cat:"adjectives"},
+  {id:4079,thai:"ฉันท์",ph:"chǎn",en:"poem / metrical composition (female)",type:"w",stage:2,cat:"adjectives"},
   {id:4080,thai:"ราชสีห์",ph:"râat chá sěe",en:"lion-king",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4081,thai:"มอญ",ph:"maawn",en:"Mon Language / Peguan",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4082,thai:"อ้อ",ph:"âaw",en:"oh / reed grass",type:"w",stage:4,cat:"weather"}, // phReview: true
@@ -2792,7 +2792,7 @@ export const IMPORTED_CARDS = [
   {id:4377,thai:"วิวาท",ph:"wí wâat",en:"debate / squabble",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4378,thai:"แซ่",ph:"sâae",en:"family name of Chinese / family name",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4379,thai:"ไถ",ph:"thǎi",en:"push / squeeze",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4380,thai:"กระผม",ph:"grà phǒhm",en:"me / I",type:"w",stage:1,cat:"pronouns"},
+  {id:4380,thai:"กระผม",ph:"grà phǒhm",en:"me / I (male)",type:"w",stage:1,cat:"pronouns"},
   {id:4381,thai:"คราง",ph:"khraang",en:"Scapharca inaequivalvis / groan",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4382,thai:"งอก",ph:"ngâawk",en:"bud / grow",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4383,thai:"อินเดียนแดง",ph:"in diian daaeng",en:"Red Indian / American Indian",type:"w",stage:2,cat:"colors"}, // phReview: true
