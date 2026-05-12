@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Sparkles, X } from 'lucide-react';
 import { STAGES } from '../data/taxonomy.js';
 import { CARDS } from '../data/cards.js';
+import ConfettiBurst from './ConfettiBurst.jsx';
+import { playCelebration } from '../lib/sounds.js';
 
 export default function Stage1CompleteCelebration({ onClose }) {
   const s2 = STAGES.find(s => s.id === 2);
   const s2Count = CARDS.filter(c => (c.stage || 1) === 2).length;
+  const [showConfetti, setShowConfetti] = useState(true);
+  useEffect(() => { playCelebration(); }, []);
   return (
     <div className="s1-complete-overlay" onClick={onClose}>
+      {showConfetti && <ConfettiBurst variant="strong" onDone={() => setShowConfetti(false)} />}
       <div className="s1-complete-modal" onClick={(e) => e.stopPropagation()}>
         <button className="s1-complete-close" onClick={onClose} aria-label="Close">
           <X size={20} />

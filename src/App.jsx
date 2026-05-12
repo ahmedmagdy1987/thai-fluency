@@ -777,7 +777,6 @@ export default function TukTalkThaiApp() {
         <div className="header-inner">
           <div className="brand">
             <span className="brand-thai">ตุ๊กตุ๊ก</span>
-            <span className="brand-thai-ph">dtúk dtúk</span>
             <span className="brand-en">Tuk Talk Thai</span>
           </div>
           <div className="header-stats">

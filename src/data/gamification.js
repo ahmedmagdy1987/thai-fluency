@@ -3,7 +3,9 @@
 import { CARDS } from './cards.js';
 
 export const ACHIEVEMENTS = [
-  {id:'first-card',icon:'🎯',name:'First Step',desc:'Review your first card',check:(s) => s.totalReviews >= 1},
+  // 'first-card' (Review your first card) was removed: the first review is too
+  // early for a celebration moment. The first motivational milestone is now
+  // 'ten-cards', which is paired with confetti + a "tin tin" sound in App.jsx.
   {id:'ten-cards',icon:'📚',name:'Getting Started',desc:'Review 10 cards',check:(s) => s.totalReviews >= 10},
   {id:'fifty-cards',icon:'🔥',name:'On Fire',desc:'Review 50 cards',check:(s) => s.totalReviews >= 50},
   {id:'hundred-cards',icon:'💯',name:'Centurion',desc:'Review 100 cards',check:(s) => s.totalReviews >= 100},

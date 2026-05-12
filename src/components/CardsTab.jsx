@@ -5,6 +5,7 @@ import { WORD_LOOKUP } from '../data/lookup.js';
 import { CATEGORIES } from '../data/taxonomy.js';
 import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { playEasy } from '../lib/sounds.js';
 import { reviewCard, getDueCards, getNewCards, getStats, intervalLabel, DAY_MS } from '../lib/srs.js';
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
 import RateBtn from './RateBtn.jsx';
@@ -41,6 +42,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const handleRate = (rating) => {
     if (!rawCard) return;
     if (rating >= 3) setSessionCorrect(c => c + 1);
+    if (rating === 4) playEasy(); // short positive blip on Easy
     setSessionDone(d => d + 1);
     setRevealed(false);
     reviewOne(rawCard.id, rating);
