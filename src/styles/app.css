@@ -1260,18 +1260,18 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
    CHARACTER COACH — production assets, reduced-motion safe
    ============================================================ */
 
-/* The .cards-coach-rail wraps the coach above the SRS card. Setting a
-   min-height stops the rail from collapsing when no bubble is showing
-   and prevents jumpy layout when reactions fire. */
-.cards-coach-rail { display: flex; justify-content: center; align-items: flex-end; min-height: 138px; margin: 8px auto 14px; padding: 0 4px; max-width: 520px; }
+/* The .cards-coach-rail wraps the coach strip above the SRS card. The
+   compact layout below is horizontal, so the rail's vertical footprint
+   is intentionally small — just enough room for the portrait. */
+.cards-coach-rail { display: flex; justify-content: center; align-items: center; min-height: 100px; margin: 4px auto 12px; padding: 0 4px; max-width: 560px; }
 @media (min-width: 720px) {
-  .cards-coach-rail { min-height: 168px; max-width: 620px; }
+  .cards-coach-rail { min-height: 120px; max-width: 640px; }
 }
 
 .character-coach { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; isolation: isolate; }
 
-/* Speech bubble — sits above the portrait, pointed down with a tail. */
-.character-coach-bubble { position: relative; max-width: min(360px, calc(100% - 32px)); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 18px; padding: 9px 14px; font-size: 13px; font-weight: 500; line-height: 1.35; color: var(--ink); box-shadow: 0 6px 18px rgba(15, 61, 46, 0.10); transform-origin: 50% 100%; animation: coach-bubble-in 320ms cubic-bezier(.21, .84, .39, 1.01); }
+/* Speech bubble — default layout: above the portrait with a downward tail. */
+.character-coach-bubble { position: relative; max-width: min(360px, calc(100% - 32px)); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 16px; padding: 9px 14px; font-size: 13px; font-weight: 500; line-height: 1.35; color: var(--ink); box-shadow: 0 6px 18px rgba(15, 61, 46, 0.10); transform-origin: 50% 100%; animation: coach-bubble-in 320ms cubic-bezier(.21, .84, .39, 1.01); }
 .app-root[data-theme="dark"] .character-coach-bubble { background: var(--card-bg); }
 .character-coach-bubble-text { display: inline-block; }
 .character-coach-bubble-tail { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: var(--card-bg); border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
@@ -1284,12 +1284,44 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 /* Portrait container — sized to the art aspect (square). The halo is a
    soft radial behind the character; the ground is a tiny ellipse shadow
    that scales subtly with the bob animation. */
-.character-coach-portrait { position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; cursor: default; }
+.character-coach-portrait { position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; cursor: default; flex-shrink: 0; }
 button.character-coach-portrait { cursor: pointer; }
-.character-coach-compact .character-coach-portrait { width: 96px; height: 96px; }
 @media (min-width: 720px) {
   .character-coach-portrait { width: 140px; height: 140px; }
+}
+
+/* ---------------- Compact (CardsTab review-mode) variant ----------------
+   Horizontal strip: portrait left, speech bubble right with a tail that
+   points back at the portrait. Total height is bounded by the portrait,
+   keeping the strip ~96–116 px tall instead of the stacked 138–168 px.
+   The lesson card sits closer to the top of the viewport as a result. */
+.character-coach-compact { flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; width: 100%; max-width: 100%; }
+.character-coach-compact .character-coach-portrait { width: 96px; height: 96px; }
+@media (min-width: 720px) {
   .character-coach-compact .character-coach-portrait { width: 116px; height: 116px; }
+}
+.character-coach-compact .character-coach-bubble {
+  /* sit beside the portrait with a small inset margin; tail (below)
+     anchors the bubble back to the portrait visually. */
+  max-width: min(380px, calc(100% - 120px));
+  margin-left: 6px;
+  transform-origin: 0% 50%;
+  animation: coach-bubble-in-h 320ms cubic-bezier(.21, .84, .39, 1.01);
+}
+.character-coach-compact .character-coach-bubble-tail {
+  bottom: auto;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-right: none;
+  border-bottom: none;
+  border-left: 1px solid var(--line-strong);
+  border-top: 1px solid var(--line-strong);
+}
+@keyframes coach-bubble-in-h {
+  0%   { opacity: 0; transform: translateX(-6px) scale(0.96); }
+  60%  { opacity: 1; transform: translateX(0)    scale(1.02); }
+  100% { opacity: 1; transform: translateX(0)    scale(1); }
 }
 .character-coach-halo { position: absolute; inset: 6px; border-radius: 50%; background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--coach-accent, var(--gold)) 28%, transparent) 0%, transparent 65%); z-index: 0; pointer-events: none; }
 .character-coach-img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(15, 61, 46, 0.18)); transform-origin: 50% 92%; will-change: transform; }

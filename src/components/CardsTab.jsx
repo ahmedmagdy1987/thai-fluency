@@ -49,7 +49,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     () => resolveCoachIdForStage(rawCard && rawCard.stage),
     [rawCard && rawCard.stage]
   );
-  const coach = useCharacterReaction({ characterId: coachId, initialState: 'idle' });
+  // mode='review' tells the coach to pull from the SRS line pool (reflective
+  // copy) rather than the quiz pool (interrogative copy). See characters.js.
+  const coach = useCharacterReaction({ characterId: coachId, initialState: 'idle', mode: 'review' });
 
   // Sync resting state with the lesson phase: while waiting for reveal the
   // coach is "idle", once the answer is on screen we shift to "thinking"
@@ -85,8 +87,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const handleReveal = () => {
     if (revealed) return;
     setRevealed(true);
-    // Short "let me check" reaction with a soft select blip.
-    coach.react('choiceSelected', { duration: 700 });
+    // Short "how did that feel" beat. Picks from review-mode choiceSelected
+    // pool — reflective, not interrogative.
+    coach.react('choiceSelected', { duration: 800 });
     playCharacterSelect(coachId);
   };
 
@@ -111,7 +114,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     if (!rawCard || !markCardKnown) return;
     setSessionDone(d => d + 1);
     setRevealed(false);
-    coach.react('greeting', { duration: 1200, message: 'Knew it already? Onward.' });
+    coach.react('correct', { duration: 1200, message: 'Marked as known. Onward.' });
     markCardKnown(rawCard.id);
   };
 
@@ -121,7 +124,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setSessionDone(d => Math.max(0, d - 1));
     if (lastReviewSnapshot.rating >= 3) setSessionCorrect(c => Math.max(0, c - 1));
     setRevealed(true); // show the card revealed since they're correcting it
-    coach.react('thinking', { duration: 1000, message: 'Take another look.' });
+    coach.react('thinking', { duration: 1000, message: 'Re-rating it — your call.' });
   };
 
   if (!card) {

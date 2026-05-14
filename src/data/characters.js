@@ -79,17 +79,40 @@ export const CHARACTERS = {
     accentColor: '#5BAF7C',
     expressions: buildExpressionMap('elephant'),
     soundProfile: SOUND_PROFILE_ELEPHANT,
-    // Voice-lines used by the speech bubble. Short, motivational, generic
-    // enough to fit any card. Picked randomly within each category.
+    // Voice-lines used by the speech bubble. Two pools per character:
+    //
+    //   review (top-level): used by CardsTab — an SRS self-rating flow.
+    //     The learner reveals an answer, then rates how well they
+    //     recalled it. Copy is reflective, not interrogative.
+    //
+    //   quiz: reserved for QuizTab — a multiple-choice flow where the
+    //     coach reacts to a chosen answer. Copy is interrogative /
+    //     adjudicative. (Wiring lands when QuizTab adopts the coach.)
+    //
+    // Pools have the same shape so pickLine(characterId, state, mode)
+    // can swap pools without touching call sites.
     lines: {
-      idle:           ['Take your time.', 'You got this.', 'Ready when you are.'],
-      thinking:       ['Hmm, what could it be?', 'Picture it in your head.', 'Listen for the tone.'],
-      choiceSelected: ['Let me check…', 'Good — let\'s see.', 'Showing the answer…'],
-      correct:        ['Nice!', 'Yes — exactly right.', 'Sàwàtdee, fluency!', 'You\'re getting it.'],
-      wrong:          ['Almost. Try again.', 'No worries — we\'ll get it.', 'That one\'s tricky.'],
-      celebrating:    ['Look at you!', 'Mài bao róo… wait, you do!', 'Outstanding work.'],
-      speaking:       ['Listen closely.', 'Hear the tone?', 'Repeat after the audio.'],
-      greeting:       ['Sàwàtdee khráp!', 'Welcome back!', 'Let\'s get a few cards in.'],
+      // --- review (SRS self-rating) ---
+      idle:           ['Take your time.', 'Ready when you are.', 'No rush.'],
+      thinking:       ['Did you remember it?', 'How well do you know it?', 'Be honest with yourself.'],
+      choiceSelected: ['How did that feel?', 'Rate your recall.', 'Honest take?'],
+      correct:        ['Locked in.', 'That\'ll stick.', 'Solid recall.', 'Keep it warm.'],
+      wrong:          ['We\'ll see it again soon.', 'Tricky one — next time.', 'Keep it in mind.'],
+      celebrating:    ['Look at you!', 'Outstanding work.', 'You\'ve earned this.'],
+      speaking:       ['Listen closely.', 'Hear the tone?', 'Mirror the rhythm.'],
+      greeting:       ['Sàwàtdee khráp!', 'Welcome back!', 'Let\'s warm up.'],
+
+      // --- quiz (future wiring; not used by CardsTab) ---
+      quiz: {
+        idle:           ['Pick when ready.', 'Take your time.'],
+        thinking:       ['Hmm, which one?', 'Listen for the tone.', 'Picture it in your head.'],
+        choiceSelected: ['Let me check…', 'Locking it in…', 'Good — let\'s see.'],
+        correct:        ['Nice — exactly right.', 'You got it.', 'Sàwàtdee, fluency!'],
+        wrong:          ['Almost. Try the next one.', 'Not quite — hear the tone?', 'That one\'s tricky.'],
+        celebrating:    ['Strong run!', 'Crushed it.'],
+        speaking:       ['Listen closely.', 'Hear the tone?'],
+        greeting:       ['Ready to quiz?', 'Let\'s test it.'],
+      },
     },
   },
 
@@ -103,14 +126,27 @@ export const CHARACTERS = {
     expressions: buildExpressionMap('muay-thai'),
     soundProfile: SOUND_PROFILE_MUAY_THAI,
     lines: {
-      idle:           ['Focus.', 'One round at a time.', 'Stay sharp.'],
-      thinking:       ['Think it through.', 'Trust your ear.', 'You\'ve seen this one.'],
-      choiceSelected: ['Let\'s see it.', 'Good call.', 'Checking…'],
-      correct:        ['Sharp!', 'Clean answer.', 'That\'s the one.', 'Knockout!'],
-      wrong:          ['Reset. Try again.', 'Not quite — shake it off.', 'Get the tone next time.'],
-      celebrating:    ['Champion form.', 'You earned that.', 'Round won.'],
+      // --- review (SRS self-rating) ---
+      idle:           ['Stay sharp.', 'Focus.', 'One round at a time.'],
+      thinking:       ['Do you know it?', 'Honest answer.', 'Trust your gut.'],
+      choiceSelected: ['How sharp was that?', 'Rate it honest.', 'Be straight with yourself.'],
+      correct:        ['Clean.', 'Locked in.', 'That\'s a keeper.', 'Sharp recall.'],
+      wrong:          ['Reset. We\'ll drill it again.', 'Shake it off.', 'Next round, that\'s yours.'],
+      celebrating:    ['Champion form.', 'Round won.', 'You earned that.'],
       speaking:       ['Listen for the tone.', 'Match the rhythm.', 'Tone, then meaning.'],
-      greeting:       ['Glove up. Let\'s train.', 'Welcome to the gym.', 'Ready to drill?'],
+      greeting:       ['Glove up.', 'Welcome to the gym.', 'Let\'s warm up.'],
+
+      // --- quiz (future wiring) ---
+      quiz: {
+        idle:           ['Pick when ready.', 'Stay sharp.'],
+        thinking:       ['Which one?', 'Trust your ear.'],
+        choiceSelected: ['Let\'s see it.', 'Checking…', 'Good call.'],
+        correct:        ['Sharp!', 'Clean answer.', 'That\'s the one.', 'Knockout!'],
+        wrong:          ['Reset. Try the next.', 'Not quite — shake it off.'],
+        celebrating:    ['Champion form.', 'Round won.'],
+        speaking:       ['Listen for the tone.', 'Match the rhythm.'],
+        greeting:       ['Ready to drill?', 'Step in the ring.'],
+      },
     },
   },
 };
@@ -140,15 +176,31 @@ export function getExpressionSrc(characterId, stateOrExpression) {
   return char.expressions[char.fallbackExpression] || char.expressions.idle;
 }
 
-// Pick a short message for a given (character, state). Falls back to the
-// idle pool when the state has no entries. Returns null if the character
-// is unknown — callers should treat null as "no bubble".
-export function pickLine(characterId, state) {
+// Pick a short message for a given (character, state, mode). `mode` is
+// one of:
+//   'review' (default) — CardsTab / SRS self-rating flow. Uses the
+//     top-level entries on `character.lines`.
+//   'quiz'             — future QuizTab / multiple-choice flow. Uses
+//     `character.lines.quiz.<state>`.
+//
+// Falls back to the idle pool of the same mode if the state is unknown.
+// Returns null if the character has no entries at all.
+export function pickLine(characterId, state, mode = 'review') {
   const char = resolveCharacter(characterId);
-  const pool = (char.lines && char.lines[state]) || (char.lines && char.lines.idle) || null;
-  if (!pool || pool.length === 0) return null;
-  if (pool.length === 1) return pool[0];
-  return pool[Math.floor(Math.random() * pool.length)];
+  if (!char.lines) return null;
+
+  const pools = mode === 'quiz' && char.lines.quiz ? char.lines.quiz : char.lines;
+  // pools may itself be the top-level review map; guard the `quiz`
+  // sub-object from being picked when mode === 'review' (the entries
+  // for state lookups are strings/arrays, never nested objects).
+  const candidate = pools[state];
+  const pool = Array.isArray(candidate) ? candidate : null;
+  const fallback = Array.isArray(pools.idle) ? pools.idle : null;
+
+  const chosen = pool || fallback;
+  if (!chosen || chosen.length === 0) return null;
+  if (chosen.length === 1) return chosen[0];
+  return chosen[Math.floor(Math.random() * chosen.length)];
 }
 
 // Whether a given character id has real art and should be used by the

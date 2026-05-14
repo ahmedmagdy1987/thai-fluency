@@ -30,6 +30,9 @@ const DEFAULT_DURATIONS = {
 export function useCharacterReaction({
   characterId,
   initialState = 'idle',
+  // 'review' (default) → SRS self-rating copy (CardsTab).
+  // 'quiz'             → multiple-choice copy (future QuizTab).
+  mode = 'review',
 } = {}) {
   const [state, setState] = useState(initialState);
   const [message, setMessage] = useState(null);
@@ -76,7 +79,7 @@ export function useCharacterReaction({
       messageNonceRef.current += 1;
       nextMessage = opts.message !== undefined
         ? opts.message
-        : pickLine(characterId, nextState);
+        : pickLine(characterId, nextState, mode);
     }
 
     setState(nextState);
@@ -90,13 +93,13 @@ export function useCharacterReaction({
         // Let the resting state speak for itself — pick an idle line
         // occasionally, but only ~30% of the time so it doesn't feel chatty.
         if (Math.random() < 0.3) {
-          setMessage(pickLine(characterId, restingRef.current || 'idle'));
+          setMessage(pickLine(characterId, restingRef.current || 'idle', mode));
         } else {
           setMessage(null);
         }
       }, duration);
     }
-  }, [characterId]);
+  }, [characterId, mode]);
 
   const clearMessage = useCallback(() => setMessage(null), []);
 
