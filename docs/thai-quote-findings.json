@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "generatedAt": "2026-05-14T09:49:15.025Z",
+    "totalCards": 4791
+  },
+  "counts": {
+    "both-ends-clean": 0,
+    "lead-only": 0,
+    "trail-only": 0,
+    "internal-only": 0,
+    "complex": 1
+  },
+  "cards": [
+    {
+      "id": 5073,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "bucket": "complex",
+      "oldThai": "\"เป็นเมนส์ \" มีประจำเดือน”",
+      "proposedThai": null,
+      "en": "I'm having my period"
+    }
+  ]
+}

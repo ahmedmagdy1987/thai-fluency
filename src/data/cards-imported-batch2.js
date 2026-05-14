@@ -388,7 +388,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4774,thai:"เอาไปซ่อนไว้ไหน",ph:"ao bpai sôn wái nǎi",en:"Where did you hide it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:4775,thai:"อยากลองดี",ph:"yàak lawng dee",en:"I want to try it (even though I know it's dangerous)",type:"s",stage:4,cat:"sentences-want"}, // phReview: true
   {id:4776,thai:"ขอทีเถอะ",ph:"khǎaw thee thùh",en:"Please stop that",type:"s",stage:1,cat:"greetings",note:"Literally: \"I beg you one time (not to do that)\""}, // phReview: true
-  {id:4777,thai:"\"อย่ายุ่งได้มั้ย",ph:"",en:"Can you not interfere?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:4777,thai:"อย่ายุ่งได้มั้ย",ph:"",en:"Can you not interfere?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
   {id:4778,thai:"บอกตรงๆ",ph:"",en:"I'll be straight with you",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To drive a vehicle while drunk\""}, // phReview: true, phNeedsGen: true
   {id:4779,thai:"ขับรถเมา",ph:"kàp rót mao",en:"To drive under the influence",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4780,thai:"เขาหนีไปแล้ว",ph:"khǎo něe bpai láew",en:"He already ran away",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
@@ -467,7 +467,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4853,thai:"โง่เหมือนควาย",ph:"ngôh měuuan khwaai",en:"As stupid as an ass",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"As stupid as a buffalo\""}, // phReview: true
   {id:4854,thai:"คิดมากไปรึเปล่า",ph:"khít mâak bpai réu bplàao",en:"Are you thinking too much about it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:4855,thai:"ไม่เอาได้มั้ย",ph:"",en:"I don't want it",type:"s",stage:4,cat:"sentences-want",note:"Literally: \"Can I not take it?\""}, // phReview: true, phNeedsGen: true
-  {id:4856,thai:"\"เดี๋ยวอย่างนี้",ph:"dǐaao yàang née",en:"Now this",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
+  {id:4856,thai:"เดี๋ยวอย่างนี้",ph:"dǐaao yàang née",en:"Now this",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4857,thai:"เดี๋ยวอย่างนั้น",ph:"dǐaao yàang nán",en:"Now that",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4858,thai:"ไม่ย่อท้อ",ph:"",en:"Not giving up",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:4859,thai:"รอเดี๋ยวนะ",ph:"raw dǐaao ná",en:"Wait a second",type:"s",stage:4,cat:"time"}, // phReview: true
@@ -539,304 +539,304 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4925,thai:"ทำยังไงดี",ph:"tham yang ngai dee",en:"What should I do?",type:"s",stage:4,cat:"sentences-questions",note:"Also: \"ทำยังไงกันดี\" \"What should we do?\""}, // phReview: true
   {id:4926,thai:"อย่ายุ่ง",ph:"yàa yûng",en:"Don't interfere",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4927,thai:"เห็นใจผมหน่อย",ph:"hěn jai phǒm nàawy",en:"Please have sympathy for me (male)",type:"s",stage:1,cat:"greetings",note:"Literally: \"Please see my heart\""}, // phReview: true
-  {id:4928,thai:"“คนหลายใจ”",ph:"",en:"An unfaithful person",type:"s",stage:4,cat:"people",note:"Literally: \"A person with many hearts\" (mostly for lovers)"}, // phReview: true, phNeedsGen: true
-  {id:4929,thai:"“คิดจนหัวปั่น”",ph:"",en:"My head is spinning from thinking too much",type:"s",stage:4,cat:"body",note:"Literally: \"Think till head spins\""}, // phReview: true, phNeedsGen: true
-  {id:4930,thai:"“คุณฝีมือดี”",ph:"",en:"You have good skills",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4931,thai:"“ห้ามเข้า”",ph:"",en:"No entry",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4932,thai:"“เราแย่งกันกิน”",ph:"",en:"We fight to get the food",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
-  {id:4933,thai:"“ยังไม่ถึงเดือน”",ph:"",en:"It hasn't been a month",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4934,thai:"“ทำกับมือ”",ph:"",en:"I made (did) it with my own hands",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:4935,thai:"“จ่ายค่าเช่า”",ph:"",en:"To pay rent",type:"s",stage:4,cat:"home",note:"Also: \"ค่าเช่าบ้าน\" \"rent for a home\" and \"ค่าเช่าห้อง\" \"rent for a room\" (Not to be confused with \"บ้านให้เช่า\" \"house for rent\""}, // phReview: true, phNeedsGen: true
-  {id:4936,thai:"“ดำปิ๊ดปี๋”",ph:"",en:"As black as charcoal",type:"s",stage:4,cat:"colors",note:"Other usage: \"แดงแจ๊ดแจ๋\" \"Very red\" or \"เหลิองอ๋อย\" \"Very yellow\""}, // phReview: true, phNeedsGen: true
-  {id:4937,thai:"“ปวดฉี่”",ph:"",en:"I need to pee",type:"s",stage:4,cat:"sentences-want",note:"Other usage: \"ปวดเยี๋ยว\" \"I need to pee*\" or \"ปวดอึ\" \"I need to poop\" or \"ปวดขี้\" \"I need to poop*\" (*=These senteces should be used with close friends only)"}, // phReview: true, phNeedsGen: true
-  {id:4938,thai:"“นึกว่าคุณไม่ชอบ”",ph:"",en:"I thought you didn't like it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: \"นึกว่าคุณจะไม่มา\" \"I thought you wouldn't come\" or \"นึกว่าคุณโกรธผม\" \"I thought you were angry at me\""}, // phReview: true, phNeedsGen: true
-  {id:4939,thai:"“ไม่นานขนาดนั้น”",ph:"",en:"It doesn't take that long",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4940,thai:"“อยู่เฝ้าบ้าน”",ph:"",en:"I'm staying home to guard the house",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
-  {id:4941,thai:"“บอกแล้วไง”",ph:"",en:"I told you so",type:"s",stage:4,cat:"sentences-daily",note:"Also: \"บอกแล้วไม่เชื่อ\" \"I already told you, but you didn't believe me\""}, // phReview: true, phNeedsGen: true
-  {id:4942,thai:"“คุณตัวร้อน”",ph:"",en:"You have a fever",type:"s",stage:4,cat:"health",note:"Literally:\"Your body is hot\""}, // phReview: true, phNeedsGen: true
-  {id:4943,thai:"“ว่าแต่คุณล่ะ”",ph:"",en:"And what about yourself?",type:"s",stage:4,cat:"sentences-questions",note:"Short form: \"คุณล่ะ\" (After this phrase you can ask questions like: \"จะทำยังไง\" \"What will you do?\" or \"คิดว่าดีมั้ย\" \"Do you think it's good?\" or \"ชอบรึไม่ชอบ\" \"Do you like it or not?\""}, // phReview: true, phNeedsGen: true
-  {id:4944,thai:"“ไม่อยากลองดี”",ph:"",en:"I don't want to try it",type:"s",stage:4,cat:"sentences-want",note:"This phrase implies that the outcome is bad."}, // phReview: true, phNeedsGen: true
-  {id:4945,thai:"“ไม่บอกก็รู้”",ph:"",en:"I knew it without being told",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4946,thai:"“ขอแก้แค้น”",ph:"",en:"I want revenge",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:4947,thai:"“เธอเป็นลม”",ph:"",en:"She fainted",type:"p",stage:4,cat:"sentences-daily",note:"Literally: \"To become wind\""}, // phReview: true, phNeedsGen: true
-  {id:4948,thai:"“ก่าเขาจะมาก็ดึกแล้ว”",ph:"",en:"It's going to be late by the time he arrives",type:"s",stage:4,cat:"time",note:"Other usage: “กว่าจะรู้ ก็สายเล้ว” “It was too late before we knew it”"}, // phReview: true, phNeedsGen: true
-  {id:4949,thai:"“ไม่เห็นจริงๆ”",ph:"",en:"I really didn't see it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4950,thai:"“น่าสงสาร”",ph:"",en:"He is pitiful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4951,thai:"“ดีขนาดนั้นเลยเหรอ”",ph:"",en:"Is it really that good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:4952,thai:"“รู้ไม่ทันคุณ”",ph:"",en:"You tricked me",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I can't catch up with your knowledge\""}, // phReview: true, phNeedsGen: true
-  {id:4953,thai:"“ไว้ใจไม่ได้”",ph:"",en:"He can't be trusted",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4954,thai:"“หนีไปเที่ยว”",ph:"",en:"She sneaked out to have fun",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
-  {id:4955,thai:"“กลางวันแสกๆ”",ph:"",en:"During broad daylight",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4956,thai:"“ได้เวลาแล้ว”",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4957,thai:"“สอบตก”",ph:"",en:"To fail the exam",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4958,thai:"“ยกมือขึ้น”",ph:"",en:"Hands up!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4959,thai:"“เขาเพึ่งจะไป”",ph:"",en:"He just left",type:"s",stage:4,cat:"sentences-daily",note:"Also: “เขาเพิ่งจะไป”"}, // phReview: true, phNeedsGen: true
-  {id:4960,thai:"“นักพนันมืออาชีพ”",ph:"",en:"A professional gambler",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “นักกีฬามือสมัครเล่น” “An amateur athlete”"}, // phReview: true, phNeedsGen: true
-  {id:4961,thai:"“แอบดู”",ph:"",en:"To peek at something",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4962,thai:"“ยังไม่เข็ด”",ph:"",en:"“I haven't learned my lesson yet”",type:"s",stage:4,cat:"sentences-self",note:"Other usage: “เข็ดแล้ว” “I’ve learned my lesson”"}, // phReview: true, phNeedsGen: true
-  {id:4963,thai:"“ไม่รู้จะทำไง”",ph:"",en:"I don't know what I should do",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4964,thai:"“ทำแรงเกินไป”",ph:"",en:"You did it too harshly",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4965,thai:"“หัวเด็ดตีนขาด ยังไงก็ไม่ทำ\"",ph:"",en:"I won't do it no matter what",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I won't do it even if my head and feet are cut off\""}, // phReview: true, phNeedsGen: true
-  {id:4966,thai:"“ทำหลบๆซ่อนๆ\"",ph:"",en:"To do something secretly",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4967,thai:"“ตามใจคุณ”",ph:"",en:"I'll let you do what you want",type:"s",stage:4,cat:"sentences-want",note:"Literally: \"I follow your heart\""}, // phReview: true, phNeedsGen: true
-  {id:4968,thai:"“กินไม่ได้ นอนไม่หลับ”",ph:"",en:"I can't eat",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
-  {id:4969,thai:"“ขึ้นๆ ลงๆ”",ph:"",en:"Up and down",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4970,thai:"“ไหนๆ ก็ไหนๆ”",ph:"",en:"Let's get over it (Let bygones be bygones)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4971,thai:"“ปากหวาน”",ph:"",en:"You're very complimentary",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"You have a sweet mouth\""}, // phReview: true, phNeedsGen: true
-  {id:4972,thai:"“ไม่มียางอาย”",ph:"",en:"You have no shame at all",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4973,thai:"“ฝีมือตก”",ph:"",en:"My skill level dropped",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:4974,thai:"“สักวัน”",ph:"",en:"One day",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4975,thai:"“จะทำให้ได้”",ph:"",en:"I will make it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4976,thai:"\"เขาเองเหรอ”",ph:"",en:"Oh, is it him?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:4977,thai:"\"อดไม่ได้”",ph:"",en:"I can't help it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4978,thai:"\"คืนดีกันแล้ว”",ph:"",en:"They reconciled",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4979,thai:"\"ตามคุณไม่ทัน”",ph:"",en:"I can't keep up with you",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4980,thai:"\"อยู่กันสองต่อสอง”",ph:"",en:"To be alone just the two of us (them)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4981,thai:"\"ขอแก้ตัว”",ph:"",en:"Give me a chance to correct myself",type:"s",stage:4,cat:"sentences-daily",note:"Not to be confused with “ข้อแก้ตัว” (An excuse)"}, // phReview: true, phNeedsGen: true
-  {id:4982,thai:"\"นอนทั้งวันทั้งคืน”",ph:"",en:"To sleep all day and all night",type:"s",stage:4,cat:"time",note:"Other usage: “ทำงานทั้งวันทั้งคืน” “To work all day all night”"}, // phReview: true, phNeedsGen: true
-  {id:4983,thai:"\"แกล้งโง่หรือโง่จริงๆ”",ph:"",en:"Are you pretending or are you really stupid?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:4984,thai:"\"รีบไปรีบมา”",ph:"",en:"Go and come back soon",type:"s",stage:4,cat:"body",note:"Literally: \"Hurry go. Hurry come.\""}, // phReview: true, phNeedsGen: true
-  {id:4985,thai:"\"อิจฉาตาร้อน”",ph:"",en:"Green with envy",type:"s",stage:4,cat:"colors",note:"Literally: \"Envy, hot eyes\""}, // phReview: true, phNeedsGen: true
-  {id:4986,thai:"\"ดูท่าทางไม่ค่อยดี”",ph:"",en:"It doesn't look very good",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4987,thai:"\"ผมไม่เกี่ยว”",ph:"",en:"I have nothing to do with this (male)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4988,thai:"\"มีเรื่องด่วน”",ph:"",en:"There is an urgent matter",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4989,thai:"\"เอาเป็นว่า...”",ph:"",en:"So let's decide that...",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4990,thai:"\"ขอบอกก่อนว่า...”",ph:"",en:"I want to tell you ahead of time that...",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4991,thai:"\"ไม่อยากคบกับเขา”",ph:"",en:"I don't want to associate with him",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:4992,thai:"\"เขาชอบนินทา”",ph:"",en:"She likes to gossip",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4928,thai:"คนหลายใจ",ph:"",en:"An unfaithful person",type:"s",stage:4,cat:"people",note:"Literally: \"A person with many hearts\" (mostly for lovers)"}, // phReview: true, phNeedsGen: true
+  {id:4929,thai:"คิดจนหัวปั่น",ph:"",en:"My head is spinning from thinking too much",type:"s",stage:4,cat:"body",note:"Literally: \"Think till head spins\""}, // phReview: true, phNeedsGen: true
+  {id:4930,thai:"คุณฝีมือดี",ph:"",en:"You have good skills",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4931,thai:"ห้ามเข้า",ph:"",en:"No entry",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4932,thai:"เราแย่งกันกิน",ph:"",en:"We fight to get the food",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
+  {id:4933,thai:"ยังไม่ถึงเดือน",ph:"",en:"It hasn't been a month",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4934,thai:"ทำกับมือ",ph:"",en:"I made (did) it with my own hands",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:4935,thai:"จ่ายค่าเช่า",ph:"",en:"To pay rent",type:"s",stage:4,cat:"home",note:"Also: \"ค่าเช่าบ้าน\" \"rent for a home\" and \"ค่าเช่าห้อง\" \"rent for a room\" (Not to be confused with \"บ้านให้เช่า\" \"house for rent\""}, // phReview: true, phNeedsGen: true
+  {id:4936,thai:"ดำปิ๊ดปี๋",ph:"",en:"As black as charcoal",type:"s",stage:4,cat:"colors",note:"Other usage: \"แดงแจ๊ดแจ๋\" \"Very red\" or \"เหลิองอ๋อย\" \"Very yellow\""}, // phReview: true, phNeedsGen: true
+  {id:4937,thai:"ปวดฉี่",ph:"",en:"I need to pee",type:"s",stage:4,cat:"sentences-want",note:"Other usage: \"ปวดเยี๋ยว\" \"I need to pee*\" or \"ปวดอึ\" \"I need to poop\" or \"ปวดขี้\" \"I need to poop*\" (*=These senteces should be used with close friends only)"}, // phReview: true, phNeedsGen: true
+  {id:4938,thai:"นึกว่าคุณไม่ชอบ",ph:"",en:"I thought you didn't like it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: \"นึกว่าคุณจะไม่มา\" \"I thought you wouldn't come\" or \"นึกว่าคุณโกรธผม\" \"I thought you were angry at me\""}, // phReview: true, phNeedsGen: true
+  {id:4939,thai:"ไม่นานขนาดนั้น",ph:"",en:"It doesn't take that long",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4940,thai:"อยู่เฝ้าบ้าน",ph:"",en:"I'm staying home to guard the house",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
+  {id:4941,thai:"บอกแล้วไง",ph:"",en:"I told you so",type:"s",stage:4,cat:"sentences-daily",note:"Also: \"บอกแล้วไม่เชื่อ\" \"I already told you, but you didn't believe me\""}, // phReview: true, phNeedsGen: true
+  {id:4942,thai:"คุณตัวร้อน",ph:"",en:"You have a fever",type:"s",stage:4,cat:"health",note:"Literally:\"Your body is hot\""}, // phReview: true, phNeedsGen: true
+  {id:4943,thai:"ว่าแต่คุณล่ะ",ph:"",en:"And what about yourself?",type:"s",stage:4,cat:"sentences-questions",note:"Short form: \"คุณล่ะ\" (After this phrase you can ask questions like: \"จะทำยังไง\" \"What will you do?\" or \"คิดว่าดีมั้ย\" \"Do you think it's good?\" or \"ชอบรึไม่ชอบ\" \"Do you like it or not?\""}, // phReview: true, phNeedsGen: true
+  {id:4944,thai:"ไม่อยากลองดี",ph:"",en:"I don't want to try it",type:"s",stage:4,cat:"sentences-want",note:"This phrase implies that the outcome is bad."}, // phReview: true, phNeedsGen: true
+  {id:4945,thai:"ไม่บอกก็รู้",ph:"",en:"I knew it without being told",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4946,thai:"ขอแก้แค้น",ph:"",en:"I want revenge",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:4947,thai:"เธอเป็นลม",ph:"",en:"She fainted",type:"p",stage:4,cat:"sentences-daily",note:"Literally: \"To become wind\""}, // phReview: true, phNeedsGen: true
+  {id:4948,thai:"ก่าเขาจะมาก็ดึกแล้ว",ph:"",en:"It's going to be late by the time he arrives",type:"s",stage:4,cat:"time",note:"Other usage: “กว่าจะรู้ ก็สายเล้ว” “It was too late before we knew it”"}, // phReview: true, phNeedsGen: true
+  {id:4949,thai:"ไม่เห็นจริงๆ",ph:"",en:"I really didn't see it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4950,thai:"น่าสงสาร",ph:"",en:"He is pitiful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4951,thai:"ดีขนาดนั้นเลยเหรอ",ph:"",en:"Is it really that good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:4952,thai:"รู้ไม่ทันคุณ",ph:"",en:"You tricked me",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I can't catch up with your knowledge\""}, // phReview: true, phNeedsGen: true
+  {id:4953,thai:"ไว้ใจไม่ได้",ph:"",en:"He can't be trusted",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4954,thai:"หนีไปเที่ยว",ph:"",en:"She sneaked out to have fun",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
+  {id:4955,thai:"กลางวันแสกๆ",ph:"",en:"During broad daylight",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4956,thai:"ได้เวลาแล้ว",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4957,thai:"สอบตก",ph:"",en:"To fail the exam",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4958,thai:"ยกมือขึ้น",ph:"",en:"Hands up!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4959,thai:"เขาเพึ่งจะไป",ph:"",en:"He just left",type:"s",stage:4,cat:"sentences-daily",note:"Also: “เขาเพิ่งจะไป”"}, // phReview: true, phNeedsGen: true
+  {id:4960,thai:"นักพนันมืออาชีพ",ph:"",en:"A professional gambler",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “นักกีฬามือสมัครเล่น” “An amateur athlete”"}, // phReview: true, phNeedsGen: true
+  {id:4961,thai:"แอบดู",ph:"",en:"To peek at something",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4962,thai:"ยังไม่เข็ด",ph:"",en:"“I haven't learned my lesson yet”",type:"s",stage:4,cat:"sentences-self",note:"Other usage: “เข็ดแล้ว” “I’ve learned my lesson”"}, // phReview: true, phNeedsGen: true
+  {id:4963,thai:"ไม่รู้จะทำไง",ph:"",en:"I don't know what I should do",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4964,thai:"ทำแรงเกินไป",ph:"",en:"You did it too harshly",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4965,thai:"หัวเด็ดตีนขาด ยังไงก็ไม่ทำ",ph:"",en:"I won't do it no matter what",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I won't do it even if my head and feet are cut off\""}, // phReview: true, phNeedsGen: true
+  {id:4966,thai:"ทำหลบๆซ่อนๆ",ph:"",en:"To do something secretly",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4967,thai:"ตามใจคุณ",ph:"",en:"I'll let you do what you want",type:"s",stage:4,cat:"sentences-want",note:"Literally: \"I follow your heart\""}, // phReview: true, phNeedsGen: true
+  {id:4968,thai:"กินไม่ได้ นอนไม่หลับ",ph:"",en:"I can't eat",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
+  {id:4969,thai:"ขึ้นๆ ลงๆ",ph:"",en:"Up and down",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4970,thai:"ไหนๆ ก็ไหนๆ",ph:"",en:"Let's get over it (Let bygones be bygones)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4971,thai:"ปากหวาน",ph:"",en:"You're very complimentary",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"You have a sweet mouth\""}, // phReview: true, phNeedsGen: true
+  {id:4972,thai:"ไม่มียางอาย",ph:"",en:"You have no shame at all",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4973,thai:"ฝีมือตก",ph:"",en:"My skill level dropped",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:4974,thai:"สักวัน",ph:"",en:"One day",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4975,thai:"จะทำให้ได้",ph:"",en:"I will make it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4976,thai:"เขาเองเหรอ",ph:"",en:"Oh, is it him?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:4977,thai:"อดไม่ได้",ph:"",en:"I can't help it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4978,thai:"คืนดีกันแล้ว",ph:"",en:"They reconciled",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4979,thai:"ตามคุณไม่ทัน",ph:"",en:"I can't keep up with you",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4980,thai:"อยู่กันสองต่อสอง",ph:"",en:"To be alone just the two of us (them)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4981,thai:"ขอแก้ตัว",ph:"",en:"Give me a chance to correct myself",type:"s",stage:4,cat:"sentences-daily",note:"Not to be confused with “ข้อแก้ตัว” (An excuse)"}, // phReview: true, phNeedsGen: true
+  {id:4982,thai:"นอนทั้งวันทั้งคืน",ph:"",en:"To sleep all day and all night",type:"s",stage:4,cat:"time",note:"Other usage: “ทำงานทั้งวันทั้งคืน” “To work all day all night”"}, // phReview: true, phNeedsGen: true
+  {id:4983,thai:"แกล้งโง่หรือโง่จริงๆ",ph:"",en:"Are you pretending or are you really stupid?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:4984,thai:"รีบไปรีบมา",ph:"",en:"Go and come back soon",type:"s",stage:4,cat:"body",note:"Literally: \"Hurry go. Hurry come.\""}, // phReview: true, phNeedsGen: true
+  {id:4985,thai:"อิจฉาตาร้อน",ph:"",en:"Green with envy",type:"s",stage:4,cat:"colors",note:"Literally: \"Envy, hot eyes\""}, // phReview: true, phNeedsGen: true
+  {id:4986,thai:"ดูท่าทางไม่ค่อยดี",ph:"",en:"It doesn't look very good",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4987,thai:"ผมไม่เกี่ยว",ph:"",en:"I have nothing to do with this (male)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4988,thai:"มีเรื่องด่วน",ph:"",en:"There is an urgent matter",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4989,thai:"เอาเป็นว่า...",ph:"",en:"So let's decide that...",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:4990,thai:"ขอบอกก่อนว่า...",ph:"",en:"I want to tell you ahead of time that...",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4991,thai:"ไม่อยากคบกับเขา",ph:"",en:"I don't want to associate with him",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:4992,thai:"เขาชอบนินทา",ph:"",en:"She likes to gossip",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:4993,thai:"เป็นใบ้",ph:"",en:"To be dumb",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:4994,thai:"\"หูหนวก”",ph:"",en:"Deaf",type:"w",stage:4,cat:"things"}, // phReview: true, phNeedsGen: true, catReview: true
+  {id:4994,thai:"หูหนวก",ph:"",en:"Deaf",type:"w",stage:4,cat:"things"}, // phReview: true, phNeedsGen: true, catReview: true
   {id:4995,thai:"ตาบอด",ph:"",en:"Blind",type:"w",stage:4,cat:"things"}, // phReview: true, phNeedsGen: true, catReview: true
-  {id:4996,thai:"\"กำลังแพ้ท้อง”",ph:"",en:"She is having morning sickness",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4997,thai:"\"ขอนั่งด้วยคนได้มั้ย”",ph:"",en:"May I sit here with you?",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:4998,thai:"\"ปรับความเข้าใจ”",ph:"",en:"To try to make up",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To adjust understanding\""}, // phReview: true, phNeedsGen: true
-  {id:4999,thai:"\"เขาไม่พูดสักคำ”",ph:"",en:"He didn't even say a word",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5000,thai:"\"ชอบใจลอย”",ph:"",en:"I'm often absent minded",type:"s",stage:4,cat:"sentences-self",note:"Literally: \"My heart likes to float\""}, // phReview: true, phNeedsGen: true
-  {id:5001,thai:"\"จริงเหรอ”",ph:"",en:"Is it really?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5002,thai:"\"แล้วทีนี้่จะทำยังไง”",ph:"",en:"What should I do then?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5003,thai:"\"มีพิรุธ”",ph:"",en:"That's suspicious",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5004,thai:"\"ยังมีอีกเยอะ”",ph:"",en:"There's still plenty left",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5005,thai:"\"ที่เหลือ”",ph:"",en:"The remaining",type:"p",stage:4,cat:"sentences-daily",note:"Other usage: “ของที่เหลือ” “The remaining items/things/stuff” or “คนที่เหลือ” “”The remaining people”"}, // phReview: true, phNeedsGen: true
-  {id:5006,thai:"\"บ้ารึเปล่า”",ph:"",en:"Are you crazy?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5007,thai:"\"ท่าทางมีความสุข”",ph:"",en:"She looks happy",type:"s",stage:4,cat:"emotions",note:"Other usage: “ท่าทางรวย” “She looks like a rich person”"}, // phReview: true, phNeedsGen: true
-  {id:5008,thai:"\"ใช้ได้มั้ย”",ph:"",en:"Will this work?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5009,thai:"\"หายป่วยแล้ว”",ph:"",en:"I'm over my sickness",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:5010,thai:"\"ถ้าไม่ได้คุณ ฉันคงแย่”",ph:"",en:"Without you, I would have been in real trouble (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5011,thai:"\"มันธรรมดา”",ph:"",en:"This is normal",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5012,thai:"\"โสดแต่ไม่สด”",ph:"",en:"She (I/You/They/He) is single, but not a virgin",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5013,thai:"\"เสียแรงที่ไว้ใจคุณ”",ph:"",en:"I'm sorry I trusted you",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
-  {id:5014,thai:"\"ขอสงบสติอารมณ์”",ph:"",en:"Give me time to calm down",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5015,thai:"\"ยินดีรับใช้”",ph:"",en:"I'm happy to see you",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
-  {id:5016,thai:"\"มันเป็นกฏ”",ph:"",en:"It's a rule",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5017,thai:"\"เขาไม่สมประกอบ”",ph:"",en:"He's not all there",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5018,thai:"\"ไปไหนกันมา”",ph:"",en:"Where have you all been?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5019,thai:"\"ไม่อยากยุ่งเรื่องชาวบ้าน”",ph:"",en:"I don't want to intrude into people's business",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5020,thai:"\"ไปคุยกันที่บ้านดีกว่า”",ph:"",en:"Let's discuss it at home",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
-  {id:5021,thai:"\"ทำไมพึ่งจะบอก”",ph:"",en:"Why didn't you tell me before?",type:"s",stage:4,cat:"time",note:"Literally: \"Why did you just tell me?\""}, // phReview: true, phNeedsGen: true
-  {id:5022,thai:"\"อยากคบคุณเป็นเพื่อน”",ph:"",en:"I want to have you as a friend",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
-  {id:5023,thai:"\"มีแต่ปัญหา”",ph:"",en:"There's nothing, but problems",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5024,thai:"\"เดือนหน้านายจะขึ้นเงินให้”",ph:"",en:"Next month my boss will give me a raise",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5025,thai:"\"เปิดอีเมล์ดูรึยัง”",ph:"",en:"Have you opened your email?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5026,thai:"\"กลัวถูกแม่ด่า”",ph:"",en:"I'm afraid my mom will yell at me",type:"s",stage:4,cat:"emotions",note:"Short form: \"กลัวแม่ด่า\""}, // phReview: true, phNeedsGen: true
-  {id:5027,thai:"\"อยากเจอคนที่รู้ใจ”",ph:"",en:"I want to meet someone that understands me",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5028,thai:"\"เรื่องอยู่บนข่าวหน้าหนึ่ง”",ph:"",en:"The story is on the front page",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5029,thai:"\"ดูแลตัวเองให้ดี”",ph:"",en:"Take good care of yourself",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5030,thai:"\"หนีตามแฟน”",ph:"",en:"She ran off with her boyfriend",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
-  {id:5031,thai:"\"เบื่อชีวิต”",ph:"",en:"I'm tired of life",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
-  {id:5032,thai:"\"อยากหารายได้เสริม”",ph:"",en:"I want to have additional income",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5033,thai:"\"สวยไปหมด”",ph:"",en:"She is beautiful all over",type:"s",stage:8,cat:"emotions",note:"Recent slang: \"Her beauty is all gone\" (No beauty left) - Other usage: \"ดีไปหมด\" \"All is good\""}, // phReview: true, phNeedsGen: true
-  {id:5034,thai:"\"เผลอไม่ได้”",ph:"",en:"You can't be careless",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5035,thai:"\"ไม่ไหวแล้ว”",ph:"",en:"I can't take it anymore",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5036,thai:"\"เรียนต่อ”",ph:"",en:"To continue one's study",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5037,thai:"\"ต้องมีอะไรแน่ๆ”",ph:"",en:"There must be something (going on) for sure",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5038,thai:"\"แทบจะบ้า”",ph:"",en:"I almost went crazy",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5039,thai:"\"เร็วๆเข้า”",ph:"",en:"Hurry up",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5040,thai:"\"ทีละคน”",ph:"",en:"One by one",type:"s",stage:4,cat:"numbers"}, // phReview: true, phNeedsGen: true
+  {id:4996,thai:"กำลังแพ้ท้อง",ph:"",en:"She is having morning sickness",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4997,thai:"ขอนั่งด้วยคนได้มั้ย",ph:"",en:"May I sit here with you?",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:4998,thai:"ปรับความเข้าใจ",ph:"",en:"To try to make up",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To adjust understanding\""}, // phReview: true, phNeedsGen: true
+  {id:4999,thai:"เขาไม่พูดสักคำ",ph:"",en:"He didn't even say a word",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5000,thai:"ชอบใจลอย",ph:"",en:"I'm often absent minded",type:"s",stage:4,cat:"sentences-self",note:"Literally: \"My heart likes to float\""}, // phReview: true, phNeedsGen: true
+  {id:5001,thai:"จริงเหรอ",ph:"",en:"Is it really?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5002,thai:"แล้วทีนี้่จะทำยังไง",ph:"",en:"What should I do then?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5003,thai:"มีพิรุธ",ph:"",en:"That's suspicious",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5004,thai:"ยังมีอีกเยอะ",ph:"",en:"There's still plenty left",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5005,thai:"ที่เหลือ",ph:"",en:"The remaining",type:"p",stage:4,cat:"sentences-daily",note:"Other usage: “ของที่เหลือ” “The remaining items/things/stuff” or “คนที่เหลือ” “”The remaining people”"}, // phReview: true, phNeedsGen: true
+  {id:5006,thai:"บ้ารึเปล่า",ph:"",en:"Are you crazy?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5007,thai:"ท่าทางมีความสุข",ph:"",en:"She looks happy",type:"s",stage:4,cat:"emotions",note:"Other usage: “ท่าทางรวย” “She looks like a rich person”"}, // phReview: true, phNeedsGen: true
+  {id:5008,thai:"ใช้ได้มั้ย",ph:"",en:"Will this work?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5009,thai:"หายป่วยแล้ว",ph:"",en:"I'm over my sickness",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:5010,thai:"ถ้าไม่ได้คุณ ฉันคงแย่",ph:"",en:"Without you, I would have been in real trouble (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5011,thai:"มันธรรมดา",ph:"",en:"This is normal",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5012,thai:"โสดแต่ไม่สด",ph:"",en:"She (I/You/They/He) is single, but not a virgin",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5013,thai:"เสียแรงที่ไว้ใจคุณ",ph:"",en:"I'm sorry I trusted you",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
+  {id:5014,thai:"ขอสงบสติอารมณ์",ph:"",en:"Give me time to calm down",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5015,thai:"ยินดีรับใช้",ph:"",en:"I'm happy to see you",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
+  {id:5016,thai:"มันเป็นกฏ",ph:"",en:"It's a rule",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5017,thai:"เขาไม่สมประกอบ",ph:"",en:"He's not all there",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5018,thai:"ไปไหนกันมา",ph:"",en:"Where have you all been?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5019,thai:"ไม่อยากยุ่งเรื่องชาวบ้าน",ph:"",en:"I don't want to intrude into people's business",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5020,thai:"ไปคุยกันที่บ้านดีกว่า",ph:"",en:"Let's discuss it at home",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
+  {id:5021,thai:"ทำไมพึ่งจะบอก",ph:"",en:"Why didn't you tell me before?",type:"s",stage:4,cat:"time",note:"Literally: \"Why did you just tell me?\""}, // phReview: true, phNeedsGen: true
+  {id:5022,thai:"อยากคบคุณเป็นเพื่อน",ph:"",en:"I want to have you as a friend",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
+  {id:5023,thai:"มีแต่ปัญหา",ph:"",en:"There's nothing, but problems",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5024,thai:"เดือนหน้านายจะขึ้นเงินให้",ph:"",en:"Next month my boss will give me a raise",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5025,thai:"เปิดอีเมล์ดูรึยัง",ph:"",en:"Have you opened your email?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5026,thai:"กลัวถูกแม่ด่า",ph:"",en:"I'm afraid my mom will yell at me",type:"s",stage:4,cat:"emotions",note:"Short form: \"กลัวแม่ด่า\""}, // phReview: true, phNeedsGen: true
+  {id:5027,thai:"อยากเจอคนที่รู้ใจ",ph:"",en:"I want to meet someone that understands me",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5028,thai:"เรื่องอยู่บนข่าวหน้าหนึ่ง",ph:"",en:"The story is on the front page",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5029,thai:"ดูแลตัวเองให้ดี",ph:"",en:"Take good care of yourself",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5030,thai:"หนีตามแฟน",ph:"",en:"She ran off with her boyfriend",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
+  {id:5031,thai:"เบื่อชีวิต",ph:"",en:"I'm tired of life",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
+  {id:5032,thai:"อยากหารายได้เสริม",ph:"",en:"I want to have additional income",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5033,thai:"สวยไปหมด",ph:"",en:"She is beautiful all over",type:"s",stage:8,cat:"emotions",note:"Recent slang: \"Her beauty is all gone\" (No beauty left) - Other usage: \"ดีไปหมด\" \"All is good\""}, // phReview: true, phNeedsGen: true
+  {id:5034,thai:"เผลอไม่ได้",ph:"",en:"You can't be careless",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5035,thai:"ไม่ไหวแล้ว",ph:"",en:"I can't take it anymore",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5036,thai:"เรียนต่อ",ph:"",en:"To continue one's study",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5037,thai:"ต้องมีอะไรแน่ๆ",ph:"",en:"There must be something (going on) for sure",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5038,thai:"แทบจะบ้า",ph:"",en:"I almost went crazy",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5039,thai:"เร็วๆเข้า",ph:"",en:"Hurry up",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5040,thai:"ทีละคน",ph:"",en:"One by one",type:"s",stage:4,cat:"numbers"}, // phReview: true, phNeedsGen: true
   {id:5041,thai:"ได้ข่าวว่า...",ph:"dâai kàao wâa",en:"I heard that...",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “สงสัยว่า” “I doubt that…” or “รู้สึกว่า” “I feel that…”"}, // phReview: true
-  {id:5042,thai:"\"ทำได้ไง”",ph:"",en:"How did you do it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5043,thai:"\"เข้ากันไม่ได้”",ph:"",en:"They don't get along",type:"s",stage:4,cat:"directions"}, // phReview: true, phNeedsGen: true
-  {id:5044,thai:"\"ตื่นได้แล้ว”",ph:"",en:"Wake up!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5045,thai:"\"ถูกแฟนทิ้ง”",ph:"",en:"She has been dumped (by her boyfriend)",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
-  {id:5046,thai:"\"ทำตามสัญญา”",ph:"",en:"To do as promised",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5047,thai:"\"เราเป็นเนื้อคู่กัน”",ph:"",en:"We are soulmates",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5048,thai:"\"ขอปิดเป็นความลับ”",ph:"",en:"I want to keep it a secret",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5049,thai:"\"กล้าพูด”",ph:"",en:"Dare to speak",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5042,thai:"ทำได้ไง",ph:"",en:"How did you do it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5043,thai:"เข้ากันไม่ได้",ph:"",en:"They don't get along",type:"s",stage:4,cat:"directions"}, // phReview: true, phNeedsGen: true
+  {id:5044,thai:"ตื่นได้แล้ว",ph:"",en:"Wake up!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5045,thai:"ถูกแฟนทิ้ง",ph:"",en:"She has been dumped (by her boyfriend)",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
+  {id:5046,thai:"ทำตามสัญญา",ph:"",en:"To do as promised",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5047,thai:"เราเป็นเนื้อคู่กัน",ph:"",en:"We are soulmates",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5048,thai:"ขอปิดเป็นความลับ",ph:"",en:"I want to keep it a secret",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5049,thai:"กล้าพูด",ph:"",en:"Dare to speak",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5050,thai:"กล้าทำ",ph:"glâa tham",en:"Dare to do",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
-  {id:5051,thai:"\"มันจะดีเหรอ”",ph:"",en:"Do you think it will be good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5052,thai:"\"เก็บแรงไว้”",ph:"",en:"I want to build up my strength",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5053,thai:"\"ดูแต่ตา”",ph:"",en:"Just look",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5051,thai:"มันจะดีเหรอ",ph:"",en:"Do you think it will be good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5052,thai:"เก็บแรงไว้",ph:"",en:"I want to build up my strength",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5053,thai:"ดูแต่ตา",ph:"",en:"Just look",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5054,thai:"มืออย่าต้อง",ph:"mue yàa tâwng",en:"Don't touch",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
-  {id:5055,thai:"\"อย่าหลงเชื่อ”",ph:"",en:"Don't fall for it and believe them",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5056,thai:"\"ไม่รู้จะทำยังไง”",ph:"",en:"I don't know what to do",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5057,thai:"\"หัวอกเดียวกัน”",ph:"",en:"To be in the same boat",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To have the same heart\""}, // phReview: true, phNeedsGen: true
-  {id:5058,thai:"\"ว่างๆ จะมาหา”",ph:"",en:"I will come to see you when I get a chance",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
-  {id:5059,thai:"\"พูดอย่าง ทำอย่าง”",ph:"",en:"Say one thing, but do another",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5060,thai:"\"เขามาตั้งแต่หัวค่ำ”",ph:"",en:"He's been here since early evening",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5061,thai:"\"ตายเป็นตาย”",ph:"",en:"I don't care if I have to die for it",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"Death is death\""}, // phReview: true, phNeedsGen: true
-  {id:5062,thai:"\"จะพาไปส่งบ้าน”",ph:"",en:"I will take you home",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
-  {id:5063,thai:"\"ปฎิเสธไม่ได้”",ph:"",en:"I can't refuse",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5064,thai:"\"เขาไม่โทรหาตั้งนาน”",ph:"",en:"He hasn't called in a long time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5065,thai:"\"ไม่น่าพูดเลย”",ph:"",en:"I shouldn't have said that",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ไม่น่าทำเลย” “I shouldn’t have done that”"}, // phReview: true, phNeedsGen: true
-  {id:5066,thai:"\"นี่มันเรื่องส่วนตัว”",ph:"",en:"This is a personal matter",type:"s",stage:4,cat:"sentences-daily",note:"You can add “คุณไม่เกี่ยว” “You don’t have anything to do with it” after this phrase."}, // phReview: true, phNeedsGen: true
-  {id:5067,thai:"\"ไม่ได้ตั้งใจ”",ph:"",en:"I didn't mean it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5068,thai:"\"คุณเป็นต้นเหตุ”",ph:"",en:"You are the cause",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5069,thai:"\"หาทางแก้ไข”",ph:"",en:"To find a way to solve the problem",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5070,thai:"\"เมียขอหย่า”",ph:"",en:"My wife asked for a divorce",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
-  {id:5071,thai:"\"เกือบไปแล้ว”",ph:"",en:"That was close!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5072,thai:"\"เรื่องน่าขำ”",ph:"",en:"A funny story",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5055,thai:"อย่าหลงเชื่อ",ph:"",en:"Don't fall for it and believe them",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5056,thai:"ไม่รู้จะทำยังไง",ph:"",en:"I don't know what to do",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5057,thai:"หัวอกเดียวกัน",ph:"",en:"To be in the same boat",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To have the same heart\""}, // phReview: true, phNeedsGen: true
+  {id:5058,thai:"ว่างๆ จะมาหา",ph:"",en:"I will come to see you when I get a chance",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
+  {id:5059,thai:"พูดอย่าง ทำอย่าง",ph:"",en:"Say one thing, but do another",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5060,thai:"เขามาตั้งแต่หัวค่ำ",ph:"",en:"He's been here since early evening",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5061,thai:"ตายเป็นตาย",ph:"",en:"I don't care if I have to die for it",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"Death is death\""}, // phReview: true, phNeedsGen: true
+  {id:5062,thai:"จะพาไปส่งบ้าน",ph:"",en:"I will take you home",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
+  {id:5063,thai:"ปฎิเสธไม่ได้",ph:"",en:"I can't refuse",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5064,thai:"เขาไม่โทรหาตั้งนาน",ph:"",en:"He hasn't called in a long time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5065,thai:"ไม่น่าพูดเลย",ph:"",en:"I shouldn't have said that",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ไม่น่าทำเลย” “I shouldn’t have done that”"}, // phReview: true, phNeedsGen: true
+  {id:5066,thai:"นี่มันเรื่องส่วนตัว",ph:"",en:"This is a personal matter",type:"s",stage:4,cat:"sentences-daily",note:"You can add “คุณไม่เกี่ยว” “You don’t have anything to do with it” after this phrase."}, // phReview: true, phNeedsGen: true
+  {id:5067,thai:"ไม่ได้ตั้งใจ",ph:"",en:"I didn't mean it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5068,thai:"คุณเป็นต้นเหตุ",ph:"",en:"You are the cause",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5069,thai:"หาทางแก้ไข",ph:"",en:"To find a way to solve the problem",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5070,thai:"เมียขอหย่า",ph:"",en:"My wife asked for a divorce",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
+  {id:5071,thai:"เกือบไปแล้ว",ph:"",en:"That was close!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5072,thai:"เรื่องน่าขำ",ph:"",en:"A funny story",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5073,thai:"\"เป็นเมนส์ \" มีประจำเดือน”",ph:"",en:"I'm having my period",type:"s",stage:4,cat:"sentences-self",note:"Also: “มีประจำเดือน”"}, // phReview: true, phNeedsGen: true
-  {id:5074,thai:"\"จะเล่าคามจริงให้ฟัง”",ph:"",en:"I will tell you the truth",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5075,thai:"\"อย่าไปโทษเขา”",ph:"",en:"Don't blame him",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “อย่าโทษตัวเอง” “Don’t blame yourself”"}, // phReview: true, phNeedsGen: true
-  {id:5076,thai:"\"ลองจินตนาการดู”",ph:"",en:"Try to imagine it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ลองคิดดู” “Think about it” or “” “Try it”"}, // phReview: true, phNeedsGen: true
-  {id:5077,thai:"\"ทำยังงี้ไม่ถูก”",ph:"",en:"Doing this is not right",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5078,thai:"\"ผมผิดข้อหาอะไร”",ph:"",en:"What are the charges against me? (male)",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5079,thai:"\"โมโหหิว”",ph:"",en:"Angry from hunger",type:"s",stage:4,cat:"emotions",note:"e.g. “เขาเป็นคนโมโหหิว” “He gets angry when he is hungry”"}, // phReview: true, phNeedsGen: true
-  {id:5080,thai:"\"เราเสียลูกค้า”",ph:"",en:"We lost a customer",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5081,thai:"\"จะไม่ยอมให้คุณทำกับฉันยังงี้”",ph:"",en:"I won't let you do this to me (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5082,thai:"\"ซึ้งแล้วใช่มั้ย”",ph:"",en:"You appreciate it now, don't you?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5083,thai:"\"เขาติดคุกอยู่”",ph:"",en:"He is in jail",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5084,thai:"\"พยยามรวบรวมเงิน”",ph:"",en:"I'm trying to gather money",type:"s",stage:4,cat:"shopping"}, // phReview: true, phNeedsGen: true
-  {id:5085,thai:"\"ครานี้ซวยแน่”",ph:"",en:"You won't be lucky this time",type:"s",stage:4,cat:"time",note:"Literally: \"This time, unlucky for sure\""}, // phReview: true, phNeedsGen: true
-  {id:5086,thai:"\"คุณชอบเถียง”",ph:"",en:"You like to argue",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5087,thai:"\"ต้องจัดการให้เร็วที่สุด”",ph:"",en:"This has to be taken care of as soon as possible",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5088,thai:"\"มักมากในกาม”",ph:"",en:"To be lustful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5089,thai:"\"แค้นต้องชำระ”",ph:"",en:"Revenge that must by paid",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5090,thai:"\"งานต้องมาก่อน”",ph:"",en:"Work must come first",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5091,thai:"\"ค่าจ้างงวดแรก”",ph:"",en:"First payment for the work",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5092,thai:"\"ผมต้องลงโทษคุณ”",ph:"",en:"I have to punish you (male)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5093,thai:"\"คุณหวังมากเกินไป”",ph:"",en:"You expect too much",type:"s",stage:4,cat:"sentences-daily",note:"Similar usage: “อย่าหวังเลย” “Don’t hope for it” and “อย่าพึ่งหมดหวัง” “Don’t give your hope up”"}, // phReview: true, phNeedsGen: true
-  {id:5094,thai:"\"เดินทางข้ามน้ำข้ามทะเล”",ph:"",en:"To travel across the ocean",type:"s",stage:4,cat:"weather",note:"Other usage: “ทำงานข้ามวันข้ามคืน” “To work all day and all night”"}, // phReview: true, phNeedsGen: true
-  {id:5095,thai:"\"อะไรกันนักกันหนา”",ph:"",en:"What are you all doing this for\"!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5096,thai:"\"ผมโดนหักหลัง”",ph:"",en:"I have been double\"crossed (male)",type:"s",stage:4,cat:"sentences-daily",note:"Also: “ผมถูกหักหลัง”"}, // phReview: true, phNeedsGen: true
-  {id:5097,thai:"\"หายโกรธรึยัง”",ph:"",en:"Have you stopped being mad?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5098,thai:"\"เธอท้องได้สามเดือน”",ph:"",en:"She is three months pregnant",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5099,thai:"\"ฉันจะไม่ลืมบุญคุณ”",ph:"",en:"I will not forget your kindness (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5100,thai:"\"คุณเป็นใครกันแน่”",ph:"",en:"Who are you really?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5101,thai:"\"ไม่มีอะไรสำคัญกว่านี้”",ph:"",en:"There's nothing more important that this",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5102,thai:"\"พนักงานชั่วคราว”",ph:"",en:"A temporary worker\"employee",type:"s",stage:4,cat:"sentences-daily",note:"Related words: “พนักงานประจำ” (Permanent worker) and “พนักงานดีเด่น” (Excellent worker)"}, // phReview: true, phNeedsGen: true
-  {id:5103,thai:"\"คุณหมายถึงอะไร”",ph:"",en:"What do you mean?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5104,thai:"\"ทำไมไม่บอกให้รู้ก่อน”",ph:"",en:"Why didn't you let me know first?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5105,thai:"\"ได้ประโยชน์อะไร”",ph:"",en:"What good will come of this?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5106,thai:"\"ใครรับผิดชอบ”",ph:"",en:"Who is responsible?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5107,thai:"\"ฉันเป็นคนช่างฝัน”",ph:"",en:"I'm a dreamer (female)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:5108,thai:"\"เขตอันตราย”",ph:"",en:"It's a danger zone",type:"s",stage:4,cat:"emergency"}, // phReview: true, phNeedsGen: true
-  {id:5109,thai:"\"เขาทำงานแบบไม่ลืมหูลืมตา”",ph:"",en:"He works as if he didn't care about anything else",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"He works without open his ears and his eyes\""}, // phReview: true, phNeedsGen: true
-  {id:5110,thai:"\"อยากได้อะไร บอกได้เลย”",ph:"",en:"If you want anything, just let me know",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5111,thai:"\"เลยเวลานัดแล้ว”",ph:"",en:"It's past the appointment time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5112,thai:"\"จะอธิบายยังไงดี”",ph:"",en:"How can I explain?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5113,thai:"\"รองเท้ากัด”",ph:"",en:"My shoes hurt my feet",type:"s",stage:4,cat:"health",note:"Literally: \"My shoes bite\" - Similar usage: “ยุงกัด” “Mosquitos bit me”"}, // phReview: true, phNeedsGen: true
-  {id:5114,thai:"\"ทำแล้วก็ไม่ดีขึ้น”",ph:"",en:"It won't get any better (even if I do it)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5115,thai:"\"ขอลองหน่อย”",ph:"",en:"I want to try it a little",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5116,thai:"\"ไม่อยากมีเรื่อง”",ph:"",en:"I don't want to make a scene",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5117,thai:"\"หวงไว้ทำไม”",ph:"",en:"Why are you possessive of that?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5118,thai:"\"งานนี้สนุกแน่”",ph:"",en:"It's going to be a fun party",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
-  {id:5119,thai:"\"ไปก่อนนะ”",ph:"",en:"I have to go now",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5120,thai:"\"มานานรึยัง”",ph:"",en:"Have you been here long?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5121,thai:"\"ทีหลังอย่าทำ”",ph:"",en:"Don't do it next time",type:"s",stage:4,cat:"time",note:"You can add \"จำไว้\" (remember) before that."}, // phReview: true, phNeedsGen: true
-  {id:5122,thai:"\"ไปได้แล้ว”",ph:"",en:"You may go now",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5123,thai:"\"ต้องพิสูจน์ให้เห็น”",ph:"",en:"I have to prove it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5124,thai:"\"ตั้งหน้าตั้งตารอ”",ph:"",en:"To look forward to seeing someone or something",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To set face and eye waiting\""}, // phReview: true, phNeedsGen: true
-  {id:5125,thai:"\"ตัวแทนจากบริษัท”",ph:"",en:"A representative from the company",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5126,thai:"\"แบบนี้แหล่ะ ดีแล้ว”",ph:"",en:"It's good the way it is",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5127,thai:"\"คิดถึงใจจะขาด”",ph:"",en:"I miss you so much it hurts",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"My heart is about to be torn from missing you\""}, // phReview: true, phNeedsGen: true
-  {id:5128,thai:"\"เดินเร็วๆ หน่อยไม่ได้เหรอ”",ph:"",en:"Can't you walk a little faster?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5129,thai:"\"ติดลม”",ph:"",en:"To get carried away doing something",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To be stuck with the wind\""}, // phReview: true, phNeedsGen: true
-  {id:5130,thai:"\"ชื่นใจจังเลย”",ph:"",en:"That's refreshing",type:"p",stage:4,cat:"sentences-daily",note:"Refreshing to the body, the nose or the mind."}, // phReview: true, phNeedsGen: true
-  {id:5131,thai:"\"ไม่ต้องบอกก็รู้”",ph:"",en:"I know it without you telling me",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5132,thai:"\"ทำใจไม่ได้”",ph:"",en:"I can't accept what happened",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I can't make my mind\""}, // phReview: true, phNeedsGen: true
-  {id:5133,thai:"\"มีแค่นี้เอง”",ph:"",en:"That's all we have",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5134,thai:"\"ได้ยินกับหู”",ph:"",en:"I heard it with my own ears",type:"s",stage:4,cat:"sentences-self",note:"Other usage: “เห็นกับตาดัวเอง” “I saw it with my own eyes”"}, // phReview: true, phNeedsGen: true
-  {id:5135,thai:"\"ได้เสียกันแล้ว”",ph:"",en:"They already had sex",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"They already gained and lost of each other"}, // phReview: true, phNeedsGen: true
-  {id:5136,thai:"\"มันไม่เหมาะ”",ph:"",en:"It's not appropriate",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5137,thai:"\"ไม่ใช่ความผิดฉัน”",ph:"",en:"It's not my fault (female)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:5138,thai:"\"มาตั้งแต่เมื่อไร”",ph:"",en:"When did you get here?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5139,thai:"\"ผู้ชายหน้าโง่”",ph:"",en:"Stupid man",type:"p",stage:4,cat:"people",note:"Literally: \"A man with a stupid face\" Other usage: “ผู้หญิงหน้าเงิน” “A material woman. / A woman who cares about nothing, but money”"}, // phReview: true, phNeedsGen: true
-  {id:5140,thai:"\"มันไม่ใช่ของง่าย”",ph:"",en:"It's not an easy thing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5141,thai:"\"จะพาแฟนไปด้วย”",ph:"",en:"I will take my boyfriend with me",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
-  {id:5142,thai:"\"แน่นะ”",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5143,thai:"\"ถึงเวลาแล้ว”",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5144,thai:"\"ออกรถ”",ph:"",en:"Drive!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5145,thai:"\"จะอยู่อีกนานมั้ย”",ph:"",en:"Are you staying here much longer?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5146,thai:"\"ขอให้รวยๆ”",ph:"",en:"I wish you lots of money",type:"s",stage:4,cat:"shopping",note:"Other usage: “ขอให้ได้แฟนสวยๆ” “I wish you a beautiful girlfriend” or “ขอให้ผ่านสอบได้” “I wish you pass the test”"}, // phReview: true, phNeedsGen: true
-  {id:5147,thai:"\"เป็นคนละคน”",ph:"",en:"She is a different person from before",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5148,thai:"\"เสียวไส้”",ph:"",en:"That's scary",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5149,thai:"\"จะให้ทำยังไง”",ph:"",en:"How do you want me to do it?",type:"s",stage:4,cat:"sentences-questions",note:"Less polite: “จะเอายังไง”"}, // phReview: true, phNeedsGen: true
-  {id:5150,thai:"\"นอนก่อนเลย”",ph:"",en:"\"Go ahead and sleep\" (I will follow you later)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5074,thai:"จะเล่าคามจริงให้ฟัง",ph:"",en:"I will tell you the truth",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5075,thai:"อย่าไปโทษเขา",ph:"",en:"Don't blame him",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “อย่าโทษตัวเอง” “Don’t blame yourself”"}, // phReview: true, phNeedsGen: true
+  {id:5076,thai:"ลองจินตนาการดู",ph:"",en:"Try to imagine it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ลองคิดดู” “Think about it” or “” “Try it”"}, // phReview: true, phNeedsGen: true
+  {id:5077,thai:"ทำยังงี้ไม่ถูก",ph:"",en:"Doing this is not right",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5078,thai:"ผมผิดข้อหาอะไร",ph:"",en:"What are the charges against me? (male)",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5079,thai:"โมโหหิว",ph:"",en:"Angry from hunger",type:"s",stage:4,cat:"emotions",note:"e.g. “เขาเป็นคนโมโหหิว” “He gets angry when he is hungry”"}, // phReview: true, phNeedsGen: true
+  {id:5080,thai:"เราเสียลูกค้า",ph:"",en:"We lost a customer",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5081,thai:"จะไม่ยอมให้คุณทำกับฉันยังงี้",ph:"",en:"I won't let you do this to me (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5082,thai:"ซึ้งแล้วใช่มั้ย",ph:"",en:"You appreciate it now, don't you?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5083,thai:"เขาติดคุกอยู่",ph:"",en:"He is in jail",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5084,thai:"พยยามรวบรวมเงิน",ph:"",en:"I'm trying to gather money",type:"s",stage:4,cat:"shopping"}, // phReview: true, phNeedsGen: true
+  {id:5085,thai:"ครานี้ซวยแน่",ph:"",en:"You won't be lucky this time",type:"s",stage:4,cat:"time",note:"Literally: \"This time, unlucky for sure\""}, // phReview: true, phNeedsGen: true
+  {id:5086,thai:"คุณชอบเถียง",ph:"",en:"You like to argue",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5087,thai:"ต้องจัดการให้เร็วที่สุด",ph:"",en:"This has to be taken care of as soon as possible",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5088,thai:"มักมากในกาม",ph:"",en:"To be lustful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5089,thai:"แค้นต้องชำระ",ph:"",en:"Revenge that must by paid",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5090,thai:"งานต้องมาก่อน",ph:"",en:"Work must come first",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5091,thai:"ค่าจ้างงวดแรก",ph:"",en:"First payment for the work",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5092,thai:"ผมต้องลงโทษคุณ",ph:"",en:"I have to punish you (male)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5093,thai:"คุณหวังมากเกินไป",ph:"",en:"You expect too much",type:"s",stage:4,cat:"sentences-daily",note:"Similar usage: “อย่าหวังเลย” “Don’t hope for it” and “อย่าพึ่งหมดหวัง” “Don’t give your hope up”"}, // phReview: true, phNeedsGen: true
+  {id:5094,thai:"เดินทางข้ามน้ำข้ามทะเล",ph:"",en:"To travel across the ocean",type:"s",stage:4,cat:"weather",note:"Other usage: “ทำงานข้ามวันข้ามคืน” “To work all day and all night”"}, // phReview: true, phNeedsGen: true
+  {id:5095,thai:"อะไรกันนักกันหนา",ph:"",en:"What are you all doing this for\"!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5096,thai:"ผมโดนหักหลัง",ph:"",en:"I have been double\"crossed (male)",type:"s",stage:4,cat:"sentences-daily",note:"Also: “ผมถูกหักหลัง”"}, // phReview: true, phNeedsGen: true
+  {id:5097,thai:"หายโกรธรึยัง",ph:"",en:"Have you stopped being mad?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5098,thai:"เธอท้องได้สามเดือน",ph:"",en:"She is three months pregnant",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5099,thai:"ฉันจะไม่ลืมบุญคุณ",ph:"",en:"I will not forget your kindness (female)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5100,thai:"คุณเป็นใครกันแน่",ph:"",en:"Who are you really?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5101,thai:"ไม่มีอะไรสำคัญกว่านี้",ph:"",en:"There's nothing more important that this",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5102,thai:"พนักงานชั่วคราว",ph:"",en:"A temporary worker\"employee",type:"s",stage:4,cat:"sentences-daily",note:"Related words: “พนักงานประจำ” (Permanent worker) and “พนักงานดีเด่น” (Excellent worker)"}, // phReview: true, phNeedsGen: true
+  {id:5103,thai:"คุณหมายถึงอะไร",ph:"",en:"What do you mean?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5104,thai:"ทำไมไม่บอกให้รู้ก่อน",ph:"",en:"Why didn't you let me know first?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5105,thai:"ได้ประโยชน์อะไร",ph:"",en:"What good will come of this?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5106,thai:"ใครรับผิดชอบ",ph:"",en:"Who is responsible?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5107,thai:"ฉันเป็นคนช่างฝัน",ph:"",en:"I'm a dreamer (female)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:5108,thai:"เขตอันตราย",ph:"",en:"It's a danger zone",type:"s",stage:4,cat:"emergency"}, // phReview: true, phNeedsGen: true
+  {id:5109,thai:"เขาทำงานแบบไม่ลืมหูลืมตา",ph:"",en:"He works as if he didn't care about anything else",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"He works without open his ears and his eyes\""}, // phReview: true, phNeedsGen: true
+  {id:5110,thai:"อยากได้อะไร บอกได้เลย",ph:"",en:"If you want anything, just let me know",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5111,thai:"เลยเวลานัดแล้ว",ph:"",en:"It's past the appointment time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5112,thai:"จะอธิบายยังไงดี",ph:"",en:"How can I explain?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5113,thai:"รองเท้ากัด",ph:"",en:"My shoes hurt my feet",type:"s",stage:4,cat:"health",note:"Literally: \"My shoes bite\" - Similar usage: “ยุงกัด” “Mosquitos bit me”"}, // phReview: true, phNeedsGen: true
+  {id:5114,thai:"ทำแล้วก็ไม่ดีขึ้น",ph:"",en:"It won't get any better (even if I do it)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5115,thai:"ขอลองหน่อย",ph:"",en:"I want to try it a little",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5116,thai:"ไม่อยากมีเรื่อง",ph:"",en:"I don't want to make a scene",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5117,thai:"หวงไว้ทำไม",ph:"",en:"Why are you possessive of that?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5118,thai:"งานนี้สนุกแน่",ph:"",en:"It's going to be a fun party",type:"s",stage:4,cat:"emotions"}, // phReview: true, phNeedsGen: true
+  {id:5119,thai:"ไปก่อนนะ",ph:"",en:"I have to go now",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5120,thai:"มานานรึยัง",ph:"",en:"Have you been here long?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5121,thai:"ทีหลังอย่าทำ",ph:"",en:"Don't do it next time",type:"s",stage:4,cat:"time",note:"You can add \"จำไว้\" (remember) before that."}, // phReview: true, phNeedsGen: true
+  {id:5122,thai:"ไปได้แล้ว",ph:"",en:"You may go now",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5123,thai:"ต้องพิสูจน์ให้เห็น",ph:"",en:"I have to prove it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5124,thai:"ตั้งหน้าตั้งตารอ",ph:"",en:"To look forward to seeing someone or something",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To set face and eye waiting\""}, // phReview: true, phNeedsGen: true
+  {id:5125,thai:"ตัวแทนจากบริษัท",ph:"",en:"A representative from the company",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5126,thai:"แบบนี้แหล่ะ ดีแล้ว",ph:"",en:"It's good the way it is",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5127,thai:"คิดถึงใจจะขาด",ph:"",en:"I miss you so much it hurts",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"My heart is about to be torn from missing you\""}, // phReview: true, phNeedsGen: true
+  {id:5128,thai:"เดินเร็วๆ หน่อยไม่ได้เหรอ",ph:"",en:"Can't you walk a little faster?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5129,thai:"ติดลม",ph:"",en:"To get carried away doing something",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To be stuck with the wind\""}, // phReview: true, phNeedsGen: true
+  {id:5130,thai:"ชื่นใจจังเลย",ph:"",en:"That's refreshing",type:"p",stage:4,cat:"sentences-daily",note:"Refreshing to the body, the nose or the mind."}, // phReview: true, phNeedsGen: true
+  {id:5131,thai:"ไม่ต้องบอกก็รู้",ph:"",en:"I know it without you telling me",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5132,thai:"ทำใจไม่ได้",ph:"",en:"I can't accept what happened",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"I can't make my mind\""}, // phReview: true, phNeedsGen: true
+  {id:5133,thai:"มีแค่นี้เอง",ph:"",en:"That's all we have",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5134,thai:"ได้ยินกับหู",ph:"",en:"I heard it with my own ears",type:"s",stage:4,cat:"sentences-self",note:"Other usage: “เห็นกับตาดัวเอง” “I saw it with my own eyes”"}, // phReview: true, phNeedsGen: true
+  {id:5135,thai:"ได้เสียกันแล้ว",ph:"",en:"They already had sex",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"They already gained and lost of each other"}, // phReview: true, phNeedsGen: true
+  {id:5136,thai:"มันไม่เหมาะ",ph:"",en:"It's not appropriate",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5137,thai:"ไม่ใช่ความผิดฉัน",ph:"",en:"It's not my fault (female)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:5138,thai:"มาตั้งแต่เมื่อไร",ph:"",en:"When did you get here?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5139,thai:"ผู้ชายหน้าโง่",ph:"",en:"Stupid man",type:"p",stage:4,cat:"people",note:"Literally: \"A man with a stupid face\" Other usage: “ผู้หญิงหน้าเงิน” “A material woman. / A woman who cares about nothing, but money”"}, // phReview: true, phNeedsGen: true
+  {id:5140,thai:"มันไม่ใช่ของง่าย",ph:"",en:"It's not an easy thing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5141,thai:"จะพาแฟนไปด้วย",ph:"",en:"I will take my boyfriend with me",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
+  {id:5142,thai:"แน่นะ",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5143,thai:"ถึงเวลาแล้ว",ph:"",en:"It's time",type:"p",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5144,thai:"ออกรถ",ph:"",en:"Drive!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5145,thai:"จะอยู่อีกนานมั้ย",ph:"",en:"Are you staying here much longer?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5146,thai:"ขอให้รวยๆ",ph:"",en:"I wish you lots of money",type:"s",stage:4,cat:"shopping",note:"Other usage: “ขอให้ได้แฟนสวยๆ” “I wish you a beautiful girlfriend” or “ขอให้ผ่านสอบได้” “I wish you pass the test”"}, // phReview: true, phNeedsGen: true
+  {id:5147,thai:"เป็นคนละคน",ph:"",en:"She is a different person from before",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5148,thai:"เสียวไส้",ph:"",en:"That's scary",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5149,thai:"จะให้ทำยังไง",ph:"",en:"How do you want me to do it?",type:"s",stage:4,cat:"sentences-questions",note:"Less polite: “จะเอายังไง”"}, // phReview: true, phNeedsGen: true
+  {id:5150,thai:"นอนก่อนเลย",ph:"",en:"\"Go ahead and sleep\" (I will follow you later)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5151,thai:"ต้องรีบท",ph:"",en:"\"I have to finish it quickly”",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5152,thai:"\"เลือกไม่ถูก”",ph:"",en:"I can't choose",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5153,thai:"\"ตายเป็นผี”",ph:"",en:"To die and become a ghost",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5154,thai:"\"เขาทนอยู่”",ph:"",en:"He forces himself to stay",type:"s",stage:4,cat:"sentences-daily",note:"Don’t confuse with: “เขาอยู่ทน” “He stays for a long time”"}, // phReview: true, phNeedsGen: true
-  {id:5155,thai:"\"กำลังยืดเส้นยืดสาย”",ph:"",en:"I'm stretching",type:"p",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:5156,thai:"\"เอาไว้คราวหน้าก็แล้วกัน”",ph:"",en:"Let's do it next time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5157,thai:"\"ทีละเล็ก ทีละน้อย”",ph:"",en:"Little by little",type:"s",stage:4,cat:"sentences-daily",note:"Short form: “ทีละน้อย” - Other form: “ทีละนิด ทีละหน่อย”"}, // phReview: true, phNeedsGen: true
-  {id:5158,thai:"\"เงินล่วงหน้า”",ph:"",en:"Money in advance",type:"s",stage:4,cat:"shopping"}, // phReview: true, phNeedsGen: true
-  {id:5159,thai:"\"รับไม่ได้”",ph:"",en:"It's not acceptable",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5160,thai:"\"เสร็จธุระแล้วรีบกลับบ้าน”",ph:"",en:"Hurry home after you are done (with business, etc)?",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
-  {id:5161,thai:"\"ทำเป็นไม่รู้ไม่ชี้”",ph:"",en:"To pretend not to know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5162,thai:"\"ไม่ต้องรอทานข้าว”",ph:"",en:"Don't wait for me for dinner (lunch, etc)",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
-  {id:5163,thai:"\"มองตาค้าง”",ph:"",en:"To look at something and be stunned",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"Look eye stay\""}, // phReview: true, phNeedsGen: true
-  {id:5164,thai:"\"สักพักใหญ่ๆ”",ph:"",en:"\"In a long while\" (As opposed to ‘a little while’)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5165,thai:"\"ธุรกิจเฟื่องฟู”",ph:"",en:"The business is flourishing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5166,thai:"\"ต้องทำให้ได้”",ph:"",en:"I have to make it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5167,thai:"\"อย่าหาเรื่อง”",ph:"",en:"Don't cause yourself trouble",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5168,thai:"\"ทำเปนไม่รูู้ไม่เห็น”",ph:"",en:"To pretend that one can't see and doesn't know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5169,thai:"\"อันเดียวพอ”",ph:"",en:"One is enough",type:"s",stage:4,cat:"numbers"}, // phReview: true, phNeedsGen: true
-  {id:5170,thai:"\"ไม่ชอบนั่งเฉยๆ”",ph:"",en:"I don't to sit doing nothing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5171,thai:"\"จะดูลายมือให้”",ph:"",en:"I will read your palm",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5172,thai:"\"ไม่เข้ากับบรรยากาศ”",ph:"",en:"It's not appropriate for the location",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"It doesn't fit with the atmosphere\""}, // phReview: true, phNeedsGen: true
-  {id:5173,thai:"\"ชอบนั่งริมหน้าต่าง”",ph:"",en:"I like to sit by the window",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
-  {id:5174,thai:"\"โดนเล่นงาน”",ph:"",en:"To be reprimanded, criticized or attacked",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To be 'play-work'ed\""}, // phReview: true, phNeedsGen: true
-  {id:5175,thai:"\"จู่ๆ ก็ได้เจอ”",ph:"",en:"I met him (it/you/they/etc) by accident",type:"s",stage:4,cat:"emergency"}, // phReview: true, phNeedsGen: true
-  {id:5176,thai:"\"อย่าไปกวนเขา”",ph:"",en:"Don't bother him",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5177,thai:"\"ต้องระวังเป็นพิเศษ”",ph:"",en:"We have to be especially careful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5178,thai:"\"บริการที่ยอดเยี่ยม”",ph:"",en:"An excellent service",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5179,thai:"\"ให้รางวัลกับตัวเอง”",ph:"",en:"To give oneself a reward",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5180,thai:"\"ซ้อมร้องเพลงอยู่”",ph:"",en:"I'm practicing singing",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:5181,thai:"\"เล่นละครเก่ง”",ph:"",en:"She is good at faking it",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"She is good at acting in a play\""}, // phReview: true, phNeedsGen: true
-  {id:5182,thai:"\"ไม่ใช่ความผิดของใคร”",ph:"",en:"It's nobody's fault",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5183,thai:"\"ดวงเป็นตัวกำหนด”",ph:"",en:"Destiny sets it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5184,thai:"\"จำเป็นต้องทำ”",ph:"",en:"It was necessary that I did it",type:"s",stage:4,cat:"sentences-daily",note:"Also: \"It's necessary that I do it\""}, // phReview: true, phNeedsGen: true
-  {id:5185,thai:"\"ไม่อยากบอก กลัวคุณจะเสียใจ”",ph:"",en:"I don't want to tell you",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
-  {id:5186,thai:"\"ทุกอย่างจะจบลงด้วยดี”",ph:"",en:"It's all going to work out fine",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5187,thai:"\"เล่าให้ฟังหน่อย”",ph:"",en:"Can you tell me about it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5188,thai:"\"จะไปไหนก็ไป”",ph:"",en:"Go fly a kite",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5189,thai:"\"จะเอาเงินไปรักษาแม่”",ph:"",en:"I will take the money to cure my mother",type:"s",stage:4,cat:"health"}, // phReview: true, phNeedsGen: true
-  {id:5190,thai:"\"ดูหมอ”",ph:"",en:"To have one's fortune told",type:"s",stage:4,cat:"sentences-daily",note:"Don’t confuse with: “หมอดู” (Foretune teller)"}, // phReview: true, phNeedsGen: true
-  {id:5191,thai:"\"ต้องหาวิธี”",ph:"",en:"I have to find a way",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5192,thai:"\"อย่าเผลอก็แล้วกัน”",ph:"",en:"Watch your back",type:"s",stage:4,cat:"body"}, // phReview: true, phNeedsGen: true
-  {id:5193,thai:"\"ทำตามคำสั่ง”",ph:"",en:"To follow the order",type:"s",stage:4,cat:"food",note:"Other usage: “ทำตามคำแนะนำ” “To follow the advice” or “ทำตามที่บอก” “To do as told”"}, // phReview: true, phNeedsGen: true
-  {id:5194,thai:"\"อย่าให้ใครรู้”",ph:"",en:"Don't let anyone know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5195,thai:"\"เอาแต่ใจตัวเอง”",ph:"",en:"She only wants it her way",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"She only takes her own heart\""}, // phReview: true, phNeedsGen: true
-  {id:5196,thai:"\"แกล้งทำ”",ph:"",en:"To pretend to do something",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5197,thai:"\"เขาเป็นปอดบวม”",ph:"",en:"He has pneumonia",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5198,thai:"\"อย่าให้มันเกินเลย”",ph:"",en:"Don't go overboard",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5199,thai:"\"แน่ใจหรือว่าดี”",ph:"",en:"Are you sure it's good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5200,thai:"\"เบาๆด้วย”",ph:"",en:"Keep it quiet",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5201,thai:"\"คุณตบตาฉัน”",ph:"",en:"You tricked me (female)",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"You slapped my eye\""}, // phReview: true, phNeedsGen: true
-  {id:5202,thai:"\"บรรยากาศเป็นใจ”",ph:"",en:"\"The condition inspires it\" (sexual contact or act)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5203,thai:"\"บอกมาเดี๋ยวนี้นะ”",ph:"",en:"Tell me now!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5204,thai:"\"ท้องเสีย”",ph:"",en:"To have diarrhea",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5205,thai:"\"ตัวใครตัวมัน”",ph:"",en:"To be on one's own",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5206,thai:"\"ตอแหล”",ph:"",en:"Liar!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5207,thai:"\"ท่าทางไม่ดี”",ph:"",en:"It doesn't look good",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5208,thai:"\"คงไม่ใช่เรื่องสำคัญ”",ph:"",en:"It shouldn't be that important",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5209,thai:"\"ท่าดี ทีเลว”",ph:"",en:"Good look, bad performance",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5210,thai:"\"ต้องเปิดตำรา”",ph:"",en:"I have to consult the book",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5211,thai:"\"เขาหน้าเหมือนคุณ”",ph:"",en:"He looks like you",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5212,thai:"\"รอนานมั้ย”",ph:"",en:"Have you waited long?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5213,thai:"\"จะไม่ให้ใครรู้”",ph:"",en:"I won't let anyone know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5214,thai:"\"ไปทำบุญที่วัด”",ph:"",en:"I go to make merit at the temple",type:"s",stage:4,cat:"places"}, // phReview: true, phNeedsGen: true
-  {id:5215,thai:"\"ถามอะไรหน่อยได้มั้ย”",ph:"",en:"Can I ask you something?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
-  {id:5216,thai:"\"เปิเเผยความลับ”",ph:"",en:"To tell a secret",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5217,thai:"\"ทำแล้วสบายใจ”",ph:"",en:"I feel good after I do it",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
-  {id:5218,thai:"\"ไม่นึกเลย”",ph:"",en:"I never thought so",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5219,thai:"\"พูดอีก ก็ถูกอีก”",ph:"",en:"You say it again, you are right again",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5220,thai:"\"ทะลึ่ง”",ph:"",en:"That's impertinent",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5221,thai:"\"ลืมหมดแล้ว”",ph:"",en:"I forgot everything",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5222,thai:"\"รสนิยมสูง รายได้ต่ำ”",ph:"",en:"High taste, low income",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
-  {id:5223,thai:"\"ขอโทษที่มาสาย”",ph:"",en:"I'm sorry I'm late",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
-  {id:5224,thai:"\"หนังเรื่องนี้มันมาก”",ph:"",en:"This movie is really fun",type:"s",stage:4,cat:"emotions",note:"Other usage: “หนังเรื่องนี้ห่วยมาก” “This movie sucks”"}, // phReview: true, phNeedsGen: true
-  {id:5225,thai:"\"มันไม่ยากอย่างที่คิด”",ph:"",en:"It's not as difficult as you think",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5152,thai:"เลือกไม่ถูก",ph:"",en:"I can't choose",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5153,thai:"ตายเป็นผี",ph:"",en:"To die and become a ghost",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5154,thai:"เขาทนอยู่",ph:"",en:"He forces himself to stay",type:"s",stage:4,cat:"sentences-daily",note:"Don’t confuse with: “เขาอยู่ทน” “He stays for a long time”"}, // phReview: true, phNeedsGen: true
+  {id:5155,thai:"กำลังยืดเส้นยืดสาย",ph:"",en:"I'm stretching",type:"p",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:5156,thai:"เอาไว้คราวหน้าก็แล้วกัน",ph:"",en:"Let's do it next time",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5157,thai:"ทีละเล็ก ทีละน้อย",ph:"",en:"Little by little",type:"s",stage:4,cat:"sentences-daily",note:"Short form: “ทีละน้อย” - Other form: “ทีละนิด ทีละหน่อย”"}, // phReview: true, phNeedsGen: true
+  {id:5158,thai:"เงินล่วงหน้า",ph:"",en:"Money in advance",type:"s",stage:4,cat:"shopping"}, // phReview: true, phNeedsGen: true
+  {id:5159,thai:"รับไม่ได้",ph:"",en:"It's not acceptable",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5160,thai:"เสร็จธุระแล้วรีบกลับบ้าน",ph:"",en:"Hurry home after you are done (with business, etc)?",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
+  {id:5161,thai:"ทำเป็นไม่รู้ไม่ชี้",ph:"",en:"To pretend not to know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5162,thai:"ไม่ต้องรอทานข้าว",ph:"",en:"Don't wait for me for dinner (lunch, etc)",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
+  {id:5163,thai:"มองตาค้าง",ph:"",en:"To look at something and be stunned",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"Look eye stay\""}, // phReview: true, phNeedsGen: true
+  {id:5164,thai:"สักพักใหญ่ๆ",ph:"",en:"\"In a long while\" (As opposed to ‘a little while’)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5165,thai:"ธุรกิจเฟื่องฟู",ph:"",en:"The business is flourishing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5166,thai:"ต้องทำให้ได้",ph:"",en:"I have to make it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5167,thai:"อย่าหาเรื่อง",ph:"",en:"Don't cause yourself trouble",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5168,thai:"ทำเปนไม่รูู้ไม่เห็น",ph:"",en:"To pretend that one can't see and doesn't know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5169,thai:"อันเดียวพอ",ph:"",en:"One is enough",type:"s",stage:4,cat:"numbers"}, // phReview: true, phNeedsGen: true
+  {id:5170,thai:"ไม่ชอบนั่งเฉยๆ",ph:"",en:"I don't to sit doing nothing",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5171,thai:"จะดูลายมือให้",ph:"",en:"I will read your palm",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5172,thai:"ไม่เข้ากับบรรยากาศ",ph:"",en:"It's not appropriate for the location",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"It doesn't fit with the atmosphere\""}, // phReview: true, phNeedsGen: true
+  {id:5173,thai:"ชอบนั่งริมหน้าต่าง",ph:"",en:"I like to sit by the window",type:"s",stage:4,cat:"home"}, // phReview: true, phNeedsGen: true
+  {id:5174,thai:"โดนเล่นงาน",ph:"",en:"To be reprimanded, criticized or attacked",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"To be 'play-work'ed\""}, // phReview: true, phNeedsGen: true
+  {id:5175,thai:"จู่ๆ ก็ได้เจอ",ph:"",en:"I met him (it/you/they/etc) by accident",type:"s",stage:4,cat:"emergency"}, // phReview: true, phNeedsGen: true
+  {id:5176,thai:"อย่าไปกวนเขา",ph:"",en:"Don't bother him",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5177,thai:"ต้องระวังเป็นพิเศษ",ph:"",en:"We have to be especially careful",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5178,thai:"บริการที่ยอดเยี่ยม",ph:"",en:"An excellent service",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5179,thai:"ให้รางวัลกับตัวเอง",ph:"",en:"To give oneself a reward",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5180,thai:"ซ้อมร้องเพลงอยู่",ph:"",en:"I'm practicing singing",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
+  {id:5181,thai:"เล่นละครเก่ง",ph:"",en:"She is good at faking it",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"She is good at acting in a play\""}, // phReview: true, phNeedsGen: true
+  {id:5182,thai:"ไม่ใช่ความผิดของใคร",ph:"",en:"It's nobody's fault",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5183,thai:"ดวงเป็นตัวกำหนด",ph:"",en:"Destiny sets it",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5184,thai:"จำเป็นต้องทำ",ph:"",en:"It was necessary that I did it",type:"s",stage:4,cat:"sentences-daily",note:"Also: \"It's necessary that I do it\""}, // phReview: true, phNeedsGen: true
+  {id:5185,thai:"ไม่อยากบอก กลัวคุณจะเสียใจ",ph:"",en:"I don't want to tell you",type:"s",stage:4,cat:"sentences-want"}, // phReview: true, phNeedsGen: true
+  {id:5186,thai:"ทุกอย่างจะจบลงด้วยดี",ph:"",en:"It's all going to work out fine",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5187,thai:"เล่าให้ฟังหน่อย",ph:"",en:"Can you tell me about it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5188,thai:"จะไปไหนก็ไป",ph:"",en:"Go fly a kite",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5189,thai:"จะเอาเงินไปรักษาแม่",ph:"",en:"I will take the money to cure my mother",type:"s",stage:4,cat:"health"}, // phReview: true, phNeedsGen: true
+  {id:5190,thai:"ดูหมอ",ph:"",en:"To have one's fortune told",type:"s",stage:4,cat:"sentences-daily",note:"Don’t confuse with: “หมอดู” (Foretune teller)"}, // phReview: true, phNeedsGen: true
+  {id:5191,thai:"ต้องหาวิธี",ph:"",en:"I have to find a way",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5192,thai:"อย่าเผลอก็แล้วกัน",ph:"",en:"Watch your back",type:"s",stage:4,cat:"body"}, // phReview: true, phNeedsGen: true
+  {id:5193,thai:"ทำตามคำสั่ง",ph:"",en:"To follow the order",type:"s",stage:4,cat:"food",note:"Other usage: “ทำตามคำแนะนำ” “To follow the advice” or “ทำตามที่บอก” “To do as told”"}, // phReview: true, phNeedsGen: true
+  {id:5194,thai:"อย่าให้ใครรู้",ph:"",en:"Don't let anyone know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5195,thai:"เอาแต่ใจตัวเอง",ph:"",en:"She only wants it her way",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"She only takes her own heart\""}, // phReview: true, phNeedsGen: true
+  {id:5196,thai:"แกล้งทำ",ph:"",en:"To pretend to do something",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5197,thai:"เขาเป็นปอดบวม",ph:"",en:"He has pneumonia",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5198,thai:"อย่าให้มันเกินเลย",ph:"",en:"Don't go overboard",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5199,thai:"แน่ใจหรือว่าดี",ph:"",en:"Are you sure it's good?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5200,thai:"เบาๆด้วย",ph:"",en:"Keep it quiet",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5201,thai:"คุณตบตาฉัน",ph:"",en:"You tricked me (female)",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"You slapped my eye\""}, // phReview: true, phNeedsGen: true
+  {id:5202,thai:"บรรยากาศเป็นใจ",ph:"",en:"\"The condition inspires it\" (sexual contact or act)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5203,thai:"บอกมาเดี๋ยวนี้นะ",ph:"",en:"Tell me now!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5204,thai:"ท้องเสีย",ph:"",en:"To have diarrhea",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5205,thai:"ตัวใครตัวมัน",ph:"",en:"To be on one's own",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5206,thai:"ตอแหล",ph:"",en:"Liar!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5207,thai:"ท่าทางไม่ดี",ph:"",en:"It doesn't look good",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5208,thai:"คงไม่ใช่เรื่องสำคัญ",ph:"",en:"It shouldn't be that important",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5209,thai:"ท่าดี ทีเลว",ph:"",en:"Good look, bad performance",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5210,thai:"ต้องเปิดตำรา",ph:"",en:"I have to consult the book",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5211,thai:"เขาหน้าเหมือนคุณ",ph:"",en:"He looks like you",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5212,thai:"รอนานมั้ย",ph:"",en:"Have you waited long?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5213,thai:"จะไม่ให้ใครรู้",ph:"",en:"I won't let anyone know",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5214,thai:"ไปทำบุญที่วัด",ph:"",en:"I go to make merit at the temple",type:"s",stage:4,cat:"places"}, // phReview: true, phNeedsGen: true
+  {id:5215,thai:"ถามอะไรหน่อยได้มั้ย",ph:"",en:"Can I ask you something?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true, phNeedsGen: true
+  {id:5216,thai:"เปิเเผยความลับ",ph:"",en:"To tell a secret",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5217,thai:"ทำแล้วสบายใจ",ph:"",en:"I feel good after I do it",type:"s",stage:4,cat:"time"}, // phReview: true, phNeedsGen: true
+  {id:5218,thai:"ไม่นึกเลย",ph:"",en:"I never thought so",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5219,thai:"พูดอีก ก็ถูกอีก",ph:"",en:"You say it again, you are right again",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5220,thai:"ทะลึ่ง",ph:"",en:"That's impertinent",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5221,thai:"ลืมหมดแล้ว",ph:"",en:"I forgot everything",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
+  {id:5222,thai:"รสนิยมสูง รายได้ต่ำ",ph:"",en:"High taste, low income",type:"s",stage:4,cat:"food"}, // phReview: true, phNeedsGen: true
+  {id:5223,thai:"ขอโทษที่มาสาย",ph:"",en:"I'm sorry I'm late",type:"s",stage:1,cat:"greetings"}, // phReview: true, phNeedsGen: true
+  {id:5224,thai:"หนังเรื่องนี้มันมาก",ph:"",en:"This movie is really fun",type:"s",stage:4,cat:"emotions",note:"Other usage: “หนังเรื่องนี้ห่วยมาก” “This movie sucks”"}, // phReview: true, phNeedsGen: true
+  {id:5225,thai:"มันไม่ยากอย่างที่คิด",ph:"",en:"It's not as difficult as you think",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5226,thai:"ถูกใจไหม",ph:"tùuk-jai mǎi",en:"Do you like it? / Is it to your liking?",type:"s",stage:2,cat:"sentences-questions"}, // phReview: true
   {id:5227,thai:"สุดยอดเลย",ph:"sùt-yâawt loei",en:"It’s awesome/super/cool!",type:"s",stage:2,cat:"emotions"}, // phReview: true
   {id:5228,thai:"เก่งมาก",ph:"gèng mâak",en:"Very good! / Nice job! / You’re good at this!",type:"s",stage:2,cat:"sentences-daily"}, // phReview: true
