@@ -684,7 +684,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5070,thai:"เมียขอหย่า",ph:"",en:"My wife asked for a divorce",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
   {id:5071,thai:"เกือบไปแล้ว",ph:"",en:"That was close!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5072,thai:"เรื่องน่าขำ",ph:"",en:"A funny story",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5073,thai:"\"เป็นเมนส์ \" มีประจำเดือน”",ph:"",en:"I'm having my period",type:"s",stage:4,cat:"sentences-self",note:"Also: “มีประจำเดือน”"}, // phReview: true, phNeedsGen: true
+  {id:5073,thai:"เป็นเมนส์ / มีประจำเดือน",ph:"",en:"I'm having my period",type:"s",stage:4,cat:"sentences-self",note:"Two ways to say this: casual เป็นเมนส์ and more formal มีประจำเดือน."}, // phReview: true, phNeedsGen: true
   {id:5074,thai:"จะเล่าคามจริงให้ฟัง",ph:"",en:"I will tell you the truth",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5075,thai:"อย่าไปโทษเขา",ph:"",en:"Don't blame him",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “อย่าโทษตัวเอง” “Don’t blame yourself”"}, // phReview: true, phNeedsGen: true
   {id:5076,thai:"ลองจินตนาการดู",ph:"",en:"Try to imagine it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ลองคิดดู” “Think about it” or “” “Try it”"}, // phReview: true, phNeedsGen: true
