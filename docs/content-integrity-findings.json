@@ -1,0 +1,3265 @@
+{
+  "meta": {
+    "generatedAt": "2026-05-14T09:14:45.877Z",
+    "totalCardsScanned": 4791
+  },
+  "issues": [
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4732,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4733,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4734,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4735,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4737,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4752,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4753,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4755,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4756,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4770,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4772,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4777,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4778,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4781,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4783,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4796,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4804,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4806,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4808,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4810,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4815,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4817,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4822,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4825,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4827,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4842,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4855,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4858,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4872,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4873,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4880,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4882,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4891,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4895,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4896,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4897,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4898,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4900,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4916,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4928,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4929,
+      "stage": 7,
+      "cat": "body",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4930,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4931,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4932,
+      "stage": 7,
+      "cat": "food",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4933,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4934,
+      "stage": 6,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4935,
+      "stage": 7,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4936,
+      "stage": 8,
+      "cat": "colors",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4937,
+      "stage": 5,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4938,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4939,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4940,
+      "stage": 7,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4941,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4942,
+      "stage": 6,
+      "cat": "health",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4943,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4944,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4945,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4946,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4947,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4948,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4949,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4950,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4951,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4952,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4953,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4954,
+      "stage": 6,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4955,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4956,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4957,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4958,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4959,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4960,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4961,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4962,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4963,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4964,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4965,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4966,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4967,
+      "stage": 5,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4968,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4969,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4970,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4971,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4972,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4973,
+      "stage": 6,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4974,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4975,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4976,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4977,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4978,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4979,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4980,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4981,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4982,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4983,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4984,
+      "stage": 7,
+      "cat": "body",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4985,
+      "stage": 7,
+      "cat": "colors",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4986,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4987,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4988,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4989,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4990,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4991,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4992,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4993,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4994,
+      "stage": 6,
+      "cat": "things",
+      "type": "w",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4995,
+      "stage": 5,
+      "cat": "things",
+      "type": "w",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4996,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4997,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4998,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 4999,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5000,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5001,
+      "stage": 5,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5002,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5003,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5004,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5005,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5006,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5007,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5008,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5009,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5010,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5011,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5012,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5013,
+      "stage": 8,
+      "cat": "greetings",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5014,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5015,
+      "stage": 8,
+      "cat": "greetings",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5016,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5017,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5018,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5019,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5020,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5021,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5022,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5023,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5024,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5025,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5026,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5027,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5028,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5029,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5030,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5031,
+      "stage": 7,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5032,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5033,
+      "stage": 5,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5034,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5035,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5036,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5037,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5038,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5039,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5040,
+      "stage": 6,
+      "cat": "numbers",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5042,
+      "stage": 5,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5043,
+      "stage": 7,
+      "cat": "directions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5044,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5045,
+      "stage": 6,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5046,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5047,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5048,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5049,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5051,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5052,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5053,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5055,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5056,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5057,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5058,
+      "stage": 7,
+      "cat": "greetings",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5059,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5060,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5061,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5062,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5063,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5064,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5065,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5066,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5067,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5068,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5069,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5070,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5071,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5072,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5073,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5074,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5075,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5076,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5077,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5078,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5079,
+      "stage": 6,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5080,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5081,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5082,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5083,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5084,
+      "stage": 8,
+      "cat": "shopping",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5085,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5086,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5087,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5088,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5089,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5090,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5091,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5092,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5093,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5094,
+      "stage": 8,
+      "cat": "weather",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5095,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5096,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5097,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5098,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5099,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5100,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5101,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5102,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5103,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5104,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5105,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5106,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5107,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5108,
+      "stage": 8,
+      "cat": "emergency",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5109,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5110,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5111,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5112,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5113,
+      "stage": 7,
+      "cat": "health",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5114,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5115,
+      "stage": 6,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5116,
+      "stage": 7,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5117,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5118,
+      "stage": 7,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5119,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5120,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5121,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5122,
+      "stage": 5,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5123,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5124,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5125,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5126,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5127,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5128,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5129,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5130,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5131,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5132,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5133,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5134,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5135,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5136,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5137,
+      "stage": 7,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5138,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5139,
+      "stage": 8,
+      "cat": "people",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5140,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5141,
+      "stage": 8,
+      "cat": "people",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5142,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5143,
+      "stage": 8,
+      "cat": "time",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5144,
+      "stage": 4,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5145,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5146,
+      "stage": 6,
+      "cat": "shopping",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5147,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5148,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5149,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5150,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5151,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5152,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5153,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5154,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5155,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5156,
+      "stage": 8,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5157,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5158,
+      "stage": 7,
+      "cat": "shopping",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5159,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5160,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5161,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5162,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5163,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5164,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5165,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5166,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5167,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5168,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5169,
+      "stage": 7,
+      "cat": "numbers",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5170,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5171,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5172,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5173,
+      "stage": 8,
+      "cat": "home",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5174,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5175,
+      "stage": 8,
+      "cat": "emergency",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5176,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5177,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5178,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5179,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5180,
+      "stage": 8,
+      "cat": "sentences-self",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5181,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5182,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5183,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5184,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5185,
+      "stage": 8,
+      "cat": "sentences-want",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5186,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5187,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5188,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5189,
+      "stage": 8,
+      "cat": "health",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5190,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5191,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5192,
+      "stage": 8,
+      "cat": "body",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5193,
+      "stage": 7,
+      "cat": "food",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5194,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5195,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5196,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5197,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5198,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5199,
+      "stage": 7,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5200,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5201,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5202,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5203,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5204,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5205,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5206,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5207,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5208,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5209,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5210,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5211,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5212,
+      "stage": 6,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5213,
+      "stage": 7,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5214,
+      "stage": 7,
+      "cat": "places",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5215,
+      "stage": 8,
+      "cat": "sentences-questions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5216,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5217,
+      "stage": 7,
+      "cat": "time",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5218,
+      "stage": 5,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5219,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5220,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "p",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5221,
+      "stage": 6,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5222,
+      "stage": 8,
+      "cat": "food",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5223,
+      "stage": 7,
+      "cat": "greetings",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5224,
+      "stage": 8,
+      "cat": "emotions",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "missing-phonetic",
+      "cardId": 5225,
+      "stage": 8,
+      "cat": "sentences-daily",
+      "type": "s",
+      "field": "ph",
+      "value": ""
+    },
+    {
+      "issue": "thai-script-in-english",
+      "cardId": 5721,
+      "stage": 5,
+      "cat": "grammar",
+      "type": "w",
+      "field": "en",
+      "value": "variant of มั้ย/ไหม (question)",
+      "thaiChars": [
+        "ม",
+        "ั",
+        "้",
+        "ย",
+        "ไ",
+        "ห",
+        "ม"
+      ]
+    }
+  ],
+  "duplicates": [
+    {
+      "thai": "ผม",
+      "ids": [
+        1,
+        573
+      ],
+      "englishes": [
+        "I / me (male)",
+        "hair"
+      ],
+      "phonetics": [
+        "phǒm"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "อยู่",
+      "ids": [
+        11,
+        510
+      ],
+      "englishes": [
+        "to be at / to live / to stay",
+        "to stay"
+      ],
+      "phonetics": [
+        "yùu"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "เย็น",
+      "ids": [
+        65,
+        217
+      ],
+      "englishes": [
+        "cool / cold (drinks/AC)",
+        "evening (4-6pm)"
+      ],
+      "phonetics": [
+        "yen"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "เลย",
+      "ids": [
+        103,
+        1276
+      ],
+      "englishes": [
+        "really / so / at all",
+        "really / at all (emphatic)"
+      ],
+      "phonetics": [
+        "loei"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "จัง",
+      "ids": [
+        104,
+        1277
+      ],
+      "englishes": [
+        "so / very (casual)",
+        "really / so much (casual)"
+      ],
+      "phonetics": [
+        "jang"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "คน",
+      "ids": [
+        190,
+        270
+      ],
+      "englishes": [
+        "person",
+        "classifier:people"
+      ],
+      "phonetics": [
+        "khon"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "หลัง",
+      "ids": [
+        297,
+        572
+      ],
+      "englishes": [
+        "after",
+        "back"
+      ],
+      "phonetics": [
+        "lǎng"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "ไม่เป็นไรครับ",
+      "ids": [
+        313,
+        871
+      ],
+      "englishes": [
+        "No worries / You are welcome (male)",
+        "No worries / it is fine (male)"
+      ],
+      "phonetics": [
+        "mâi pen rai khráp"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "อันนี้คืออะไรครับ",
+      "ids": [
+        351,
+        916
+      ],
+      "englishes": [
+        "What is this? (male)",
+        "What is this dish? (male)"
+      ],
+      "phonetics": [
+        "annǐi khue àrai khráp?"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "อร่อยมากครับ",
+      "ids": [
+        354,
+        910
+      ],
+      "englishes": [
+        "Very delicious (male)",
+        "It is very delicious (male)"
+      ],
+      "phonetics": [
+        "aròi mâak khráp"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "ผมอิ่มแล้วครับ",
+      "ids": [
+        356,
+        806
+      ],
+      "englishes": [
+        "I am full (male)",
+        "I am full (already) (male)"
+      ],
+      "phonetics": [
+        "phǒm ìm láew khráp"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "มีไหมครับ",
+      "ids": [
+        414,
+        851
+      ],
+      "englishes": [
+        "Do you have (it)? (male)",
+        "Do you have (any)? (male)"
+      ],
+      "phonetics": [
+        "mii mǎi khráp?"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": false
+    },
+    {
+      "thai": "น้ำตาล",
+      "ids": [
+        550,
+        520
+      ],
+      "englishes": [
+        "brown",
+        "sugar"
+      ],
+      "phonetics": [
+        "náam-taan",
+        "náam taan"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": true
+    },
+    {
+      "thai": "รู้สึก",
+      "ids": [
+        1759,
+        5722
+      ],
+      "englishes": [
+        "feel",
+        "to feel"
+      ],
+      "phonetics": [
+        "róo sèuk",
+        "rúu sùek"
+      ],
+      "conflictingEn": true,
+      "conflictingPh": true
+    }
+  ],
+  "duplicateIds": [],
+  "counts": {
+    "missing-phonetic": 334,
+    "thai-script-in-english": 1
+  }
+}

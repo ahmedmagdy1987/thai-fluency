@@ -368,12 +368,12 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4754,thai:"มันยังไงกัน",ph:"man yang ngai gan",en:"What's that all about",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4755,thai:"เราจะเหมารถไป",ph:"",en:"We will rent a car and a driver",type:"s",stage:4,cat:"home",note:"เหมา\" means \"to take or buy all of something"}, // phReview: true, phNeedsGen: true
   {id:4756,thai:"ผมเป็นหนี้บุคุณเขา",ph:"",en:"I'm indebted to him (male)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true, phNeedsGen: true
-  {id:4757,thai:"ขอเป็นโอกาสหน้า",ph:"khǎaw bpen o:h gàat nâa",en:"I'd like to do it next time",type:"s",stage:4,cat:"time"}, // phReview: true
+  {id:4757,thai:"ขอเป็นโอกาสหน้า",ph:"khǎaw bpen oh gàat nâa",en:"I'd like to do it next time",type:"s",stage:4,cat:"time"}, // phReview: true
   {id:4758,thai:"เราได้กำไร",ph:"rao dâai gam rai",en:"We made a profit",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4759,thai:"เขาพูดไม่รู้เรื่อง",ph:"khǎo phûut mâi rúu rêuuang",en:"I don't understand what he says",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4760,thai:"พอได้ก็ได้มาก",ph:"phaw dâai gâw dâai mâak",en:"When it rains, it pours",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4761,thai:"รอไม่ไหวแล้ว",ph:"raw mâi wǎi láew",en:"I can't wait any longer",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: \"ทำไม่ไหวแล้ว\" \"I can't do it anymore\" or \"ทนไม่ไหวเล้ว\" \"I can't stand it anymore\""}, // phReview: true
-  {id:4762,thai:"มันไม่มีประโยชน์",ph:"man mâi mee bprà yò:ht",en:"It's useless",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
+  {id:4762,thai:"มันไม่มีประโยชน์",ph:"man mâi mee bprà yòht",en:"It's useless",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4763,thai:"ใครบอก",ph:"khrai bàwk",en:"Who told you that?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:4764,thai:"คนใจดำ",ph:"khon jai dam",en:"Cruel\"hearted person",type:"p",stage:4,cat:"people",note:"Literally: \"A black-hearted person\""}, // phReview: true
   {id:4765,thai:"อย่าหลอกกันนะ",ph:"yàa làawk gan ná",en:"Don't deceive me",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
@@ -464,7 +464,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4850,thai:"คุณมาทำอะไรที่นี่",ph:"khun maa tham àrai têe nêe",en:"What are you doing here?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:4851,thai:"เขาก็โทรมา",ph:"khǎo gâw toh maa",en:"At last, he called",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4852,thai:"ฉันไม่พอใจคุณ",ph:"chăn mâi phaw jai khun",en:"I'm not pleased about what you did (female)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true
-  {id:4853,thai:"โง่เหมือนควาย",ph:"ngô:h měuuan khwaai",en:"As stupid as an ass",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"As stupid as a buffalo\""}, // phReview: true
+  {id:4853,thai:"โง่เหมือนควาย",ph:"ngôh měuuan khwaai",en:"As stupid as an ass",type:"s",stage:4,cat:"sentences-daily",note:"Literally: \"As stupid as a buffalo\""}, // phReview: true
   {id:4854,thai:"คิดมากไปรึเปล่า",ph:"khít mâak bpai réu bplàao",en:"Are you thinking too much about it?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:4855,thai:"ไม่เอาได้มั้ย",ph:"",en:"I don't want it",type:"s",stage:4,cat:"sentences-want",note:"Literally: \"Can I not take it?\""}, // phReview: true, phNeedsGen: true
   {id:4856,thai:"\"เดี๋ยวอย่างนี้",ph:"dǐaao yàang née",en:"Now this",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
@@ -535,7 +535,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4921,thai:"มันก็จริง",ph:"man gâw jing",en:"I agree it's true",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: \"มันก็ดี\" \"I agree it's good\""},
   {id:4922,thai:"ไปให้พ้น",ph:"bpai hâi phóhn",en:"Go away!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4923,thai:"จะบ้าตาย",ph:"jà bâa dtaai",en:"I'm going crazy",type:"s",stage:4,cat:"sentences-self",note:"Literally: \"I will be dead from the craziness\""}, // phReview: true
-  {id:4924,thai:"หน้าไปโดนอะไรมา",ph:"nâa bpai do:hn àrai maa",en:"What happened to your face?",type:"s",stage:4,cat:"body"}, // phReview: true
+  {id:4924,thai:"หน้าไปโดนอะไรมา",ph:"nâa bpai dohn àrai maa",en:"What happened to your face?",type:"s",stage:4,cat:"body"}, // phReview: true
   {id:4925,thai:"ทำยังไงดี",ph:"tham yang ngai dee",en:"What should I do?",type:"s",stage:4,cat:"sentences-questions",note:"Also: \"ทำยังไงกันดี\" \"What should we do?\""}, // phReview: true
   {id:4926,thai:"อย่ายุ่ง",ph:"yàa yûng",en:"Don't interfere",type:"p",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:4927,thai:"เห็นใจผมหน่อย",ph:"hěn jai phǒm nàawy",en:"Please have sympathy for me (male)",type:"s",stage:1,cat:"greetings",note:"Literally: \"Please see my heart\""}, // phReview: true
@@ -1005,7 +1005,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5391,thai:"ยังไม่ว่าง",ph:"yang mâi wâang",en:"(I)’m busy. / (I) don’t have time. / (I)’m not free.",type:"s",stage:3,cat:"time"}, // phReview: true
   {id:5392,thai:"ขอยืม(ปากกา)ได้ไหม(คะ/ครับ)",ph:"kǎaw yeum (bpàak-gaa) dâi-mǎi (ká/kráp)",en:"Can I borrow (a/your pen)? (male/female)",type:"s",stage:3,cat:"sentences-questions"}, // phReview: true
   {id:5393,thai:"แล้วเจอกัน(นะ)",ph:"láaeo joe gan (ná)",en:"See you (later). / See you (in a bit).",type:"s",stage:3,cat:"greetings"}, // phReview: true
-  {id:5394,thai:"ในนี้มีอะไร",ph:"nai níi mii à-rai",en:"What’s in it? / What’s in this? /  What’s in here?",type:"s",stage:3,cat:"sentences-questions"}, // phReview: true
+  {id:5394,thai:"ในนี้มีอะไร",ph:"nai níi mii à-rai",en:"What’s in it? / What’s in this? / What’s in here?",type:"s",stage:3,cat:"sentences-questions"}, // phReview: true
   {id:5395,thai:"ดีมาก",ph:"dii mâak",en:"Great! / Excellent! / Very good.",type:"s",stage:3,cat:"sentences-daily"}, // phReview: true
   {id:5396,thai:"กี่โมงแล้ว(ครับ)",ph:"gìi-moong-láaeo (kráp)",en:"What time is it? / Do you have the time? (male)",type:"s",stage:3,cat:"time"}, // phReview: true
   {id:5397,thai:"หิวมาก",ph:"hǐu mâak",en:"I’m so hungry!",type:"s",stage:3,cat:"food"}, // phReview: true
@@ -1140,13 +1140,13 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5526,thai:"เข้ามาสิ",ph:"kâo maa sì",en:"INFORMAL - Come in. / Come on in.",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:5527,thai:"ผมไม่ถนัด",ph:"pǒm mâi tà-nàt",en:"I’m not good at (it). / I’m no good. (male)",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true
   {id:5528,thai:"คุณทำอะไรอยู่",ph:"kun tam à-rai yùu",en:"What are you doing?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
-  {id:5529,thai:"ไปเที่ยวกัน(เถอะ)",ph:"bpai tîao gan (tòe)",en:"Let’s go out. /  Let’s go hang out. /  Wanna go out?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
+  {id:5529,thai:"ไปเที่ยวกัน(เถอะ)",ph:"bpai tîao gan (tòe)",en:"Let’s go out. / Let’s go hang out. / Wanna go out?",type:"s",stage:4,cat:"sentences-questions"}, // phReview: true
   {id:5530,thai:"อย่าหัวเราะ",ph:"yàa hǔa-ráw",en:"Don’t laugh!",type:"s",stage:5,cat:"emotions"}, // phReview: true
   {id:5531,thai:"(มัน)แย่มาก",ph:"(man) yâae mâak",en:"It’s terrible/horrible/awful.",type:"p",stage:5,cat:"emotions"}, // phReview: true
   {id:5532,thai:"หนูไม่ชอบตื่นเช้า",ph:"nǔu mâi-châawp dtèun cháao",en:"I don’t like getting up early. / I’m not a morning person.",type:"s",stage:5,cat:"time"}, // phReview: true
-  {id:5533,thai:"เรื่องอะไร",ph:"rêuang à-rai",en:"About what? / What story?  (are you talking about)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
+  {id:5533,thai:"เรื่องอะไร",ph:"rêuang à-rai",en:"About what? / What story? (are you talking about)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5534,thai:"(...)ทำให้ผมมีความสุข(...)",ph:"(...)tam-hâi pǒm mii-kwaam-sùk (...)",en:"It makes me happy. / You make me happy. (male)",type:"s",stage:5,cat:"emotions"}, // phReview: true
-  {id:5535,thai:"กินด้วยกันสิ",ph:"gin dûai-gan sì",en:"Have some. / Join me.  (eating together)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
+  {id:5535,thai:"กินด้วยกันสิ",ph:"gin dûai-gan sì",en:"Have some. / Join me. (eating together)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5536,thai:"เขานิสัยไม่ดี",ph:"kǎo ní-sǎi mâi-dii",en:"He’s bad! / He’s a bad boy! / He’s ill-natured. / He’s rude.",type:"s",stage:5,cat:"health"}, // phReview: true
   {id:5537,thai:"ช้าหน่อย",ph:"cháa nàwi",en:"Slow down!",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5538,thai:"ฉันจะมาใหม่",ph:"chǎn jà maa mài",en:"I’ll be back. / I’ll come back. (female)",type:"s",stage:5,cat:"body"}, // phReview: true
@@ -1170,7 +1170,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5556,thai:"วาง(ลง)",ph:"waang (long)",en:"Put it down. / Lay it down.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5557,thai:"ลืมซื้อมา",ph:"leum séu maa",en:"(I) forgot to buy it.",type:"s",stage:5,cat:"shopping"}, // phReview: true
   {id:5558,thai:"อย่าลืมซื้อ...",ph:"yàa leum séu…",en:"Don’t forget to buy…",type:"s",stage:5,cat:"shopping"}, // phReview: true
-  {id:5559,thai:"ครับ(พ่อ) / ค่ะ(พ่อ)",ph:"kráp (pâaw) / kà (pâaw)",en:"Yes, (Dad).  (acknowledging, agreeing, etc.) (male/female)",type:"p",stage:5,cat:"people"}, // phReview: true
+  {id:5559,thai:"ครับ(พ่อ) / ค่ะ(พ่อ)",ph:"kráp (pâaw) / kà (pâaw)",en:"Yes, (Dad). (acknowledging, agreeing, etc.) (male/female)",type:"p",stage:5,cat:"people"}, // phReview: true
   {id:5560,thai:"ยังไม่รู้",ph:"yang mâi-rúu",en:"I don’t know yet. / I still don’t know.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5561,thai:"แค่ครั้งเดียว",ph:"kâae kráng-diao",en:"Only once. / Only one time.",type:"s",stage:5,cat:"time"}, // phReview: true
   {id:5562,thai:"หลับหรือยัง",ph:"làp rěu yang",en:"Are you asleep (yet)?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
@@ -1210,7 +1210,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5596,thai:"ฉันอยากเจอเขา",ph:"chǎn yàak joe kǎo",en:"I want to meet him/her. (female)",type:"s",stage:5,cat:"sentences-want"}, // phReview: true
   {id:5597,thai:"(8)ชั่วโมงต่อวัน",ph:"(bpàaet) chûa-moong dtàaw-wan",en:"(8) hours a day.",type:"s",stage:5,cat:"time"}, // phReview: true
   {id:5598,thai:"ทำยาก",ph:"tam yâak",en:"It’s difficult to do. / That’s hard.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
-  {id:5599,thai:"พูดสิ",ph:"pûut sì",en:"Say it.  (repeat it after me, etc.)",type:"p",stage:5,cat:"time"}, // phReview: true
+  {id:5599,thai:"พูดสิ",ph:"pûut sì",en:"Say it. (repeat it after me, etc.)",type:"p",stage:5,cat:"time"}, // phReview: true
   {id:5600,thai:"ฉันไม่กลัว(หรอก)",ph:"chǎn mâi-glûa (ràawk)",en:"I’m not afraid (at all). (female)",type:"s",stage:5,cat:"emotions"}, // phReview: true
   {id:5601,thai:"ล้างมือก่อน",ph:"láang meu gàawn",en:"Wash your hands (first).",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5602,thai:"มันหนักมาก",ph:"man nàk mâak",en:"It’s very heavy.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
@@ -1233,7 +1233,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5619,thai:"พักผ่อนเยอะๆ",ph:"pák-pàwn yóe -yóe",en:"Get a lot of rest. / Rest up.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5620,thai:"ไม่รู้(เขา)อยู่ไหน",ph:"mâi-rúu (kǎo) yùu-nǎi",en:"I don’t know where (he) is.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5621,thai:"กลับมาตั้งแต่เมื่อไร",ph:"glàp-maa dtâng-dtàae mêua-rai",en:"When did (you) get/come back?",type:"s",stage:5,cat:"body"}, // phReview: true
-  {id:5622,thai:"ไปก่อนนะ",ph:"bpai gàawn ná",en:"Bye. / Gonna go now—bye. / See you later.  (one person leaves before the other)",type:"s",stage:5,cat:"greetings"}, // phReview: true
+  {id:5622,thai:"ไปก่อนนะ",ph:"bpai gàawn ná",en:"Bye. / Gonna go now—bye. / See you later. (one person leaves before the other)",type:"s",stage:5,cat:"greetings"}, // phReview: true
   {id:5623,thai:"ยังไม่หลับหรือ",ph:"yang mâi làp rěu",en:"Are you still awake? / Not sleeping yet?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
   {id:5624,thai:"เมาแล้ว",ph:"mao láaeo",en:"I’m drunk. / You’re drunk.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5625,thai:"ทำเองหรือ",ph:"tam eeng rěu",en:"Did you make (this/it) yourself?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
@@ -1280,7 +1280,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5666,thai:"ร้องไห้ทำไม",ph:"ráawng-hâi tam-mai",en:"Why are you crying?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
   {id:5667,thai:"จริงหรือ",ph:"jing rěu",en:"Really? / Is that true?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
   {id:5668,thai:"ฉันท้องเสีย",ph:"chǎn táawng-sǐa",en:"I have diarrhea. (female)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
-  {id:5669,thai:"อย่าช้า",ph:"yàa cháa",en:"Hurry. / Don’t slow down!  (we’ll be late)",type:"s",stage:5,cat:"time"}, // phReview: true
+  {id:5669,thai:"อย่าช้า",ph:"yàa cháa",en:"Hurry. / Don’t slow down! (we’ll be late)",type:"s",stage:5,cat:"time"}, // phReview: true
   {id:5670,thai:"ไปดูกัน(นะ)",ph:"bpai duu gan (ná)",en:"Let’s (go and) have a look. / Let’s check it out.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5671,thai:"อันนี้(ก็)สวย",ph:"an-níi (gâaw) sǔai",en:"This one’s cute/nice/pretty.",type:"s",stage:5,cat:"emotions"}, // phReview: true
   {id:5672,thai:"มีลูกแล้ว",ph:"mii lûuk láaeo",en:"I have children. / She has a son/daughter.",type:"s",stage:5,cat:"people"}, // phReview: true
@@ -1292,7 +1292,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5678,thai:"ทำได้ไหม",ph:"tam dâi mǎi",en:"Can you do that? / Can you do it?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
   {id:5679,thai:"รอผมหน่อยนะ",ph:"raaw pǒm nàwi ná",en:"Wait for me. (male)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5680,thai:"ฉันจำได้",ph:"chǎn jam dâi",en:"I remember (it). (female)",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
-  {id:5681,thai:"ผมอยู่คนเดียว",ph:"pǒm yùu kon-diao",en:"I live alone.  OR   I’m alone. (male)",type:"s",stage:5,cat:"sentences-self"}, // phReview: true
+  {id:5681,thai:"ผมอยู่คนเดียว",ph:"pǒm yùu kon-diao",en:"I live alone. OR I’m alone. (male)",type:"s",stage:5,cat:"sentences-self"}, // phReview: true
   {id:5682,thai:"มันสะดวก",ph:"man sà-dùak",en:"It’s convenient.",type:"p",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5683,thai:"จำเป็นไหม",ph:"jam-bpen mǎi",en:"Is it/that necessary?",type:"s",stage:5,cat:"sentences-questions"}, // phReview: true
   {id:5684,thai:"มันเป็นของคุณ",ph:"man bpen kǎawng kun",en:"It’s yours.",type:"p",stage:5,cat:"sentences-daily"}, // phReview: true
@@ -1303,7 +1303,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5689,thai:"เราเป็นเพื่อนบ้าน(กัน)",ph:"rao bpen pêuan-bâan (gan)",en:"We’re neighbors.",type:"p",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5690,thai:"มีแมว(สอง)ตัว",ph:"mii maaeo (sǎawng) dtua",en:"(I) have (two) cats.",type:"p",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5691,thai:"อยู่(ตรง)หัวมุม",ph:"yùu (dtrong) hǔa-mum",en:"It’s (right) on the corner.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true
-  {id:5692,thai:"(…)อยู่ซ้ายมือ",ph:"(…)  yùu sáai-meu",en:"It’s on the left. / It’s to the left.",type:"s",stage:5,cat:"directions"}, // phReview: true
+  {id:5692,thai:"(…)อยู่ซ้ายมือ",ph:"(…) yùu sáai-meu",en:"It’s on the left. / It’s to the left.",type:"s",stage:5,cat:"directions"}, // phReview: true
   {id:5693,thai:"(…)อยู่ขวามือ",ph:"(…) yùu kwǎa-meu",en:"It’s on the right. / It’s to the right.",type:"s",stage:5,cat:"directions"}, // phReview: true
   {id:5694,thai:"(กำลัง)ขับรถอยู่",ph:"gam-lang) kàp-rót yùu",en:"(I)’m driving.",type:"p",stage:5,cat:"sentences-daily"}, // phReview: true
   {id:5695,thai:"นั่งรถเมล์มา",ph:"nâng rót-mee maa",en:"(I) came by bus. / (I) took the bus.",type:"s",stage:5,cat:"sentences-daily"}, // phReview: true

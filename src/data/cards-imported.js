@@ -126,12 +126,12 @@ export const IMPORTED_CARDS = [
   {id:1711,thai:"รวม",ph:"ruaam",en:"including",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:1712,thai:"ฉัน",ph:"chăn",en:"I (female)",type:"w",stage:1,cat:"pronouns"},
   {id:1713,thai:"ชาย",ph:"chaai",en:"man",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:1714,thai:"โอกาส",ph:"o:h gàat",en:"chance",type:"w",stage:1,cat:"things"}, // phReview: true
+  {id:1714,thai:"โอกาส",ph:"oh gàat",en:"chance",type:"w",stage:1,cat:"things"}, // phReview: true
   {id:1715,thai:"เสมอ",ph:"sà-mĕr",en:"always",type:"w",stage:1,cat:"time"},
   {id:1716,thai:"นาย",ph:"naai",en:"Mr.",type:"w",stage:1,cat:"grammar"}, // phReview: true
   {id:1717,thai:"ชาติ",ph:"châat",en:"nation",type:"w",stage:1,cat:"things"},
   {id:1718,thai:"ทราบ",ph:"sâap",en:"know",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:1719,thai:"โรง",ph:"ro:hng",en:"building; structure",type:"w",stage:3,cat:"places"},
+  {id:1719,thai:"โรง",ph:"rohng",en:"building; structure",type:"w",stage:3,cat:"places"},
   {id:1720,thai:"เชื่อ",ph:"chêua",en:"believe",type:"w",stage:1,cat:"verbs"},
   {id:1721,thai:"ตน",ph:"dtohn",en:"self",type:"w",stage:1,cat:"things"},
   {id:1722,thai:"ระดับ",ph:"rá dàp",en:"level; grade",type:"w",stage:1,cat:"things"},
@@ -203,7 +203,7 @@ export const IMPORTED_CARDS = [
   {id:1788,thai:"ประมาณ",ph:"bprà maan",en:"about (approx.)",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:1789,thai:"ประจำ",ph:"bprà jam",en:"regular",type:"w",stage:2,cat:"adjectives"},
   {id:1790,thai:"เกี่ยวกับ",ph:"gìeow gàp",en:"about",type:"w",stage:1,cat:"things"},
-  {id:1791,thai:"ประโยชน์",ph:"bprà yò:ht",en:"benefit; use",type:"w",stage:2,cat:"adjectives"},
+  {id:1791,thai:"ประโยชน์",ph:"bprà yòht",en:"benefit; use",type:"w",stage:2,cat:"adjectives"},
   {id:1792,thai:"จำเป็น",ph:"jam bpen",en:"necessary",type:"w",stage:2,cat:"adjectives"},
   {id:1793,thai:"เกิน",ph:"geern",en:"exceed; surpass; go beyond",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:1794,thai:"นาง",ph:"naang",en:"Mrs.",type:"w",stage:1,cat:"things"}, // phReview: true
@@ -245,7 +245,7 @@ export const IMPORTED_CARDS = [
   {id:1830,thai:"พา",ph:"phaa",en:"lead; carry",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:1831,thai:"ยอมรับ",ph:"yaawm ráp",en:"accept",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:1832,thai:"พิมพ์",ph:"pim",en:"print",type:"w",stage:1,cat:"verbs"},
-  {id:1833,thai:"โต",ph:"dto:h",en:"large; grow up",type:"w",stage:2,cat:"adjectives"},
+  {id:1833,thai:"โต",ph:"dtoh",en:"large; grow up",type:"w",stage:2,cat:"adjectives"},
   {id:1834,thai:"ลักษณะ",ph:"lák sà nà",en:"characteristic; attribute",type:"w",stage:1,cat:"things"},
   {id:1835,thai:"ตัดสินใจ",ph:"dtàt sǐn jai",en:"decide",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:1836,thai:"ราคา",ph:"raa khaa",en:"price",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -366,7 +366,7 @@ export const IMPORTED_CARDS = [
   {id:1951,thai:"สิ้น",ph:"sîn",en:"end",type:"w",stage:2,cat:"things"},
   {id:1952,thai:"กันเอง",ph:"gan aehng",en:"intimately; among themselves",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:1953,thai:"หมู่",ph:"mùu",en:"group",type:"w",stage:4,cat:"adverbs"}, // phReview: true
-  {id:1954,thai:"โครงการ",ph:"khro:hng gaan",en:"project",type:"w",stage:2,cat:"things"}, // phReview: true
+  {id:1954,thai:"โครงการ",ph:"khrohng gaan",en:"project",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:1955,thai:"บริการ",ph:"baaw rí gaan",en:"service",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:1956,thai:"ป้องกัน",ph:"bpâawng gan",en:"prevent; protect against",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:1957,thai:"เรื่อย",ph:"rêuuay",en:"continuously",type:"w",stage:4,cat:"adverbs"}, // phReview: true
@@ -458,7 +458,7 @@ export const IMPORTED_CARDS = [
   {id:2043,thai:"ขณะ",ph:"khà nà",en:"while",type:"w",stage:1,cat:"grammar"},
   {id:2044,thai:"เตรียม",ph:"dtriiam",en:"to prepare; get ready",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2045,thai:"หัวหน้า",ph:"hǔaa nâa",en:"chief; boss",type:"w",stage:2,cat:"things"}, // phReview: true
-  {id:2046,thai:"ก็ดี",ph:"gâaw dee",en:"be quite good;  not bad",type:"w",stage:2,cat:"things"}, // phReview: true
+  {id:2046,thai:"ก็ดี",ph:"gâaw dee",en:"be quite good; not bad",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2047,thai:"อนาคต",ph:"à naa khóht",en:"future",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2048,thai:"แตกต่าง",ph:"dtàek dtàang",en:"different",type:"w",stage:2,cat:"adjectives"},
   {id:2049,thai:"หมู่บ้าน",ph:"mùu bâan",en:"village",type:"w",stage:3,cat:"places"}, // phReview: true
@@ -491,7 +491,7 @@ export const IMPORTED_CARDS = [
   {id:2076,thai:"ละคร",ph:"lá khaawn",en:"drama",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2077,thai:"กรุง",ph:"groong",en:"capital city; city",type:"w",stage:3,cat:"places"}, // phReview: true
   {id:2078,thai:"สืบ",ph:"sèuup",en:"investigate; track",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:2079,thai:"โรค",ph:"rô:hk",en:"disease",type:"w",stage:6,cat:"health"},
+  {id:2079,thai:"โรค",ph:"rôhk",en:"disease",type:"w",stage:6,cat:"health"},
   {id:2080,thai:"สวน",ph:"sŭan",en:"garden",type:"w",stage:5,cat:"home"},
   {id:2081,thai:"หวัง",ph:"wăng",en:"hope",type:"w",stage:1,cat:"verbs"},
   {id:2082,thai:"ห่าง",ph:"hàang",en:"far",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -510,7 +510,7 @@ export const IMPORTED_CARDS = [
   {id:2095,thai:"คุณภาพ",ph:"khoon ná phâap",en:"quality",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2096,thai:"ยอด",ph:"yôt",en:"top",type:"w",stage:2,cat:"things"},
   {id:2097,thai:"ระ",ph:"rá",en:"strike, hit, scrape",type:"w",stage:1,cat:"verbs"},
-  {id:2098,thai:"โบราณ",ph:"bo:h raan",en:"ancient",type:"w",stage:2,cat:"adjectives"}, // phReview: true
+  {id:2098,thai:"โบราณ",ph:"boh raan",en:"ancient",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2099,thai:"มั่นคง",ph:"mân khohng",en:"stable; firm",type:"w",stage:2,cat:"adjectives"},
   {id:2100,thai:"ล้าน",ph:"láan",en:"million",type:"w",stage:1,cat:"numbers"},
   {id:2101,thai:"เสด็จ",ph:"sà dèt",en:"His Highness (Royal use only)",type:"w",stage:1,cat:"pronouns"},
@@ -579,7 +579,7 @@ export const IMPORTED_CARDS = [
   {id:2164,thai:"กระบวนการ",ph:"grà buaan gaan",en:"process",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2165,thai:"ฝรั่ง",ph:"fà ràng",en:"western person; guava",type:"w",stage:2,cat:"adjectives"},
   {id:2166,thai:"แถว",ph:"tăe",en:"row",type:"w",stage:2,cat:"things"},
-  {id:2167,thai:"โทษ",ph:"thô:ht",en:"blame; punish",type:"w",stage:1,cat:"verbs"},
+  {id:2167,thai:"โทษ",ph:"thôht",en:"blame; punish",type:"w",stage:1,cat:"verbs"},
   {id:2168,thai:"คลื่น",ph:"klêun",en:"wave",type:"w",stage:2,cat:"things"},
   {id:2169,thai:"หนู",ph:"nǔu",en:"rat; mouse; (a pronoun)",type:"w",stage:1,cat:"pronouns"}, // phReview: true
   {id:2170,thai:"ได้ยิน",ph:"dâi yin",en:"hear",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -658,7 +658,7 @@ export const IMPORTED_CARDS = [
   {id:2243,thai:"กาย",ph:"gaai",en:"body",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2244,thai:"แล",ph:"laae",en:"look at; watch; truly",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:2245,thai:"ทั้งสิ้น",ph:"tháng sîn",en:"whole; all; entire",type:"w",stage:4,cat:"adverbs"},
-  {id:2246,thai:"โดน",ph:"do:hn",en:"hit; passive voice marker",type:"w",stage:1,cat:"verbs"},
+  {id:2246,thai:"โดน",ph:"dohn",en:"hit; passive voice marker",type:"w",stage:1,cat:"verbs"},
   {id:2247,thai:"เสริม",ph:"sěerm",en:"supplement; add",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2248,thai:"ดูเหมือน",ph:"duu měuuan",en:"seems",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2249,thai:"ปัญญา",ph:"bpan yaa",en:"wit; wisdom; intelligence",type:"w",stage:2,cat:"things"}, // phReview: true
@@ -687,7 +687,7 @@ export const IMPORTED_CARDS = [
   {id:2272,thai:"ที่ผ่านมา",ph:"têe pàan maa",en:"past",type:"w",stage:3,cat:"directions"},
   {id:2273,thai:"จังหวะ",ph:"jang wà",en:"rhythm; appropriate occasion",type:"w",stage:2,cat:"things"},
   {id:2274,thai:"จำกัด",ph:"jam gàt",en:"ltd.; limit; confine; constrict",type:"w",stage:2,cat:"adjectives"},
-  {id:2275,thai:"เทคโนโลยี",ph:"thâehk no:h lo:h yee",en:"technology",type:"w",stage:2,cat:"things"}, // phReview: true
+  {id:2275,thai:"เทคโนโลยี",ph:"thâehk noh loh yee",en:"technology",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2276,thai:"ท่า",ph:"thâa",en:"position; posture",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2277,thai:"เสื้อ",ph:"sêuua",en:"shirt",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2278,thai:"อาคาร",ph:"aa-kaan",en:"building",type:"w",stage:3,cat:"places"},
@@ -736,7 +736,7 @@ export const IMPORTED_CARDS = [
   {id:2321,thai:"สุขภาพ",ph:"sùk-kà-pâap",en:"health",type:"w",stage:2,cat:"things"},
   {id:2322,thai:"สวรรค์",ph:"sà wǎn",en:"heaven",type:"w",stage:2,cat:"things"},
   {id:2323,thai:"บางที",ph:"baang tee",en:"maybe",type:"w",stage:4,cat:"adverbs"},
-  {id:2324,thai:"โรงงาน",ph:"ro:hng ngaan",en:"factory",type:"w",stage:2,cat:"things"}, // phReview: true
+  {id:2324,thai:"โรงงาน",ph:"rohng ngaan",en:"factory",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2325,thai:"ความต้องการ",ph:"kwaam dtông gaan",en:"need",type:"w",stage:2,cat:"things"},
   {id:2326,thai:"สาขา",ph:"sǎa khǎa",en:"branch (of tree or office)",type:"w",stage:4,cat:"weather"}, // phReview: true
   {id:2327,thai:"ทำเป็น",ph:"tham bpen",en:"know how to do; to feign; to pretend",type:"w",stage:1,cat:"verbs"},
@@ -752,7 +752,7 @@ export const IMPORTED_CARDS = [
   {id:2337,thai:"สับสน",ph:"sàp sǒhn",en:"confused; mixed up",type:"w",stage:2,cat:"adjectives"},
   {id:2338,thai:"คนเรา",ph:"khohn rao",en:"we; us",type:"w",stage:1,cat:"pronouns"}, // phReview: true
   {id:2339,thai:"บทบาท",ph:"bòht bàat",en:"role",type:"w",stage:2,cat:"things"}, // phReview: true
-  {id:2340,thai:"โฆษณา",ph:"khô:ht sà naa",en:"commercial",type:"w",stage:1,cat:"verbs"}, // phReview: true
+  {id:2340,thai:"โฆษณา",ph:"khôht sà naa",en:"commercial",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2341,thai:"หลง",ph:"lǒhng",en:"lost; neglected; mentally weak",type:"w",stage:2,cat:"adjectives"},
   {id:2342,thai:"น้ำมัน",ph:"nám man",en:"oil",type:"w",stage:2,cat:"things"},
   {id:2343,thai:"หัก",ph:"hàk",en:"fracture; subtract",type:"w",stage:1,cat:"verbs"},
@@ -866,7 +866,7 @@ export const IMPORTED_CARDS = [
   {id:2451,thai:"ล้ำ",ph:"lám",en:"break; violate",type:"w",stage:4,cat:"adverbs"},
   {id:2452,thai:"เล็กน้อย",ph:"lék náawy",en:"a little; bit",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2453,thai:"ดินแดน",ph:"din daaen",en:"territory, country, land",type:"w",stage:3,cat:"places"}, // phReview: true
-  {id:2454,thai:"โปรด",ph:"bprò:ht",en:"please",type:"w",stage:2,cat:"adjectives"},
+  {id:2454,thai:"โปรด",ph:"bpròht",en:"please",type:"w",stage:2,cat:"adjectives"},
   {id:2455,thai:"แง่",ph:"ngâae",en:"point of view; corner",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2456,thai:"คำพูด",ph:"kham phûut",en:"words; speech",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2457,thai:"จดหมาย",ph:"jòht mǎai",en:"letter",type:"w",stage:2,cat:"things"}, // phReview: true
@@ -915,7 +915,7 @@ export const IMPORTED_CARDS = [
   {id:2500,thai:"รี",ph:"ree",en:"oval; delay",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2501,thai:"ฝูง",ph:"fǔung",en:"group; crowd",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2502,thai:"รับรอง",ph:"ráp raawng",en:"guarantee; confirm",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:2503,thai:"โค",ph:"kho:h",en:"cow",type:"w",stage:2,cat:"things"},
+  {id:2503,thai:"โค",ph:"khoh",en:"cow",type:"w",stage:2,cat:"things"},
   {id:2504,thai:"ทิศ",ph:"thít",en:"direction of compass",type:"w",stage:2,cat:"things"},
   {id:2505,thai:"ไฟฟ้า",ph:"fai fáa",en:"electric",type:"w",stage:2,cat:"adjectives"},
   {id:2506,thai:"ทน",ph:"thohn",en:"bear; endure",type:"w",stage:1,cat:"verbs"},
@@ -939,7 +939,7 @@ export const IMPORTED_CARDS = [
   {id:2524,thai:"ก่อให้เกิด",ph:"gàaw hâi gèert",en:"cause; produce",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2525,thai:"ขวา",ph:"kwăa",en:"right",type:"w",stage:4,cat:"adverbs"},
   {id:2526,thai:"ครอง",ph:"khraawng",en:"put on; possess",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:2527,thai:"โค้ง",ph:"khó:hng",en:"bow; bend; incline",type:"w",stage:2,cat:"adjectives"},
+  {id:2527,thai:"โค้ง",ph:"khóhng",en:"bow; bend; incline",type:"w",stage:2,cat:"adjectives"},
   {id:2528,thai:"ล้ม",ph:"lóhm",en:"abolish; die; fall down",type:"w",stage:1,cat:"verbs"},
   {id:2529,thai:"กาล",ph:"gaan",en:"time; era; tense (grammar)",type:"w",stage:1,cat:"time"}, // phReview: true
   {id:2530,thai:"สาธารณะ",ph:"sǎa thaa rá ná",en:"public; a public place",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -956,9 +956,9 @@ export const IMPORTED_CARDS = [
   {id:2541,thai:"คาด",ph:"khâat",en:"forecast; expect",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2542,thai:"ยาง",ph:"yaang",en:"rubber",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2543,thai:"ไล่",ph:"lâi",en:"chase",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:2544,thai:"บริโภค",ph:"baaw rí phô:hk",en:"consume",type:"w",stage:1,cat:"verbs"}, // phReview: true
+  {id:2544,thai:"บริโภค",ph:"baaw rí phôhk",en:"consume",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2545,thai:"แถม",ph:"thǎaem",en:"plus, added",type:"w",stage:1,cat:"grammar"}, // phReview: true
-  {id:2546,thai:"ผลประโยชน์",ph:"phǒhn bprà yò:ht",en:"interests; benefits; profit",type:"w",stage:2,cat:"things"},
+  {id:2546,thai:"ผลประโยชน์",ph:"phǒhn bprà yòht",en:"interests; benefits; profit",type:"w",stage:2,cat:"things"},
   {id:2547,thai:"ปรารถนา",ph:"bpràat thà nǎa",en:"to wish for; to desire",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2548,thai:"หลาน",ph:"lăan",en:"grandchild",type:"w",stage:2,cat:"things"},
   {id:2549,thai:"นั่นคือ",ph:"nân kheuu",en:"that is",type:"w",stage:2,cat:"things"}, // phReview: true
@@ -1075,7 +1075,7 @@ export const IMPORTED_CARDS = [
   {id:2660,thai:"อดทน",ph:"òht thohn",en:"endure; bear",type:"w",stage:2,cat:"adjectives"},
   {id:2661,thai:"ศัตรู",ph:"sàt dtruu",en:"enemy",type:"w",stage:2,cat:"things"}, // phReview: true
   {id:2662,thai:"สมัคร",ph:"sà màk",en:"apply; volunteer",type:"w",stage:1,cat:"verbs"},
-  {id:2663,thai:"โจร",ph:"jo:hn",en:"bandit; thief; burglar",type:"w",stage:6,cat:"emergency"},
+  {id:2663,thai:"โจร",ph:"john",en:"bandit; thief; burglar",type:"w",stage:6,cat:"emergency"},
   {id:2664,thai:"ปา",ph:"bpaa",en:"throw; sling; toss",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2665,thai:"เครื่องบิน",ph:"krêuang bin",en:"aeroplane",type:"w",stage:2,cat:"things"},
   {id:2666,thai:"ถ้าหาก",ph:"thâa hàak",en:"if",type:"w",stage:1,cat:"grammar"}, // phReview: true
@@ -1116,7 +1116,7 @@ export const IMPORTED_CARDS = [
   {id:2701,thai:"ตัดสิน",ph:"dtàt sǐn",en:"decide",type:"w",stage:1,cat:"verbs"},
   {id:2702,thai:"ผู้เขียน",ph:"phûu khǐian",en:"author",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:2703,thai:"ที่พัก",ph:"thêe phák",en:"residence; home",type:"w",stage:5,cat:"home"}, // phReview: true
-  {id:2704,thai:"โท",ph:"tho:h",en:"two",type:"w",stage:2,cat:"adjectives"},
+  {id:2704,thai:"โท",ph:"thoh",en:"two",type:"w",stage:2,cat:"adjectives"},
   {id:2705,thai:"กลับบ้าน",ph:"glàp bâan",en:"home",type:"w",stage:4,cat:"adverbs"},
   {id:2706,thai:"ชนบท",ph:"chohn ná bòht",en:"countryside; rural area",type:"w",stage:3,cat:"places"},
   {id:2707,thai:"สนทนา",ph:"sǒhn thá naa",en:"discuss; conversation",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1137,7 +1137,7 @@ export const IMPORTED_CARDS = [
   {id:2722,thai:"ชู",ph:"chuu",en:"lift",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2723,thai:"เลี้ยงดู",ph:"líiang duu",en:"feed; support",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2724,thai:"กระจ่าง",ph:"grà jàang",en:"clear; brighten",type:"w",stage:4,cat:"adverbs"}, // phReview: true
-  {id:2725,thai:"ลงโทษ",ph:"lohng thô:ht",en:"punish",type:"w",stage:1,cat:"verbs"},
+  {id:2725,thai:"ลงโทษ",ph:"lohng thôht",en:"punish",type:"w",stage:1,cat:"verbs"},
   {id:2726,thai:"ซ่อน",ph:"sôn",en:"hide",type:"w",stage:1,cat:"verbs"},
   {id:2727,thai:"เม็ด",ph:"mét",en:"grain",type:"w",stage:4,cat:"things"},
   {id:2728,thai:"พ่อค้า",ph:"phâaw kháa",en:"merchant; trader",type:"w",stage:4,cat:"things"}, // phReview: true
@@ -1235,7 +1235,7 @@ export const IMPORTED_CARDS = [
   {id:2820,thai:"วุ่นวาย",ph:"wôon waai",en:"chaotic; troublesome; bothersome",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2821,thai:"หลังคา",ph:"lăng kaa",en:"roof",type:"w",stage:5,cat:"home"},
   {id:2822,thai:"ปราศจาก",ph:"bpràat sà jàak",en:"be without, be deprived of",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:2823,thai:"โชคดี",ph:"chô:hk dee",en:"good luck",type:"w",stage:2,cat:"adjectives"}, // phReview: true
+  {id:2823,thai:"โชคดี",ph:"chôhk dee",en:"good luck",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2824,thai:"กระจก",ph:"grà jòhk",en:"glass; mirror",type:"w",stage:4,cat:"things"},
   {id:2825,thai:"ยากจน",ph:"yâak jon",en:"poor",type:"w",stage:2,cat:"adjectives"},
   {id:2826,thai:"ศิลปิน",ph:"sĭn-lá-bpin",en:"artist",type:"w",stage:4,cat:"things"},
@@ -1395,7 +1395,7 @@ export const IMPORTED_CARDS = [
   {id:2980,thai:"เจ็บป่วย",ph:"jèp bpùay",en:"be sick; be ill",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:2981,thai:"ใบไม้",ph:"bai máai",en:"leave",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:2982,thai:"ตัก",ph:"dtàk",en:"lap; scoop",type:"w",stage:1,cat:"verbs"},
-  {id:2983,thai:"โมง",ph:"mo:hng",en:"o'clock, hour",type:"w",stage:1,cat:"time"},
+  {id:2983,thai:"โมง",ph:"mohng",en:"o'clock, hour",type:"w",stage:1,cat:"time"},
   {id:2984,thai:"ตัวละคร",ph:"dtuaa lá khaawn",en:"character",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:2985,thai:"ปราบ",ph:"bpràap",en:"subdue; conquer",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2986,thai:"ร่องรอย",ph:"rông roi",en:"trail",type:"w",stage:4,cat:"things"},
@@ -1411,7 +1411,7 @@ export const IMPORTED_CARDS = [
   {id:2996,thai:"ผู้ใช้",ph:"phûu chái",en:"user",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:2997,thai:"ถอย",ph:"thǎawy",en:"retreate; move back",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:2998,thai:"พญา",ph:"phá yaa",en:"king; lord; leader",type:"w",stage:4,cat:"people"}, // phReview: true
-  {id:2999,thai:"ใหญ่โต",ph:"yài dto:h",en:"enourmous; huge",type:"w",stage:2,cat:"adjectives"}, // phReview: true
+  {id:2999,thai:"ใหญ่โต",ph:"yài dtoh",en:"enourmous; huge",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3000,thai:"ธาตุ",ph:"thâat",en:"element; essence; substance",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3001,thai:"เวียน",ph:"wiian",en:"circle; revolve",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3002,thai:"ขบวน",ph:"khà buaan",en:"procession; line; caravan",type:"w",stage:4,cat:"things"}, // phReview: true
@@ -1421,7 +1421,7 @@ export const IMPORTED_CARDS = [
   {id:3006,thai:"เที่ยง",ph:"thîiang",en:"noon; accurate",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3007,thai:"กลม",ph:"glohm",en:"round; circular",type:"w",stage:2,cat:"adjectives"},
   {id:3008,thai:"พระมหากษัตริย์",ph:"phrá má hǎa gà sàt",en:"Monarch",type:"w",stage:4,cat:"things"}, // phReview: true
-  {id:3009,thai:"โครง",ph:"khro:hng",en:"framework; structure",type:"w",stage:4,cat:"things"},
+  {id:3009,thai:"โครง",ph:"khrohng",en:"framework; structure",type:"w",stage:4,cat:"things"},
   {id:3010,thai:"ความจำ",ph:"kwaam jam",en:"memory",type:"w",stage:4,cat:"things"},
   {id:3011,thai:"น้ำใจ",ph:"nám jai",en:"kindness; spirit",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3012,thai:"ชิน",ph:"chin",en:"accustomed to; familiar with",type:"w",stage:2,cat:"adjectives"},
@@ -1582,9 +1582,9 @@ export const IMPORTED_CARDS = [
   {id:3167,thai:"บาดเจ็บ",ph:"bàat jèp",en:"injured, wounded, hurt",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3168,thai:"สภาพแวดล้อม",ph:"sà phâap wâaet láawm",en:"environment; surrounding",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3169,thai:"งง",ph:"ngohng",en:"confused",type:"w",stage:2,cat:"adjectives"},
-  {id:3170,thai:"โชค",ph:"chô:hk",en:"luck",type:"w",stage:4,cat:"things"},
+  {id:3170,thai:"โชค",ph:"chôhk",en:"luck",type:"w",stage:4,cat:"things"},
   {id:3171,thai:"สกุล",ph:"sà goon",en:"clan; family; ancestor",type:"w",stage:4,cat:"people"}, // phReview: true
-  {id:3172,thai:"โศก",ph:"sò:hk",en:"melancholic; sad",type:"w",stage:2,cat:"adjectives"},
+  {id:3172,thai:"โศก",ph:"sòhk",en:"melancholic; sad",type:"w",stage:2,cat:"adjectives"},
   {id:3173,thai:"กลอง",ph:"glaawng",en:"drum",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3174,thai:"กิริยา",ph:"gì rí yaa",en:"manners; behaviour",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:3175,thai:"บาป",ph:"bàap",en:"sin",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -1666,13 +1666,13 @@ export const IMPORTED_CARDS = [
   {id:3251,thai:"พระราชวัง",ph:"phrá râat chá wang",en:"palace",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3252,thai:"ทักทาย",ph:"thák thaai",en:"greet",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3253,thai:"กวาง",ph:"gwaang",en:"deer",type:"w",stage:4,cat:"things"},
-  {id:3254,thai:"ขอโทษ",ph:"khǎaw thô:ht",en:"sorry",type:"w",stage:1,cat:"verbs"}, // phReview: true
+  {id:3254,thai:"ขอโทษ",ph:"khǎaw thôht",en:"sorry",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3255,thai:"มหาสมุทร",ph:"má-hăa sà-mùt",en:"ocean",type:"w",stage:4,cat:"weather"},
   {id:3256,thai:"ผู้ดี",ph:"phûu dee",en:"gentleman; lady",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3257,thai:"สะกด",ph:"sà gòht",en:"spell; hypnotize; follow; suppress",type:"w",stage:2,cat:"adjectives"},
   {id:3258,thai:"สุรา",ph:"sòo raa",en:"spirits; liquor",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3259,thai:"ธง",ph:"tong",en:"flag",type:"w",stage:4,cat:"things"},
-  {id:3260,thai:"โน้น",ph:"nó:hn",en:"that",type:"w",stage:4,cat:"things"},
+  {id:3260,thai:"โน้น",ph:"nóhn",en:"that",type:"w",stage:4,cat:"things"},
   {id:3261,thai:"เสียดาย",ph:"sǐia daai",en:"regret; feel sorry",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3262,thai:"ลือ",ph:"leuu",en:"circulate; broadcast",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3263,thai:"วิตก",ph:"wí dtòhk",en:"serious; tense; strain",type:"w",stage:2,cat:"adjectives"},
@@ -1680,16 +1680,16 @@ export const IMPORTED_CARDS = [
   {id:3265,thai:"กุหลาบ",ph:"gòo làap",en:"rose",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3266,thai:"ผู้ร้าย",ph:"phûu ráai",en:"culprit; criminal",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3267,thai:"สนอง",ph:"sà nǎawng",en:"reply; respond",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:3268,thai:"ตะโกน",ph:"dtà go:hn",en:"shout",type:"w",stage:1,cat:"verbs"},
+  {id:3268,thai:"ตะโกน",ph:"dtà gohn",en:"shout",type:"w",stage:1,cat:"verbs"},
   {id:3269,thai:"ทำท่า",ph:"tham thâa",en:"act; conduct oneself",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3270,thai:"ถูกใจ",ph:"thùuk jai",en:"like; be pleased",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:3271,thai:"โน่น",ph:"nô:hn",en:"that",type:"w",stage:4,cat:"adverbs"},
+  {id:3271,thai:"โน่น",ph:"nôhn",en:"that",type:"w",stage:4,cat:"adverbs"},
   {id:3272,thai:"กลอน",ph:"glaawn",en:"verse; poem; bolt",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3273,thai:"พระจันทร์",ph:"prá jan",en:"moon",type:"w",stage:4,cat:"things"},
   {id:3274,thai:"ภูมิใจ",ph:"phuum jai",en:"proud",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3275,thai:"เวร",ph:"waehn",en:"turn; shift; duty; retribution; fate",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3276,thai:"มั่น",ph:"mân",en:"certain; sure",type:"w",stage:2,cat:"adjectives"},
-  {id:3277,thai:"โง่",ph:"ngô:h",en:"stupid",type:"w",stage:2,cat:"adjectives"},
+  {id:3277,thai:"โง่",ph:"ngôh",en:"stupid",type:"w",stage:2,cat:"adjectives"},
   {id:3278,thai:"สำราญ",ph:"sǎm raan",en:"be happy",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3279,thai:"พระนาง",ph:"phrá naang",en:"princess; Her Majesty",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:3280,thai:"เปล่ง",ph:"bplèng",en:"glow; shine; utter; express",type:"w",stage:2,cat:"adjectives"},
@@ -1732,7 +1732,7 @@ export const IMPORTED_CARDS = [
   {id:3317,thai:"ประณีต",ph:"bprà nêet",en:"finely; neatly; elaborately",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3318,thai:"ควาย",ph:"khwaai",en:"buffalo",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3319,thai:"นาค",ph:"nâak",en:"Naga",type:"w",stage:4,cat:"things"}, // phReview: true
-  {id:3320,thai:"ข้าวโพด",ph:"khâao phô:ht",en:"corn",type:"w",stage:4,cat:"things"}, // phReview: true
+  {id:3320,thai:"ข้าวโพด",ph:"khâao phôht",en:"corn",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3321,thai:"เครื่องประดับ",ph:"khrêuuang bprà dàp",en:"decorations; ornaments",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3322,thai:"กระป๋อง",ph:"grà-bpŏng",en:"can",type:"w",stage:4,cat:"things"},
   {id:3323,thai:"สมมุติ",ph:"sǒhm móot",en:"suppose; assume",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1752,14 +1752,14 @@ export const IMPORTED_CARDS = [
   {id:3337,thai:"ก็แล้วกัน",ph:"gâaw láaeo gan",en:"as you like it",type:"w",stage:4,cat:"emotions"}, // phReview: true
   {id:3338,thai:"เจดีย์",ph:"jaeh dee",en:"pagoda; stupa",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3339,thai:"ใย",ph:"yai",en:"fiber; tread; to be concerned about",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:3340,thai:"โล่ง",ph:"lô:hng",en:"open; clear; empty",type:"w",stage:2,cat:"adjectives"},
+  {id:3340,thai:"โล่ง",ph:"lôhng",en:"open; clear; empty",type:"w",stage:2,cat:"adjectives"},
   {id:3341,thai:"แค้น",ph:"kháaen",en:"be angry; furious",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3342,thai:"ถ้ำ",ph:"thâm",en:"cave",type:"w",stage:4,cat:"things"},
   {id:3343,thai:"พื้นบ้าน",ph:"phéuun bâan",en:"folk; local",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3344,thai:"ขุนนาง",ph:"khǒon naang",en:"nobility",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3345,thai:"รับสั่ง",ph:"ráp sàng",en:"order",type:"w",stage:1,cat:"verbs"},
   {id:3346,thai:"หุ้ม",ph:"hôom",en:"overlay; cover; plate",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:3347,thai:"โผล่",ph:"phlò:h",en:"emerge; appear",type:"w",stage:1,cat:"verbs"},
+  {id:3347,thai:"โผล่",ph:"phlòh",en:"emerge; appear",type:"w",stage:1,cat:"verbs"},
   {id:3348,thai:"ศีล",ph:"sěen",en:"canon; religious precept",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3349,thai:"ประพันธ์",ph:"bprà phan",en:"write; compose; create",type:"w",stage:1,cat:"verbs"},
   {id:3350,thai:"ผ่า",ph:"phàa",en:"chop",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1770,7 +1770,7 @@ export const IMPORTED_CARDS = [
   {id:3355,thai:"สุนัข",ph:"sù-nák",en:"dog",type:"w",stage:4,cat:"things"},
   {id:3356,thai:"ตบ",ph:"dtòhp",en:"slap",type:"w",stage:1,cat:"verbs"},
   {id:3357,thai:"ข้างนอก",ph:"kâang nôk",en:"outside",type:"w",stage:4,cat:"things"},
-  {id:3358,thai:"โต้ตอบ",ph:"dtô:h dtàawp",en:"counter; respond; oppose",type:"w",stage:4,cat:"things"}, // phReview: true
+  {id:3358,thai:"โต้ตอบ",ph:"dtôh dtàawp",en:"counter; respond; oppose",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3359,thai:"แล่น",ph:"lâaen",en:"run; move; glide",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3360,thai:"ค่านิยม",ph:"khâa ní yohm",en:"values",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3361,thai:"ไข",ph:"khǎi",en:"turn; reveal; expose",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1841,7 +1841,7 @@ export const IMPORTED_CARDS = [
   {id:3426,thai:"ธุระ",ph:"thóo rá",en:"business; duty; affair",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:3427,thai:"แบบแผน",ph:"bàaep phǎaen",en:"custom; tradition",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3428,thai:"ผู้ฟัง",ph:"phûu fang",en:"audience; listener",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:3429,thai:"อ่อนโยน",ph:"àawn yo:hn",en:"gentle; tender; soft",type:"w",stage:2,cat:"adjectives"}, // phReview: true
+  {id:3429,thai:"อ่อนโยน",ph:"àawn yohn",en:"gentle; tender; soft",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3430,thai:"ท่อง",ph:"thâawng",en:"recite; memorize; wander around",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3431,thai:"แจ่มใส",ph:"jàem sǎi",en:"cheerfully; happy",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3432,thai:"ประกวด",ph:"bprà gùaat",en:"contest; compete",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1859,7 +1859,7 @@ export const IMPORTED_CARDS = [
   {id:3444,thai:"จำแนก",ph:"jam nâaek",en:"distinguish; classify; segregate",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3445,thai:"ม่าน",ph:"mâan",en:"curtain",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:3446,thai:"บุญคุณ",ph:"boon khoon",en:"favour; kindness",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:3447,thai:"โคลน",ph:"khlo:hn",en:"mud; mire",type:"w",stage:5,cat:"things"},
+  {id:3447,thai:"โคลน",ph:"khlohn",en:"mud; mire",type:"w",stage:5,cat:"things"},
   {id:3448,thai:"นวนิยาย",ph:"ná wá ní yaai",en:"novel; fiction",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:3449,thai:"ดวงอาทิตย์",ph:"duaang aa thít",en:"sun",type:"w",stage:4,cat:"weather"}, // phReview: true
   {id:3450,thai:"สรรเสริญ",ph:"sǎn sěern",en:"praise; admire",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -1923,7 +1923,7 @@ export const IMPORTED_CARDS = [
   {id:3508,thai:"หุง",ph:"hǒong",en:"cook; prepare",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3509,thai:"ริมฝีปาก",ph:"rim fěe bpàak",en:"lip",type:"w",stage:6,cat:"body"}, // phReview: true
   {id:3510,thai:"พระพุทธรูป",ph:"phrá phóo thóht thá rûup",en:"buddha statue",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:3511,thai:"โคน",ph:"kho:hn",en:"base",type:"w",stage:5,cat:"things"},
+  {id:3511,thai:"โคน",ph:"khohn",en:"base",type:"w",stage:5,cat:"things"},
   {id:3512,thai:"บำเพ็ญ",ph:"bam phen",en:"practice; behave",type:"w",stage:1,cat:"verbs"},
   {id:3513,thai:"เล็บ",ph:"lép",en:"nail",type:"w",stage:6,cat:"body"},
   {id:3514,thai:"แสงแดด",ph:"sǎaeng dàaet",en:"sunlight",type:"w",stage:4,cat:"weather"}, // phReview: true
@@ -1938,9 +1938,9 @@ export const IMPORTED_CARDS = [
   {id:3523,thai:"หอบ",ph:"hàawp",en:"carry in arms; gasp",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3524,thai:"ฉวย",ph:"chǔay",en:"snatch",type:"w",stage:1,cat:"grammar"}, // phReview: true
   {id:3525,thai:"เตะ",ph:"dtè",en:"kick",type:"w",stage:1,cat:"verbs"},
-  {id:3526,thai:"โปรดเกล้า",ph:"bprò:ht glâo",en:"be kind enough to",type:"w",stage:4,cat:"adverbs"}, // phReview: true
+  {id:3526,thai:"โปรดเกล้า",ph:"bpròht glâo",en:"be kind enough to",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:3527,thai:"ฟาก",ph:"fâak",en:"shore; bank",type:"w",stage:3,cat:"places"}, // phReview: true
-  {id:3528,thai:"โลหิต",ph:"lo:h hìt",en:"blood",type:"w",stage:6,cat:"body"},
+  {id:3528,thai:"โลหิต",ph:"loh hìt",en:"blood",type:"w",stage:6,cat:"body"},
   {id:3529,thai:"สับ",ph:"sàp",en:"chop; cut",type:"w",stage:2,cat:"adjectives"},
   {id:3530,thai:"หมี",ph:"mĕe",en:"bear",type:"w",stage:5,cat:"things"},
   {id:3531,thai:"ปลื้ม",ph:"bplêuum",en:"pleased; delighted",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -1999,7 +1999,7 @@ export const IMPORTED_CARDS = [
   {id:3584,thai:"ชะงัก",ph:"chá ngák",en:"stop short; stop",type:"w",stage:4,cat:"adverbs"},
   {id:3585,thai:"ทาย",ph:"thaai",en:"guess",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3586,thai:"วิสัย",ph:"wí sǎi",en:"nature; character; limit of one's ability",type:"w",stage:4,cat:"weather"}, // phReview: true
-  {id:3587,thai:"โมโห",ph:"mo:h hǒ:h",en:"angry",type:"w",stage:2,cat:"adjectives"},
+  {id:3587,thai:"โมโห",ph:"moh hǒh",en:"angry",type:"w",stage:2,cat:"adjectives"},
   {id:3588,thai:"รับคำ",ph:"ráp kham",en:"promise; give ones word",type:"w",stage:5,cat:"things"},
   {id:3589,thai:"ขว้าง",ph:"khwâang",en:"pitch; throw",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3590,thai:"ฟาร์ม",ph:"faam",en:"farm",type:"w",stage:3,cat:"directions"},
@@ -2085,7 +2085,7 @@ export const IMPORTED_CARDS = [
   {id:3670,thai:"ลอด",ph:"lâawt",en:"pass through",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3671,thai:"ประถมศึกษา",ph:"bprà thǒhm sèuk sǎa",en:"primary education",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:3672,thai:"จิ๋ว",ph:"jǐu",en:"tiny; midget",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:3673,thai:"โธ่",ph:"thô:h",en:"what a pity",type:"w",stage:5,cat:"things"},
+  {id:3673,thai:"โธ่",ph:"thôh",en:"what a pity",type:"w",stage:5,cat:"things"},
   {id:3674,thai:"ลูบ",ph:"lûup",en:"grope; touch; stroke",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3675,thai:"ร่าเริง",ph:"râa reerng",en:"cheerful; happy",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:3676,thai:"การกระทำ",ph:"gaan grà-tam",en:"act",type:"w",stage:5,cat:"things"},
@@ -2469,7 +2469,7 @@ export const IMPORTED_CARDS = [
   {id:4054,thai:"วรรณยุกต์",ph:"wan ná yóok",en:"tone marks / intonation mark",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4055,thai:"กุมาร",ph:"gòo maan",en:"son / baby",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4056,thai:"บาลี",ph:"baa lee",en:"Pali",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:4057,thai:"โคลง",ph:"khlo:hng",en:"poem / verse",type:"w",stage:2,cat:"adjectives"},
+  {id:4057,thai:"โคลง",ph:"khlohng",en:"poem / verse",type:"w",stage:2,cat:"adjectives"},
   {id:4058,thai:"ทรรศนะ",ph:"thát",en:"viewpoint / point of view",type:"w",stage:5,cat:"things"},
   {id:4059,thai:"สรรพนาม",ph:"sàp phá naam",en:"pronoun",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4060,thai:"สันสกฤต",ph:"sǎn sà grìt",en:"Sanskrit",type:"w",stage:5,cat:"things"},
@@ -2477,17 +2477,17 @@ export const IMPORTED_CARDS = [
   {id:4062,thai:"ครู่หนึ่ง",ph:"khrûu nèung",en:"awhile / a few moments",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4063,thai:"ประสม",ph:"bprà sǒhm",en:"add / amalgamate",type:"w",stage:2,cat:"adjectives"},
   {id:4064,thai:"คุณยาย",ph:"khoon yaai",en:"grandmother / grandmother (maternal – form.)",type:"w",stage:4,cat:"people"}, // phReview: true
-  {id:4065,thai:"โขลง",ph:"khlǒ:hng",en:"herd (of elephant) / herd",type:"w",stage:5,cat:"things"},
+  {id:4065,thai:"โขลง",ph:"khlǒhng",en:"herd (of elephant) / herd",type:"w",stage:5,cat:"things"},
   {id:4066,thai:"แพะ",ph:"pháe",en:"goat",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4067,thai:"เออ",ph:"uuhr",en:"Yes / Yes!",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4068,thai:"รด",ph:"róht",en:"pour / water",type:"w",stage:1,cat:"verbs"},
   {id:4069,thai:"ตัวสะกด",ph:"dtuaa sà gòht",en:"final consonant / final voiced consonant",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4070,thai:"ดูก่อน",ph:"duu gàawn",en:"listen to me / hear me",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4071,thai:"กระไร",ph:"grà rai",en:"how / what",type:"w",stage:4,cat:"adverbs"}, // phReview: true
-  {id:4072,thai:"โต้แย้ง",ph:"dtô:h yáaeng",en:"dispute / contest",type:"w",stage:1,cat:"verbs"}, // phReview: true
+  {id:4072,thai:"โต้แย้ง",ph:"dtôh yáaeng",en:"dispute / contest",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4073,thai:"กระ",ph:"grà",en:"freckle(s) / spot",type:"w",stage:1,cat:"grammar"},
   {id:4074,thai:"ขอบใจ",ph:"khàawp jai",en:"thank / be grateful to",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4075,thai:"โน้มน้าว",ph:"nó:hm náao",en:"induce / prevail upon",type:"w",stage:1,cat:"verbs"}, // phReview: true
+  {id:4075,thai:"โน้มน้าว",ph:"nóhm náao",en:"induce / prevail upon",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4076,thai:"บิดามารดา",ph:"bì daa maan daa",en:"parents",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4077,thai:"ร้อยกรอง",ph:"ráawy graawng",en:"poem / verse",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4078,thai:"ทันใด",ph:"than dai",en:"instant / instantly",type:"w",stage:4,cat:"adverbs"}, // phReview: true
@@ -2499,7 +2499,7 @@ export const IMPORTED_CARDS = [
   {id:4084,thai:"เจ้าคุณ",ph:"jâo khoon",en:"personal pronoun used for both the 2nd and 3rd person, referring to a Phya, or to a Lord Abbot of monastery / Sir",type:"w",stage:1,cat:"pronouns"}, // phReview: true
   {id:4085,thai:"ผึ้ง",ph:"phêung",en:"bee / Apidae",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4086,thai:"ลำธาร",ph:"lam thaan",en:"brook / creek",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:4087,thai:"โอ",ph:"o:h",en:"lacquered bowl / small bowl",type:"w",stage:5,cat:"things"},
+  {id:4087,thai:"โอ",ph:"oh",en:"lacquered bowl / small bowl",type:"w",stage:5,cat:"things"},
   {id:4088,thai:"กิ่งไม้",ph:"gìng máai",en:"bough / limb",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4089,thai:"แหม",ph:"mǎae",en:"oh! / Jeez!",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4090,thai:"อำมาตย์",ph:"am màat",en:"elite bureaucrats / elite",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2513,9 +2513,9 @@ export const IMPORTED_CARDS = [
   {id:4098,thai:"เรียบเรียง",ph:"rîiap riiang",en:"arrange / compile",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4099,thai:"พระราชนิพนธ์",ph:"phrá râat chá ní phohn",en:"writings by the king / royal literary work",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4100,thai:"เนื้อความ",ph:"néuua khwaam",en:"material / contents",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:4101,thai:"โวหาร",ph:"wo:h hǎan",en:"eloquence / diction",type:"w",stage:5,cat:"things"}, // phReview: true
+  {id:4101,thai:"โวหาร",ph:"woh hǎan",en:"eloquence / diction",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4102,thai:"ตะ",ph:"dtà",en:"coat",type:"w",stage:1,cat:"verbs"},
-  {id:4103,thai:"สุโขทัย",ph:"sòo khǒ:h thai",en:"Sukhothai era / Sukhothai",type:"w",stage:5,cat:"things"}, // phReview: true
+  {id:4103,thai:"สุโขทัย",ph:"sòo khǒh thai",en:"Sukhothai era / Sukhothai",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4104,thai:"เนื้อเรื่อง",ph:"néuua rêuuang",en:"outline / plot",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4105,thai:"การงาน",ph:"gaan ngaan",en:"act / business",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4106,thai:"ขอม",ph:"khǎawm",en:"Cambodian / Khmer",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2542,7 +2542,7 @@ export const IMPORTED_CARDS = [
   {id:4127,thai:"สู",ph:"sǔu",en:"sonny / little girl",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4128,thai:"หมาจิ้งจอก",ph:"mǎa jîng jàawk",en:"jackal / fox",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4129,thai:"อุทาน",ph:"òo thaan",en:"interjection / exclamation",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4130,thai:"โอรส",ph:"o:h róht",en:"son",type:"w",stage:2,cat:"adjectives"},
+  {id:4130,thai:"โอรส",ph:"oh róht",en:"son",type:"w",stage:2,cat:"adjectives"},
   {id:4131,thai:"ไฉน",ph:"chà nǎi",en:"oboe / how",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4132,thai:"คุณลุง",ph:"khoon loong",en:"uncle",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4133,thai:"สันธาน",ph:"sǎn thaan",en:"connection / conjunction",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2552,7 +2552,7 @@ export const IMPORTED_CARDS = [
   {id:4137,thai:"ล่วง",ph:"lûaang",en:"go in advance / go beyond",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4138,thai:"สัตย์",ph:"sàt",en:"promise / honour = honor (Am.)",type:"w",stage:5,cat:"things"},
   {id:4139,thai:"สมาส",ph:"sà màat",en:"compound word",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:4140,thai:"โพรง",ph:"phro:hng",en:"hole / hollow",type:"w",stage:5,cat:"things"},
+  {id:4140,thai:"โพรง",ph:"phrohng",en:"hole / hollow",type:"w",stage:5,cat:"things"},
   {id:4141,thai:"พราน",ph:"phraan",en:"hunter",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4142,thai:"พาล",ph:"phaan",en:"hair / hooligan",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4143,thai:"นายพราน",ph:"naai phraan",en:"hunter",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2574,7 +2574,7 @@ export const IMPORTED_CARDS = [
   {id:4159,thai:"เอ๊ะ",ph:"éh",en:"Eh!",type:"w",stage:1,cat:"grammar"},
   {id:4160,thai:"หีบ",ph:"hèep",en:"chest / casket",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4161,thai:"เชื่อฟัง",ph:"chêuua fang",en:"obey / be obedient",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4162,thai:"โจน",ph:"jo:hn",en:"spring / bound",type:"w",stage:1,cat:"verbs"},
+  {id:4162,thai:"โจน",ph:"john",en:"spring / bound",type:"w",stage:1,cat:"verbs"},
   {id:4163,thai:"เรียงความ",ph:"riiang khwaam",en:"composition / essay",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4164,thai:"ย่อหน้า",ph:"yâaw nâa",en:"paragraph / indentation",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4165,thai:"เสื่อ",ph:"sèuua",en:"mat / reed mat",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2589,7 +2589,7 @@ export const IMPORTED_CARDS = [
   {id:4174,thai:"จัดแจง",ph:"jàt jaaeng",en:"prepare / get things ready",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4175,thai:"ดูซิ",ph:"duu sí",en:"Look at that! / Look here!",type:"w",stage:3,cat:"directions"}, // phReview: true
   {id:4176,thai:"มุ่งหมาย",ph:"môong mǎai",en:"aim at / desire",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4177,thai:"ยุโรป",ph:"yóo rò:hp",en:"Europe",type:"w",stage:2,cat:"adjectives"}, // phReview: true
+  {id:4177,thai:"ยุโรป",ph:"yóo ròhp",en:"Europe",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4178,thai:"ฉะนี้",ph:"chà née",en:"as / thence",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4179,thai:"พระเจ้าอยู่หัว",ph:"phrá jâo yùu hǔaa",en:"king / His Majesty the King",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4180,thai:"เคือง",ph:"kheuuang",en:"irritate / be angry",type:"w",stage:2,cat:"adjectives"}, // phReview: true
@@ -2641,7 +2641,7 @@ export const IMPORTED_CARDS = [
   {id:4226,thai:"เชียงใหม่",ph:"chiiang mài",en:"Chiengmai / Chiang Mai",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4227,thai:"จ้า",ph:"jâa",en:"be bright / strong",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4228,thai:"ชมเชย",ph:"chohm cheeuy",en:"honour / laud",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4229,thai:"โห่",ph:"hò:h",en:"onomatopoeia from the sound of a long undulating shout of cheer / acclaim",type:"w",stage:1,cat:"verbs"},
+  {id:4229,thai:"โห่",ph:"hòh",en:"onomatopoeia from the sound of a long undulating shout of cheer / acclaim",type:"w",stage:1,cat:"verbs"},
   {id:4230,thai:"กาด",ph:"gàat",en:"market",type:"w",stage:3,cat:"places"}, // phReview: true
   {id:4231,thai:"ชะลอม",ph:"chá laawm",en:"round bamboo basket / chalom",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4232,thai:"มหาดเล็ก",ph:"má hàat lék",en:"royal page / page",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2650,7 +2650,7 @@ export const IMPORTED_CARDS = [
   {id:4235,thai:"เมื่อกี้",ph:"mêuua gêe",en:"just now / a moment ago",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4236,thai:"ผู้น้อย",ph:"phûu náawy",en:"subordinate / inferior",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4237,thai:"รำพึง",ph:"ram pheung",en:"groan / muse",type:"w",stage:1,cat:"verbs"}, // phReview: true
-  {id:4238,thai:"โทรเลข",ph:"tho:h rá lâehk",en:"telegraph / wire",type:"w",stage:5,cat:"things"}, // phReview: true
+  {id:4238,thai:"โทรเลข",ph:"thoh rá lâehk",en:"telegraph / wire",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4239,thai:"คำนำ",ph:"kham nam",en:"preface / foreword",type:"w",stage:5,cat:"things"},
   {id:4240,thai:"จับใจ",ph:"jàp jai",en:"impress / imprint",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4241,thai:"มุง",ph:"moong",en:"roof / thatch",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -2672,7 +2672,7 @@ export const IMPORTED_CARDS = [
   {id:4257,thai:"เกี่ยวข้าว",ph:"gìaao khâao",en:"harvest / harvest rice",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4258,thai:"เขลา",ph:"khlǎo",en:"fool / stupid",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4259,thai:"เล้า",ph:"láao",en:"sty (pig) / corral (elephant, horse, cattle)",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:4260,thai:"โขน",ph:"khǒ:hn",en:"kind of Thai drama / Thai classic masked drama",type:"w",stage:5,cat:"things"},
+  {id:4260,thai:"โขน",ph:"khǒhn",en:"kind of Thai drama / Thai classic masked drama",type:"w",stage:5,cat:"things"},
   {id:4261,thai:"น้ำผึ้ง",ph:"nám phêung",en:"honey",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4262,thai:"บรรทม",ph:"ban thohm",en:"sleep / slumber",type:"w",stage:1,cat:"verbs"},
   {id:4263,thai:"เงือก",ph:"ngêuuak",en:"a kind of bird / mermaid",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2689,7 +2689,7 @@ export const IMPORTED_CARDS = [
   {id:4274,thai:"มั่งมี",ph:"mâng mee",en:"be rich / wealthy",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4275,thai:"ว่องไว",ph:"wâawng wai",en:"be quick / be agile",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4276,thai:"เอาละ",ph:"ao lá",en:"very well / now then",type:"w",stage:1,cat:"time"}, // phReview: true
-  {id:4277,thai:"โคร่ง",ph:"khrô:hng",en:"oversize / Panthera tigris",type:"w",stage:2,cat:"adjectives"},
+  {id:4277,thai:"โคร่ง",ph:"khrôhng",en:"oversize / Panthera tigris",type:"w",stage:2,cat:"adjectives"},
   {id:4278,thai:"ใต้ถุน",ph:"dtâi thǒon",en:"basement / space under a Thai house",type:"w",stage:5,cat:"home"}, // phReview: true
   {id:4279,thai:"กาลเทศะ",ph:"gaa lá thaeh sà",en:"propriety / occasion",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4280,thai:"อัธยาศัย",ph:"àt thá yaa sǎi",en:"mind / disposition",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2710,7 +2710,7 @@ export const IMPORTED_CARDS = [
   {id:4295,thai:"ครุ",ph:"khróo",en:"bamboo bucket / bamboo pail",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4296,thai:"ดอกบัว",ph:"dàawk buaa",en:"lotus flower / lotus",type:"w",stage:4,cat:"weather"}, // phReview: true
   {id:4297,thai:"บัดนั้น",ph:"bàt nán",en:"at the time / at that time",type:"w",stage:1,cat:"time"},
-  {id:4298,thai:"โอ่ง",ph:"ò:hng",en:"water jar / earthen jar",type:"w",stage:2,cat:"food"},
+  {id:4298,thai:"โอ่ง",ph:"òhng",en:"water jar / earthen jar",type:"w",stage:2,cat:"food"},
   {id:4299,thai:"นิราศ",ph:"ní râat",en:"long lyrical Thai poetry with eight or nine syllables per line / book of travels",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4300,thai:"ฟุ้ง",ph:"fóong",en:"fill the air / fly",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:4301,thai:"เหาะ",ph:"hàw",en:"hover / flit",type:"w",stage:1,cat:"verbs"},
@@ -2756,7 +2756,7 @@ export const IMPORTED_CARDS = [
   {id:4341,thai:"หนูน้อย",ph:"nǔu náawy",en:"child",type:"w",stage:4,cat:"people"}, // phReview: true
   {id:4342,thai:"กระหาย",ph:"grà hǎai",en:"thirst for / eager (for)",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4343,thai:"คำนับ",ph:"kham náp",en:"pay one's respects / make a dee bow",type:"w",stage:1,cat:"verbs"},
-  {id:4344,thai:"ชะโงก",ph:"chá ngô:hk",en:"lean out / poke",type:"w",stage:2,cat:"adjectives"},
+  {id:4344,thai:"ชะโงก",ph:"chá ngôhk",en:"lean out / poke",type:"w",stage:2,cat:"adjectives"},
   {id:4345,thai:"ทรัพย์สมบัติ",ph:"sáp sǒhm bàt",en:"wealth / possessions",type:"w",stage:5,cat:"things"},
   {id:4346,thai:"ปลาช่อน",ph:"bplaa châawn",en:"snakehead / striped snakehead",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4347,thai:"ราชทูต",ph:"râat chá thûut",en:"King's envoy / envoy",type:"w",stage:4,cat:"people"}, // phReview: true
@@ -2765,7 +2765,7 @@ export const IMPORTED_CARDS = [
   {id:4350,thai:"งอกงาม",ph:"ngâawk ngaam",en:"flourish / grow",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4351,thai:"ท้า",ph:"tháa",en:"provoke / challenge",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4352,thai:"ฮะ",ph:"há",en:"huh! / okay",type:"w",stage:1,cat:"grammar"},
-  {id:4353,thai:"กระโจน",ph:"grà jo:hn",en:"spring / bounce",type:"w",stage:1,cat:"verbs"},
+  {id:4353,thai:"กระโจน",ph:"grà john",en:"spring / bounce",type:"w",stage:1,cat:"verbs"},
   {id:4354,thai:"ขวิด",ph:"khwìt",en:"wood apple / elephant apple",type:"w",stage:1,cat:"verbs"},
   {id:4355,thai:"คงคา",ph:"khohng khaa",en:"a kind of ratteen / Ganges River",type:"w",stage:4,cat:"weather"}, // phReview: true
   {id:4356,thai:"ปรารภ",ph:"bpraa róhp",en:"express concern / say",type:"w",stage:1,cat:"verbs"}, // phReview: true
@@ -2782,7 +2782,7 @@ export const IMPORTED_CARDS = [
   {id:4367,thai:"ดวงใจ",ph:"duaang jai",en:"dearest / sweetheart",type:"w",stage:2,cat:"food"}, // phReview: true
   {id:4368,thai:"ยืดยาว",ph:"yêuut yaao",en:"drawn out = drawn-out",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4369,thai:"อุปราช",ph:"òop bpà râat",en:"second king / local king",type:"w",stage:1,cat:"time"}, // phReview: true
-  {id:4370,thai:"โยคี",ph:"yo:h khee",en:"ascetic / hermit",type:"w",stage:5,cat:"things"}, // phReview: true
+  {id:4370,thai:"โยคี",ph:"yoh khee",en:"ascetic / hermit",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4371,thai:"ข้อควร",ph:"khâaw khuaan",en:"points to be considered\", \"things to note\", or \"recommendations\"",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4372,thai:"จัตวา",ph:"jàt dtà waa",en:"four / the fourth tonal accent in Thai",type:"w",stage:2,cat:"adjectives"}, // phReview: true
   {id:4373,thai:"ตัวเมีย",ph:"dtuaa miia",en:"concave / female",type:"w",stage:5,cat:"things"}, // phReview: true
@@ -2797,8 +2797,8 @@ export const IMPORTED_CARDS = [
   {id:4382,thai:"งอก",ph:"ngâawk",en:"bud / grow",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4383,thai:"อินเดียนแดง",ph:"in diian daaeng",en:"Red Indian / American Indian",type:"w",stage:2,cat:"colors"}, // phReview: true
   {id:4384,thai:"เสบียง",ph:"sà biiang",en:".(army) provisions / provisions",type:"w",stage:6,cat:"body"}, // phReview: true
-  {id:4385,thai:"โครงเรื่อง",ph:"khro:hng rêuuang",en:"outline / plot",type:"w",stage:5,cat:"things"}, // phReview: true
-  {id:4386,thai:"โอ้",ph:"ô:h",en:"oh / Oh!",type:"w",stage:4,cat:"adverbs"},
+  {id:4385,thai:"โครงเรื่อง",ph:"khrohng rêuuang",en:"outline / plot",type:"w",stage:5,cat:"things"}, // phReview: true
+  {id:4386,thai:"โอ้",ph:"ôh",en:"oh / Oh!",type:"w",stage:4,cat:"adverbs"},
   {id:4387,thai:"กระจาบ",ph:"grà jàap",en:"weaverbird",type:"w",stage:5,cat:"things"}, // phReview: true
   {id:4388,thai:"คำราม",ph:"kham raam",en:"grumble / bellow",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:4389,thai:"ชมพู่",ph:"chohm phûu",en:"Syzygium / rose apple",type:"w",stage:2,cat:"food"}, // phReview: true
