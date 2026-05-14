@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Home, Layers, BookOpen, Award, Compass, Flame, Settings, Zap } from 'lucide-react';
 
 import { CARDS } from './data/cards.js';
 import { STAGES } from './data/taxonomy.js';
@@ -32,12 +31,16 @@ import {
   downloadAchievements,
 } from './lib/cloudStorage.js';
 
+import AppShell from './components/AppShell.jsx';
+import LearnPath from './components/LearnPath.jsx';
+import ShopScreen from './components/ShopScreen.jsx';
+import QuestsScreen from './components/QuestsScreen.jsx';
+import LeaderboardScreen from './components/LeaderboardScreen.jsx';
 import TodayTab from './components/TodayTab.jsx';
 import CardsTab from './components/CardsTab.jsx';
 import BrowseTab from './components/BrowseTab.jsx';
 import QuizTab from './components/QuizTab.jsx';
 import GuideTab from './components/GuideTab.jsx';
-import NavBtn from './components/NavBtn.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import StageUpToast from './components/StageUpToast.jsx';
 import MissionCompleteToast from './components/MissionCompleteToast.jsx';
@@ -45,14 +48,13 @@ import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.js
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
-import UserMenu from './components/auth/UserMenu.jsx';
 import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 
 export default function TukTalkThaiApp() {
-  const [tab, setTab] = useState('today');
+  const [tab, setTab] = useState('learn');
   const [progress, setProgress] = useState({});
   const [stats, setStats] = useState(DEFAULT_STATS);
   const [loaded, setLoaded] = useState(false);
@@ -770,59 +772,30 @@ export default function TukTalkThaiApp() {
   }
 
   return (
-    <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
-      
-
-      <header className="app-header">
-        <div className="header-inner">
-          <div className="brand">
-            <span className="brand-thai">ตุ๊กตุ๊ก</span>
-            <span className="brand-en">Tuk Talk Thai</span>
-          </div>
-          <div className="header-stats">
-            {dashboardStats.due > 0 && (
-              <div className="due-pill" onClick={() => setTab('cards')}>
-                <Flame size={12} />
-                <span>{dashboardStats.due} due</span>
-              </div>
-            )}
-            {stats.streak > 0 && (
-              <div className="streak-pill" title={`${stats.streakFreezes || 0} freeze${(stats.streakFreezes || 0) === 1 ? '' : 's'} available`}>
-                <span className="streak-icon">🔥</span>
-                <span>{stats.streak}</span>
-              </div>
-            )}
-            <div className="xp-pill" title="Total XP">
-              <Zap size={12} />
-              <span>{stats.totalXp || 0}</span>
-            </div>
-            {hasSupabaseConfig && session && (
-              <UserMenu
-                profile={profile}
-                session={session}
-                onSignOut={handleSignOut}
-                onProfile={() => setShowProfile(true)}
-              />
-            )}
-            {hasSupabaseConfig && !session && (
-              <button className="header-signin-btn" onClick={handleHeaderSignInClick} title="Sign in to save progress">
-                Sign in
-              </button>
-            )}
-            <button className="settings-btn" onClick={() => setShowSettings(true)} title="Settings">
-              <Settings size={16} />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="app-main">
-        {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
-        {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.85} audioAutoPlay={!!stats.audioAutoPlay} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
-        {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.85} />}
-        {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} />}
-        {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
-      </main>
+    <AppShell
+      tab={tab}
+      setTab={setTab}
+      stats={stats}
+      dashboardStats={dashboardStats}
+      session={session}
+      profile={profile}
+      hasSupabaseConfig={hasSupabaseConfig}
+      onOpenProfile={() => setShowProfile(true)}
+      onOpenSettings={() => setShowSettings(true)}
+      onSignOut={handleSignOut}
+      onHeaderSignInClick={handleHeaderSignInClick}
+      themeAttr={stats.theme || 'light'}
+      viewModeAttr={viewMode}
+    >
+      {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={setTab} />}
+      {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
+      {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.85} audioAutoPlay={!!stats.audioAutoPlay} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
+      {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.85} />}
+      {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} />}
+      {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
+      {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={setTab} />}
+      {tab === 'shop'   && <ShopScreen stats={stats} />}
+      {tab === 'leaderboard' && <LeaderboardScreen stats={stats} />}
 
       {achievementToast && (
         <AchievementToast achievement={achievementToast} onClose={handleAchievementToastClose} />
@@ -839,14 +812,6 @@ export default function TukTalkThaiApp() {
       {showSettings && (
         <SettingsModal stats={stats} updateSettings={updateSettings} onClose={() => setShowSettings(false)} resetAll={resetAll} />
       )}
-
-      <nav className="app-nav">
-        <NavBtn active={tab === 'today'}  onClick={() => setTab('today')}  Icon={Home}      label="Today" />
-        <NavBtn active={tab === 'cards'}  onClick={() => setTab('cards')}  Icon={Layers}    label="Cards" badge={dashboardStats.due > 0 ? dashboardStats.due : null} />
-        <NavBtn active={tab === 'browse'} onClick={() => setTab('browse')} Icon={BookOpen}  label="Browse" />
-        <NavBtn active={tab === 'quiz'}   onClick={() => setTab('quiz')}   Icon={Award}     label="Quiz" />
-        <NavBtn active={tab === 'guide'}  onClick={() => setTab('guide')}  Icon={Compass}   label="Guide" />
-      </nav>
-    </div>
+    </AppShell>
   );
 }
