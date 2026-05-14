@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-05-14T09:14:45.877Z",
+    "generatedAt": "2026-05-14T09:23:58.246Z",
     "totalCardsScanned": 4791
   },
   "issues": [
@@ -3235,23 +3235,6 @@
       "phonetics": [
         "náam-taan",
         "náam taan"
-      ],
-      "conflictingEn": true,
-      "conflictingPh": true
-    },
-    {
-      "thai": "รู้สึก",
-      "ids": [
-        1759,
-        5722
-      ],
-      "englishes": [
-        "feel",
-        "to feel"
-      ],
-      "phonetics": [
-        "róo sèuk",
-        "rúu sùek"
       ],
       "conflictingEn": true,
       "conflictingPh": true

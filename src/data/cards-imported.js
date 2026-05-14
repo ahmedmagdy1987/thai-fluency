@@ -171,7 +171,7 @@ export const IMPORTED_CARDS = [
   {id:1756,thai:"ระยะ",ph:"rá yá",en:"phase",type:"w",stage:1,cat:"things"},
   {id:1757,thai:"สู่",ph:"sùu",en:"to",type:"w",stage:4,cat:"adverbs"}, // phReview: true
   {id:1758,thai:"พร้อม",ph:"próm",en:"ready",type:"w",stage:2,cat:"adjectives"},
-  {id:1759,thai:"รู้สึก",ph:"róo sèuk",en:"feel",type:"w",stage:1,cat:"verbs"},
+  {id:1759,thai:"รู้สึก",ph:"rúu sùek",en:"to feel",type:"w",stage:1,cat:"verbs"}, // ph/en normalized to app standard (was róo sèuk / feel) — see docs/duplicate-thai-review.md
   {id:1760,thai:"นี่",ph:"nêe",en:"this",type:"w",stage:1,cat:"grammar"}, // phReview: true
   {id:1761,thai:"หลังจาก",ph:"lăng jàak",en:"after",type:"w",stage:1,cat:"time"},
   {id:1762,thai:"หมด",ph:"mòht",en:"all; empty",type:"w",stage:2,cat:"adjectives"},
