@@ -73,13 +73,11 @@ export default function CharacterCoach({
       data-character={character.id}
       style={{ '--coach-accent': character.accentColor || '#5BAF7C' }}
     >
-      {displayed && (
-        <div key={nonce} className="character-coach-bubble" role="status" aria-live="polite">
-          <span className="character-coach-bubble-text">{displayed}</span>
-          <span className="character-coach-bubble-tail" aria-hidden="true" />
-        </div>
-      )}
-
+      {/* Character first, bubble second. In compact (row) mode the
+          portrait sits on the LEFT and the bubble flows to its right
+          with a left-pointing tail anchoring to the character. In the
+          default (column-reverse) mode the bubble still floats above
+          the portrait — DOM order is independent of visual stacking. */}
       <Tag
         type={interactive ? 'button' : undefined}
         className="character-coach-portrait"
@@ -98,6 +96,13 @@ export default function CharacterCoach({
         />
         <span className="character-coach-ground" aria-hidden="true" />
       </Tag>
+
+      {displayed && (
+        <div key={nonce} className="character-coach-bubble" role="status" aria-live="polite">
+          <span className="character-coach-bubble-text">{displayed}</span>
+          <span className="character-coach-bubble-tail" aria-hidden="true" />
+        </div>
+      )}
     </div>
   );
 }

@@ -169,18 +169,8 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         </div>
       </div>
 
-      <div className="cards-coach-rail">
-        <CharacterCoach
-          characterId={coachId}
-          state={coach.state}
-          message={coach.message}
-          isSpeaking={isSpeaking}
-          compact
-        />
-      </div>
-
       <div className="srs-card-wrap">
-        <div className={`srs-card srs-card-mode-${viewMode || 'speak'} ${revealed ? 'srs-card-revealed' : ''}`} onClick={handleReveal}>
+        <div className={`srs-card srs-card-mode-${viewMode || 'speak'} srs-card-with-coach ${revealed ? 'srs-card-revealed' : ''}`} onClick={handleReveal}>
           <div className="srs-card-meta">
             {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
             <div className="srs-card-meta-right">
@@ -197,6 +187,19 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
                 </button>
               )}
             </div>
+          </div>
+
+          {/* Tutor coach embedded at the top of the lesson card. Character
+              on the left (faces right), bubble immediately to its right
+              with a left-pointing tail anchoring back to the character. */}
+          <div className="srs-card-coach">
+            <CharacterCoach
+              characterId={coachId}
+              state={coach.state}
+              message={coach.message}
+              isSpeaking={isSpeaking}
+              compact
+            />
           </div>
 
           {/* Render order depends on view mode. Empty ph (cards flagged phNeedsGen)

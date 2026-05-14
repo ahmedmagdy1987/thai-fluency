@@ -51,9 +51,9 @@ img, svg, video { max-width: 100%; }
 .app-root[data-view-mode="speak"] .quiz-dir-thai,
 .app-root[data-view-mode="speak"] .quiz-opt-thai,
 .app-root[data-view-mode="speak"] .ref-card-thai { display: none; }
-.srs-card-thai-primary { font-size: 56px; line-height: 1.1; margin: 16px 0 8px; color: var(--jade); }
-.srs-card-ph-primary { font-family: 'JetBrains Mono', monospace; font-size: 38px; font-weight: 700; color: var(--jade); text-align: center; margin: 16px 0 4px; letter-spacing: 0.01em; line-height: 1.1; }
-.srs-card-thai-secondary { font-size: 22px !important; font-weight: 500 !important; color: var(--ink-soft) !important; margin: 4px 0 16px !important; opacity: 0.7; }
+.srs-card-thai-primary { font-size: 56px; line-height: 1.1; margin: 8px 0; color: var(--jade); }
+.srs-card-ph-primary { font-family: 'JetBrains Mono', monospace; font-size: 38px; font-weight: 700; color: var(--jade); text-align: center; margin: 8px 0 4px; letter-spacing: 0.01em; line-height: 1.1; }
+.srs-card-thai-secondary { font-size: 22px !important; font-weight: 500 !important; color: var(--ink-soft) !important; margin: 4px 0 12px !important; opacity: 0.7; }
 @media (min-width: 640px) { .srs-card-thai-primary { font-size: 72px; }
 .srs-card-ph-primary { font-size: 52px; }
 }
@@ -283,15 +283,15 @@ img, svg, video { max-width: 100%; }
 .queue-remaining { color: var(--gold); font-weight: 600; }
 .cards-progress-bar { height: 4px; background: rgba(15,61,46,0.08); border-radius: 999px; overflow: hidden; }
 .cards-progress-fill { height: 100%; background: linear-gradient(90deg, var(--jade), var(--gold)); border-radius: 999px; transition: width 0.4s ease; }
-.srs-card-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 16px 0 24px; }
-.srs-card { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 20px; padding: 32px 24px; cursor: pointer; transition: all 0.25s; position: relative; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(15, 61, 46, 0.04); }@media (hover: hover) and (pointer: fine) {
+.srs-card-wrap { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 0 0 20px; }
+.srs-card { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 20px; padding: 18px 22px 24px; cursor: pointer; transition: all 0.25s; position: relative; min-height: 320px; display: flex; flex-direction: column; justify-content: flex-start; box-shadow: 0 1px 3px rgba(15, 61, 46, 0.04); }@media (hover: hover) and (pointer: fine) {
 .srs-card:hover { border-color: var(--gold); }}
 .srs-card-revealed { cursor: default; border-color: var(--gold); background: white; box-shadow: 0 8px 28px rgba(15, 61, 46, 0.08); }
-.srs-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.srs-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
 .srs-card-cat { font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
 .srs-card-new-badge { background: var(--gold); color: var(--jade); padding: 3px 10px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
 .srs-card-interval { color: var(--stone); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
-.srs-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 56px; font-weight: 600; color: var(--jade); text-align: center; line-height: 1.1; margin: 16px 0 8px; word-break: break-word; }
+.srs-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 56px; font-weight: 600; color: var(--jade); text-align: center; line-height: 1.1; margin: 8px 0; word-break: break-word; }
 .srs-card-ph-front { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--brick); text-align: center; margin-bottom: 16px; letter-spacing: 0.01em; }
 .srs-card-prompt { text-align: center; margin-top: auto; }
 .srs-card-prompt-text { font-size: 13px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; margin-bottom: 4px; }
@@ -301,7 +301,7 @@ img, svg, video { max-width: 100%; }
 .srs-card-ph { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; color: var(--brick); margin-bottom: 8px; }
 .srs-card-en { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 16px; }
 .srs-card-note { font-size: 13px; color: var(--ink-soft); font-style: italic; background: rgba(201, 169, 97, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid var(--gold); text-align: left; margin-top: 12px; line-height: 1.5; }
-@media (min-width: 640px) { .srs-card { padding: 48px 32px; min-height: 380px; }
+@media (min-width: 640px) { .srs-card { padding: 24px 32px 36px; min-height: 360px; }
 .srs-card-thai { font-size: 72px; }
 .srs-card-ph-front { font-size: 24px; }
 }
@@ -1260,14 +1260,33 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
    CHARACTER COACH — production assets, reduced-motion safe
    ============================================================ */
 
-/* The .cards-coach-rail wraps the coach strip above the SRS card.
-   Sized purely by content (no min-height) so the rail collapses to
-   just the portrait's height. Width fills the parent so the strip
-   aligns to the lesson card's left edge — the coach reads as a tutor
-   speaking next to the card, not a centered banner above it. */
-.cards-coach-rail { display: flex; justify-content: flex-start; align-items: center; margin: 0 auto 6px; padding: 0; width: 100%; }
+/* The coach lives INSIDE the lesson card as its own row, sitting
+   between the card's metadata (category / interval / speaker) and
+   the main Thai content. The row is a "tutor shelf" — character on
+   the left, speech bubble to its right. A subtle dashed underline
+   visually anchors it as part of the lesson surface rather than a
+   floating element. */
+.srs-card-coach {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 14px;
+  padding: 0 0 14px;
+  width: 100%;
+  border-bottom: 1px dashed var(--line);
+}
+.srs-card-with-coach { padding-top: 14px; }
+@media (min-width: 720px) {
+  .srs-card-coach { margin: 0 0 18px; padding: 0 0 18px; }
+  .srs-card-with-coach { padding-top: 18px; }
+}
 
-.character-coach { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; isolation: isolate; }
+/* DOM order is portrait → bubble (so compact/row mode reads correctly:
+   character on the left, bubble on the right). In the default vertical
+   layout we use column-reverse so the bubble still appears ABOVE the
+   portrait with its downward tail — visual stacking is independent of
+   the DOM order required for the row variant. */
+.character-coach { position: relative; display: flex; flex-direction: column-reverse; align-items: center; gap: 8px; width: 100%; isolation: isolate; }
 
 /* Speech bubble — default layout: above the portrait with a downward tail. */
 .character-coach-bubble { position: relative; max-width: min(360px, calc(100% - 32px)); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 16px; padding: 9px 14px; font-size: 13px; font-weight: 500; line-height: 1.35; color: var(--ink); box-shadow: 0 6px 18px rgba(15, 61, 46, 0.10); transform-origin: 50% 100%; animation: coach-bubble-in 320ms cubic-bezier(.21, .84, .39, 1.01); }
@@ -1289,43 +1308,97 @@ button.character-coach-portrait { cursor: pointer; }
   .character-coach-portrait { width: 140px; height: 140px; }
 }
 
-/* ---------------- Compact (CardsTab review-mode) variant ----------------
-   Horizontal strip: portrait left, speech bubble right with a tail that
-   points back at the portrait. Sizes lean larger than the original
-   compact variant so the character reads as an intentional tutor —
-   88 px mobile / 132 px desktop. The strip's height is purely the
-   portrait's height; the rail above carries no padding of its own. */
-.character-coach-compact { flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; max-width: 100%; }
-.character-coach-compact .character-coach-portrait { width: 88px; height: 88px; }
-@media (min-width: 720px) {
-  .character-coach-compact .character-coach-portrait { width: 132px; height: 132px; }
+/* ---------------- Compact (embedded in lesson card) variant -------------
+   Horizontal "tutor sitting inside the lesson card" layout. DOM order
+   is portrait → bubble, so flex-direction: row places the character on
+   the LEFT and the bubble immediately to its right. The bubble tail is
+   on the left side of the bubble and points back at the character's
+   trunk — the eye reads "the elephant is talking to me."
+
+   Sizes (per redesign spec):
+     Mobile  < 720 px : 108 px portrait, bubble max ~210 px
+     Desktop ≥ 720 px : 176 px portrait, bubble max 260 px              */
+.character-coach-compact {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+  max-width: 100%;
 }
+.character-coach-compact .character-coach-portrait { width: 108px; height: 108px; }
+@media (min-width: 720px) {
+  .character-coach-compact { gap: 22px; }
+  .character-coach-compact .character-coach-portrait { width: 176px; height: 176px; }
+}
+
+/* Speech bubble — sits to the right of the elephant, white card surface
+   with a soft shadow so it lifts off the cream lesson background. The
+   left-pointing tail is the visual anchor connecting the two. */
 .character-coach-compact .character-coach-bubble {
-  /* sit beside the portrait. The left tail anchors the bubble back
-     to the character so the eye reads "the elephant is speaking." */
-  max-width: min(380px, calc(100% - 110px));
-  margin-left: 4px;
+  max-width: min(210px, calc(100% - 128px));
+  margin-left: 6px;
   transform-origin: 0% 50%;
   animation: coach-bubble-in-h 320ms cubic-bezier(.21, .84, .39, 1.01);
+  background: var(--card-bg);
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  padding: 11px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 6px 18px rgba(15, 61, 46, 0.09);
 }
+@media (min-width: 720px) {
+  .character-coach-compact .character-coach-bubble {
+    max-width: min(260px, calc(100% - 210px));
+    font-size: 14px;
+    padding: 13px 18px;
+    border-radius: 18px;
+  }
+}
+
 /* Left-pointing tail. After rotate(45deg) of a 12×12 box, the visible
-   strokes need to be on the lower-left and upper-left diamond edges —
-   that maps to the original square's `border-bottom` and `border-left`,
-   NOT `border-top + border-left` (which produces an up-pointing tip). */
+   strokes are the lower-left and upper-left diamond edges — that maps
+   to the original square's border-bottom + border-left. */
 .character-coach-compact .character-coach-bubble-tail {
   bottom: auto;
-  left: -6px;
+  left: -7px;
   top: 50%;
+  width: 12px;
+  height: 12px;
   transform: translateY(-50%) rotate(45deg);
   border-right: none;
   border-top: none;
   border-left: 1px solid var(--line-strong);
   border-bottom: 1px solid var(--line-strong);
+  background: var(--card-bg);
 }
 @keyframes coach-bubble-in-h {
   0%   { opacity: 0; transform: translateX(-6px) scale(0.96); }
   60%  { opacity: 1; transform: translateX(0)    scale(1.02); }
   100% { opacity: 1; transform: translateX(0)    scale(1); }
+}
+
+/* Narrow-mobile fallback: only when the portrait + a usable bubble
+   width can't fit on a single row. Below ~360 px effective width we
+   stack the bubble UNDER the character (DOM order remains portrait
+   first → bubble second), with the tail flipped to point UP toward
+   the portrait. Character stays compact-but-intentional (96 px). */
+@media (max-width: 360px) {
+  .character-coach-compact { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .character-coach-compact .character-coach-portrait { width: 96px; height: 96px; }
+  .character-coach-compact .character-coach-bubble {
+    max-width: 100%;
+    margin-left: 0;
+    transform-origin: 18% 0%;
+  }
+  .character-coach-compact .character-coach-bubble-tail {
+    bottom: auto; left: 28px; top: -7px;
+    transform: rotate(45deg);
+    border-bottom: none; border-right: none;
+    border-top: 1px solid var(--line-strong);
+    border-left: 1px solid var(--line-strong);
+  }
 }
 .character-coach-halo { position: absolute; inset: 6px; border-radius: 50%; background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--coach-accent, var(--gold)) 28%, transparent) 0%, transparent 65%); z-index: 0; pointer-events: none; }
 .character-coach-img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(15, 61, 46, 0.18)); transform-origin: 50% 92%; will-change: transform; }
