@@ -1,13 +1,18 @@
-// Stage → character mapping. Frontend-only config. The owner is preparing
-// original Tuk Talk Thai character art separately; until those assets land
-// we render a polished emoji placeholder with a per-character accent color.
-// Each entry is keyed by stage id (1-8) so it composes cleanly with
-// taxonomy.js without touching that file.
+// Stage → character mapping. Frontend-only config. The owner has shipped
+// real art for `elephant` and `muay-thai` (see /public/characters/). The
+// remaining characters (monkey, gecko, buffalo, hippo) still ship with
+// emoji placeholders for the LearnPath stage list. The lesson Coach
+// only renders real art — when a stage points at a character without
+// real art, the coach falls back to the default (elephant) via
+// resolveCoachIdForStage() below.
 //
 // To swap a stage's character later, edit only this file:
-//   - placeholderEmoji  →  art `${id}.png` from /public/characters/ (future)
+//   - placeholderEmoji  →  emoji shown in the LearnPath badge
 //   - accent            →  per-character brand accent
-//   - vibe              →  one-line tone used in the Learn path subtitle
+//   - vibe              →  one-line tone used in the LearnPath subtitle
+//   - hasArt            →  true once real art lives at /public/characters/<id>/
+
+import { hasRealArt, DEFAULT_CHARACTER_ID } from './characters.js';
 
 export const CHARACTERS = {
   elephant: {
@@ -16,6 +21,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🐘',
     accent: '#5BAF7C',
     vibe: 'patient, steady, never forgets a word',
+    hasArt: true,
   },
   gecko: {
     id: 'gecko',
@@ -23,6 +29,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🦎',
     accent: '#7B5BA3',
     vibe: 'curious, quick, hears every tone',
+    hasArt: false,
   },
   monkey: {
     id: 'monkey',
@@ -30,6 +37,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🐒',
     accent: '#E0823B',
     vibe: 'playful — perfect for daily life lessons',
+    hasArt: false,
   },
   muayThai: {
     id: 'muay-thai',
@@ -37,6 +45,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🥊',
     accent: '#A03B2C',
     vibe: 'disciplined — pushes you to mastery',
+    hasArt: true,
   },
   buffalo: {
     id: 'buffalo',
@@ -44,6 +53,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🐃',
     accent: '#6B4F2E',
     vibe: 'strong, dependable — your fluency anchor',
+    hasArt: false,
   },
   hippo: {
     id: 'hippo',
@@ -51,6 +61,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🦛',
     accent: '#2563A8',
     vibe: 'cool under pressure — natural Thai flow',
+    hasArt: false,
   },
 };
 
@@ -66,9 +77,9 @@ export const STAGE_CHARACTER_MAP = {
   8: 'muayThai',   // Thai Mastery → Khun Suk
 };
 
-// Safe lookup. Returns a neutral fallback if the stage isn't mapped or the
-// character id is unknown — so the UI never crashes when art assets are
-// missing or the map is mid-edit.
+// Safe lookup for the LearnPath badge. Returns a neutral fallback if the
+// stage isn't mapped or the character id is unknown — so the UI never
+// crashes when art assets are missing or the map is mid-edit.
 export function getStageCharacter(stageId) {
   const charId = STAGE_CHARACTER_MAP[stageId];
   const char = charId ? CHARACTERS[charId] : null;
@@ -79,5 +90,17 @@ export function getStageCharacter(stageId) {
     placeholderEmoji: '✨',
     accent: '#C9A961',
     vibe: 'your guide on the path',
+    hasArt: false,
   };
+}
+
+// Resolves the character id used for the lesson Coach for a given stage.
+// Differs from getStageCharacter: the coach can only use characters with
+// real art committed. If the stage points at a no-art character (monkey,
+// gecko, buffalo, hippo, or any unknown id), we fall back to the default
+// art character (elephant). Returns the string id, not the manifest.
+export function resolveCoachIdForStage(stageId) {
+  const entry = stageId ? CHARACTERS[STAGE_CHARACTER_MAP[stageId]] : null;
+  if (entry && entry.hasArt && hasRealArt(entry.id)) return entry.id;
+  return DEFAULT_CHARACTER_ID;
 }

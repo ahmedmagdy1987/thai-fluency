@@ -1,19 +1,29 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Volume2, RotateCcw, Check, ChevronRight } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { WORD_LOOKUP } from '../data/lookup.js';
 import { CATEGORIES } from '../data/taxonomy.js';
 import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
-import { playEasy } from '../lib/sounds.js';
+import {
+  playEasy,
+  playCharacterSelect,
+  playCharacterCorrect,
+  playCharacterWrong,
+} from '../lib/sounds.js';
 import { reviewCard, getDueCards, getNewCards, getStats, intervalLabel, DAY_MS } from '../lib/srs.js';
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
+import { resolveCoachIdForStage } from '../data/stageCharacters.js';
+import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import RateBtn from './RateBtn.jsx';
+import CharacterCoach from './CharacterCoach.jsx';
 
 export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, undoLastReview, lastReviewSnapshot }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const speakingTimerRef = useRef(null);
 
   const queue = useMemo(() => {
     const now = Date.now();
@@ -32,17 +42,66 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);
 
+  // Coach: derived from the current card's stage so the right tutor
+  // shows up as the user moves between stages. Stages without real art
+  // resolve to the default character (elephant).
+  const coachId = useMemo(
+    () => resolveCoachIdForStage(rawCard && rawCard.stage),
+    [rawCard && rawCard.stage]
+  );
+  const coach = useCharacterReaction({ characterId: coachId, initialState: 'idle' });
+
+  // Sync resting state with the lesson phase: while waiting for reveal the
+  // coach is "idle", once the answer is on screen we shift to "thinking"
+  // (gentle attentive pose).
+  useEffect(() => {
+    coach.setRestingState(revealed ? 'thinking' : 'idle');
+  }, [revealed]);
+
   useEffect(() => {
     if (audioAutoPlay && card && card.thai) {
-      const t = setTimeout(() => speakThai(card.thai, audioRate), 350);
+      const t = setTimeout(() => triggerSpeak(card.thai), 350);
       return () => clearTimeout(t);
     }
   }, [card && card.id, audioAutoPlay, audioRate]);
 
+  // Clean up the speaking timer on unmount so we don't leak state.
+  useEffect(() => () => {
+    if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
+  }, []);
+
+  // Speaks the Thai phrase AND drives the coach's speaking pulse. The
+  // pulse is time-boxed (we can't reliably hook into speechSynthesis
+  // end events on every browser) — 1.6s comfortably covers a phrase.
+  const triggerSpeak = (text) => {
+    if (!text) return;
+    try { speakThai(text, audioRate); } catch (_) { /* ignore */ }
+    setIsSpeaking(true);
+    coach.react('speaking', { duration: 1800 });
+    if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
+    speakingTimerRef.current = setTimeout(() => setIsSpeaking(false), 1800);
+  };
+
+  const handleReveal = () => {
+    if (revealed) return;
+    setRevealed(true);
+    // Short "let me check" reaction with a soft select blip.
+    coach.react('choiceSelected', { duration: 700 });
+    playCharacterSelect(coachId);
+  };
+
   const handleRate = (rating) => {
     if (!rawCard) return;
-    if (rating >= 3) setSessionCorrect(c => c + 1);
-    if (rating === 4) playEasy(); // short positive blip on Easy
+    const correct = rating >= 3;
+    if (correct) setSessionCorrect(c => c + 1);
+    if (rating === 4) playEasy(); // existing Easy blip — preserved
+    if (correct) {
+      coach.react('correct', { duration: 1500 });
+      playCharacterCorrect(coachId);
+    } else {
+      coach.react('wrong', { duration: 1700 });
+      playCharacterWrong(coachId);
+    }
     setSessionDone(d => d + 1);
     setRevealed(false);
     reviewOne(rawCard.id, rating);
@@ -52,6 +111,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     if (!rawCard || !markCardKnown) return;
     setSessionDone(d => d + 1);
     setRevealed(false);
+    coach.react('greeting', { duration: 1200, message: 'Knew it already? Onward.' });
     markCardKnown(rawCard.id);
   };
 
@@ -61,6 +121,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setSessionDone(d => Math.max(0, d - 1));
     if (lastReviewSnapshot.rating >= 3) setSessionCorrect(c => Math.max(0, c - 1));
     setRevealed(true); // show the card revealed since they're correcting it
+    coach.react('thinking', { duration: 1000, message: 'Take another look.' });
   };
 
   if (!card) {
@@ -105,8 +166,18 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         </div>
       </div>
 
+      <div className="cards-coach-rail">
+        <CharacterCoach
+          characterId={coachId}
+          state={coach.state}
+          message={coach.message}
+          isSpeaking={isSpeaking}
+          compact
+        />
+      </div>
+
       <div className="srs-card-wrap">
-        <div className={`srs-card srs-card-mode-${viewMode || 'speak'} ${revealed ? 'srs-card-revealed' : ''}`} onClick={() => !revealed && setRevealed(true)}>
+        <div className={`srs-card srs-card-mode-${viewMode || 'speak'} ${revealed ? 'srs-card-revealed' : ''}`} onClick={handleReveal}>
           <div className="srs-card-meta">
             {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
             <div className="srs-card-meta-right">
@@ -115,7 +186,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
               {ttsAvailable() && card.thai && (
                 <button
                   className="speaker-btn speaker-btn-card"
-                  onClick={(e) => { e.stopPropagation(); speakThai(card.thai, audioRate); }}
+                  onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
                   title="Hear pronunciation"
                   aria-label="Play pronunciation"
                 >
@@ -201,7 +272,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
       {!revealed && (
         <div className="rate-row rate-row-hidden">
-          <button className="reveal-btn" onClick={() => setRevealed(true)}>Show answer</button>
+          <button className="reveal-btn" onClick={handleReveal}>Show answer</button>
         </div>
       )}
     </div>

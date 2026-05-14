@@ -90,3 +90,68 @@ export function playCelebration() {
     tone(ctx, 523.25, 0.30, 0.36, 0.10, 'sine');
   } catch (_) { /* ignore */ }
 }
+
+// ====================================================================
+// Character reaction sounds
+//
+// Each character has a sound profile (see data/characters.js) describing
+// the notes, durations, oscillator type, and peak gain for four
+// reactions: select / correct / wrong / celebrate. These helpers look
+// up the profile by character id and schedule the notes sequentially.
+//
+// All four helpers are autoplay-safe (lazy AudioContext, ensureRunning),
+// wrapped in try/catch, and silent no-ops if Web Audio is unavailable.
+// They never interfere with the Thai pronunciation TTS, which uses a
+// separate browser API (speechSynthesis).
+// ====================================================================
+
+import { resolveCharacter } from '../data/characters.js';
+
+function getProfile(characterId, slot) {
+  try {
+    const char = resolveCharacter(characterId);
+    const profile = char && char.soundProfile && char.soundProfile[slot];
+    if (!profile || !Array.isArray(profile.notes) || profile.notes.length === 0) return null;
+    return profile;
+  } catch (_) {
+    return null;
+  }
+}
+
+function playProfile(profile, gainScale = 1) {
+  const ctx = getCtx();
+  if (!ctx || !profile) return;
+  try {
+    ensureRunning(ctx);
+    let t = 0;
+    const type = profile.type || 'sine';
+    const peak = (profile.peak || 0.16) * gainScale;
+    profile.notes.forEach((freq, i) => {
+      const dur = (profile.dur && profile.dur[i]) || 0.12;
+      tone(ctx, freq, t, dur, peak, type);
+      t += Math.max(0.04, dur - 0.04);
+    });
+  } catch (_) { /* ignore */ }
+}
+
+export function playCharacterSelect(characterId) {
+  const profile = getProfile(characterId, 'select');
+  // Lower gain — this fires on every reveal, shouldn't be intrusive.
+  playProfile(profile, 0.85);
+}
+
+export function playCharacterCorrect(characterId) {
+  const profile = getProfile(characterId, 'correct');
+  playProfile(profile, 1.0);
+}
+
+export function playCharacterWrong(characterId) {
+  const profile = getProfile(characterId, 'wrong');
+  // Wrong should feel supportive, not punishing — keep gain modest.
+  playProfile(profile, 0.85);
+}
+
+export function playCharacterCelebrate(characterId) {
+  const profile = getProfile(characterId, 'celebrate');
+  playProfile(profile, 1.0);
+}
