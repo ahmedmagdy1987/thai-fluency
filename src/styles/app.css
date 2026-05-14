@@ -964,7 +964,6 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 .app-shell-header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
 .app-shell-header-inner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; max-width: 1180px; margin: 0 auto; }
 .app-shell-header-brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; flex-shrink: 0; }
-.app-shell-header-account { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
 @media (min-width: 1024px) {
   /* Sidebar shows brand; hide the header brand to avoid duplication. */
   .app-shell-header-brand { display: none; }

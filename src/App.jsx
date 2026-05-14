@@ -778,12 +778,8 @@ export default function TukTalkThaiApp() {
       stats={stats}
       dashboardStats={dashboardStats}
       session={session}
-      profile={profile}
-      hasSupabaseConfig={hasSupabaseConfig}
       onOpenProfile={() => setShowProfile(true)}
       onOpenSettings={() => setShowSettings(true)}
-      onSignOut={handleSignOut}
-      onHeaderSignInClick={handleHeaderSignInClick}
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
     >

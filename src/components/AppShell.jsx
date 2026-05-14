@@ -1,14 +1,12 @@
 import React from 'react';
-import { Settings as SettingsIcon } from 'lucide-react';
 
 import SidebarNav from './SidebarNav.jsx';
 import MobileNav from './MobileNav.jsx';
 import TopStatsBar from './TopStatsBar.jsx';
-import UserMenu from './auth/UserMenu.jsx';
 
 // Wraps the main app surface with: sidebar on desktop, bottom nav on mobile,
-// a top stats bar, and the existing user/settings/sign-in controls. Keeps
-// App.jsx's concerns to state + routing — the shell only handles chrome.
+// and a header dedicated to progress stats. Profile + Settings live in the
+// sidebar/mobile nav — the header stays focused on streak/gems/hearts/XP.
 export default function AppShell({
   children,
   tab,
@@ -16,12 +14,8 @@ export default function AppShell({
   stats,
   dashboardStats,
   session,
-  profile,
-  hasSupabaseConfig,
   onOpenProfile,
   onOpenSettings,
-  onSignOut,
-  onHeaderSignInClick,
   themeAttr,
   viewModeAttr,
 }) {
@@ -50,34 +44,6 @@ export default function AppShell({
               dashboardStats={dashboardStats}
               onOpenShop={() => setTab('shop')}
             />
-            <div className="app-shell-header-account">
-              {hasSupabaseConfig && session && (
-                <UserMenu
-                  profile={profile}
-                  session={session}
-                  onSignOut={onSignOut}
-                  onProfile={onOpenProfile}
-                />
-              )}
-              {hasSupabaseConfig && !session && (
-                <button
-                  type="button"
-                  className="header-signin-btn"
-                  onClick={onHeaderSignInClick}
-                  title="Sign in to save progress"
-                >
-                  Sign in
-                </button>
-              )}
-              <button
-                type="button"
-                className="settings-btn"
-                onClick={onOpenSettings}
-                title="Settings"
-              >
-                <SettingsIcon size={16} />
-              </button>
-            </div>
           </div>
         </header>
 
