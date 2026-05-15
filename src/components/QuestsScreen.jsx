@@ -2,10 +2,8 @@ import React from 'react';
 import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Award } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 
-// Phase 1 quests — reads real stats where it can (today XP, streak, due
-// cards) so the page already feels alive, but the rewards next to each
-// quest are placeholders. Nothing here mutates progress beyond what the
-// underlying lesson flow already does.
+// Phase 1 quests read real stats where available, but they do not spend
+// rewards or mutate quest state. Lesson flow remains the source of progress.
 export default function QuestsScreen({ stats, dashboardStats, setTab }) {
   const goal = stats?.dailyGoal || DEFAULT_DAILY_GOAL;
   const todayXp = stats?.todayXp || 0;
@@ -34,7 +32,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       Icon: Target,
       iconBg: '#5BAF7C',
       title: 'Hit your daily XP goal',
-      desc: `Earn ${goal} XP in any combination of lessons, quizzes, or reviews.`,
+      desc: `Earn ${goal} XP through lessons, quizzes, or reviews.`,
       progress: `${todayXp}/${goal} XP`,
       pct: dailyPct,
       done: dailyDone,
@@ -47,12 +45,12 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       Icon: BookOpen,
       iconBg: '#C9A961',
       title: 'Practice 10 cards today',
-      desc: 'Short and sweet — a quick session keeps the language warm.',
+      desc: 'Complete cards to earn XP and keep Thai fresh.',
       progress: `${reviewsToday}/${cardsTarget} cards`,
       pct: cardsPct,
       done: cardsDone,
-      reward: 'Coming: +15 gems',
-      cta: cardsDone ? null : 'Open Cards',
+      reward: 'Rewards coming soon',
+      cta: cardsDone ? null : 'Open cards',
       onClick: () => setTab && setTab('cards'),
     },
     {
@@ -61,12 +59,12 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       iconBg: '#2E7D5B',
       title: 'Review your due cards',
       desc: due > 0
-        ? `${due} card${due === 1 ? '' : 's'} are waiting — clear them to lock in mastery.`
+        ? `${due} card${due === 1 ? '' : 's'} waiting. Clear them to lock in mastery.`
         : 'No reviews due right now. Excellent.',
       progress: due > 0 ? `${due} due` : 'Cleared',
       pct: duePct,
       done: dueDone,
-      reward: 'Keeps mastery moving',
+      reward: 'Build mastery',
       cta: due > 0 ? 'Review now' : null,
       onClick: () => setTab && setTab('cards'),
     },
@@ -76,12 +74,12 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       iconBg: '#E0823B',
       title: 'Keep your streak alive',
       desc: streakAlive
-        ? `${stats.streak}-day streak going. Study today to keep it.`
-        : 'Build a streak — study at least one card today.',
-      progress: streakAlive ? `🔥 ${stats.streak} days` : 'Start today',
+        ? `${stats.streak}-day streak. Study today to keep it.`
+        : 'Build a streak by studying at least one card today.',
+      progress: streakAlive ? `${stats.streak} days` : 'Start today',
       pct: streakPct,
       done: streakAlive,
-      reward: 'Coming: streak freeze drop',
+      reward: 'Streak rewards coming soon',
       cta: streakAlive ? null : 'Study now',
       onClick: () => setTab && setTab('cards'),
     },
@@ -94,11 +92,10 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       <header className="quests-hero">
         <div className="quests-hero-icon" aria-hidden="true"><Target size={28} /></div>
         <div className="quests-hero-body">
-          <div className="quests-hero-eyebrow">Daily quests · Preview</div>
+          <div className="quests-hero-eyebrow">Daily quests</div>
           <h1 className="quests-hero-title">{completed > 0 ? `${completed} of ${quests.length} done today` : "Today's quests"}</h1>
           <p className="quests-hero-sub">
-            Small daily goals tuned to your real progress. Full quest economy
-            (chests, gem rewards, weekly challenges) ships in a later phase.
+            Track your daily practice, build your streak, and complete cards to earn XP.
           </p>
         </div>
       </header>
@@ -137,9 +134,9 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       <section className="quests-future">
         <div className="quests-future-icon"><Award size={20} /></div>
         <div className="quests-future-body">
-          <div className="quests-future-title">Weekly challenges, leaderboards, and chests are coming</div>
+          <div className="quests-future-title">Weekly challenges and chests</div>
           <div className="quests-future-sub">
-            We're keeping Phase 1 focused on real learning. Reward economy lands once we wire the supporting database tables.
+            Rewards coming soon. Daily practice tracking is available now.
           </div>
         </div>
       </section>

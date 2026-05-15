@@ -1418,6 +1418,24 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .quests-hero-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(15, 61, 46, 0.7); margin-bottom: 6px; }
 .quests-hero-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 6px; line-height: 1.2; }
 .quests-hero-sub { font-size: 13.5px; line-height: 1.5; color: rgba(15, 61, 46, 0.8); margin: 0; }
+.app-root[data-theme="dark"] .quests-hero {
+  background: linear-gradient(135deg, rgba(224, 189, 122, 0.18) 0%, rgba(91, 175, 124, 0.12) 100%);
+  border: 1px solid rgba(224, 189, 122, 0.22);
+  color: #f2eee5;
+}
+.app-root[data-theme="dark"] .quests-hero-icon {
+  background: #e0bd7a;
+  color: #17221e;
+}
+.app-root[data-theme="dark"] .quests-hero-eyebrow {
+  color: var(--gold-soft);
+}
+.app-root[data-theme="dark"] .quests-hero-title {
+  color: #f2eee5;
+}
+.app-root[data-theme="dark"] .quests-hero-sub {
+  color: #d4cfc5;
+}
 
 .quests-list { display: flex; flex-direction: column; gap: 12px; }
 .quest-card { display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: center; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
@@ -1434,12 +1452,74 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .quest-card-cta:hover { background: var(--jade-soft); }
 .quest-card-done { background: color-mix(in srgb, var(--quest-color, var(--jade)) 6%, var(--card-bg)); border-color: color-mix(in srgb, var(--quest-color, var(--jade)) 30%, var(--line)); }
 .quest-card-done .quest-card-icon { background: var(--quest-color, var(--jade)); color: white; }
+.app-root[data-theme="dark"] .quest-card {
+  background: #202725;
+  border-color: rgba(232, 228, 217, 0.14);
+}
+.app-root[data-theme="dark"] .quest-card-title {
+  color: #78d49a;
+}
+.app-root[data-theme="dark"] .quest-card-desc,
+.app-root[data-theme="dark"] .quest-card-progress-text {
+  color: #d4cfc5;
+}
+.app-root[data-theme="dark"] .quest-card-bar {
+  background: rgba(232, 228, 217, 0.12);
+}
+.app-root[data-theme="dark"] .quest-card-reward {
+  color: #ebcc8e;
+}
+.app-root[data-theme="dark"] .quest-card-cta {
+  background: #e0bd7a;
+  border-color: #e0bd7a;
+  color: #17221e;
+}
+.app-root[data-theme="dark"] .quest-card-done {
+  background: color-mix(in srgb, var(--quest-color, var(--jade)) 12%, #202725);
+  border-color: color-mix(in srgb, var(--quest-color, var(--jade)) 42%, rgba(232, 228, 217, 0.16));
+}
+@media (max-width: 639px) {
+  .quests-hero { padding: 18px 16px 20px; gap: 12px; border-radius: 16px; }
+  .quests-hero-icon { width: 44px; height: 44px; border-radius: 12px; }
+  .quests-hero-title { font-size: 20px; }
+  .quest-card {
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    padding: 14px;
+  }
+  .quest-card-icon { width: 44px; height: 44px; border-radius: 11px; }
+  .quest-card-body { min-width: 0; }
+  .quest-card-desc { font-size: 13px; line-height: 1.45; }
+  .quest-card-progress-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quest-card-bar { width: 100%; }
+  .quest-card-cta {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+    border-radius: 10px;
+  }
+}
 
 .quests-future { display: flex; gap: 12px; align-items: center; padding: 14px 16px; background: var(--cream-warm); border: 1px dashed var(--line-strong); border-radius: 14px; }
 .app-root[data-theme="dark"] .quests-future { background: rgba(232, 228, 217, 0.04); }
 .quests-future svg { color: var(--gold); flex-shrink: 0; }
 .quests-future-title { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 600; color: var(--jade); margin-bottom: 2px; }
 .quests-future-sub { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.app-root[data-theme="dark"] .quests-future {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(232, 228, 217, 0.24);
+}
+.app-root[data-theme="dark"] .quests-future-title {
+  color: #78d49a;
+}
+.app-root[data-theme="dark"] .quests-future-sub {
+  color: #d4cfc5;
+}
 
 /* ============================================================
    LEADERBOARD PLACEHOLDER
