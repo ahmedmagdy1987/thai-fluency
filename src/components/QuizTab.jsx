@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Award, Check, CheckCircle2, ChevronRight, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { displayCard } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
@@ -148,6 +149,7 @@ export default function QuizTab({
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [poolError, setPoolError] = useState(null);
+  const checkLockedRef = useRef(false);
 
   const current = questions[idx] || null;
   const correctDisplay = current ? getDisplayed(current.correct, voice) : null;
@@ -178,6 +180,7 @@ export default function QuizTab({
     setScore(0);
     setDone(false);
     setPoolError(null);
+    checkLockedRef.current = false;
   };
 
   const resetQuiz = () => {
@@ -188,23 +191,33 @@ export default function QuizTab({
     setScore(0);
     setDone(false);
     setPoolError(null);
+    checkLockedRef.current = false;
     coach.clearMessage();
   };
 
   const handleSelect = (option) => {
     if (checked) return;
     setSelectedId(option.id);
+    if (type === 'en-to-thai') {
+      const thai = getDisplayed(option, voice)?.thai;
+      if (thai) {
+        try { speakThai(thai, audioRate); } catch (_) { /* ignore */ }
+      }
+    }
     coach.react('choiceSelected', { duration: 900, message: 'Locked in?' });
   };
 
   const handleCheck = () => {
-    if (!current || !selected || checked) return;
+    if (!current || !selected || checked || checkLockedRef.current) return;
+    checkLockedRef.current = true;
     setChecked(true);
     if (selected.id === current.correct.id) {
       setScore(prev => prev + 1);
       coach.react('correct', { duration: 1700 });
+      playCharacterCorrect(coachId);
     } else {
       coach.react('wrong', { duration: 1900 });
+      playCharacterWrong(coachId);
     }
   };
 
@@ -220,6 +233,7 @@ export default function QuizTab({
     setIdx(prev => prev + 1);
     setSelectedId(null);
     setChecked(false);
+    checkLockedRef.current = false;
   };
 
   const playCorrectThai = () => {
@@ -243,7 +257,7 @@ export default function QuizTab({
           )}
           <div className="quiz-mode-intro-icon"><Award size={34} /></div>
           <h2 className="quiz-mode-title">Challenge</h2>
-          <p className="quiz-mode-sub">Test yourself with quick questions. Your SRS cards stay unchanged.</p>
+          <p className="quiz-mode-sub">Test yourself with quick questions and build confidence.</p>
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
           <div className="quiz-mode-direction-grid">
             {Object.entries(QUESTION_TYPES).map(([id, config]) => (
