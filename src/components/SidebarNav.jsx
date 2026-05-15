@@ -5,7 +5,7 @@ import {
   Target,
   ShoppingBag,
   BookOpen,
-  Award,
+  Zap,
   Compass,
   User,
   Settings as SettingsIcon,
@@ -27,7 +27,7 @@ const ENGAGE = [
 ];
 const EXPLORE = [
   { id: 'browse', Icon: BookOpen, label: 'Browse' },
-  { id: 'quiz',   Icon: Award,    label: 'Quiz' },
+  { id: 'quiz',   Icon: Zap,      label: 'Challenge' },
   { id: 'guide',  Icon: Compass,  label: 'Guide' },
 ];
 

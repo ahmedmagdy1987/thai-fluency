@@ -111,7 +111,7 @@ export const CHARACTERS = {
         wrong:          ['Almost. Try the next one.', 'Not quite. Listen for the tone.', 'That one is tricky.'],
         celebrating:    ['Strong run!', 'Crushed it.'],
         speaking:       ['Listen closely.', 'Hear the tone?'],
-        greeting:       ['Ready to quiz?', 'Let\'s test it.'],
+        greeting:       ['Ready for a challenge?', 'Let\'s test it.'],
       },
     },
   },

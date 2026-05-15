@@ -6,27 +6,25 @@ import {
   ShoppingBag,
   MoreHorizontal,
   BookOpen,
-  Award,
+  Zap,
   Compass,
   User,
   Trophy,
   Settings as SettingsIcon,
 } from 'lucide-react';
 
-// Mobile bottom nav: 5 slots is the practical cap before icons get cramped.
-// The 5th is a "More" sheet that surfaces secondary destinations (Browse,
-// Quiz, Guide, Profile, Leaderboard) — same set as the desktop sidebar so
-// nothing is reachable on one viewport and hidden on another.
+// Mobile bottom nav keeps the highest-frequency destinations visible while
+// the More sheet holds secondary explore/profile actions.
 const PRIMARY = [
   { id: 'learn',  Icon: MapIcon,      label: 'Learn' },
   { id: 'cards',  Icon: Layers,       label: 'Cards' },
+  { id: 'quiz',   Icon: Zap,          label: 'Challenge' },
   { id: 'quests', Icon: Target,       label: 'Quests' },
   { id: 'shop',   Icon: ShoppingBag,  label: 'Shop' },
 ];
 
 const MORE = [
   { id: 'browse',      Icon: BookOpen, label: 'Browse' },
-  { id: 'quiz',        Icon: Award,    label: 'Quiz' },
   { id: 'guide',       Icon: Compass,  label: 'Guide' },
   { id: 'leaderboard', Icon: Trophy,   label: 'Leaderboard' },
 ];

@@ -209,14 +209,14 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
           <button className="quick-card" onClick={() => setTab('quiz')}>
             <Award size={20} />
             <div>
-              <div className="quick-title">Take a quiz</div>
+              <div className="quick-title">Start challenge</div>
               <div className="quick-sub">+{XP_REWARDS.quizCorrect} XP per correct</div>
             </div>
           </button>
           <button className="quick-card" onClick={() => setTab('guide')}>
             <Compass size={20} />
             <div>
-              <div className="quick-title">Tones quiz</div>
+              <div className="quick-title">Tone challenge</div>
               <div className="quick-sub">{fullStats.tonesQuizPassed ? 'Passed. Try again' : 'Train your ear'}</div>
             </div>
           </button>

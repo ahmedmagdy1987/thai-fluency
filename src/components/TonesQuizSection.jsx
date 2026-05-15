@@ -35,7 +35,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
     return (
       <div>
         <div className="guide-eyebrow">Required for Level 1</div>
-        <h2 className="guide-h2">Tones Quiz</h2>
+        <h2 className="guide-h2">Tone Challenge</h2>
         <p className="guide-p">10 questions. Look at the romanized syllable and pick the correct tone (mid / low / falling / high / rising). Pass with 80% or higher to unlock Level 1.</p>
         <div className="tones-quiz-intro-stats">
           <div className="tqi-stat">
@@ -47,7 +47,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
             <div className="tqi-label">{passed ? 'Passed' : 'Not yet passed'}</div>
           </div>
         </div>
-        <button className="btn-primary" onClick={startQuiz} style={{ marginTop: 24 }}><Award size={14} /> Start Tones Quiz</button>
+        <button className="btn-primary" onClick={startQuiz} style={{ marginTop: 24 }}><Award size={14} /> Start tone challenge</button>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
         <div className="quiz-results-icon">{passedNow ? '🎵' : '📖'}</div>
         <div className="quiz-results-score">{score} / {questions.length}</div>
         <div className="quiz-results-pct">{pct}%</div>
-        <div className="quiz-results-msg">{passedNow ? 'You passed the Tones Quiz!' : 'Need 80% to pass. Try again!'}</div>
+        <div className="quiz-results-msg">{passedNow ? 'You passed the tone challenge!' : 'Need 80% to pass. Try again!'}</div>
         <div className="quiz-results-actions">
           <button className="btn-primary" onClick={startQuiz}><RotateCcw size={14} /> Try again</button>
         </div>

@@ -167,7 +167,7 @@ export default function QuizTab({
   const startQuiz = (nextType) => {
     const built = buildQuestions(nextType, maxUnlockedStage, voice);
     if (built.questions.length < 1) {
-      setPoolError(`Not enough unlocked cards for this quiz yet. Available cards: ${built.poolSize}.`);
+      setPoolError(`Not enough unlocked cards for this challenge yet. Available cards: ${built.poolSize}.`);
       return;
     }
     setType(nextType);
@@ -236,14 +236,14 @@ export default function QuizTab({
               <CharacterCoach
                 characterId={coachId}
                 state={coach.state}
-                message={coach.message || 'Ready for a quick quiz?'}
+                message={coach.message || 'Ready for a quick challenge?'}
                 compact
               />
             </div>
           )}
           <div className="quiz-mode-intro-icon"><Award size={34} /></div>
-          <h2 className="quiz-mode-title">Quiz practice</h2>
-          <p className="quiz-mode-sub">Choose a direction. Your SRS cards stay unchanged.</p>
+          <h2 className="quiz-mode-title">Challenge</h2>
+          <p className="quiz-mode-sub">Test yourself with quick questions. Your SRS cards stay unchanged.</p>
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
           <div className="quiz-mode-direction-grid">
             {Object.entries(QUESTION_TYPES).map(([id, config]) => (
@@ -261,7 +261,7 @@ export default function QuizTab({
 
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
-    const msg = pct === 100 ? 'Perfect round.' : pct >= 80 ? 'Strong quiz.' : pct >= 60 ? 'Good practice.' : 'Keep practicing.';
+    const msg = pct === 100 ? 'Perfect round.' : pct >= 80 ? 'Strong challenge.' : pct >= 60 ? 'Good practice.' : 'Keep practicing.';
     return (
       <div className="tab-content quiz-mode">
         <div className="quiz-mode-results">

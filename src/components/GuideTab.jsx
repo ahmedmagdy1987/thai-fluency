@@ -15,7 +15,7 @@ export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuiz
       <div className="guide-section-tabs">
         {[
           { id: 'tones', label: 'Tones', icon: TrendingUp },
-          { id: 'tones-quiz',label: 'Tones Quiz', icon: Award },
+          { id: 'tones-quiz',label: 'Tone Challenge', icon: Award },
           { id: 'pronoun', label: 'Pronunciation', icon: Volume2 },
           { id: 'patterns', label: 'Patterns', icon: BookOpen },
           { id: 'idioms', label: 'Idioms', icon: Sparkles },

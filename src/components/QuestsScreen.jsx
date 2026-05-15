@@ -32,7 +32,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       Icon: Target,
       iconBg: '#5BAF7C',
       title: 'Hit your daily XP goal',
-      desc: `Earn ${goal} XP through lessons, quizzes, or reviews.`,
+      desc: `Earn ${goal} XP through lessons, challenges, or reviews.`,
       progress: `${todayXp}/${goal} XP`,
       pct: dailyPct,
       done: dailyDone,
