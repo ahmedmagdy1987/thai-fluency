@@ -104,7 +104,7 @@ const RAW_CARDS = [
   {id:115,thai:'ยังไง',ph:'yang ngai',en:'how (informal)',type:'w',stage:1,cat:'questions'},
   {id:116,thai:'เท่าไหร่',ph:'thâo rài',en:'how much',type:'w',stage:1,cat:'questions'},
   {id:117,thai:'กี่',ph:'gìi',en:'how many',type:'w',stage:1,cat:'questions',note:'Followed by a classifier:"gìi khon?" = how many people?'},
-  {id:118,thai:'ไหม',ph:'mǎi',en:'(yes/no question marker)',type:'w',stage:1,cat:'questions',note:'Tack onto end:"ao mǎi?" = "want?" Rising tone.'},
+  {id:118,thai:'ไหม',ph:'mǎi',en:'(yes/no question particle — end of sentence)',type:'w',stage:1,cat:'questions',note:'Tacks onto the END of a sentence to make it a yes/no question: "ao mǎi?" = "want it?". Rising tone. In casual speech you\'ll also hear มั้ย (mái) — same job, more spoken. Do NOT confuse with ไม่ (mâi, falling) which means "no/not".'},
 
   {id:130,thai:'ข้าว',ph:'khâao',en:'rice / food (general)',type:'w',stage:2,cat:'food'},
   {id:131,thai:'น้ำ',ph:'náam',en:'water',type:'w',stage:2,cat:'food'},
@@ -186,7 +186,7 @@ const RAW_CARDS = [
   {id:240,thai:'ร้อย',ph:'ráwy',en:'hundred (100)',type:'w',stage:1,cat:'numbers'},
   {id:241,thai:'พัน',ph:'phan',en:'thousand (1000)',type:'w',stage:1,cat:'numbers'},
 
-  {id:250,thai:'ไม่',ph:'mâi',en:'no / not',type:'w',stage:1,cat:'grammar',note:'Goes BEFORE the verb. Falling tone — careful:mǎi (rising) is a question marker.'},
+  {id:250,thai:'ไม่',ph:'mâi',en:'no / not',type:'w',stage:1,cat:'grammar',note:'Used BEFORE verbs/adjectives to make them negative: "mâi gin" = don\'t eat. Falling tone. Do NOT confuse with ไหม / มั้ย (rising tone) — those are question particles that go at the END of a sentence.'},
   {id:251,thai:'ใช่',ph:'châi',en:'yes / correct',type:'w',stage:1,cat:'grammar'},
   {id:252,thai:'จะ',ph:'jà',en:'will (future)',type:'g',stage:1,cat:'grammar',note:'Before verb. "phǒm jà bpai" = I will go.'},
   {id:253,thai:'แล้ว',ph:'láew',en:'already / done',type:'g',stage:1,cat:'grammar',note:'After verb. Replaces past tense. "gin láew" = already ate.'},
@@ -219,10 +219,10 @@ const RAW_CARDS = [
   {id:298,thai:'กว่า',ph:'kwàa',en:'more than (comparative)',type:'g',stage:1,cat:'grammar',note:'"X kwàa Y" = X is more than Y.'},
   {id:299,thai:'ที่สุด',ph:'thîi sùt',en:'most / -est (superlative)',type:'g',stage:1,cat:'grammar',note:'"aròi thîi sùt" = most delicious.'},
 
-  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye (male)',type:'p',stage:1,cat:'greetings',note:'Universal greeting. Time of day does not matter.'},
+  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye (male)',type:'p',stage:1,cat:'greetings',note:'Polite greeting used by male speakers — works for hello AND goodbye, any time of day. ครับ is the male polite particle. Female speakers say สวัสดีค่ะ.'},
   {id:311,thai:'ขอบคุณครับ',ph:'khàwp khun khráp',en:'Thank you (male)',type:'p',stage:1,cat:'greetings'},
   {id:312,thai:'ขอบคุณมากครับ',ph:'khàwp khun mâak khráp',en:'Thank you very much (male)',type:'p',stage:1,cat:'greetings'},
-  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome (male)',type:'p',stage:1,cat:'greetings',note:'The unofficial Thai national motto.'},
+  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome (male)',type:'p',stage:1,cat:'greetings',note:'Polite male-speaker form of ไม่เป็นไร — the unofficial Thai national motto. Means "no worries", "you\'re welcome", "it\'s fine", or "never mind" depending on context. Female speakers say ไม่เป็นไรค่ะ.'},
   {id:314,thai:'ขอโทษครับ',ph:'khǎw thôht khráp',en:'Excuse me / Sorry (male)',type:'p',stage:1,cat:'greetings'},
   {id:315,thai:'สบายดีไหมครับ',ph:'sàbaai dee mǎi khráp?',en:'How are you? (male)',type:'p',stage:1,cat:'greetings'},
   {id:316,thai:'สบายดีครับ',ph:'sàbaai dee khráp',en:'I am fine (male)',type:'p',stage:1,cat:'greetings'},
@@ -460,7 +460,7 @@ const RAW_CARDS = [
   {id:859,thai:'อย่างไรครับ',ph:'yàang rai khráp?',en:'How? (male)',type:'s',stage:4,cat:'sentences-questions'},
 
   {id:870,thai:'ขอโทษนะครับ',ph:'khǎw thôht ná khráp',en:'Excuse me / sorry (male)',type:'s',stage:4,cat:'sentences-polite'},
-  {id:871,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / it is fine (male)',type:'s',stage:4,cat:'sentences-polite'},
+  {id:871,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / it is fine (male)',type:'s',stage:4,cat:'sentences-polite',note:'Polite male-speaker form of ไม่เป็นไร. Reintroduced at Stage 4 as a full polite sentence — same phrase as the Stage 1 greeting (card #310 territory) but reframed in the politeness category.'},
   { id: 872, thai: 'ขอบคุณมากครับ', ph: 'khàwp khun mâak khráp', en: 'Thank you very much (male)', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'ขอบคุณ',ph:'khàwp khun',en:'thank you'},{thai:'มาก',ph:'mâak',en:'very'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },
   {id:873,thai:'ยินดีที่ได้รู้จักครับ',ph:'yindee thîi dâai rúujàk khráp',en:'Nice to meet you (male)',type:'s',stage:4,cat:'sentences-polite'},
   { id: 874, thai: 'พูดช้าๆได้ไหมครับ', ph: 'phûut cháa cháa dâai mǎi khráp?', en: 'Could you speak slowly please? (male)', type: 's', stage: 4, cat: 'sentences-polite', breakdown: [{thai:'พูด',ph:'phûut',en:'speak'},{thai:'ช้าๆ',ph:'cháa cháa',en:'slowly'},{thai:'ได้ไหม',ph:'dâai mǎi',en:'can?'},{thai:'ครับ',ph:'khráp',en:'(polite)'}] },

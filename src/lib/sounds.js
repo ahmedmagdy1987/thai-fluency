@@ -53,6 +53,20 @@ function tone(ctx, freq, startSec, durSec, peak = 0.18, type = 'sine') {
   osc.stop(t1 + 0.02);
 }
 
+// Card flip — a brief soft "whoosh" played when the user reveals the
+// answer side of a card. Triangle blips with a fast decay to feel like
+// a card snapping over rather than a long musical note. Kept quiet so
+// it doesn't compete with the TTS or the character reaction sound.
+export function playFlip() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    tone(ctx, 880, 0,     0.05, 0.08, 'triangle');
+    tone(ctx, 520, 0.04,  0.07, 0.06, 'triangle');
+  } catch (_) { /* ignore */ }
+}
+
 // Easy / correct-answer blip. Short rising sine — ~120ms.
 export function playEasy() {
   const ctx = getCtx();

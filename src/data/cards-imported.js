@@ -1808,7 +1808,7 @@ export const IMPORTED_CARDS = [
   {id:3393,thai:"แคว้น",ph:"khwáaen",en:"nation",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3394,thai:"จ้อง",ph:"jâawng",en:"stare; gaze at",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3395,thai:"มิฉะนั้น",ph:"mí chà nán",en:"otherwise",type:"w",stage:4,cat:"adverbs"},
-  {id:3396,thai:"สวัสดี",ph:"sà-wàt-dee",en:"goodbye",type:"w",stage:1,cat:"grammar"},
+  {id:3396,thai:"สวัสดี",ph:"sà-wàt-dee",en:"hello / goodbye (general greeting)",type:"w",stage:1,cat:"greetings",note:"General greeting. Means 'hello' in most contexts and can also be used for 'goodbye'. Not time-of-day specific — works morning, afternoon, or night. Add ครับ (male) or ค่ะ (female) for the polite forms."},
   {id:3397,thai:"ห้องเรียน",ph:"hông rian",en:"study",type:"w",stage:4,cat:"things"},
   {id:3398,thai:"ทำนา",ph:"tham naa",en:"to farm",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3399,thai:"ทองคำ",ph:"thaawng kham",en:"gold",type:"w",stage:2,cat:"colors"}, // phReview: true

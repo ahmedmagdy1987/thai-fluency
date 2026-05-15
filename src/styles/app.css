@@ -25,7 +25,7 @@ img, svg, video { max-width: 100%; }
 .app-root[data-theme="dark"] .reveal-btn,
 .app-root[data-theme="dark"] .rate-btn { background: var(--card-bg); }
 .app-root[data-theme="dark"] .app-header { background: var(--header-bg); }
-.app-root[data-theme="dark"] .app-nav { background: var(--header-bg); border-top-color: var(--line); }.app-root[data-theme="dark"] .srs-card-revealed,
+.app-root[data-theme="dark"] .app-nav { background: var(--header-bg); border-top-color: var(--line); }.app-root[data-theme="dark"] .srs-card-face-back,
 .app-root[data-theme="dark"] .browse-tab-active,
 .app-root[data-theme="dark"] .guide-tab-active,
 .app-root[data-theme="dark"] .tone-example-cell,
@@ -284,22 +284,71 @@ img, svg, video { max-width: 100%; }
 .cards-progress-bar { height: 4px; background: rgba(15,61,46,0.08); border-radius: 999px; overflow: hidden; }
 .cards-progress-fill { height: 100%; background: linear-gradient(90deg, var(--jade), var(--gold)); border-radius: 999px; transition: width 0.4s ease; }
 .srs-card-wrap { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 0 0 20px; }
-.srs-card { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 20px; padding: 18px 22px 24px; cursor: pointer; transition: all 0.25s; position: relative; min-height: 320px; display: flex; flex-direction: column; justify-content: flex-start; box-shadow: 0 1px 3px rgba(15, 61, 46, 0.04); }@media (hover: hover) and (pointer: fine) {
-.srs-card:hover { border-color: var(--gold); }}
-.srs-card-revealed { cursor: default; border-color: var(--gold); background: white; box-shadow: 0 8px 28px rgba(15, 61, 46, 0.08); }
+
+/* ---- Flip container -----------------------------------------------------
+   The wrap establishes a perspective; the inner uses preserve-3d and
+   actually rotates. Both faces share the same grid cell so the wrap auto-
+   sizes to the taller face — no fixed height needed. backface-visibility
+   hides whichever side is currently rotated away from the camera.        */
+.srs-card-flip-wrap { width: 100%; perspective: 1400px; }
+.srs-card-flip {
+  position: relative;
+  display: grid;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(.21, .84, .39, 1.01);
+  will-change: transform;
+}
+.srs-card-flip-revealed { transform: rotateY(180deg); }
+.srs-card-face {
+  grid-area: 1 / 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.srs-card-face-back { transform: rotateY(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .srs-card-flip { transition: none; transform: none !important; }
+  .srs-card-face-back { transform: none; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .srs-card-flip-revealed .srs-card-face-front { opacity: 0; pointer-events: none; }
+  .srs-card-flip-revealed .srs-card-face-back  { opacity: 1; pointer-events: auto; }
+}
+
+.srs-card { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 20px; padding: 18px 22px 24px; transition: border-color 0.25s, box-shadow 0.25s; position: relative; min-height: 320px; display: flex; flex-direction: column; justify-content: flex-start; box-shadow: 0 1px 3px rgba(15, 61, 46, 0.04); }
+.srs-card-face-front { cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .srs-card-face-front:hover { border-color: var(--gold); }
+}
+/* Back face uses the "revealed" treatment as its baseline — once the flip
+   completes the user is looking at the answer side, so it should feel
+   lifted/finished by default (not requiring an additional state class). */
+.srs-card-face-back { cursor: default; background: white; border-color: var(--gold); box-shadow: 0 8px 28px rgba(15, 61, 46, 0.08); text-align: center; }
+.app-root[data-theme="dark"] .srs-card-face-back { background: var(--card-bg); }
+
 .srs-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
 .srs-card-cat { font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
 .srs-card-new-badge { background: var(--gold); color: var(--jade); padding: 3px 10px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
 .srs-card-interval { color: var(--stone); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 .srs-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 56px; font-weight: 600; color: var(--jade); text-align: center; line-height: 1.1; margin: 8px 0; word-break: break-word; }
 .srs-card-ph-front { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--brick); text-align: center; margin-bottom: 16px; letter-spacing: 0.01em; }
+.srs-card-front-body { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
 .srs-card-prompt { text-align: center; margin-top: auto; }
 .srs-card-prompt-text { font-size: 13px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; margin-bottom: 4px; }
 .srs-card-prompt-hint { font-size: 12px; color: var(--stone); font-style: italic; }
-.srs-card-back { text-align: center; animation: revealUp 0.3s ease-out; }
+
+/* Back face layout: a quiet header (category + audio), then the answer
+   body. The answer dominates — no giant Thai duplicate of the front side. */
+/* Used by .dialogue-line and .modal — kept here so flip-card refactor
+   doesn't accidentally orphan the keyframe other components depend on. */
 @keyframes revealUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.srs-card-ph { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; color: var(--brick); margin-bottom: 8px; }
-.srs-card-en { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 16px; }
+
+.srs-card-back-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.srs-card-back-body { display: flex; flex-direction: column; align-items: stretch; flex: 1; }
+.srs-card-back-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 700; text-align: center; margin-bottom: 8px; }
+.srs-card-back-ph { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--brick); text-align: center; margin: 0 0 8px; letter-spacing: 0.01em; }
+.srs-card-en { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; color: var(--ink); text-align: center; margin: 0 0 18px; line-height: 1.25; }
+@media (min-width: 640px) { .srs-card-en { font-size: 30px; } }
+
 .srs-card-note { font-size: 13px; color: var(--ink-soft); font-style: italic; background: rgba(201, 169, 97, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid var(--gold); text-align: left; margin-top: 12px; line-height: 1.5; }
 @media (min-width: 640px) { .srs-card { padding: 24px 32px 36px; min-height: 360px; }
 .srs-card-thai { font-size: 72px; }
@@ -636,9 +685,9 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Welcome screen (AuthGate intro) */
 .auth-welcome-card { max-width: 480px; text-align: center; padding: 36px 24px; }
-.auth-welcome-brand { margin-bottom: 18px; }
+.auth-welcome-brand { margin-bottom: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .auth-welcome-brand-thai { font-family: 'Noto Sans Thai', serif; font-size: 36px; color: var(--jade); font-weight: 600; line-height: 1; }
-.auth-welcome-brand-ph { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); margin-top: 4px; letter-spacing: 0.04em; }
+.auth-welcome-brand-wordmark { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: 0.01em; line-height: 1; }
 .auth-welcome-title { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; color: var(--ink); line-height: 1.15; margin: 4px 0 12px; letter-spacing: -0.015em; }
 .auth-welcome-sub { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 24px; }
 
@@ -823,19 +872,22 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .setting-stage-current-num { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--jade); }
 .setting-stage-current-name { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
 
-/* Demo mode (5-card read-only path for anonymous users) */
-.demo-card-wrap { max-width: 460px; text-align: center; padding: 32px 24px; }
-.demo-progress-row { margin-bottom: 24px; }
+/* Demo mode (5-card read-only path for anonymous users) — uses the same
+   flip-card mechanic as the real lesson so the unauthenticated experience
+   matches the signed-in one. The .demo-card-face overrides below tighten
+   the .srs-card sizing for the demo card width. */
+.demo-card-wrap { max-width: 480px; text-align: center; padding: 24px 20px 22px; }
+.demo-progress-row { margin-bottom: 18px; }
 .demo-progress-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-soft); font-weight: 700; margin-bottom: 8px; }
 .demo-progress-bar { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; }
 .demo-progress-fill { height: 100%; background: var(--jade); transition: width 0.35s ease; }
-.demo-card-content { padding: 24px 12px 28px; }
-.demo-card-thai { font-family: 'Noto Sans Thai', serif; font-size: 38px; color: var(--ink); font-weight: 600; line-height: 1.2; margin-bottom: 12px; }
-.demo-card-ph { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--brick); margin-bottom: 14px; }
-.demo-card-audio { display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px; color: var(--jade); cursor: pointer; transition: background 0.15s, color 0.15s; }
-.demo-card-audio:hover { background: var(--jade); color: var(--cream); }
-.demo-card-en { font-family: 'Fraunces', serif; font-size: 22px; color: var(--ink); line-height: 1.3; }
-.demo-card-note { font-size: 13px; color: var(--ink-soft); font-style: italic; margin-top: 12px; line-height: 1.4; }
+.demo-flip-wrap { margin-bottom: 18px; }
+.demo-card-face { min-height: 280px; padding: 18px 20px 22px; }
+@media (min-width: 640px) { .demo-card-face { min-height: 320px; padding: 22px 26px 28px; } }
+.demo-reveal-hint { display: block; width: 100%; margin: 0 0 6px; padding: 10px 12px; background: transparent; border: 1px dashed var(--line-strong); border-radius: 999px; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; text-align: center; }
+@media (hover: hover) and (pointer: fine) {
+  .demo-reveal-hint:hover { border-color: var(--gold); color: var(--gold); border-style: solid; }
+}
 .demo-next-btn { width: 100%; justify-content: center; padding: 13px 20px; font-size: 14px; }
 .demo-signin-link { display: block; margin-top: 14px; font-size: 13px; text-align: center; width: 100%; }
 

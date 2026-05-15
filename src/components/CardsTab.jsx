@@ -7,6 +7,7 @@ import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFA
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import {
   playEasy,
+  playFlip,
   playCharacterSelect,
   playCharacterCorrect,
   playCharacterWrong,
@@ -18,7 +19,7 @@ import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import RateBtn from './RateBtn.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
 
-export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, undoLastReview, lastReviewSnapshot }) {
+export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
@@ -87,6 +88,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const handleReveal = () => {
     if (revealed) return;
     setRevealed(true);
+    // Subtle "card snap" cue. Played alongside the character reaction sound
+    // so the flip feels grounded as a physical action, not just visual.
+    playFlip();
     // Short "how did that feel" beat. Picks from review-mode choiceSelected
     // pool — reflective, not interrogative.
     coach.react('choiceSelected', { duration: 800 });
@@ -170,88 +174,117 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       </div>
 
       <div className="srs-card-wrap">
-        <div className={`srs-card srs-card-mode-${viewMode || 'speak'} srs-card-with-coach ${revealed ? 'srs-card-revealed' : ''}`} onClick={handleReveal}>
-          <div className="srs-card-meta">
-            {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
-            <div className="srs-card-meta-right">
-              {isNew && <span className="srs-card-new-badge">new</span>}
-              {!isNew && cardState && <span className="srs-card-interval">{cardState.learning ? 'learning' : `${cardState.interval}d interval`}</span>}
-              {ttsAvailable() && card.thai && (
-                <button
-                  className="speaker-btn speaker-btn-card"
-                  onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
-                  title="Hear pronunciation"
-                  aria-label="Play pronunciation"
-                >
-                  <Volume2 size={16} />
-                </button>
+        <div className="srs-card-flip-wrap">
+          <div className={`srs-card-flip ${revealed ? 'srs-card-flip-revealed' : ''}`}>
+            {/* ============ FRONT FACE ============ */}
+            <div
+              className={`srs-card srs-card-face srs-card-face-front srs-card-mode-${viewMode || 'speak'} ${showCharacters ? 'srs-card-with-coach' : ''}`}
+              onClick={handleReveal}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleReveal(); } }}
+              aria-label="Reveal answer"
+            >
+              <div className="srs-card-meta">
+                {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
+                <div className="srs-card-meta-right">
+                  {isNew && <span className="srs-card-new-badge">new</span>}
+                  {!isNew && cardState && <span className="srs-card-interval">{cardState.learning ? 'learning' : `${cardState.interval}d interval`}</span>}
+                  {ttsAvailable() && card.thai && (
+                    <button
+                      className="speaker-btn speaker-btn-card"
+                      onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
+                      title="Hear pronunciation"
+                      aria-label="Play pronunciation"
+                    >
+                      <Volume2 size={16} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Tutor coach embedded at the top of the lesson card. Hidden
+                  when the user disables `showCharacters` in Settings — the
+                  card still works, it just looks cleaner. */}
+              {showCharacters && (
+                <div className="srs-card-coach">
+                  <CharacterCoach
+                    characterId={coachId}
+                    state={coach.state}
+                    message={coach.message}
+                    isSpeaking={isSpeaking}
+                    compact
+                  />
+                </div>
               )}
+
+              <div className="srs-card-front-body">
+                {viewMode === 'read' ? (
+                  <div className="srs-card-thai srs-card-thai-primary">{card.thai}</div>
+                ) : viewMode === 'both' ? (
+                  <>
+                    <div className="srs-card-thai">{card.thai}</div>
+                    <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
+                  </>
+                ) : (
+                  <>
+                    {/* speak mode: phonetic primary, Thai script small/secondary */}
+                    <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
+                    <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
+                  </>
+                )}
+              </div>
+
+              <div className="srs-card-prompt">
+                <div className="srs-card-prompt-text">Tap to reveal</div>
+                <div className="srs-card-prompt-hint">Try to recall the meaning first</div>
+              </div>
             </div>
-          </div>
 
-          {/* Tutor coach embedded at the top of the lesson card. Character
-              on the left (faces right), bubble immediately to its right
-              with a left-pointing tail anchoring back to the character. */}
-          <div className="srs-card-coach">
-            <CharacterCoach
-              characterId={coachId}
-              state={coach.state}
-              message={coach.message}
-              isSpeaking={isSpeaking}
-              compact
-            />
-          </div>
+            {/* ============ BACK FACE ============ */}
+            <div className="srs-card srs-card-face srs-card-face-back" aria-hidden={!revealed}>
+              <div className="srs-card-back-meta">
+                {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
+                {ttsAvailable() && card.thai && (
+                  <button
+                    className="speaker-btn speaker-btn-card"
+                    onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
+                    title="Hear pronunciation"
+                    aria-label="Play pronunciation"
+                  >
+                    <Volume2 size={16} />
+                  </button>
+                )}
+              </div>
 
-          {/* Render order depends on view mode. Empty ph (cards flagged phNeedsGen)
-              would otherwise render a blank line — show a "coming soon" placeholder. */}
-          {viewMode === 'read' ? (
-            <>
-              <div className="srs-card-thai srs-card-thai-primary">{card.thai}</div>
-              {revealed && <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>}
-            </>
-          ) : viewMode === 'both' ? (
-            <>
-              <div className="srs-card-thai">{card.thai}</div>
-              <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
-            </>
-          ) : (
-            <>
-              {/* speak mode: phonetic primary, Thai script small/secondary */}
-              <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
-              <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
-            </>
-          )}
+              <div className="srs-card-back-body">
+                <div className="srs-card-back-eyebrow">Meaning</div>
+                {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}
+                <div className="srs-card-en">{card.en}</div>
 
-          {!revealed ? (
-            <div className="srs-card-prompt">
-              <div className="srs-card-prompt-text">Tap to reveal</div>
-              <div className="srs-card-prompt-hint">Try to recall the meaning first</div>
-            </div>
-          ) : (
-            <div className="srs-card-back">
-              <div className="srs-card-en">{card.en}</div>
-              {(() => {
-                const bd = card.breakdown && card.breakdown.length > 0 ? card.breakdown
-                  : (card.type === 's' ? autoBreakdown(card.ph) : null);
-                if (!bd || bd.length === 0) return null;
-                return (
-                  <div className="srs-breakdown">
-                    <div className="srs-breakdown-label">Word-by-word</div>
-                    <div className="srs-breakdown-grid">
-                      {bd.map((b, i) => (
-                        <div key={i} className="srs-breakdown-item">
-                          {viewMode !== 'speak' && b.thai && b.thai !== '—' && <div className="srs-bd-thai">{b.thai}</div>}
-                          <div className="srs-bd-ph">{b.ph}</div>
-                          <div className="srs-bd-en">{b.en}</div>
-                        </div>
-                      ))}
+                {(() => {
+                  const bd = card.breakdown && card.breakdown.length > 0 ? card.breakdown
+                    : (card.type === 's' ? autoBreakdown(card.ph) : null);
+                  if (!bd || bd.length === 0) return null;
+                  return (
+                    <div className="srs-breakdown">
+                      <div className="srs-breakdown-label">Word-by-word</div>
+                      <div className="srs-breakdown-grid">
+                        {bd.map((b, i) => (
+                          <div key={i} className="srs-breakdown-item">
+                            {viewMode !== 'speak' && b.thai && b.thai !== '—' && <div className="srs-bd-thai">{b.thai}</div>}
+                            <div className="srs-bd-ph">{b.ph}</div>
+                            <div className="srs-bd-en">{b.en}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                );
-              })()}
-              {card.note && <div className="srs-card-note">{card.note}</div>}
+                  );
+                })()}
+                {card.note && <div className="srs-card-note">{card.note}</div>}
+              </div>
             </div>
-          )}
+          </div>
         </div>
 
         {/* I know this - skip button (only when card is new and not yet revealed) */}

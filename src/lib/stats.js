@@ -29,6 +29,11 @@ export const DEFAULT_STATS = {
   audioAutoPlay: false,
   streakFreezes: 1,
   lastFreezeGrant: null,
+  // Lesson preferences. showCharacters defaults ON; users can disable the
+  // animated CharacterCoach from Settings if they find it distracting. Stored
+  // locally only for now (same pattern as theme / voice / audioRate) — when
+  // we add a profile_preferences table this can move there for cross-device.
+  showCharacters: true,
 };
 
 export function migrateStats(stats) {

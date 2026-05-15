@@ -16,6 +16,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
   const theme = stats.theme || 'light';
   const audioRate = stats.audioRate || 0.85;
   const audioAutoPlay = !!stats.audioAutoPlay;
+  const showCharacters = stats.showCharacters !== false;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -107,6 +108,25 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               </button>
               <button className={`setting-toggle-btn ${audioAutoPlay ? 'setting-toggle-active' : ''}`} onClick={() => updateSettings({ audioAutoPlay: true })}>
                 Auto-play new cards
+              </button>
+            </div>
+          </div>
+
+          <div className="setting-group">
+            <div className="setting-label">Show lesson characters</div>
+            <div className="setting-sub">Turn off animated lesson characters if they feel distracting.</div>
+            <div className="setting-toggle">
+              <button
+                className={`setting-toggle-btn ${showCharacters ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ showCharacters: true })}
+              >
+                <span className="setting-toggle-icon">🐘</span> On <span className="setting-toggle-sub">animated tutor</span>
+              </button>
+              <button
+                className={`setting-toggle-btn ${!showCharacters ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ showCharacters: false })}
+              >
+                <span className="setting-toggle-icon">⊘</span> Off <span className="setting-toggle-sub">cleaner cards</span>
               </button>
             </div>
           </div>

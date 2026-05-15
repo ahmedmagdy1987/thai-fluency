@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-05-15",
+  "scope": "Targeted clarity + duplicate audit for สวัสดี cluster, ไม่ / ไหม / มั้ย homophone cluster, and ไม่เป็นไร cluster (per lesson-UX brief).",
+  "rules": {
+    "deletion": "No card was deleted. Even high-confidence duplicates retained because users may have SRS progress on them.",
+    "thaiText": "No Thai text was guessed. Anything uncertain was flagged for native review.",
+    "classifications": [
+      "exact-duplicate",
+      "polite-gender-variant",
+      "contextual-meaning-variant",
+      "cross-stage-repeat-intentional",
+      "near-duplicate-needs-editorial-decision"
+    ]
+  },
+  "changed": [
+    {
+      "cardId": 3396,
+      "file": "src/data/cards-imported.js",
+      "stage": 1,
+      "thai": "สวัสดี",
+      "englishBefore": "goodbye",
+      "englishAfter": "hello / goodbye (general greeting)",
+      "noteBefore": null,
+      "noteAfter": "General greeting. Means 'hello' in most contexts and can also be used for 'goodbye'. Not time-of-day specific — works morning, afternoon, or night. Add ครับ (male) or ค่ะ (female) for the polite forms.",
+      "categoryBefore": "grammar",
+      "categoryAfter": "greetings",
+      "status": "updated",
+      "classification": "contextual-meaning-variant",
+      "reason": "Bug-fix: card claimed only 'goodbye'. สวัสดี is the canonical general greeting (hello AND goodbye).",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 310,
+      "file": "src/data/cards.js",
+      "stage": 1,
+      "thai": "สวัสดีครับ",
+      "englishBefore": "Hello / Goodbye (male)",
+      "englishAfter": "Hello / Goodbye (male)",
+      "noteBefore": "Universal greeting. Time of day does not matter.",
+      "noteAfter": "Polite greeting used by male speakers — works for hello AND goodbye, any time of day. ครับ is the male polite particle. Female speakers say สวัสดีค่ะ.",
+      "status": "updated",
+      "classification": "polite-gender-variant",
+      "reason": "Make the male/female pairing explicit and learnable.",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 4485,
+      "file": "src/data/cards-imported-batch2.js",
+      "stage": 1,
+      "thai": "สวัสดีค่ะ",
+      "englishBefore": "hello / goodbye (female)",
+      "englishAfter": "hello / goodbye (female)",
+      "noteBefore": null,
+      "noteAfter": "Polite greeting used by female speakers. ค่ะ is the female polite particle. Works for hello and goodbye in any context. Male speakers use สวัสดีครับ.",
+      "status": "updated",
+      "classification": "polite-gender-variant",
+      "reason": "Symmetric framing with the male card (#310).",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 250,
+      "file": "src/data/cards.js",
+      "stage": 1,
+      "thai": "ไม่",
+      "englishBefore": "no / not",
+      "englishAfter": "no / not",
+      "noteBefore": "Goes BEFORE the verb. Falling tone — careful:mǎi (rising) is a question marker.",
+      "noteAfter": "Used BEFORE verbs/adjectives to make them negative: 'mâi gin' = don't eat. Falling tone. Do NOT confuse with ไหม / มั้ย (rising tone) — those are question particles that go at the END of a sentence.",
+      "status": "updated",
+      "classification": "contextual-meaning-variant",
+      "reason": "Avoid ไม่ vs ไหม / มั้ย confusion (per brief).",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 118,
+      "file": "src/data/cards.js",
+      "stage": 1,
+      "thai": "ไหม",
+      "englishBefore": "(yes/no question marker)",
+      "englishAfter": "(yes/no question particle — end of sentence)",
+      "noteBefore": "Tack onto end:\"ao mǎi?\" = \"want?\" Rising tone.",
+      "noteAfter": "Tacks onto the END of a sentence to make it a yes/no question: 'ao mǎi?' = 'want it?'. Rising tone. In casual speech you'll also hear มั้ย (mái) — same job, more spoken. Do NOT confuse with ไม่ (mâi, falling) which means 'no/not'.",
+      "status": "updated",
+      "classification": "contextual-meaning-variant",
+      "reason": "Distinguish the question particle from negation; introduce มั้ย as a casual variant.",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 313,
+      "file": "src/data/cards.js",
+      "stage": 1,
+      "thai": "ไม่เป็นไรครับ",
+      "englishBefore": "No worries / You are welcome (male)",
+      "englishAfter": "No worries / You are welcome (male)",
+      "noteBefore": "The unofficial Thai national motto.",
+      "noteAfter": "Polite male-speaker form of ไม่เป็นไร — the unofficial Thai national motto. Means 'no worries', 'you're welcome', 'it's fine', or 'never mind' depending on context. Female speakers say ไม่เป็นไรค่ะ.",
+      "status": "updated",
+      "classification": "polite-gender-variant",
+      "reason": "Per brief: explicitly classify as polite male-speaker form, list common English shades.",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 871,
+      "file": "src/data/cards.js",
+      "stage": 4,
+      "thai": "ไม่เป็นไรครับ",
+      "englishBefore": "No worries / it is fine (male)",
+      "englishAfter": "No worries / it is fine (male)",
+      "noteBefore": null,
+      "noteAfter": "Polite male-speaker form of ไม่เป็นไร. Reintroduced at Stage 4 as a full polite sentence — same phrase as the Stage 1 greeting (card #310 territory) but reframed in the politeness category.",
+      "status": "updated",
+      "classification": "cross-stage-repeat-intentional",
+      "reason": "Document that the Stage 4 appearance is intentional re-exposure, not a mistake.",
+      "needsNativeReview": false
+    },
+    {
+      "cardId": 5704,
+      "file": "src/data/cards-step2.js",
+      "stage": 2,
+      "thai": "มั้ย",
+      "englishBefore": "casual question particle",
+      "englishAfter": "casual question particle (end of sentence)",
+      "noteBefore": null,
+      "noteAfter": "Spoken/casual variant of ไหม (mǎi). Same job — tacks onto the END of a sentence to make a yes/no question — but you'll hear มั้ย more in everyday speech. Do NOT confuse with ไม่ (mâi, falling) which means 'no/not'.",
+      "status": "updated",
+      "classification": "contextual-meaning-variant",
+      "reason": "Ensure question-particle usage is unambiguous; cross-reference ไหม and warn vs ไม่.",
+      "needsNativeReview": false
+    }
+  ],
+  "flagged": [
+    {
+      "cardId": 5291,
+      "file": "src/data/cards-imported-batch2.js",
+      "stage": 2,
+      "thai": "สวัสดีค่ะ / สวัสดีครับ",
+      "englishBefore": "Good-bye (or Hello) (male/female)",
+      "englishAfter": "Good-bye (or Hello) (male/female)",
+      "noteBefore": null,
+      "noteAfter": null,
+      "status": "flagged",
+      "classification": "near-duplicate-needs-editorial-decision",
+      "reason": "Combines both gender forms with a slash in a single card. Stage 2 placement overlaps with the stage-1 cards (#310, #4485). Risky to auto-delete because users may have SRS progress on it.",
+      "recommendation": "Delete (covered by #310 + #4485) OR convert to a single polite-particle teaching card.",
+      "needsNativeReview": true
+    },
+    {
+      "cardId": 5361,
+      "file": "src/data/cards-imported-batch2.js",
+      "stage": 3,
+      "thai": "ไม่เป็นไร",
+      "englishBefore": "It's okay. / It's fine. / It's no problem. / It's all right. / You're welcome. / Never mind.",
+      "englishAfter": "It's okay. / It's fine. / It's no problem. / It's all right. / You're welcome. / Never mind.",
+      "noteBefore": null,
+      "noteAfter": null,
+      "status": "flagged",
+      "classification": "contextual-meaning-variant",
+      "reason": "English enumerates many meanings — readable but unusual vs the rest of the deck. Trim to the 2-3 most common to reduce cognitive load.",
+      "needsNativeReview": true
+    },
+    {
+      "cardId": 5721,
+      "file": "src/data/cards-step2.js",
+      "stage": 5,
+      "thai": "ไม๊",
+      "englishBefore": "variant of มั้ย/ไหม (question)",
+      "englishAfter": "variant of มั้ย/ไหม (question)",
+      "noteBefore": null,
+      "noteAfter": null,
+      "status": "flagged",
+      "classification": "near-duplicate-needs-editorial-decision",
+      "reason": "Three spellings (ไหม, มั้ย, ไม๊) all teach the same particle. Confirm with native speaker whether ไม๊ is common enough to warrant a card, or whether it should be a note on #118 / #5704 instead.",
+      "needsNativeReview": true
+    },
+    {
+      "cardId": 4503,
+      "file": "src/data/cards-imported-batch2.js",
+      "stage": 4,
+      "thai": "ไม่เป็นไรหรอก",
+      "englishBefore": "Not a big deal. (casual)",
+      "englishAfter": "Not a big deal. (casual)",
+      "noteBefore": null,
+      "noteAfter": null,
+      "status": "flagged",
+      "classification": "contextual-meaning-variant",
+      "reason": "Pedagogically distinct casual variant. English could be richer (note what หรอก adds — mild reassurance / dismissive softening).",
+      "needsNativeReview": true
+    },
+    {
+      "cardId": 2874,
+      "file": "src/data/cards-imported.js",
+      "stage": 1,
+      "thai": "ไหม้",
+      "englishBefore": "burn",
+      "englishAfter": "burn",
+      "noteBefore": null,
+      "noteAfter": null,
+      "status": "flagged",
+      "classification": "contextual-meaning-variant",
+      "reason": "Same-romanization homophone with ไม่ / ไหม / มั้ย / ไม๊. Need a native-confirmed note clarifying that ไหม้ is a completely different word (verb, falling tone, mai-tho tone mark) and that the romanization collision is orthographic confusion to be aware of.",
+      "needsNativeReview": true
+    }
+  ],
+  "clusters": [
+    {
+      "name": "สวัสดี greetings",
+      "members": [
+        { "cardId": 3396, "thai": "สวัสดี", "role": "base", "stage": 1 },
+        { "cardId": 310,  "thai": "สวัสดีครับ", "role": "polite-male", "stage": 1 },
+        { "cardId": 4485, "thai": "สวัสดีค่ะ", "role": "polite-female", "stage": 1 },
+        { "cardId": 5291, "thai": "สวัสดีค่ะ / สวัสดีครับ", "role": "near-duplicate-flagged", "stage": 2 }
+      ]
+    },
+    {
+      "name": "ไม่เป็นไร",
+      "members": [
+        { "cardId": 5361, "thai": "ไม่เป็นไร", "role": "base-flagged", "stage": 3 },
+        { "cardId": 313,  "thai": "ไม่เป็นไรครับ", "role": "polite-male-stage1", "stage": 1 },
+        { "cardId": 871,  "thai": "ไม่เป็นไรครับ", "role": "polite-male-stage4-repeat", "stage": 4 },
+        { "cardId": 4503, "thai": "ไม่เป็นไรหรอก", "role": "casual-flagged", "stage": 4 }
+      ]
+    },
+    {
+      "name": "ไม่ / ไหม / มั้ย homophone cluster",
+      "members": [
+        { "cardId": 250,  "thai": "ไม่",  "role": "negation",         "stage": 1 },
+        { "cardId": 118,  "thai": "ไหม",  "role": "question-particle-formal", "stage": 1 },
+        { "cardId": 5704, "thai": "มั้ย", "role": "question-particle-casual",  "stage": 2 },
+        { "cardId": 5721, "thai": "ไม๊",  "role": "question-particle-rare-flagged", "stage": 5 },
+        { "cardId": 2874, "thai": "ไหม้", "role": "homophone-different-word-flagged", "stage": 1 }
+      ]
+    }
+  ]
+}

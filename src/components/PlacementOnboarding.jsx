@@ -156,7 +156,7 @@ export default function PlacementOnboarding({ onComplete }) {
         <div className="onboard-eyebrow">Almost done</div>
         <h2 className="onboard-title">Where do you want to start?</h2>
         <p className="onboard-sub">
-          You marked {knownIds.length} of {cards.length} as known — those are auto-matured. Pick a starting stage. We'd suggest <strong>Stage {suggestedStage}</strong>.
+          You marked {knownIds.length} card{knownIds.length === 1 ? '' : 's'} as known. We'll start you at the right level — we suggest <strong>Stage {suggestedStage}</strong>.
         </p>
         <div className="onboard-stage-grid">
           {STAGES.map(s => (

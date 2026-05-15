@@ -96,7 +96,7 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:4482,thai:"เมื่อวานนี้ตอนเย็น",ph:"mêuwahnnée dtorn yen",en:"yesterday evening",type:"p",stage:4,cat:"time"}, // phReview: true
   {id:4483,thai:"กับลูกชายผมสามคน",ph:"lôog chahy poem saahm kon",en:"my three sons (male)",type:"s",stage:4,cat:"sentences-self"}, // phReview: true
   {id:4484,thai:"หนึ่งอาทิตย์",ph:"nèrng ahtít",en:"one week",type:"p",stage:4,cat:"time"}, // phReview: true
-  {id:4485,thai:"สวัสดีค่ะ",ph:"sawùtdee kâ",en:"hello / goodbye (female)",type:"s",stage:1,cat:"greetings"}, // phReview: true
+  {id:4485,thai:"สวัสดีค่ะ",ph:"sawùtdee kâ",en:"hello / goodbye (female)",type:"s",stage:1,cat:"greetings",note:"Polite greeting used by female speakers. ค่ะ is the female polite particle. Works for hello and goodbye in any context. Male speakers use สวัสดีครับ."}, // phReview: true
   {id:4486,thai:"ขอบคุณค่ะ",ph:"kòrp koon kâ",en:"thank you (female)",type:"p",stage:1,cat:"greetings"}, // phReview: true
   {id:4487,thai:"ดิฉันเป็น",ph:"dee chàn pen",en:"I am (female, formal)",type:"p",stage:1,cat:"sentences-self"}, // phReview: true
   {id:4488,thai:"ผมเป็น",ph:"poem pen",en:"I am (male)",type:"p",stage:1,cat:"sentences-self"}, // phReview: true

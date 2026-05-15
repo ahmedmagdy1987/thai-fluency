@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Volume2, ChevronRight, UserPlus, Sparkles } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { playFlip, playCharacterSelect } from '../lib/sounds.js';
+import { resolveCoachIdForStage } from '../data/stageCharacters.js';
+import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
+import CharacterCoach from './CharacterCoach.jsx';
 
 // Five curated survival cards shown to first-time visitors who pick "Try a
 // quick demo". Read-only — no SRS state is written. After all 5 are seen,
@@ -10,8 +14,11 @@ import { speakThai, ttsAvailable } from '../lib/audio.js';
 const DEMO_CARD_IDS = [310, 312, 251, 250, 853];
 const DEMO_IDX_KEY = 'tuk-talk-thai-demo-idx';
 
-export default function DemoMode({ onSignUp, onSignIn }) {
-  const cards = DEMO_CARD_IDS.map(id => CARDS.find(c => c.id === id)).filter(Boolean);
+export default function DemoMode({ onSignUp, onSignIn, showCharacters = true }) {
+  const cards = useMemo(
+    () => DEMO_CARD_IDS.map(id => CARDS.find(c => c.id === id)).filter(Boolean),
+    []
+  );
   const [idx, setIdx] = useState(() => {
     try {
       const stored = parseInt(localStorage.getItem(DEMO_IDX_KEY) || '0', 10);
@@ -20,10 +27,57 @@ export default function DemoMode({ onSignUp, onSignIn }) {
       return 0;
     }
   });
+  const [revealed, setRevealed] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const speakingTimerRef = useRef(null);
+
+  const card = idx < cards.length ? cards[idx] : null;
+  const coachId = useMemo(
+    () => resolveCoachIdForStage(card && card.stage),
+    [card && card.stage]
+  );
+  const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'review' });
+
+  // Greet the user on the very first card so the demo feels welcoming, then
+  // settle the coach into the idle/thinking rhythm the real lesson uses.
+  useEffect(() => {
+    if (!card) return;
+    if (idx === 0 && !revealed) {
+      coach.react('greeting', { duration: 1600, message: 'Welcome! Tap the card to see the meaning.' });
+    } else if (!revealed) {
+      coach.setRestingState('idle');
+    }
+  }, [card && card.id]);
+
+  useEffect(() => {
+    coach.setRestingState(revealed ? 'thinking' : 'idle');
+  }, [revealed]);
+
+  useEffect(() => () => {
+    if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
+  }, []);
+
+  const triggerSpeak = (text) => {
+    if (!text) return;
+    try { speakThai(text, 0.85); } catch { /* ignore */ }
+    setIsSpeaking(true);
+    coach.react('speaking', { duration: 1600 });
+    if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
+    speakingTimerRef.current = setTimeout(() => setIsSpeaking(false), 1600);
+  };
+
+  const handleReveal = () => {
+    if (revealed) return;
+    setRevealed(true);
+    playFlip();
+    coach.react('choiceSelected', { duration: 900 });
+    playCharacterSelect(coachId);
+  };
 
   const advance = () => {
     const next = idx + 1;
     try { localStorage.setItem(DEMO_IDX_KEY, String(next)); } catch { /* ignore */ }
+    setRevealed(false);
     setIdx(next);
   };
 
@@ -51,8 +105,6 @@ export default function DemoMode({ onSignUp, onSignIn }) {
     );
   }
 
-  const card = cards[idx];
-
   return (
     <div className="onboard-root">
       <div className="onboard-card demo-card-wrap">
@@ -63,28 +115,90 @@ export default function DemoMode({ onSignUp, onSignIn }) {
           </div>
         </div>
 
-        <div className="demo-card-content">
-          <div className="demo-card-thai">{card.thai}</div>
-          <div className="demo-card-ph">
-            {card.ph}
-            {ttsAvailable() && (
-              <button
-                type="button"
-                className="demo-card-audio"
-                onClick={() => speakThai(card.thai, 0.85)}
-                aria-label="Hear pronunciation"
-              >
-                <Volume2 size={18} />
-              </button>
-            )}
+        {/* Same flip mechanic as the real lesson card so the demo feels
+            continuous with the signed-in experience. */}
+        <div className="srs-card-flip-wrap demo-flip-wrap">
+          <div className={`srs-card-flip ${revealed ? 'srs-card-flip-revealed' : ''}`}>
+            {/* FRONT */}
+            <div
+              className={`srs-card srs-card-face srs-card-face-front demo-card-face ${showCharacters ? 'srs-card-with-coach' : ''}`}
+              onClick={handleReveal}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleReveal(); } }}
+              aria-label="Reveal answer"
+            >
+              <div className="srs-card-meta">
+                <span className="srs-card-cat" style={{ color: 'var(--jade)' }}>Demo</span>
+                {ttsAvailable() && card.thai && (
+                  <button
+                    className="speaker-btn speaker-btn-card"
+                    onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
+                    title="Hear pronunciation"
+                    aria-label="Play pronunciation"
+                  >
+                    <Volume2 size={16} />
+                  </button>
+                )}
+              </div>
+
+              {showCharacters && (
+                <div className="srs-card-coach">
+                  <CharacterCoach
+                    characterId={coachId}
+                    state={coach.state}
+                    message={coach.message}
+                    isSpeaking={isSpeaking}
+                    compact
+                  />
+                </div>
+              )}
+
+              <div className="srs-card-front-body">
+                <div className="srs-card-thai">{card.thai}</div>
+                <div className="srs-card-ph-front">{card.ph}</div>
+              </div>
+
+              <div className="srs-card-prompt">
+                <div className="srs-card-prompt-text">Tap to reveal</div>
+                <div className="srs-card-prompt-hint">Try to recall the meaning first</div>
+              </div>
+            </div>
+
+            {/* BACK */}
+            <div className="srs-card srs-card-face srs-card-face-back demo-card-face" aria-hidden={!revealed}>
+              <div className="srs-card-back-meta">
+                <span className="srs-card-cat" style={{ color: 'var(--jade)' }}>Meaning</span>
+                {ttsAvailable() && card.thai && (
+                  <button
+                    className="speaker-btn speaker-btn-card"
+                    onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
+                    title="Hear pronunciation"
+                    aria-label="Play pronunciation"
+                  >
+                    <Volume2 size={16} />
+                  </button>
+                )}
+              </div>
+
+              <div className="srs-card-back-body">
+                <div className="srs-card-back-eyebrow">Meaning</div>
+                <div className="srs-card-en">{card.en}</div>
+                {card.note && <div className="srs-card-note">{card.note}</div>}
+              </div>
+            </div>
           </div>
-          <div className="demo-card-en">{card.en}</div>
-          {card.note && <div className="demo-card-note">{card.note}</div>}
         </div>
 
-        <button className="btn-primary auth-cta demo-next-btn" onClick={advance}>
-          {idx + 1 < cards.length ? <>Next card <ChevronRight size={16} /></> : <>See what's next →</>}
-        </button>
+        {revealed ? (
+          <button className="btn-primary auth-cta demo-next-btn" onClick={advance}>
+            {idx + 1 < cards.length ? <>Next card <ChevronRight size={16} /></> : <>See what's next →</>}
+          </button>
+        ) : (
+          <button type="button" className="demo-reveal-hint" onClick={handleReveal}>
+            Tap the card above to reveal the meaning
+          </button>
+        )}
 
         <button type="button" className="auth-link demo-signin-link" onClick={onSignIn}>
           Already have an account? Sign in

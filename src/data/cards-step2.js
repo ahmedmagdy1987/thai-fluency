@@ -9,7 +9,7 @@ export const STEP2_ADDITIONS = [
   {id:5701,thai:'อันนี้',ph:'an níi',en:'this one / this thing',type:'w',stage:1,cat:'pronouns'},
   {id:5702,thai:'เจอกัน',ph:'jer gan',en:'see you',type:'w',stage:1,cat:'greetings'},
   {id:5703,thai:'ไม่ใช่',ph:'mâi châi',en:'no / not so / that\'s not it',type:'w',stage:1,cat:'grammar'},
-  {id:5704,thai:'มั้ย',ph:'mái',en:'casual question particle',type:'w',stage:2,cat:'grammar'},
+  {id:5704,thai:'มั้ย',ph:'mái',en:'casual question particle (end of sentence)',type:'w',stage:2,cat:'grammar',note:'Spoken/casual variant of ไหม (mǎi). Same job — tacks onto the END of a sentence to make a yes/no question — but you\'ll hear มั้ย more in everyday speech. Do NOT confuse with ไม่ (mâi, falling) which means "no/not".'},
   {id:5705,thai:'ได้ไหม',ph:'dâai mǎi',en:'can you...? / is it OK?',type:'w',stage:6,cat:'grammar'},
   {id:5706,thai:'กินข้าว',ph:'gin khâao',en:'eat (a meal)',type:'w',stage:6,cat:'food'},
   {id:5707,thai:'จากไหน',ph:'jàak nǎi',en:'from where',type:'w',stage:6,cat:'directions'},
