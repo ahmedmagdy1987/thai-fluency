@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Volume2, ChevronRight, UserPlus, Sparkles } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
+import { DEFAULT_VIEW_MODE } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playFlip, playCharacterSelect } from '../lib/sounds.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
@@ -14,7 +15,14 @@ import CharacterCoach from './CharacterCoach.jsx';
 const DEMO_CARD_IDS = [310, 312, 251, 250, 853];
 const DEMO_IDX_KEY = 'tuk-talk-thai-demo-idx';
 
-export default function DemoMode({ onSignUp, onSignIn, showCharacters = true }) {
+export default function DemoMode({
+  onSignUp,
+  onSignIn,
+  viewMode = DEFAULT_VIEW_MODE,
+  audioRate = 0.95,
+  audioAutoPlay = false,
+  showCharacters = true,
+}) {
   const cards = useMemo(
     () => DEMO_CARD_IDS.map(id => CARDS.find(c => c.id === id)).filter(Boolean),
     []
@@ -57,9 +65,16 @@ export default function DemoMode({ onSignUp, onSignIn, showCharacters = true }) 
     if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
   }, []);
 
+  useEffect(() => {
+    if (audioAutoPlay && card && card.thai) {
+      const t = setTimeout(() => triggerSpeak(card.thai), 350);
+      return () => clearTimeout(t);
+    }
+  }, [card && card.id, audioAutoPlay, audioRate]);
+
   const triggerSpeak = (text) => {
     if (!text) return;
-    try { speakThai(text, 0.85); } catch { /* ignore */ }
+    try { speakThai(text, audioRate); } catch { /* ignore */ }
     setIsSpeaking(true);
     coach.react('speaking', { duration: 1600 });
     if (speakingTimerRef.current) clearTimeout(speakingTimerRef.current);
@@ -155,8 +170,19 @@ export default function DemoMode({ onSignUp, onSignIn, showCharacters = true }) 
               )}
 
               <div className="srs-card-front-body">
-                <div className="srs-card-thai">{card.thai}</div>
-                <div className="srs-card-ph-front">{card.ph}</div>
+                {viewMode === 'read' ? (
+                  <div className="srs-card-thai srs-card-thai-primary">{card.thai}</div>
+                ) : viewMode === 'both' ? (
+                  <>
+                    <div className="srs-card-thai">{card.thai}</div>
+                    <div className="srs-card-ph-front">{card.ph}</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="srs-card-ph-primary">{card.ph}</div>
+                    <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
+                  </>
+                )}
               </div>
 
               <div className="srs-card-prompt">
@@ -181,8 +207,21 @@ export default function DemoMode({ onSignUp, onSignIn, showCharacters = true }) 
                 )}
               </div>
 
+              {showCharacters && (
+                <div className="srs-card-coach srs-card-coach-back">
+                  <CharacterCoach
+                    characterId={coachId}
+                    state={coach.state}
+                    message={coach.message}
+                    isSpeaking={isSpeaking}
+                    compact
+                  />
+                </div>
+              )}
+
               <div className="srs-card-back-body">
                 <div className="srs-card-back-eyebrow">Meaning</div>
+                {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}
                 <div className="srs-card-en">{card.en}</div>
                 {card.note && <div className="srs-card-note">{card.note}</div>}
               </div>

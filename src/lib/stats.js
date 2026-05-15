@@ -25,7 +25,7 @@ export const DEFAULT_STATS = {
   voice: DEFAULT_VOICE,
   viewMode: DEFAULT_VIEW_MODE,
   theme: 'light',
-  audioRate: 0.85,
+  audioRate: 0.95,
   audioAutoPlay: false,
   streakFreezes: 1,
   lastFreezeGrant: null,
@@ -37,7 +37,12 @@ export const DEFAULT_STATS = {
 };
 
 export function migrateStats(stats) {
-  return { ...DEFAULT_STATS, ...stats };
+  const migrated = { ...DEFAULT_STATS, ...stats };
+  // Legacy Settings used 0.85 as "Natural" and 1 as "Fast". Normalize old
+  // cached values to the clearer speed spread used by the current selector.
+  if (migrated.audioRate === 0.85) migrated.audioRate = 0.95;
+  if (migrated.audioRate === 1) migrated.audioRate = 1.15;
+  return migrated;
 }
 
 export function startStudyDay(s, today, newStreak, amount, usedFreeze) {

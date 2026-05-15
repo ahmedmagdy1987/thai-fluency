@@ -109,6 +109,7 @@ img, svg, video { max-width: 100%; }
 .setting-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
 .setting-toggle { display: flex; gap: 8px; }
 .setting-toggle-vert { flex-direction: column; }
+.setting-toggle-compact .setting-toggle-btn { align-items: center; justify-content: center; text-align: center; padding: 10px 8px; min-width: 0; }
 .setting-toggle-btn { flex: 1; background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 10px; padding: 12px 14px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; transition: all 0.15s; text-align: left; }@media (hover: hover) and (pointer: fine) {
 .setting-toggle-btn:hover { border-color: var(--gold); }}
 .setting-toggle-active { background: var(--jade); color: white; border-color: var(--jade); }
@@ -116,12 +117,21 @@ img, svg, video { max-width: 100%; }
 .setting-toggle-icon { font-size: 18px; }
 .setting-toggle-sub { font-size: 11px; font-weight: 400; color: var(--ink-soft); }
 .setting-toggle-row { display: flex; align-items: center; gap: 8px; width: 100%; }
+.setting-goal-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .setting-goal-btn { flex: 1; background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .setting-goal-btn:hover { border-color: var(--gold); }}
-.setting-test-audio-btn { width: 100%; background: var(--cream-warm); border: 1px dashed var(--line-strong); border-radius: 10px; padding: 10px 14px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--jade); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
+.setting-goal-btn.setting-toggle-active { background: var(--jade); color: white; border-color: var(--jade); }
+.setting-goal-btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; }
+.setting-test-audio-btn { width: 100%; margin-top: 8px; background: var(--cream-warm); border: 1px dashed var(--line-strong); border-radius: 10px; padding: 10px 14px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--jade); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .setting-test-audio-btn:hover { border-color: var(--jade); border-style: solid; background: var(--jade); color: var(--gold); }}
 .setting-test-audio-btn:active { transform: scale(0.98); }
 .app-root[data-theme="dark"] .setting-test-audio-btn { background: var(--card-bg); }
+@media (max-width: 420px) {
+  .setting-toggle:not(.setting-toggle-vert):not(.setting-goal-grid) { gap: 6px; }
+  .setting-toggle-compact .setting-toggle-btn { padding: 9px 6px; font-size: 12px; }
+  .setting-goal-grid { gap: 6px; }
+  .setting-goal-btn { padding: 9px 4px; font-size: 12px; }
+}
 .onboard-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 600; margin-top: 32px; }
 .onboard-title { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 500; color: var(--jade); text-align: center; letter-spacing: -0.02em; margin: 12px 0 8px; line-height: 1.2; }
 .onboard-sub { font-size: 15px; color: var(--ink-soft); text-align: center; line-height: 1.5; margin-bottom: 24px; max-width: 420px; }

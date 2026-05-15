@@ -29,6 +29,7 @@ import {
   downloadProgress,
   downloadStats,
   downloadAchievements,
+  updateProfile,
 } from './lib/cloudStorage.js';
 
 import AppShell from './components/AppShell.jsx';
@@ -52,6 +53,16 @@ import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
+
+const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters'];
+
+function pickCloudProfileSettings(settings) {
+  if (!settings || typeof settings !== 'object' || Array.isArray(settings)) return {};
+  return CLOUD_PROFILE_SETTING_KEYS.reduce((picked, key) => {
+    if (Object.prototype.hasOwnProperty.call(settings, key)) picked[key] = settings[key];
+    return picked;
+  }, {});
+}
 
 export default function TukTalkThaiApp() {
   const [tab, setTab] = useState('learn');
@@ -140,15 +151,24 @@ export default function TukTalkThaiApp() {
           .maybeSingle();
         if (cancelled) return;
         if (data) {
+          const applyProfileSettings = (profileData) => {
+            const cloudSettings = pickCloudProfileSettings(profileData?.settings);
+            if (Object.keys(cloudSettings).length > 0) {
+              setStats(s => migrateStats({ ...s, ...cloudSettings }));
+            }
+          };
           // (1) display_name backfill
           const metaName = session.user.user_metadata?.display_name;
           if (!data.display_name && metaName) {
             const trimmed = String(metaName).trim();
             await supabase.from('profiles').update({ display_name: trimmed }).eq('id', session.user.id);
             if (cancelled) return;
-            setProfile({ ...data, display_name: trimmed });
+            const nextProfile = { ...data, display_name: trimmed };
+            setProfile(nextProfile);
+            applyProfileSettings(nextProfile);
           } else {
             setProfile(data);
+            applyProfileSettings(data);
           }
           // (2) onboarding_completed sync: cloud → local
           if (data.onboarding_completed) {
@@ -638,7 +658,20 @@ export default function TukTalkThaiApp() {
 
   const updateSettings = useCallback((updates) => {
     setStats(s => ({ ...s, ...updates }));
-  }, []);
+    if (!session || !session.user?.email_confirmed_at || !hasSupabaseConfig) return;
+
+    const profileSettings = {};
+    CLOUD_PROFILE_SETTING_KEYS.forEach(key => {
+      if (Object.prototype.hasOwnProperty.call(updates, key)) profileSettings[key] = updates[key];
+    });
+    if (Object.keys(profileSettings).length === 0) return;
+
+    const nextSettings = { ...(profile?.settings || {}), ...profileSettings };
+    setProfile(p => (p ? { ...p, settings: nextSettings } : p));
+    updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
+      console.warn('[App] failed to write settings to cloud profile', e);
+    });
+  }, [session, profile]);
 
   // Sequential stage unlock: only stages ≤ maxUnlockedStage are accessible.
   // Stage N+1 unlocks when Stage N reaches 70% mastery. dashboardStats, the
@@ -715,6 +748,9 @@ export default function TukTalkThaiApp() {
         <DemoMode
           onSignUp={handleDemoSignUp}
           onSignIn={handleDemoSignIn}
+          viewMode={viewMode}
+          audioRate={stats.audioRate || 0.95}
+          audioAutoPlay={!!stats.audioAutoPlay}
           showCharacters={stats.showCharacters !== false}
         />
       </div>
@@ -789,8 +825,8 @@ export default function TukTalkThaiApp() {
     >
       {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={setTab} />}
       {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
-      {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.85} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
-      {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.85} />}
+      {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
+      {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
       {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} />}
       {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
       {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={setTab} />}
