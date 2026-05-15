@@ -1432,10 +1432,12 @@ button.character-coach-portrait { cursor: pointer; }
   gap: 14px;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  flex-wrap: nowrap;
 }
 .character-coach-compact .character-coach-portrait { width: 108px; height: 108px; }
-.srs-card-coach .character-coach-compact { gap: 10px; }
-.srs-card-coach .character-coach-compact .character-coach-portrait { width: 76px; height: 76px; }
+.srs-card-coach .character-coach-compact { flex-direction: row; align-items: center; gap: 8px; flex-wrap: nowrap; min-width: 0; }
+.srs-card-coach .character-coach-compact .character-coach-portrait { width: 88px; height: 88px; }
 @media (min-width: 720px) {
   .character-coach-compact { gap: 22px; }
   .character-coach-compact .character-coach-portrait { width: 176px; height: 176px; }
@@ -1460,11 +1462,14 @@ button.character-coach-portrait { cursor: pointer; }
   box-shadow: 0 6px 18px rgba(15, 61, 46, 0.09);
 }
 .srs-card-coach .character-coach-compact .character-coach-bubble {
-  max-width: min(250px, calc(100% - 96px));
-  padding: 8px 11px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+  margin-left: 0;
+  padding: 7px 9px;
   border-radius: 12px;
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.3;
   box-shadow: 0 4px 12px rgba(15, 61, 46, 0.08);
 }
 @media (min-width: 720px) {
@@ -1504,15 +1509,18 @@ button.character-coach-portrait { cursor: pointer; }
   100% { opacity: 1; transform: translateX(0)    scale(1); }
 }
 
-/* Narrow-mobile fallback: only when the portrait + a usable bubble
-   width can't fit on a single row. Below ~360 px effective width we
+/* Extreme narrow fallback only; standard phone widths keep the row layout.
+   Below 320 px effective width we
    stack the bubble UNDER the character (DOM order remains portrait
    first → bubble second), with the tail flipped to point UP toward
    the portrait. Character stays compact-but-intentional (96 px). */
-@media (max-width: 360px) {
+@media (max-width: 319px) {
   .character-coach-compact { flex-direction: column; align-items: flex-start; gap: 10px; }
   .character-coach-compact .character-coach-portrait { width: 96px; height: 96px; }
+  .srs-card-coach .character-coach-compact { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .srs-card-coach .character-coach-compact .character-coach-portrait { width: 82px; height: 82px; }
   .character-coach-compact .character-coach-bubble {
+    flex: 0 1 auto;
     max-width: 100%;
     margin-left: 0;
     transform-origin: 18% 0%;
