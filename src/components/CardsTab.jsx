@@ -19,6 +19,10 @@ import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import RateBtn from './RateBtn.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
 
+// The card flip is 550ms in CSS; 3400ms keeps the reveal prompt readable
+// for roughly 2.8s after the back face settles, then returns to resting.
+const REVEAL_PROMPT_DURATION_MS = 3400;
+
 export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
@@ -91,9 +95,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     // Subtle "card snap" cue. Played alongside the character reaction sound
     // so the flip feels grounded as a physical action, not just visual.
     playFlip();
-    // Short "how did that feel" beat. Picks from review-mode choiceSelected
+    // Keep the reveal prompt readable after the flip; choiceSelected
     // pool — reflective, not interrogative.
-    coach.react('choiceSelected', { duration: 800 });
+    coach.react('choiceSelected', { duration: REVEAL_PROMPT_DURATION_MS });
     playCharacterSelect(coachId);
   };
 
