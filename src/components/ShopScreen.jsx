@@ -3,7 +3,7 @@ import { Heart, Snowflake, Zap, Sparkles, Lock, ShoppingBag, Gem } from 'lucide-
 import { CHARACTERS, STAGE_CHARACTER_MAP } from '../data/stageCharacters.js';
 import { STAGES } from '../data/taxonomy.js';
 
-// Phase 1 shop — visual scaffold only. None of these buttons spend gems,
+// Phase 1 shop: visual scaffold only. None of these buttons spend gems,
 // modify the database, or change gameplay. They exist so the future
 // economy phase has a known target layout. Pricing strings are intentional
 // placeholders; treat them as illustrative.
@@ -18,7 +18,7 @@ const REFILL_ITEMS = [
     title: 'Refill hearts',
     desc: 'Top up to full so you can keep learning without a break.',
     price: '350 gems',
-    note: 'Coming soon',
+    note: 'Purchases coming soon.',
   },
   {
     id: 'unlimited-hearts',
@@ -27,7 +27,7 @@ const REFILL_ITEMS = [
     title: 'Unlimited hearts (1h)',
     desc: 'Practice as much as you want without losing hearts.',
     price: '500 gems',
-    note: 'Coming soon',
+    note: 'Purchases coming soon.',
   },
 ];
 
@@ -37,18 +37,18 @@ const POWERUP_ITEMS = [
     icon: Snowflake,
     iconColor: '#5B9CC4',
     title: 'Streak freeze',
-    desc: 'Protects your streak for one missed day. Already earned at 7-day milestones.',
+    desc: 'Protects your streak for one missed day.',
     price: '200 gems',
-    note: 'Already earned at milestones — purchase coming soon',
+    note: 'Earned through milestones. Purchases coming soon.',
   },
   {
     id: 'double-xp',
     icon: Zap,
     iconColor: '#E0823B',
     title: 'Double XP (15 min)',
-    desc: 'Earn 2× XP on every review — great for crushing your daily goal.',
+    desc: 'Earn 2x XP on every review. Great for reaching your daily goal.',
     price: '250 gems',
-    note: 'Coming soon',
+    note: 'Purchases coming soon.',
   },
 ];
 
@@ -104,8 +104,8 @@ export default function ShopScreen({ stats }) {
           <span className="shop-section-badge">Preview</span>
         </div>
         <p className="shop-section-lead">
-          Each stage features a Tuk Talk Thai character. In a future phase you'll
-          be able to choose a favourite or unlock skins. Original art coming soon.
+          Each stage features a Tuk Talk Thai character. In a future phase you
+          will be able to choose a favorite or unlock skins. Original art coming soon.
         </p>
         <div className="shop-character-grid">
           {Object.values(CHARACTERS).map(c => {
@@ -121,7 +121,7 @@ export default function ShopScreen({ stats }) {
                 {stages.length > 0 && (
                   <div className="shop-character-stages">
                     {stages.map(s => (
-                      <span key={s.id} className="shop-character-stage-chip">S{s.id} · {s.name}</span>
+                      <span key={s.id} className="shop-character-stage-chip">S{s.id} - {s.name}</span>
                     ))}
                   </div>
                 )}
