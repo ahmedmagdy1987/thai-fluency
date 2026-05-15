@@ -56,6 +56,7 @@ export default function AppShell({
         tab={tab}
         setTab={setTab}
         onOpenProfile={onOpenProfile}
+        onOpenSettings={onOpenSettings}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
       />

@@ -98,7 +98,7 @@ img, svg, video { max-width: 100%; }
 .srs-card-meta-right { display: flex; align-items: center; gap: 8px; }
 .dialogue-bubble-row { display: flex; align-items: flex-start; gap: 10px; }
 .dialogue-bubble-text { flex: 1; min-width: 0; }
-.card-skip-row { display: flex; justify-content: center; margin-top: 14px; }
+.card-skip-row { display: flex; justify-content: center; margin: 10px 0 12px; order: 3; }
 .card-skip-btn { background: none; border: 1px dashed var(--line-strong); border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .card-skip-btn:hover { border-color: var(--gold); color: var(--gold); border-style: solid; }}
 .settings-btn { background: none; border: 1px solid var(--line-strong); border-radius: 999px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
@@ -283,7 +283,8 @@ img, svg, video { max-width: 100%; }
 .queue-remaining { color: var(--gold); font-weight: 600; }
 .cards-progress-bar { height: 4px; background: rgba(15,61,46,0.08); border-radius: 999px; overflow: hidden; }
 .cards-progress-fill { height: 100%; background: linear-gradient(90deg, var(--jade), var(--gold)); border-radius: 999px; transition: width 0.4s ease; }
-.srs-card-wrap { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 0 0 20px; }
+.srs-card-wrap { flex: 1; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 0 0 12px; order: 2; }
+.cards-tab-content .rate-row { order: 4; }
 
 /* ---- Flip container -----------------------------------------------------
    The wrap establishes a perspective; the inner uses preserve-3d and
@@ -353,6 +354,38 @@ img, svg, video { max-width: 100%; }
 @media (min-width: 640px) { .srs-card { padding: 24px 32px 36px; min-height: 360px; }
 .srs-card-thai { font-size: 72px; }
 .srs-card-ph-front { font-size: 24px; }
+}
+@media (max-width: 640px) {
+  .cards-tab-content { min-height: 0; }
+  .cards-header { margin-bottom: 10px; }
+  .srs-card-wrap { flex: 0 0 auto; padding-bottom: 6px; }
+  .srs-card { min-height: 270px; padding: 12px 14px 14px; border-radius: 16px; }
+  .srs-card-with-coach { padding-top: 12px; }
+  .srs-card-meta,
+  .srs-card-back-meta { margin-bottom: 8px; gap: 6px; }
+  .srs-card-front-body { min-height: 84px; }
+  .srs-card-thai { font-size: 42px; margin: 6px 0; }
+  .srs-card-thai-primary { font-size: 42px; }
+  .srs-card-ph-primary { font-size: 30px; margin: 4px 0 2px; }
+  .srs-card-ph-front { font-size: 18px; margin-bottom: 10px; }
+  .srs-card-thai-secondary { font-size: 18px !important; margin: 2px 0 8px !important; }
+  .srs-card-prompt-text { font-size: 11px; letter-spacing: 0.16em; }
+  .srs-card-prompt-hint { font-size: 11px; }
+  .srs-card-face-back { max-height: min(58vh, 430px); max-height: min(58svh, 430px); overflow: hidden; }
+  .srs-card-back-body { flex: 0 1 auto; max-height: calc(58vh - 150px); max-height: calc(58svh - 150px); overflow-y: auto; padding-right: 2px; }
+  .srs-card-back-eyebrow { margin-bottom: 5px; }
+  .srs-card-back-ph { font-size: 12px; margin-bottom: 5px; }
+  .srs-card-en { font-size: 21px; margin-bottom: 10px; }
+  .srs-breakdown { margin-top: 8px; padding-top: 8px; }
+  .srs-breakdown-grid { gap: 4px; }
+  .srs-breakdown-item { padding: 5px 7px; min-width: 54px; }
+  .srs-card-note { margin-top: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.4; }
+  .card-skip-row { margin: 6px 0 10px; }
+  .cards-tab-content .rate-row { gap: 5px; }
+  .cards-tab-content .rate-btn { padding: 9px 4px; border-radius: 9px; }
+  .cards-tab-content .rate-btn-label { font-size: 11px; }
+  .cards-tab-content .rate-btn-sub { font-size: 9px; }
+  .cards-tab-content .reveal-btn { padding: 12px; font-size: 15px; }
 }
 .rate-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .rate-row-hidden { grid-template-columns: 1fr; }
@@ -1038,6 +1071,25 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .app-root[data-theme="dark"] .topstats-pill-streak { color: #E0AD7B; border-color: rgba(224, 173, 123, 0.35); }
 .app-root[data-theme="dark"] .topstats-pill-xp { color: var(--jade); }
 .topstats-hearts-of { opacity: 0.6; font-weight: 600; margin-left: 1px; }
+@media (max-width: 540px) {
+  .app-shell-header-inner { padding: 8px 10px; gap: 8px; }
+  .app-shell-header-brand { gap: 5px; flex: 0 1 auto; }
+  .brand-thai { font-size: 18px; }
+  .brand-en { font-size: 12px; white-space: nowrap; }
+  .topstats-bar { flex-wrap: nowrap; justify-content: flex-end; gap: 3px; overflow: hidden; }
+  .topstats-pill { gap: 3px; padding: 4px 6px; min-width: 28px; min-height: 26px; justify-content: center; font-size: 10px; white-space: nowrap; }
+  .topstats-pill svg { width: 11px; height: 11px; }
+  .topstats-icon-emoji { font-size: 12px; }
+  .topstats-hearts-of,
+  .topstats-due-label { display: none; }
+}
+@media (max-width: 360px) {
+  .app-shell-header-inner { padding-left: 8px; padding-right: 8px; gap: 6px; }
+  .brand-thai { font-size: 16px; }
+  .brand-en { font-size: 11px; }
+  .topstats-pill { padding: 3px 5px; min-width: 25px; font-size: 9px; }
+  .topstats-pill svg { width: 10px; height: 10px; }
+}
 
 /* === Main column main area (replaces .app-main when in shell) === */
 .app-shell-main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 22px 18px calc(100px + env(safe-area-inset-bottom, 0px)); }
@@ -1322,14 +1374,17 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: 0 0 14px;
-  padding: 0 0 14px;
+  margin: 0 0 12px;
+  padding: 8px 10px;
   width: 100%;
-  border-bottom: 1px dashed var(--line);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--line);
+  border-radius: 14px;
 }
+.app-root[data-theme="dark"] .srs-card-coach { background: rgba(255, 255, 255, 0.04); }
 .srs-card-with-coach { padding-top: 14px; }
 @media (min-width: 720px) {
-  .srs-card-coach { margin: 0 0 18px; padding: 0 0 18px; }
+  .srs-card-coach { margin: 0 0 16px; padding: 10px 12px; }
   .srs-card-with-coach { padding-top: 18px; }
 }
 
@@ -1379,9 +1434,13 @@ button.character-coach-portrait { cursor: pointer; }
   max-width: 100%;
 }
 .character-coach-compact .character-coach-portrait { width: 108px; height: 108px; }
+.srs-card-coach .character-coach-compact { gap: 10px; }
+.srs-card-coach .character-coach-compact .character-coach-portrait { width: 76px; height: 76px; }
 @media (min-width: 720px) {
   .character-coach-compact { gap: 22px; }
   .character-coach-compact .character-coach-portrait { width: 176px; height: 176px; }
+  .srs-card-coach .character-coach-compact { gap: 12px; }
+  .srs-card-coach .character-coach-compact .character-coach-portrait { width: 96px; height: 96px; }
 }
 
 /* Speech bubble — sits to the right of the elephant, white card surface
@@ -1400,12 +1459,26 @@ button.character-coach-portrait { cursor: pointer; }
   line-height: 1.4;
   box-shadow: 0 6px 18px rgba(15, 61, 46, 0.09);
 }
+.srs-card-coach .character-coach-compact .character-coach-bubble {
+  max-width: min(250px, calc(100% - 96px));
+  padding: 8px 11px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(15, 61, 46, 0.08);
+}
 @media (min-width: 720px) {
   .character-coach-compact .character-coach-bubble {
     max-width: min(260px, calc(100% - 210px));
     font-size: 14px;
     padding: 13px 18px;
     border-radius: 18px;
+  }
+  .srs-card-coach .character-coach-compact .character-coach-bubble {
+    max-width: min(360px, calc(100% - 118px));
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 13px;
   }
 }
 

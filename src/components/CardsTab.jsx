@@ -257,6 +257,18 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
                 )}
               </div>
 
+              {showCharacters && (
+                <div className="srs-card-coach srs-card-coach-back">
+                  <CharacterCoach
+                    characterId={coachId}
+                    state={coach.state}
+                    message={coach.message}
+                    isSpeaking={isSpeaking}
+                    compact
+                  />
+                </div>
+              )}
+
               <div className="srs-card-back-body">
                 <div className="srs-card-back-eyebrow">Meaning</div>
                 {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}

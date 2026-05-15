@@ -26,7 +26,7 @@ export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
       {due > 0 && (
         <div className="topstats-pill topstats-pill-due" title={`${due} card${due === 1 ? '' : 's'} due`}>
           <Flame size={13} />
-          <span>{due} due</span>
+          <span><span className="topstats-due-count">{due}</span><span className="topstats-due-label"> due</span></span>
         </div>
       )}
       <div className="topstats-pill topstats-pill-streak" title={`${streak} day streak`}>

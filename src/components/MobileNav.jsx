@@ -10,6 +10,7 @@ import {
   Compass,
   User,
   Trophy,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 
 // Mobile bottom nav: 5 slots is the practical cap before icons get cramped.
@@ -34,6 +35,7 @@ export default function MobileNav({
   tab,
   setTab,
   onOpenProfile,
+  onOpenSettings,
   dashboardStats,
   isAuthed,
 }) {
@@ -120,6 +122,14 @@ export default function MobileNav({
                   <span>Profile</span>
                 </button>
               )}
+              <button
+                type="button"
+                className="mobile-more-item"
+                onClick={() => { setMoreOpen(false); onOpenSettings && onOpenSettings(); }}
+              >
+                <SettingsIcon size={22} />
+                <span>Settings</span>
+              </button>
             </div>
             <button
               type="button"
