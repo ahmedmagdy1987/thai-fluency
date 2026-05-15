@@ -58,18 +58,18 @@ export default function PrivacyPolicy({ onClose }) {
           <h3>4. Third-party services</h3>
           <p>We use the following service providers as data processors:</p>
           <ul>
-            <li><strong>Supabase</strong> — database and authentication. <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a></li>
-            <li><strong>Vercel</strong> — hosting. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">vercel.com/legal/privacy-policy</a></li>
+            <li><strong>Supabase</strong>: database and authentication. <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a></li>
+            <li><strong>Vercel</strong>: hosting. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">vercel.com/legal/privacy-policy</a></li>
           </ul>
-          <p>These providers may collect technical data (IP address, request timestamps) for security and operational purposes. We use no other third-party integrations — no analytics, no advertising trackers.</p>
+          <p>These providers may collect technical data (IP address, request timestamps) for security and operational purposes. We use no other third-party integrations, analytics, or advertising trackers.</p>
 
           <h3>5. Your rights</h3>
           <p>You have the right to:</p>
           <ul>
-            <li><strong>Access</strong> your data — the app shows all of your stored progress.</li>
-            <li><strong>Delete</strong> your account and all associated data — contact us at the address below. Deletion cascades to all learning data within 30 days, allowing for backup retention.</li>
-            <li><strong>Export</strong> your data in a portable format — contact us at the address below to request an export.</li>
-            <li><strong>Correct</strong> inaccurate data — update your name in Settings; for other corrections, contact us.</li>
+            <li><strong>Access</strong> your data. The app shows all of your stored progress.</li>
+            <li><strong>Delete</strong> your account and all associated data. Contact us at the address below. Deletion cascades to all learning data within 30 days, allowing for backup retention.</li>
+            <li><strong>Export</strong> your data in a portable format. Contact us at the address below to request an export.</li>
+            <li><strong>Correct</strong> inaccurate data. Update your name in Settings; for other corrections, contact us.</li>
           </ul>
           <p>If you are in the EU/UK, you have the rights described in the GDPR, including the right to lodge a complaint with your data protection authority.</p>
 

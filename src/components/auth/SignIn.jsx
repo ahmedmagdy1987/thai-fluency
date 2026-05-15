@@ -121,7 +121,7 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
             <div className="auth-error-block">
               <div className="auth-error">{error.message}</div>
               <button type="button" className="auth-suggest-cta" onClick={goSignUpWithEmail}>
-                <UserPlus size={16} /> Create an account with this email →
+                <UserPlus size={16} /> Create an account with this email
               </button>
             </div>
           )}
@@ -129,7 +129,7 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
             <div className="auth-error-block">
               <div className="auth-error">{error.message}</div>
               <button type="button" className="auth-link auth-error-link" onClick={onForgot}>
-                Forgot password? →
+                Forgot password?
               </button>
             </div>
           )}
@@ -145,7 +145,7 @@ export default function SignIn({ onBack, onSignUp, onForgot, onSuccess }) {
                   onClick={handleResendConfirmation}
                   disabled={resending}
                 >
-                  {resending ? 'Resending…' : 'Resend confirmation email →'}
+                  {resending ? 'Resending…' : 'Resend confirmation email'}
                 </button>
               )}
             </div>

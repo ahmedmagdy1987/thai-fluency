@@ -43,7 +43,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
             <div className="tqi-label">Best score</div>
           </div>
           <div className="tqi-stat">
-            <div className="tqi-num">{passed ? '✓' : '—'}</div>
+            <div className="tqi-num">{passed ? '✓' : ''}</div>
             <div className="tqi-label">{passed ? 'Passed' : 'Not yet passed'}</div>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
         <div className="quiz-results-icon">{passedNow ? '🎵' : '📖'}</div>
         <div className="quiz-results-score">{score} / {questions.length}</div>
         <div className="quiz-results-pct">{pct}%</div>
-        <div className="quiz-results-msg">{passedNow ? 'You passed the Tones Quiz!' : 'Need 80% to pass — try again!'}</div>
+        <div className="quiz-results-msg">{passedNow ? 'You passed the Tones Quiz!' : 'Need 80% to pass. Try again!'}</div>
         <div className="quiz-results-actions">
           <button className="btn-primary" onClick={startQuiz}><RotateCcw size={14} /> Try again</button>
         </div>
@@ -110,7 +110,7 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
         <div className="quiz-feedback">
           <div className="quiz-feedback-detail">
             <span className="quiz-feedback-thai">{q.syl}</span>
-            <span className="quiz-feedback-en"> → {TONES[q.tone].name} tone, "{q.mean}"</span>
+            <span className="quiz-feedback-en"> Answer: {TONES[q.tone].name} tone, "{q.mean}"</span>
           </div>
           <button className="btn-primary" onClick={next}>
             {idx + 1 >= questions.length ? 'See results' : 'Next'} <ChevronRight size={16} />

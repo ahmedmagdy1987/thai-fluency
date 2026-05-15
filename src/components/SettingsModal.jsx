@@ -109,7 +109,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               className="setting-test-audio-btn"
               onClick={() => speakThai(previewText, audioRate)}
             >
-              Preview selected speed
+              Play sample
             </button>
           </div>
 
@@ -165,7 +165,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
 
           <div className="setting-group">
             <div className="setting-label">Daily XP goal</div>
-            <div className="setting-sub">Hit it for a {XP_REWARDS.dailyGoalBonus} XP bonus</div>
+            <div className="setting-sub">Earn a {XP_REWARDS.dailyGoalBonus} XP bonus when you hit it.</div>
             <div className="setting-toggle setting-goal-grid">
               {[25, 50, 100, 200].map(g => (
                 <button
@@ -195,7 +195,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
 
           <div className="setting-group">
             <div className="setting-label">Streak protection</div>
-            <div className="setting-sub">You have <strong>{stats.streakFreezes || 0}</strong> freeze{(stats.streakFreezes || 0) === 1 ? '' : 's'} available. Auto-grants every 7 study days.</div>
+            <div className="setting-sub">You have <strong>{stats.streakFreezes || 0}</strong> freeze{(stats.streakFreezes || 0) === 1 ? '' : 's'} available. You earn one every 7 study days.</div>
           </div>
 
           <div className="setting-group">

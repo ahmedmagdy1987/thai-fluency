@@ -104,13 +104,13 @@ export default function DemoMode({
           <div className="demo-end-icon"><Sparkles size={48} /></div>
           <div className="onboard-eyebrow">Demo complete</div>
           <h1 className="onboard-title">Loved it?</h1>
-          <p className="demo-end-thai">เก่งมาก — gèng mâak</p>
+          <p className="demo-end-thai">เก่งมาก (gèng mâak)</p>
           <p className="onboard-sub">
-            Sign up to save your progress and unlock the full Thai learning path —
+            Sign up to save your progress and unlock the full Thai learning path,
             from Survival Thai through Thai Mastery. Free forever.
           </p>
           <button className="btn-primary auth-cta demo-end-cta" onClick={onSignUp}>
-            <UserPlus size={16} /> Create my account →
+            <UserPlus size={16} /> Create my account
           </button>
           <button type="button" className="auth-link demo-end-signin" onClick={onSignIn}>
             Already have an account? Sign in
@@ -124,7 +124,7 @@ export default function DemoMode({
     <div className="onboard-root">
       <div className="onboard-card demo-card-wrap">
         <div className="demo-progress-row">
-          <div className="demo-progress-text">Demo · Card {idx + 1} of {cards.length}</div>
+          <div className="demo-progress-text">Demo: Card {idx + 1} of {cards.length}</div>
           <div className="demo-progress-bar">
             <div className="demo-progress-fill" style={{ width: `${((idx + 1) / cards.length) * 100}%` }} />
           </div>
@@ -231,7 +231,7 @@ export default function DemoMode({
 
         {revealed ? (
           <button className="btn-primary auth-cta demo-next-btn" onClick={advance}>
-            {idx + 1 < cards.length ? <>Next card <ChevronRight size={16} /></> : <>See what's next →</>}
+            {idx + 1 < cards.length ? <>Next card <ChevronRight size={16} /></> : <>See what's next</>}
           </button>
         ) : (
           <button type="button" className="demo-reveal-hint" onClick={handleReveal}>

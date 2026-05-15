@@ -49,7 +49,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       progress: `${reviewsToday}/${cardsTarget} cards`,
       pct: cardsPct,
       done: cardsDone,
-      reward: 'Rewards coming soon',
+      reward: 'Rewards planned',
       cta: cardsDone ? null : 'Open cards',
       onClick: () => setTab && setTab('cards'),
     },
@@ -79,7 +79,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
       progress: streakAlive ? `${stats.streak} days` : 'Start today',
       pct: streakPct,
       done: streakAlive,
-      reward: 'Streak rewards coming soon',
+      reward: 'Streak rewards planned',
       cta: streakAlive ? null : 'Study now',
       onClick: () => setTab && setTab('cards'),
     },
@@ -136,7 +136,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
         <div className="quests-future-body">
           <div className="quests-future-title">Weekly challenges and chests</div>
           <div className="quests-future-sub">
-            Rewards coming soon. Daily practice tracking is available now.
+            Rewards are planned. Daily practice tracking is available now.
           </div>
         </div>
       </section>

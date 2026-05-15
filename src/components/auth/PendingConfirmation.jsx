@@ -51,7 +51,7 @@ export default function PendingConfirmation({ email, onSignOut }) {
             className="btn-primary auth-submit"
             onClick={() => window.location.reload()}
           >
-            <RotateCw size={14} /> I confirmed — reload
+            <RotateCw size={14} /> I confirmed. Reload
           </button>
 
           <div className="auth-resend-row">

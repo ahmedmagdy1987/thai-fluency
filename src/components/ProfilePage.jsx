@@ -27,7 +27,7 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   }, [displayName]);
   const memberSince = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-    : '—';
+    : 'Not available';
   const stagesComplete = stageState
     ? stageState.stages.filter(s => s.complete && s.total > 0).length
     : 0;
@@ -189,10 +189,10 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
               <span className="profile-action-label">Sign out</span>
               <ChevronLeft size={14} className="profile-action-chevron" />
             </button>
-            <div className="profile-action-disabled" title="Coming soon">
+            <div className="profile-action-disabled" title="Not available yet">
               <Trash2 size={16} />
               <span className="profile-action-label">Delete account</span>
-              <span className="profile-action-coming">Coming soon</span>
+              <span className="profile-action-coming">Not available yet</span>
             </div>
           </div>
         </div>

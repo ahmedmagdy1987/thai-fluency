@@ -132,7 +132,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setSessionDone(d => Math.max(0, d - 1));
     if (lastReviewSnapshot.rating >= 3) setSessionCorrect(c => Math.max(0, c - 1));
     setRevealed(true); // show the card revealed since they're correcting it
-    coach.react('thinking', { duration: 1000, message: 'Re-rating it — your call.' });
+    coach.react('thinking', { duration: 1000, message: 'Re-rate it if needed.' });
   };
 
   if (!card) {
@@ -228,12 +228,12 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
                 ) : viewMode === 'both' ? (
                   <>
                     <div className="srs-card-thai">{card.thai}</div>
-                    <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
+                    <div className="srs-card-ph-front">{card.ph || <span className="srs-card-ph-pending">phonetic unavailable</span>}</div>
                   </>
                 ) : (
                   <>
                     {/* speak mode: phonetic primary, Thai script small/secondary */}
-                    <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic coming soon</span>}</div>
+                    <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic unavailable</span>}</div>
                     <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
                   </>
                 )}
@@ -306,7 +306,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         {/* I know this - skip button (only when card is new and not yet revealed) */}
         {isNew && !revealed && markCardKnown && (
           <button className="srs-skip-btn" onClick={(e) => { e.stopPropagation(); handleSkip(); }}>
-            I already know this — skip
+            I already know this. Skip
           </button>
         )}
       </div>
@@ -320,7 +320,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
             <RateBtn rating={4} label="Easy"  subLabel={intervalLabel(cardState, 4)} color="#2563A8" onClick={() => handleRate(4)} />
           </div>
           <div className="card-skip-row">
-            <button className="card-skip-btn" onClick={handleSkip}>I already know this — skip</button>
+            <button className="card-skip-btn" onClick={handleSkip}>I already know this. Skip</button>
           </div>
         </>
       )}

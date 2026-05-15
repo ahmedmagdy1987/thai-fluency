@@ -44,7 +44,7 @@ export default function DialoguesView({ recordDialogueComplete, dialoguesComplet
                 <div className="dialogue-bubble-row">
                   <div className="dialogue-bubble-text">
                     <div className="dialogue-line-thai">{line.thai}</div>
-                    <div className="dialogue-line-ph">{line.ph || <span className="ph-pending">phonetic coming soon</span>}</div>
+                    <div className="dialogue-line-ph">{line.ph || <span className="ph-pending">phonetic unavailable</span>}</div>
                     <div className="dialogue-line-en">"{line.en}"</div>
                   </div>
                   {ttsAvailable() && line.thai && (

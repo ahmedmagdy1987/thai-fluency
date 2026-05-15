@@ -107,7 +107,7 @@ export default function NotificationSettings({ session, profile, onProfileRefres
     statusLabel = 'Blocked in browser settings';
     statusTone = 'warn';
   } else if (permission === 'granted' && optedIn) {
-    statusLabel = 'On — this device';
+    statusLabel = 'On for this device';
     statusTone = 'on';
   } else if (permission === 'granted' && !optedIn) {
     statusLabel = 'Permission granted but paused';

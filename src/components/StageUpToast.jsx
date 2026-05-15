@@ -11,7 +11,7 @@ export default function StageUpToast({ stage, onClose }) {
       <div className="toast-icon toast-icon-big">{stage.icon}</div>
       <div className="toast-body">
         <div className="toast-eyebrow">Stage Complete!</div>
-        <div className="toast-title">Stage {stage.id} · {stage.name}</div>
+        <div className="toast-title">Stage {stage.id}: {stage.name}</div>
         <div className="toast-desc">{stage.desc}</div>
       </div>
     </div>

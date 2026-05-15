@@ -142,7 +142,7 @@ export default function SignUp({ onBack, onSignIn, onSuccess, prefilledEmail }) 
         <div className="onboard-eyebrow">Get started</div>
         <h1 className="onboard-title">Create your account</h1>
         <p className="onboard-sub">
-          Save progress to the cloud — pick up on any device. Free forever.
+          Save progress to the cloud and pick up on any device. Free forever.
         </p>
 
         <form onSubmit={handleSubmit} className="auth-form">

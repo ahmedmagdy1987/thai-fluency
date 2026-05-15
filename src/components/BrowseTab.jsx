@@ -107,7 +107,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                 ))}
                 {nextLockedStage && (
                   <div className="stage-chip stage-chip-locked-preview" style={{ '--chip-color': nextLockedStage.color }} title={`Unlocks when Stage ${upper} is 70% mastered`}>
-                    🔒 Stage {nextLockedStage.id} · {nextLockedStage.name} (next)
+                    🔒 Stage {nextLockedStage.id}: {nextLockedStage.name} (next)
                   </div>
                 )}
               </div>
@@ -115,8 +115,8 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
           )}
           {!search && unlockedStages.length === 1 && (
             <div className="browse-s1-only-notice">
-              📖 Browsing <strong>{unlockedStages[0].name}</strong> · {visibleDeck.length} cards
-              {nextLockedStage ? ` · ${nextLockedStage.name} unlocks at 70% mastery` : ''}
+              📖 Browsing <strong>{unlockedStages[0].name}</strong>. {visibleDeck.length} cards
+              {nextLockedStage ? `. ${nextLockedStage.name} unlocks at 70% mastery` : ''}
             </div>
           )}
 
@@ -124,7 +124,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
             <section className="browse-filter-section" aria-labelledby="filter-cat-label">
               <header className="browse-filter-header">
                 <h3 id="filter-cat-label" className="browse-filter-title">🏷️ Filter by Category</h3>
-                <span className="browse-filter-hint">Topic — food, body, time, and more</span>
+                <span className="browse-filter-hint">Topics: food, body, time, and more</span>
               </header>
               <div className="cat-chips">
                 <button className={`cat-chip ${activeCat === null ? 'cat-chip-active' : ''}`} onClick={() => setActiveCat(null)}>
@@ -176,7 +176,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                   <div key={c.id} className="vocab-item">
                     <div className="vocab-item-main">
                       <div className="vocab-item-thai">{c.thai}</div>
-                      <div className="vocab-item-ph">{c.ph || <span className="vocab-item-ph-pending">phonetic coming soon</span>}</div>
+                      <div className="vocab-item-ph">{c.ph || <span className="vocab-item-ph-pending">phonetic unavailable</span>}</div>
                       <div className="vocab-item-en">{c.en}</div>
                       {c.note && <div className="vocab-item-note">{c.note}</div>}
                     </div>
@@ -205,7 +205,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                 className="browse-load-more-btn"
                 onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
               >
-                Load more · {Math.min(PAGE_SIZE, filtered.length - visibleCount)} more
+                Load more ({Math.min(PAGE_SIZE, filtered.length - visibleCount)} more)
               </button>
             </div>
           )}

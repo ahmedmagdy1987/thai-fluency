@@ -56,15 +56,15 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
         <div className="auth-welcome-bullets">
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon">🌱</span>
-            <div><strong>Start with 6 missions</strong> in Survival Thai — greetings, food, taxi, prices, help.</div>
+            <div><strong>Start with 6 missions.</strong> Practice greetings, food, taxis, prices, and help.</div>
           </div>
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon">🔄</span>
-            <div><strong>Sync across devices</strong> — your progress follows you from laptop to phone.</div>
+            <div><strong>Sync across devices.</strong> Your progress follows you from laptop to phone.</div>
           </div>
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon">🎯</span>
-            <div><strong>Speak from day one</strong> — real phrases for Thailand, not textbook drills.</div>
+            <div><strong>Speak from day one.</strong> Use real phrases for Thailand, not textbook drills.</div>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
           </button>
         </div>
         <button className="auth-guest-link" onClick={onTryDemo}>
-          Try a quick demo (5 cards) →
+          Try a quick demo (5 cards)
         </button>
         <div className="auth-welcome-footer">
           By continuing you agree to our{' '}

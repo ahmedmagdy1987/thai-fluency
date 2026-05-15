@@ -31,7 +31,7 @@ export default function AchievementToast({ achievement, onClose }) {
             {isMilestone ? 'You’ve completed 10 cards' : achievement.name}
           </div>
           <div className="toast-desc">
-            {isMilestone ? 'Keep going — you’re building real Thai fluency.' : achievement.desc}
+            {isMilestone ? 'Keep going. You are building real Thai fluency.' : achievement.desc}
           </div>
         </div>
       </div>

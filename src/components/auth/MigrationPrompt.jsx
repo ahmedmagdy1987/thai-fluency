@@ -75,7 +75,7 @@ export default function MigrationPrompt({ cardCount, totalXp, streak, onMigrate,
               disabled={busy}
               type="button"
             >
-              Skip — I want to start fresh
+              Skip. Start fresh
             </button>
           ) : (
             <div className="migration-skip-confirm">

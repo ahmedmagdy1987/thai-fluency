@@ -14,7 +14,7 @@ export default function LeaderboardScreen({ stats }) {
       <header className="leaderboard-hero">
         <div className="leaderboard-hero-icon"><Trophy size={28} /></div>
         <div className="leaderboard-hero-body">
-          <div className="leaderboard-hero-eyebrow">Leaderboard · Preview</div>
+          <div className="leaderboard-hero-eyebrow">Leaderboard preview</div>
           <h1 className="leaderboard-hero-title">Friendly competition is on the way</h1>
           <p className="leaderboard-hero-sub">
             Compete weekly with other Thai learners by total XP earned. Climb
@@ -25,7 +25,7 @@ export default function LeaderboardScreen({ stats }) {
 
       <div className="leaderboard-preview-card">
         <div className="leaderboard-preview-row leaderboard-preview-row-self">
-          <div className="leaderboard-preview-rank">—</div>
+          <div className="leaderboard-preview-rank">You</div>
           <div className="leaderboard-preview-avatar" aria-hidden="true">🐘</div>
           <div className="leaderboard-preview-name">You</div>
           <div className="leaderboard-preview-stat">
@@ -36,22 +36,22 @@ export default function LeaderboardScreen({ stats }) {
         <div className="leaderboard-preview-row leaderboard-preview-row-placeholder">
           <div className="leaderboard-preview-rank">2</div>
           <div className="leaderboard-preview-avatar" aria-hidden="true">🦎</div>
-          <div className="leaderboard-preview-name">A future learner</div>
-          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>—</span></div>
-          <div className="leaderboard-preview-xp">— XP</div>
+          <div className="leaderboard-preview-name">Learner preview</div>
+          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>0</span></div>
+          <div className="leaderboard-preview-xp">0 XP</div>
         </div>
         <div className="leaderboard-preview-row leaderboard-preview-row-placeholder">
           <div className="leaderboard-preview-rank">3</div>
           <div className="leaderboard-preview-avatar" aria-hidden="true">🐒</div>
-          <div className="leaderboard-preview-name">A future learner</div>
-          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>—</span></div>
-          <div className="leaderboard-preview-xp">— XP</div>
+          <div className="leaderboard-preview-name">Learner preview</div>
+          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>0</span></div>
+          <div className="leaderboard-preview-xp">0 XP</div>
         </div>
       </div>
 
       <div className="leaderboard-lock">
         <Lock size={14} />
-        <span>Leaderboards require opt-in profile sharing and weekly aggregation. Phase 1 keeps everything private.</span>
+        <span>Leaderboards require opt-in profile sharing and weekly totals. Your profile stays private by default.</span>
       </div>
 
       <div className="leaderboard-future">
@@ -59,7 +59,7 @@ export default function LeaderboardScreen({ stats }) {
         <div>
           <div className="leaderboard-future-title">Private by default</div>
           <div className="leaderboard-future-sub">
-            When leaderboards ship you'll choose whether to appear at all. Display name only — no email, no streak data without consent.
+            You will choose whether to appear. Display name only. No email or streak data without consent.
           </div>
         </div>
       </div>

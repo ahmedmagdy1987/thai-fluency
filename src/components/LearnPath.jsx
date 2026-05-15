@@ -36,12 +36,12 @@ export default function LearnPath({
     : null;
 
   const ctaLabel = due > 0
-    ? `Continue · ${due} due`
+    ? `Continue: ${due} due`
     : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`);
 
   const continueSubtitle = inMissionView && currentMission
-    ? `Mission ${currentMission.id} · ${currentMission.name}`
-    : (currentStage ? `Stage ${currentStage.id} · ${currentStage.name}` : 'Survival Thai');
+    ? `Mission ${currentMission.id}: ${currentMission.name}`
+    : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
 
@@ -64,7 +64,7 @@ export default function LearnPath({
           <div className="learn-continue-eyebrow">{continueSubtitle}</div>
           <div className="learn-continue-cta">{ctaLabel}</div>
           <div className="learn-continue-sub">
-            with <strong>{stageCharacter.name}</strong> — {stageCharacter.vibe}
+            Guided by <strong>{stageCharacter.name}</strong>. {stageCharacter.vibe}
           </div>
         </div>
         <div className="learn-continue-arrow"><ChevronRight size={26} /></div>
@@ -108,8 +108,8 @@ export default function LearnPath({
       {inMissionView && currentMission && missionState && (
         <section className="learn-section">
           <div className="learn-section-header">
-            <h2 className="learn-section-title">Mission {currentMission.id} · {currentMission.name}</h2>
-            <span className="learn-section-meta">Stage 1 · Survival Thai</span>
+            <h2 className="learn-section-title">Mission {currentMission.id}: {currentMission.name}</h2>
+            <span className="learn-section-meta">Stage 1: Survival Thai</span>
           </div>
           <div className="learn-mission-card" style={{ '--mission-color': currentMission.color }}>
             <div className="learn-mission-icon">{currentMission.icon}</div>
@@ -123,7 +123,6 @@ export default function LearnPath({
               </div>
               <div className="learn-mission-stats">
                 <span>{currentMission.seen}/{currentMission.total} seen</span>
-                <span>·</span>
                 <span>{currentMission.mature}/{currentMission.total} mastered</span>
               </div>
             </div>
@@ -164,7 +163,7 @@ export default function LearnPath({
       <section className="learn-section">
         <div className="learn-section-header">
           <h2 className="learn-section-title">Your Thai journey</h2>
-          <span className="learn-section-meta">{STAGES.length} stages · {MISSIONS.length} S1 missions</span>
+          <span className="learn-section-meta">{STAGES.length} stages, {MISSIONS.length} Stage 1 missions</span>
         </div>
 
         <ol className="learn-path-list" role="list">
@@ -230,7 +229,7 @@ export default function LearnPath({
                       </div>
                     )}
                     {isEmpty && (
-                      <div className="learn-path-empty-note">More cards coming soon</div>
+                      <div className="learn-path-empty-note">More lessons planned</div>
                     )}
                   </div>
                   {!isLocked && (
@@ -245,7 +244,7 @@ export default function LearnPath({
 
       <div className="learn-footnote">
         <Sparkles size={14} />
-        <span>Stages unlock as you reach 70% mastery. Take your time — practical fluency over speed.</span>
+        <span>Stages unlock at 70% mastery. Take your time. Practical fluency matters more than speed.</span>
       </div>
     </div>
   );

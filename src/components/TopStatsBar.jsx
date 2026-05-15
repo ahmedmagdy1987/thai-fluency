@@ -37,7 +37,7 @@ export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
         type="button"
         className="topstats-pill topstats-pill-gems"
         onClick={onShopClick}
-        title="Gems — coming soon"
+        title="Gems preview"
       >
         <Gem size={13} />
         <span>{gems}</span>
@@ -46,7 +46,7 @@ export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
         type="button"
         className="topstats-pill topstats-pill-hearts"
         onClick={onShopClick}
-        title="Hearts — coming soon"
+        title="Hearts preview"
       >
         <Heart size={13} fill="currentColor" />
         <span>{hearts}<span className="topstats-hearts-of">/{heartsMax}</span></span>

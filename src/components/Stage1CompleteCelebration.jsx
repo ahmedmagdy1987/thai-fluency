@@ -20,18 +20,18 @@ export default function Stage1CompleteCelebration({ onClose }) {
         <div className="s1-complete-icon"><Sparkles size={56} /></div>
         <div className="s1-complete-eyebrow">Survival Thai Complete</div>
         <h1 className="s1-complete-title">👑 You can handle real Thailand.</h1>
-        <p className="s1-complete-thai">เก่งมาก — gèng mâak</p>
+        <p className="s1-complete-thai">เก่งมาก (gèng mâak)</p>
         <p className="s1-complete-body">
           You've mastered the 150 essentials. You can greet, order food, ask directions,
           handle prices, and call for help in Thai.
         </p>
         <div className="s1-complete-divider" />
         <div className="s1-complete-unlock-eyebrow">Now unlocked</div>
-        <div className="s1-complete-unlock-title">{s2.icon} Stage 2 · {s2.name}</div>
+        <div className="s1-complete-unlock-title">{s2.icon} Stage 2: {s2.name}</div>
         <p className="s1-complete-unlock-body">
-          {s2Count} new cards — {s2.desc.toLowerCase()} More stages unlock as you complete each one.
+          {s2Count} new cards unlocked. {s2.desc} More stages unlock as you complete each one.
         </p>
-        <button className="s1-complete-cta" onClick={onClose}>Let's keep going →</button>
+        <button className="s1-complete-cta" onClick={onClose}>Let's keep going</button>
       </div>
     </div>
   );

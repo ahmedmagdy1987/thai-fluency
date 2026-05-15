@@ -47,7 +47,7 @@ export const STAGES = [
     name:'Survival Thai',
     icon:'🌱',
     color:'#5BAF7C',
-    desc:'Function immediately: greetings, numbers, food, taxi, "I want", "Where is".',
+    desc:'Start using Thai right away: greetings, numbers, food, taxis, wants, and places.',
     cats:['pronouns','verbs','greetings','questions','numbers','time','grammar'],
 },
   {
@@ -55,7 +55,7 @@ export const STAGES = [
     name:'Daily Essentials',
     icon:'🍜',
     color:'#E0823B',
-    desc:'Order food, shop, buy things, navigate flavors and quantities.',
+    desc:'Order food, shop, buy things, and handle flavors and quantities.',
     cats:['food','food-phrases','shopping','sentences-food','sentences-want','colors','adjectives'],
 },
   {
@@ -63,7 +63,7 @@ export const STAGES = [
     name:'Getting Around',
     icon:'🛺',
     color:'#2563A8',
-    desc:'Taxis, motorbikes, hotels, airports. Get anywhere.',
+    desc:'Use taxis, motorbikes, hotels, and airports with confidence.',
     cats:['places','directions','sentences-travel'],
 },
   {
@@ -71,7 +71,7 @@ export const STAGES = [
     name:'Real Conversations',
     icon:'🤝',
     color:'#C9A961',
-    desc:'Make friends. Small talk. Compliments. Daily chat.',
+    desc:'Make friends, handle small talk, and keep daily chats moving.',
     cats:['intro','people','emotions','sentences-self','sentences-questions','sentences-polite','sentences-social','sentences-daily','weather','adverbs'],
 },
   {
@@ -79,7 +79,7 @@ export const STAGES = [
     name:'Social Confidence',
     icon:'🏠',
     color:'#7B5BA3',
-    desc:'Condo, internet, AC, repairs, deliveries. Adult life problems.',
+    desc:'Handle condos, internet, repairs, deliveries, and everyday home needs.',
     cats:['things','home','sentences-home'],
 },
   {
@@ -87,7 +87,7 @@ export const STAGES = [
     name:'Intermediate Power',
     icon:'🩺',
     color:'#A03B2C',
-    desc:'Pharmacy, doctor, massage, pain, emergencies.',
+    desc:'Handle pharmacies, doctors, massage, pain, and emergencies.',
     cats:['body','emergency','health','sentences-health'],
 },
   {
@@ -95,7 +95,7 @@ export const STAGES = [
     name:'Natural Thai',
     icon:'💳',
     color:'#5B7C99',
-    desc:'Bank, ATM, visa, phone plans, immigration, paperwork.',
+    desc:'Handle banking, ATMs, visas, phone plans, immigration, and paperwork.',
     cats:['admin','sentences-admin'],
 },
   {
@@ -103,7 +103,7 @@ export const STAGES = [
     name:'Thai Mastery',
     icon:'👑',
     color:'#0F3D2E',
-    desc:'Connectors, opinions, slang, particles. Sound less robotic.',
+    desc:'Use connectors, opinions, slang, and particles so your Thai sounds natural.',
     cats:['fluency','sentences-fluency'],
 },
 ];
@@ -142,7 +142,7 @@ export const MISSIONS = [
     icon: '💰',
     color: '#C9A961',
     goal: 'Ask "how much", understand prices and time, count.',
-    celebration: '💰 You can bargain! เท่าไหร่ครับ → ลดได้ไหม. Mission 5 unlocked.',
+    celebration: '💰 You can ask about prices and discounts. Mission 5 unlocked.',
   },
   {
     id: 5,
@@ -150,7 +150,7 @@ export const MISSIONS = [
     icon: '❤️',
     color: '#A03B2C',
     goal: "Ask for help, express that you don't understand, talk about pain/needs.",
-    celebration: '❤️ You can ask for help! ช่วยด้วย, ผมไม่เข้าใจ — three lifelines mastered. Mission 6 unlocked.',
+    celebration: '❤️ You can ask for help. Three lifelines mastered. Mission 6 unlocked.',
   },
   {
     id: 6,
@@ -158,6 +158,6 @@ export const MISSIONS = [
     icon: '👑',
     color: '#0F3D2E',
     goal: 'Review challenge. Connectors, common verbs, fluency particles to lock in mastery before Stage 2.',
-    celebration: '👑 Survival Thai complete! You can handle real Thailand. The full path is now unlocked — 4,752 cards await.',
+    celebration: '👑 Survival Thai complete. You can handle real Thailand. The full 4,752-card path is unlocked.',
   },
 ];

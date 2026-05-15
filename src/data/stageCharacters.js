@@ -20,7 +20,7 @@ export const CHARACTERS = {
     name: 'Chang',
     placeholderEmoji: '🐘',
     accent: '#5BAF7C',
-    vibe: 'patient, steady, never forgets a word',
+    vibe: 'Patient, steady, and ready to help you remember.',
     hasArt: true,
   },
   gecko: {
@@ -28,7 +28,7 @@ export const CHARACTERS = {
     name: 'Jingjok',
     placeholderEmoji: '🦎',
     accent: '#7B5BA3',
-    vibe: 'curious, quick, hears every tone',
+    vibe: 'Curious, quick, and sharp with tones.',
     hasArt: false,
   },
   monkey: {
@@ -36,7 +36,7 @@ export const CHARACTERS = {
     name: 'Ling',
     placeholderEmoji: '🐒',
     accent: '#E0823B',
-    vibe: 'playful — perfect for daily life lessons',
+    vibe: 'Playful practice for daily life.',
     hasArt: false,
   },
   muayThai: {
@@ -44,7 +44,7 @@ export const CHARACTERS = {
     name: 'Khun Suk',
     placeholderEmoji: '🥊',
     accent: '#A03B2C',
-    vibe: 'disciplined — pushes you to mastery',
+    vibe: 'Disciplined coaching for steady mastery.',
     hasArt: true,
   },
   buffalo: {
@@ -52,7 +52,7 @@ export const CHARACTERS = {
     name: 'Kwai',
     placeholderEmoji: '🐃',
     accent: '#6B4F2E',
-    vibe: 'strong, dependable — your fluency anchor',
+    vibe: 'Strong support for confident fluency.',
     hasArt: false,
   },
   hippo: {
@@ -60,7 +60,7 @@ export const CHARACTERS = {
     name: 'Hippo',
     placeholderEmoji: '🦛',
     accent: '#2563A8',
-    vibe: 'cool under pressure — natural Thai flow',
+    vibe: 'Calm practice for natural Thai flow.',
     hasArt: false,
   },
 };
@@ -89,7 +89,7 @@ export function getStageCharacter(stageId) {
     name: 'Tuk Talk',
     placeholderEmoji: '✨',
     accent: '#C9A961',
-    vibe: 'your guide on the path',
+    vibe: 'A steady guide for the path.',
     hasArt: false,
   };
 }

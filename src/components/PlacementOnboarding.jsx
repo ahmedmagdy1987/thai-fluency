@@ -26,7 +26,7 @@ export default function PlacementOnboarding({ onComplete }) {
     return (
       <div className="onboard-root">
         <div className="onboard-card">
-          <div className="onboard-eyebrow">ภาษาไทย · phaa-sǎa thai</div>
+          <div className="onboard-eyebrow">Thai setup</div>
           <h1 className="onboard-title">Welcome.</h1>
           <p className="onboard-sub">Quick setup. We'll skip what you already know.</p>
 
@@ -105,7 +105,7 @@ export default function PlacementOnboarding({ onComplete }) {
           <div className="onboard-eyebrow">Do you know this?</div>
           <div className="onboard-placement-card">
             <div className="onboard-placement-thai">{transformThai(card.thai, voice)}</div>
-            <div className="onboard-placement-ph">{card.ph && card.ph.trim() ? transformPh(card.ph, voice) : <span className="ph-pending">phonetic coming soon</span>}</div>
+            <div className="onboard-placement-ph">{card.ph && card.ph.trim() ? transformPh(card.ph, voice) : <span className="ph-pending">phonetic unavailable</span>}</div>
             <div className="onboard-placement-en">{transformEn(card.en, voice)}</div>
           </div>
           <div className="onboard-rate-row">
@@ -156,7 +156,7 @@ export default function PlacementOnboarding({ onComplete }) {
         <div className="onboard-eyebrow">Almost done</div>
         <h2 className="onboard-title">Where do you want to start?</h2>
         <p className="onboard-sub">
-          You marked {knownIds.length} card{knownIds.length === 1 ? '' : 's'} as known. We'll start you at the right level — we suggest <strong>Stage {suggestedStage}</strong>.
+          You marked {knownIds.length} card{knownIds.length === 1 ? '' : 's'} as known. We suggest <strong>Stage {suggestedStage}</strong>.
         </p>
         <div className="onboard-stage-grid">
           {STAGES.map(s => (
@@ -169,7 +169,7 @@ export default function PlacementOnboarding({ onComplete }) {
           ))}
         </div>
         <div className="onboard-skip-row">
-          <button className="onboard-skip-btn" onClick={() => onComplete(1, knownIds, voice)}>I'm a total beginner — start at Stage 1</button>
+          <button className="onboard-skip-btn" onClick={() => onComplete(1, knownIds, voice)}>I'm a total beginner. Start at Stage 1</button>
         </div>
       </div>
     </div>

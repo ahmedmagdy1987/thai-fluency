@@ -82,7 +82,7 @@ export default function CharacterCoach({
         type={interactive ? 'button' : undefined}
         className="character-coach-portrait"
         onClick={interactive ? onClick : undefined}
-        aria-label={interactive ? `${character.displayName} — your Thai coach` : undefined}
+        aria-label={interactive ? `${character.displayName}, your Thai coach` : undefined}
       >
         <span className="character-coach-halo" aria-hidden="true" />
         <img

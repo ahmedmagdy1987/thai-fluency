@@ -18,7 +18,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
     ? Math.max(0, _currentMissionForSubtitle.total - _currentMissionForSubtitle.seen)
     : stats.newAvail;
   const subtitle = stats.due > 0
-    ? `${stats.due} due now${newCount > 0 ? ` · ${newCount} new available` : ''}`
+    ? `${stats.due} due now${newCount > 0 ? `, ${newCount} new available` : ''}`
     : (inMissionViewPre && _currentMissionForSubtitle ? `Mission ${_currentMissionForSubtitle.id}: ${newCount} cards` : `${newCount} new cards ready`);
   const goal = fullStats.dailyGoal || DEFAULT_DAILY_GOAL;
   const todayXp = fullStats.todayXp || 0;
@@ -77,7 +77,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
             {goalMet ? `+${XP_REWARDS.dailyGoalBonus} XP bonus earned` : `${goal - todayXp} XP to go`}
           </div>
           <div className="daily-goal-stats">
-            <div className="dgs-item"><span className="dgs-num">{fullStats.streak || 0}</span><span className="dgs-label">🔥 streak</span></div>
+            <div className="dgs-item"><span className="dgs-num">{fullStats.streak || 0}</span><span className="dgs-label">streak</span></div>
             <div className="dgs-item"><span className="dgs-num">{fullStats.totalXp || 0}</span><span className="dgs-label">total XP</span></div>
             <div className="dgs-item"><span className="dgs-num">{fullStats.dailyGoalsHit || 0}</span><span className="dgs-label">goals hit</span></div>
           </div>
@@ -89,12 +89,12 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
         <div className="dash-section">
           <div className="dash-section-header">
             <div className="dash-section-title">Your mission</div>
-            <div className="dash-section-meta">Mission {currentMission.id} of 6 · Survival Thai</div>
+            <div className="dash-section-meta">Mission {currentMission.id} of 6: Survival Thai</div>
           </div>
           <div className="level-card-current" style={{ '--level-color': currentMission.color }}>
             <div className="level-card-icon">{currentMission.icon}</div>
             <div className="level-card-body">
-              <div className="level-card-name">Mission {currentMission.id} · {currentMission.name}</div>
+              <div className="level-card-name">Mission {currentMission.id}: {currentMission.name}</div>
               <div className="level-card-desc">{currentMission.goal}</div>
               <div className="level-card-overall">
                 <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentMission.maturePct + '%' }} /></div>
@@ -137,7 +137,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
           <div className="level-card-current" style={{ '--level-color': currentStage.color }}>
             <div className="level-card-icon">{currentStage.icon}</div>
             <div className="level-card-body">
-              <div className="level-card-name">Stage {currentStage.id} · {currentStage.name}</div>
+              <div className="level-card-name">Stage {currentStage.id}: {currentStage.name}</div>
               <div className="level-card-desc">{currentStage.desc}</div>
               <div className="level-card-overall">
                 <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentStage.maturePct + '%' }} /></div>
@@ -203,7 +203,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
             <BookOpen size={20} />
             <div>
               <div className="quick-title">Browse content</div>
-              <div className="quick-sub">{inMissionView ? '150 cards in Survival Thai' : `${CARDS.length} cards`} · 6 dialogues</div>
+              <div className="quick-sub">{inMissionView ? '150 cards in Survival Thai' : `${CARDS.length} cards`}, 6 dialogues</div>
             </div>
           </button>
           <button className="quick-card" onClick={() => setTab('quiz')}>
@@ -217,14 +217,14 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
             <Compass size={20} />
             <div>
               <div className="quick-title">Tones quiz</div>
-              <div className="quick-sub">{fullStats.tonesQuizPassed ? '✓ Passed · try again' : 'Train your ear'}</div>
+              <div className="quick-sub">{fullStats.tonesQuizPassed ? 'Passed. Try again' : 'Train your ear'}</div>
             </div>
           </button>
         </div>
       </div>
 
       <div className="footer-ornament">
-        <span>{voice === 'female' ? 'โชคดีค่ะ · chôhk dee khâ' : 'โชคดีครับ · chôhk dee khráp'}</span>
+        <span>{voice === 'female' ? 'โชคดีค่ะ (chôhk dee khâ)' : 'โชคดีครับ (chôhk dee khráp)'}</span>
       </div>
 
       {showAchievements && <AchievementsModal achievements={allAchievements} unlocked={fullStats.unlockedAchievements || []} onClose={() => setShowAchievements(false)} />}
