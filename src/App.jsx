@@ -54,6 +54,8 @@ import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
+import MiniUnitFlow from './components/MiniUnitFlow.jsx';
+import { getMiniUnit } from './data/miniUnits.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects'];
 
@@ -77,6 +79,7 @@ export default function TukTalkThaiApp() {
   const [showProfile, setShowProfile] = useState(false);
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
+  const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
 
   // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
   // only paths to the full app are sign-in or sign-up.
@@ -685,6 +688,11 @@ export default function TukTalkThaiApp() {
     });
   }, [session, profile]);
 
+  const handleSetTab = useCallback((nextTab) => {
+    setActiveMiniUnitId(null);
+    setTab(nextTab);
+  }, []);
+
   // Sequential stage unlock: only stages ≤ maxUnlockedStage are accessible.
   // Stage N+1 unlocks when Stage N reaches 70% mastery. dashboardStats, the
   // Cards tab SRS pool, Browse listing, and the Quiz pool all filter to the
@@ -697,6 +705,7 @@ export default function TukTalkThaiApp() {
   const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
+  const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
 
   // Hard-fail when Supabase env vars are missing — never silently degrade to
   // a no-auth main app. Security audit HIGH-1: previously, an unconfigured
@@ -826,7 +835,7 @@ export default function TukTalkThaiApp() {
   return (
     <AppShell
       tab={tab}
-      setTab={setTab}
+      setTab={handleSetTab}
       stats={stats}
       dashboardStats={dashboardStats}
       session={session}
@@ -835,15 +844,29 @@ export default function TukTalkThaiApp() {
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
     >
-      {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={setTab} />}
-      {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={setTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
-      {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
-      {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
-      {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
-      {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
-      {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={setTab} />}
-      {tab === 'shop'   && <ShopScreen stats={stats} />}
-      {tab === 'leaderboard' && <LeaderboardScreen stats={stats} />}
+      {activeMiniUnit ? (
+        <MiniUnitFlow
+          unit={activeMiniUnit}
+          voice={voice}
+          audioRate={stats.audioRate || 0.95}
+          showCharacters={stats.showCharacters !== false}
+          onExit={() => setActiveMiniUnitId(null)}
+          onOpenCards={() => handleSetTab('cards')}
+          onOpenChallenge={() => handleSetTab('quiz')}
+        />
+      ) : (
+        <>
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={setActiveMiniUnitId} />}
+          {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
+          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
+          {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
+          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
+          {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
+          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={handleSetTab} />}
+          {tab === 'shop'   && <ShopScreen stats={stats} />}
+          {tab === 'leaderboard' && <LeaderboardScreen stats={stats} />}
+        </>
+      )}
 
       {achievementToast && (
         <AchievementToast achievement={achievementToast} onClose={handleAchievementToastClose} />

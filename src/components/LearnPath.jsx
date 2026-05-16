@@ -1,8 +1,9 @@
 import React from 'react';
-import { ChevronRight, Lock, Check, Sparkles, Flame, Zap } from 'lucide-react';
+import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Zap } from 'lucide-react';
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
+import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 
 // New primary learning view. Renders the 8-stage path with a per-stage
 // character, plus a Stage-1 mission rail while the user is still in S1.
@@ -15,6 +16,7 @@ export default function LearnPath({
   stageState,
   missionState,
   setTab,
+  onStartMiniUnit,
 }) {
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
@@ -44,6 +46,7 @@ export default function LearnPath({
     : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
+  const showMiniUnitPilot = !!(onStartMiniUnit && stageState && stageState.currentStage === 1);
 
   return (
     <div className="tab-content learn-path">
@@ -71,6 +74,33 @@ export default function LearnPath({
       </section>
 
       {/* Daily goal — mirrors TodayTab's ring so users get the same dopamine signal */}
+      {showMiniUnitPilot && (
+        <section className="learn-miniunit-card">
+          <div className="learn-miniunit-icon" aria-hidden="true">
+            <BookOpen size={24} />
+          </div>
+          <div className="learn-miniunit-body">
+            <div className="learn-miniunit-eyebrow">Guided mini-unit pilot</div>
+            <h2 className="learn-miniunit-title">{STAGE_1_MINI_UNIT_PILOT.title}</h2>
+            <p className="learn-miniunit-copy">
+              A short 75/25 lesson: practice polite intro cards, see one sentence, then answer a mini challenge.
+            </p>
+            <div className="learn-miniunit-meta">
+              <span><Clock size={13} /> {STAGE_1_MINI_UNIT_PILOT.estimatedMinutes} min</span>
+              <span>{STAGE_1_MINI_UNIT_PILOT.vocabCardIds.length} cards</span>
+              <span>{STAGE_1_MINI_UNIT_PILOT.challengeCardIds.length} challenge cards</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="learn-miniunit-btn"
+            onClick={() => onStartMiniUnit(STAGE_1_MINI_UNIT_PILOT.unitId)}
+          >
+            Try guided lesson <ChevronRight size={16} />
+          </button>
+        </section>
+      )}
+
       <section className="learn-goal-card">
         <div className="learn-goal-ring-wrap">
           <svg viewBox="0 0 120 120" className="learn-goal-ring" aria-hidden="true">
