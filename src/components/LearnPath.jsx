@@ -73,7 +73,7 @@ export default function LearnPath({
         <div className="learn-continue-arrow"><ChevronRight size={26} /></div>
       </section>
 
-      {/* Daily goal — mirrors TodayTab's ring so users get the same dopamine signal */}
+      {/* Guided mini-unit pilot — a safe entry point into the new 75/25 flow */}
       {showMiniUnitPilot && (
         <section className="learn-miniunit-card">
           <div className="learn-miniunit-icon" aria-hidden="true">
@@ -101,6 +101,7 @@ export default function LearnPath({
         </section>
       )}
 
+      {/* Daily goal — mirrors TodayTab's ring so users get the same dopamine signal */}
       <section className="learn-goal-card">
         <div className="learn-goal-ring-wrap">
           <svg viewBox="0 0 120 120" className="learn-goal-ring" aria-hidden="true">
@@ -193,7 +194,10 @@ export default function LearnPath({
       <section className="learn-section">
         <div className="learn-section-header">
           <h2 className="learn-section-title">Your Thai journey</h2>
-          <span className="learn-section-meta">{STAGES.length} stages, {MISSIONS.length} Stage 1 missions</span>
+          <span className="learn-section-meta learn-journey-summary">
+            <span>{STAGES.length} stages</span>
+            <span>{MISSIONS.length} missions in Stage 1</span>
+          </span>
         </div>
 
         <ol className="learn-path-list" role="list">

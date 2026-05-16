@@ -11,6 +11,12 @@ import CharacterCoach from './CharacterCoach.jsx';
 const QUESTION_COUNT = 12;
 const MIN_DISTRACTORS = 2;
 const MAX_DISTRACTORS = 3;
+const EXCLUDED_CHALLENGE_CARD_IDS = new Set([
+  // Client-reported bad Challenge item: คา / "to obstruct; to be stuck".
+  // It produced a low-quality generic verb question; keep it out of Challenge
+  // until the content can be reviewed without changing the card data.
+  2250,
+]);
 
 const QUESTION_TYPES = {
   'thai-to-en': {
@@ -44,6 +50,63 @@ function normalizeAnswer(text, type) {
     .trim();
 }
 
+function answerMeaningParts(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')
+    .split(/[;\/,|]+|\bor\b/gi)
+    .map(part => part
+      .replace(/[^a-z0-9\u0E00-\u0E7F]+/gi, ' ')
+      .replace(/\b(to|a|an|the|be|is|are|am|for|of|and|or|it|this|that|thing|male|female|formal|casual)\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim())
+    .filter(Boolean);
+}
+
+function answerTokens(text) {
+  return new Set(answerMeaningParts(text).join(' ').split(/\s+/).filter(Boolean));
+}
+
+function tokenOverlapRatio(a, b) {
+  if (a.size === 0 || b.size === 0) return 0;
+  let overlap = 0;
+  a.forEach(token => { if (b.has(token)) overlap += 1; });
+  return overlap / Math.min(a.size, b.size);
+}
+
+function sharesMeaningPart(a, b) {
+  const aParts = answerMeaningParts(a);
+  const bParts = answerMeaningParts(b);
+  return aParts.some(aPart => bParts.some(bPart => {
+    if (aPart === bPart) return true;
+    if (aPart.length < 4 || bPart.length < 4) return false;
+    return aPart.includes(bPart) || bPart.includes(aPart);
+  }));
+}
+
+function answersTooSimilar(a, b, type) {
+  const aNorm = normalizeAnswer(a, type);
+  const bNorm = normalizeAnswer(b, type);
+  if (!aNorm || !bNorm) return true;
+  if (aNorm === bNorm) return true;
+  if (type === 'en-to-thai') {
+    if (aNorm.length >= 4 && bNorm.length >= 4 && (aNorm.includes(bNorm) || bNorm.includes(aNorm))) return true;
+    return false;
+  }
+  if (sharesMeaningPart(a, b)) return true;
+  return tokenOverlapRatio(answerTokens(a), answerTokens(b)) >= 0.75;
+}
+
+function choicesTooSimilar(candidate, existing, type, voice) {
+  if (answersTooSimilar(getAnswerText(candidate, type, voice), getAnswerText(existing, type, voice), type)) {
+    return true;
+  }
+  if (type === 'en-to-thai') {
+    return answersTooSimilar(getDisplayed(candidate, voice)?.en, getDisplayed(existing, voice)?.en, 'thai-to-en');
+  }
+  return false;
+}
+
 function getDisplayed(card, voice) {
   return displayCard(card, voice) || card;
 }
@@ -61,6 +124,7 @@ function getAnswerText(card, type, voice) {
 function isEligible(card, type, voice) {
   return !!(
     card &&
+    !EXCLUDED_CHALLENGE_CARD_IDS.has(card.id) &&
     card.thai &&
     card.en &&
     getPromptText(card, type, voice) &&
@@ -72,6 +136,7 @@ function collectDistractors(correct, pool, type, voice) {
   const correctNorm = normalizeAnswer(getAnswerText(correct, type, voice), type);
   const seenIds = new Set([correct.id]);
   const seenAnswers = new Set([correctNorm]);
+  const selectedCards = [correct];
   const picked = [];
 
   const tiers = [
@@ -89,6 +154,7 @@ function collectDistractors(correct, pool, type, voice) {
       const answer = getAnswerText(card, type, voice);
       const norm = normalizeAnswer(answer, type);
       if (!norm || seenAnswers.has(norm)) return false;
+      if (selectedCards.some(existing => choicesTooSimilar(card, existing, type, voice))) return false;
       return true;
     });
 
@@ -97,6 +163,7 @@ function collectDistractors(correct, pool, type, voice) {
       const norm = normalizeAnswer(getAnswerText(card, type, voice), type);
       seenIds.add(card.id);
       seenAnswers.add(norm);
+      selectedCards.push(card);
       picked.push(card);
     });
   });

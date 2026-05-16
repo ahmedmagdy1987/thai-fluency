@@ -1438,9 +1438,11 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 
 /* Sections */
 .learn-section { display: flex; flex-direction: column; gap: 14px; }
-.learn-section-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.learn-section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .learn-section-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin: 0; }
 .learn-section-meta { font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.learn-journey-summary { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; text-transform: none; letter-spacing: 0; }
+.learn-journey-summary span { display: inline-flex; align-items: center; min-height: 28px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--cream-warm); color: var(--ink-soft); white-space: nowrap; }
 
 /* Mission card + node rail (S1 only) */
 .learn-mission-card { display: flex; gap: 14px; align-items: flex-start; background: var(--card-bg); border: 1px solid var(--line); border-left: 4px solid var(--mission-color, var(--jade)); border-radius: 14px; padding: 16px 18px; }
@@ -2100,6 +2102,7 @@ button.character-coach-portrait { cursor: pointer; }
 .miniunit-complete-icon { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
 
 .app-root[data-theme="dark"] .learn-miniunit-card,
+.app-root[data-theme="dark"] .learn-journey-summary span,
 .app-root[data-theme="dark"] .miniunit-hero,
 .app-root[data-theme="dark"] .miniunit-panel,
 .app-root[data-theme="dark"] .miniunit-practice-card,
@@ -2120,6 +2123,9 @@ button.character-coach-portrait { cursor: pointer; }
 .app-root[data-theme="dark"] .miniunit-option-selected { background: rgba(224, 189, 122, 0.13); }
 
 @media (max-width: 680px) {
+  .learn-section-header { align-items: flex-start; gap: 8px; }
+  .learn-journey-summary { width: 100%; gap: 6px; }
+  .learn-journey-summary span { flex: 1 1 140px; justify-content: center; }
   .learn-miniunit-card { grid-template-columns: 44px 1fr; align-items: flex-start; padding: 14px; }
   .learn-miniunit-btn { grid-column: 1 / -1; justify-content: center; width: 100%; }
   .miniunit-hero,
