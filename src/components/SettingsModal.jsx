@@ -25,6 +25,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
   const audioRate = stats.audioRate || 0.95;
   const audioAutoPlay = !!stats.audioAutoPlay;
   const showCharacters = stats.showCharacters !== false;
+  const soundEffects = stats.soundEffects !== false;
   const currentStageId = stats.currentStage || stats.startedStage || 1;
   const currentStage = STAGES.find(s => s.id === currentStageId) || {};
   const previewText = transformThai(PREVIEW_THAI, voice);
@@ -159,6 +160,31 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               >
                 <span>Off</span>
                 <span className="setting-toggle-sub">Cleaner cards</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="setting-group">
+            <div className="setting-label">Sound effects</div>
+            <div className="setting-sub">Turn off lesson sounds, feedback sounds, and celebration sounds.</div>
+            <div className="setting-toggle">
+              <button
+                type="button"
+                className={`setting-toggle-btn ${soundEffects ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ soundEffects: true })}
+                aria-pressed={soundEffects}
+              >
+                <span>On</span>
+                <span className="setting-toggle-sub">Feedback sounds</span>
+              </button>
+              <button
+                type="button"
+                className={`setting-toggle-btn ${!soundEffects ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ soundEffects: false })}
+                aria-pressed={!soundEffects}
+              >
+                <span>Off</span>
+                <span className="setting-toggle-sub">Silent effects</span>
               </button>
             </div>
           </div>

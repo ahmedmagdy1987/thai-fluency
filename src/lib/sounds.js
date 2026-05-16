@@ -10,6 +10,15 @@
 
 let _ctx = null;
 let _ctxFailed = false;
+let _soundEffectsEnabled = true;
+
+export function setSoundEffectsEnabled(enabled) {
+  _soundEffectsEnabled = enabled !== false;
+}
+
+function effectsEnabled() {
+  return _soundEffectsEnabled;
+}
 
 function getCtx() {
   if (_ctx) return _ctx;
@@ -58,6 +67,7 @@ function tone(ctx, freq, startSec, durSec, peak = 0.18, type = 'sine') {
 // a card snapping over rather than a long musical note. Kept quiet so
 // it doesn't compete with the TTS or the character reaction sound.
 export function playFlip() {
+  if (!effectsEnabled()) return;
   const ctx = getCtx();
   if (!ctx) return;
   try {
@@ -69,6 +79,7 @@ export function playFlip() {
 
 // Easy / correct-answer blip. Short rising sine — ~120ms.
 export function playEasy() {
+  if (!effectsEnabled()) return;
   const ctx = getCtx();
   if (!ctx) return;
   try {
@@ -80,6 +91,7 @@ export function playEasy() {
 
 // 10-card milestone "tin tin" — two clear chime notes (C5, E5).
 export function playMilestone() {
+  if (!effectsEnabled()) return;
   const ctx = getCtx();
   if (!ctx) return;
   try {
@@ -91,6 +103,7 @@ export function playMilestone() {
 
 // Mission / stage complete flourish — C major arpeggio + a held top note.
 export function playCelebration() {
+  if (!effectsEnabled()) return;
   const ctx = getCtx();
   if (!ctx) return;
   try {
@@ -133,6 +146,7 @@ function getProfile(characterId, slot) {
 }
 
 function playProfile(profile, gainScale = 1) {
+  if (!effectsEnabled()) return;
   const ctx = getCtx();
   if (!ctx || !profile) return;
   try {

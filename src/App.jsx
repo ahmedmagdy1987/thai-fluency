@@ -9,6 +9,7 @@ import { loadState, saveState, clearState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, migrateStats, startStudyDay } from './lib/stats.js';
+import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import {
@@ -54,7 +55,7 @@ import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 
-const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters'];
+const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects'];
 
 function pickCloudProfileSettings(settings) {
   if (!settings || typeof settings !== 'object' || Array.isArray(settings)) return {};
@@ -106,6 +107,10 @@ export default function TukTalkThaiApp() {
       setLoaded(true);
     })();
   }, []);
+
+  useEffect(() => {
+    setSoundEffectsEnabled(stats.soundEffects !== false);
+  }, [stats.soundEffects]);
 
   // Supabase session detection
   useEffect(() => {
@@ -328,6 +333,10 @@ export default function TukTalkThaiApp() {
         voice: s.voice || DEFAULT_VOICE,
         viewMode: s.viewMode || DEFAULT_VIEW_MODE,
         theme: s.theme || 'light',
+        audioRate: s.audioRate || 0.95,
+        audioAutoPlay: !!s.audioAutoPlay,
+        showCharacters: s.showCharacters !== false,
+        soundEffects: s.soundEffects !== false,
         unlockedAchievements: cloudAchs || [],
         hasOnboarded: false, // fresh start → re-run placement
       }));
@@ -657,6 +666,9 @@ export default function TukTalkThaiApp() {
   }, [markCardsKnown, session]);
 
   const updateSettings = useCallback((updates) => {
+    if (Object.prototype.hasOwnProperty.call(updates, 'soundEffects')) {
+      setSoundEffectsEnabled(updates.soundEffects !== false);
+    }
     setStats(s => ({ ...s, ...updates }));
     if (!session || !session.user?.email_confirmed_at || !hasSupabaseConfig) return;
 
