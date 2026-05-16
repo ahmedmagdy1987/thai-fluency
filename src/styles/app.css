@@ -1287,7 +1287,7 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 .app-shell-main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 /* === Sidebar (desktop) === */
-.sidebar-nav { display: none; width: 240px; min-width: 240px; flex-direction: column; gap: 4px; background: var(--cream-warm); border-right: 1px solid var(--line); padding: 22px 14px calc(22px + env(safe-area-inset-bottom, 0px)); position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow-y: auto; }
+.sidebar-nav { display: none; width: 240px; min-width: 240px; flex-direction: column; gap: 4px; background: var(--cream-warm); border-right: 1px solid var(--line); padding: 22px 14px calc(22px + env(safe-area-inset-bottom, 0px)); height: 100vh; overflow-y: auto; }
 .app-root[data-theme="dark"] .sidebar-nav { background: var(--card-bg); }
 .sidebar-brand { display: flex; flex-direction: column; gap: 2px; padding: 4px 10px 22px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
 .sidebar-brand-mark { font-family: 'Noto Sans Thai', sans-serif; font-size: 22px; font-weight: 700; color: var(--jade); letter-spacing: -0.01em; line-height: 1; }
@@ -1305,7 +1305,9 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 .sidebar-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
 
 @media (min-width: 1024px) {
-  .sidebar-nav { display: flex; }
+  .app-shell-root { padding-left: 240px; overflow-x: clip; }
+  .app-shell-main-col { width: 100%; }
+  .sidebar-nav { position: fixed; inset: 0 auto 0 0; display: flex; height: 100vh; height: 100dvh; overscroll-behavior: contain; }
 }
 
 /* === Shell header (replaces .app-header for shell pages) === */
