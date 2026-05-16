@@ -236,7 +236,10 @@ export default function QuizTab({
     checkLockedRef.current = false;
   };
 
+  const canPlayPromptAudio = type === 'thai-to-en' && ttsAvailable() && !!correctDisplay?.thai;
+
   const playCorrectThai = () => {
+    if (!canPlayPromptAudio) return;
     if (correctDisplay?.thai) speakThai(correctDisplay.thai, audioRate);
     coach.react('speaking', { duration: 1400 });
   };
@@ -335,7 +338,7 @@ export default function QuizTab({
         {type === 'thai-to-en' && correctDisplay?.ph && (
           <div className="quiz-mode-prompt-ph">{correctDisplay.ph}</div>
         )}
-        {ttsAvailable() && correctDisplay?.thai && (
+        {canPlayPromptAudio && (
           <button
             type="button"
             className="speaker-btn speaker-btn-card quiz-mode-speaker"
