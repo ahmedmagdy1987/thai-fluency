@@ -11,6 +11,7 @@ import {
   User,
   Trophy,
   Settings as SettingsIcon,
+  LogOut,
 } from 'lucide-react';
 
 // Mobile bottom nav keeps the highest-frequency destinations visible while
@@ -34,6 +35,7 @@ export default function MobileNav({
   setTab,
   onOpenProfile,
   onOpenSettings,
+  onSignOut,
   dashboardStats,
   isAuthed,
 }) {
@@ -128,6 +130,16 @@ export default function MobileNav({
                 <SettingsIcon size={22} />
                 <span>Settings</span>
               </button>
+              {isAuthed && (
+                <button
+                  type="button"
+                  className="mobile-more-item mobile-more-item-danger"
+                  onClick={() => { setMoreOpen(false); onSignOut && onSignOut(); }}
+                >
+                  <LogOut size={22} />
+                  <span>Sign out</span>
+                </button>
+              )}
             </div>
             <button
               type="button"

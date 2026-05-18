@@ -49,6 +49,7 @@ import MissionCompleteToast from './components/MissionCompleteToast.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
+import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
 import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
@@ -91,6 +92,10 @@ export default function TukTalkThaiApp() {
     catch { return false; }
   });
   const [forceAuthGate, setForceAuthGate] = useState(false);
+  const [showPublicLanding, setShowPublicLanding] = useState(() => {
+    try { return localStorage.getItem('tuk-talk-thai-demo-mode') !== 'true'; }
+    catch { return true; }
+  });
   const [authInitialScreen, setAuthInitialScreen] = useState('welcome');
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
   const [showMigration, setShowMigration] = useState(false);
@@ -194,16 +199,19 @@ export default function TukTalkThaiApp() {
     try { localStorage.setItem('tuk-talk-thai-demo-mode', 'true'); } catch { /* ignore */ }
     setDemoMode(true);
     setForceAuthGate(false);
+    setShowPublicLanding(false);
   }, []);
 
   const handleDemoSignUp = useCallback(() => {
     setAuthInitialScreen('signup');
     setForceAuthGate(true);
+    setShowPublicLanding(false);
   }, []);
 
   const handleDemoSignIn = useCallback(() => {
     setAuthInitialScreen('signin');
     setForceAuthGate(true);
+    setShowPublicLanding(false);
   }, []);
 
   const handleAuthSuccess = useCallback(() => {
@@ -217,6 +225,12 @@ export default function TukTalkThaiApp() {
     } catch { /* ignore */ }
     setDemoMode(false);
     // onAuthStateChange fires and updates session; cloud sync effect runs next.
+  }, []);
+
+  const openAuthGate = useCallback((screen = 'welcome') => {
+    setAuthInitialScreen(screen);
+    setShowPublicLanding(false);
+    setForceAuthGate(true);
   }, []);
 
   const handleSignOut = useCallback(async () => {
@@ -240,13 +254,9 @@ export default function TukTalkThaiApp() {
     setStats(DEFAULT_STATS);
     setDemoMode(false);
     setForceAuthGate(false);
+    setShowPublicLanding(true);
     setAuthInitialScreen('welcome');
     notificationPromptFired.current = false;
-  }, []);
-
-  const handleHeaderSignInClick = useCallback(() => {
-    setAuthInitialScreen('signin');
-    setForceAuthGate(true);
   }, []);
 
   // Cloud init: when a user is signed in AND email-confirmed, decide whether
@@ -731,10 +741,17 @@ export default function TukTalkThaiApp() {
     );
   }
 
+  // Do not render any logged-out or onboarding surface until Supabase has told
+  // us whether a session already exists. This prevents a first-paint flash of
+  // the wrong gate on cold loads.
+  if (!authReady) {
+    return <div className="app-root" data-theme={stats.theme || 'light'} />;
+  }
+
   // Pending confirmation: session exists but email isn't confirmed. Sits
   // between AuthGate and the main app — the user has signed up but can't
   // proceed until they click the email link.
-  if (hasSupabaseConfig && authReady && session && !isEmailConfirmed) {
+  if (hasSupabaseConfig && session && !isEmailConfirmed) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
         <PendingConfirmation
@@ -745,10 +762,22 @@ export default function TukTalkThaiApp() {
     );
   }
 
-  // Auth gate: every anonymous visitor must either sign in/up or pick the
-  // 5-card demo. forceAuthGate wins over demoMode so a demo user can convert
-  // by clicking the header "Sign in" button or the demo's end-CTA buttons.
-  const showAuthGate = hasSupabaseConfig && authReady && !session && (forceAuthGate || !demoMode);
+  const showLanding = hasSupabaseConfig && !session && !demoMode && !forceAuthGate && showPublicLanding;
+  if (showLanding) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <PublicLanding
+          onGetStarted={() => openAuthGate('welcome')}
+          onSignIn={() => openAuthGate('signin')}
+        />
+      </div>
+    );
+  }
+
+  // Auth gate: after the landing page, every anonymous visitor must either
+  // sign in/up or pick the 5-card demo. forceAuthGate wins over demoMode so a
+  // demo user can convert from the demo's end-CTA buttons.
+  const showAuthGate = hasSupabaseConfig && !session && (forceAuthGate || (!demoMode && !showPublicLanding));
   if (showAuthGate) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
@@ -762,7 +791,7 @@ export default function TukTalkThaiApp() {
   }
 
   // Demo mode: 5 curated cards, read-only, no progress saved.
-  const showDemo = hasSupabaseConfig && authReady && !session && demoMode && !forceAuthGate;
+  const showDemo = hasSupabaseConfig && !session && demoMode && !forceAuthGate;
   if (showDemo) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
@@ -841,6 +870,7 @@ export default function TukTalkThaiApp() {
       session={session}
       onOpenProfile={() => setShowProfile(true)}
       onOpenSettings={() => setShowSettings(true)}
+      onSignOut={handleSignOut}
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
     >

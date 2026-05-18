@@ -10,6 +10,7 @@ import {
   User,
   Settings as SettingsIcon,
   Trophy,
+  LogOut,
 } from 'lucide-react';
 
 // Desktop-only sidebar (visible at ≥1024px via CSS). Groups items by intent
@@ -36,6 +37,7 @@ export default function SidebarNav({
   setTab,
   onOpenProfile,
   onOpenSettings,
+  onSignOut,
   dashboardStats,
   isAuthed,
 }) {
@@ -87,6 +89,12 @@ export default function SidebarNav({
           <SettingsIcon size={18} strokeWidth={1.8} />
           <span className="sidebar-item-label">Settings</span>
         </button>
+        {isAuthed && (
+          <button type="button" className="sidebar-item sidebar-item-danger" onClick={onSignOut}>
+            <LogOut size={18} strokeWidth={1.8} />
+            <span className="sidebar-item-label">Sign out</span>
+          </button>
+        )}
       </div>
     </aside>
   );

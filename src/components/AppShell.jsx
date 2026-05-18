@@ -16,6 +16,7 @@ export default function AppShell({
   session,
   onOpenProfile,
   onOpenSettings,
+  onSignOut,
   themeAttr,
   viewModeAttr,
 }) {
@@ -28,6 +29,7 @@ export default function AppShell({
         setTab={setTab}
         onOpenProfile={onOpenProfile}
         onOpenSettings={onOpenSettings}
+        onSignOut={onSignOut}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
       />
@@ -57,6 +59,7 @@ export default function AppShell({
         setTab={setTab}
         onOpenProfile={onOpenProfile}
         onOpenSettings={onOpenSettings}
+        onSignOut={onSignOut}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
       />
