@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
 import ForgotPassword from './ForgotPassword.jsx';
@@ -9,35 +9,44 @@ import TermsOfService from '../legal/TermsOfService.jsx';
 // "Try a quick demo" is the only anonymous path — limited to 5 cards via
 // the DemoMode component (rendered separately at the App level when the
 // onTryDemo callback flips that mode on).
-export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome' }) {
+export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome', onScreenChange }) {
   const [screen, setScreen] = useState(initialScreen);
   const [prefilledEmail, setPrefilledEmail] = useState('');
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
+  useEffect(() => {
+    setScreen(initialScreen);
+  }, [initialScreen]);
+
+  const showScreen = (nextScreen) => {
+    setScreen(nextScreen);
+    onScreenChange && onScreenChange(nextScreen);
+  };
+
   const goToSignUp = (email) => {
     if (typeof email === 'string' && email) setPrefilledEmail(email);
-    setScreen('signup');
+    showScreen('signup');
   };
 
   if (screen === 'signup') {
     return <SignUp
       prefilledEmail={prefilledEmail}
-      onBack={() => setScreen('welcome')}
-      onSignIn={() => setScreen('signin')}
+      onBack={() => showScreen('welcome')}
+      onSignIn={() => showScreen('signin')}
       onSuccess={onAuthSuccess}
     />;
   }
   if (screen === 'signin') {
     return <SignIn
-      onBack={() => setScreen('welcome')}
+      onBack={() => showScreen('welcome')}
       onSignUp={goToSignUp}
-      onForgot={() => setScreen('forgot')}
+      onForgot={() => showScreen('forgot')}
       onSuccess={onAuthSuccess}
     />;
   }
   if (screen === 'forgot') {
-    return <ForgotPassword onBack={() => setScreen('signin')} />;
+    return <ForgotPassword onBack={() => showScreen('signin')} />;
   }
 
   // Welcome (default screen)
@@ -69,10 +78,10 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
         </div>
 
         <div className="auth-welcome-actions">
-          <button className="btn-primary auth-cta" onClick={() => setScreen('signup')}>
+          <button className="btn-primary auth-cta" onClick={() => showScreen('signup')}>
             Create free account
           </button>
-          <button className="btn-secondary auth-cta" onClick={() => setScreen('signin')}>
+          <button className="btn-secondary auth-cta" onClick={() => showScreen('signin')}>
             I already have an account
           </button>
         </div>

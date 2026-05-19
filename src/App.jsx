@@ -59,6 +59,66 @@ import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import { getMiniUnit } from './data/miniUnits.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects'];
+const TAB_ROUTES = {
+  learn: '/learn',
+  today: '/today',
+  cards: '/cards',
+  browse: '/browse',
+  quiz: '/challenge',
+  guide: '/guide',
+  quests: '/quests',
+  shop: '/shop',
+  leaderboard: '/leaderboard',
+};
+const ROUTE_TABS = {
+  '/': 'learn',
+  '/learn': 'learn',
+  '/today': 'today',
+  '/cards': 'cards',
+  '/browse': 'browse',
+  '/challenge': 'quiz',
+  '/quiz': 'quiz',
+  '/guide': 'guide',
+  '/quests': 'quests',
+  '/shop': 'shop',
+  '/leaderboard': 'leaderboard',
+};
+const AUTH_ROUTES = {
+  '/welcome': 'welcome',
+  '/sign-in': 'signin',
+};
+
+function normalizePathname(pathname = '/') {
+  const withoutTrailingSlash = pathname.replace(/\/+$/, '');
+  return withoutTrailingSlash || '/';
+}
+
+function getRouteForPath(pathname) {
+  const path = normalizePathname(pathname);
+  if (ROUTE_TABS[path]) return { type: 'tab', tab: ROUTE_TABS[path], path };
+  if (path === '/profile') return { type: 'profile', path };
+  if (path === '/settings') return { type: 'settings', path };
+  if (path === '/get-started') return { type: 'landing', path };
+  if (AUTH_ROUTES[path]) return { type: 'auth', authScreen: AUTH_ROUTES[path], path };
+  return { type: 'tab', tab: 'learn', path: '/learn', unknown: true };
+}
+
+function getCurrentRoute() {
+  if (typeof window === 'undefined') return { type: 'tab', tab: 'learn', path: '/' };
+  return getRouteForPath(window.location.pathname);
+}
+
+function routePathForTab(tab) {
+  return TAB_ROUTES[tab] || '/learn';
+}
+
+function writeRoute(path, { replace = false } = {}) {
+  if (typeof window === 'undefined') return;
+  const current = normalizePathname(window.location.pathname);
+  if (current === path) return;
+  const method = replace ? 'replaceState' : 'pushState';
+  window.history[method]({ tukTalkRoute: true }, '', path);
+}
 
 function pickCloudProfileSettings(settings) {
   if (!settings || typeof settings !== 'object' || Array.isArray(settings)) return {};
@@ -69,15 +129,16 @@ function pickCloudProfileSettings(settings) {
 }
 
 export default function TukTalkThaiApp() {
-  const [tab, setTab] = useState('learn');
+  const initialRoute = getCurrentRoute();
+  const [tab, setTab] = useState(() => initialRoute.tab || 'learn');
   const [progress, setProgress] = useState({});
   const [stats, setStats] = useState(DEFAULT_STATS);
   const [loaded, setLoaded] = useState(false);
   const [achievementToast, setAchievementToast] = useState(null);
   const [achievementQueue, setAchievementQueue] = useState([]);
   const [stageUpToast, setStageUpToast] = useState(null);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
+  const [showSettings, setShowSettings] = useState(() => initialRoute.type === 'settings');
+  const [showProfile, setShowProfile] = useState(() => initialRoute.type === 'profile');
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
@@ -91,12 +152,12 @@ export default function TukTalkThaiApp() {
     try { return localStorage.getItem('tuk-talk-thai-demo-mode') === 'true'; }
     catch { return false; }
   });
-  const [forceAuthGate, setForceAuthGate] = useState(false);
+  const [forceAuthGate, setForceAuthGate] = useState(() => initialRoute.type === 'auth');
   const [showPublicLanding, setShowPublicLanding] = useState(() => {
     try { return localStorage.getItem('tuk-talk-thai-demo-mode') !== 'true'; }
     catch { return true; }
   });
-  const [authInitialScreen, setAuthInitialScreen] = useState('welcome');
+  const [authInitialScreen, setAuthInitialScreen] = useState(() => initialRoute.authScreen || 'welcome');
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
   const [showMigration, setShowMigration] = useState(false);
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
@@ -132,6 +193,72 @@ export default function TukTalkThaiApp() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const applyRouteFromLocation = () => {
+      const route = getCurrentRoute();
+      setActiveMiniUnitId(null);
+      if (route.unknown) writeRoute(route.path, { replace: true });
+
+      if (route.type === 'tab') {
+        setTab(route.tab);
+        setShowProfile(false);
+        setShowSettings(false);
+        setForceAuthGate(false);
+        setShowPublicLanding(true);
+        return;
+      }
+
+      if (route.type === 'profile') {
+        setShowProfile(true);
+        setShowSettings(false);
+        setForceAuthGate(false);
+        setShowPublicLanding(true);
+        return;
+      }
+
+      if (route.type === 'settings') {
+        setShowSettings(true);
+        setShowProfile(false);
+        setForceAuthGate(false);
+        setShowPublicLanding(true);
+        return;
+      }
+
+      if (route.type === 'auth') {
+        setAuthInitialScreen(route.authScreen || 'welcome');
+        setForceAuthGate(true);
+        setShowPublicLanding(false);
+        setShowProfile(false);
+        setShowSettings(false);
+        return;
+      }
+
+      if (route.type === 'landing') {
+        setShowPublicLanding(true);
+        setForceAuthGate(false);
+        setShowProfile(false);
+        setShowSettings(false);
+      }
+    };
+
+    window.addEventListener('popstate', applyRouteFromLocation);
+    return () => window.removeEventListener('popstate', applyRouteFromLocation);
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) return;
+    const route = getCurrentRoute();
+    if (route.unknown) writeRoute(route.path, { replace: true });
+    if (session && (route.type === 'auth' || route.type === 'landing')) {
+      setTab('learn');
+      setShowProfile(false);
+      setShowSettings(false);
+      setForceAuthGate(false);
+      setShowPublicLanding(false);
+      writeRoute('/learn', { replace: true });
+    }
+  }, [authReady, session?.user?.id]);
 
   // Load profile when session changes. Three things happen here:
   // 1. display_name backfill: if the profile row's display_name is empty but
@@ -206,12 +333,14 @@ export default function TukTalkThaiApp() {
     setAuthInitialScreen('signup');
     setForceAuthGate(true);
     setShowPublicLanding(false);
+    writeRoute('/welcome');
   }, []);
 
   const handleDemoSignIn = useCallback(() => {
     setAuthInitialScreen('signin');
     setForceAuthGate(true);
     setShowPublicLanding(false);
+    writeRoute('/sign-in');
   }, []);
 
   const handleAuthSuccess = useCallback(() => {
@@ -230,7 +359,10 @@ export default function TukTalkThaiApp() {
   const openAuthGate = useCallback((screen = 'welcome') => {
     setAuthInitialScreen(screen);
     setShowPublicLanding(false);
+    setShowProfile(false);
+    setShowSettings(false);
     setForceAuthGate(true);
+    writeRoute(screen === 'signin' ? '/sign-in' : '/welcome');
   }, []);
 
   const handleSignOut = useCallback(async () => {
@@ -256,6 +388,9 @@ export default function TukTalkThaiApp() {
     setForceAuthGate(false);
     setShowPublicLanding(true);
     setAuthInitialScreen('welcome');
+    setShowProfile(false);
+    setShowSettings(false);
+    writeRoute('/get-started', { replace: true });
     notificationPromptFired.current = false;
   }, []);
 
@@ -698,10 +833,37 @@ export default function TukTalkThaiApp() {
     });
   }, [session, profile]);
 
-  const handleSetTab = useCallback((nextTab) => {
+  const handleSetTab = useCallback((nextTab, options = {}) => {
     setActiveMiniUnitId(null);
+    setShowProfile(false);
+    setShowSettings(false);
     setTab(nextTab);
+    writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
   }, []);
+
+  const handleOpenProfile = useCallback(() => {
+    setActiveMiniUnitId(null);
+    setShowSettings(false);
+    setShowProfile(true);
+    writeRoute('/profile');
+  }, []);
+
+  const handleCloseProfile = useCallback(() => {
+    setShowProfile(false);
+    writeRoute(routePathForTab(tab), { replace: true });
+  }, [tab]);
+
+  const handleOpenSettings = useCallback(() => {
+    setActiveMiniUnitId(null);
+    setShowProfile(false);
+    setShowSettings(true);
+    writeRoute('/settings');
+  }, []);
+
+  const handleCloseSettings = useCallback(() => {
+    setShowSettings(false);
+    writeRoute(routePathForTab(tab), { replace: true });
+  }, [tab]);
 
   // Sequential stage unlock: only stages ≤ maxUnlockedStage are accessible.
   // Stage N+1 unlocks when Stage N reaches 70% mastery. dashboardStats, the
@@ -785,6 +947,7 @@ export default function TukTalkThaiApp() {
           initialScreen={authInitialScreen}
           onTryDemo={startDemo}
           onAuthSuccess={handleAuthSuccess}
+          onScreenChange={(screen) => writeRoute(screen === 'signin' ? '/sign-in' : '/welcome')}
         />
       </div>
     );
@@ -850,7 +1013,7 @@ export default function TukTalkThaiApp() {
           fullStats={stats}
           session={session}
           stageState={stageState}
-          onClose={() => setShowProfile(false)}
+          onClose={handleCloseProfile}
           onSignOut={() => { setShowProfile(false); handleSignOut(); }}
           onProfileRefresh={async () => {
             const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
@@ -868,8 +1031,8 @@ export default function TukTalkThaiApp() {
       stats={stats}
       dashboardStats={dashboardStats}
       session={session}
-      onOpenProfile={() => setShowProfile(true)}
-      onOpenSettings={() => setShowSettings(true)}
+      onOpenProfile={handleOpenProfile}
+      onOpenSettings={handleOpenSettings}
       onSignOut={handleSignOut}
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
@@ -911,7 +1074,7 @@ export default function TukTalkThaiApp() {
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
-        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={() => setShowSettings(false)} resetAll={resetAll} />
+        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} resetAll={resetAll} />
       )}
     </AppShell>
   );
