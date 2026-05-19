@@ -2,9 +2,11 @@
 
 Date: 2026-05-19
 
-Scope: local repo audit plus live-access readiness check. No migrations were applied. No schema was changed. No production data was read or modified.
+Scope: local repo audit plus live Supabase metadata audit. No migrations were applied. No schema was changed. No production data was modified.
 
-Live database status: not audited from this machine. The Supabase CLI is not installed (`supabase` command not found), this checkout has no `supabase/config.toml` project link, and no read-only database connection string or Supabase access token is available locally. `.env.local` exists, but client publishable env vars are not sufficient for schema/RLS/cron/webhook verification.
+Live database status: audited read-only through Supabase CLI 2.100.0 using the linked project `fkebzcywofzloaqeghtn` (`tuk-talk-thai`). `supabase db dump` could not be used because Docker is not running on this machine, so live inspection used `supabase db query --linked` against catalog metadata only. No table data was queried except cron job metadata.
+
+Important secret-handling note: live database webhook trigger definitions contain an inline service-role bearer token in the trigger metadata. The value is intentionally not copied into this report. Rotate the service-role key and reconfigure the webhooks with a safer secret pattern before wider access to schema dumps or metadata.
 
 ## Sources reviewed
 
@@ -31,11 +33,98 @@ Live database status: not audited from this machine. The Supabase CLI is not ins
 | --- | --- | --- |
 | `supabase/schema.sql` | Baseline manual schema. Creates core app tables, RLS policies, signup trigger, updated_at triggers, and `email_exists`. | Present. This is not a numbered migration. |
 | `supabase/migrations/001_email_exists.sql` | Creates/replaces `public.email_exists(check_email text)` and grants execute to `anon` and `authenticated`. | Present. Duplicates the function already present in `schema.sql`. |
-| `supabase/migrations/002_*.sql` | Unknown. | Missing locally. Earlier project notes mention migrations 001, 002, 003, and 004 as applied, but the repo only contains 001, 003, and 004. Live comparison is required to know what 002 did, if anything. |
+| `supabase/migrations/002_*.sql` | Unknown locally. Live DB contains an untracked `public.rls_auto_enable()` function plus `ensure_rls` event trigger that are not in local migrations. | Missing locally and not present in remote CLI migration history. This is the best live candidate for the missing 002 change, but it cannot be proven because the remote has no `supabase_migrations` history table. |
 | `supabase/migrations/003_notifications.sql` | Adds notification columns/indexes to `profiles` and `user_stats`. | Present. Required by current OneSignal code. |
 | `supabase/migrations/004_notification_scheduler.sql` | Enables `pg_net` and `pg_cron`, stores a service role key in Vault, creates `public.tick_notifications()`, and schedules hourly notification ticks. | Present. Contains the placeholder `YOUR_SERVICE_ROLE_KEY_HERE`; do not commit a real service role key. |
 
+## Live migration history
+
+Linked project verification:
+
+- Project ref: `fkebzcywofzloaqeghtn`
+- Project name: `tuk-talk-thai`
+- Supabase CLI: `2.100.0`
+
+Remote migration comparison:
+
+```text
+Local | Remote | Time (UTC)
+------+--------+-----------
+001   |        | 001
+003   |        | 003
+004   |        | 004
+```
+
+The live database does not have a `supabase_migrations` schema. A direct read of `supabase_migrations.schema_migrations` fails because the relation does not exist. Therefore:
+
+- No CLI-tracked remote migration history exists.
+- Remote migration `002` cannot be confirmed as an applied migration.
+- Local migrations `001`, `003`, and `004` also do not appear as CLI-tracked remote migrations.
+- The live schema clearly includes the effects of the local baseline, 003, and 004, so those changes were applied manually or by dashboard tooling outside Supabase CLI migration tracking.
+
+### Missing 002 reconstruction note
+
+This is documentation only. Do not apply automatically.
+
+The only live object found in `public` that looks migration-like and is not represented in local migration files is:
+
+- Function: `public.rls_auto_enable()`
+- Event trigger: `ensure_rls` on `ddl_command_end`
+
+Observed behavior: when new tables are created in the `public` schema, the event trigger calls `public.rls_auto_enable()` and attempts to run `alter table if exists <created table> enable row level security`.
+
+Reconstruction note:
+
+```sql
+-- Reconstruction note only. Do not run without owner review.
+-- Live-only object not present in local migrations.
+create or replace function public.rls_auto_enable()
+returns event_trigger
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  cmd record;
+begin
+  for cmd in
+    select *
+    from pg_event_trigger_ddl_commands()
+    where command_tag in ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')
+      and object_type in ('table', 'partitioned table')
+  loop
+    if cmd.schema_name is not null
+       and cmd.schema_name in ('public')
+       and cmd.schema_name not in ('pg_catalog', 'information_schema')
+       and cmd.schema_name not like 'pg_toast%'
+       and cmd.schema_name not like 'pg_temp%' then
+      begin
+        execute format('alter table if exists %s enable row level security', cmd.object_identity);
+      exception
+        when others then
+          raise log 'rls_auto_enable: failed to enable RLS on %', cmd.object_identity;
+      end;
+    end if;
+  end loop;
+end;
+$$;
+
+create event trigger ensure_rls
+on ddl_command_end
+execute function public.rls_auto_enable();
+```
+
 ## Tables and columns found
+
+Live public tables found:
+
+- `profiles`
+- `user_achievements`
+- `user_missions`
+- `user_progress`
+- `user_stats`
+
+No extra public app tables were found during the live catalog audit. Live columns match the local baseline plus notification migration 003. Live constraints include the expected primary keys, foreign keys to `auth.users`, unique constraints, `profiles_selected_voice_check`, and `user_stats_typical_study_hour_check`.
 
 ### `public.profiles`
 
@@ -212,7 +301,17 @@ Local findings:
 - `email_exists` is `SECURITY DEFINER` and grants execution to `anon` and `authenticated`. It intentionally bypasses profile RLS to return a boolean. This improves sign-in UX but creates an email-enumeration surface.
 - Users can write their own stats/progress/mission rows from the client. RLS prevents cross-user writes, but it does not prove the learning event is legitimate. This matters for XP, streaks, milestones, notification triggers, future leaderboards, and rewards.
 
-Live RLS status: not verified. A live audit should query `pg_policies`, `pg_class.relrowsecurity`, and RLS behavior with at least two test users or a read-only schema dump plus controlled test credentials.
+Live RLS status: verified through `pg_class` and `pg_policies`.
+
+| Table | Live RLS | Live policies | Live policy predicates |
+| --- | --- | --- | --- |
+| `profiles` | Enabled | SELECT, INSERT, UPDATE, DELETE | Own-row policies using `auth.uid() = id`; INSERT has `WITH CHECK`; UPDATE does not show a separate `WITH CHECK`. |
+| `user_stats` | Enabled | SELECT, INSERT, UPDATE, DELETE | Own-row policies using `auth.uid() = user_id`; INSERT has `WITH CHECK`; UPDATE does not show a separate `WITH CHECK`. |
+| `user_progress` | Enabled | SELECT, INSERT, UPDATE, DELETE | Own-row policies using `auth.uid() = user_id`; INSERT has `WITH CHECK`; UPDATE does not show a separate `WITH CHECK`. |
+| `user_missions` | Enabled | SELECT, INSERT, UPDATE, DELETE | Own-row policies using `auth.uid() = user_id`; INSERT has `WITH CHECK`; UPDATE does not show a separate `WITH CHECK`. |
+| `user_achievements` | Enabled | SELECT, INSERT, UPDATE, DELETE | Own-row policies using `auth.uid() = user_id`; INSERT has `WITH CHECK`; UPDATE does not show a separate `WITH CHECK`. |
+
+Live RLS behavior was not tested with two real user sessions; this audit confirms catalog state, not runtime cross-user query attempts.
 
 ## Functions, triggers, extensions, cron, webhooks, and Edge Functions
 
@@ -224,6 +323,13 @@ Live RLS status: not verified. A live audit should query `pg_policies`, `pg_clas
 | `public.set_updated_at()` | `supabase/schema.sql` | Updates `updated_at` on table updates. | Normal trigger function. |
 | `public.email_exists(check_email text)` | `schema.sql`, `001_email_exists.sql` | Boolean lookup for sign-in UX. | `SECURITY DEFINER`, executable by `anon` and `authenticated`; email enumeration risk. |
 | `public.tick_notifications()` | `004_notification_scheduler.sql` | Posts `{ "mode": "tick" }` to the notification Edge Function. | `SECURITY DEFINER`; depends on Vault secret `service_role_key`, `pg_net`, and Edge Function availability. |
+| `public.rls_auto_enable()` | Live DB only | Event trigger helper that enables RLS on newly created `public` tables. | `SECURITY DEFINER`, `search_path = pg_catalog`; missing from local migration files. |
+
+Live function status:
+
+- All four local functions exist remotely.
+- `public.rls_auto_enable()` also exists remotely and is not represented locally.
+- `public.tick_notifications()` exists remotely.
 
 ### Triggers
 
@@ -233,6 +339,21 @@ Live RLS status: not verified. A live audit should query `pg_policies`, `pg_clas
 | `set_profiles_updated_at` | `public.profiles` | `public.set_updated_at()` | Maintain `profiles.updated_at`. |
 | `set_user_stats_updated_at` | `public.user_stats` | `public.set_updated_at()` | Maintain `user_stats.updated_at`. |
 | `set_user_progress_updated_at` | `public.user_progress` | `public.set_updated_at()` | Maintain `user_progress.updated_at`. |
+| `mission_complete_notify` | `public.user_missions` | `supabase_functions.http_request(...)` | Dashboard webhook trigger for mission milestone notifications. |
+| `stats_update_notify` | `public.user_stats` | `supabase_functions.http_request(...)` | Dashboard webhook trigger for stats milestone notifications. |
+
+Live trigger status:
+
+- `on_auth_user_created` exists and is enabled.
+- `set_profiles_updated_at`, `set_user_stats_updated_at`, and `set_user_progress_updated_at` exist and are enabled.
+- `mission_complete_notify` and `stats_update_notify` exist and are enabled.
+- No `set_user_missions_updated_at` or `set_user_achievements_updated_at` trigger exists locally or remotely.
+- The live webhook trigger definitions include an inline service-role bearer token in their `Authorization` header. This report redacts the value. Treat that token as exposed to anyone with enough database metadata visibility.
+
+Live event triggers:
+
+- `ensure_rls` calls `public.rls_auto_enable()` on `ddl_command_end`.
+- Supabase-managed event triggers also exist for PostgREST, pg_net, pg_cron, and pg_graphql access maintenance.
 
 ### Extensions and cron
 
@@ -247,7 +368,12 @@ Cron job:
 - Schedule: `5 * * * *`
 - SQL: `select public.tick_notifications();`
 
-This cannot be verified live without DB access.
+Live status:
+
+- `pg_cron` is installed.
+- `pg_net` is installed.
+- `supabase_vault` is installed.
+- Cron job `tuk-talk-notification-tick` exists, is active, runs as `postgres`, and executes `select public.tick_notifications();`.
 
 ### Database webhooks
 
@@ -257,6 +383,13 @@ This cannot be verified live without DB access.
 - `stats_update_notify`: table `user_stats`, update, sends to `send-notification`.
 
 These cannot be verified from the repo alone. Supabase dashboard access or live metadata access is required.
+
+Live status:
+
+- `mission_complete_notify` exists as an enabled trigger on `public.user_missions` for insert/update.
+- `stats_update_notify` exists as an enabled trigger on `public.user_stats` for update.
+- Both call the deployed `send-notification` Edge Function URL.
+- Both trigger definitions contain an inline service-role bearer token. Do not copy this token into files or logs; rotate it and reconfigure the webhook authentication.
 
 ### Edge Function
 
@@ -333,59 +466,66 @@ Machine-readable details are in `docs/database-persistence-matrix.json`.
 
 ## Local vs live database status
 
-Cannot verify live schema from this machine.
+Live schema was verified read-only through catalog queries.
 
-Known local expectations that must be checked against production:
+Local/remote comparison:
 
-- Whether remote migrations include a migration 002 not present in the repo.
-- Whether migration 003 columns exist remotely:
-  - `profiles.onesignal_player_id`
-  - `profiles.notification_preferences`
-  - `profiles.timezone`
-  - `user_stats.typical_study_hour`
-  - `user_stats.last_notification_sent_at`
-- Whether migration 004 is actually active remotely:
-  - `pg_net`
-  - `pg_cron`
-  - Vault secret named `service_role_key`
-  - `public.tick_notifications()`
-  - cron job `tuk-talk-notification-tick`
-- Whether dashboard webhooks from `NOTIFICATIONS.md` exist and point at the deployed Edge Function.
-- Whether all five app tables still have RLS enabled and the expected owner-scoped policies.
-- Whether remote schema contains dashboard/manual changes that are not represented in migrations.
+| Area | Live status | Local status | Result |
+| --- | --- | --- | --- |
+| Project link | `fkebzcywofzloaqeghtn` (`tuk-talk-thai`) | `supabase/.temp/project-ref` points to same ref | Match. |
+| CLI migration history | No `supabase_migrations` schema exists. `supabase migration list --linked` shows local `001`, `003`, `004` with blank remote entries. | Local migrations are `001`, `003`, `004`. | Mismatch: remote changes are untracked/manual. |
+| Migration 002 | No remote migration history entry exists for `002`. | No local `002` file exists. | Cannot confirm as a migration. Live-only `rls_auto_enable`/`ensure_rls` are the likely missing change. |
+| Core app tables | `profiles`, `user_stats`, `user_progress`, `user_missions`, `user_achievements` exist. | Defined in `schema.sql`. | Match. |
+| Migration 003 columns | Notification columns exist on `profiles` and `user_stats`. | Defined in `003_notifications.sql`. | Match. |
+| Migration 004 function/cron | `pg_net`, `pg_cron`, `tick_notifications()`, and active cron job exist. | Defined in `004_notification_scheduler.sql`. | Match, except actual Vault secret value was not read. |
+| Dashboard webhooks | `mission_complete_notify` and `stats_update_notify` exist as enabled triggers. | Documented in `NOTIFICATIONS.md`; not in migrations. | Live-only/dashboard-managed. |
+| RLS policies | RLS enabled and own-row policies exist for all five app tables. | Defined in `schema.sql`. | Match. |
+| Live-only public function/event trigger | `public.rls_auto_enable()` and `ensure_rls` exist. | Not present locally. | Mismatch; add a migration note/file if owner wants local schema parity. |
+
+The live schema supports the current app's production persistence needs, but migration tracking is not reliable because the remote migration ledger is absent. Future work should start by deciding whether to baseline the current live schema into a tracked migration history.
 
 ## Security and RLS concerns
 
 Top concerns from this audit:
 
-1. Client-authored progress and rewards are not server-validated.
+1. Live webhook trigger metadata contains an inline service-role bearer token.
+   - `mission_complete_notify` and `stats_update_notify` call `supabase_functions.http_request(...)` with an inline `Authorization: Bearer ...` header.
+   - The token is not copied into this report, but it was visible through database trigger metadata.
+   - Rotate the service-role key, then reconfigure notification webhook auth so a full service-role JWT is not embedded in schema metadata.
+
+2. Remote migration history is absent.
+   - The live database has no `supabase_migrations` schema.
+   - `supabase migration list --linked` reports local migrations but no remote versions.
+   - This makes migration drift harder to audit and explains why a supposed migration `002` cannot be confirmed from the remote ledger.
+
+3. Client-authored progress and rewards are not server-validated.
    - Current RLS protects user isolation, not data integrity.
    - A signed-in user can fabricate their own XP, streak, progress, mission completion, and achievement state by changing local state or direct REST calls.
    - This becomes launch-critical before leaderboards, rewards, paid unlocks, public rankings, or competitive streaks.
 
-2. Mission and stats writes can trigger notifications.
+4. Mission and stats writes can trigger notifications.
    - `user_missions` and `user_stats` are client-writable for own rows.
    - Webhooks may send milestone notifications from fabricated own-row updates.
    - This is not cross-user data exposure, but it is notification abuse/noise risk.
 
-3. `email_exists` is an intentional account-enumeration surface.
+5. `email_exists` is an intentional account-enumeration surface.
    - It returns only a boolean and not row data, but anonymous callers can test whether an email has a profile.
    - Consider rate limiting, CAPTCHA after repeated failures, or removing the RPC if the UX tradeoff changes.
 
-4. Profile `settings` JSON has no documented shape or database-level validation.
+6. Profile `settings` JSON has no documented shape or database-level validation.
    - Current app expects `viewMode`, `audioRate`, `audioAutoPlay`, `showCharacters`, and `soundEffects`.
    - Theme and post-onboarding voice changes are local-only despite being user preferences.
    - Future settings growth may make the JSON blob hard to reason about.
 
-5. Notification player ID is stored as a single profile value.
+7. Notification player ID is stored as a single profile value.
    - If OneSignal returns different subscription IDs across devices/browsers, the latest write can overwrite the prior device.
    - If multi-device push matters, use a `user_push_subscriptions` table later.
 
-6. `profiles.email` can become stale.
+8. `profiles.email` can become stale.
    - Signup trigger copies `auth.users.email` once.
    - No trigger or client sync was found for later email changes.
 
-7. Own-row DELETE policies exist on all app tables.
+9. Own-row DELETE policies exist on all app tables.
    - This is not cross-user access.
    - If accidental client deletes are a concern, narrow delete policies to controlled account deletion flows later.
 
@@ -465,7 +605,7 @@ Recommended before soft launch:
 - Basic achievements.
 - Stage 1 mission completion events.
 - Notification preferences and OneSignal targeting.
-- Server-side notification sending via Edge Function, if production cron/webhooks/secrets are configured as documented.
+- Server-side notification scheduling via `tick_notifications()` and active cron job. Webhook triggers are live, but their inline service-role token should be rotated and reconfigured.
 
 ## Top missing tables/columns for launch readiness
 
@@ -479,24 +619,26 @@ Most important current gaps:
 6. Mini-unit progress: current mini-unit flow cannot resume or mark completion across devices.
 7. Rewards economy: gems, hearts, inventory, shop purchases, character unlocks, and selected character have no real schema yet.
 
-## Required access checklist for live audit
+## Required access checklist for future audits
 
-What can be audited from the repo alone:
+Completed in this pass:
 
-- Local migration files and missing local migration numbers.
-- Expected tables, columns, policies, triggers, functions, indexes, cron SQL, and Edge Function dependencies.
-- Supabase client reads/writes in code.
-- Which user features are persisted in Supabase, localStorage, session state, placeholders, or not implemented.
-- Roadmap schema gaps and likely RLS model.
+- Supabase CLI is installed and usable via `supabase.cmd`.
+- Local project is linked to `fkebzcywofzloaqeghtn`.
+- Live catalog metadata was queried through `supabase db query --linked`.
+- Live tables, columns, indexes, constraints, RLS state, policies, functions, triggers, event triggers, extensions, and cron job metadata were audited.
 
-What is needed from the owner to audit live Supabase safely:
+Remaining limits:
 
-1. Confirm whether the Supabase CLI can be installed locally, or install it.
-2. Provide Supabase CLI login access, preferably with an owner-approved access token that can inspect project metadata.
-3. Link the project locally with project ref `fkebzcywofzloaqeghtn`, or provide permission to run `supabase link --project-ref fkebzcywofzloaqeghtn`.
-4. Provide a read-only database connection string if available. Ideal: a dedicated read-only `audit_reader` role that can read `information_schema`, `pg_catalog`, `pg_policies`, `cron.job`, extension metadata, and schema definitions without reading user table data.
-5. Provide dashboard access or exported metadata for Database Webhooks, because local SQL does not define those webhooks.
-6. Provide Edge Function metadata access sufficient to verify deployed function names and secret names. Secret values are not needed.
+- `supabase db dump --linked` is still blocked because Docker is not running, so no full `pg_dump` schema file was generated.
+- Runtime RLS was not tested with two controlled user accounts; only catalog RLS state was verified.
+- Edge Function deployment metadata and secret names were not queried; the database objects that call the function were verified.
+- Vault secret value was not read, intentionally.
 
-Service role key is not needed for this audit unless the owner specifically wants a controlled Edge Function invocation test. Do not share it for schema/RLS review.
+Needed only for deeper future verification:
 
+1. Docker Desktop running, or a local `pg_dump`/`psql` client, if a full schema dump is required.
+2. Two disposable test users if runtime cross-user RLS tests are required.
+3. Dashboard or Management API access for Edge Function deployment metadata, if function deployment status and configured secret names need formal verification.
+
+Service role key is not needed for schema/RLS review. Because the live webhook trigger metadata currently exposes a service-role bearer token, rotate that key before sharing schema dumps or broad metadata access.
