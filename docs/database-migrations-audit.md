@@ -8,6 +8,8 @@ Live database status: audited read-only through Supabase CLI 2.100.0 using the l
 
 Important secret-handling note: live database webhook trigger definitions contain an inline service-role bearer token in the trigger metadata. The value is intentionally not copied into this report. Rotate the service-role key and reconfigure the webhooks with a safer secret pattern before wider access to schema dumps or metadata.
 
+Remediation update, 2026-05-19: notification webhook and cron auth were updated to use `NOTIFICATION_WEBHOOK_SECRET` via `X-Tuk-Notification-Secret`; service-role bearer auth was removed from the notification webhook triggers and `public.tick_notifications()`.
+
 ## Sources reviewed
 
 - `supabase/schema.sql`
@@ -35,7 +37,7 @@ Important secret-handling note: live database webhook trigger definitions contai
 | `supabase/migrations/001_email_exists.sql` | Creates/replaces `public.email_exists(check_email text)` and grants execute to `anon` and `authenticated`. | Present. Duplicates the function already present in `schema.sql`. |
 | `supabase/migrations/002_*.sql` | Unknown locally. Live DB contains an untracked `public.rls_auto_enable()` function plus `ensure_rls` event trigger that are not in local migrations. | Missing locally and not present in remote CLI migration history. This is the best live candidate for the missing 002 change, but it cannot be proven because the remote has no `supabase_migrations` history table. |
 | `supabase/migrations/003_notifications.sql` | Adds notification columns/indexes to `profiles` and `user_stats`. | Present. Required by current OneSignal code. |
-| `supabase/migrations/004_notification_scheduler.sql` | Enables `pg_net` and `pg_cron`, stores a service role key in Vault, creates `public.tick_notifications()`, and schedules hourly notification ticks. | Present. Contains the placeholder `YOUR_SERVICE_ROLE_KEY_HERE`; do not commit a real service role key. |
+| `supabase/migrations/004_notification_scheduler.sql` | Enables `pg_net` and `pg_cron`, stores a dedicated notification webhook secret in Vault, creates `public.tick_notifications()`, and schedules hourly notification ticks. | Present. Contains the placeholder `YOUR_NOTIFICATION_WEBHOOK_SECRET_HERE`; do not commit a real secret value. |
 
 ## Live migration history
 

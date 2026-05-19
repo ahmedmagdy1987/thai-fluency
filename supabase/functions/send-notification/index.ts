@@ -14,12 +14,13 @@
 //      notifications (daily reminder, streak warning, re-engagement)
 //      to whoever matches the current hour in their local timezone.
 //
-// Auth: verify_jwt is on (Supabase default). Database Webhooks and pg_cron
-// both authenticate with the service_role_key.
+// Auth: every POST path requires X-Tuk-Notification-Secret, so database
+// webhooks and pg_cron do not need to embed service-role bearer credentials.
 //
 // Required Edge Function secrets:
 //   ONESIGNAL_APP_ID            (public; for convenience, mirrors VITE_ONESIGNAL_APP_ID)
 //   ONESIGNAL_REST_API_KEY      (sensitive; never set on Vercel)
+//   NOTIFICATION_WEBHOOK_SECRET (sensitive; shared only with DB webhooks/cron)
 //
 // Auto-injected by Supabase:
 //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
@@ -31,6 +32,7 @@ const ONESIGNAL_APP_ID = Deno.env.get("ONESIGNAL_APP_ID") ?? "";
 const ONESIGNAL_REST_API_KEY = Deno.env.get("ONESIGNAL_REST_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const NOTIFICATION_WEBHOOK_SECRET = Deno.env.get("NOTIFICATION_WEBHOOK_SECRET") ?? "";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   auth: { persistSession: false },
@@ -41,6 +43,20 @@ const COOLDOWN_MINUTES = 60;
 
 // App URL the user lands on when they tap a notification.
 const APP_URL = "https://thai-fluency.vercel.app/";
+
+function constantTimeEqual(a: string, b: string): boolean {
+  const maxLength = Math.max(a.length, b.length);
+  let mismatch = a.length === b.length ? 0 : 1;
+  for (let i = 0; i < maxLength; i++) {
+    mismatch |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  }
+  return mismatch === 0;
+}
+
+function hasValidNotificationSecret(req: Request): boolean {
+  const provided = req.headers.get("X-Tuk-Notification-Secret") ?? "";
+  return !!NOTIFICATION_WEBHOOK_SECRET && constantTimeEqual(provided, NOTIFICATION_WEBHOOK_SECRET);
+}
 
 // Message variants. Picked deterministically per (user, day) so each user
 // sees variety across days without us tracking which variant they last got.
@@ -300,9 +316,22 @@ serve(async (req) => {
   if (req.method === "GET") {
     return new Response(JSON.stringify({
       ok: true,
-      configured: !!(ONESIGNAL_APP_ID && ONESIGNAL_REST_API_KEY && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY),
+      configured: !!(
+        ONESIGNAL_APP_ID &&
+        ONESIGNAL_REST_API_KEY &&
+        SUPABASE_URL &&
+        SUPABASE_SERVICE_ROLE_KEY &&
+        NOTIFICATION_WEBHOOK_SECRET
+      ),
     }), {
       status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  if (!hasValidNotificationSecret(req)) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
       headers: { "Content-Type": "application/json" },
     });
   }
