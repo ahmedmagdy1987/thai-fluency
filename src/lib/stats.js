@@ -22,6 +22,7 @@ export const DEFAULT_STATS = {
   startedStage: 1,
   knownCardIds: [],
   hasOnboarded: false,
+  firstLessonCompleted: false,
   voice: DEFAULT_VOICE,
   viewMode: DEFAULT_VIEW_MODE,
   theme: 'light',
@@ -35,12 +36,33 @@ export const DEFAULT_STATS = {
   showCharacters: true,
 };
 
+export function hasStatsLearningActivity(stats = {}) {
+  return (
+    (stats.totalXp || 0) > 0 ||
+    (stats.totalReviews || 0) > 0 ||
+    (stats.quizzesPassed || 0) > 0 ||
+    (stats.perfectQuizzes || 0) > 0 ||
+    (stats.dailyGoalsHit || 0) > 0 ||
+    (stats.tonesQuizBest || 0) > 0 ||
+    stats.tonesQuizPassed === true ||
+    (stats.currentStage || 1) > 1 ||
+    (stats.startedStage || 1) > 1 ||
+    (stats.stage1CelebrationShown === true) ||
+    (Array.isArray(stats.knownCardIds) && stats.knownCardIds.length > 0) ||
+    (Array.isArray(stats.dialoguesCompleted) && stats.dialoguesCompleted.length > 0) ||
+    (Array.isArray(stats.unlockedAchievements) && stats.unlockedAchievements.length > 0)
+  );
+}
+
 export function migrateStats(stats) {
   const migrated = { ...DEFAULT_STATS, ...stats };
   // Legacy Settings used 0.85 as "Natural" and 1 as "Fast". Normalize old
   // cached values to the clearer speed spread used by the current selector.
   if (migrated.audioRate === 0.85) migrated.audioRate = 0.95;
   if (migrated.audioRate === 1) migrated.audioRate = 1.15;
+  if (!migrated.firstLessonCompleted && hasStatsLearningActivity(migrated)) {
+    migrated.firstLessonCompleted = true;
+  }
   return migrated;
 }
 

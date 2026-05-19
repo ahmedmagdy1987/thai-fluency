@@ -2134,6 +2134,80 @@ button.character-coach-portrait { cursor: pointer; }
   .learn-miniunit-btn:hover { background: var(--jade-soft); }
 }
 
+.firstlesson-root { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 22px; background: radial-gradient(circle at top left, rgba(201, 169, 97, 0.16), transparent 34%), var(--cream); }
+.firstlesson-shell { width: min(720px, 100%); display: flex; flex-direction: column; gap: 16px; }
+.firstlesson-brand { display: inline-flex; align-items: center; gap: 10px; align-self: center; color: var(--jade); font-size: 13px; font-weight: 800; }
+.firstlesson-brand-mark { width: 36px; height: 36px; border-radius: 12px; background: var(--jade); color: var(--cream); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 0; }
+.firstlesson-panel { background: var(--card-bg); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: 0 18px 46px rgba(15, 61, 46, 0.08); }
+.firstlesson-intro,
+.firstlesson-complete { text-align: center; }
+.firstlesson-coach { max-width: 440px; margin: 0 auto 18px; }
+.firstlesson-eyebrow,
+.firstlesson-step-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 800; }
+.firstlesson-title { font-family: 'Fraunces', serif; font-size: 34px; line-height: 1.1; color: var(--jade); margin: 10px 0; font-weight: 650; letter-spacing: 0; }
+.firstlesson-copy { color: var(--ink-soft); font-size: 15px; line-height: 1.55; margin: 0 auto 22px; max-width: 480px; }
+.firstlesson-primary { justify-content: center; min-width: 160px; }
+.firstlesson-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.firstlesson-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.firstlesson-progress-pill { border: 1px solid var(--line); background: var(--cream-warm); color: var(--ink-soft); border-radius: 999px; padding: 7px 10px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+.firstlesson-flash { width: 100%; min-height: 310px; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--cream-warm); color: var(--ink); padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; text-align: center; cursor: pointer; font-family: inherit; }
+.firstlesson-flash-revealed { background: color-mix(in srgb, var(--gold) 8%, var(--card-bg)); }
+.firstlesson-card-kind { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 800; }
+.firstlesson-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 46px; line-height: 1.14; color: var(--jade); font-weight: 800; overflow-wrap: anywhere; }
+.firstlesson-card-ph { font-family: 'JetBrains Mono', monospace; color: var(--brick); font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+.firstlesson-card-en { font-family: 'Fraunces', serif; color: var(--ink); font-size: 25px; line-height: 1.24; max-width: 560px; }
+.firstlesson-card-hint { color: var(--ink-soft); font-size: 13px; font-weight: 700; }
+.firstlesson-actions { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.firstlesson-icon-btn { width: 44px; height: 44px; justify-content: center; padding: 0; }
+.firstlesson-question { background: var(--cream-warm); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px; text-align: center; margin-bottom: 14px; }
+.firstlesson-question span { color: var(--ink-soft); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; }
+.firstlesson-question strong { font-family: 'Fraunces', serif; color: var(--jade); font-size: 28px; line-height: 1.2; }
+.firstlesson-options { display: flex; flex-direction: column; gap: 9px; }
+.firstlesson-option { width: 100%; min-height: 64px; border: 1px solid var(--line-strong); border-radius: 13px; background: var(--card-bg); color: var(--ink); font-family: inherit; padding: 12px; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; }
+.firstlesson-option:disabled { cursor: default; }
+.firstlesson-option-letter { width: 30px; height: 30px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-warm); color: var(--jade); font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 900; flex-shrink: 0; }
+.firstlesson-option-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.firstlesson-option-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 20px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+.firstlesson-option-ph { font-family: 'JetBrains Mono', monospace; color: var(--ink-soft); font-size: 12px; font-weight: 700; }
+.firstlesson-option-selected { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, var(--card-bg)); }
+.firstlesson-option-correct { background: var(--jade) !important; border-color: var(--jade) !important; color: var(--cream); }
+.firstlesson-option-wrong { background: var(--brick) !important; border-color: var(--brick) !important; color: var(--cream); }
+.firstlesson-option-correct .firstlesson-option-letter,
+.firstlesson-option-wrong .firstlesson-option-letter { background: rgba(255,255,255,0.18); color: white; }
+.firstlesson-option-correct .firstlesson-option-ph,
+.firstlesson-option-wrong .firstlesson-option-ph { color: rgba(255,255,255,0.78); }
+.firstlesson-feedback { border: 1px solid var(--line); border-radius: 12px; margin-top: 12px; padding: 12px; font-size: 13px; font-weight: 800; }
+.firstlesson-feedback-correct { border-color: color-mix(in srgb, var(--jade) 35%, var(--line)); color: var(--jade); }
+.firstlesson-feedback-wrong { border-color: color-mix(in srgb, var(--brick) 35%, var(--line)); color: var(--brick); }
+.firstlesson-complete-icon { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
+.firstlesson-unlock-note { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid color-mix(in srgb, var(--jade) 22%, var(--line)); background: color-mix(in srgb, var(--jade) 7%, var(--card-bg)); border-radius: 14px; padding: 12px 14px; margin-bottom: 16px; color: var(--ink); font-size: 13px; font-weight: 750; }
+.firstlesson-unlock-note button { border: none; border-radius: 999px; background: var(--jade); color: var(--cream); font-family: inherit; font-size: 12px; font-weight: 800; padding: 8px 12px; cursor: pointer; white-space: nowrap; }
+
+.app-root[data-theme="dark"] .firstlesson-root { background: radial-gradient(circle at top left, rgba(224, 189, 122, 0.12), transparent 34%), var(--cream); }
+.app-root[data-theme="dark"] .firstlesson-panel,
+.app-root[data-theme="dark"] .firstlesson-option { background: var(--card-bg); }
+.app-root[data-theme="dark"] .firstlesson-flash,
+.app-root[data-theme="dark"] .firstlesson-progress-pill,
+.app-root[data-theme="dark"] .firstlesson-question,
+.app-root[data-theme="dark"] .firstlesson-option-letter { background: rgba(232, 228, 217, 0.04); }
+.app-root[data-theme="dark"] .firstlesson-card-en { color: #f2eee5; }
+.app-root[data-theme="dark"] .firstlesson-option-selected { background: rgba(224, 189, 122, 0.13); }
+.app-root[data-theme="dark"] .firstlesson-unlock-note { background: rgba(91, 175, 124, 0.08); }
+
+@media (max-width: 620px) {
+  .firstlesson-root { align-items: flex-start; padding: 14px; }
+  .firstlesson-panel { padding: 18px 14px; border-radius: 15px; }
+  .firstlesson-title { font-size: 29px; }
+  .firstlesson-flash { min-height: 280px; padding: 16px; }
+  .firstlesson-card-thai { font-size: 37px; }
+  .firstlesson-card-en { font-size: 22px; }
+  .firstlesson-question strong { font-size: 24px; }
+  .firstlesson-actions { align-items: stretch; }
+  .firstlesson-primary { flex: 1; min-width: 0; }
+  .firstlesson-unlock-note { align-items: flex-start; flex-direction: column; }
+  .firstlesson-unlock-note button { width: 100%; justify-content: center; }
+}
+
 .miniunit-flow { display: flex; flex-direction: column; gap: 16px; }
 .miniunit-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .miniunit-back-btn { border: 1px solid var(--line-strong); background: var(--card-bg); color: var(--ink); border-radius: 999px; padding: 8px 12px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }

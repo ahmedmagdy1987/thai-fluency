@@ -56,9 +56,10 @@ import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
+import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import { getMiniUnit } from './data/miniUnits.js';
 
-const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects'];
+const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects', 'firstLessonCompleted'];
 const TAB_ROUTES = {
   learn: '/learn',
   today: '/today',
@@ -142,6 +143,7 @@ export default function TukTalkThaiApp() {
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
+  const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
 
   // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
   // only paths to the full app are sign-in or sign-up.
@@ -170,8 +172,11 @@ export default function TukTalkThaiApp() {
     (async () => {
       const saved = await loadState();
       if (saved) {
-        setProgress(saved.progress || {});
-        setStats(migrateStats(saved.stats || {}));
+        const savedProgress = saved.progress || {};
+        const savedStats = migrateStats(saved.stats || {});
+        if (Object.keys(savedProgress).length > 0) savedStats.firstLessonCompleted = true;
+        setProgress(savedProgress);
+        setStats(savedStats);
       }
       setLoaded(true);
     })();
@@ -421,15 +426,23 @@ export default function TukTalkThaiApp() {
           if (cancelled) return;
           if (cloudHasData) setProgress(cloudProgress);
           if (cloudStatsData) {
-            setStats(s => ({ ...s, ...cloudStatsData, unlockedAchievements: cloudAchs || s.unlockedAchievements || [] }));
+            setStats(s => migrateStats({
+              ...s,
+              ...cloudStatsData,
+              firstLessonCompleted: s.firstLessonCompleted || cloudHasData || cloudStatsData.firstLessonCompleted,
+              unlockedAchievements: cloudAchs || s.unlockedAchievements || [],
+            }));
           } else if (cloudAchs && cloudAchs.length > 0) {
-            setStats(s => ({ ...s, unlockedAchievements: cloudAchs }));
+            setStats(s => ({ ...s, firstLessonCompleted: true, unlockedAchievements: cloudAchs }));
+          } else if (cloudHasData) {
+            setStats(s => ({ ...s, firstLessonCompleted: true }));
           }
           setCloudReady(true);
         }
       } catch (e) {
         console.warn('[App] cloud init failed', e);
         // Fall back to local-only mode; user can retry by signing out and back in.
+        if (!cancelled) setCloudReady(true);
       } finally {
         cloudInitInFlight.current = false;
       }
@@ -833,6 +846,30 @@ export default function TukTalkThaiApp() {
     });
   }, [session, profile]);
 
+  const firstLessonCompleted = !!stats.firstLessonCompleted;
+
+  const completeFirstLesson = useCallback(() => {
+    updateSettings({ firstLessonCompleted: true });
+    setShowFirstLessonUnlock(true);
+    setActiveMiniUnitId(null);
+    setShowProfile(false);
+    setShowSettings(false);
+    setTab('learn');
+    writeRoute('/learn', { replace: true });
+  }, [updateSettings]);
+
+  useEffect(() => {
+    if (!loaded || !stats.firstLessonCompleted) return;
+    if (!session || !isEmailConfirmed || !hasSupabaseConfig || !profile) return;
+    if (profile.settings?.firstLessonCompleted === true) return;
+
+    const nextSettings = { ...(profile.settings || {}), firstLessonCompleted: true };
+    setProfile(p => (p ? { ...p, settings: nextSettings } : p));
+    updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
+      console.warn('[App] failed to write first lesson state to cloud profile', e);
+    });
+  }, [loaded, stats.firstLessonCompleted, session?.user?.id, isEmailConfirmed, profile]);
+
   const handleSetTab = useCallback((nextTab, options = {}) => {
     setActiveMiniUnitId(null);
     setShowProfile(false);
@@ -1003,6 +1040,23 @@ export default function TukTalkThaiApp() {
     );
   }
 
+  if (loaded && stats.hasOnboarded && session && isEmailConfirmed && !cloudReady && !firstLessonCompleted) {
+    return <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode} />;
+  }
+
+  if (loaded && stats.hasOnboarded && !firstLessonCompleted) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
+        <FirstLessonFlow
+          voice={voice}
+          audioRate={stats.audioRate || 0.95}
+          showCharacters={stats.showCharacters !== false}
+          onComplete={completeFirstLesson}
+        />
+      </div>
+    );
+  }
+
   // Profile page renders full-screen on top of the main app when opened
   // from the user menu. Closing returns to whatever tab was active.
   if (showProfile && session && profile) {
@@ -1049,6 +1103,12 @@ export default function TukTalkThaiApp() {
         />
       ) : (
         <>
+          {showFirstLessonUnlock && (
+            <div className="firstlesson-unlock-note">
+              <span>Cards help you remember. Challenge helps you test yourself.</span>
+              <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
+            </div>
+          )}
           {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={setActiveMiniUnitId} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
