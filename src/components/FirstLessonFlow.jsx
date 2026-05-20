@@ -1,13 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Check, ChevronRight, Sparkles, Volume2 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
+import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { displayCard } from '../lib/voice.js';
 import CharacterCoach from './CharacterCoach.jsx';
-
-export const FIRST_LESSON_VOCAB_IDS = [3396, 1, 1661, 2, 2815, 3254];
-export const FIRST_LESSON_SENTENCE_ID = 330;
-export const FIRST_LESSON_CHALLENGE_IDS = [3396, 2815, 330];
 
 function cardsByIds(ids, voice) {
   return ids
@@ -35,6 +32,7 @@ function buildQuestions(challengeCards, lessonCards) {
 }
 
 export default function FirstLessonFlow({
+  unit = STAGE_1_MINI_UNIT_PILOT,
   voice,
   audioRate = 0.95,
   showCharacters = true,
@@ -49,13 +47,13 @@ export default function FirstLessonFlow({
   const [score, setScore] = useState(0);
   const checkLockedRef = useRef(false);
 
-  const vocabCards = useMemo(() => cardsByIds(FIRST_LESSON_VOCAB_IDS, voice), [voice]);
-  const sentenceCard = useMemo(() => cardsByIds([FIRST_LESSON_SENTENCE_ID], voice)[0] || null, [voice]);
+  const vocabCards = useMemo(() => cardsByIds(unit.vocabCardIds || [], voice), [unit, voice]);
+  const sentenceCard = useMemo(() => cardsByIds(unit.sentenceCardId ? [unit.sentenceCardId] : [], voice)[0] || null, [unit, voice]);
   const lessonCards = useMemo(
     () => (sentenceCard ? [...vocabCards, sentenceCard] : vocabCards),
     [vocabCards, sentenceCard]
   );
-  const challengeCards = useMemo(() => cardsByIds(FIRST_LESSON_CHALLENGE_IDS, voice), [voice]);
+  const challengeCards = useMemo(() => cardsByIds(unit.challengeCardIds || [], voice), [unit, voice]);
   const challengeQuestions = useMemo(
     () => buildQuestions(challengeCards, lessonCards).slice(0, 3),
     [challengeCards, lessonCards]
@@ -91,7 +89,12 @@ export default function FirstLessonFlow({
       return;
     }
     if (cardIndex + 1 >= vocabCards.length) {
-      setStep('sentence');
+      setStep(sentenceCard ? 'sentence' : 'challenge');
+      setChallengeIndex(0);
+      setSelectedId(null);
+      setChecked(false);
+      setScore(0);
+      checkLockedRef.current = false;
       setRevealed(false);
       return;
     }
@@ -157,11 +160,16 @@ export default function FirstLessonFlow({
                 />
               </div>
             )}
-            <div className="firstlesson-eyebrow">First lesson</div>
-            <h1 className="firstlesson-title">Learn your first Thai words</h1>
+            <div className="firstlesson-eyebrow">Stage {unit.stageId} mini-unit</div>
+            <h1 className="firstlesson-title">{unit.title}</h1>
             <p className="firstlesson-copy">
-              We&apos;ll guide you through a short lesson, then unlock the rest.
+              {unit.subtitle || 'We will guide you through a short lesson, then unlock the rest.'}
             </p>
+            <div className="firstlesson-stats-row">
+              <span>{unit.estimatedMinutes} min</span>
+              <span>{vocabCards.length} cards</span>
+              <span>{challengeQuestions.length} questions</span>
+            </div>
             <button type="button" className="btn-primary firstlesson-primary" onClick={startLesson}>
               Start lesson <ChevronRight size={16} />
             </button>
@@ -173,7 +181,7 @@ export default function FirstLessonFlow({
             <div className="firstlesson-progress-row">
               <span className="firstlesson-step-label">{cardLabel}</span>
               <span className="firstlesson-progress-pill">
-                {step === 'sentence' ? '7 of 7' : `${cardIndex + 1} of ${vocabCards.length + 1}`}
+                {step === 'sentence' ? `${vocabCards.length + 1} of ${vocabCards.length + 1}` : `${cardIndex + 1} of ${vocabCards.length + (sentenceCard ? 1 : 0)}`}
               </span>
             </div>
 

@@ -2146,6 +2146,8 @@ button.character-coach-portrait { cursor: pointer; }
 .firstlesson-step-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 800; }
 .firstlesson-title { font-family: 'Fraunces', serif; font-size: 34px; line-height: 1.1; color: var(--jade); margin: 10px 0; font-weight: 650; letter-spacing: 0; }
 .firstlesson-copy { color: var(--ink-soft); font-size: 15px; line-height: 1.55; margin: 0 auto 22px; max-width: 480px; }
+.firstlesson-stats-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: -6px 0 20px; }
+.firstlesson-stats-row span { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; color: var(--ink-soft); font-size: 12px; font-weight: 800; }
 .firstlesson-primary { justify-content: center; min-width: 160px; }
 .firstlesson-primary:disabled { opacity: 0.45; cursor: not-allowed; }
 .firstlesson-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }

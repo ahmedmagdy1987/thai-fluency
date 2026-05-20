@@ -21,7 +21,7 @@ function rotateOptions(options, shift) {
 }
 
 function buildMiniChallenge(cards) {
-  return cards.slice(0, 5).map((correct, index) => {
+  return cards.map((correct, index) => {
     const distractors = cards.filter(card => card.id !== correct.id).slice(0, 3);
     const options = rotateOptions([correct, ...distractors], index);
     return {
@@ -86,7 +86,17 @@ export default function MiniUnitFlow({
 
   const nextVocab = () => {
     if (vocabIndex + 1 >= vocabCards.length) {
-      setStep('sentence');
+      if (sentenceCard) {
+        setStep('sentence');
+      } else {
+        setStep('challenge');
+        setChallengeIndex(0);
+        setSelectedId(null);
+        setChecked(false);
+        setChallengeScore(0);
+        checkLockedRef.current = false;
+        coach.react('greeting', { duration: 1200, message: 'Pick the Thai you just practiced.' });
+      }
       setRevealed(false);
       return;
     }
@@ -216,14 +226,14 @@ export default function MiniUnitFlow({
           )}
           <div className="miniunit-eyebrow">Stage {unit.stageId} guided lesson</div>
           <h1 className="miniunit-title">{unit.title}</h1>
-          <p className="miniunit-sub">{unit.introText}</p>
+          <p className="miniunit-sub">{unit.subtitle || unit.introText}</p>
           <div className="miniunit-stats-row">
             <span>{vocabCards.length} vocab cards</span>
-            <span>1 sentence</span>
+            {sentenceCard && <span>1 sentence</span>}
             <span>{challengeQuestions.length} challenge questions</span>
           </div>
           <button type="button" className="btn-primary miniunit-primary" onClick={() => setStep('vocab')}>
-            Start mini-unit <ChevronRight size={16} />
+            Start lesson <ChevronRight size={16} />
           </button>
         </section>
       )}
@@ -244,15 +254,6 @@ export default function MiniUnitFlow({
           onNext={startChallenge}
           nextLabel="Start challenge"
         />
-      )}
-
-      {step === 'sentence' && !sentenceCard && (
-        <section className="miniunit-panel">
-          <div className="miniunit-step-label">Sentence</div>
-          <h2 className="miniunit-panel-title">Sentence card missing</h2>
-          <p className="miniunit-panel-copy">This pilot has no approved sentence card yet. The gap is documented so Thai content can be reviewed separately.</p>
-          <button type="button" className="btn-primary" onClick={startChallenge}>Start challenge</button>
-        </section>
       )}
 
       {step === 'challenge' && currentChallenge && (
@@ -347,8 +348,8 @@ export default function MiniUnitFlow({
         <section className="miniunit-complete">
           <div className="miniunit-complete-icon"><Sparkles size={48} /></div>
           <div className="miniunit-eyebrow">Mini-unit complete</div>
-          <h2 className="miniunit-title">You finished your first guided Thai mini-unit.</h2>
-          <p className="miniunit-sub">Score: {challengeScore} of {challengeQuestions.length}. This pilot kept SRS untouched and used Challenge practice as a short check.</p>
+          <h2 className="miniunit-title">Nice! You learned your first Thai words and sentence.</h2>
+          <p className="miniunit-sub">Score: {challengeScore} of {challengeQuestions.length}. Cards did most of the learning; Challenge gave you a quick check.</p>
           <div className="miniunit-complete-actions">
             <button type="button" className="btn-primary" onClick={onOpenCards}>Review cards</button>
             <button type="button" className="btn-secondary" onClick={onOpenChallenge}>Open Challenge</button>

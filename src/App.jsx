@@ -57,7 +57,7 @@ import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
-import { getMiniUnit } from './data/miniUnits.js';
+import { getMiniUnit, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects', 'firstLessonCompleted'];
 const TAB_ROUTES = {
@@ -1048,6 +1048,7 @@ export default function TukTalkThaiApp() {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
         <FirstLessonFlow
+          unit={STAGE_1_MINI_UNIT_PILOT}
           voice={voice}
           audioRate={stats.audioRate || 0.95}
           showCharacters={stats.showCharacters !== false}
@@ -1105,7 +1106,7 @@ export default function TukTalkThaiApp() {
         <>
           {showFirstLessonUnlock && (
             <div className="firstlesson-unlock-note">
-              <span>Cards help you remember. Challenge helps you test yourself.</span>
+              <span>{STAGE_1_MINI_UNIT_PILOT.unlockMessage}</span>
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}

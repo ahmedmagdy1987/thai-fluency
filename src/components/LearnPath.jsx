@@ -83,12 +83,12 @@ export default function LearnPath({
             <div className="learn-miniunit-eyebrow">Guided mini-unit pilot</div>
             <h2 className="learn-miniunit-title">{STAGE_1_MINI_UNIT_PILOT.title}</h2>
             <p className="learn-miniunit-copy">
-              A short 75/25 lesson: practice polite intro cards, see one sentence, then answer a mini challenge.
+              {STAGE_1_MINI_UNIT_PILOT.subtitle}
             </p>
             <div className="learn-miniunit-meta">
               <span><Clock size={13} /> {STAGE_1_MINI_UNIT_PILOT.estimatedMinutes} min</span>
               <span>{STAGE_1_MINI_UNIT_PILOT.vocabCardIds.length} cards</span>
-              <span>{STAGE_1_MINI_UNIT_PILOT.challengeCardIds.length} challenge cards</span>
+              <span>{STAGE_1_MINI_UNIT_PILOT.challengeCardIds.length} questions</span>
             </div>
           </div>
           <button

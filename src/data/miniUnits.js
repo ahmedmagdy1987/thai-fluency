@@ -1,29 +1,32 @@
 export const STAGE_1_MINI_UNIT_PILOT = {
   unitId: 'stage-1-introductions-politeness',
   stageId: 1,
-  title: 'Introductions and polite basics',
+  missionId: 1,
+  title: 'Your first polite introduction',
+  subtitle: 'Say hello, introduce yourself, and recognize yes/no politely.',
   estimatedMinutes: 10,
   characterId: 'elephant',
-  vocabCardIds: [1, 2, 1661, 3396, 2815, 3254, 5361, 5702],
+  vocabCardIds: [3396, 1, 1661, 2, 3, 251, 250, 2815],
   sentenceCardId: 330,
-  challengeCardIds: [1, 2, 1661, 3396, 330, 2815, 3254, 5361, 5702],
+  challengeCardIds: [3396, 330, 251],
   futureDragDropSentence: {
     sourceCardId: 330,
     status: 'deferred',
     note: 'Use approved Thai token boundaries before enabling drag-and-drop.',
   },
-  introText: 'Practice the words that make a first Thai exchange feel polite and natural.',
+  introText: 'Start with one clear path: learn the words, see the sentence, then try a tiny challenge.',
   recapText: [
-    'You learned the polite building blocks for a first exchange.',
-    'The key pieces are I, name, and the polite particle.',
-    'You also practiced hello, thanks, sorry, no worries, and see you.',
-    'Those words support the sentence My name is ___.',
+    'You learned the core pieces of a polite first exchange.',
+    'Hello, I, name, and the polite particle build your intro sentence.',
+    'You also practiced you, yes, no/not, and thanks.',
+    'Those pieces support the sentence My name is ___.',
   ],
   previewText: [
-    'Next, this pattern can expand into introductions with more personal details.',
-    'You can add where you are from, what you like, or what you need.',
-    'The future sentence builder should let you arrange the Thai pieces yourself.',
+    'Next units can add what your name is, where you are from, and what you need.',
+    'Mini-lessons between units can explain why polite particles matter.',
+    'A future sentence builder can let you arrange the Thai pieces yourself.',
   ],
+  unlockMessage: 'Cards help you remember. Challenge helps you test yourself. Learn keeps you moving forward.',
 };
 
 export const MINI_UNITS = [STAGE_1_MINI_UNIT_PILOT];
