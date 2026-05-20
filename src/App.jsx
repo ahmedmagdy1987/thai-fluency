@@ -968,6 +968,7 @@ export default function TukTalkThaiApp() {
         <PublicLanding
           onGetStarted={() => openAuthGate('welcome')}
           onSignIn={() => openAuthGate('signin')}
+          audioRate={stats.audioRate || 0.95}
         />
       </div>
     );

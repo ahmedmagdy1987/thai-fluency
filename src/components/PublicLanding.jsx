@@ -8,6 +8,8 @@ import {
   Repeat2,
   Volume2,
 } from 'lucide-react';
+import { CARDS } from '../data/cards.js';
+import { speakThai } from '../lib/audio.js';
 
 const BENEFITS = [
   {
@@ -32,7 +34,30 @@ const BENEFITS = [
   },
 ];
 
-export default function PublicLanding({ onGetStarted, onSignIn }) {
+const PHRASE_SOURCES = [
+  { className: 'landing-phrase-one', cardId: 310, meaning: 'hello' },
+  { className: 'landing-phrase-two', cardId: 410, meaning: 'how much?' },
+  { className: 'landing-phrase-three', cardId: 5701, meaning: 'this one' },
+];
+
+function getPhrase(source) {
+  const card = CARDS.find(item => item.id === source.cardId);
+  return {
+    ...source,
+    thai: card?.thai || '',
+    ph: card?.ph || '',
+    en: source.meaning || card?.en || '',
+  };
+}
+
+export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95 }) {
+  const phrases = PHRASE_SOURCES.map(getPhrase);
+
+  const playPhrase = (thai) => {
+    if (!thai) return;
+    try { speakThai(thai, audioRate); } catch (_) { /* TTS unavailable */ }
+  };
+
   return (
     <main className="landing-page">
       <header className="landing-topbar">
@@ -46,24 +71,30 @@ export default function PublicLanding({ onGetStarted, onSignIn }) {
       </header>
 
       <section className="landing-hero" aria-labelledby="landing-title">
-        <div className="landing-hero-scene" aria-hidden="true">
+        <div className="landing-hero-scene">
           <img
             className="landing-character"
             src="/characters/muay-thai/speaking.webp"
             alt=""
+            aria-hidden="true"
           />
-          <div className="landing-phrase landing-phrase-one">
-            <span className="landing-phrase-thai">สวัสดีครับ</span>
-            <span className="landing-phrase-en">hello</span>
-          </div>
-          <div className="landing-phrase landing-phrase-two">
-            <span className="landing-phrase-thai">เท่าไหร่ครับ</span>
-            <span className="landing-phrase-en">how much?</span>
-          </div>
-          <div className="landing-phrase landing-phrase-three">
-            <span className="landing-phrase-thai">เอาอันนี้</span>
-            <span className="landing-phrase-en">this one</span>
-          </div>
+          {phrases.map(phrase => (
+            <div className={`landing-phrase ${phrase.className}`} key={phrase.cardId}>
+              <div className="landing-phrase-copy">
+                <span className="landing-phrase-thai">{phrase.thai}</span>
+                {phrase.ph && <span className="landing-phrase-ph">{phrase.ph}</span>}
+                <span className="landing-phrase-en">{phrase.en}</span>
+              </div>
+              <button
+                type="button"
+                className="landing-phrase-audio"
+                onClick={() => playPhrase(phrase.thai)}
+                aria-label={`Play ${phrase.en} pronunciation`}
+              >
+                <Volume2 size={15} />
+              </button>
+            </div>
+          ))}
         </div>
 
         <div className="landing-hero-inner">
