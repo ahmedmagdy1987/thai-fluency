@@ -45,7 +45,6 @@ img, svg, video { max-width: 100%; }
 .app-root[data-view-mode="speak"] .vocab-item-thai,
 .app-root[data-view-mode="speak"] .dialogue-line-thai,
 .app-root[data-view-mode="speak"] .quiz-feedback-thai,
-.app-root[data-view-mode="speak"] .brand-thai,
 .app-root[data-view-mode="speak"] .dash-greeting-thai,
 .app-root[data-view-mode="speak"] .onboard-placement-thai,
 .app-root[data-view-mode="speak"] .quiz-dir-thai,
@@ -203,12 +202,9 @@ img, svg, video { max-width: 100%; }
 .mono-font { font-family: 'JetBrains Mono', monospace; }
 .app-header { position: sticky; top: 0; z-index: 50; background: rgba(245, 240, 229, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
 .header-inner { max-width: 900px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
-.brand-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 22px; font-weight: 700; color: var(--jade); letter-spacing: -0.01em; }
-.brand-thai-ph { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--brick); white-space: nowrap; display: none; }
-@media (min-width: 480px) { .brand-thai-ph { display: inline; }
-}
-.brand-en { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: var(--gold); font-weight: 500; }
+.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.brand-en { font-family: 'Fraunces', serif; font-size: 18px; color: var(--jade); font-weight: 700; line-height: 1; letter-spacing: 0; }
+.brand-slogan { color: var(--ink-soft); font-size: 11px; font-weight: 500; line-height: 1.2; white-space: nowrap; }
 .header-stats { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 .due-pill, .streak-pill { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
 .due-pill { background: var(--brick); color: var(--cream); cursor: pointer; transition: transform 0.15s; }@media (hover: hover) and (pointer: fine) {
@@ -982,9 +978,9 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 /* Public landing page shown before the auth gate */
 .landing-page { flex: 1; min-height: 100vh; background: var(--cream); color: var(--ink); overflow: hidden; position: relative; letter-spacing: 0; }
 .landing-topbar { position: relative; z-index: 4; width: 100%; max-width: 1160px; margin: 0 auto; padding: 18px 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.landing-topbar-brand { display: inline-flex; align-items: baseline; gap: 10px; min-width: 0; }
-.landing-brand-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 24px; font-weight: 700; color: var(--jade); line-height: 1; white-space: nowrap; }
-.landing-brand-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1; white-space: nowrap; }
+.landing-topbar-brand { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.landing-brand-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--jade); line-height: 1; white-space: nowrap; letter-spacing: 0; }
+.landing-brand-slogan { color: var(--ink-soft); font-size: 12px; font-weight: 500; line-height: 1.2; white-space: nowrap; }
 .landing-topbar-signin { flex-shrink: 0; background: var(--card-bg); color: var(--jade); border: 1px solid var(--line-strong); border-radius: 999px; padding: 9px 15px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
 .landing-topbar-signin:hover { border-color: var(--jade); color: var(--jade-soft); }
 
@@ -1021,7 +1017,8 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (max-width: 639px) {
   .landing-topbar { max-width: 100vw; }
   .landing-topbar-brand { flex: 1; overflow: hidden; }
-  .landing-brand-name { overflow: hidden; text-overflow: ellipsis; }
+  .landing-brand-name,
+  .landing-brand-slogan { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
   .landing-hero-inner { width: calc(100vw - 40px); max-width: calc(100vw - 40px); }
   .landing-title,
   .landing-subtitle,
@@ -1033,8 +1030,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (min-width: 640px) {
   .landing-topbar { padding-top: 22px; }
-  .landing-brand-thai { font-size: 27px; }
-  .landing-brand-name { font-size: 18px; }
+  .landing-brand-name { font-size: 22px; }
   .landing-actions { max-width: none; flex-direction: row; width: auto; }
   .landing-primary-cta,
   .landing-secondary-cta { width: auto; padding-left: 24px; padding-right: 24px; }
@@ -1055,8 +1051,8 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 380px) {
   .landing-topbar { padding-left: 16px; padding-right: 16px; }
-  .landing-brand-thai { font-size: 21px; }
-  .landing-brand-name { font-size: 14px; }
+  .landing-brand-name { font-size: 18px; }
+  .landing-brand-slogan { font-size: 10.5px; }
   .landing-topbar-signin { padding-left: 12px; padding-right: 12px; }
   .landing-hero { padding-left: 16px; padding-right: 16px; }
   .landing-hero-inner { width: calc(100vw - 32px); max-width: calc(100vw - 32px); }
@@ -1070,9 +1066,9 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Welcome screen (AuthGate intro) */
 .auth-welcome-card { max-width: 480px; text-align: center; padding: 36px 24px; }
-.auth-welcome-brand { margin-bottom: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-.auth-welcome-brand-thai { font-family: 'Noto Sans Thai', serif; font-size: 36px; color: var(--jade); font-weight: 600; line-height: 1; }
-.auth-welcome-brand-wordmark { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: 0.01em; line-height: 1; }
+.auth-welcome-brand { margin-bottom: 22px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.auth-welcome-brand-wordmark { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--jade); letter-spacing: 0; line-height: 1; }
+.auth-welcome-brand-slogan { color: var(--ink-soft); font-size: 13px; font-weight: 500; line-height: 1.35; }
 .auth-welcome-title { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; color: var(--ink); line-height: 1.15; margin: 4px 0 12px; letter-spacing: -0.015em; }
 .auth-welcome-sub { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 24px; }
 
@@ -1378,9 +1374,9 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 /* === Sidebar (desktop) === */
 .sidebar-nav { display: none; width: 240px; min-width: 240px; flex-direction: column; gap: 4px; background: var(--cream-warm); border-right: 1px solid var(--line); padding: 22px 14px calc(22px + env(safe-area-inset-bottom, 0px)); height: 100vh; overflow-y: auto; }
 .app-root[data-theme="dark"] .sidebar-nav { background: var(--card-bg); }
-.sidebar-brand { display: flex; flex-direction: column; gap: 2px; padding: 4px 10px 22px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
-.sidebar-brand-mark { font-family: 'Noto Sans Thai', sans-serif; font-size: 22px; font-weight: 700; color: var(--jade); letter-spacing: -0.01em; line-height: 1; }
-.sidebar-brand-name { font-family: 'Fraunces', serif; font-size: 13px; font-style: italic; color: var(--gold); font-weight: 500; }
+.sidebar-brand { display: flex; flex-direction: column; gap: 5px; padding: 4px 10px 22px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+.sidebar-brand-name { font-family: 'Fraunces', serif; font-size: 20px; color: var(--jade); font-weight: 700; line-height: 1; letter-spacing: 0; }
+.sidebar-brand-slogan { color: var(--ink-soft); font-size: 11px; line-height: 1.35; font-weight: 500; max-width: 180px; }
 .sidebar-group { display: flex; flex-direction: column; gap: 2px; }
 .sidebar-group-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); padding: 16px 10px 6px; }
 .sidebar-item { position: relative; display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid transparent; background: transparent; color: var(--ink); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s, border-color 0.15s; }
@@ -1404,7 +1400,7 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 /* === Shell header (replaces .app-header for shell pages) === */
 .app-shell-header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
 .app-shell-header-inner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; max-width: 1180px; margin: 0 auto; }
-.app-shell-header-brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; flex-shrink: 0; }
+.app-shell-header-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; flex: 0 1 172px; }
 @media (min-width: 1024px) {
   /* Sidebar shows brand; hide the header brand to avoid duplication. */
   .app-shell-header-brand { display: none; }
@@ -1429,9 +1425,9 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .topstats-hearts-of { opacity: 0.6; font-weight: 600; margin-left: 1px; }
 @media (max-width: 540px) {
   .app-shell-header-inner { padding: 8px 10px; gap: 8px; }
-  .app-shell-header-brand { gap: 5px; flex: 0 1 auto; }
-  .brand-thai { font-size: 18px; }
-  .brand-en { font-size: 12px; white-space: nowrap; }
+  .app-shell-header-brand { flex: 0 1 128px; gap: 1px; }
+  .brand-en { font-size: 13px; white-space: nowrap; }
+  .brand-slogan { max-width: 128px; overflow: hidden; text-overflow: ellipsis; font-size: 9px; }
   .topstats-bar { flex-wrap: nowrap; justify-content: flex-end; gap: 3px; overflow: hidden; }
   .topstats-pill { gap: 3px; padding: 4px 6px; min-width: 28px; min-height: 26px; justify-content: center; font-size: 10px; white-space: nowrap; }
   .topstats-pill svg { width: 11px; height: 11px; }
@@ -1441,8 +1437,9 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 }
 @media (max-width: 360px) {
   .app-shell-header-inner { padding-left: 8px; padding-right: 8px; gap: 6px; }
-  .brand-thai { font-size: 16px; }
-  .brand-en { font-size: 11px; }
+  .app-shell-header-brand { flex-basis: 104px; }
+  .brand-en { font-size: 12px; }
+  .brand-slogan { max-width: 104px; font-size: 8.5px; }
   .topstats-pill { padding: 3px 5px; min-width: 25px; font-size: 9px; }
   .topstats-pill svg { width: 10px; height: 10px; }
 }
@@ -2136,8 +2133,9 @@ button.character-coach-portrait { cursor: pointer; }
 
 .firstlesson-root { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 22px; background: radial-gradient(circle at top left, rgba(201, 169, 97, 0.16), transparent 34%), var(--cream); }
 .firstlesson-shell { width: min(720px, 100%); display: flex; flex-direction: column; gap: 16px; }
-.firstlesson-brand { display: inline-flex; align-items: center; gap: 10px; align-self: center; color: var(--jade); font-size: 13px; font-weight: 800; }
-.firstlesson-brand-mark { width: 36px; height: 36px; border-radius: 12px; background: var(--jade); color: var(--cream); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 0; }
+.firstlesson-brand { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; align-self: center; color: var(--jade); }
+.firstlesson-brand-name { font-family: 'Fraunces', serif; color: var(--jade); font-size: 21px; font-weight: 700; line-height: 1; letter-spacing: 0; }
+.firstlesson-brand-slogan { color: var(--ink-soft); font-size: 12px; font-weight: 500; line-height: 1.25; }
 .firstlesson-panel { background: var(--card-bg); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: 0 18px 46px rgba(15, 61, 46, 0.08); }
 .firstlesson-intro,
 .firstlesson-complete { text-align: center; }

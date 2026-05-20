@@ -60,8 +60,8 @@ export default function SidebarNav({
   return (
     <aside className="sidebar-nav" aria-label="Primary navigation">
       <div className="sidebar-brand">
-        <span className="sidebar-brand-mark" aria-hidden="true">ตุ๊กตุ๊ก</span>
         <span className="sidebar-brand-name">Tuk Talk Thai</span>
+        <span className="sidebar-brand-slogan">Learn Thai the fast and fun way.</span>
       </div>
 
       <nav className="sidebar-group">

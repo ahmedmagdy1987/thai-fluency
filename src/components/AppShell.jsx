@@ -38,8 +38,8 @@ export default function AppShell({
         <header className="app-shell-header">
           <div className="app-shell-header-inner">
             <div className="app-shell-header-brand">
-              <span className="brand-thai">ตุ๊กตุ๊ก</span>
               <span className="brand-en">Tuk Talk Thai</span>
+              <span className="brand-slogan">Learn Thai the fast and fun way.</span>
             </div>
             <TopStatsBar
               stats={stats}

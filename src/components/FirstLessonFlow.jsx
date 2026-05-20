@@ -144,8 +144,8 @@ export default function FirstLessonFlow({
     <main className="firstlesson-root">
       <div className="firstlesson-shell">
         <div className="firstlesson-brand">
-          <span className="firstlesson-brand-mark">Tuk</span>
-          <span>Tuk Talk Thai</span>
+          <span className="firstlesson-brand-name">Tuk Talk Thai</span>
+          <span className="firstlesson-brand-slogan">Learn Thai the fast and fun way.</span>
         </div>
 
         {step === 'intro' && (

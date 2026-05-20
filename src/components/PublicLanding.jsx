@@ -37,8 +37,8 @@ export default function PublicLanding({ onGetStarted, onSignIn }) {
     <main className="landing-page">
       <header className="landing-topbar">
         <div className="landing-topbar-brand" aria-label="Tuk Talk Thai">
-          <span className="landing-brand-thai">ตุ๊ก ตุ๊ก</span>
           <span className="landing-brand-name">Tuk Talk Thai</span>
+          <span className="landing-brand-slogan">Learn Thai the fast and fun way.</span>
         </div>
         <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
           Sign in

@@ -54,8 +54,8 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
     <div className="onboard-root">
       <div className="onboard-card auth-welcome-card">
         <div className="auth-welcome-brand">
-          <div className="auth-welcome-brand-thai">ตุ๊ก ตุ๊ก</div>
           <div className="auth-welcome-brand-wordmark">Tuk Talk Thai</div>
+          <div className="auth-welcome-brand-slogan">Learn Thai the fast and fun way.</div>
         </div>
         <h1 className="auth-welcome-title">Real Thai for real life.</h1>
         <p className="auth-welcome-sub">
