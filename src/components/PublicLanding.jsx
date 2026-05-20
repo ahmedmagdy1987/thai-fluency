@@ -50,6 +50,30 @@ function getPhrase(source) {
   };
 }
 
+function LandingPhraseCard({ phrase, onPlay, className = '' }) {
+  return (
+    <div className={`landing-phrase ${phrase.className} ${className}`.trim()}>
+      <div className="landing-phrase-copy">
+        <span className="landing-phrase-thai">{phrase.thai}</span>
+        {phrase.ph && <span className="landing-phrase-ph">{phrase.ph}</span>}
+        <span className="landing-phrase-en">{phrase.en}</span>
+      </div>
+      <button
+        type="button"
+        className="landing-phrase-audio"
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          onPlay(phrase.thai);
+        }}
+        aria-label={`Play ${phrase.en} pronunciation`}
+      >
+        <Volume2 size={15} />
+      </button>
+    </div>
+  );
+}
+
 export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95 }) {
   const phrases = PHRASE_SOURCES.map(getPhrase);
 
@@ -79,21 +103,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95
             aria-hidden="true"
           />
           {phrases.map(phrase => (
-            <div className={`landing-phrase ${phrase.className}`} key={phrase.cardId}>
-              <div className="landing-phrase-copy">
-                <span className="landing-phrase-thai">{phrase.thai}</span>
-                {phrase.ph && <span className="landing-phrase-ph">{phrase.ph}</span>}
-                <span className="landing-phrase-en">{phrase.en}</span>
-              </div>
-              <button
-                type="button"
-                className="landing-phrase-audio"
-                onClick={() => playPhrase(phrase.thai)}
-                aria-label={`Play ${phrase.en} pronunciation`}
-              >
-                <Volume2 size={15} />
-              </button>
-            </div>
+            <LandingPhraseCard phrase={phrase} onPlay={playPhrase} key={phrase.cardId} />
           ))}
         </div>
 
@@ -123,6 +133,18 @@ export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95
             <span><CheckCircle2 size={15} /> Smart review</span>
             <span><CheckCircle2 size={15} /> Quick challenges</span>
             <span><CheckCircle2 size={15} /> Device sync</span>
+          </div>
+
+          <div className="landing-mobile-phrases" aria-label="Try a phrase">
+            <div className="landing-mobile-phrases-title">Try a phrase</div>
+            {phrases.map(phrase => (
+              <LandingPhraseCard
+                phrase={phrase}
+                onPlay={playPhrase}
+                className="landing-mobile-phrase"
+                key={`mobile-${phrase.cardId}`}
+              />
+            ))}
           </div>
         </div>
       </section>
