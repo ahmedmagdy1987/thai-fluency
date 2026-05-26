@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
 import ForgotPassword from './ForgotPassword.jsx';
+import { SITE_CONFIG } from '../../config/site.js';
 
 // Three-button entry: Create account, Sign in, or Try a quick demo.
 // "Try a quick demo" is the only anonymous path — limited to 5 cards via
@@ -58,8 +59,8 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
     <div className="onboard-root">
       <div className="onboard-card auth-welcome-card">
         <div className="auth-welcome-brand">
-          <div className="auth-welcome-brand-wordmark">Tuk Talk Thai</div>
-          <div className="auth-welcome-brand-slogan">Learn Thai the fast and fun way.</div>
+          <div className="auth-welcome-brand-wordmark">{SITE_CONFIG.siteName}</div>
+          <div className="auth-welcome-brand-slogan">{SITE_CONFIG.slogan}</div>
         </div>
         <h1 className="auth-welcome-title">Real Thai for real life.</h1>
         <p className="auth-welcome-sub">

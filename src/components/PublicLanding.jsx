@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { speakThai } from '../lib/audio.js';
+import { SITE_CONFIG } from '../config/site.js';
 
 const BENEFITS = [
   {
@@ -99,9 +100,9 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   return (
     <main className="landing-page">
       <header className="landing-topbar">
-        <div className="landing-topbar-brand" aria-label="Tuk Talk Thai">
-          <span className="landing-brand-name">Tuk Talk Thai</span>
-          <span className="landing-brand-slogan">Learn Thai the fast and fun way.</span>
+        <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
+          <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
+          <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
         </div>
         <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
           Sign in
@@ -176,7 +177,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       <footer className="landing-footer" aria-label="Public links">
-        <div className="landing-footer-brand">Tuk Talk Thai</div>
+        <div className="landing-footer-brand">{SITE_CONFIG.siteName}</div>
         <nav className="landing-footer-links">
           {FOOTER_LINKS.map(link => (
             <a key={link.path} href={link.path} onClick={openPublicPage(link.path)}>

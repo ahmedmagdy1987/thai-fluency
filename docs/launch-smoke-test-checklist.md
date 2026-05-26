@@ -2,6 +2,21 @@
 
 Run this checklist on the launch domain before public beta. Mark one result per row.
 
+## Production Domain Checks
+
+| Check | Pass | Fail | Notes |
+| --- | --- | --- | --- |
+| `tuktalkthai.com` resolves to the production deployment. | [ ] | [ ] |  |
+| `www.tuktalkthai.com` redirects correctly or loads correctly. | [ ] | [ ] |  |
+| HTTPS works without browser warnings. | [ ] | [ ] |  |
+| Direct routes work after hard refresh. | [ ] | [ ] |  |
+| Legal pages work at `/privacy`, `/terms`, `/support`, and `/delete-account`. | [ ] | [ ] |  |
+| `/OneSignalSDKWorker.js` returns the worker script. | [ ] | [ ] |  |
+| `/manifest.webmanifest` returns the PWA manifest if present. | [ ] | [ ] |  |
+| Mobile landing renders cleanly on a real phone or device emulator. | [ ] | [ ] |  |
+| Sign-up and sign-in work on the production domain. | [ ] | [ ] |  |
+| First guided lesson works on the production domain. | [ ] | [ ] |  |
+
 ## Domain Check
 
 | Check | Pass | Fail | Notes |

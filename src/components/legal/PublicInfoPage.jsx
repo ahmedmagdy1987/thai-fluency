@@ -6,18 +6,19 @@ import {
   SupportContent,
   TermsOfUseContent,
 } from './legalCopy.jsx';
+import { SITE_CONFIG } from '../../config/site.js';
 
 const PUBLIC_PAGES = {
   privacy: {
     eyebrow: 'Legal',
     title: 'Privacy Policy',
-    intro: 'How Tuk Talk Thai handles account data, learning progress, preferences, notifications, and service providers.',
+    intro: `How ${SITE_CONFIG.siteName} handles account data, learning progress, preferences, notifications, and service providers.`,
     Content: PrivacyPolicyContent,
   },
   terms: {
     eyebrow: 'Legal',
     title: 'Terms of Use',
-    intro: 'The basic rules for using Tuk Talk Thai during the web/PWA beta.',
+    intro: `The basic rules for using ${SITE_CONFIG.siteName} during the web/PWA beta.`,
     Content: TermsOfUseContent,
   },
   support: {
@@ -58,8 +59,8 @@ export default function PublicInfoPage({ page = 'privacy', isAuthed = false, onN
     <main className="public-info-page">
       <header className="public-info-topbar">
         <a className="public-info-brand" href={homePath} onClick={navClick(homePath)}>
-          <span className="public-info-brand-name">Tuk Talk Thai</span>
-          <span className="public-info-brand-slogan">Learn Thai the fast and fun way.</span>
+          <span className="public-info-brand-name">{SITE_CONFIG.siteName}</span>
+          <span className="public-info-brand-slogan">{SITE_CONFIG.slogan}</span>
         </a>
         <nav className="public-info-nav" aria-label="Public pages">
           {PAGE_LINKS.map(link => (

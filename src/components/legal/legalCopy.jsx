@@ -1,6 +1,7 @@
 import React from 'react';
+import { SITE_CONFIG } from '../../config/site.js';
 
-export const SUPPORT_EMAIL = 'support@tuktalkthai.com';
+const { siteName, siteUrl, supportEmail } = SITE_CONFIG;
 export const LEGAL_LAST_UPDATED = 'May 26, 2026';
 
 export function OwnerReviewNotice({ children = 'Draft legal/support copy. The owner should review and approve this page before public launch.' }) {
@@ -20,11 +21,11 @@ export function PrivacyPolicyContent() {
       </OwnerReviewNotice>
 
       <p>
-        This Privacy Policy explains how Tuk Talk Thai collects, uses, and protects information when you use the web app or PWA beta.
+        This Privacy Policy explains how {siteName} collects, uses, and protects information when you use the web app or PWA beta at <a href={siteUrl}>{siteUrl}</a>.
       </p>
 
       <h3>1. Information we collect</h3>
-      <p>We collect only the information needed to operate Tuk Talk Thai:</p>
+      <p>We collect only the information needed to operate {siteName}:</p>
       <ul>
         <li><strong>Account information</strong>: your email address and name/display name if you provide one.</li>
         <li><strong>Learning progress</strong>: reviewed cards, lesson progress, XP, streaks, achievements, mission state, and other progress data.</li>
@@ -45,7 +46,7 @@ export function PrivacyPolicyContent() {
 
       <h3>3. Push notifications</h3>
       <p>
-        Tuk Talk Thai may use OneSignal to deliver optional web push notifications. If you allow notifications, OneSignal may process device identifiers, notification permission state, subscription status, and delivery information needed to send and manage push messages. You can change notification permissions in your browser/device settings and, where available, inside Tuk Talk Thai notification preferences.
+        {siteName} may use OneSignal to deliver optional web push notifications. If you allow notifications, OneSignal may process device identifiers, notification permission state, subscription status, and delivery information needed to send and manage push messages. You can change notification permissions in your browser/device settings and, where available, inside {siteName} notification preferences.
       </p>
 
       <h3>4. Service providers</h3>
@@ -58,29 +59,29 @@ export function PrivacyPolicyContent() {
 
       <h3>5. Data sharing and selling</h3>
       <p>
-        We do not sell user data. We do not use learning progress for third-party advertising. We share information only with service providers needed to operate Tuk Talk Thai, when required by law, or when needed to protect the app and its users.
+        We do not sell user data. We do not use learning progress for third-party advertising. We share information only with service providers needed to operate {siteName}, when required by law, or when needed to protect the app and its users.
       </p>
 
       <h3>6. Data retention and deletion</h3>
       <p>
-        We keep account and learning data while your account is active or as needed to operate the service. To request account or data deletion, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> with the email address on your account and a clear deletion request.
+        We keep account and learning data while your account is active or as needed to operate the service. To request account or data deletion, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> with the email address on your account and a clear deletion request.
       </p>
 
       <h3>7. Your choices</h3>
       <ul>
-        <li>You can update some profile and app settings inside Tuk Talk Thai.</li>
+        <li>You can update some profile and app settings inside {siteName}.</li>
         <li>You can disable push notifications through your browser or device settings.</li>
         <li>You can contact support to request account deletion or help with account data.</li>
       </ul>
 
       <h3>8. Changes</h3>
       <p>
-        We may update this Privacy Policy as Tuk Talk Thai changes. If the update is material, we will take reasonable steps to notify users.
+        We may update this Privacy Policy as {siteName} changes. If the update is material, we will take reasonable steps to notify users.
       </p>
 
       <h3>9. Contact</h3>
       <p>
-        For privacy questions, support requests, or data/account deletion, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        For privacy questions, support requests, or data/account deletion, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
       </p>
     </>
   );
@@ -95,12 +96,12 @@ export function TermsOfUseContent() {
       </OwnerReviewNotice>
 
       <p>
-        These Terms of Use govern your access to and use of Tuk Talk Thai. By using the app, you agree to these terms.
+        These Terms of Use govern your access to and use of {siteName}. By using the app, you agree to these terms.
       </p>
 
       <h3>1. Educational use</h3>
       <p>
-        Tuk Talk Thai is an educational app for learning and practicing Thai. It is not a professional translation, interpretation, legal, medical, safety, or immigration service.
+        {siteName} is an educational app for learning and practicing Thai. It is not a professional translation, interpretation, legal, medical, safety, or immigration service.
       </p>
 
       <h3>2. Accuracy</h3>
@@ -118,7 +119,7 @@ export function TermsOfUseContent() {
       <h3>4. Acceptable use</h3>
       <p>You agree not to:</p>
       <ul>
-        <li>Use Tuk Talk Thai for unlawful, abusive, or harmful activity.</li>
+        <li>Use {siteName} for unlawful, abusive, or harmful activity.</li>
         <li>Attempt to access another user's account or data.</li>
         <li>Interfere with app security, availability, or normal operation.</li>
         <li>Copy, scrape, resell, or misuse app content or functionality in a way that harms the service.</li>
@@ -126,7 +127,7 @@ export function TermsOfUseContent() {
 
       <h3>5. Changes to the app</h3>
       <p>
-        Tuk Talk Thai is in beta and may change over time. Features, lesson structure, card availability, notifications, rewards, and other parts of the app may be added, changed, paused, or removed.
+        {siteName} is in beta and may change over time. Features, lesson structure, card availability, notifications, rewards, and other parts of the app may be added, changed, paused, or removed.
       </p>
 
       <h3>6. Availability</h3>
@@ -136,12 +137,12 @@ export function TermsOfUseContent() {
 
       <h3>7. Account deletion</h3>
       <p>
-        You can request account deletion by emailing <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Automated in-app deletion is planned as a future improvement.
+        You can request account deletion by emailing <a href={`mailto:${supportEmail}`}>{supportEmail}</a>. Automated in-app deletion is planned as a future improvement.
       </p>
 
       <h3>8. Contact</h3>
       <p>
-        For questions about these terms or support needs, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        For questions about these terms or support needs, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
       </p>
     </>
   );
@@ -151,11 +152,11 @@ export function SupportContent() {
   return (
     <>
       <OwnerReviewNotice>
-        Confirm the support email before public launch. Current placeholder: {SUPPORT_EMAIL}.
+        Confirm the support email is active before public launch. Current public support email: {supportEmail}.
       </OwnerReviewNotice>
 
       <p>
-        Need help with Tuk Talk Thai? Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and include the account email you use for the app when relevant.
+        Need help with {siteName}? Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> and include the account email you use for the app when relevant.
       </p>
 
       <h3>Common help topics</h3>
@@ -165,7 +166,7 @@ export function SupportContent() {
         <li><strong>Learning progress</strong>: missing progress, sync questions, streaks, XP, or settings persistence.</li>
         <li><strong>Deleting account</strong>: request manual account deletion through support.</li>
         <li><strong>Reporting incorrect Thai content</strong>: send the phrase, card, screen, and what looks wrong.</li>
-        <li><strong>Billing</strong>: coming later. Tuk Talk Thai is not collecting payments in the current beta.</li>
+        <li><strong>Billing</strong>: coming later. {siteName} is not collecting payments in the current beta.</li>
       </ul>
 
       <h3>What to include</h3>
@@ -187,13 +188,13 @@ export function DeleteAccountContent() {
       </OwnerReviewNotice>
 
       <p>
-        Tuk Talk Thai currently uses a support-based account deletion workflow. This page does not delete your account automatically.
+        {siteName} currently uses a support-based account deletion workflow. This page does not delete your account automatically.
       </p>
 
       <h3>How to request deletion</h3>
       <ol>
-        <li>Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.</li>
-        <li>Send the request from the email address on your Tuk Talk Thai account when possible.</li>
+        <li>Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.</li>
+        <li>Send the request from the email address on your {siteName} account when possible.</li>
         <li>Include the account email and write that you are requesting account deletion.</li>
         <li>The owner/admin will manually delete the account and associated app data from Supabase until automated deletion exists.</li>
       </ol>
@@ -205,7 +206,7 @@ export function DeleteAccountContent() {
 
       <h3>Need help?</h3>
       <p>
-        For account questions or deletion status, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        For account questions or deletion status, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
       </p>
     </>
   );

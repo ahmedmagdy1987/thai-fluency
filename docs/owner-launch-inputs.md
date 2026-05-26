@@ -4,8 +4,8 @@ Owner review is required before public launch. The public Privacy Policy, Terms 
 
 | Input | Status | Owner Action |
 | --- | --- | --- |
-| Confirmed domain | Required | Confirm the production web/PWA domain and final public URLs. |
-| Support email | Required | Confirm whether `support@tuktalkthai.com` is active. This placeholder is used in the app until confirmed or replaced. |
+| Confirmed domain | Known: `tuktalkthai.com` | Verify DNS and deployment are connected at `https://tuktalkthai.com`. |
+| Support email | Pending confirmation: `support@tuktalkthai.com` | Confirm the mailbox exists, can receive mail, and is monitored before public beta. |
 | Legal/business name | Required | Provide the legal owner or business name to use in public legal copy and app-store forms. |
 | Privacy approval | Required | Review and approve the Privacy Policy before launch. |
 | Terms approval | Required | Review and approve the Terms of Use before launch. |
