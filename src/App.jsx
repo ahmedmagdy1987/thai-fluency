@@ -8,7 +8,7 @@ import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState, clearState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
-import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
+import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -51,7 +51,6 @@ import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
-import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
@@ -188,6 +187,7 @@ export default function TukTalkThaiApp() {
   const [publicPage, setPublicPage] = useState(() => initialRoute.type === 'public' ? initialRoute.page : null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
+  const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
   const [rewardScreen, setRewardScreen] = useState(null);
   const [upgradePrompt, setUpgradePrompt] = useState(null);
@@ -209,13 +209,15 @@ export default function TukTalkThaiApp() {
   });
   const [authInitialScreen, setAuthInitialScreen] = useState(() => initialRoute.authScreen || 'welcome');
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
-  const [showMigration, setShowMigration] = useState(false);
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
   const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
   const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
   const profileSettingsRef = useRef({});
+  const reviewLocksRef = useRef(new Set());
+  const missionRewardLocksRef = useRef(new Set());
+  const achievementLocksRef = useRef(new Set());
 
   useEffect(() => {
     profileSettingsRef.current = (profile?.settings && typeof profile.settings === 'object' && !Array.isArray(profile.settings))
@@ -256,6 +258,7 @@ export default function TukTalkThaiApp() {
 
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
+    setCardSession(null);
 
     if (route.type === 'public') {
       setPublicPage(route.page);
@@ -479,14 +482,14 @@ export default function TukTalkThaiApp() {
     setShowProfile(false);
     setShowSettings(false);
     setPublicPage(null);
+    setCardSession(null);
     writeRoute('/get-started', { replace: true });
     notificationPromptFired.current = false;
   }, []);
 
-  // Cloud init: when a user is signed in AND email-confirmed, decide whether
-  // to upload local-only progress (migration prompt) or just download whatever's
-  // on the cloud. Unconfirmed users are blocked at the PendingConfirmation gate
-  // above and never reach cloud sync.
+  // Cloud init: when a user is signed in AND email-confirmed, automatically
+  // uploads local-only progress only when the cloud is empty; otherwise the
+  // cloud remains the source of truth. No blocking migration prompt.
   useEffect(() => {
     if (!session || !loaded || cloudReady || cloudInitInFlight.current || !hasSupabaseConfig) return;
     if (!session.user?.email_confirmed_at) return;
@@ -495,20 +498,21 @@ export default function TukTalkThaiApp() {
     (async () => {
       try {
         const cloudProgress = await downloadProgress(session.user.id);
-        const cloudHasData = Object.keys(cloudProgress).length > 0;
-        const localHasData = Object.keys(progress).length > 0;
+        const safeCloudProgress = cloudProgress && typeof cloudProgress === 'object' ? cloudProgress : {};
+        const safeLocalProgress = progress && typeof progress === 'object' ? progress : {};
+        const cloudHasData = Object.keys(safeCloudProgress).length > 0;
+        const localHasData = Object.keys(safeLocalProgress).length > 0;
+        const [cloudStatsData, cloudAchs] = await Promise.all([
+          downloadStats(session.user.id),
+          downloadAchievements(session.user.id),
+        ]);
         if (cancelled) return;
-        if (localHasData && !cloudHasData) {
-          // Conflict: local has work, cloud is empty. Ask the user.
-          setShowMigration(true);
-          // cloudReady stays false until migration resolves.
+        const cloudHasState = cloudHasData || hasStatsLearningActivity(cloudStatsData || {}) || (cloudAchs && cloudAchs.length > 0);
+        if (localHasData && !cloudHasState) {
+          await uploadFullState(session.user.id, safeLocalProgress, stats);
+          if (!cancelled) setCloudReady(true);
         } else {
-          const [cloudStatsData, cloudAchs] = await Promise.all([
-            downloadStats(session.user.id),
-            downloadAchievements(session.user.id),
-          ]);
-          if (cancelled) return;
-          if (cloudHasData) setProgress(cloudProgress);
+          if (cloudHasData) setProgress(safeCloudProgress);
           if (cloudStatsData) {
             setStats(s => migrateStats({
               ...s,
@@ -553,43 +557,6 @@ export default function TukTalkThaiApp() {
     }, 2500);
     return () => { if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current); };
   }, [progress, stats, session, cloudReady, loaded]);
-
-  const handleMigrateLocal = useCallback(async () => {
-    if (!session) return;
-    await uploadFullState(session.user.id, progress, stats);
-    setShowMigration(false);
-    setCloudReady(true);
-  }, [session, progress, stats]);
-
-  const handleSkipMigration = useCallback(async () => {
-    if (!session) return;
-    // Discard local progress; load whatever's on the cloud (likely defaults
-    // since the user just signed up).
-    try {
-      const [cloudStatsData, cloudAchs] = await Promise.all([
-        downloadStats(session.user.id),
-        downloadAchievements(session.user.id),
-      ]);
-      setProgress({});
-      setStats(s => ({
-        ...DEFAULT_STATS,
-        ...(cloudStatsData || {}),
-        // Preserve a couple of local-only fields we don't want to clobber.
-        voice: s.voice || DEFAULT_VOICE,
-        viewMode: s.viewMode || DEFAULT_VIEW_MODE,
-        theme: s.theme || 'light',
-        audioRate: s.audioRate || 0.95,
-        audioAutoPlay: !!s.audioAutoPlay,
-        showCharacters: s.showCharacters !== false,
-        soundEffects: s.soundEffects !== false,
-        unlockedAchievements: cloudAchs || [],
-        hasOnboarded: false, // fresh start → re-run placement
-      }));
-    } finally {
-      setShowMigration(false);
-      setCloudReady(true);
-    }
-  }, [session]);
 
   useEffect(() => {
     if (loaded && !demoMode) saveState({ progress, stats });
@@ -728,21 +695,25 @@ export default function TukTalkThaiApp() {
   useEffect(() => {
     if (!loaded || !missionState) return;
     const lastSeen = stats.lastSeenMission || 1;
-    const cur = missionState.currentMission;
+    const cur = missionState.stage1Complete ? MISSIONS.length + 1 : missionState.currentMission;
     if (cur > lastSeen) {
       // Mission(s) finished in between. Reward the one that just completed.
       const justFinished = MISSIONS.find(m => m.id === cur - 1);
       if (justFinished) {
-        grantXp(MISSION_REWARD_XP);
-        setRewardScreen({
-          id: `mission-${justFinished.id}-${Date.now()}`,
-          title: `Mission ${justFinished.id} Complete`,
-          subtitle: justFinished.celebration,
-          xpEarned: MISSION_REWARD_XP,
-          streak: stats.streak || 0,
-          nextStep: `Mission ${cur}`,
-          superPromptReason: 'mission',
-        });
+        const rewardKey = `mission:${justFinished.id}`;
+        if (!missionRewardLocksRef.current.has(rewardKey)) {
+          missionRewardLocksRef.current.add(rewardKey);
+          grantXp(MISSION_REWARD_XP);
+          setRewardScreen({
+            id: `mission-${justFinished.id}-${Date.now()}`,
+            title: `Mission ${justFinished.id} Complete`,
+            subtitle: justFinished.celebration,
+            xpEarned: MISSION_REWARD_XP,
+            streak: stats.streak || 0,
+            nextStep: cur > MISSIONS.length ? 'Stage 2' : `Mission ${cur}`,
+            superPromptReason: 'mission',
+          });
+        }
       }
       setStats(s => ({ ...s, lastSeenMission: cur }));
       // Record completion in user_missions so the database webhook can
@@ -774,8 +745,9 @@ export default function TukTalkThaiApp() {
   useEffect(() => {
     if (!loaded) return;
     const unlocked = checkAchievements(stats, progress).filter(a => a.unlocked).map(a => a.id);
-    const newly = unlocked.filter(id => !(stats.unlockedAchievements || []).includes(id));
+    const newly = unlocked.filter(id => !(stats.unlockedAchievements || []).includes(id) && !achievementLocksRef.current.has(id));
     if (newly.length > 0) {
+      newly.forEach(id => achievementLocksRef.current.add(id));
       const newAchievements = newly.map(id => ACHIEVEMENTS.find(a => a.id === id)).filter(Boolean);
       // Show the first one immediately, queue the rest
       setAchievementToast(prev => prev || newAchievements[0]);
@@ -801,27 +773,36 @@ export default function TukTalkThaiApp() {
   const [lastReviewSnapshot, setLastReviewSnapshot] = useState(null);
 
   const reviewOne = useCallback((cardId, rating) => {
+    const previousProgress = progress?.[cardId] || null;
+    const reviewKey = `${cardId}:${previousProgress?.lastReview || 'new'}`;
+    if (reviewLocksRef.current.has(reviewKey)) return false;
+    reviewLocksRef.current.add(reviewKey);
+    window.setTimeout(() => reviewLocksRef.current.delete(reviewKey), 1500);
     // Snapshot previous state for undo
     setLastReviewSnapshot({
       cardId,
       rating,
-      previousProgress: progress[cardId] || null,
+      previousProgress,
+      reviewKey,
       timestamp: Date.now(),
     });
     setProgress(p => {
-      const newState = reviewCard(p[cardId], rating);
-      return { ...p, [cardId]: newState };
+      const safeProgress = p && typeof p === 'object' ? p : {};
+      const newState = reviewCard(safeProgress[cardId], rating);
+      return { ...safeProgress, [cardId]: newState };
     });
     setStats(s => ({ ...s, totalReviews: (s.totalReviews || 0) + 1 }));
     const xp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
     grantXp(xp);
+    return true;
   }, [grantXp, progress]);
 
   const undoLastReview = useCallback(() => {
     if (!lastReviewSnapshot) return;
-    const { cardId, rating, previousProgress } = lastReviewSnapshot;
+    const { cardId, rating, previousProgress, reviewKey } = lastReviewSnapshot;
+    if (reviewKey) reviewLocksRef.current.delete(reviewKey);
     setProgress(p => {
-      const next = { ...p };
+      const next = { ...(p && typeof p === 'object' ? p : {}) };
       if (previousProgress) next[cardId] = previousProgress;
       else delete next[cardId];
       return next;
@@ -886,7 +867,7 @@ export default function TukTalkThaiApp() {
 
   const markCardsKnown = useCallback((cardIds) => {
     setProgress(p => {
-      const next = { ...p };
+      const next = { ...(p && typeof p === 'object' ? p : {}) };
       const now = Date.now();
       cardIds.forEach(id => {
         next[id] = {
@@ -1011,6 +992,7 @@ export default function TukTalkThaiApp() {
     });
     setShowFirstLessonUnlock(true);
     setActiveMiniUnitId(null);
+    setCardSession(null);
     setShowProfile(false);
     setShowSettings(false);
     setPublicPage(null);
@@ -1087,6 +1069,7 @@ export default function TukTalkThaiApp() {
 
   const handleFinishMiniUnitAndOpen = useCallback((nextTab) => {
     setActiveMiniUnitId(null);
+    setCardSession(null);
     updateSettings({ activeMiniUnitId: null, miniUnitProgress: null });
     setShowProfile(false);
     setShowSettings(false);
@@ -1110,6 +1093,7 @@ export default function TukTalkThaiApp() {
     }
     if (activeMiniUnitId) updateSettings({ activeMiniUnitId: null });
     setActiveMiniUnitId(null);
+    setCardSession(nextTab === 'cards' ? (options.sessionScope || null) : null);
     setShowProfile(false);
     setShowSettings(false);
     setPublicPage(null);
@@ -1117,8 +1101,25 @@ export default function TukTalkThaiApp() {
     writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
   }, [activeMiniUnitId, firstLessonCompleted, requestSuperPrompt, stageState?.maxUnlockedStage, updateSettings]);
 
+  const handleStartMissionCards = useCallback((mission) => {
+    if (!mission) {
+      handleSetTab('cards');
+      return;
+    }
+    handleSetTab('cards', {
+      sessionScope: {
+        type: 'mission',
+        missionId: mission.id,
+        name: mission.name,
+        total: mission.total,
+        cardIds: mission.cardIds || [],
+      },
+    });
+  }, [handleSetTab]);
+
   const handleOpenProfile = useCallback(() => {
     setActiveMiniUnitId(null);
+    setCardSession(null);
     setPublicPage(null);
     setShowSettings(false);
     setShowProfile(true);
@@ -1133,6 +1134,7 @@ export default function TukTalkThaiApp() {
 
   const handleOpenSettings = useCallback(() => {
     setActiveMiniUnitId(null);
+    setCardSession(null);
     setPublicPage(null);
     setShowProfile(false);
     setShowSettings(true);
@@ -1265,22 +1267,6 @@ export default function TukTalkThaiApp() {
     );
   }
 
-  // Migration prompt: shown when newly signed-in user has local-only progress
-  // and the cloud is empty. Blocks the rest of the app until resolved.
-  if (showMigration) {
-    return (
-      <div className="app-root" data-theme={stats.theme || 'light'}>
-        <MigrationPrompt
-          cardCount={Object.keys(progress).length}
-          totalXp={stats.totalXp || 0}
-          streak={stats.streak || 0}
-          onMigrate={handleMigrateLocal}
-          onSkip={handleSkipMigration}
-        />
-      </div>
-    );
-  }
-
   // Wait for the cloud profile check to resolve before deciding to show
   // placement onboarding. Without this, signed-in users on a new device
   // would briefly see the onboarding flow before the cloud sync corrects
@@ -1374,9 +1360,9 @@ export default function TukTalkThaiApp() {
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}
-          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} />}
-          {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} />}
-          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} />}
+          {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
+          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}

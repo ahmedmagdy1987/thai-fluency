@@ -18,6 +18,7 @@ export default function LearnPath({
   setTab,
   onStartMiniUnit,
   onLockedFeature,
+  onStartMissionCards,
 }) {
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
@@ -38,9 +39,11 @@ export default function LearnPath({
     ? stageState.stages.find(s => s.id === stageState.currentStage) || stageState.stages[0]
     : null;
 
-  const ctaLabel = due > 0
-    ? `Continue: ${due} due`
-    : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`);
+  const ctaLabel = inMissionView && currentMission
+    ? (currentMission.seen === 0 ? `Start Mission ${currentMission.id}` : `Continue Mission ${currentMission.id}`)
+    : (due > 0
+      ? `Continue: ${due} due`
+      : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`));
 
   const continueSubtitle = inMissionView && currentMission
     ? `Mission ${currentMission.id}: ${currentMission.name}`
@@ -48,6 +51,13 @@ export default function LearnPath({
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
   const showMiniUnitPilot = !!(onStartMiniUnit && stageState && stageState.currentStage === 1);
+  const startCards = () => {
+    if (inMissionView && currentMission && onStartMissionCards) {
+      onStartMissionCards(currentMission);
+      return;
+    }
+    setTab('cards');
+  };
 
   return (
     <div className="tab-content learn-path">
@@ -55,10 +65,10 @@ export default function LearnPath({
       <section
         className="learn-continue"
         style={{ '--learn-char-accent': stageCharacter.accent }}
-        onClick={() => setTab('cards')}
+        onClick={startCards}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTab('cards'); } }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startCards(); } }}
       >
         <div className="learn-continue-character" aria-hidden="true">
           <span className="learn-continue-character-emoji">{stageCharacter.placeholderEmoji}</span>
@@ -149,9 +159,9 @@ export default function LearnPath({
               <div className="learn-mission-goal">{currentMission.goal}</div>
               <div className="learn-mission-progress">
                 <div className="learn-mission-bar">
-                  <div className="learn-mission-bar-fill" style={{ width: `${Math.round(currentMission.maturePct || 0)}%` }} />
+                  <div className="learn-mission-bar-fill" style={{ width: `${Math.round(currentMission.seenPct || 0)}%` }} />
                 </div>
-                <span className="learn-mission-pct">{Math.round(currentMission.maturePct || 0)}%</span>
+                <span className="learn-mission-pct">{Math.round(currentMission.seenPct || 0)}%</span>
               </div>
               <div className="learn-mission-stats">
                 <span>{currentMission.seen}/{currentMission.total} seen</span>
@@ -177,13 +187,13 @@ export default function LearnPath({
                   role="listitem"
                   className={cls}
                   style={{ '--node-color': M.color }}
-                  title={isLocked ? `Unlocks when Mission ${M.id - 1} is 70% mastered` : M.name}
+                  title={isLocked ? `Unlocks when Mission ${M.id - 1} is complete` : M.name}
                 >
                   <div className="learn-mission-node-icon">
                     {isDone ? <Check size={16} /> : (isLocked ? <Lock size={14} /> : M.icon)}
                   </div>
                   <div className="learn-mission-node-name">{M.name}</div>
-                  <div className="learn-mission-node-meta">{M.mature}/{M.total}</div>
+                  <div className="learn-mission-node-meta">{M.seen}/{M.total}</div>
                 </div>
               );
             })}
@@ -219,6 +229,10 @@ export default function LearnPath({
             const onClick = () => {
               if (isLocked) {
                 onLockedFeature && onLockedFeature(S);
+                return;
+              }
+              if (S.id === 1 && inMissionView && currentMission && onStartMissionCards) {
+                onStartMissionCards(currentMission);
                 return;
               }
               setTab('cards');
@@ -257,13 +271,13 @@ export default function LearnPath({
                       <span className="learn-path-character-name">{character.placeholderEmoji} {character.name}</span>
                       {!isEmpty && (
                         <span className="learn-path-progress-text">
-                          {S.mature}/{S.total} mastered ({S.maturePct}%)
+                          {S.seen}/{S.total} learned, {S.mature}/{S.total} mastered
                         </span>
                       )}
                     </div>
                     {!isEmpty && (
                       <div className="learn-path-bar">
-                        <div className="learn-path-bar-fill" style={{ width: `${S.maturePct}%` }} />
+                        <div className="learn-path-bar-fill" style={{ width: `${S.seenPct}%` }} />
                       </div>
                     )}
                     {isEmpty && (

@@ -39,16 +39,18 @@ export function reviewCard(state, rating) {
 }
 
 export function getDueCards(progress, allCards, now) {
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
   return allCards
-    .filter(c => progress[c.id] && progress[c.id].nextDue <= now)
-    .sort((a, b) => progress[a.id].nextDue - progress[b.id].nextDue);
+    .filter(c => safeProgress[c.id] && safeProgress[c.id].nextDue <= now)
+    .sort((a, b) => safeProgress[a.id].nextDue - safeProgress[b.id].nextDue);
 }
 
 export function getNewCards(progress, allCards, limit = 10) {
   // Cards user hasn't seen yet — group by stage so earlier stages come first.
   // Within a stage, prioritize by mission ascending (so M1 cards deliver before
   // M2 cards in Stage 1), then by a daily seed for variety.
-  const unseen = allCards.filter(c => !progress[c.id]);
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
+  const unseen = allCards.filter(c => !safeProgress[c.id]);
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
   const seededRand = (i) => {
@@ -72,12 +74,13 @@ export function getNewCards(progress, allCards, limit = 10) {
 }
 
 export function getStats(progress, allCards) {
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
   const total = allCards.length;
-  const seen = Object.keys(progress).length;
-  const mature = Object.values(progress).filter(c => c.interval >= 21).length;
+  const seen = Object.keys(safeProgress).length;
+  const mature = Object.values(safeProgress).filter(c => c.interval >= 21).length;
   const now = Date.now();
-  const due = allCards.filter(c => progress[c.id] && progress[c.id].nextDue <= now).length;
-  const newAvail = allCards.filter(c => !progress[c.id]).length;
+  const due = allCards.filter(c => safeProgress[c.id] && safeProgress[c.id].nextDue <= now).length;
+  const newAvail = allCards.filter(c => !safeProgress[c.id]).length;
   return { total, seen, mature, due, newAvail };
 }
 

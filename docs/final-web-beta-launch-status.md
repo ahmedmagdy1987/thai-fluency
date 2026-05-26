@@ -100,6 +100,18 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | Migration | Pass | `005_launch_persistence_hardening.sql` applied to live Supabase project. |
 | RLS | Pass | New `user_stats` columns are protected by existing own-row RLS policies. |
 
+## P0 Stability Update
+
+| Item | Result | Notes |
+| --- | --- | --- |
+| Hard-refresh white screen | Fixed pending deployment verification | `autoBreakdown()` and progress helpers now guard null/undefined inputs before `Object.keys` access. |
+| OneSignal double init warning | Fixed pending deployment verification | SDK init now treats an already-initialized SDK as success and does not repeatedly log `[onesignal] init failed`. |
+| Mission-scoped practice | Fixed | Starting from a mission now opens only that mission's card IDs. Mission 1 is 29 cards and cannot continue into unrelated Stage 1 cards. |
+| Stage progress clarity | Fixed | Stage UI shows learned/seen progress plus mastered progress. Mission 1 completion visibly changes Stage 1 to 29 learned / 150 even when mastered remains 0. |
+| XP farming | Fixed | Rating buttons lock immediately, duplicate review guards ignore repeated clicks, skip gives no XP, mission bonuses and achievement unlocks fire once. |
+| Local XP sync prompt | Removed | Local anonymous progress auto-syncs only when the signed-in cloud account is empty; no blocking transfer prompt is shown. |
+| Local production preview | Pass | `npm.cmd run build`, local route smoke, and Playwright screenshots for `/`, `/learn`, `/cards`, `/challenge`, `/premium`, `/shop`, `/privacy` passed. |
+
 ## Fixed Issues
 
 - Updated centralized `siteUrl` to the confirmed production primary: `https://www.tuktalkthai.com`.
@@ -110,6 +122,11 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 - Added Tuk Talk Thai Super coming-soon page, once-per-day upgrade prompt, and clearer progressive unlock copy.
 - Removed Reset all progress from Settings.
 - Added signed-in persistence for today XP, visible settings, guided first lesson progress, mini-unit progress, and Challenge aggregates.
+- Removed the local XP/progress migration prompt and replaced it with safe automatic sync when cloud state is empty.
+- Fixed the null `Object.keys` hard-refresh crash path.
+- Made OneSignal initialization idempotent.
+- Scoped mission card sessions and added anti-XP-farming guards.
+- Clarified learned vs mastered Stage progress.
 - Rotated notification webhook auth and verified unauthenticated POST `401`, authenticated no-op webhook POST `200`, no bearer trigger headers, and no bearer cron command.
 
 No Thai card content, SRS scheduling, Challenge answer generation, auth implementation, OneSignal app config, payments, or ads were changed. The only schema change was additive `user_stats` persistence columns for launch hardening. The reward/premium layer is motivational and coming-soon only; it does not add paid entitlements or real shop purchases.

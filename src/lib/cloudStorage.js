@@ -9,10 +9,11 @@ import { dateKeyFromValue } from './stats.js';
 // ---- Progress (SRS state per card) ----
 
 export async function uploadProgress(userId, progress) {
-  const ids = Object.keys(progress);
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
+  const ids = Object.keys(safeProgress);
   if (ids.length === 0) return { count: 0 };
   const rows = ids.map(cardId => {
-    const s = progress[cardId];
+    const s = safeProgress[cardId];
     return {
       user_id: userId,
       card_id: parseInt(cardId, 10),

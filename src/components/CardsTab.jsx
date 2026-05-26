@@ -23,29 +23,55 @@ import CharacterCoach from './CharacterCoach.jsx';
 // for roughly 2.8s after the back face settles, then returns to resting.
 const REVEAL_PROMPT_DURATION_MS = 3400;
 
-export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot }) {
+export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [ratingLocked, setRatingLocked] = useState(false);
   const speakingTimerRef = useRef(null);
+  const handledCardIdsRef = useRef(new Set());
+  const actionLockRef = useRef(null);
+  const sessionKey = sessionScope?.type === 'mission'
+    ? `mission:${sessionScope.missionId}`
+    : 'practice';
 
   const queue = useMemo(() => {
     const now = Date.now();
-    // Sequential unlock: SRS pool is constrained to unlocked stages.
-    const lower = startedStage || 1;
-    const upper = maxUnlockedStage || 1;
-    const filteredCards = CARDS.filter(c => {
-      const s = c.stage || 1;
-      return s >= lower && s <= upper;
-    });
+    const missionCardIds = Array.isArray(sessionScope?.cardIds) ? new Set(sessionScope.cardIds) : null;
+    const filteredCards = missionCardIds
+      ? CARDS.filter(c => missionCardIds.has(c.id))
+      : CARDS.filter(c => {
+          const s = c.stage || 1;
+          const lower = startedStage || 1;
+          const upper = maxUnlockedStage || 1;
+          return s >= lower && s <= upper;
+        });
     const due = getDueCards(progress, filteredCards, now);
-    const newOnes = getNewCards(progress, filteredCards, dailyNewLimit);
+    const newOnes = getNewCards(progress, filteredCards, missionCardIds ? filteredCards.length : dailyNewLimit);
     return [...due, ...newOnes];
-  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage]);
+  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope]);
 
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);
+  const sessionTotal = sessionScope?.type === 'mission'
+    ? Math.max(sessionScope.total || 0, sessionDone + queue.length)
+    : sessionDone + queue.length;
+  const isMissionSession = sessionScope?.type === 'mission';
+
+  useEffect(() => {
+    setRevealed(false);
+    setSessionDone(0);
+    setSessionCorrect(0);
+    setRatingLocked(false);
+    handledCardIdsRef.current = new Set();
+    actionLockRef.current = null;
+  }, [sessionKey]);
+
+  useEffect(() => {
+    setRatingLocked(false);
+    actionLockRef.current = null;
+  }, [rawCard?.id]);
 
   // Coach: derived from the current card's stage so the right tutor
   // shows up as the user moves between stages. Stages without real art
@@ -102,7 +128,13 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   };
 
   const handleRate = (rating) => {
-    if (!rawCard) return;
+    if (!rawCard || ratingLocked || actionLockRef.current === rawCard.id) return;
+    actionLockRef.current = rawCard.id;
+    setRatingLocked(true);
+    if (handledCardIdsRef.current.has(rawCard.id)) return;
+    handledCardIdsRef.current.add(rawCard.id);
+    const accepted = reviewOne(rawCard.id, rating);
+    if (accepted === false) return;
     const correct = rating >= 3;
     if (correct) setSessionCorrect(c => c + 1);
     if (rating === 4) playEasy(); // existing Easy blip — preserved
@@ -115,11 +147,14 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     }
     setSessionDone(d => d + 1);
     setRevealed(false);
-    reviewOne(rawCard.id, rating);
   };
 
   const handleSkip = () => {
-    if (!rawCard || !markCardKnown) return;
+    if (!rawCard || !markCardKnown || ratingLocked || actionLockRef.current === rawCard.id) return;
+    actionLockRef.current = rawCard.id;
+    setRatingLocked(true);
+    if (handledCardIdsRef.current.has(rawCard.id)) return;
+    handledCardIdsRef.current.add(rawCard.id);
     setSessionDone(d => d + 1);
     setRevealed(false);
     coach.react('correct', { duration: 1200, message: 'Marked as known. Onward.' });
@@ -129,6 +164,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const handleUndo = () => {
     if (!undoLastReview || !lastReviewSnapshot) return;
     undoLastReview();
+    handledCardIdsRef.current.delete(lastReviewSnapshot.cardId);
+    actionLockRef.current = null;
+    setRatingLocked(false);
     setSessionDone(d => Math.max(0, d - 1));
     if (lastReviewSnapshot.rating >= 3) setSessionCorrect(c => Math.max(0, c - 1));
     setRevealed(true); // show the card revealed since they're correcting it
@@ -140,8 +178,12 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       <div className="tab-content">
         <div className="empty-state">
           <div className="empty-icon">🎉</div>
-          <div className="empty-title">All done for now</div>
-          <div className="empty-sub">No cards due. Come back later or browse to add new vocabulary.</div>
+          <div className="empty-title">{isMissionSession ? 'Mission complete' : 'All done for now'}</div>
+          <div className="empty-sub">
+            {isMissionSession
+              ? `You finished this mission's ${sessionScope.total || sessionDone} cards.`
+              : 'No cards due. Come back later or browse to add new vocabulary.'}
+          </div>
           {sessionDone > 0 && (
             <div className="session-summary">
               <div className="summary-stat"><div className="summary-num">{sessionDone}</div><div className="summary-label">reviewed</div></div>
@@ -154,7 +196,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     );
   }
 
-  const cardState = progress[card.id];
+  const cardState = progress?.[card.id];
   const isNew = !cardState;
   const cat = CATEGORIES.find(c => c.id === card.cat);
 
@@ -173,7 +215,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
           )}
         </div>
         <div className="cards-progress-bar">
-          <div className="cards-progress-fill" style={{ width: sessionDone > 0 ? `${(sessionDone / (sessionDone + queue.length)) * 100}%` : '0%' }} />
+          <div className="cards-progress-fill" style={{ width: sessionDone > 0 && sessionTotal > 0 ? `${Math.min(100, (sessionDone / sessionTotal) * 100)}%` : '0%' }} />
         </div>
       </div>
 
@@ -305,7 +347,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
         {/* I know this - skip button (only when card is new and not yet revealed) */}
         {isNew && !revealed && markCardKnown && (
-          <button className="srs-skip-btn" onClick={(e) => { e.stopPropagation(); handleSkip(); }}>
+          <button className="srs-skip-btn" onClick={(e) => { e.stopPropagation(); handleSkip(); }} disabled={ratingLocked}>
             I already know this. Skip
           </button>
         )}
@@ -314,13 +356,13 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       {revealed && (
         <>
           <div className="rate-row">
-            <RateBtn rating={1} label="Again" subLabel={intervalLabel(cardState, 1)} color="#A03B2C" onClick={() => handleRate(1)} />
-            <RateBtn rating={2} label="Hard"  subLabel={intervalLabel(cardState, 2)} color="#E0823B" onClick={() => handleRate(2)} />
-            <RateBtn rating={3} label="Good"  subLabel={intervalLabel(cardState, 3)} color="#2E7D5B" onClick={() => handleRate(3)} />
-            <RateBtn rating={4} label="Easy"  subLabel={intervalLabel(cardState, 4)} color="#2563A8" onClick={() => handleRate(4)} />
+            <RateBtn rating={1} label="Again" subLabel={intervalLabel(cardState, 1)} color="#A03B2C" onClick={() => handleRate(1)} disabled={ratingLocked} />
+            <RateBtn rating={2} label="Hard"  subLabel={intervalLabel(cardState, 2)} color="#E0823B" onClick={() => handleRate(2)} disabled={ratingLocked} />
+            <RateBtn rating={3} label="Good"  subLabel={intervalLabel(cardState, 3)} color="#2E7D5B" onClick={() => handleRate(3)} disabled={ratingLocked} />
+            <RateBtn rating={4} label="Easy"  subLabel={intervalLabel(cardState, 4)} color="#2563A8" onClick={() => handleRate(4)} disabled={ratingLocked} />
           </div>
           <div className="card-skip-row">
-            <button className="card-skip-btn" onClick={handleSkip}>I already know this. Skip</button>
+            <button className="card-skip-btn" onClick={handleSkip} disabled={ratingLocked}>I already know this. Skip</button>
           </div>
         </>
       )}

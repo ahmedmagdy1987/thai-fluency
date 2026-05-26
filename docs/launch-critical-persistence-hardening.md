@@ -31,15 +31,39 @@ This pass removed the user-facing Reset all progress flow and hardened launch-vi
 
 - Removed the `Reset all progress` button and reset callback from the Settings UI.
 - Removed the reset prop from `TodayTab` and `SettingsModal`.
+- Removed the blocking local XP/progress migration prompt. Signed-in users now auto-upload local anonymous progress only when the cloud account has no learning state.
 - Added additive `user_stats` columns for today XP and Challenge aggregate persistence.
 - Synced theme and voice settings through `profiles.settings`; voice also updates `profiles.selected_voice`.
 - Added first-lesson progress resume state through `profiles.settings.firstLessonProgress`.
 - Added mini-unit resume/completion state through `profiles.settings`.
 - Added Challenge aggregate updates when a Challenge round completes.
+- Scoped mission-started card sessions to the current mission's card IDs. Mission 1 is 29 cards and cannot continue into the broader Stage 1 deck.
+- Changed mission completion to all mission cards reviewed/seen. SRS mastery remains separate and visible.
+- Updated Stage progress UI to show learned/seen progress alongside mastered progress, so a completed mission visibly affects Stage 1.
+- Locked rating and skip actions immediately after one action and added duplicate review guards so repeated Easy clicks cannot farm XP.
+- Kept skip actions XP-free. Mission completion rewards and achievement unlocks are guarded to fire once.
+- Made OneSignal initialization idempotent when the SDK has already been initialized during the page lifecycle.
+- Fixed the hard-refresh `Object.keys` crash by guarding null lookup/progress inputs and giving `autoBreakdown()` a safe default lookup.
 - Added `supabase/.temp/` to `.gitignore` so CLI link/cache files are not committed.
 - Repaired live Supabase migration history for already-present migrations `001`, `003`, and `004`, then pushed migration `005`.
 - Rotated `NOTIFICATION_WEBHOOK_SECRET` without printing or committing the value.
 - Updated the Edge Function secret, Vault secret used by cron, and database webhook headers.
+
+## Mission And XP Rules
+
+| Area | Rule |
+| --- | --- |
+| Mission card sessions | Starting a mission opens only that mission's card IDs. A mission session ends when those cards are exhausted. |
+| Mission 1 size | 29 cards. The session count cannot continue past 29 inside Mission 1. |
+| Mission completion | A mission completes when all its cards have been reviewed/seen. Mastered remains the SRS long-interval count. |
+| Stage progress | Stage cards now show learned/seen progress and mastered progress, avoiding a misleading `0/150 mastered`-only state. |
+| Card XP | One rating action per card per session. Rating buttons lock immediately. |
+| Easy farming | Repeated Easy clicks on the same revealed card are ignored after the first accepted rating. |
+| Skip | Marks the card known where supported, but awards no XP. |
+| Mission bonus | Awarded once per mission. |
+| Achievements | Unlock toasts are guarded so each achievement fires once. |
+| Local sync | Local anonymous progress auto-syncs once only when the signed-in cloud account is empty; there is no blocking prompt. |
+| OneSignal | SDK initialization treats an already-initialized SDK as success instead of repeatedly logging scary warnings. |
 
 ## Migrations And RLS
 
@@ -98,6 +122,10 @@ The generated value was written only to temporary files outside the repo and rem
 | `user_stats` own-row policies present | Pass |
 | Notification webhook secret rotation checks | Pass |
 | `npm.cmd run build` final | Pass |
+| Local preview direct route smoke for `/`, `/learn`, `/cards`, `/challenge`, `/premium`, `/shop`, `/privacy` | Pass |
+| Local preview route script including legal/support/feedback/worker/manifest routes | Pass |
+| Mission 1 scoped queue count check | Pass: 29 cards |
+| Mission 1 completion state check | Pass: 29/29 seen advances to Mission 2 and Stage 1 shows 29 learned / 150 |
 
 Build warning: Vite still reports the existing large JS chunk warning. No risky lazy-loading refactor was attempted in this persistence pass.
 

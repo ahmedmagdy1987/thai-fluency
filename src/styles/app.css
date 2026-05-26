@@ -128,7 +128,7 @@ img, svg, video { max-width: 100%; }
 .level-pill-empty { opacity: 0.35; }
 .level-pill-empty .level-pill-name { font-size: 9px; }
 .srs-skip-btn { margin: 12px auto 0; display: block; background: none; border: 1px dashed var(--line-strong); border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
-.srs-skip-btn:hover { border-color: var(--gold); color: var(--gold); border-style: solid; }}
+.srs-skip-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); border-style: solid; }}
 .quiz-progress-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); font-weight: 500; }
 .quiz-score-text { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
 .streak-icon { font-size: 14px; line-height: 1; }
@@ -147,7 +147,7 @@ img, svg, video { max-width: 100%; }
 .dialogue-bubble-text { flex: 1; min-width: 0; }
 .card-skip-row { display: flex; justify-content: center; margin: 10px 0 12px; order: 3; }
 .card-skip-btn { background: none; border: 1px dashed var(--line-strong); border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
-.card-skip-btn:hover { border-color: var(--gold); color: var(--gold); border-style: solid; }}
+.card-skip-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); border-style: solid; }}
 .settings-btn { background: none; border: 1px solid var(--line-strong); border-radius: 999px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .settings-btn:hover { color: var(--jade); border-color: var(--jade); }}
 .setting-group { margin-bottom: 24px; }
@@ -443,12 +443,15 @@ img, svg, video { max-width: 100%; }
 .rate-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .rate-row-hidden { grid-template-columns: 1fr; }
 .rate-btn { --rate-color: var(--jade); background: white; border: 2px solid var(--rate-color); border-radius: 10px; padding: 12px 6px; cursor: pointer; transition: all 0.15s; font-family: inherit; display: flex; flex-direction: column; align-items: center; gap: 2px; }@media (hover: hover) and (pointer: fine) {
-.rate-btn:hover { background: var(--rate-color); color: white; transform: translateY(-1px); }}
+.rate-btn:hover:not(:disabled) { background: var(--rate-color); color: white; transform: translateY(-1px); }}
 .rate-btn:active { transform: translateY(0); }
+.rate-btn:disabled,
+.card-skip-btn:disabled,
+.srs-skip-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 .rate-btn-label { font-size: 13px; font-weight: 700; color: var(--rate-color); text-transform: uppercase; letter-spacing: 0.05em; }@media (hover: hover) and (pointer: fine) {
-.rate-btn:hover .rate-btn-label { color: white; }}
+.rate-btn:hover:not(:disabled) .rate-btn-label { color: white; }}
 .rate-btn-sub { font-size: 10px; color: var(--stone); font-family: 'JetBrains Mono', monospace; }@media (hover: hover) and (pointer: fine) {
-.rate-btn:hover .rate-btn-sub { color: rgba(255,255,255,0.85); }}
+.rate-btn:hover:not(:disabled) .rate-btn-sub { color: rgba(255,255,255,0.85); }}
 .reveal-btn { width: 100%; background: var(--jade); color: var(--cream); border: none; border-radius: 10px; padding: 14px; font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; cursor: pointer; letter-spacing: -0.01em; transition: background 0.2s; }@media (hover: hover) and (pointer: fine) {
 .reveal-btn:hover { background: var(--jade-soft); }}
 .app-root[data-theme="dark"] .srs-card {

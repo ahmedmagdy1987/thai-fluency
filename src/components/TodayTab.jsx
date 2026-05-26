@@ -6,7 +6,7 @@ import { STAGES } from '../data/taxonomy.js';
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
 import AchievementsModal from './AchievementsModal.jsx';
 
-export default function TodayTab({ stats, fullStats, setTab, stageState, missionState, voice, viewMode }) {
+export default function TodayTab({ stats, fullStats, setTab, stageState, missionState, voice, viewMode, onStartMissionCards }) {
   const [showAchievements, setShowAchievements] = useState(false);
   const ctaText = stats.due > 0 ? `Review ${stats.due} card${stats.due === 1 ? '' : 's'}` : (stats.seen === 0 ? 'Start learning' : 'Learn new cards');
   // In mission view, scope the "new cards ready" count to the user's current
@@ -34,6 +34,13 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
   const inMissionView = !!(missionState && stageState && stageState.currentStage === 1 && !missionState.stage1Complete);
   const currentMission = missionState ? missionState.missions.find(m => m.id === missionState.currentMission) : null;
   const s1Stage = stageState ? stageState.stages.find(s => s.id === 1) : null;
+  const startCards = () => {
+    if (inMissionView && currentMission && onStartMissionCards) {
+      onStartMissionCards(currentMission);
+      return;
+    }
+    setTab('cards');
+  };
 
   const greetingThai = voice === 'female' ? 'สวัสดีค่ะ' : 'สวัสดีครับ';
   const greetingPh = voice === 'female' ? 'sàwàtdee khâ' : 'sàwàtdee khráp';
@@ -46,7 +53,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
         <div className="dash-greeting-en">Welcome back. Here's where you are.</div>
       </div>
 
-      <div className="hero-card" onClick={() => setTab('cards')}>
+      <div className="hero-card" onClick={startCards}>
         <div className="hero-card-bg" />
         <div className="hero-card-content">
           <div className="hero-eyebrow">Today's session</div>
@@ -97,13 +104,13 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
               <div className="level-card-name">Mission {currentMission.id}: {currentMission.name}</div>
               <div className="level-card-desc">{currentMission.goal}</div>
               <div className="level-card-overall">
-                <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentMission.maturePct + '%' }} /></div>
-                <div className="level-card-overall-pct">{Math.round(currentMission.maturePct)}%</div>
+                <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: (currentMission.seenPct || 0) + '%' }} /></div>
+                <div className="level-card-overall-pct">{Math.round(currentMission.seenPct || 0)}%</div>
               </div>
               <div className="stage-stats-row">
                 <div className="stage-stats-item"><div className="ssi-num">{currentMission.seen}<span className="ssi-of">/{currentMission.total}</span></div><div className="ssi-label">seen</div></div>
                 <div className="stage-stats-item"><div className="ssi-num">{currentMission.mature}<span className="ssi-of">/{currentMission.total}</span></div><div className="ssi-label">mastered</div></div>
-                <div className="stage-stats-item"><div className="ssi-num">{Math.max(0, currentMission.total - currentMission.mature)}</div><div className="ssi-label">to go</div></div>
+                <div className="stage-stats-item"><div className="ssi-num">{Math.max(0, currentMission.total - currentMission.seen)}</div><div className="ssi-label">to learn</div></div>
               </div>
             </div>
           </div>
@@ -115,10 +122,10 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
               const isLocked = !M.unlocked;
               const isDone = M.complete;
               return (
-                <div key={M.id} className={`level-pill ${isCurrent ? 'level-pill-current' : ''} ${isDone ? 'level-pill-done' : ''} ${isLocked ? 'level-pill-locked' : ''}`} style={{ '--lp-color': M.color }} title={isLocked ? `Unlocks when Mission ${M.id - 1} is 70% mastered` : M.name}>
+                <div key={M.id} className={`level-pill ${isCurrent ? 'level-pill-current' : ''} ${isDone ? 'level-pill-done' : ''} ${isLocked ? 'level-pill-locked' : ''}`} style={{ '--lp-color': M.color }} title={isLocked ? `Unlocks when Mission ${M.id - 1} is complete` : M.name}>
                   <div className="level-pill-icon">{isDone ? '✓' : (isLocked ? '🔒' : M.icon)}</div>
                   <div className="level-pill-name">{M.name}</div>
-                  <div className="level-pill-meta">{M.mature}/{M.total}</div>
+                  <div className="level-pill-meta">{M.seen}/{M.total}</div>
                 </div>
               );
             })}
@@ -140,13 +147,13 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
               <div className="level-card-name">Stage {currentStage.id}: {currentStage.name}</div>
               <div className="level-card-desc">{currentStage.desc}</div>
               <div className="level-card-overall">
-                <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentStage.maturePct + '%' }} /></div>
-                <div className="level-card-overall-pct">{currentStage.maturePct}%</div>
+                <div className="level-card-overall-bar"><div className="level-card-overall-fill" style={{ width: currentStage.seenPct + '%' }} /></div>
+                <div className="level-card-overall-pct">{currentStage.seenPct}% learned</div>
               </div>
               <div className="stage-stats-row">
                 <div className="stage-stats-item"><div className="ssi-num">{currentStage.seen}<span className="ssi-of">/{currentStage.total}</span></div><div className="ssi-label">seen</div></div>
                 <div className="stage-stats-item"><div className="ssi-num">{currentStage.mature}<span className="ssi-of">/{currentStage.total}</span></div><div className="ssi-label">mastered</div></div>
-                <div className="stage-stats-item"><div className="ssi-num">{currentStage.total > 0 ? Math.max(0, currentStage.total - currentStage.mature) : 0}</div><div className="ssi-label">to go</div></div>
+                <div className="stage-stats-item"><div className="ssi-num">{currentStage.total > 0 ? Math.max(0, currentStage.total - currentStage.seen) : 0}</div><div className="ssi-label">to learn</div></div>
               </div>
             </div>
           </div>
@@ -162,7 +169,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
                 <div key={S.id} className={`level-pill ${isCurrent ? 'level-pill-current' : ''} ${isDone ? 'level-pill-done' : ''} ${isLocked ? 'level-pill-locked' : ''} ${isEmpty ? 'level-pill-empty' : ''}`} style={{ '--lp-color': S.color }} title={S.name}>
                   <div className="level-pill-icon">{isDone ? '✓' : (isLocked ? '🔒' : (isEmpty ? '…' : S.icon))}</div>
                   <div className="level-pill-name">{S.name}</div>
-                  {!isEmpty && <div className="level-pill-meta">{S.mature}/{S.total}</div>}
+                  {!isEmpty && <div className="level-pill-meta">{S.seen}/{S.total}</div>}
                 </div>
               );
             })}

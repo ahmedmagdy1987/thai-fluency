@@ -61,6 +61,11 @@ async function ensureLoaded() {
       });
       initialized = true;
     } catch (e) {
+      const message = String(e?.message || e || '');
+      if (/already initialized/i.test(message)) {
+        initialized = true;
+        return;
+      }
       // eslint-disable-next-line no-console
       console.warn('[onesignal] init failed', e);
       OneSignal = null;

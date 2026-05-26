@@ -1,6 +1,7 @@
 import { ACHIEVEMENTS, MISSION_UNLOCK_THRESHOLD } from '../data/gamification.js';
 import { CARDS } from '../data/cards.js';
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
+import { WORD_LOOKUP } from '../data/lookup.js';
 
 // Compute state of each stage based on user progress.
 // Sequential unlock: Stage N+1 is unlocked when Stage N reaches the
@@ -8,15 +9,17 @@ import { STAGES, MISSIONS } from '../data/taxonomy.js';
 // placement-test startedStage are always considered unlocked (they're
 // auto-matured from the placement test or below the user's known floor).
 export function getStageState(stats, progress) {
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
   const startedStage = stats.startedStage || 1;
   const stages = STAGES.map(S => {
     const stageCards = CARDS.filter(c => (c.stage || 1) === S.id);
     const total = stageCards.length;
-    const seen = stageCards.filter(c => progress[c.id]).length;
-    const mature = stageCards.filter(c => progress[c.id] && progress[c.id].interval >= 21).length;
+    const seen = stageCards.filter(c => safeProgress[c.id]).length;
+    const mature = stageCards.filter(c => safeProgress[c.id] && safeProgress[c.id].interval >= 21).length;
     const complete = total > 0 && (mature / total) >= MISSION_UNLOCK_THRESHOLD; // 70% mature
+    const seenPct = total === 0 ? 0 : Math.round((seen / total) * 100);
     const maturePct = total === 0 ? 0 : Math.round((mature / total) * 100);
-    return { ...S, total, seen, mature, complete, maturePct };
+    return { ...S, total, seen, mature, complete, seenPct, maturePct };
   });
 
   // Sequential unlock: walk stages from startedStage upward; each contiguous
@@ -61,8 +64,9 @@ export function buildPlacementCards() {
 }
 
 // Auto-generate breakdown from phonetic using WORD_LOOKUP
-export function autoBreakdown(phonetic, lookup) {
+export function autoBreakdown(phonetic, lookup = WORD_LOOKUP) {
   if (!phonetic) return null;
+  const safeLookup = (lookup && typeof lookup === 'object') ? lookup : {};
   const cleaned = phonetic.replace(/[?!.,]+$/, '').trim();
   const words = cleaned.split(/\s+/);
   const result = [];
@@ -71,9 +75,9 @@ export function autoBreakdown(phonetic, lookup) {
     let matched = false;
     for (let span = Math.min(3, words.length - i); span >= 1; span--) {
       const phrase = words.slice(i, i + span).join(' ').toLowerCase();
-      const key = Object.keys(lookup).find(k => k.toLowerCase() === phrase);
+      const key = Object.keys(safeLookup).find(k => k.toLowerCase() === phrase);
       if (key) {
-        result.push({ ph: words.slice(i, i + span).join(' '), thai: lookup[key].thai, en: lookup[key].en });
+        result.push({ ph: words.slice(i, i + span).join(' '), thai: safeLookup[key].thai, en: safeLookup[key].en });
         i += span;
         matched = true;
         break;
@@ -93,20 +97,21 @@ export function checkAchievements(stats, progress, achievements = ACHIEVEMENTS) 
   return achievements.map(a => ({ ...a, unlocked: a.check(stats, progress) }));
 }
 
-// Mission state for Stage 1. Each mission's progress is the % of its cards
-// that are mature (SRS interval ≥ 21d). A mission is "complete" at the
-// MISSION_UNLOCK_THRESHOLD (70%). Mission N+1 is unlocked when mission N is
-// complete. Mission 1 is always unlocked.
+// Mission state for Stage 1. Launch sessions complete when every card in the
+// current mission has been reviewed/seen. SRS maturity is tracked separately
+// so the UI can show learned progress and mastered progress side by side.
 export function getMissionState(progress) {
+  const safeProgress = progress && typeof progress === 'object' ? progress : {};
   const s1Cards = CARDS.filter(c => (c.stage || 1) === 1);
   const missions = MISSIONS.map(M => {
     const cards = s1Cards.filter(c => c.mission === M.id);
     const total = cards.length;
-    const seen = cards.filter(c => progress[c.id]).length;
-    const mature = cards.filter(c => progress[c.id] && progress[c.id].interval >= 21).length;
+    const seen = cards.filter(c => safeProgress[c.id]).length;
+    const mature = cards.filter(c => safeProgress[c.id] && safeProgress[c.id].interval >= 21).length;
+    const seenPct = total === 0 ? 0 : Math.round((seen / total) * 100);
     const maturePct = total === 0 ? 0 : (mature / total) * 100;
-    const complete = total > 0 && (mature / total) >= MISSION_UNLOCK_THRESHOLD;
-    return { ...M, total, seen, mature, maturePct, complete };
+    const complete = total > 0 && seen >= total;
+    return { ...M, total, seen, mature, seenPct, maturePct, complete, cardIds: cards.map(c => c.id) };
   });
 
   // Lock state: M1 always unlocked; M(N+1) unlocked when M(N) is complete.
