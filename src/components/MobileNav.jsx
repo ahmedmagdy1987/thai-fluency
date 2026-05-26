@@ -12,6 +12,7 @@ import {
   Trophy,
   Settings as SettingsIcon,
   LogOut,
+  MessageSquare,
 } from 'lucide-react';
 
 // Mobile bottom nav keeps the highest-frequency destinations visible while
@@ -36,6 +37,7 @@ export default function MobileNav({
   onOpenProfile,
   onOpenSettings,
   onSignOut,
+  onOpenPublicPage,
   dashboardStats,
   isAuthed,
 }) {
@@ -129,6 +131,14 @@ export default function MobileNav({
               >
                 <SettingsIcon size={22} />
                 <span>Settings</span>
+              </button>
+              <button
+                type="button"
+                className="mobile-more-item"
+                onClick={() => { setMoreOpen(false); onOpenPublicPage && onOpenPublicPage('/feedback'); }}
+              >
+                <MessageSquare size={22} />
+                <span>Feedback</span>
               </button>
               {isAuthed && (
                 <button

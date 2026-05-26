@@ -79,6 +79,7 @@ const FOOTER_LINKS = [
   { path: '/privacy', label: 'Privacy' },
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
+  { path: '/feedback', label: 'Feedback' },
   { path: '/delete-account', label: 'Account deletion' },
 ];
 

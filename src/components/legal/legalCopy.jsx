@@ -3,6 +3,19 @@ import { SITE_CONFIG } from '../../config/site.js';
 
 const { siteName, siteUrl, supportEmail } = SITE_CONFIG;
 export const LEGAL_LAST_UPDATED = 'May 26, 2026';
+const FEEDBACK_SUBJECT = `${siteName} Beta Feedback`;
+const FEEDBACK_BODY = [
+  'What happened:',
+  '',
+  'What page were you on:',
+  '',
+  'What device/browser:',
+  '',
+  'Your account email, optional:',
+  '',
+  'Screenshot attached, optional:',
+].join('\n');
+export const FEEDBACK_MAILTO = `mailto:${supportEmail}?subject=${encodeURIComponent(FEEDBACK_SUBJECT)}&body=${encodeURIComponent(FEEDBACK_BODY)}`;
 
 export function OwnerReviewNotice({ children = 'Draft legal/support copy. The owner should review and approve this page before public launch.' }) {
   return (
@@ -158,6 +171,9 @@ export function SupportContent() {
       <p>
         Need help with {siteName}? Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> and include the account email you use for the app when relevant.
       </p>
+      <p>
+        For beta bugs, content mistakes, audio issues, login issues, or general feedback, use the <a href="/feedback">Beta Feedback page</a>.
+      </p>
 
       <h3>Common help topics</h3>
       <ul>
@@ -175,6 +191,59 @@ export function SupportContent() {
         <li>The device/browser you are using.</li>
         <li>A short description of what happened.</li>
         <li>A screenshot if it helps explain the issue.</li>
+      </ul>
+    </>
+  );
+}
+
+export function FeedbackContent() {
+  return (
+    <>
+      <p>
+        Help us improve {siteName}. Tell us what happened, what device you used, and what you expected.
+      </p>
+      <p>
+        This page opens your email app. It does not collect or store feedback in the database.
+      </p>
+
+      <p>
+        <a className="btn-primary feedback-mailto-btn" href={FEEDBACK_MAILTO}>
+          Email feedback
+        </a>
+      </p>
+
+      <h3>Report a bug</h3>
+      <p>
+        Tell us what broke, the page you were on, and what you expected to happen instead.
+      </p>
+
+      <h3>Report incorrect Thai content</h3>
+      <p>
+        Include the phrase, card, lesson, or screen, plus what looks incorrect.
+      </p>
+
+      <h3>Audio/pronunciation issue</h3>
+      <p>
+        Tell us which phrase or button had the issue, whether audio failed to play, or what sounded wrong.
+      </p>
+
+      <h3>Account/login issue</h3>
+      <p>
+        Include whether the problem happened during sign up, sign in, password reset, email confirmation, or sign out.
+      </p>
+
+      <h3>General feedback</h3>
+      <p>
+        Share what felt confusing, what helped you learn, or what would make the beta better.
+      </p>
+
+      <h3>Email template</h3>
+      <ul>
+        <li>What happened</li>
+        <li>What page were you on</li>
+        <li>What device/browser</li>
+        <li>Your account email, optional</li>
+        <li>Screenshot attached, optional</li>
       </ul>
     </>
   );

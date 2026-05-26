@@ -37,6 +37,7 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | `/privacy` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
 | `/terms` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
 | `/support` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
+| `/feedback` | Pending deployment re-smoke | Pending deployment re-smoke | Pending deployment re-smoke |
 | `/delete-account` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
 | `/OneSignalSDKWorker.js` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
 | `/manifest.webmanifest` | 200 | 307 -> `www`, final 200 | 308 -> `www`, final 200 |
@@ -63,25 +64,37 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | Controlled push test | Owner action | Requires a real subscribed test device/browser on `https://www.tuktalkthai.com`. Send one controlled test only after the device subscription is visible. |
 | Backend webhook auth exposure | Not changed | Local Edge Function code requires `X-Tuk-Notification-Secret` for POST paths. Prior audit docs still note live webhook metadata should be reviewed for bearer-token exposure before relying on automated notification cron at scale. |
 
+## Beta Feedback Status
+
+| Item | Result | Notes |
+| --- | --- | --- |
+| Feedback route | Ready pending deployment | `/feedback` is a public route using the existing public-page navigation pattern. |
+| Feedback categories | Ready pending deployment | Covers bugs, incorrect Thai content, audio/pronunciation issues, account/login issues, and general feedback. |
+| Email feedback flow | Ready pending deployment | Opens `mailto:support@tuktalkthai.com` with a beta feedback subject and issue template. |
+| Storage/data changes | Pass | No database tables, external services, schema changes, or feedback persistence were added. |
+| Support mailbox | Owner action | Confirm `support@tuktalkthai.com` exists, receives mail, and is monitored before inviting testers. |
+
 ## Fixed Issues
 
 - Updated centralized `siteUrl` to the confirmed production primary: `https://www.tuktalkthai.com`.
 - Updated launch checklist with production pass/fail/owner-verification status.
 - Updated owner inputs to mark domain connected and support email pending confirmation.
+- Added beta feedback/report issue route and checklist entries for post-deploy smoke testing.
 
 No learning logic, Thai card content, SRS scheduling, auth implementation, OneSignal config, database schema, migrations, rewards, payments, or ads were changed.
 
 ## Remaining Owner Actions
 
 1. Confirm `support@tuktalkthai.com` exists, receives mail, and is monitored.
-2. Approve Privacy Policy and Terms of Use with the final legal/business name.
-3. Create or provide one fresh production test account and inbox access for sign-up/email-confirmation/password-reset testing.
-4. Complete one returning-user sign-in/sign-out smoke test.
-5. Complete one guided first lesson on a fresh account and confirm unlock into the main app.
-6. Provide a subscribed OneSignal test device/browser and approve one controlled push notification test.
-7. Approve final app icon assets and launch screenshots.
-8. Confirm launch date and beta support availability.
-9. Have a native speaker do one launch-critical pass over visible Thai phrases and audio.
+2. Send one test feedback email from `/feedback` on desktop and mobile after deployment.
+3. Approve Privacy Policy and Terms of Use with the final legal/business name.
+4. Create or provide one fresh production test account and inbox access for sign-up/email-confirmation/password-reset testing.
+5. Complete one returning-user sign-in/sign-out smoke test.
+6. Complete one guided first lesson on a fresh account and confirm unlock into the main app.
+7. Provide a subscribed OneSignal test device/browser and approve one controlled push notification test.
+8. Approve final app icon assets and launch screenshots.
+9. Confirm launch date and beta support availability.
+10. Have a native speaker do one launch-critical pass over visible Thai phrases and audio.
 
 ## Go/No-Go Recommendation
 
@@ -101,7 +114,8 @@ Run these on a real mobile device before posting publicly:
 | Create a fresh account | Signup works and email confirmation behavior is correct. |
 | Complete first guided lesson | Main app unlocks after completion. |
 | Open More menu | Browse, Guide, Leaderboard, Profile, Settings are reachable. |
-| Open Settings | Sound effects, characters, audio speed, Privacy, Terms, Support, and Account Deletion are reachable. |
+| Open Settings | Sound effects, characters, audio speed, Privacy, Terms, Support, Feedback, and Account Deletion are reachable. |
+| Open Feedback | Email feedback button opens a draft to `support@tuktalkthai.com`. |
 | Review one Card | Card reveal and rating buttons work. |
 | Complete one Challenge round | Options, feedback, and result state work. |
 | Sign out and sign in | Returning-user state loads correctly. |
@@ -117,6 +131,7 @@ Before posting:
 | Positioning says web/PWA beta, not native app-store launch. | Ready |
 | Mention free beta unless monetization decision changes. | Owner confirm |
 | Include support email `support@tuktalkthai.com`. | Pending mailbox confirmation |
+| Ask testers to use the Feedback page or Report an issue link for bugs, content mistakes, audio issues, and login issues. | Ready after deployment |
 | Avoid claims of perfect translation or pronunciation. | Ready |
 | Ask testers to report incorrect Thai content. | Ready |
 | Ask testers to use Chrome/Edge/Safari and try Add to Home Screen. | Ready |

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy } from 'lucide-react';
+import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
 import NotificationSettings from './profile/NotificationSettings.jsx';
@@ -195,6 +195,15 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
             >
               <LifeBuoy size={16} />
               <span className="profile-action-label">Support</span>
+              <ChevronLeft size={14} className="profile-action-chevron" />
+            </button>
+            <button
+              type="button"
+              className="profile-action-btn"
+              onClick={() => openPublicPage('/feedback')}
+            >
+              <MessageSquare size={16} />
+              <span className="profile-action-label">Report an issue</span>
               <ChevronLeft size={14} className="profile-action-chevron" />
             </button>
             <button

@@ -1242,6 +1242,8 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .legal-content a { color: var(--jade); text-decoration: underline; text-underline-offset: 2px; word-break: break-word; }
 .legal-content a:hover { color: var(--jade-soft); }
 .legal-content strong { color: var(--ink); font-weight: 600; }
+.legal-content a.feedback-mailto-btn { color: var(--cream); text-decoration: none; word-break: normal; margin-top: 4px; }
+.legal-content a.feedback-mailto-btn:hover { color: var(--cream); }
 .legal-updated { font-size: 12px; color: var(--ink-soft); font-style: italic; margin-bottom: 18px !important; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .legal-owner-note { margin: 0 0 18px; padding: 12px 14px; border: 1px solid rgba(201, 169, 97, 0.45); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; background: rgba(201, 169, 97, 0.12); color: var(--ink); font-size: 13px; line-height: 1.5; }
 

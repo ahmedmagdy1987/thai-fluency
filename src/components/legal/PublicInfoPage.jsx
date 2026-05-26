@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import {
   DeleteAccountContent,
+  FeedbackContent,
   PrivacyPolicyContent,
   SupportContent,
   TermsOfUseContent,
@@ -27,6 +28,12 @@ const PUBLIC_PAGES = {
     intro: 'Get help with account access, notifications, progress, content reports, and beta support questions.',
     Content: SupportContent,
   },
+  feedback: {
+    eyebrow: 'Beta',
+    title: 'Beta Feedback',
+    intro: `Help us improve ${SITE_CONFIG.siteName}. Tell us what happened, what device you used, and what you expected.`,
+    Content: FeedbackContent,
+  },
   'delete-account': {
     eyebrow: 'Account',
     title: 'Account Deletion',
@@ -39,6 +46,7 @@ const PAGE_LINKS = [
   { path: '/privacy', label: 'Privacy' },
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
+  { path: '/feedback', label: 'Feedback' },
   { path: '/delete-account', label: 'Delete account' },
 ];
 

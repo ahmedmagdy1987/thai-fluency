@@ -17,6 +17,7 @@ export default function AppShell({
   onOpenProfile,
   onOpenSettings,
   onSignOut,
+  onOpenPublicPage,
   themeAttr,
   viewModeAttr,
 }) {
@@ -60,6 +61,7 @@ export default function AppShell({
         onOpenProfile={onOpenProfile}
         onOpenSettings={onOpenSettings}
         onSignOut={onSignOut}
+        onOpenPublicPage={onOpenPublicPage}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
       />

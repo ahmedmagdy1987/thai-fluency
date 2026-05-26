@@ -11,7 +11,7 @@ Latest technical smoke run: May 26, 2026 against `https://www.tuktalkthai.com` a
 | `tuktalkthai.com` resolves to the production deployment. | [x] | [ ] | Apex redirects to `https://www.tuktalkthai.com/` with HTTP 307. |
 | `www.tuktalkthai.com` redirects correctly or loads correctly. | [x] | [ ] | Primary production domain loads with HTTP 200. |
 | HTTPS works without browser warnings. | [x] | [ ] | Route smoke checks completed over HTTPS. |
-| Direct routes work after hard refresh. | [x] | [ ] | Smoke script passed `/learn`, `/cards`, `/challenge`, `/shop`, and public pages. |
+| Direct routes work after hard refresh. | [x] | [ ] | Smoke script passed `/learn`, `/cards`, `/challenge`, `/shop`, and public pages. Re-run after feedback deployment to include `/feedback`. |
 | Legal pages work at `/privacy`, `/terms`, `/support`, and `/delete-account`. | [x] | [ ] | All returned HTTP 200 on `www`; mobile/desktop screenshots checked. |
 | `/OneSignalSDKWorker.js` returns the worker script. | [x] | [ ] | HTTP 200, `application/javascript`. |
 | `/manifest.webmanifest` returns the PWA manifest if present. | [x] | [ ] | HTTP 200, `application/manifest+json`; name, short name, theme color, and icons checked. |
@@ -34,7 +34,17 @@ Latest technical smoke run: May 26, 2026 against `https://www.tuktalkthai.com` a
 | Landing page loads while logged out. | [x] | [ ] | HTTP and screenshot verified. |
 | Primary CTA opens the welcome/auth flow. | [x] | [ ] | Auth welcome route loads; owner should click through once on phone. |
 | Sign-in CTA opens sign in. | [ ] | [ ] | Owner/test-account verification still required. |
-| Footer links open Privacy, Terms, Support, and Account Deletion. | [x] | [ ] | Public routes passed smoke test. |
+| Footer links open Privacy, Terms, Support, Feedback, and Account Deletion. | [ ] | [ ] | Re-check after the feedback page deploys. |
+
+## Feedback and Support
+
+| Check | Pass | Fail | Notes |
+| --- | --- | --- | --- |
+| Feedback page loads at `/feedback`. | [ ] | [ ] | Re-check after deployment with the production smoke script. |
+| Feedback mailto opens to `support@tuktalkthai.com`. | [ ] | [ ] | Confirm on desktop and mobile; no feedback is stored in the database. |
+| Support page links to Feedback. | [ ] | [ ] | Re-check after deployment. |
+| Settings/Profile/Mobile More links open Feedback while signed in. | [ ] | [ ] | Owner/test account required. |
+| Support email is confirmed and monitored. | [ ] | [ ] | Owner action: confirm `support@tuktalkthai.com` exists and receives mail. |
 
 ## Sign Up
 
@@ -154,4 +164,5 @@ Latest technical smoke run: May 26, 2026 against `https://www.tuktalkthai.com` a
 | `/privacy` | [x] | [ ] | HTTP 200 on `www`; apex redirects to `www`. |
 | `/terms` | [x] | [ ] | HTTP 200 on `www`; apex redirects to `www`. |
 | `/support` | [x] | [ ] | HTTP 200 on `www`; apex redirects to `www`. |
+| `/feedback` | [ ] | [ ] | Re-run production smoke after deployment. |
 | `/delete-account` | [x] | [ ] | HTTP 200 on `www`; apex redirects to `www`. |

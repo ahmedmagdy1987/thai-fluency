@@ -93,6 +93,7 @@ const PUBLIC_PAGE_ROUTES = {
   '/privacy': 'privacy',
   '/terms': 'terms',
   '/support': 'support',
+  '/feedback': 'feedback',
   '/delete-account': 'delete-account',
 };
 
@@ -1147,6 +1148,7 @@ export default function TukTalkThaiApp() {
       onOpenProfile={handleOpenProfile}
       onOpenSettings={handleOpenSettings}
       onSignOut={handleSignOut}
+      onOpenPublicPage={handleNavigatePath}
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
     >

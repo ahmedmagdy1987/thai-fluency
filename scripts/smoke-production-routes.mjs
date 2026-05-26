@@ -9,6 +9,7 @@ const ROUTES = [
   { path: '/privacy', type: 'html' },
   { path: '/terms', type: 'html' },
   { path: '/support', type: 'html' },
+  { path: '/feedback', type: 'html' },
   { path: '/delete-account', type: 'html' },
   { path: '/OneSignalSDKWorker.js', type: 'script' },
   { path: '/manifest.webmanifest', type: 'manifest', optional: true },

@@ -245,6 +245,8 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/support')}>Support</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/feedback')}>Feedback</button>
+              <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>
           </div>
