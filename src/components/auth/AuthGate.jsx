@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react';
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
 import ForgotPassword from './ForgotPassword.jsx';
-import PrivacyPolicy from '../legal/PrivacyPolicy.jsx';
-import TermsOfService from '../legal/TermsOfService.jsx';
 
 // Three-button entry: Create account, Sign in, or Try a quick demo.
 // "Try a quick demo" is the only anonymous path — limited to 5 cards via
 // the DemoMode component (rendered separately at the App level when the
 // onTryDemo callback flips that mode on).
-export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome', onScreenChange }) {
+export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome', onScreenChange, onOpenPublicPage }) {
   const [screen, setScreen] = useState(initialScreen);
   const [prefilledEmail, setPrefilledEmail] = useState('');
-  const [showPrivacy, setShowPrivacy] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
 
   useEffect(() => {
     setScreen(initialScreen);
@@ -27,6 +23,14 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
   const goToSignUp = (email) => {
     if (typeof email === 'string' && email) setPrefilledEmail(email);
     showScreen('signup');
+  };
+
+  const openPublicPage = (path) => {
+    if (onOpenPublicPage) {
+      onOpenPublicPage(path);
+      return;
+    }
+    window.location.assign(path);
   };
 
   if (screen === 'signup') {
@@ -90,13 +94,16 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
         </button>
         <div className="auth-welcome-footer">
           By continuing you agree to our{' '}
-          <button type="button" className="auth-footer-link" onClick={() => setShowTerms(true)}>Terms</button>
+          <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/terms')}>Terms</button>
           {' '}and{' '}
-          <button type="button" className="auth-footer-link" onClick={() => setShowPrivacy(true)}>Privacy Policy</button>.
+          <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/privacy')}>Privacy Policy</button>.
+          <span className="auth-footer-secondary-links">
+            <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/support')}>Support</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/delete-account')}>Account deletion</button>
+          </span>
         </div>
       </div>
-      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
-      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
     </div>
   );
 }

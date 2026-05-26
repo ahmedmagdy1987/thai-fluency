@@ -74,12 +74,26 @@ function LandingPhraseCard({ phrase, onPlay, className = '' }) {
   );
 }
 
-export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95 }) {
+const FOOTER_LINKS = [
+  { path: '/privacy', label: 'Privacy' },
+  { path: '/terms', label: 'Terms' },
+  { path: '/support', label: 'Support' },
+  { path: '/delete-account', label: 'Account deletion' },
+];
+
+export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.95 }) {
   const phrases = PHRASE_SOURCES.map(getPhrase);
 
   const playPhrase = (thai) => {
     if (!thai) return;
     try { speakThai(thai, audioRate); } catch (_) { /* TTS unavailable */ }
+  };
+
+  const openPublicPage = (path) => (event) => {
+    if (!onOpenPublicPage || event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    onOpenPublicPage(path);
   };
 
   return (
@@ -160,6 +174,17 @@ export default function PublicLanding({ onGetStarted, onSignIn, audioRate = 0.95
           </article>
         ))}
       </section>
+
+      <footer className="landing-footer" aria-label="Public links">
+        <div className="landing-footer-brand">Tuk Talk Thai</div>
+        <nav className="landing-footer-links">
+          {FOOTER_LINKS.map(link => (
+            <a key={link.path} href={link.path} onClick={openPublicPage(link.path)}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </footer>
     </main>
   );
 }

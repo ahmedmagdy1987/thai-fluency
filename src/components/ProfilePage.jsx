@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2 } from 'lucide-react';
+import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
 import NotificationSettings from './profile/NotificationSettings.jsx';
 
 // Profile view — accessible from the header user menu. Edit display name
 // inline, view account info, change password, sign out.
-export default function ProfilePage({ profile, fullStats, session, stageState, onClose, onSignOut, onProfileRefresh }) {
+export default function ProfilePage({ profile, fullStats, session, stageState, onClose, onSignOut, onProfileRefresh, onOpenPublicPage }) {
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState('');
   const [savingName, setSavingName] = useState(false);
@@ -77,6 +77,14 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   const handleNameKeyDown = (e) => {
     if (e.key === 'Enter') { e.preventDefault(); saveName(); }
     else if (e.key === 'Escape') cancelEdit();
+  };
+
+  const openPublicPage = (path) => {
+    if (onOpenPublicPage) {
+      onOpenPublicPage(path);
+      return;
+    }
+    window.location.assign(path);
   };
 
   return (
@@ -183,17 +191,41 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
             <button
               type="button"
               className="profile-action-btn"
+              onClick={() => openPublicPage('/support')}
+            >
+              <LifeBuoy size={16} />
+              <span className="profile-action-label">Support</span>
+              <ChevronLeft size={14} className="profile-action-chevron" />
+            </button>
+            <button
+              type="button"
+              className="profile-action-btn"
               onClick={onSignOut}
             >
               <LogOut size={16} />
               <span className="profile-action-label">Sign out</span>
               <ChevronLeft size={14} className="profile-action-chevron" />
             </button>
-            <div className="profile-action-disabled" title="Not available yet">
+            <button
+              type="button"
+              className="profile-action-btn profile-action-danger"
+              onClick={() => openPublicPage('/delete-account')}
+            >
               <Trash2 size={16} />
               <span className="profile-action-label">Delete account</span>
-              <span className="profile-action-coming">Not available yet</span>
-            </div>
+              <ChevronLeft size={14} className="profile-action-chevron" />
+            </button>
+          </div>
+        </div>
+
+        <div className="profile-section">
+          <div className="profile-section-title">Legal</div>
+          <div className="settings-legal-links profile-legal-links">
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/privacy')}>Privacy Policy</button>
+            <span className="settings-legal-divider" aria-hidden="true">/</span>
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/terms')}>Terms of Use</button>
+            <span className="settings-legal-divider" aria-hidden="true">/</span>
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
           </div>
         </div>
 

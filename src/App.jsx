@@ -55,6 +55,7 @@ import MigrationPrompt from './components/auth/MigrationPrompt.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
+import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import { getMiniUnit, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
@@ -88,6 +89,12 @@ const AUTH_ROUTES = {
   '/welcome': 'welcome',
   '/sign-in': 'signin',
 };
+const PUBLIC_PAGE_ROUTES = {
+  '/privacy': 'privacy',
+  '/terms': 'terms',
+  '/support': 'support',
+  '/delete-account': 'delete-account',
+};
 
 function normalizePathname(pathname = '/') {
   const withoutTrailingSlash = pathname.replace(/\/+$/, '');
@@ -100,6 +107,7 @@ function getRouteForPath(pathname) {
   if (path === '/profile') return { type: 'profile', path };
   if (path === '/settings') return { type: 'settings', path };
   if (path === '/get-started') return { type: 'landing', path };
+  if (PUBLIC_PAGE_ROUTES[path]) return { type: 'public', page: PUBLIC_PAGE_ROUTES[path], path };
   if (AUTH_ROUTES[path]) return { type: 'auth', authScreen: AUTH_ROUTES[path], path };
   return { type: 'tab', tab: 'learn', path: '/learn', unknown: true };
 }
@@ -140,6 +148,7 @@ export default function TukTalkThaiApp() {
   const [stageUpToast, setStageUpToast] = useState(null);
   const [showSettings, setShowSettings] = useState(() => initialRoute.type === 'settings');
   const [showProfile, setShowProfile] = useState(() => initialRoute.type === 'profile');
+  const [publicPage, setPublicPage] = useState(() => initialRoute.type === 'public' ? initialRoute.page : null);
   const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
@@ -156,6 +165,7 @@ export default function TukTalkThaiApp() {
   });
   const [forceAuthGate, setForceAuthGate] = useState(() => initialRoute.type === 'auth');
   const [showPublicLanding, setShowPublicLanding] = useState(() => {
+    if (initialRoute.type === 'public') return false;
     try { return localStorage.getItem('tuk-talk-thai-demo-mode') !== 'true'; }
     catch { return true; }
   });
@@ -199,57 +209,78 @@ export default function TukTalkThaiApp() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const applyRouteState = useCallback((route) => {
+    setActiveMiniUnitId(null);
+
+    if (route.type === 'public') {
+      setPublicPage(route.page);
+      setShowProfile(false);
+      setShowSettings(false);
+      setForceAuthGate(false);
+      setShowPublicLanding(false);
+      return;
+    }
+
+    setPublicPage(null);
+
+    if (route.type === 'tab') {
+      setTab(route.tab);
+      setShowProfile(false);
+      setShowSettings(false);
+      setForceAuthGate(false);
+      setShowPublicLanding(true);
+      return;
+    }
+
+    if (route.type === 'profile') {
+      setShowProfile(true);
+      setShowSettings(false);
+      setForceAuthGate(false);
+      setShowPublicLanding(true);
+      return;
+    }
+
+    if (route.type === 'settings') {
+      setShowSettings(true);
+      setShowProfile(false);
+      setForceAuthGate(false);
+      setShowPublicLanding(true);
+      return;
+    }
+
+    if (route.type === 'auth') {
+      setAuthInitialScreen(route.authScreen || 'welcome');
+      setForceAuthGate(true);
+      setShowPublicLanding(false);
+      setShowProfile(false);
+      setShowSettings(false);
+      return;
+    }
+
+    if (route.type === 'landing') {
+      setShowPublicLanding(true);
+      setForceAuthGate(false);
+      setShowProfile(false);
+      setShowSettings(false);
+    }
+  }, []);
+
+  const handleNavigatePath = useCallback((path, options = {}) => {
+    const route = getRouteForPath(path);
+    writeRoute(route.path, { replace: !!options.replace });
+    applyRouteState(route);
+  }, [applyRouteState]);
+
   useEffect(() => {
     const applyRouteFromLocation = () => {
       const route = getCurrentRoute();
-      setActiveMiniUnitId(null);
       if (route.unknown) writeRoute(route.path, { replace: true });
-
-      if (route.type === 'tab') {
-        setTab(route.tab);
-        setShowProfile(false);
-        setShowSettings(false);
-        setForceAuthGate(false);
-        setShowPublicLanding(true);
-        return;
-      }
-
-      if (route.type === 'profile') {
-        setShowProfile(true);
-        setShowSettings(false);
-        setForceAuthGate(false);
-        setShowPublicLanding(true);
-        return;
-      }
-
-      if (route.type === 'settings') {
-        setShowSettings(true);
-        setShowProfile(false);
-        setForceAuthGate(false);
-        setShowPublicLanding(true);
-        return;
-      }
-
-      if (route.type === 'auth') {
-        setAuthInitialScreen(route.authScreen || 'welcome');
-        setForceAuthGate(true);
-        setShowPublicLanding(false);
-        setShowProfile(false);
-        setShowSettings(false);
-        return;
-      }
-
-      if (route.type === 'landing') {
-        setShowPublicLanding(true);
-        setForceAuthGate(false);
-        setShowProfile(false);
-        setShowSettings(false);
-      }
+      applyRouteState(route);
     };
 
     window.addEventListener('popstate', applyRouteFromLocation);
     return () => window.removeEventListener('popstate', applyRouteFromLocation);
-  }, []);
+  }, [applyRouteState]);
 
   useEffect(() => {
     if (!authReady) return;
@@ -332,12 +363,14 @@ export default function TukTalkThaiApp() {
     setDemoMode(true);
     setForceAuthGate(false);
     setShowPublicLanding(false);
+    setPublicPage(null);
   }, []);
 
   const handleDemoSignUp = useCallback(() => {
     setAuthInitialScreen('signup');
     setForceAuthGate(true);
     setShowPublicLanding(false);
+    setPublicPage(null);
     writeRoute('/welcome');
   }, []);
 
@@ -345,6 +378,7 @@ export default function TukTalkThaiApp() {
     setAuthInitialScreen('signin');
     setForceAuthGate(true);
     setShowPublicLanding(false);
+    setPublicPage(null);
     writeRoute('/sign-in');
   }, []);
 
@@ -366,6 +400,7 @@ export default function TukTalkThaiApp() {
     setShowPublicLanding(false);
     setShowProfile(false);
     setShowSettings(false);
+    setPublicPage(null);
     setForceAuthGate(true);
     writeRoute(screen === 'signin' ? '/sign-in' : '/welcome');
   }, []);
@@ -395,6 +430,7 @@ export default function TukTalkThaiApp() {
     setAuthInitialScreen('welcome');
     setShowProfile(false);
     setShowSettings(false);
+    setPublicPage(null);
     writeRoute('/get-started', { replace: true });
     notificationPromptFired.current = false;
   }, []);
@@ -854,6 +890,7 @@ export default function TukTalkThaiApp() {
     setActiveMiniUnitId(null);
     setShowProfile(false);
     setShowSettings(false);
+    setPublicPage(null);
     setTab('learn');
     writeRoute('/learn', { replace: true });
   }, [updateSettings]);
@@ -874,12 +911,14 @@ export default function TukTalkThaiApp() {
     setActiveMiniUnitId(null);
     setShowProfile(false);
     setShowSettings(false);
+    setPublicPage(null);
     setTab(nextTab);
     writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
   }, []);
 
   const handleOpenProfile = useCallback(() => {
     setActiveMiniUnitId(null);
+    setPublicPage(null);
     setShowSettings(false);
     setShowProfile(true);
     writeRoute('/profile');
@@ -887,11 +926,13 @@ export default function TukTalkThaiApp() {
 
   const handleCloseProfile = useCallback(() => {
     setShowProfile(false);
+    setPublicPage(null);
     writeRoute(routePathForTab(tab), { replace: true });
   }, [tab]);
 
   const handleOpenSettings = useCallback(() => {
     setActiveMiniUnitId(null);
+    setPublicPage(null);
     setShowProfile(false);
     setShowSettings(true);
     writeRoute('/settings');
@@ -899,6 +940,7 @@ export default function TukTalkThaiApp() {
 
   const handleCloseSettings = useCallback(() => {
     setShowSettings(false);
+    setPublicPage(null);
     writeRoute(routePathForTab(tab), { replace: true });
   }, [tab]);
 
@@ -915,6 +957,18 @@ export default function TukTalkThaiApp() {
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
   const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
+
+  if (publicPage) {
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
+        <PublicInfoPage
+          page={publicPage}
+          isAuthed={!!session}
+          onNavigate={handleNavigatePath}
+        />
+      </div>
+    );
+  }
 
   // Hard-fail when Supabase env vars are missing — never silently degrade to
   // a no-auth main app. Security audit HIGH-1: previously, an unconfigured
@@ -968,6 +1022,7 @@ export default function TukTalkThaiApp() {
         <PublicLanding
           onGetStarted={() => openAuthGate('welcome')}
           onSignIn={() => openAuthGate('signin')}
+          onOpenPublicPage={handleNavigatePath}
           audioRate={stats.audioRate || 0.95}
         />
       </div>
@@ -985,6 +1040,7 @@ export default function TukTalkThaiApp() {
           initialScreen={authInitialScreen}
           onTryDemo={startDemo}
           onAuthSuccess={handleAuthSuccess}
+          onOpenPublicPage={handleNavigatePath}
           onScreenChange={(screen) => writeRoute(screen === 'signin' ? '/sign-in' : '/welcome')}
         />
       </div>
@@ -1071,6 +1127,7 @@ export default function TukTalkThaiApp() {
           stageState={stageState}
           onClose={handleCloseProfile}
           onSignOut={() => { setShowProfile(false); handleSignOut(); }}
+          onOpenPublicPage={handleNavigatePath}
           onProfileRefresh={async () => {
             const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
             if (data) setProfile(data);
@@ -1136,7 +1193,7 @@ export default function TukTalkThaiApp() {
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
-        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} resetAll={resetAll} />
+        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} resetAll={resetAll} onOpenPublicPage={handleNavigatePath} />
       )}
     </AppShell>
   );

@@ -15,7 +15,7 @@ const AUDIO_RATE_OPTIONS = [
   { value: 1.15, label: 'Fast', helper: 'Challenge pace' },
 ];
 
-export default function SettingsModal({ stats, updateSettings, onClose, resetAll }) {
+export default function SettingsModal({ stats, updateSettings, onClose, resetAll, onOpenPublicPage }) {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const voice = stats.voice || DEFAULT_VOICE;
@@ -29,6 +29,17 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
   const currentStageId = stats.currentStage || stats.startedStage || 1;
   const currentStage = STAGES.find(s => s.id === currentStageId) || {};
   const previewText = transformThai(PREVIEW_THAI, voice);
+  const openPublicPage = (path, fallback) => {
+    if (onOpenPublicPage) {
+      onOpenPublicPage(path);
+      return;
+    }
+    if (fallback) {
+      fallback(true);
+      return;
+    }
+    window.location.assign(path);
+  };
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -226,10 +237,15 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
 
           <div className="setting-group">
             <div className="setting-label">Legal</div>
+            <div className="setting-sub">Public launch pages and support information</div>
             <div className="settings-legal-links">
-              <button type="button" className="settings-legal-link" onClick={() => setShowPrivacy(true)}>Privacy Policy</button>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/privacy', setShowPrivacy)}>Privacy Policy</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
-              <button type="button" className="settings-legal-link" onClick={() => setShowTerms(true)}>Terms of Service</button>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/terms', setShowTerms)}>Terms of Use</button>
+              <span className="settings-legal-divider" aria-hidden="true">/</span>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/support')}>Support</button>
+              <span className="settings-legal-divider" aria-hidden="true">/</span>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>
           </div>
 
