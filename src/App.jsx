@@ -700,6 +700,28 @@ export default function TukTalkThaiApp() {
     return () => clearTimeout(t);
   }, [session?.user?.id, isEmailConfirmed, stats.hasOnboarded, profile?.onesignal_player_id]);
 
+  const grantXp = useCallback((amount) => {
+    setStats(s => {
+      const today = getLocalDateKey();
+      const isNewDay = s.todayDate !== today;
+      const yesterday = previousLocalDateKey();
+      let newStreak = s.streak || 0;
+      if (isNewDay) {
+        if (s.lastStudy === yesterday) {
+          newStreak = newStreak + 1;
+        } else if (s.lastStudy !== today) {
+          const daysSince = s.lastStudy ? Math.floor((Date.now() - new Date(s.lastStudy).getTime()) / DAY_MS) : 999;
+          if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
+            newStreak = newStreak + 1;
+            return startStudyDay(s, today, newStreak, amount, true);
+          }
+          newStreak = 1;
+        }
+      }
+      return startStudyDay(s, today, newStreak, amount, false);
+    });
+  }, []);
+
   // Mission advancement: when currentMission increases past lastSeenMission,
   // celebrate the mission that just finished. The "just finished" mission is
   // currentMission - 1 (or M6 if everything is done).
@@ -773,28 +795,6 @@ export default function TukTalkThaiApp() {
       // Schedule next toast after a short delay
       setTimeout(() => setAchievementToast(next), 400);
       return rest;
-    });
-  }, []);
-
-  const grantXp = useCallback((amount) => {
-    setStats(s => {
-      const today = getLocalDateKey();
-      const isNewDay = s.todayDate !== today;
-      const yesterday = previousLocalDateKey();
-      let newStreak = s.streak || 0;
-      if (isNewDay) {
-        if (s.lastStudy === yesterday) {
-          newStreak = newStreak + 1;
-        } else if (s.lastStudy !== today) {
-          const daysSince = s.lastStudy ? Math.floor((Date.now() - new Date(s.lastStudy).getTime()) / DAY_MS) : 999;
-          if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
-            newStreak = newStreak + 1;
-            return startStudyDay(s, today, newStreak, amount, true);
-          }
-          newStreak = 1;
-        }
-      }
-      return startStudyDay(s, today, newStreak, amount, false);
     });
   }, []);
 
