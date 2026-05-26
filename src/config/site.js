@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
   siteName: 'Tuk Talk Thai',
-  siteUrl: 'https://tuktalkthai.com',
+  siteUrl: 'https://www.tuktalkthai.com',
   supportEmail: 'support@tuktalkthai.com',
   slogan: 'Learn Thai the fast and fun way.',
 };
