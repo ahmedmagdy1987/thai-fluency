@@ -191,6 +191,11 @@ export default function FirstLessonFlow({
               <span>{vocabCards.length} cards</span>
               <span>{challengeQuestions.length} questions</span>
             </div>
+            <div className="firstlesson-unlock-preview" aria-label="Unlocked after first lesson">
+              <div><strong>Cards</strong><span>Complete your first lesson to unlock Cards.</span></div>
+              <div><strong>Challenge</strong><span>Complete your first lesson to unlock Challenge.</span></div>
+              <div><strong>Quests</strong><span>Reach Level 2 to unlock daily quests.</span></div>
+            </div>
             <button type="button" className="btn-primary firstlesson-primary" onClick={startLesson}>
               Start lesson <ChevronRight size={16} />
             </button>

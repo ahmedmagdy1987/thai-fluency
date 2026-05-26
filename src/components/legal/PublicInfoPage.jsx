@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import {
   DeleteAccountContent,
   FeedbackContent,
+  PremiumContent,
   PrivacyPolicyContent,
   SupportContent,
   TermsOfUseContent,
@@ -34,6 +35,12 @@ const PUBLIC_PAGES = {
     intro: `Help us improve ${SITE_CONFIG.siteName}. Tell us what happened, what device you used, and what you expected.`,
     Content: FeedbackContent,
   },
+  premium: {
+    eyebrow: 'Super',
+    title: 'Tuk Talk Thai Super',
+    intro: 'The planned premium layer for early access, flexible practice, bonus rewards, and future ad removal.',
+    Content: PremiumContent,
+  },
   'delete-account': {
     eyebrow: 'Account',
     title: 'Account Deletion',
@@ -47,6 +54,7 @@ const PAGE_LINKS = [
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
   { path: '/feedback', label: 'Feedback' },
+  { path: '/premium', label: 'Super' },
   { path: '/delete-account', label: 'Delete account' },
 ];
 

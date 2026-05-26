@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Snowflake, Zap, Sparkles, Lock, ShoppingBag, Gem } from 'lucide-react';
+import { Crown, Heart, Snowflake, Zap, Sparkles, Lock, ShoppingBag, Gem } from 'lucide-react';
 import { CHARACTERS, STAGE_CHARACTER_MAP } from '../data/stageCharacters.js';
 import { STAGES } from '../data/taxonomy.js';
 
@@ -52,7 +52,7 @@ const POWERUP_ITEMS = [
   },
 ];
 
-export default function ShopScreen({ stats }) {
+export default function ShopScreen({ stats, onOpenSuper }) {
   const gems = stats?.gems ?? 0;
   const hearts = stats?.hearts ?? 5;
 
@@ -134,7 +134,12 @@ export default function ShopScreen({ stats }) {
 
       <div className="shop-footnote">
         <Lock size={14} />
-        <span>Purchases are not available yet.</span>
+        <span>Purchases are not available yet. Super founder offer coming soon.</span>
+        {onOpenSuper && (
+          <button type="button" className="shop-footnote-link" onClick={onOpenSuper}>
+            <Crown size={13} /> See Super
+          </button>
+        )}
       </div>
     </div>
   );

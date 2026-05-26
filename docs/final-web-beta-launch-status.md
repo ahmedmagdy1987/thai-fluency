@@ -74,6 +74,17 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | Storage/data changes | Pass | No database tables, external services, schema changes, or feedback persistence were added. |
 | Support mailbox | Owner action | Confirm `support@tuktalkthai.com` exists, receives mail, and is monitored before inviting testers. |
 
+## Reward and Premium Motivation Status
+
+| Item | Result | Notes |
+| --- | --- | --- |
+| Mission Complete reward | Ready pending deployment | Full-screen reward appears after guided first lesson completion, Stage 1 mission completion, and mini-unit completion. |
+| XP count-up | Ready pending deployment | XP animates from 0 to the earned amount and respects reduced-motion preferences. |
+| XP sound | Ready pending deployment | Short generated tick sound plays only when Sound effects are enabled. |
+| Super page | Ready pending deployment | `/premium` presents Tuk Talk Thai Super as coming soon/founder offer coming soon, with no checkout or payment claim. |
+| Upgrade prompt | Ready pending deployment | Shows only after positive/intentional moments and is capped at once per day through `profiles.settings` or localStorage fallback. |
+| Locked messaging | Ready pending deployment | First lesson, locked stages, Quests, Shop, and Leaderboard now explain progressive unlocks or preview status more clearly. |
+
 ## Persistence Hardening Status
 
 | Item | Result | Notes |
@@ -95,11 +106,13 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 - Updated launch checklist with production pass/fail/owner-verification status.
 - Updated owner inputs to mark domain connected and support email pending confirmation.
 - Added beta feedback/report issue route and checklist entries for post-deploy smoke testing.
+- Added Mission Complete reward screen with XP count-up and sound-effects-aware tick audio.
+- Added Tuk Talk Thai Super coming-soon page, once-per-day upgrade prompt, and clearer progressive unlock copy.
 - Removed Reset all progress from Settings.
 - Added signed-in persistence for today XP, visible settings, guided first lesson progress, mini-unit progress, and Challenge aggregates.
 - Rotated notification webhook auth and verified unauthenticated POST `401`, authenticated no-op webhook POST `200`, no bearer trigger headers, and no bearer cron command.
 
-No learning logic, Thai card content, SRS scheduling, auth implementation, OneSignal app config, rewards, payments, or ads were changed. The only schema change was additive `user_stats` persistence columns for launch hardening.
+No Thai card content, SRS scheduling, Challenge answer generation, auth implementation, OneSignal app config, payments, or ads were changed. The only schema change was additive `user_stats` persistence columns for launch hardening. The reward/premium layer is motivational and coming-soon only; it does not add paid entitlements or real shop purchases.
 
 ## Remaining Owner Actions
 
@@ -134,6 +147,8 @@ Run these on a real mobile device before posting publicly:
 | Open More menu | Browse, Guide, Leaderboard, Profile, Settings are reachable. |
 | Open Settings | Sound effects, characters, audio speed, Privacy, Terms, Support, Feedback, and Account Deletion are reachable. |
 | Open Feedback | Email feedback button opens a draft to `support@tuktalkthai.com`. |
+| Complete a reward event | Mission Complete screen appears; Sound effects OFF suppresses XP tick audio. |
+| Open Super | `/premium` loads and clearly says coming soon with no payment flow. |
 | Review one Card | Card reveal and rating buttons work. |
 | Complete one Challenge round | Options, feedback, and result state work. |
 | Sign out and sign in | Returning-user state loads correctly. |

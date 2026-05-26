@@ -249,6 +249,44 @@ export function FeedbackContent() {
   );
 }
 
+export function PremiumContent() {
+  return (
+    <>
+      <OwnerReviewNotice>
+        Founder offer details, price, launch date, and payment provider are not active yet. This page is a coming-soon foundation only.
+      </OwnerReviewNotice>
+
+      <p>
+        Tuk Talk Thai Super is the planned premium layer for learners who want more flexibility, more rewards, and early access to new learning features.
+      </p>
+
+      <div className="premium-coming-soon">
+        <strong>Coming soon:</strong> Founder offer details will be announced after beta testing. No payments are collected in the current beta.
+      </div>
+
+      <h3>Planned Super benefits</h3>
+      <ul className="premium-benefit-list">
+        <li><strong>Unlock every lesson path</strong>: move through the full Thai journey without waiting for every staged unlock.</li>
+        <li><strong>Practice any topic anytime</strong>: jump into food, taxis, shopping, social Thai, emergency phrases, and more.</li>
+        <li><strong>Bonus rewards</strong>: extra XP events and reward boosts when the beta economy is ready.</li>
+        <li><strong>Early access to phrase packs</strong>: try new packs before they become part of the standard path.</li>
+        <li><strong>Remove future ads</strong>: if ads are added later, Super is planned to remove them.</li>
+        <li><strong>Support new Thai learning features</strong>: help fund native review, audio improvements, and better guided lessons.</li>
+      </ul>
+
+      <h3>No payment yet</h3>
+      <p>
+        Super is not a subscription today. There is no checkout, no billing, no paid entitlement, and no payment claim on this page.
+      </p>
+
+      <h3>Beta status</h3>
+      <p>
+        During beta, use the free learning path and send feedback to <a href={`mailto:${supportEmail}`}>{supportEmail}</a>. Premium access, pricing, and terms will need owner approval before launch.
+      </p>
+    </>
+  );
+}
+
 export function DeleteAccountContent() {
   return (
     <>

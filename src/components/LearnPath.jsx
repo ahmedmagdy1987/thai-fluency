@@ -17,6 +17,7 @@ export default function LearnPath({
   missionState,
   setTab,
   onStartMiniUnit,
+  onLockedFeature,
 }) {
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
@@ -216,7 +217,10 @@ export default function LearnPath({
             ].filter(Boolean).join(' ');
 
             const onClick = () => {
-              if (isLocked) return;
+              if (isLocked) {
+                onLockedFeature && onLockedFeature(S);
+                return;
+              }
               setTab('cards');
             };
 
@@ -231,7 +235,7 @@ export default function LearnPath({
                   type="button"
                   className="learn-path-node-btn"
                   onClick={onClick}
-                  disabled={isLocked}
+                  aria-disabled={isLocked}
                   aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : ''}`}
                 >
                   <div className="learn-path-character" aria-hidden="true">
@@ -264,6 +268,11 @@ export default function LearnPath({
                     )}
                     {isEmpty && (
                       <div className="learn-path-empty-note">More lessons planned</div>
+                    )}
+                    {isLocked && (
+                      <div className="learn-path-locked-note">
+                        Reach Level {S.id} through the path. Super unlocks this early when it opens.
+                      </div>
                     )}
                   </div>
                   {!isLocked && (

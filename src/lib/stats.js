@@ -34,6 +34,7 @@ export const DEFAULT_STATS = {
   activeMiniUnitId: null,
   miniUnitProgress: null,
   completedMiniUnits: [],
+  superPromptLastShownAt: null,
   voice: DEFAULT_VOICE,
   viewMode: DEFAULT_VIEW_MODE,
   theme: 'light',

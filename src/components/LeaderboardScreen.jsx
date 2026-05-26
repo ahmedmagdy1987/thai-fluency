@@ -1,11 +1,11 @@
 import React from 'react';
-import { Trophy, Lock, Users, Flame } from 'lucide-react';
+import { Crown, Trophy, Lock, Users, Flame } from 'lucide-react';
 
 // Placeholder leaderboard. No real ranking infrastructure exists. The page
 // exists because the sidebar surfaces a Leaderboard entry — dead buttons
 // are forbidden by the spec, so this renders a polished "Coming soon" view
 // that explains the intent.
-export default function LeaderboardScreen({ stats }) {
+export default function LeaderboardScreen({ stats, onOpenSuper }) {
   const streak = stats?.streak || 0;
   const totalXp = stats?.totalXp || 0;
 
@@ -51,7 +51,12 @@ export default function LeaderboardScreen({ stats }) {
 
       <div className="leaderboard-lock">
         <Lock size={14} />
-        <span>Leaderboards require opt-in profile sharing and weekly totals. Your profile stays private by default.</span>
+        <span>Leaderboards require Level 2 progress, opt-in profile sharing, and weekly totals. Super unlocks some competitive features early when it opens.</span>
+        {onOpenSuper && (
+          <button type="button" className="leaderboard-super-link" onClick={onOpenSuper}>
+            <Crown size={13} /> See Super
+          </button>
+        )}
       </div>
 
       <div className="leaderboard-future">

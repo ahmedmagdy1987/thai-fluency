@@ -80,6 +80,7 @@ const FOOTER_LINKS = [
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
   { path: '/feedback', label: 'Feedback' },
+  { path: '/premium', label: 'Super' },
   { path: '/delete-account', label: 'Account deletion' },
 ];
 

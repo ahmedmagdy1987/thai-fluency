@@ -234,6 +234,8 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
             <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/terms')}>Terms of Use</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/premium')}>Super</button>
+            <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
           </div>
         </div>

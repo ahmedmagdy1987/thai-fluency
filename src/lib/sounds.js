@@ -118,6 +118,19 @@ export function playCelebration() {
   } catch (_) { /* ignore */ }
 }
 
+// Rapid XP counter tick. Kept very short because reward screens may call it
+// repeatedly during count-up animation.
+export function playXpTick(step = 0) {
+  if (!effectsEnabled()) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    const freq = 760 + ((step % 5) * 55);
+    tone(ctx, freq, 0, 0.035, 0.08, 'triangle');
+  } catch (_) { /* ignore */ }
+}
+
 // ====================================================================
 // Character reaction sounds
 //

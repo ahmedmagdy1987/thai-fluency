@@ -8,7 +8,7 @@ import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState, clearState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
-import { DEFAULT_STATS, getLocalDateKey, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
+import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -45,7 +45,7 @@ import QuizTab from './components/QuizTab.jsx';
 import GuideTab from './components/GuideTab.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import StageUpToast from './components/StageUpToast.jsx';
-import MissionCompleteToast from './components/MissionCompleteToast.jsx';
+import MissionCompleteRewardScreen from './components/MissionCompleteRewardScreen.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
@@ -58,6 +58,7 @@ import ProfilePage from './components/ProfilePage.jsx';
 import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
+import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
 import { getMiniUnit, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = [
@@ -73,7 +74,12 @@ const CLOUD_PROFILE_SETTING_KEYS = [
   'activeMiniUnitId',
   'miniUnitProgress',
   'completedMiniUnits',
+  'superPromptLastShownAt',
 ];
+const FIRST_LESSON_REWARD_XP = 60;
+const MISSION_REWARD_XP = 35;
+const MINI_UNIT_REWARD_XP = 45;
+const SUPER_PROMPT_STORAGE_KEY = 'tuk-talk-thai-super-prompt-last-shown';
 const TAB_ROUTES = {
   learn: '/learn',
   today: '/today',
@@ -107,6 +113,7 @@ const PUBLIC_PAGE_ROUTES = {
   '/terms': 'terms',
   '/support': 'support',
   '/feedback': 'feedback',
+  '/premium': 'premium',
   '/delete-account': 'delete-account',
 };
 
@@ -151,6 +158,22 @@ function pickCloudProfileSettings(settings) {
   }, {});
 }
 
+function getLocalSuperPromptDate() {
+  try {
+    return localStorage.getItem(SUPER_PROMPT_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function setLocalSuperPromptDate(value) {
+  try {
+    localStorage.setItem(SUPER_PROMPT_STORAGE_KEY, value);
+  } catch {
+    /* ignore */
+  }
+}
+
 export default function TukTalkThaiApp() {
   const initialRoute = getCurrentRoute();
   const [tab, setTab] = useState(() => initialRoute.tab || 'learn');
@@ -163,10 +186,11 @@ export default function TukTalkThaiApp() {
   const [showSettings, setShowSettings] = useState(() => initialRoute.type === 'settings');
   const [showProfile, setShowProfile] = useState(() => initialRoute.type === 'profile');
   const [publicPage, setPublicPage] = useState(() => initialRoute.type === 'public' ? initialRoute.page : null);
-  const [missionToast, setMissionToast] = useState(null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
+  const [rewardScreen, setRewardScreen] = useState(null);
+  const [upgradePrompt, setUpgradePrompt] = useState(null);
 
   // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
   // only paths to the full app are sign-in or sign-up.
@@ -684,9 +708,20 @@ export default function TukTalkThaiApp() {
     const lastSeen = stats.lastSeenMission || 1;
     const cur = missionState.currentMission;
     if (cur > lastSeen) {
-      // Mission(s) finished in between. Toast the one that just completed.
+      // Mission(s) finished in between. Reward the one that just completed.
       const justFinished = MISSIONS.find(m => m.id === cur - 1);
-      if (justFinished) setMissionToast(justFinished);
+      if (justFinished) {
+        grantXp(MISSION_REWARD_XP);
+        setRewardScreen({
+          id: `mission-${justFinished.id}-${Date.now()}`,
+          title: `Mission ${justFinished.id} Complete`,
+          subtitle: justFinished.celebration,
+          xpEarned: MISSION_REWARD_XP,
+          streak: stats.streak || 0,
+          nextStep: `Mission ${cur}`,
+          superPromptReason: 'mission',
+        });
+      }
       setStats(s => ({ ...s, lastSeenMission: cur }));
       // Record completion in user_missions so the database webhook can
       // fan out a milestone notification via the send-notification Edge
@@ -703,7 +738,7 @@ export default function TukTalkThaiApp() {
         });
       }
     }
-  }, [missionState, loaded]);
+  }, [missionState, loaded, stats.lastSeenMission, stats.streak, grantXp, session]);
 
   // Stage 1 complete: one-time big celebration. Reveals the full deck.
   useEffect(() => {
@@ -920,6 +955,36 @@ export default function TukTalkThaiApp() {
     });
   }, [session]);
 
+  const requestSuperPrompt = useCallback((reason = 'mission') => {
+    const today = getLocalDateKey();
+    const lastShown = stats.superPromptLastShownAt || getLocalSuperPromptDate();
+    if (dateKeyFromValue(lastShown) === today) return false;
+
+    const shownAt = new Date().toISOString();
+    setLocalSuperPromptDate(shownAt);
+    updateSettings({ superPromptLastShownAt: shownAt });
+    setUpgradePrompt({ reason });
+    return true;
+  }, [stats.superPromptLastShownAt, updateSettings]);
+
+  const handleOpenPremium = useCallback(() => {
+    setUpgradePrompt(null);
+    setRewardScreen(null);
+    handleNavigatePath('/premium');
+  }, [handleNavigatePath]);
+
+  const handleRewardContinue = useCallback(() => {
+    const promptReason = rewardScreen?.superPromptReason;
+    setRewardScreen(null);
+    if (promptReason) {
+      window.setTimeout(() => requestSuperPrompt(promptReason), 120);
+    }
+  }, [requestSuperPrompt, rewardScreen?.superPromptReason]);
+
+  const handleLockedFeature = useCallback(() => {
+    requestSuperPrompt('locked');
+  }, [requestSuperPrompt]);
+
   const firstLessonCompleted = !!stats.firstLessonCompleted;
 
   const completeFirstLesson = useCallback(() => {
@@ -927,6 +992,16 @@ export default function TukTalkThaiApp() {
       ...(stats.completedMiniUnits || []),
       STAGE_1_MINI_UNIT_PILOT.unitId,
     ])];
+    grantXp(FIRST_LESSON_REWARD_XP);
+    setRewardScreen({
+      id: `first-lesson-${Date.now()}`,
+      title: 'First Mission Complete',
+      subtitle: 'You finished the guided starter lesson and unlocked the main practice path.',
+      xpEarned: FIRST_LESSON_REWARD_XP,
+      streak: Math.max(1, stats.streak || 0),
+      nextStep: 'Cards and Challenge',
+      superPromptReason: 'first-lesson',
+    });
     updateSettings({
       firstLessonCompleted: true,
       firstLessonProgress: null,
@@ -941,7 +1016,7 @@ export default function TukTalkThaiApp() {
     setPublicPage(null);
     setTab('learn');
     writeRoute('/learn', { replace: true });
-  }, [stats.completedMiniUnits, updateSettings]);
+  }, [grantXp, stats.completedMiniUnits, stats.streak, updateSettings]);
 
   const handleFirstLessonProgressChange = useCallback((progressUpdate) => {
     if (!progressUpdate || firstLessonCompleted) return;
@@ -991,9 +1066,19 @@ export default function TukTalkThaiApp() {
         ...completed,
         progressUpdate.unitId,
       ])];
+      grantXp(MINI_UNIT_REWARD_XP);
+      setRewardScreen({
+        id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
+        title: 'Mini-Unit Complete',
+        subtitle: 'You finished a guided lesson and checked your recall.',
+        xpEarned: MINI_UNIT_REWARD_XP,
+        streak: stats.streak || 0,
+        nextStep: 'Review or Challenge',
+        superPromptReason: 'mini-unit',
+      });
     }
     updateSettings(updates);
-  }, [stats.completedMiniUnits, updateSettings]);
+  }, [grantXp, stats.completedMiniUnits, stats.streak, updateSettings]);
 
   const handleExitMiniUnit = useCallback(() => {
     setActiveMiniUnitId(null);
@@ -1019,6 +1104,10 @@ export default function TukTalkThaiApp() {
   }, [loaded, activeMiniUnitId, stats.firstLessonCompleted, stats.activeMiniUnitId, showProfile, showSettings, publicPage]);
 
   const handleSetTab = useCallback((nextTab, options = {}) => {
+    const unlockedStage = stageState?.maxUnlockedStage || 1;
+    if (nextTab === 'quests' && firstLessonCompleted && unlockedStage < 2) {
+      requestSuperPrompt('locked');
+    }
     if (activeMiniUnitId) updateSettings({ activeMiniUnitId: null });
     setActiveMiniUnitId(null);
     setShowProfile(false);
@@ -1026,7 +1115,7 @@ export default function TukTalkThaiApp() {
     setPublicPage(null);
     setTab(nextTab);
     writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
-  }, [activeMiniUnitId, updateSettings]);
+  }, [activeMiniUnitId, firstLessonCompleted, requestSuperPrompt, stageState?.maxUnlockedStage, updateSettings]);
 
   const handleOpenProfile = useCallback(() => {
     setActiveMiniUnitId(null);
@@ -1285,15 +1374,15 @@ export default function TukTalkThaiApp() {
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}
-          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} />}
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
-          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={handleSetTab} />}
-          {tab === 'shop'   && <ShopScreen stats={stats} />}
-          {tab === 'leaderboard' && <LeaderboardScreen stats={stats} />}
+          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
+          {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
+          {tab === 'leaderboard' && <LeaderboardScreen stats={stats} onOpenSuper={handleOpenPremium} />}
         </>
       )}
 
@@ -1303,14 +1392,24 @@ export default function TukTalkThaiApp() {
       {stageUpToast && (
         <StageUpToast stage={stageUpToast} onClose={() => setStageUpToast(null)} />
       )}
-      {missionToast && (
-        <MissionCompleteToast mission={missionToast} onClose={() => setMissionToast(null)} />
-      )}
       {showStage1Celebration && (
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
         <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} />
+      )}
+      {rewardScreen && (
+        <MissionCompleteRewardScreen
+          {...rewardScreen}
+          onContinue={handleRewardContinue}
+        />
+      )}
+      {upgradePrompt && (
+        <SuperUpgradePrompt
+          reason={upgradePrompt.reason}
+          onClose={() => setUpgradePrompt(null)}
+          onSeeSuper={handleOpenPremium}
+        />
       )}
     </AppShell>
   );

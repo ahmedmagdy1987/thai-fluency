@@ -1,10 +1,10 @@
 import React from 'react';
-import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Award } from 'lucide-react';
+import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Award, Crown, Lock } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 
 // Phase 1 quests read real stats where available, but they do not spend
 // rewards or mutate quest state. Lesson flow remains the source of progress.
-export default function QuestsScreen({ stats, dashboardStats, setTab }) {
+export default function QuestsScreen({ stats, dashboardStats, setTab, locked = false, onOpenSuper }) {
   const goal = stats?.dailyGoal || DEFAULT_DAILY_GOAL;
   const todayXp = stats?.todayXp || 0;
   const dailyPct = Math.min(100, Math.round((todayXp / goal) * 100));
@@ -86,6 +86,29 @@ export default function QuestsScreen({ stats, dashboardStats, setTab }) {
   ];
 
   const completed = quests.filter(q => q.done).length;
+
+  if (locked) {
+    return (
+      <div className="tab-content quests-screen">
+        <section className="feature-lock-panel">
+          <div className="feature-lock-icon"><Lock size={28} /></div>
+          <div className="feature-lock-eyebrow">Progressive unlock</div>
+          <h1 className="feature-lock-title">Reach Level 2 to unlock Quests</h1>
+          <p className="feature-lock-copy">
+            Finish your first path and keep practicing Cards to unlock daily quests. Super unlocks this early when it opens.
+          </p>
+          <div className="feature-lock-actions">
+            <button type="button" className="btn-primary" onClick={() => setTab && setTab('cards')}>
+              Practice Cards
+            </button>
+            <button type="button" className="btn-secondary" onClick={onOpenSuper}>
+              <Crown size={15} /> See Super
+            </button>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="tab-content quests-screen">
