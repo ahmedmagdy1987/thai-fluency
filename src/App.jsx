@@ -8,7 +8,7 @@ import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState, clearState } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
-import { DEFAULT_STATS, migrateStats, startStudyDay } from './lib/stats.js';
+import { DEFAULT_STATS, getLocalDateKey, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -60,7 +60,20 @@ import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import { getMiniUnit, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 
-const CLOUD_PROFILE_SETTING_KEYS = ['viewMode', 'audioRate', 'audioAutoPlay', 'showCharacters', 'soundEffects', 'firstLessonCompleted'];
+const CLOUD_PROFILE_SETTING_KEYS = [
+  'viewMode',
+  'audioRate',
+  'audioAutoPlay',
+  'showCharacters',
+  'soundEffects',
+  'theme',
+  'voice',
+  'firstLessonCompleted',
+  'firstLessonProgress',
+  'activeMiniUnitId',
+  'miniUnitProgress',
+  'completedMiniUnits',
+];
 const TAB_ROUTES = {
   learn: '/learn',
   today: '/today',
@@ -178,6 +191,13 @@ export default function TukTalkThaiApp() {
   const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
   const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
+  const profileSettingsRef = useRef({});
+
+  useEffect(() => {
+    profileSettingsRef.current = (profile?.settings && typeof profile.settings === 'object' && !Array.isArray(profile.settings))
+      ? profile.settings
+      : {};
+  }, [profile?.settings]);
 
   useEffect(() => {
     (async () => {
@@ -330,6 +350,9 @@ export default function TukTalkThaiApp() {
         if (data) {
           const applyProfileSettings = (profileData) => {
             const cloudSettings = pickCloudProfileSettings(profileData?.settings);
+            if (!Object.prototype.hasOwnProperty.call(cloudSettings, 'voice') && profileData?.selected_voice) {
+              cloudSettings.voice = profileData.selected_voice;
+            }
             if (Object.keys(cloudSettings).length > 0) {
               setStats(s => migrateStats({ ...s, ...cloudSettings }));
             }
@@ -550,7 +573,7 @@ export default function TukTalkThaiApp() {
 
   useEffect(() => {
     if (!loaded) return;
-    const today = new Date().toDateString();
+    const today = getLocalDateKey();
     if (stats.todayDate !== today) {
       setStats(s => ({ ...s, todayXp: 0, todayDate: today }));
     }
@@ -720,9 +743,9 @@ export default function TukTalkThaiApp() {
 
   const grantXp = useCallback((amount) => {
     setStats(s => {
-      const today = new Date().toDateString();
+      const today = getLocalDateKey();
       const isNewDay = s.todayDate !== today;
-      const yesterday = new Date(Date.now() - DAY_MS).toDateString();
+      const yesterday = previousLocalDateKey();
       let newStreak = s.streak || 0;
       if (isNewDay) {
         if (s.lastStudy === yesterday) {
@@ -793,12 +816,28 @@ export default function TukTalkThaiApp() {
 
   const recordQuizComplete = useCallback((score, total) => {
     const passed = (score / total) >= 0.8;
+    const correct = Math.max(0, score || 0);
+    const wrong = Math.max(0, (total || 0) - correct);
+    const today = getLocalDateKey();
     grantXp(score * XP_REWARDS.quizCorrect);
-    setStats(s => ({
-      ...s,
-      quizzesPassed: passed ? (s.quizzesPassed || 0) + 1 : (s.quizzesPassed || 0),
-      perfectQuizzes: score === total ? (s.perfectQuizzes || 0) + 1 : (s.perfectQuizzes || 0),
-    }));
+    setStats(s => {
+      const currentBestScore = s.bestChallengeScore || 0;
+      const currentBestTotal = s.bestChallengeTotal || 0;
+      const currentBestPct = currentBestTotal > 0 ? currentBestScore / currentBestTotal : -1;
+      const nextPct = total > 0 ? correct / total : 0;
+      const isNewBest = nextPct > currentBestPct || (nextPct === currentBestPct && correct > currentBestScore);
+      return {
+        ...s,
+        quizzesPassed: passed ? (s.quizzesPassed || 0) + 1 : (s.quizzesPassed || 0),
+        perfectQuizzes: score === total ? (s.perfectQuizzes || 0) + 1 : (s.perfectQuizzes || 0),
+        challengeAttempts: (s.challengeAttempts || 0) + 1,
+        challengeCorrect: (s.challengeCorrect || 0) + correct,
+        challengeWrong: (s.challengeWrong || 0) + wrong,
+        lastChallengeDate: today,
+        bestChallengeScore: isNewBest ? correct : currentBestScore,
+        bestChallengeTotal: isNewBest ? (total || 0) : currentBestTotal,
+      };
+    });
   }, [grantXp]);
 
   const recordDialogueComplete = useCallback((dialogueId) => {
@@ -809,13 +848,6 @@ export default function TukTalkThaiApp() {
     });
     grantXp(10);
   }, [grantXp]);
-
-  const resetAll = useCallback(() => {
-    if (window.confirm('Reset ALL progress? This cannot be undone.')) {
-      setProgress({});
-      setStats(DEFAULT_STATS);
-    }
-  }, []);
 
   const markCardsKnown = useCallback((cardIds) => {
     setProgress(p => {
@@ -876,17 +908,32 @@ export default function TukTalkThaiApp() {
     });
     if (Object.keys(profileSettings).length === 0) return;
 
-    const nextSettings = { ...(profile?.settings || {}), ...profileSettings };
-    setProfile(p => (p ? { ...p, settings: nextSettings } : p));
-    updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
+    const nextSettings = { ...(profileSettingsRef.current || {}), ...profileSettings };
+    profileSettingsRef.current = nextSettings;
+    const profilePatch = { settings: nextSettings };
+    if (Object.prototype.hasOwnProperty.call(updates, 'voice')) {
+      profilePatch.selected_voice = updates.voice;
+    }
+    setProfile(p => (p ? { ...p, ...profilePatch } : p));
+    updateProfile(session.user.id, profilePatch).catch(e => {
       console.warn('[App] failed to write settings to cloud profile', e);
     });
-  }, [session, profile]);
+  }, [session]);
 
   const firstLessonCompleted = !!stats.firstLessonCompleted;
 
   const completeFirstLesson = useCallback(() => {
-    updateSettings({ firstLessonCompleted: true });
+    const completedMiniUnits = [...new Set([
+      ...(stats.completedMiniUnits || []),
+      STAGE_1_MINI_UNIT_PILOT.unitId,
+    ])];
+    updateSettings({
+      firstLessonCompleted: true,
+      firstLessonProgress: null,
+      activeMiniUnitId: null,
+      miniUnitProgress: null,
+      completedMiniUnits,
+    });
     setShowFirstLessonUnlock(true);
     setActiveMiniUnitId(null);
     setShowProfile(false);
@@ -894,7 +941,12 @@ export default function TukTalkThaiApp() {
     setPublicPage(null);
     setTab('learn');
     writeRoute('/learn', { replace: true });
-  }, [updateSettings]);
+  }, [stats.completedMiniUnits, updateSettings]);
+
+  const handleFirstLessonProgressChange = useCallback((progressUpdate) => {
+    if (!progressUpdate || firstLessonCompleted) return;
+    updateSettings({ firstLessonProgress: progressUpdate });
+  }, [firstLessonCompleted, updateSettings]);
 
   useEffect(() => {
     if (!loaded || !stats.firstLessonCompleted) return;
@@ -908,14 +960,73 @@ export default function TukTalkThaiApp() {
     });
   }, [loaded, stats.firstLessonCompleted, session?.user?.id, isEmailConfirmed, profile]);
 
+  const handleStartMiniUnit = useCallback((unitId) => {
+    const unit = getMiniUnit(unitId);
+    if (!unit) return;
+    const currentProgress = stats.miniUnitProgress?.unitId === unitId
+      ? stats.miniUnitProgress
+      : {
+          unitId,
+          step: 'intro',
+          vocabIndex: 0,
+          revealed: false,
+          challengeIndex: 0,
+          selectedId: null,
+          checked: false,
+          challengeScore: 0,
+        };
+    setActiveMiniUnitId(unitId);
+    updateSettings({ activeMiniUnitId: unitId, miniUnitProgress: currentProgress });
+  }, [stats.miniUnitProgress, updateSettings]);
+
+  const handleMiniUnitProgressChange = useCallback((progressUpdate) => {
+    if (!progressUpdate?.unitId) return;
+    const updates = {
+      activeMiniUnitId: progressUpdate.unitId,
+      miniUnitProgress: progressUpdate,
+    };
+    const completed = stats.completedMiniUnits || [];
+    if (progressUpdate.step === 'complete' && !completed.includes(progressUpdate.unitId)) {
+      updates.completedMiniUnits = [...new Set([
+        ...completed,
+        progressUpdate.unitId,
+      ])];
+    }
+    updateSettings(updates);
+  }, [stats.completedMiniUnits, updateSettings]);
+
+  const handleExitMiniUnit = useCallback(() => {
+    setActiveMiniUnitId(null);
+    updateSettings({ activeMiniUnitId: null });
+  }, [updateSettings]);
+
+  const handleFinishMiniUnitAndOpen = useCallback((nextTab) => {
+    setActiveMiniUnitId(null);
+    updateSettings({ activeMiniUnitId: null, miniUnitProgress: null });
+    setShowProfile(false);
+    setShowSettings(false);
+    setPublicPage(null);
+    setTab(nextTab);
+    writeRoute(routePathForTab(nextTab));
+  }, [updateSettings]);
+
+  useEffect(() => {
+    if (!loaded || activeMiniUnitId || !stats.firstLessonCompleted) return;
+    if (!stats.activeMiniUnitId) return;
+    if (showProfile || showSettings || publicPage) return;
+    const unit = getMiniUnit(stats.activeMiniUnitId);
+    if (unit) setActiveMiniUnitId(stats.activeMiniUnitId);
+  }, [loaded, activeMiniUnitId, stats.firstLessonCompleted, stats.activeMiniUnitId, showProfile, showSettings, publicPage]);
+
   const handleSetTab = useCallback((nextTab, options = {}) => {
+    if (activeMiniUnitId) updateSettings({ activeMiniUnitId: null });
     setActiveMiniUnitId(null);
     setShowProfile(false);
     setShowSettings(false);
     setPublicPage(null);
     setTab(nextTab);
     writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
-  }, []);
+  }, [activeMiniUnitId, updateSettings]);
 
   const handleOpenProfile = useCallback(() => {
     setActiveMiniUnitId(null);
@@ -1110,6 +1221,8 @@ export default function TukTalkThaiApp() {
           voice={voice}
           audioRate={stats.audioRate || 0.95}
           showCharacters={stats.showCharacters !== false}
+          initialProgress={stats.firstLessonProgress}
+          onProgressChange={handleFirstLessonProgressChange}
           onComplete={completeFirstLesson}
         />
       </div>
@@ -1158,9 +1271,11 @@ export default function TukTalkThaiApp() {
           voice={voice}
           audioRate={stats.audioRate || 0.95}
           showCharacters={stats.showCharacters !== false}
-          onExit={() => setActiveMiniUnitId(null)}
-          onOpenCards={() => handleSetTab('cards')}
-          onOpenChallenge={() => handleSetTab('quiz')}
+          initialProgress={stats.miniUnitProgress}
+          onProgressChange={handleMiniUnitProgressChange}
+          onExit={handleExitMiniUnit}
+          onOpenCards={() => handleFinishMiniUnitAndOpen('cards')}
+          onOpenChallenge={() => handleFinishMiniUnitAndOpen('quiz')}
         />
       ) : (
         <>
@@ -1170,8 +1285,8 @@ export default function TukTalkThaiApp() {
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}
-          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={setActiveMiniUnitId} />}
-          {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} resetAll={resetAll} voice={voice} viewMode={viewMode} />}
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} />}
+          {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
@@ -1195,7 +1310,7 @@ export default function TukTalkThaiApp() {
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
-        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} resetAll={resetAll} onOpenPublicPage={handleNavigatePath} />
+        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} />
       )}
     </AppShell>
   );

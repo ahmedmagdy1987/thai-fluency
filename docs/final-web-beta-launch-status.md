@@ -4,9 +4,9 @@ Date: May 26, 2026
 
 ## Final Readiness Score
 
-**88/100: technically ready for a controlled public web/PWA beta, pending owner-only checks.**
+**91/100: technically ready for a controlled public web/PWA beta, pending owner-only checks.**
 
-The production domain, public routes, legal/support pages, PWA manifest, public assets, OneSignal worker, and build all pass technical smoke checks. The remaining risk is owner-controlled: legal approval, support mailbox confirmation, a real test account/inbox pass, and one controlled OneSignal device test.
+The production domain, public routes, legal/support pages, PWA manifest, public assets, OneSignal worker, persistence hardening, and build all pass technical smoke checks. The remaining risk is owner-controlled: legal approval, support mailbox confirmation, a real test account/inbox pass, and one controlled OneSignal device test.
 
 ## Production Domain Status
 
@@ -62,7 +62,7 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | Edge Function health | Pass | `GET https://fkebzcywofzloaqeghtn.supabase.co/functions/v1/send-notification` returned `{"ok":true,"configured":true}`. |
 | Mass notification safety | Pass | No POST/send operation was run. |
 | Controlled push test | Owner action | Requires a real subscribed test device/browser on `https://www.tuktalkthai.com`. Send one controlled test only after the device subscription is visible. |
-| Backend webhook auth exposure | Not changed | Local Edge Function code requires `X-Tuk-Notification-Secret` for POST paths. Prior audit docs still note live webhook metadata should be reviewed for bearer-token exposure before relying on automated notification cron at scale. |
+| Backend webhook auth exposure | Pass | `NOTIFICATION_WEBHOOK_SECRET` was rotated. DB webhook triggers use `X-Tuk-Notification-Secret`; sanitized verification found zero Authorization/Bearer trigger headers. Cron calls `public.tick_notifications()` and its command has no bearer auth. |
 
 ## Beta Feedback Status
 
@@ -74,14 +74,32 @@ node scripts/smoke-production-routes.mjs https://thai-fluency.vercel.app
 | Storage/data changes | Pass | No database tables, external services, schema changes, or feedback persistence were added. |
 | Support mailbox | Owner action | Confirm `support@tuktalkthai.com` exists, receives mail, and is monitored before inviting testers. |
 
+## Persistence Hardening Status
+
+| Item | Result | Notes |
+| --- | --- | --- |
+| Reset all progress | Pass | Removed from user-facing Settings UI/actions. |
+| Today XP | Pass | Signed-in users sync `today_xp`, `today_xp_date`, and `last_xp_activity_at` through `public.user_stats`. |
+| Visible settings | Pass | Learning mode, audio rate, auto-play, sound effects, show characters, theme, voice, and daily XP goal persist for signed-in users. |
+| Guided first lesson | Pass | Completion and in-progress step state sync through `profiles.settings`. |
+| Mini-unit progress | Pass | Active unit, current step state, and completed unit IDs sync through `profiles.settings`. |
+| Challenge aggregates | Pass | Attempts, correct/wrong answers, last challenge date, and best score sync through `public.user_stats`. |
+| Feedback/deletion | Pass | Mailto/support workflow remains honest; no fake in-app storage. |
+| Shop/economy | Pass | Shop and leaderboard remain preview-only; purchase buttons are disabled. |
+| Migration | Pass | `005_launch_persistence_hardening.sql` applied to live Supabase project. |
+| RLS | Pass | New `user_stats` columns are protected by existing own-row RLS policies. |
+
 ## Fixed Issues
 
 - Updated centralized `siteUrl` to the confirmed production primary: `https://www.tuktalkthai.com`.
 - Updated launch checklist with production pass/fail/owner-verification status.
 - Updated owner inputs to mark domain connected and support email pending confirmation.
 - Added beta feedback/report issue route and checklist entries for post-deploy smoke testing.
+- Removed Reset all progress from Settings.
+- Added signed-in persistence for today XP, visible settings, guided first lesson progress, mini-unit progress, and Challenge aggregates.
+- Rotated notification webhook auth and verified unauthenticated POST `401`, authenticated no-op webhook POST `200`, no bearer trigger headers, and no bearer cron command.
 
-No learning logic, Thai card content, SRS scheduling, auth implementation, OneSignal config, database schema, migrations, rewards, payments, or ads were changed.
+No learning logic, Thai card content, SRS scheduling, auth implementation, OneSignal app config, rewards, payments, or ads were changed. The only schema change was additive `user_stats` persistence columns for launch hardening.
 
 ## Remaining Owner Actions
 

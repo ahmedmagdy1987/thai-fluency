@@ -7,9 +7,21 @@ Supabase project ref: `fkebzcywofzloaqeghtn`
 
 ## Scope
 
-This was a read-only persistence audit. No migrations were applied, `db push` was not run, production rows were not modified, and user row contents were not dumped. Live inspection used schema metadata, policy metadata, function/trigger names, cron metadata, and aggregate row counts only.
+This started as a read-only persistence audit. The follow-up launch hardening pass applied one additive migration, repaired migration history for already-present migrations, and rotated the notification webhook secret. User row contents were not dumped, and no production user data was modified.
 
-One important exception: an initial trigger metadata query returned a live webhook header value inside `information_schema.triggers.action_statement`. That value is not included in this document or committed files. Treat it as exposed to the local audit transcript and rotate the notification webhook secret before relying on production notifications.
+One important audit exception: an initial trigger metadata query returned a live webhook header value inside `information_schema.triggers.action_statement`. That value is not included in this document or committed files. The secret was rotated on May 26, 2026.
+
+## Launch Hardening Update
+
+| Item | Result |
+| --- | --- |
+| Reset all progress | Removed from user-facing UI/actions. |
+| Migration history | Remote history repaired for already-present `001`, `003`, `004`; `005` pushed. |
+| Migration `005` | Added current-day XP and Challenge aggregate columns to `public.user_stats`. |
+| RLS | Existing `user_stats` own-row RLS protects new columns. |
+| Settings | Theme, voice, first lesson progress, mini-unit progress, and completed mini-units now sync through `profiles.settings`. |
+| Notification secret | Edge Function secret, Vault secret, and DB webhook headers rotated together. |
+| Webhook auth check | Unauthenticated POST returned `401`; authenticated no-op webhook POST returned `200`; webhook triggers have `X-Tuk-Notification-Secret` and no `Authorization`/`Bearer`. |
 
 ## CLI And Link Status
 
@@ -19,7 +31,7 @@ One important exception: an initial trigger metadata query returned a live webho
 | Login | Pass | CLI query access worked through the linked project. |
 | Project link | Pass | `npx.cmd supabase link --project-ref fkebzcywofzloaqeghtn` completed successfully. |
 | Link confirmation | Pass | `supabase/.temp/project-ref` contains `fkebzcywofzloaqeghtn`. This CLI cache folder is untracked and was not committed. |
-| Production data writes | Pass | No writes, migrations, or pushes were run. |
+| Production data writes | Pass | Only additive schema/migration-history writes and notification-secret rotation were performed during hardening. No user rows were modified or dumped. |
 | Secrets committed | Pass | No secret files were committed. Tracked env files are only `.env.example` and `.env.local.example`. |
 
 ## Live Tables Found
@@ -50,7 +62,7 @@ Other visible schemas:
 | Table | Key columns |
 | --- | --- |
 | `profiles` | `id`, `email`, `display_name`, `onboarding_completed`, `selected_voice`, `settings`, `onesignal_player_id`, `notification_preferences`, `timezone`, timestamps |
-| `user_stats` | `user_id`, `total_xp`, `current_streak`, `longest_streak`, `last_active_date`, `cards_seen`, `cards_mastered`, `current_stage`, `started_stage`, `total_reviews`, `daily_goal`, `daily_goals_hit`, tone/challenge aggregate fields, `streak_freezes`, `last_seen_mission`, `stage1_celebration_shown`, `dialogues_completed`, `known_card_ids`, `typical_study_hour`, `last_notification_sent_at`, timestamps |
+| `user_stats` | `user_id`, `total_xp`, `current_streak`, `longest_streak`, `last_active_date`, `cards_seen`, `cards_mastered`, `current_stage`, `started_stage`, `total_reviews`, `today_xp`, `today_xp_date`, `last_xp_activity_at`, `daily_goal`, `daily_goals_hit`, tone/challenge aggregate fields, `challenge_attempts`, `challenge_correct`, `challenge_wrong`, `last_challenge_date`, `best_challenge_score`, `best_challenge_total`, `streak_freezes`, `last_seen_mission`, `stage1_celebration_shown`, `dialogues_completed`, `known_card_ids`, `typical_study_hour`, `last_notification_sent_at`, timestamps |
 | `user_progress` | `user_id`, `card_id`, `ease`, `interval`, `reps`, `lapses`, `learning`, `next_review`, `last_review`, timestamps |
 | `user_missions` | `user_id`, `stage`, `mission`, `completed`, `completed_at`, `created_at` |
 | `user_achievements` | `user_id`, `achievement_id`, `unlocked_at` |
@@ -121,8 +133,8 @@ Vault:
 Notification webhook metadata:
 
 - Database webhook triggers are present on `user_stats` and `user_missions`.
-- The live trigger metadata stores a literal webhook header value in the trigger action statement.
-- The docs do not include the value. Owner should rotate `NOTIFICATION_WEBHOOK_SECRET` and the webhook header secret after this audit.
+- The trigger headers were rotated and now use `X-Tuk-Notification-Secret`.
+- Sanitized verification found zero `Authorization` or `Bearer` strings in the two notification webhook trigger statements.
 - Cron uses `public.tick_notifications()`, which reads the webhook secret from Vault and avoids embedding the cron secret directly in the cron command.
 
 ## App-To-DB Wiring Summary
@@ -132,11 +144,12 @@ Notification webhook metadata:
 | Auth/session | Supabase Auth client with custom storage key `tuk-talk-thai-auth` | Good. No service-role key in frontend. |
 | Profile | `profiles` fetched after confirmed session; display name editable; onboarding flag written after placement | Good, user-scoped by RLS. |
 | Progress | `user_progress` downloaded on cloud init, uploaded on debounced local changes | Good for normal sync. Reset/delete semantics are incomplete. |
-| Stats | `user_stats` downloaded/uploaded with aggregate fields | Good for aggregate beta stats. Some local-only fields are not synced. |
+| Stats | `user_stats` downloaded/uploaded with aggregate fields, current-day XP fields, and Challenge aggregate fields | Good for aggregate beta stats. |
 | Achievements | `user_achievements` upserted and downloaded | Good for beta; client-authorable. |
 | Missions | `user_missions` upserted when Stage 1 mission advances | Good for notification events; not a full mission-state store. |
-| Settings | selected keys sync to `profiles.settings`; daily goal syncs through `user_stats` | Mostly good. Theme and later voice changes remain local-only. |
-| First lesson | `firstLessonCompleted` syncs through `profiles.settings` | Good. |
+| Settings | selected keys sync to `profiles.settings`; daily goal syncs through `user_stats` | Good for visible beta settings. |
+| First lesson | `firstLessonCompleted` and `firstLessonProgress` sync through `profiles.settings` | Good; mid-lesson refresh can resume. |
+| Mini-units | active unit/progress/completed unit IDs sync through `profiles.settings` | Good for beta resume behavior. |
 | OneSignal | profile stores one `onesignal_player_id`, `notification_preferences`, `timezone`; Edge Function uses service role server-side only | Good enough for single-device beta. Multi-device push can overwrite the player ID. |
 | Feedback | mailto-only | Intentional, no DB write. |
 | Account deletion | support workflow only | Intentional for web beta; automate later. |
@@ -152,13 +165,10 @@ High-signal summary:
 | --- | --- |
 | Account/profile/email confirmation | Supabase Auth + `profiles` |
 | SRS progress, due cards, seen/mastered derivation | `user_progress` |
-| Total XP, streak, stage, daily goal, aggregate challenge stats | `user_stats` |
-| First lesson and key settings | `profiles.settings` |
+| Total XP, streak, stage, daily goal, today XP, aggregate challenge stats | `user_stats` |
+| First lesson, mini-unit resume state, and visible settings | `profiles.settings` |
 | OneSignal subscription/preferences/timezone | `profiles` |
-| Today XP/current-day quest state | localStorage only |
-| Theme and later voice changes | localStorage only / partly persisted |
-| Challenge attempt history | session/aggregate only |
-| Mini-unit step progress | session only |
+| Challenge attempt history | aggregate only; no per-question history table |
 | Feedback reports/account deletion requests | support/mailto placeholder only |
 | Gems/hearts/energy/shop/inventory/character unlocks/subscriptions/paid packs/ads removal | placeholder or not implemented |
 
@@ -166,17 +176,15 @@ High-signal summary:
 
 ### Must Fix Before Public Beta
 
-1. Rotate the notification webhook secret after this audit exposure.
-   The value was returned by a live trigger metadata query. It was not committed or included here, but it should be considered exposed to the local audit transcript.
+No known launch-critical persistence gaps remain after the hardening pass.
 
-2. Decide whether the visible Reset all progress control must clear cloud data before launch.
-   Current `resetAll()` clears local state, and the cloud sync then uploads reset stats. It does not delete existing `user_progress`, `user_achievements`, or `user_missions` rows because `uploadProgress()` returns early on an empty progress object and achievement/mission deletes are not implemented. A signed-in user may see progress reappear after sign-out/sign-in or on another device.
+Reset all progress was removed instead of trying to support a destructive reset flow. Today XP, visible settings, guided lesson resume state, mini-unit resume state, and Challenge aggregate state are now cloud-backed for signed-in users.
 
 ### Should Fix Soon After Beta
 
-1. Sync `theme` and later `voice` setting changes to `profiles.settings` or a normalized preference table.
-2. Add a `user_push_subscriptions` table if multi-device notifications matter. One `profiles.onesignal_player_id` can be overwritten by another device/browser.
-3. Add current-day activity persistence if daily quests need accurate cross-device behavior. `todayXp` and `todayDate` are local-only.
+1. Add a `user_push_subscriptions` table if multi-device notifications matter. One `profiles.onesignal_player_id` can be overwritten by another device/browser.
+2. Add historical daily activity rows if analytics need day-by-day XP history beyond the current-day aggregate.
+3. Add `user_challenge_attempts` if per-question Challenge analytics or history is needed.
 4. Either maintain or deprecate `user_stats.cards_seen` and `cards_mastered`; current app derives these from `user_progress` and does not update the aggregate columns.
 5. Narrow client delete policies if accidental self-deletion or untrusted client mutation becomes a concern.
 
@@ -200,8 +208,7 @@ Create these only when those features are ready:
 
 ## Owner Actions
 
-1. Rotate `NOTIFICATION_WEBHOOK_SECRET` and update the live database webhook header secret.
-2. Run one controlled notification test after rotation.
-3. Decide whether cloud Reset all progress must be fixed before public beta invites.
-4. Confirm support mailbox monitoring remains in place for feedback and deletion requests.
-5. Before monetization/rewards, approve a server-side mutation model. Do not let the frontend directly award spendable gems, hearts, inventory, or entitlements.
+1. Run one controlled notification test with a subscribed test device.
+2. Confirm support mailbox monitoring remains in place for feedback and deletion requests.
+3. Approve legal/support copy before public launch.
+4. Before monetization/rewards, approve a server-side mutation model. Do not let the frontend directly award spendable gems, hearts, inventory, or entitlements.

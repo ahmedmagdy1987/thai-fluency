@@ -15,7 +15,7 @@ const AUDIO_RATE_OPTIONS = [
   { value: 1.15, label: 'Fast', helper: 'Challenge pace' },
 ];
 
-export default function SettingsModal({ stats, updateSettings, onClose, resetAll, onOpenPublicPage }) {
+export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage }) {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const voice = stats.voice || DEFAULT_VOICE;
@@ -249,10 +249,6 @@ export default function SettingsModal({ stats, updateSettings, onClose, resetAll
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>
-          </div>
-
-          <div className="setting-group setting-group-danger">
-            <button className="dash-reset-btn" onClick={() => { onClose(); resetAll(); }}>Reset all progress</button>
           </div>
         </div>
       </div>

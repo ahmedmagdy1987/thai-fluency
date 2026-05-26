@@ -33,23 +33,31 @@ function buildMiniChallenge(cards) {
   });
 }
 
+function safeNonNegativeIndex(value) {
+  const index = Number.isFinite(Number(value)) ? Number(value) : 0;
+  return Math.max(0, index);
+}
+
 export default function MiniUnitFlow({
   unit,
   voice,
   audioRate = 0.95,
   showCharacters = true,
+  initialProgress,
+  onProgressChange,
   onExit,
   onOpenCards,
   onOpenChallenge,
 }) {
-  const [step, setStep] = useState('intro');
-  const [vocabIndex, setVocabIndex] = useState(0);
-  const [revealed, setRevealed] = useState(false);
-  const [challengeIndex, setChallengeIndex] = useState(0);
-  const [selectedId, setSelectedId] = useState(null);
-  const [checked, setChecked] = useState(false);
-  const [challengeScore, setChallengeScore] = useState(0);
-  const checkLockedRef = useRef(false);
+  const savedProgress = initialProgress?.unitId === unit.unitId ? initialProgress : null;
+  const [step, setStep] = useState(savedProgress?.step || 'intro');
+  const [vocabIndex, setVocabIndex] = useState(() => safeNonNegativeIndex(savedProgress?.vocabIndex));
+  const [revealed, setRevealed] = useState(!!savedProgress?.revealed);
+  const [challengeIndex, setChallengeIndex] = useState(() => safeNonNegativeIndex(savedProgress?.challengeIndex));
+  const [selectedId, setSelectedId] = useState(savedProgress?.selectedId || null);
+  const [checked, setChecked] = useState(!!savedProgress?.checked);
+  const [challengeScore, setChallengeScore] = useState(savedProgress?.challengeScore || 0);
+  const checkLockedRef = useRef(!!savedProgress?.checked);
   const completedSoundRef = useRef(false);
 
   const vocabCards = useMemo(() => cardsByIds(unit.vocabCardIds, voice), [unit, voice]);
@@ -61,6 +69,20 @@ export default function MiniUnitFlow({
   const currentVocab = vocabCards[vocabIndex] || null;
   const currentChallenge = challengeQuestions[challengeIndex] || null;
   const selectedIsCorrect = !!(currentChallenge && selectedId === currentChallenge.correct.id);
+
+  useEffect(() => {
+    onProgressChange?.({
+      unitId: unit.unitId,
+      step,
+      vocabIndex,
+      revealed,
+      challengeIndex,
+      selectedId,
+      checked,
+      challengeScore,
+      updatedAt: new Date().toISOString(),
+    });
+  }, [unit.unitId, step, vocabIndex, revealed, challengeIndex, selectedId, checked, challengeScore, onProgressChange]);
 
   useEffect(() => {
     if (step === 'complete' && !completedSoundRef.current) {

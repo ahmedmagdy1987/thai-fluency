@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, ChevronRight, Sparkles, Volume2 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
@@ -31,22 +31,20 @@ function buildQuestions(challengeCards, lessonCards) {
   });
 }
 
+function safeIndex(value, max) {
+  const index = Number.isFinite(Number(value)) ? Number(value) : 0;
+  return Math.min(Math.max(0, index), Math.max(0, max - 1));
+}
+
 export default function FirstLessonFlow({
   unit = STAGE_1_MINI_UNIT_PILOT,
   voice,
   audioRate = 0.95,
   showCharacters = true,
+  initialProgress,
+  onProgressChange,
   onComplete,
 }) {
-  const [step, setStep] = useState('intro');
-  const [cardIndex, setCardIndex] = useState(0);
-  const [revealed, setRevealed] = useState(false);
-  const [challengeIndex, setChallengeIndex] = useState(0);
-  const [selectedId, setSelectedId] = useState(null);
-  const [checked, setChecked] = useState(false);
-  const [score, setScore] = useState(0);
-  const checkLockedRef = useRef(false);
-
   const vocabCards = useMemo(() => cardsByIds(unit.vocabCardIds || [], voice), [unit, voice]);
   const sentenceCard = useMemo(() => cardsByIds(unit.sentenceCardId ? [unit.sentenceCardId] : [], voice)[0] || null, [unit, voice]);
   const lessonCards = useMemo(
@@ -58,10 +56,33 @@ export default function FirstLessonFlow({
     () => buildQuestions(challengeCards, lessonCards).slice(0, 3),
     [challengeCards, lessonCards]
   );
+  const savedProgress = initialProgress?.unitId === unit.unitId ? initialProgress : null;
+  const [step, setStep] = useState(savedProgress?.step || 'intro');
+  const [cardIndex, setCardIndex] = useState(() => safeIndex(savedProgress?.cardIndex, Math.max(1, vocabCards.length)));
+  const [revealed, setRevealed] = useState(!!savedProgress?.revealed);
+  const [challengeIndex, setChallengeIndex] = useState(() => safeIndex(savedProgress?.challengeIndex, Math.max(1, challengeQuestions.length)));
+  const [selectedId, setSelectedId] = useState(savedProgress?.selectedId || null);
+  const [checked, setChecked] = useState(!!savedProgress?.checked);
+  const [score, setScore] = useState(savedProgress?.score || 0);
+  const checkLockedRef = useRef(!!savedProgress?.checked);
 
   const currentCard = step === 'sentence' ? sentenceCard : vocabCards[cardIndex];
   const currentQuestion = challengeQuestions[challengeIndex] || null;
   const selectedIsCorrect = !!(currentQuestion && selectedId === currentQuestion.correct.id);
+
+  useEffect(() => {
+    onProgressChange?.({
+      unitId: unit.unitId,
+      step,
+      cardIndex,
+      revealed,
+      challengeIndex,
+      selectedId,
+      checked,
+      score,
+      updatedAt: new Date().toISOString(),
+    });
+  }, [unit.unitId, step, cardIndex, revealed, challengeIndex, selectedId, checked, score, onProgressChange]);
 
   const triggerSpeak = (text) => {
     if (!text) return;

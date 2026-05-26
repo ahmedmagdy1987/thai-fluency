@@ -71,13 +71,13 @@
   },
   {
     "feature": "today XP",
-    "classification": "localStorage only",
-    "tableColumn": "stats.todayXp, stats.todayDate in localStorage",
-    "userScoped": "per browser only",
-    "rlsProtected": "not applicable",
-    "riskLevel": "medium",
-    "neededBeforeBeta": false,
-    "recommendedNextAction": "Add daily activity rows or sync today_xp/today_date if cross-device daily quest accuracy matters."
+    "classification": "persisted in Supabase",
+    "tableColumn": "public.user_stats.today_xp, today_xp_date, last_xp_activity_at",
+    "userScoped": true,
+    "rlsProtected": true,
+    "riskLevel": "low",
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Keep current aggregate day fields for beta. Add per-day activity rows later if analytics or quest ledgers need history."
   },
   {
     "feature": "streak",
@@ -127,7 +127,7 @@
     "rlsProtected": true,
     "riskLevel": "medium",
     "neededBeforeBeta": true,
-    "recommendedNextAction": "Keep current per-card sync. Fix cloud reset semantics before relying on Reset all progress for signed-in users."
+    "recommendedNextAction": "Keep current per-card sync. Reset all progress was removed from the user-facing app."
   },
   {
     "feature": "due cards",
@@ -192,7 +192,7 @@
   {
     "feature": "guided first lesson completion",
     "classification": "persisted in profiles.settings JSON",
-    "tableColumn": "public.profiles.settings.firstLessonCompleted",
+    "tableColumn": "public.profiles.settings.firstLessonCompleted and firstLessonProgress",
     "userScoped": true,
     "rlsProtected": true,
     "riskLevel": "low",
@@ -201,28 +201,28 @@
   },
   {
     "feature": "mini-unit progress",
-    "classification": "session only",
-    "tableColumn": "activeMiniUnitId and step state in React component state",
-    "userScoped": "current session only",
-    "rlsProtected": "not applicable",
+    "classification": "persisted in profiles.settings JSON",
+    "tableColumn": "public.profiles.settings.activeMiniUnitId, miniUnitProgress, completedMiniUnits",
+    "userScoped": true,
+    "rlsProtected": true,
     "riskLevel": "low",
-    "neededBeforeBeta": false,
-    "recommendedNextAction": "Add user_mini_unit_progress when mini-units become resumable core lessons."
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Keep current JSON resume state for beta. Add user_mini_unit_progress only if mini-units expand into a full curriculum with analytics."
   },
   {
     "feature": "Challenge attempts",
-    "classification": "session only",
-    "tableColumn": "QuizTab component state",
-    "userScoped": "current session only",
-    "rlsProtected": "not applicable",
+    "classification": "persisted in Supabase",
+    "tableColumn": "public.user_stats.challenge_attempts, challenge_correct, challenge_wrong, last_challenge_date",
+    "userScoped": true,
+    "rlsProtected": true,
     "riskLevel": "low",
-    "neededBeforeBeta": false,
-    "recommendedNextAction": "Add user_challenge_attempts if resume/history/adaptive analytics are needed."
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Aggregate persistence is enough for launch beta. Add user_challenge_attempts if per-question analytics or history is needed."
   },
   {
     "feature": "Challenge score/history",
     "classification": "persisted in Supabase",
-    "tableColumn": "public.user_stats.quizzes_passed, perfect_quizzes, tones_quiz_passed, tones_quiz_best; no per-attempt history",
+    "tableColumn": "public.user_stats.quizzes_passed, perfect_quizzes, challenge_attempts, challenge_correct, challenge_wrong, last_challenge_date, best_challenge_score, best_challenge_total; no per-attempt history",
     "userScoped": true,
     "rlsProtected": true,
     "riskLevel": "low",
@@ -281,23 +281,23 @@
   },
   {
     "feature": "theme",
-    "classification": "localStorage only",
-    "tableColumn": "stats.theme in localStorage",
-    "userScoped": "per browser only",
-    "rlsProtected": "not applicable",
+    "classification": "persisted in profiles.settings JSON",
+    "tableColumn": "public.profiles.settings.theme",
+    "userScoped": true,
+    "rlsProtected": true,
     "riskLevel": "low",
-    "neededBeforeBeta": false,
-    "recommendedNextAction": "Add theme to profiles.settings if cross-device theme sync is desired."
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Keep current profile settings sync."
   },
   {
     "feature": "voice/perspective setting",
-    "classification": "localStorage only",
-    "tableColumn": "profiles.selected_voice is written during onboarding; later stats.voice changes are localStorage only",
-    "userScoped": "partly",
+    "classification": "persisted in profiles.settings JSON",
+    "tableColumn": "public.profiles.selected_voice and public.profiles.settings.voice",
+    "userScoped": true,
     "rlsProtected": true,
-    "riskLevel": "medium",
-    "neededBeforeBeta": false,
-    "recommendedNextAction": "Sync Settings voice changes to profiles.selected_voice or profiles.settings.voice."
+    "riskLevel": "low",
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Keep selected_voice as the compatibility column and settings.voice as the active preference."
   },
   {
     "feature": "OneSignal player ID",
@@ -317,7 +317,7 @@
     "rlsProtected": true,
     "riskLevel": "medium",
     "neededBeforeBeta": true,
-    "recommendedNextAction": "Keep current JSON preferences. Rotate webhook secret after audit exposure and use Vault-backed cron/webhook secrets."
+    "recommendedNextAction": "Keep current JSON preferences. Webhook secret was rotated and cron/webhook auth now uses X-Tuk-Notification-Secret without bearer headers."
   },
   {
     "feature": "shop purchases",

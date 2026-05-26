@@ -2,7 +2,7 @@
 
 Date: 2026-05-19
 
-Scope: local repo audit plus live Supabase metadata audit. No migrations were applied. No schema was changed. No production data was modified.
+Scope: local repo audit plus live Supabase metadata audit. Original May 19 audit was read-only. The May 26 launch hardening update applied one additive migration (`005`) and rotated notification webhook secrets. No production user data was dumped or modified.
 
 Live database status: audited read-only through Supabase CLI 2.100.0 using the linked project `fkebzcywofzloaqeghtn` (`tuk-talk-thai`). `supabase db dump` could not be used because Docker is not running on this machine, so live inspection used `supabase db query --linked` against catalog metadata only. No table data was queried except cron job metadata.
 
@@ -10,12 +10,15 @@ Important secret-handling note: live database webhook trigger definitions contai
 
 Remediation update, 2026-05-19: notification webhook and cron auth were updated to use `NOTIFICATION_WEBHOOK_SECRET` via `X-Tuk-Notification-Secret`; service-role bearer auth was removed from the notification webhook triggers and `public.tick_notifications()`.
 
+Launch hardening update, 2026-05-26: migration history was repaired for already-present migrations `001`, `003`, and `004`; migration `005_launch_persistence_hardening.sql` was pushed; the notification webhook secret was rotated again after audit exposure; today XP, Challenge aggregates, theme/voice settings, first-lesson progress, and mini-unit progress are now persisted for signed-in users.
+
 ## Sources reviewed
 
 - `supabase/schema.sql`
 - `supabase/migrations/001_email_exists.sql`
 - `supabase/migrations/003_notifications.sql`
 - `supabase/migrations/004_notification_scheduler.sql`
+- `supabase/migrations/005_launch_persistence_hardening.sql`
 - `supabase/functions/send-notification/index.ts`
 - `src/lib/supabase.js`
 - `src/lib/storage.js`
@@ -38,6 +41,7 @@ Remediation update, 2026-05-19: notification webhook and cron auth were updated 
 | `supabase/migrations/002_*.sql` | Unknown locally. Live DB contains an untracked `public.rls_auto_enable()` function plus `ensure_rls` event trigger that are not in local migrations. | Missing locally and not present in remote CLI migration history. This is the best live candidate for the missing 002 change, but it cannot be proven because the remote has no `supabase_migrations` history table. |
 | `supabase/migrations/003_notifications.sql` | Adds notification columns/indexes to `profiles` and `user_stats`. | Present. Required by current OneSignal code. |
 | `supabase/migrations/004_notification_scheduler.sql` | Enables `pg_net` and `pg_cron`, stores a dedicated notification webhook secret in Vault, creates `public.tick_notifications()`, and schedules hourly notification ticks. | Present. Contains the placeholder `YOUR_NOTIFICATION_WEBHOOK_SECRET_HERE`; do not commit a real secret value. |
+| `supabase/migrations/005_launch_persistence_hardening.sql` | Adds current-day XP and Challenge aggregate columns to `user_stats`. | Present and applied to the linked project on 2026-05-26. |
 
 ## Live migration history
 
@@ -52,17 +56,17 @@ Remote migration comparison:
 ```text
 Local | Remote | Time (UTC)
 ------+--------+-----------
-001   |        | 001
-003   |        | 003
-004   |        | 004
+001   | 001    | 001
+003   | 003    | 003
+004   | 004    | 004
+005   | 005    | 005
 ```
 
-The live database does not have a `supabase_migrations` schema. A direct read of `supabase_migrations.schema_migrations` fails because the relation does not exist. Therefore:
+As of the 2026-05-26 hardening pass, the linked project has CLI migration history for `001`, `003`, `004`, and `005`. Earlier notes in this document described the pre-repair state where no CLI-tracked remote history existed. Therefore:
 
-- No CLI-tracked remote migration history exists.
 - Remote migration `002` cannot be confirmed as an applied migration.
-- Local migrations `001`, `003`, and `004` also do not appear as CLI-tracked remote migrations.
-- The live schema clearly includes the effects of the local baseline, 003, and 004, so those changes were applied manually or by dashboard tooling outside Supabase CLI migration tracking.
+- Local migrations `001`, `003`, `004`, and `005` appear as CLI-tracked remote migrations.
+- The live schema clearly includes the effects of the local baseline, 003, 004, and 005.
 
 ### Missing 002 reconstruction note
 
@@ -324,7 +328,7 @@ Live RLS behavior was not tested with two real user sessions; this audit confirm
 | `public.handle_new_user()` | `supabase/schema.sql` | After Auth signup, inserts matching `profiles` and `user_stats` rows. | `SECURITY DEFINER`, `search_path = public`. |
 | `public.set_updated_at()` | `supabase/schema.sql` | Updates `updated_at` on table updates. | Normal trigger function. |
 | `public.email_exists(check_email text)` | `schema.sql`, `001_email_exists.sql` | Boolean lookup for sign-in UX. | `SECURITY DEFINER`, executable by `anon` and `authenticated`; email enumeration risk. |
-| `public.tick_notifications()` | `004_notification_scheduler.sql` | Posts `{ "mode": "tick" }` to the notification Edge Function. | `SECURITY DEFINER`; depends on Vault secret `service_role_key`, `pg_net`, and Edge Function availability. |
+| `public.tick_notifications()` | `004_notification_scheduler.sql` | Posts `{ "mode": "tick" }` to the notification Edge Function. | `SECURITY DEFINER`; depends on Vault secret `notification_webhook_secret`, `pg_net`, and Edge Function availability. |
 | `public.rls_auto_enable()` | Live DB only | Event trigger helper that enables RLS on newly created `public` tables. | `SECURITY DEFINER`, `search_path = pg_catalog`; missing from local migration files. |
 
 Live function status:
@@ -350,7 +354,7 @@ Live trigger status:
 - `set_profiles_updated_at`, `set_user_stats_updated_at`, and `set_user_progress_updated_at` exist and are enabled.
 - `mission_complete_notify` and `stats_update_notify` exist and are enabled.
 - No `set_user_missions_updated_at` or `set_user_achievements_updated_at` trigger exists locally or remotely.
-- The live webhook trigger definitions include an inline service-role bearer token in their `Authorization` header. This report redacts the value. Treat that token as exposed to anyone with enough database metadata visibility.
+- The live webhook trigger definitions were rotated to use `X-Tuk-Notification-Secret`. Sanitized verification found zero `Authorization` or `Bearer` strings in the notification trigger statements.
 
 Live event triggers:
 
@@ -391,7 +395,7 @@ Live status:
 - `mission_complete_notify` exists as an enabled trigger on `public.user_missions` for insert/update.
 - `stats_update_notify` exists as an enabled trigger on `public.user_stats` for update.
 - Both call the deployed `send-notification` Edge Function URL.
-- Both trigger definitions contain an inline service-role bearer token. Do not copy this token into files or logs; rotate it and reconfigure the webhook authentication.
+- Both trigger definitions use `X-Tuk-Notification-Secret`. Do not copy live header values into files or logs.
 
 ### Edge Function
 
@@ -421,15 +425,15 @@ The function reads profiles/stats using a service-role Supabase client, checks n
 | Display name | `profiles.display_name` plus auth metadata | Yes | Avatar is not implemented. |
 | Password | Supabase Auth | Yes | No app table stores passwords. |
 | Onboarding completed | `profiles.onboarding_completed`, local `stats.hasOnboarded` | Yes | Set after placement onboarding. |
-| Selected voice from onboarding | `profiles.selected_voice`, local `stats.voice` | Partly | Later Settings voice changes update local stats only. |
-| Theme | local `stats.theme` | No | Privacy copy says theme is collected, but `CLOUD_PROFILE_SETTING_KEYS` excludes it. |
+| Selected voice from onboarding/settings | `profiles.selected_voice`, `profiles.settings.voice`, local `stats.voice` | Yes | Settings voice changes now update cloud profile state. |
+| Theme | `profiles.settings.theme`, local `stats.theme` | Yes | Theme is included in profile settings sync. |
 | View/learning mode | `profiles.settings.viewMode`, local stats | Yes | Included in profile settings sync. |
 | Pronunciation speed | `profiles.settings.audioRate`, local stats | Yes | Included in profile settings sync. |
 | Auto-play setting | `profiles.settings.audioAutoPlay`, local stats | Yes | Included in profile settings sync. |
 | Sound effects | `profiles.settings.soundEffects`, local stats | Yes | Included in profile settings sync. |
 | Show characters | `profiles.settings.showCharacters`, local stats | Yes | Included in profile settings sync. |
 | Daily XP goal | `user_stats.daily_goal`, local stats | Yes | Uploaded through periodic stats sync. |
-| Today XP | local `stats.todayXp` and `stats.todayDate` | No | Quests use this locally; not restored cross-device. |
+| Today XP | `user_stats.today_xp`, `today_xp_date`, `last_xp_activity_at`, local stats | Yes | Current-day XP now restores cross-device for signed-in users. |
 | XP total | `user_stats.total_xp`, local stats | Yes | Client-authored. |
 | Streak | `user_stats.current_streak`, `longest_streak`, `last_active_date` | Yes | Client-authored. |
 | Current stage | `user_stats.current_stage` | Yes | Client-authored from local stage state. |
@@ -443,8 +447,8 @@ The function reads profiles/stats using a service-role Supabase client, checks n
 | Quests | Derived locally from stats/dashboard state | No dedicated table | Rewards/chests are preview only. |
 | Achievements | `user_achievements`; local `stats.unlockedAchievements` | Yes | Stores achievement IDs only. |
 | Tones quiz | `user_stats.tones_quiz_passed`, `tones_quiz_best` | Yes | Aggregate only. |
-| Challenge results | `user_stats.quizzes_passed`, `perfect_quizzes` | Partly | No per-attempt history or question history. |
-| Mini-unit progress | React session state only | No | Pilot keeps SRS untouched and records no completion state. |
+| Challenge results | `user_stats.quizzes_passed`, `perfect_quizzes`, `challenge_attempts`, `challenge_correct`, `challenge_wrong`, `last_challenge_date`, `best_challenge_score`, `best_challenge_total` | Partly | Aggregate persistence exists; no per-attempt history or question history. |
+| Mini-unit progress | `profiles.settings.activeMiniUnitId`, `miniUnitProgress`, `completedMiniUnits` | Yes | Pilot still keeps SRS untouched but can resume current guided progress. |
 | Drag-and-drop progress | Not implemented | No | Planned/deferred in learning-flow docs. |
 | OneSignal player/subscription ID | `profiles.onesignal_player_id` | Yes | One value per profile; multi-device semantics may overwrite. |
 | Timezone | `profiles.timezone` | Yes | Set during OneSignal linking. |
@@ -607,19 +611,17 @@ Recommended before soft launch:
 - Basic achievements.
 - Stage 1 mission completion events.
 - Notification preferences and OneSignal targeting.
-- Server-side notification scheduling via `tick_notifications()` and active cron job. Webhook triggers are live, but their inline service-role token should be rotated and reconfigured.
+- Server-side notification scheduling via `tick_notifications()` and active cron job. Webhook triggers are live and use `X-Tuk-Notification-Secret`; sanitized verification found no bearer auth in trigger headers or cron command.
 
 ## Top missing tables/columns for launch readiness
 
 Most important current gaps:
 
-1. Preferences parity: `theme` and post-onboarding `voice` are local-only, while other settings sync through `profiles.settings`.
-2. Daily quest/day state: `todayXp`, `todayDate`, `dailyNewLimit`, and `lastGoalHit` are local-only. Cross-device daily quest behavior can diverge.
-3. Seen/mastered aggregate consistency: `cards_seen` and `cards_mastered` columns exist, but current cloud sync does not write or read them.
-4. Multi-device notifications: one `profiles.onesignal_player_id` may not be enough for multiple browser/device subscriptions.
-5. Challenge attempt history: only aggregate quiz counters persist.
-6. Mini-unit progress: current mini-unit flow cannot resume or mark completion across devices.
-7. Rewards economy: gems, hearts, inventory, shop purchases, character unlocks, and selected character have no real schema yet.
+1. Seen/mastered aggregate consistency: `cards_seen` and `cards_mastered` columns exist, but current cloud sync does not write or read them.
+2. Multi-device notifications: one `profiles.onesignal_player_id` may not be enough for multiple browser/device subscriptions.
+3. Challenge attempt history: aggregate counters persist, but no per-question attempt rows exist.
+4. Historical daily XP ledger: current-day XP persists, but prior day history is not modeled.
+5. Rewards economy: gems, hearts, inventory, shop purchases, character unlocks, and selected character have no real schema yet.
 
 ## Required access checklist for future audits
 

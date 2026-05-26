@@ -151,7 +151,6 @@ img, svg, video { max-width: 100%; }
 .settings-btn { background: none; border: 1px solid var(--line-strong); border-radius: 999px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .settings-btn:hover { color: var(--jade); border-color: var(--jade); }}
 .setting-group { margin-bottom: 24px; }
-.setting-group-danger { padding-top: 20px; border-top: 1px solid var(--line); }
 .setting-label { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin-bottom: 4px; }
 .setting-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
 .setting-toggle { display: flex; gap: 8px; }
@@ -1452,9 +1451,6 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .tqo-name { font-size: 10px; font-weight: 600; color: var(--tone-color); text-transform: uppercase; letter-spacing: 0.05em; }
 .tqo-check { position: absolute; top: 4px; right: 4px; }
 .tones-quiz-results { text-align: center; padding: 40px 20px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 16px; }
-.dash-reset-row { text-align: center; padding: 20px 0; }
-.dash-reset-btn { background: none; border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 16px; font-family: inherit; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
-.dash-reset-btn:hover { border-color: var(--brick); color: var(--brick); }}
 
 /* Remove default browser focus outlines after mouse click (the "stuck pressed" look).
    Keyboard accessibility preserved via :focus-visible. */

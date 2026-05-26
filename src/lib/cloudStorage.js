@@ -4,6 +4,7 @@
 // cloud failures don't break the app.
 
 import { supabase } from './supabase.js';
+import { dateKeyFromValue } from './stats.js';
 
 // ---- Progress (SRS state per card) ----
 
@@ -59,23 +60,33 @@ export async function downloadProgress(userId) {
 // ---- Stats (aggregate gamification state) ----
 
 export async function uploadStats(userId, stats) {
+  const todayDate = dateKeyFromValue(stats.todayDate);
+  const lastStudy = dateKeyFromValue(stats.lastStudy);
+  const lastChallengeDate = dateKeyFromValue(stats.lastChallengeDate);
   const row = {
     user_id: userId,
     total_xp: stats.totalXp || 0,
     current_streak: stats.streak || 0,
     longest_streak: Math.max(stats.streak || 0, stats.longestStreak || 0),
-    last_active_date: stats.lastStudy
-      ? new Date(stats.lastStudy).toISOString().split('T')[0]
-      : null,
+    last_active_date: lastStudy,
     current_stage: stats.currentStage || 1,
     started_stage: stats.startedStage || 1,
     total_reviews: stats.totalReviews || 0,
+    today_xp: stats.todayXp || 0,
+    today_xp_date: todayDate,
+    last_xp_activity_at: stats.lastXpActivityAt || null,
     daily_goal: stats.dailyGoal || 50,
     daily_goals_hit: stats.dailyGoalsHit || 0,
     tones_quiz_passed: !!stats.tonesQuizPassed,
     tones_quiz_best: stats.tonesQuizBest || 0,
     quizzes_passed: stats.quizzesPassed || 0,
     perfect_quizzes: stats.perfectQuizzes || 0,
+    challenge_attempts: stats.challengeAttempts || 0,
+    challenge_correct: stats.challengeCorrect || 0,
+    challenge_wrong: stats.challengeWrong || 0,
+    last_challenge_date: lastChallengeDate,
+    best_challenge_score: stats.bestChallengeScore || 0,
+    best_challenge_total: stats.bestChallengeTotal || 0,
     streak_freezes: stats.streakFreezes || 0,
     last_freeze_grant: stats.lastFreezeGrant || null,
     last_seen_mission: stats.lastSeenMission || 1,
@@ -108,12 +119,21 @@ export async function downloadStats(userId) {
     currentStage: data.current_stage || 1,
     startedStage: data.started_stage || 1,
     totalReviews: data.total_reviews || 0,
+    todayXp: data.today_xp || 0,
+    todayDate: data.today_xp_date || null,
+    lastXpActivityAt: data.last_xp_activity_at || null,
     dailyGoal: data.daily_goal || 50,
     dailyGoalsHit: data.daily_goals_hit || 0,
     tonesQuizPassed: !!data.tones_quiz_passed,
     tonesQuizBest: data.tones_quiz_best || 0,
     quizzesPassed: data.quizzes_passed || 0,
     perfectQuizzes: data.perfect_quizzes || 0,
+    challengeAttempts: data.challenge_attempts || 0,
+    challengeCorrect: data.challenge_correct || 0,
+    challengeWrong: data.challenge_wrong || 0,
+    lastChallengeDate: data.last_challenge_date || null,
+    bestChallengeScore: data.best_challenge_score || 0,
+    bestChallengeTotal: data.best_challenge_total || 0,
     streakFreezes: data.streak_freezes ?? 1,
     lastFreezeGrant: data.last_freeze_grant || null,
     lastSeenMission: data.last_seen_mission || 1,

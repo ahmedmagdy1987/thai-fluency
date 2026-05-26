@@ -6,7 +6,7 @@ import { STAGES } from '../data/taxonomy.js';
 import { getStageState, buildPlacementCards, autoBreakdown, checkAchievements } from '../lib/state.js';
 import AchievementsModal from './AchievementsModal.jsx';
 
-export default function TodayTab({ stats, fullStats, setTab, stageState, missionState, resetAll, voice, viewMode }) {
+export default function TodayTab({ stats, fullStats, setTab, stageState, missionState, voice, viewMode }) {
   const [showAchievements, setShowAchievements] = useState(false);
   const ctaText = stats.due > 0 ? `Review ${stats.due} card${stats.due === 1 ? '' : 's'}` : (stats.seen === 0 ? 'Start learning' : 'Learn new cards');
   // In mission view, scope the "new cards ready" count to the user's current
