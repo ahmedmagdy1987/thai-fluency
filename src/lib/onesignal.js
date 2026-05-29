@@ -15,6 +15,15 @@
 const APP_ID = import.meta.env.VITE_ONESIGNAL_APP_ID || '';
 export const hasOneSignalConfig = !!APP_ID;
 
+// Push notifications are a best-effort enhancement, never load-bearing. SDK
+// hiccups (version drift, missing methods, blocked permission) must NEVER
+// surface as scary console errors in production. `debug` logs only in dev so
+// we keep visibility while developing without spamming users' consoles.
+const IS_DEV = !!(import.meta.env && import.meta.env.DEV);
+function debug(...args) {
+  if (IS_DEV) console.info('[onesignal]', ...args);
+}
+
 let OneSignal = null;
 let initPromise = null;
 let initialized = false;
@@ -62,12 +71,12 @@ async function ensureLoaded() {
       initialized = true;
     } catch (e) {
       const message = String(e?.message || e || '');
+      // An "already initialized" SDK is a non-fatal no-op, not an error.
       if (/already initialized/i.test(message)) {
         initialized = true;
         return;
       }
-      // eslint-disable-next-line no-console
-      console.warn('[onesignal] init failed', e);
+      debug('init skipped', message);
       OneSignal = null;
       initialized = false;
       initPromise = null;
@@ -84,10 +93,14 @@ export async function initOneSignal() {
 export async function promptForPushPermission() {
   if (!(await ensureLoaded())) return false;
   try {
+    if (typeof OneSignal?.Slidedown?.promptPush !== 'function') {
+      debug('prompt unavailable on this SDK build');
+      return false;
+    }
     await OneSignal.Slidedown.promptPush();
     return true;
   } catch (e) {
-    console.warn('[onesignal] prompt failed', e);
+    debug('prompt failed', e?.message || e);
     return false;
   }
 }
@@ -111,19 +124,30 @@ export async function getPushSubscription() {
 export async function setExternalUserId(userId) {
   if (!userId) return;
   if (!(await ensureLoaded())) return;
+  // Guard the API surface: a `login` method missing on the loaded build is
+  // exactly what produced the "OneSignal login failed TypeError" in prod.
+  // Treat it as a non-fatal no-op rather than throwing/warning.
+  if (typeof OneSignal?.login !== 'function') {
+    debug('login() unavailable on this SDK build — skipping user link');
+    return;
+  }
   try {
     await OneSignal.login(String(userId));
   } catch (e) {
-    console.warn('[onesignal] login failed', e);
+    debug('login failed', e?.message || e);
   }
 }
 
 export async function clearExternalUserId() {
   if (!(await ensureLoaded())) return;
+  if (typeof OneSignal?.logout !== 'function') {
+    debug('logout() unavailable on this SDK build — skipping');
+    return;
+  }
   try {
     await OneSignal.logout();
   } catch (e) {
-    console.warn('[onesignal] logout failed', e);
+    debug('logout failed', e?.message || e);
   }
 }
 
@@ -149,11 +173,16 @@ export async function onSubscriptionChange(callback) {
 
 export async function setPushOptIn(optIn) {
   if (!(await ensureLoaded())) return;
+  const sub = OneSignal?.User?.PushSubscription;
+  if (!sub || typeof sub.optIn !== 'function' || typeof sub.optOut !== 'function') {
+    debug('PushSubscription opt-in/out unavailable on this SDK build');
+    return;
+  }
   try {
-    if (optIn) await OneSignal.User.PushSubscription.optIn();
-    else await OneSignal.User.PushSubscription.optOut();
+    if (optIn) await sub.optIn();
+    else await sub.optOut();
   } catch (e) {
-    console.warn('[onesignal] opt-in/out failed', e);
+    debug('opt-in/out failed', e?.message || e);
   }
 }
 

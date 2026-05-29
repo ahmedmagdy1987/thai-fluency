@@ -4,10 +4,20 @@ import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { WORD_LOOKUP } from '../data/lookup.js';
 
 // Compute state of each stage based on user progress.
-// Sequential unlock: Stage N+1 is unlocked when Stage N reaches the
-// MISSION_UNLOCK_THRESHOLD (70%) mastery. Stages below the user's
-// placement-test startedStage are always considered unlocked (they're
-// auto-matured from the placement test or below the user's known floor).
+//
+// Sequential unlock: Stage N+1 unlocks when Stage N is COMPLETE. A stage is
+// complete when all of its cards are LEARNED (seen at least once in a guided
+// session) — mastery is NOT required to advance. This matches the mission
+// model (a mission completes when all its cards are seen) so that, e.g.,
+// 150/150 learned in Stage 1 immediately unlocks Stage 2 even with 0 cards
+// matured.
+//
+// We keep the legacy "≥70% matured" path as an OR fallback so that any user
+// who already unlocked the next stage under the old mastery-based rule is
+// never re-locked after this change (do-not-regress safeguard).
+//
+// Stages below the user's placement-test startedStage are always considered
+// unlocked (auto-matured from the placement test or below the known floor).
 export function getStageState(stats, progress) {
   const safeProgress = progress && typeof progress === 'object' ? progress : {};
   const startedStage = stats.startedStage || 1;
@@ -16,10 +26,14 @@ export function getStageState(stats, progress) {
     const total = stageCards.length;
     const seen = stageCards.filter(c => safeProgress[c.id]).length;
     const mature = stageCards.filter(c => safeProgress[c.id] && safeProgress[c.id].interval >= 21).length;
-    const complete = total > 0 && (mature / total) >= MISSION_UNLOCK_THRESHOLD; // 70% mature
+    // Primary rule: all cards learned. Fallback: legacy ≥70% matured (so
+    // pre-existing unlocks survive). Mastery is never *required* to advance.
+    const learnedComplete = total > 0 && seen >= total;
+    const matureComplete = total > 0 && (mature / total) >= MISSION_UNLOCK_THRESHOLD;
+    const complete = learnedComplete || matureComplete;
     const seenPct = total === 0 ? 0 : Math.round((seen / total) * 100);
     const maturePct = total === 0 ? 0 : Math.round((mature / total) * 100);
-    return { ...S, total, seen, mature, complete, seenPct, maturePct };
+    return { ...S, total, seen, mature, complete, learnedComplete, seenPct, maturePct };
   });
 
   // Sequential unlock: walk stages from startedStage upward; each contiguous

@@ -186,3 +186,37 @@ Before posting:
 | Ask testers to report incorrect Thai content. | Ready |
 | Ask testers to use Chrome/Edge/Safari and try Add to Home Screen. | Ready |
 | Prepare a short known-issues note: notifications need opt-in, billing is not active, app-store versions are not live yet. | Ready |
+
+## Progression QA & Anti-Rushing Fix Pass (May 29, 2026)
+
+A production-testing pass fixed the launch-critical progression issues. Details
+and definitions live in `docs/launch-critical-persistence-hardening.md`
+("Progression Correctness & Anti-Rushing Pass"). Summary of what changed and the
+QA performed:
+
+### Issues fixed
+
+| Issue found in testing | Fix |
+| --- | --- |
+| Stage 1 showed 150/150 learned, 0/150 mastered, but Stage 2 did not unlock. | Stage completion now keys off **learned (all cards seen)**, not mastery. `getStageState` recomputes on load, so existing 150/150 users unlock Stage 2 immediately. Legacy ≥70%-matured unlock is kept as an OR so no one is re-locked. |
+| App could be rushed by pressing **Easy** repeatedly. | Anti-rushing XP throttle: >5 consecutive high-value ratings faster than 1300 ms cap XP at 1, with a gentle "Quick pass saved" nudge. SRS/learned/unlock are unaffected; mastery still needs real review. Skip stays 0 XP; mission reward fires once. |
+| Learned vs mastered was confusing. | Copy clarified everywhere: "`N` learned · `N` mastered through review"; completed stage shows "Stage N complete — keep reviewing to master them"; mastery is no longer framed as a blocker. |
+| Practice page could dead-end at "no cards due". | Empty state now offers **Continue your path** and **Try a Challenge**, or "You're caught up" when the whole deck is seen. |
+| Console: "OneSignal login failed TypeError". | SDK calls guarded with `typeof` checks; warnings downgraded to dev-only `debug()`. Non-fatal, notification flow intact. |
+| Console: AudioContext created/resumed before a user gesture. | `AudioContext` is created only after the first real user gesture; no warning on load; first legitimate sound still plays. |
+
+### Routes / states tested
+
+| Check | Result |
+| --- | --- |
+| `npm run build` | Pass (pre-existing large-chunk warning only) |
+| `/learn`, `/cards`, `/challenge`, `/premium`, `/shop` | Load and render |
+| Stage 1 complete state (150/150 learned) | Shows "Complete" + Start Stage 2 |
+| Stage 2 unlock | Unlocks on learned completion; simulated across 6 scenarios |
+| Rapid Easy spam | XP throttled to 1 after the run threshold; gentle nudge shown |
+| Practice empty state | Continue-path / Challenge CTAs (no dead end) |
+| Sound effects ON/OFF | Honored; no AudioContext on load |
+| OneSignal console | No TypeError; quiet in production |
+
+No Thai card content, payments, ads, subscriptions, or major UI was changed, and
+no database migration was applied.

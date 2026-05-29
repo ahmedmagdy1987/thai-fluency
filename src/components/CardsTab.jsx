@@ -23,7 +23,7 @@ import CharacterCoach from './CharacterCoach.jsx';
 // for roughly 2.8s after the back face settles, then returns to resting.
 const REVEAL_PROMPT_DURATION_MS = 3400;
 
-export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope }) {
+export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope, setTab, stageState }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
@@ -133,12 +133,18 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setRatingLocked(true);
     if (handledCardIdsRef.current.has(rawCard.id)) return;
     handledCardIdsRef.current.add(rawCard.id);
-    const accepted = reviewOne(rawCard.id, rating);
-    if (accepted === false) return;
+    const result = reviewOne(rawCard.id, rating);
+    if (result === false) return;
+    const rushed = !!(result && result.rushed);
     const correct = rating >= 3;
     if (correct) setSessionCorrect(c => c + 1);
     if (rating === 4) playEasy(); // existing Easy blip — preserved
-    if (correct) {
+    if (rushed) {
+      // Gentle nudge when XP was throttled for blind-fast rating. The card is
+      // still saved/scheduled; we just remind them speed isn't mastery.
+      coach.react('thinking', { duration: 2000, message: 'Quick pass saved. Review again later to master it.' });
+      if (correct) playCharacterCorrect(coachId); else playCharacterWrong(coachId);
+    } else if (correct) {
       coach.react('correct', { duration: 1500 });
       playCharacterCorrect(coachId);
     } else {
@@ -174,21 +180,51 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   };
 
   if (!card) {
+    // Has the user seen every card in the whole deck? (true "caught up").
+    const allContentSeen = CARDS.every(c => progress && progress[c.id]);
+    const goLearn = () => setTab && setTab('learn');
+    const goChallenge = () => setTab && setTab('quiz');
+
+    let emptyTitle;
+    let emptySub;
+    if (isMissionSession) {
+      emptyTitle = 'Mission complete';
+      emptySub = `You finished this mission's ${sessionScope.total || sessionDone} cards. Keep going on your path.`;
+    } else if (allContentSeen) {
+      emptyTitle = "You're caught up";
+      emptySub = 'Come back later to review and master what you learned. Your reviews appear here when they’re due.';
+    } else {
+      emptyTitle = 'No reviews due right now';
+      emptySub = 'Continue your learning path to learn new words, or try a Challenge to test what you know.';
+    }
+
     return (
       <div className="tab-content">
         <div className="empty-state">
-          <div className="empty-icon">🎉</div>
-          <div className="empty-title">{isMissionSession ? 'Mission complete' : 'All done for now'}</div>
-          <div className="empty-sub">
-            {isMissionSession
-              ? `You finished this mission's ${sessionScope.total || sessionDone} cards.`
-              : 'No cards due. Come back later or browse to add new vocabulary.'}
-          </div>
+          <div className="empty-icon">{allContentSeen ? '✅' : '🎉'}</div>
+          <div className="empty-title">{emptyTitle}</div>
+          <div className="empty-sub">{emptySub}</div>
           {sessionDone > 0 && (
             <div className="session-summary">
               <div className="summary-stat"><div className="summary-num">{sessionDone}</div><div className="summary-label">reviewed</div></div>
               <div className="summary-stat"><div className="summary-num">{sessionCorrect}</div><div className="summary-label">correct</div></div>
               <div className="summary-stat"><div className="summary-num">{Math.round((sessionCorrect/sessionDone)*100)}%</div><div className="summary-label">accuracy</div></div>
+            </div>
+          )}
+          {setTab && (
+            <div className="empty-actions">
+              {!allContentSeen && (
+                <button type="button" className="btn-primary empty-cta" onClick={goLearn}>
+                  Continue your path <ChevronRight size={16} />
+                </button>
+              )}
+              <button
+                type="button"
+                className={allContentSeen ? 'btn-primary empty-cta' : 'empty-cta-secondary'}
+                onClick={goChallenge}
+              >
+                Try a Challenge
+              </button>
             </div>
           )}
         </div>

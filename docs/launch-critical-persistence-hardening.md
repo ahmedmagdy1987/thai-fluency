@@ -148,3 +148,114 @@ Build warning: Vite still reports the existing large JS chunk warning. No risky 
 3. Run a real signed-in smoke test on two browsers/devices to verify cross-device today XP, settings, guided first lesson resume, and Challenge aggregate continuity.
 4. Provide one subscribed OneSignal test device and run a controlled push test.
 5. Approve whether future reset/delete functionality is ever needed. It is intentionally absent from the app now.
+
+## Progression Correctness & Anti-Rushing Pass (May 29, 2026)
+
+Production testing surfaced a core progression bug: a user who finished Stage 1
+saw **150/150 learned, 0/150 mastered** but Stage 2 did not clearly unlock, and
+the app could be rushed through by pressing **Easy** repeatedly. This pass fixes
+stage unlock, clarifies learned vs mastered, adds lightweight anti-rushing XP
+rules, improves the Practice empty state, and cleans up two console issues. No
+Thai card content, payments, ads, subscriptions, or major UI was changed, and no
+database migration was applied (all changes are client-side).
+
+### Learned vs Mastered (definitions)
+
+| Term | Meaning | Source of truth |
+| --- | --- | --- |
+| **Learned / seen** | Card was completed once in a guided session/review. | `progress[cardId]` exists (`getStats.seen`). |
+| **Mastered** | Card was retained through long-term SRS review (interval ≥ 21 days). | `progress[cardId].interval >= 21` (`getStats.mature`). |
+
+Mastery is a long-term review outcome, not a gate. The UI now says
+"`N` mastered through review" instead of framing "0/150 mastered" as a blocker.
+
+### Stage unlock rule (fixed)
+
+- A stage is **complete** when **all of its cards are learned** (seen at least
+  once). Previously completion required ≥70% of cards *matured*, which left
+  users with 150/150 learned but 0 matured permanently stuck on Stage 1.
+- Stage N+1 unlocks when Stage N is complete by **learned/mission** progress.
+  **Mastery is never required to advance.**
+- For Stage 1 this is equivalent to all six missions complete: the 150 Stage 1
+  cards are fully partitioned across missions 1–6 (29/26/24/24/28/19), so
+  `seen >= total` ⇔ `stage1Complete`.
+- **Do-not-regress safeguard:** completion is `learnedComplete OR legacy
+  matureComplete (≥70% matured)`, so any user who already unlocked the next
+  stage under the old mastery rule is never re-locked.
+- Implemented in `src/lib/state.js` `getStageState`. The stage is recomputed
+  from `progress` on every load, so existing users with 150/150 learned unlock
+  Stage 2 immediately on next open.
+
+### Learned vs mastered UX (fixed)
+
+- `LearnPath` stage rows: "`seen`/`total` learned · `mature` mastered through
+  review"; a completed stage shows a "Complete" tag plus "Stage N complete —
+  every word learned. Keep reviewing to master them."
+- A freshly-unlocked, not-yet-started stage shows an explicit **Start Stage N**
+  call-to-action so a completed stage never feels like a dead end.
+- Footnote now reads: "Learn every word in a stage to unlock the next one.
+  Mastery comes later, through review."
+
+### Anti-rushing XP rules
+
+- XP per rating is unchanged for honest pace: Again 1 / Hard 2 / Good 3 / Easy 5;
+  Challenge correct 5; mission completion 35; "I already know this — Skip" stays
+  **0 XP**.
+- `App.jsx` `reviewOne` now detects **blind Easy/Good spam**: high-value ratings
+  (Good/Easy) entered faster than **1300 ms** apart count toward a run; once the
+  run exceeds **5 consecutive** rushed ratings, XP for those ratings is **capped
+  at 1**. Any slower rating, or any low rating (Again/Hard), resets the run, so
+  normal pace is never penalised.
+- A gentle coach message appears on a throttled rating: *"Quick pass saved.
+  Review again later to master it."*
+- SRS scheduling, learned/seen counts, and stage unlocks are **unaffected** —
+  only the XP currency is throttled. Mastery still requires real spaced review,
+  so rushing cannot meaningfully "finish" the app.
+- Undo reverses the **exact XP awarded** (throttled or not) and rolls back the
+  rush bookkeeping, so the undo path stays accurate.
+- Mission completion rewards continue to fire exactly once (existing
+  `missionRewardLocksRef` guard), and require all mission cards seen.
+
+### Practice empty state (fixed)
+
+`CardsTab` no longer dead-ends when there are no due cards:
+
+- Mission session finished → "Mission complete" + **Continue your path**.
+- Reviews available later but nothing due now → "No reviews due right now.
+  Continue your learning path, or try a Challenge." with **Continue your path**
+  (→ Learn) and **Try a Challenge** (→ Challenge) buttons.
+- Everything in the deck seen → "You're caught up. Come back later to review and
+  master what you learned."
+
+### OneSignal console cleanup
+
+- `setExternalUserId`/`clearExternalUserId`/`setPushOptIn`/
+  `promptForPushPermission` now guard the SDK surface with `typeof` checks
+  before calling (`login`, `logout`, `optIn`/`optOut`, `Slidedown.promptPush`).
+  A missing `login` method was the source of the "OneSignal login failed
+  TypeError" — it is now a non-fatal no-op.
+- All `console.warn` noise was downgraded to a dev-only `debug()` logger, so
+  production consoles are no longer spammed. "Already initialized" remains a
+  non-fatal no-op. The notification permission flow is unchanged.
+
+### AudioContext console cleanup
+
+- `src/lib/sounds.js` no longer creates or resumes an `AudioContext` on page
+  load. A capture-phase first-gesture listener
+  (`pointerdown`/`mousedown`/`touchstart`/`keydown`) sets a flag; `getCtx()`
+  returns `null` until then, so the browser "AudioContext was not allowed to
+  start" warning no longer fires. The listener itself creates nothing.
+- Because pointer/touch/key gestures fire before the `click` handlers that
+  request sound, the first legitimate sound (card reveal, reward flow) still
+  plays. Sound effects OFF is still respected, and the reward screen already
+  suppresses celebration audio under `prefers-reduced-motion`.
+
+### Verification
+
+- `npm run build` passes (pre-existing large-chunk warning only).
+- Simulated `getStageState` across scenarios: 150/150 learned (0 mastered) →
+  Stage 2 unlocks; legacy 105 seen+matured/45 unseen → Stage 2 stays unlocked
+  (no regression); 100/150 learned → Stage 2 stays locked; placement at Stage 3
+  → Stages 1–3 unlocked; `getMissionState.stage1Complete` agrees.
+- Routes smoke-checked locally: `/learn`, `/cards`, `/challenge`, `/premium`,
+  `/shop`.

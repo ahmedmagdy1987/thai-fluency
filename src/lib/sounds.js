@@ -12,6 +12,26 @@ let _ctx = null;
 let _ctxFailed = false;
 let _soundEffectsEnabled = true;
 
+// Browsers warn ("The AudioContext was not allowed to start...") and refuse to
+// produce sound if an AudioContext is created or resumed before the first user
+// gesture. We therefore do NOT create the context on page load. Instead we
+// watch for the first real gesture (pointer/touch/key) — these fire in the
+// capture phase BEFORE the click handlers that actually request sound — and
+// only then allow getCtx() to construct the context. Until a gesture happens,
+// every play helper is a silent no-op. The listener itself creates nothing.
+let _userGestureSeen = false;
+
+function _markGesture() {
+  _userGestureSeen = true;
+}
+
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  const opts = { capture: true, once: true, passive: true };
+  ['pointerdown', 'mousedown', 'touchstart', 'keydown'].forEach((evt) => {
+    try { window.addEventListener(evt, _markGesture, opts); } catch (_) { /* ignore */ }
+  });
+}
+
 export function setSoundEffectsEnabled(enabled) {
   _soundEffectsEnabled = enabled !== false;
 }
@@ -24,6 +44,9 @@ function getCtx() {
   if (_ctx) return _ctx;
   if (_ctxFailed) return null;
   if (typeof window === 'undefined') return null;
+  // Never create/resume the context before a user gesture — doing so triggers
+  // the browser autoplay warning and the context would be born suspended.
+  if (!_userGestureSeen) return null;
   try {
     const Ctor = window.AudioContext || window.webkitAudioContext;
     if (!Ctor) { _ctxFailed = true; return null; }

@@ -78,6 +78,15 @@ const CLOUD_PROFILE_SETTING_KEYS = [
 const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
 const MINI_UNIT_REWARD_XP = 45;
+// Anti-rushing thresholds. Once a user fires more than RUSH_RUN_LIMIT
+// consecutive high-value ratings (Good/Easy) faster than RUSH_GAP_MS apart —
+// i.e. with no time to actually recall the card — further rushed ratings are
+// capped at RUSH_XP_CAP so XP/progression can't be farmed by spamming Easy.
+// A single slower rating, or any low rating (Again/Hard), resets the run, so
+// honest pace is never penalised.
+const RUSH_GAP_MS = 1300;
+const RUSH_RUN_LIMIT = 5;
+const RUSH_XP_CAP = 1;
 const SUPER_PROMPT_STORAGE_KEY = 'tuk-talk-thai-super-prompt-last-shown';
 const TAB_ROUTES = {
   learn: '/learn',
@@ -218,6 +227,8 @@ export default function TukTalkThaiApp() {
   const reviewLocksRef = useRef(new Set());
   const missionRewardLocksRef = useRef(new Set());
   const achievementLocksRef = useRef(new Set());
+  const ratingTimesRef = useRef([]); // recent rating timestamps (rush detection)
+  const rushRunRef = useRef(0);      // consecutive rushed high-value ratings
 
   useEffect(() => {
     profileSettingsRef.current = (profile?.settings && typeof profile.settings === 'object' && !Array.isArray(profile.settings))
@@ -778,13 +789,39 @@ export default function TukTalkThaiApp() {
     if (reviewLocksRef.current.has(reviewKey)) return false;
     reviewLocksRef.current.add(reviewKey);
     window.setTimeout(() => reviewLocksRef.current.delete(reviewKey), 1500);
-    // Snapshot previous state for undo
+
+    // --- Anti-rushing -------------------------------------------------------
+    // A "rushed" rating is a high-value rating (Good/Easy) entered faster than
+    // RUSH_GAP_MS after the previous one. We count consecutive rushed ratings;
+    // once the run exceeds RUSH_RUN_LIMIT, the XP for those ratings is capped
+    // so blind Easy spam can't farm XP. SRS scheduling, learned/seen counts,
+    // and stage unlocks are unaffected — only the XP currency is throttled.
+    const now = Date.now();
+    const times = ratingTimesRef.current;
+    const prevT = times.length ? times[times.length - 1] : 0;
+    times.push(now);
+    if (times.length > 16) times.shift();
+    const fast = prevT > 0 && (now - prevT) < RUSH_GAP_MS;
+    const highValue = rating >= 3;
+    const prevRushRun = rushRunRef.current; // captured pre-mutation for exact undo
+    if (fast && highValue) rushRunRef.current += 1;
+    else rushRunRef.current = 0;
+    const baseXp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
+    const rushed = rushRunRef.current > RUSH_RUN_LIMIT;
+    const xp = rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp;
+    // ------------------------------------------------------------------------
+
+    // Snapshot previous state for undo. Store the XP actually awarded so undo
+    // reverses the throttled amount, and the pre-rating rush counter so undo
+    // restores the exact run length (a reset-to-0 is not a simple -1).
     setLastReviewSnapshot({
       cardId,
       rating,
       previousProgress,
       reviewKey,
-      timestamp: Date.now(),
+      xpAwarded: xp,
+      prevRushRun,
+      timestamp: now,
     });
     setProgress(p => {
       const safeProgress = p && typeof p === 'object' ? p : {};
@@ -792,23 +829,33 @@ export default function TukTalkThaiApp() {
       return { ...safeProgress, [cardId]: newState };
     });
     setStats(s => ({ ...s, totalReviews: (s.totalReviews || 0) + 1 }));
-    const xp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
     grantXp(xp);
-    return true;
+    return { accepted: true, rushed };
   }, [grantXp, progress]);
 
   const undoLastReview = useCallback(() => {
     if (!lastReviewSnapshot) return;
     const { cardId, rating, previousProgress, reviewKey } = lastReviewSnapshot;
     if (reviewKey) reviewLocksRef.current.delete(reviewKey);
+    // Roll back the rush-detection bookkeeping to its exact pre-rating state
+    // (a reset-to-0 can't be inverted by a blind -1, so restore the snapshot).
+    if (ratingTimesRef.current.length) ratingTimesRef.current.pop();
+    rushRunRef.current = typeof lastReviewSnapshot.prevRushRun === 'number'
+      ? lastReviewSnapshot.prevRushRun
+      : Math.max(0, rushRunRef.current - 1);
     setProgress(p => {
       const next = { ...(p && typeof p === 'object' ? p : {}) };
       if (previousProgress) next[cardId] = previousProgress;
       else delete next[cardId];
       return next;
     });
-    // Reverse XP and review counter (don't try to reverse streak — too tricky and not worth it)
-    const xp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
+    // Reverse the rating-level XP awarded (throttled or not) and the review
+    // counter. As with streak, we intentionally do NOT unwind the daily-goal
+    // bonus or dailyGoalsHit when this review happened to cross the goal —
+    // reversing derived day-state is brittle and the small leftover is benign.
+    const xp = typeof lastReviewSnapshot.xpAwarded === 'number'
+      ? lastReviewSnapshot.xpAwarded
+      : (rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy);
     setStats(s => ({
       ...s,
       totalReviews: Math.max(0, (s.totalReviews || 0) - 1),
@@ -1362,7 +1409,7 @@ export default function TukTalkThaiApp() {
           )}
           {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
-          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} />}
+          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}

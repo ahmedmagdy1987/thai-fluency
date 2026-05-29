@@ -39,11 +39,17 @@ export default function LearnPath({
     ? stageState.stages.find(s => s.id === stageState.currentStage) || stageState.stages[0]
     : null;
 
+  // A freshly-unlocked stage the user hasn't started yet (e.g. Stage 2 right
+  // after Stage 1 is complete) gets an explicit "Start Stage N" call-to-action
+  // so a completed stage never feels like a dead end.
+  const startingNewStage = !inMissionView && currentStage && currentStage.id > 1 && (currentStage.seen || 0) === 0;
   const ctaLabel = inMissionView && currentMission
     ? (currentMission.seen === 0 ? `Start Mission ${currentMission.id}` : `Continue Mission ${currentMission.id}`)
-    : (due > 0
-      ? `Continue: ${due} due`
-      : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`));
+    : startingNewStage
+      ? `Start Stage ${currentStage.id}`
+      : (due > 0
+        ? `Continue: ${due} due`
+        : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`));
 
   const continueSubtitle = inMissionView && currentMission
     ? `Mission ${currentMission.id}: ${currentMission.name}`
@@ -164,8 +170,8 @@ export default function LearnPath({
                 <span className="learn-mission-pct">{Math.round(currentMission.seenPct || 0)}%</span>
               </div>
               <div className="learn-mission-stats">
-                <span>{currentMission.seen}/{currentMission.total} seen</span>
-                <span>{currentMission.mature}/{currentMission.total} mastered</span>
+                <span>{currentMission.seen}/{currentMission.total} learned</span>
+                <span>{currentMission.mature} mastered through review</span>
               </div>
             </div>
           </div>
@@ -271,13 +277,18 @@ export default function LearnPath({
                       <span className="learn-path-character-name">{character.placeholderEmoji} {character.name}</span>
                       {!isEmpty && (
                         <span className="learn-path-progress-text">
-                          {S.seen}/{S.total} learned, {S.mature}/{S.total} mastered
+                          {S.seen}/{S.total} learned · {S.mature} mastered through review
                         </span>
                       )}
                     </div>
                     {!isEmpty && (
                       <div className="learn-path-bar">
                         <div className="learn-path-bar-fill" style={{ width: `${S.seenPct}%` }} />
+                      </div>
+                    )}
+                    {isDone && !isEmpty && (
+                      <div className="learn-path-done-note">
+                        Stage {S.id} complete — every word learned. Keep reviewing to master them.
                       </div>
                     )}
                     {isEmpty && (
@@ -301,7 +312,7 @@ export default function LearnPath({
 
       <div className="learn-footnote">
         <Sparkles size={14} />
-        <span>Stages unlock at 70% mastery. Take your time. Practical fluency matters more than speed.</span>
+        <span>Learn every word in a stage to unlock the next one. Mastery comes later, through review — keep reviewing to lock words in for good.</span>
       </div>
     </div>
   );
