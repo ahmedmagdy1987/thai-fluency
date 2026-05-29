@@ -1216,9 +1216,10 @@ export default function TukTalkThaiApp() {
   }, [tab]);
 
   // Sequential stage unlock: only stages ≤ maxUnlockedStage are accessible.
-  // Stage N+1 unlocks when Stage N reaches 70% mastery. dashboardStats, the
-  // Cards tab SRS pool, Browse listing, and the Quiz pool all filter to the
-  // unlocked window. The mission view (S1 only) is a special case within this.
+  // Stage N+1 unlocks when Stage N is learned/complete, with legacy mature
+  // unlock preserved. dashboardStats, the Cards tab SRS pool, Browse listing,
+  // and the Quiz pool all filter to the unlocked window. The mission view
+  // (S1 only) is a special case within this.
   const maxUnlockedStage = stageState ? stageState.maxUnlockedStage : 1;
   const eligibleCards = useMemo(
     () => CARDS.filter(c => (c.stage || 1) <= maxUnlockedStage),
