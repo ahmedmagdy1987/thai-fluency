@@ -824,7 +824,15 @@ export default function TukTalkThaiApp() {
     }
     const rushed = nextRun > RUSH_RUN_LIMIT;
     const baseXp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
-    const xp = rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp;
+    // XP by source. A new learning card earns once; a genuinely DUE review earns
+    // review XP. Re-practicing a card that is NOT due (already learned, scheduled
+    // in the future — e.g. a completed-stage card) earns 0, so XP can't be farmed
+    // by looping old cards. SRS scheduling + review counts below are unaffected;
+    // only the XP currency is gated. The rush cap still applies on top.
+    const isNewCard = !previousProgress;
+    const isDueReview = !!previousProgress && (previousProgress.nextDue || 0) <= now;
+    const earnsXp = isNewCard || isDueReview;
+    const xp = !earnsXp ? 0 : (rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp);
     // Commit + persist immediately so the cap is durable mid-session.
     rushGuardRef.current = { rushRun: nextRun, lastRatingAt: now };
     saveRushGuard(rushGuardRef.current);
@@ -848,7 +856,7 @@ export default function TukTalkThaiApp() {
       return { ...safeProgress, [cardId]: newState };
     });
     setStats(s => ({ ...s, totalReviews: (s.totalReviews || 0) + 1 }));
-    grantXp(xp);
+    if (xp > 0) grantXp(xp);
     return { accepted: true, rushed };
   }, [grantXp, progress]);
 

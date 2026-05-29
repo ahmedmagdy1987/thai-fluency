@@ -23,6 +23,10 @@ import CharacterCoach from './CharacterCoach.jsx';
 // for roughly 2.8s after the back face settles, then returns to resting.
 const REVEAL_PROMPT_DURATION_MS = 3400;
 
+// Fast id → card lookup for resolving the frozen new-card allotment back to
+// card objects without scanning the whole deck on every render.
+const CARD_BY_ID = new Map(CARDS.map(c => [c.id, c]));
+
 export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope, setTab, stageState }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
@@ -32,12 +36,15 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const speakingTimerRef = useRef(null);
   const handledCardIdsRef = useRef(new Set());
   const actionLockRef = useRef(null);
+  // The new-card allotment is frozen once per session (see queue useMemo).
+  const newAllotmentRef = useRef({ key: null, ids: [] });
   const sessionKey = sessionScope?.type === 'mission'
     ? `mission:${sessionScope.missionId}`
     : 'practice';
 
   const queue = useMemo(() => {
     const now = Date.now();
+    const safeProgress = progress && typeof progress === 'object' ? progress : {};
     const missionCardIds = Array.isArray(sessionScope?.cardIds) ? new Set(sessionScope.cardIds) : null;
     const filteredCards = missionCardIds
       ? CARDS.filter(c => missionCardIds.has(c.id))
@@ -47,10 +54,45 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
           const upper = maxUnlockedStage || 1;
           return s >= lower && s <= upper;
         });
+    // Due reviews are always live: any unlocked stage (including a completed
+    // one) surfaces its cards here exactly when SRS says they're due.
     const due = getDueCards(progress, filteredCards, now);
-    const newOnes = getNewCards(progress, filteredCards, missionCardIds ? filteredCards.length : dailyNewLimit);
+
+    // New-card candidates exclude completed stages: once a stage is
+    // learned/complete its cards only return as due reviews (above), never as
+    // fresh learning. New learning flows forward to the current stage/mission.
+    const completeStageIds = new Set(
+      (stageState?.stages || []).filter(s => s.complete).map(s => s.id)
+    );
+    const newCandidates = missionCardIds
+      ? filteredCards
+      : filteredCards.filter(c => !completeStageIds.has(c.stage || 1));
+
+    // Freeze the new-card allotment once per session. getNewCards returns a
+    // sliding window of the next unseen cards capped at the daily limit; if it
+    // were recomputed live, rating a new card would immediately pull the next
+    // unseen card into the queue and "N left" would never fall. Snapshotting
+    // makes the session a bounded batch that counts down to an empty state.
+    // The session resets when the Cards tab is re-entered (CardsTab remounts)
+    // or the session scope changes (sessionKey).
+    if (newAllotmentRef.current.key !== sessionKey) {
+      newAllotmentRef.current = {
+        key: sessionKey,
+        ids: getNewCards(
+          progress,
+          newCandidates,
+          missionCardIds ? newCandidates.length : dailyNewLimit
+        ).map(c => c.id),
+      };
+    }
+    // Only allotment cards still unseen remain queued; a rated new card drops
+    // out and is NOT replaced — that is what makes the remaining count fall.
+    const newOnes = newAllotmentRef.current.ids
+      .filter(id => !safeProgress[id])
+      .map(id => CARD_BY_ID.get(id))
+      .filter(Boolean);
     return [...due, ...newOnes];
-  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope]);
+  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope, sessionKey, stageState]);
 
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);
@@ -93,6 +135,17 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   useEffect(() => {
     setRatingLocked(false);
     actionLockRef.current = null;
+    // When we advance off a card, drop it from the per-session dedupe guard.
+    // Otherwise a card that legitimately re-dues later this session (e.g. rated
+    // "Again", due again in ~1 min) would re-surface as queue[0] but every
+    // rating would silently no-op on the handledCardIdsRef check below, leaving
+    // the user stuck on it and unable to reach an empty queue. Same-exposure
+    // double-taps are still blocked by actionLockRef above and by reviewOne's
+    // own per-exposure review lock.
+    const handledId = rawCard?.id;
+    return () => {
+      if (handledId != null) handledCardIdsRef.current.delete(handledId);
+    };
   }, [rawCard?.id]);
 
   // Coach: derived from the current card's stage so the right tutor
@@ -207,17 +260,45 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     const goLearn = () => setTab && setTab('learn');
     const goChallenge = () => setTab && setTab('quiz');
 
+    // If the user just cleared a stage and the next one is unlocked with content
+    // still to learn, point them forward instead of leaving a dead end.
+    const stages = stageState?.stages || [];
+    // Only treat the next stage as "freshly cleared → start it" when it hasn't
+    // been started yet (seen === 0). If it's already in progress, the empty
+    // queue just means the daily allotment is drained, so we fall through to the
+    // accurate generic "No reviews due right now / Continue your path" copy
+    // instead of wrongly saying "Start Stage N" for a stage already underway.
+    const nextStage = stages.find(
+      s => s.id === stageState?.currentStage && s.unlocked && !s.complete && s.total > 0 && (s.seen || 0) === 0
+    );
+    const clearedStage = nextStage
+      ? stages.filter(s => s.complete && s.total > 0 && s.id < nextStage.id).slice(-1)[0]
+      : null;
+
     let emptyTitle;
     let emptySub;
+    let primaryLabel = null;
+    let primaryAction = null;
     if (isMissionSession) {
       emptyTitle = 'Mission complete';
       emptySub = `You finished this mission's ${sessionScope.total || sessionDone} cards. Keep going on your path.`;
+      primaryLabel = 'Continue your path';
+      primaryAction = goLearn;
+    } else if (clearedStage && nextStage) {
+      emptyTitle = `Stage ${clearedStage.id} complete. No reviews due right now.`;
+      emptySub = `Nice work — you've learned all of ${clearedStage.name}. Start Stage ${nextStage.id} to keep going.`;
+      primaryLabel = `Start Stage ${nextStage.id}`;
+      primaryAction = goLearn;
     } else if (allContentSeen) {
       emptyTitle = "You're caught up";
       emptySub = 'Come back later to review and master what you learned. Your reviews appear here when they’re due.';
+      primaryLabel = 'Try a Challenge';
+      primaryAction = goChallenge;
     } else {
       emptyTitle = 'No reviews due right now';
       emptySub = 'Continue your learning path to learn new words, or try a Challenge to test what you know.';
+      primaryLabel = 'Continue your path';
+      primaryAction = goLearn;
     }
 
     return (
@@ -235,18 +316,16 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
           )}
           {setTab && (
             <div className="empty-actions">
-              {!allContentSeen && (
-                <button type="button" className="btn-primary empty-cta" onClick={goLearn}>
-                  Continue your path <ChevronRight size={16} />
+              {primaryLabel && (
+                <button type="button" className="btn-primary empty-cta" onClick={primaryAction}>
+                  {primaryLabel} <ChevronRight size={16} />
                 </button>
               )}
-              <button
-                type="button"
-                className={allContentSeen ? 'btn-primary empty-cta' : 'empty-cta-secondary'}
-                onClick={goChallenge}
-              >
-                Try a Challenge
-              </button>
+              {primaryAction !== goChallenge && (
+                <button type="button" className="empty-cta-secondary" onClick={goChallenge}>
+                  Try a Challenge
+                </button>
+              )}
             </div>
           )}
         </div>
