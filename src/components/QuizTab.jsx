@@ -171,10 +171,15 @@ function collectDistractors(correct, pool, type, voice) {
   return picked;
 }
 
-function buildQuestions(type, maxUnlockedStage, voice) {
-  const upper = maxUnlockedStage || 1;
+function buildQuestions(type, stageId, voice) {
+  // Stage-scoped exam: only cards from the selected stage. Distractors are
+  // drawn from this same stage pool (collectDistractors below), so a Stage N
+  // Challenge tests Stage N content exclusively. Locked stages are never
+  // selectable (the picker only offers unlocked stages), so out-of-scope
+  // cards can't leak in.
+  const stage = stageId || 1;
   const pool = CARDS
-    .filter(card => (card.stage || 1) <= upper)
+    .filter(card => (card.stage || 1) === stage)
     .filter(card => isEligible(card, type, voice));
 
   const candidates = shuffle(pool);
@@ -205,9 +210,22 @@ export default function QuizTab({
   onComplete,
   voice,
   maxUnlockedStage,
+  stageState,
   audioRate = 0.95,
   showCharacters = true,
 }) {
+  // Stages the user may be challenged on: unlocked and with content. Locked
+  // stages are intentionally excluded so a Stage N Challenge can never pull
+  // cards the user hasn't reached.
+  const challengeStages = useMemo(
+    () => (stageState?.stages || []).filter(s => s.unlocked && s.total > 0),
+    [stageState]
+  );
+  // Default the picker to the current in-progress stage, clamped to what's
+  // unlocked. Falls back to the highest unlocked stage if no in-progress one.
+  const upper = maxUnlockedStage || 1;
+  const defaultStage = Math.min(stageState?.currentStage || upper, upper);
+  const [selectedStage, setSelectedStage] = useState(defaultStage);
   const [type, setType] = useState('thai-to-en');
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
@@ -223,8 +241,8 @@ export default function QuizTab({
   const selected = current?.options.find(option => option.id === selectedId) || null;
   const selectedIsCorrect = !!(selected && current && selected.id === current.correct.id);
   const coachId = useMemo(
-    () => resolveCoachIdForStage(current?.correct?.stage || maxUnlockedStage || 1),
-    [current?.correct?.stage, maxUnlockedStage]
+    () => resolveCoachIdForStage(current?.correct?.stage || selectedStage || maxUnlockedStage || 1),
+    [current?.correct?.stage, selectedStage, maxUnlockedStage]
   );
   const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'quiz' });
 
@@ -234,9 +252,10 @@ export default function QuizTab({
   }, [current?.id]);
 
   const startQuiz = (nextType) => {
-    const built = buildQuestions(nextType, maxUnlockedStage, voice);
+    const stage = selectedStage || upper;
+    const built = buildQuestions(nextType, stage, voice);
     if (built.questions.length < 1) {
-      setPoolError(`Not enough unlocked cards for this challenge yet. Available cards: ${built.poolSize}.`);
+      setPoolError(`Not enough Stage ${stage} cards for this challenge yet. Available cards: ${built.poolSize}.`);
       return;
     }
     setType(nextType);
@@ -326,8 +345,26 @@ export default function QuizTab({
             </div>
           )}
           <div className="quiz-mode-intro-icon"><Award size={34} /></div>
-          <h2 className="quiz-mode-title">Challenge</h2>
-          <p className="quiz-mode-sub">Test yourself with quick questions and build confidence.</p>
+          <h2 className="quiz-mode-title">Stage {selectedStage} Challenge</h2>
+          <p className="quiz-mode-sub">Pick a stage, then a direction. You'll be tested only on that stage's cards.</p>
+          {challengeStages.length > 1 && (
+            <div className="quiz-stage-select">
+              <div className="quiz-stage-select-label">Choose a stage</div>
+              <div className="quiz-stage-chips" role="group" aria-label="Select challenge stage">
+                {challengeStages.map(s => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className={`quiz-stage-chip ${s.id === selectedStage ? 'quiz-stage-chip-active' : ''}`}
+                    aria-pressed={s.id === selectedStage}
+                    onClick={() => { setSelectedStage(s.id); setPoolError(null); }}
+                  >
+                    Stage {s.id}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
           <div className="quiz-mode-direction-grid">
             {Object.entries(QUESTION_TYPES).map(([id, config]) => (
@@ -365,7 +402,7 @@ export default function QuizTab({
           <div className="quiz-mode-results-msg">{msg}</div>
           <div className="quiz-results-actions">
             <button className="btn-primary" onClick={() => startQuiz(type)}><RotateCcw size={14} /> Try again</button>
-            <button className="btn-secondary" onClick={resetQuiz}>Change direction</button>
+            <button className="btn-secondary" onClick={resetQuiz}>Change stage or direction</button>
           </div>
         </div>
       </div>
@@ -380,7 +417,7 @@ export default function QuizTab({
     <div className="tab-content quiz-mode">
       <div className="quiz-mode-header">
         <div>
-          <div className="quiz-progress-text">Question {idx + 1} of {questions.length}</div>
+          <div className="quiz-progress-text">Stage {selectedStage} Challenge · Question {idx + 1} of {questions.length}</div>
           <div className="quiz-mode-type">{typeConfig.label}</div>
         </div>
         <div className="quiz-score-text">Score: <span>{score}</span></div>

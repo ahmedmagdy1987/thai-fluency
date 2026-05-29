@@ -31,6 +31,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
+  const [sessionNewCount, setSessionNewCount] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [ratingLocked, setRatingLocked] = useState(false);
   const speakingTimerRef = useRef(null);
@@ -38,20 +39,59 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const actionLockRef = useRef(null);
   // The new-card allotment is frozen once per session (see queue useMemo).
   const newAllotmentRef = useRef({ key: null, ids: [] });
+  // Stage Review freezes its (already-seen) stage deck once per session, due
+  // cards first. Cards reviewed this session are tracked so the one-pass queue
+  // counts down to a completion state instead of looping forever on non-due
+  // replays (which never re-schedule out of view).
+  const stageReviewAllotmentRef = useRef({ key: null, ids: [] });
+  const sessionReviewedRef = useRef(new Set());
   const sessionKey = sessionScope?.type === 'mission'
     ? `mission:${sessionScope.missionId}`
-    : sessionScope?.type === 'learn'
-      ? 'learn'
-      : 'practice';
+    : sessionScope?.type === 'stageReview'
+      ? `stageReview:${sessionScope.stageId}`
+      : sessionScope?.type === 'learn'
+        // chunk nonce lets "Continue Stage N" pull the next batch of unseen
+        // cards by changing the session key (which re-freezes the allotment).
+        ? `learn:${sessionScope.chunk || 0}`
+        : 'practice';
   // New unseen cards are only introduced in a LEARNING session — a Stage-1
   // mission or a Learn-path stage session. Entering the Practice/Cards tab
   // directly (no scope) is REVIEW-ONLY: it shows due SRS cards and never
   // teaches new cards, so it can't advance stage progress or farm XP.
   const isLearningSession = sessionScope?.type === 'mission' || sessionScope?.type === 'learn';
+  // Stage Review: an intentional review of a COMPLETED stage launched from the
+  // Learn path. It is NOT a learning session — it shows that stage's already-
+  // seen cards for review, never introduces new cards, and never advances
+  // stage progress. XP is gated in reviewOne (due → review XP, non-due → 0).
+  const isStageReview = sessionScope?.type === 'stageReview';
 
   const queue = useMemo(() => {
     const now = Date.now();
     const safeProgress = progress && typeof progress === 'object' ? progress : {};
+
+    // --- Stage Review (intentional review of a completed stage) ------------
+    // Review-only and scoped to one stage's already-seen cards. The deck is
+    // frozen once per session, due cards first, then non-due replays; cards
+    // reviewed this session drop out so the queue counts down. Never calls
+    // getNewCards, so it can't introduce new learning or advance progress.
+    if (isStageReview) {
+      const stageId = sessionScope.stageId;
+      if (stageReviewAllotmentRef.current.key !== sessionKey) {
+        const stageSeen = CARDS.filter(c => (c.stage || 1) === stageId && safeProgress[c.id]);
+        const dueSeen = getDueCards(progress, stageSeen, now);
+        const dueIds = new Set(dueSeen.map(c => c.id));
+        const restSeen = stageSeen.filter(c => !dueIds.has(c.id));
+        stageReviewAllotmentRef.current = {
+          key: sessionKey,
+          ids: [...dueSeen, ...restSeen].map(c => c.id),
+        };
+      }
+      return stageReviewAllotmentRef.current.ids
+        .filter(id => !sessionReviewedRef.current.has(id))
+        .map(id => CARD_BY_ID.get(id))
+        .filter(Boolean);
+    }
+
     const missionCardIds = Array.isArray(sessionScope?.cardIds) ? new Set(sessionScope.cardIds) : null;
     const filteredCards = missionCardIds
       ? CARDS.filter(c => missionCardIds.has(c.id))
@@ -105,7 +145,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       .map(id => CARD_BY_ID.get(id))
       .filter(Boolean);
     return [...due, ...newOnes];
-  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope, sessionKey, stageState, isLearningSession]);
+  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope, sessionKey, stageState, isLearningSession, isStageReview, sessionDone]);
 
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);
@@ -140,8 +180,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setRevealed(false);
     setSessionDone(0);
     setSessionCorrect(0);
+    setSessionNewCount(0);
     setRatingLocked(false);
     handledCardIdsRef.current = new Set();
+    sessionReviewedRef.current = new Set();
     actionLockRef.current = null;
   }, [sessionKey]);
 
@@ -217,12 +259,19 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
   const handleRate = (rating) => {
     if (!rawCard || ratingLocked || actionLockRef.current === rawCard.id) return;
+    // Captured before reviewOne mutates progress — used for the "you learned
+    // N new words" Learn-chunk completion copy.
+    const wasNew = !(progress && progress[rawCard.id]);
     actionLockRef.current = rawCard.id;
     setRatingLocked(true);
     if (handledCardIdsRef.current.has(rawCard.id)) return;
     handledCardIdsRef.current.add(rawCard.id);
     const result = reviewOne(rawCard.id, rating);
     if (result === false) return;
+    // Remember it was handled this session so a one-pass Stage Review counts
+    // down (non-due replays don't re-schedule out of the queue on their own).
+    sessionReviewedRef.current.add(rawCard.id);
+    if (wasNew) setSessionNewCount(n => n + 1);
     const rushed = !!(result && result.rushed);
     const correct = rating >= 3;
     if (correct) setSessionCorrect(c => c + 1);
@@ -245,10 +294,13 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
   const handleSkip = () => {
     if (!rawCard || !markCardKnown || ratingLocked || actionLockRef.current === rawCard.id) return;
+    const wasNew = !(progress && progress[rawCard.id]);
     actionLockRef.current = rawCard.id;
     setRatingLocked(true);
     if (handledCardIdsRef.current.has(rawCard.id)) return;
     handledCardIdsRef.current.add(rawCard.id);
+    sessionReviewedRef.current.add(rawCard.id);
+    if (wasNew) setSessionNewCount(n => n + 1);
     setSessionDone(d => d + 1);
     setRevealed(false);
     coach.react('correct', { duration: 1200, message: 'Marked as known. Onward.' });
@@ -259,9 +311,11 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     if (!undoLastReview || !lastReviewSnapshot) return;
     undoLastReview();
     handledCardIdsRef.current.delete(lastReviewSnapshot.cardId);
+    sessionReviewedRef.current.delete(lastReviewSnapshot.cardId);
     actionLockRef.current = null;
     setRatingLocked(false);
     setSessionDone(d => Math.max(0, d - 1));
+    if (!lastReviewSnapshot.previousProgress) setSessionNewCount(n => Math.max(0, n - 1));
     if (lastReviewSnapshot.rating >= 3) setSessionCorrect(c => Math.max(0, c - 1));
     setRevealed(true); // show the card revealed since they're correcting it
     coach.react('thinking', { duration: 1000, message: 'Re-rate it if needed.' });
@@ -272,6 +326,33 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     const allContentSeen = CARDS.every(c => progress && progress[c.id]);
     const goLearn = () => setTab && setTab('learn');
     const goChallenge = () => setTab && setTab('quiz');
+    // Continue the current Learn-path stage with the NEXT chunk of unseen
+    // cards. Bumping the chunk nonce changes the session key, which re-freezes
+    // the new-card allotment and (since this chunk is now seen) pulls the next
+    // batch — instead of dumping the user into a generic "no reviews" state.
+    const continueLearnChunk = () => {
+      const nextChunk = (sessionScope?.chunk || 0) + 1;
+      setTab && setTab('cards', { sessionScope: { type: 'learn', chunk: nextChunk } });
+    };
+
+    // How many unseen cards remain in the current Learn frontier (current,
+    // not-yet-complete stages within the unlocked range). Drives the "Continue
+    // Stage N" learning-completion state so a big stage isn't cut off at one
+    // 10-card chunk.
+    const isLearnSession = sessionScope?.type === 'learn';
+    let learnableRemaining = 0;
+    if (isLearnSession) {
+      const completeStageIds = new Set(
+        (stageState?.stages || []).filter(s => s.complete).map(s => s.id)
+      );
+      const lower = startedStage || 1;
+      const upper = maxUnlockedStage || 1;
+      learnableRemaining = CARDS.filter(c => {
+        const st = c.stage || 1;
+        return st >= lower && st <= upper && !completeStageIds.has(st) && !(progress && progress[c.id]);
+      }).length;
+    }
+    const learnStageNum = stageState?.currentStage || (startedStage || 1);
 
     // If the user just cleared a stage and the next one is unlocked with content
     // still to learn, point them forward instead of leaving a dead end.
@@ -297,6 +378,23 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       emptySub = `You finished this mission's ${sessionScope.total || sessionDone} cards. Keep going on your path.`;
       primaryLabel = 'Continue your path';
       primaryAction = goLearn;
+    } else if (isStageReview) {
+      // Stage Review session ran through every seen card in the stage.
+      emptyTitle = `Stage ${sessionScope.stageId} review complete`;
+      emptySub = 'Nice work reviewing. Continue your path or test yourself with a Challenge.';
+      primaryLabel = 'Continue your path';
+      primaryAction = goLearn;
+    } else if (isLearnSession && learnableRemaining > 0) {
+      // Learn chunk finished but the stage still has new cards — keep the user
+      // in Learn mode rather than showing a misleading "No reviews due" state.
+      // Only claim "N new words" when new cards were actually learned this
+      // chunk; a chunk of pure due reviews shouldn't be mislabeled as learning.
+      emptyTitle = 'Nice work!';
+      emptySub = sessionNewCount > 0
+        ? `You learned ${sessionNewCount} new ${sessionNewCount === 1 ? 'word' : 'words'}. Continue Stage ${learnStageNum} when you're ready.`
+        : `Continue Stage ${learnStageNum} when you're ready.`;
+      primaryLabel = `Continue Stage ${learnStageNum}`;
+      primaryAction = continueLearnChunk;
     } else if (clearedStage && nextStage) {
       emptyTitle = `Stage ${clearedStage.id} complete. No reviews due right now.`;
       emptySub = `Nice work — you've learned all of ${clearedStage.name}. Start Stage ${nextStage.id} to keep going.`;
@@ -352,6 +450,11 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
   return (
     <div className="tab-content cards-tab-content">
+      {isStageReview && (
+        <div className="cards-session-banner cards-session-banner-review">
+          Review Stage {sessionScope.stageId} · review only
+        </div>
+      )}
       <div className="cards-header">
         <div className="cards-progress-text">
           <span className="cards-progress-text-left">

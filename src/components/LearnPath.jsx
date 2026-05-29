@@ -244,11 +244,13 @@ export default function LearnPath({
                 onStartMissionCards(currentMission);
                 return;
               }
-              // A completed stage never re-teaches new cards: open review-only
-              // Practice (due cards), which guides to the next stage when none
-              // are due. An active/incomplete stage starts a learning session.
+              // A completed stage never re-teaches new cards: open a Stage
+              // Review session scoped to that stage's already-seen cards. Due
+              // cards earn review XP; non-due replays earn 0. It never advances
+              // stage progress. An active/incomplete stage starts a learning
+              // session instead.
               if (isDone) {
-                setTab('cards');
+                setTab('cards', { sessionScope: { type: 'stageReview', stageId: S.id, stageName: S.name } });
                 return;
               }
               setTab('cards', { sessionScope: { type: 'learn' } });
@@ -266,7 +268,7 @@ export default function LearnPath({
                   className="learn-path-node-btn"
                   onClick={onClick}
                   aria-disabled={isLocked}
-                  aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : ''}`}
+                  aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : isDone ? ' (complete — tap to review)' : ''}`}
                 >
                   <div className="learn-path-character" aria-hidden="true">
                     <span className="learn-path-character-emoji">
@@ -298,7 +300,7 @@ export default function LearnPath({
                     )}
                     {isDone && !isEmpty && (
                       <div className="learn-path-done-note">
-                        Stage {S.id} complete — every word learned. Keep reviewing to master them.
+                        Stage {S.id} complete — every word learned. Tap to review Stage {S.id} (review only — due cards earn XP).
                       </div>
                     )}
                     {isEmpty && (
