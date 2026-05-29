@@ -204,17 +204,47 @@ Mastery is a long-term review outcome, not a gate. The UI now says
 - `App.jsx` `reviewOne` now detects **blind Easy/Good spam**: high-value ratings
   (Good/Easy) entered faster than **1300 ms** apart count toward a run; once the
   run exceeds **5 consecutive** rushed ratings, XP for those ratings is **capped
-  at 1**. Any slower rating, or any low rating (Again/Hard), resets the run, so
-  normal pace is never penalised.
-- A gentle coach message appears on a throttled rating: *"Quick pass saved.
-  Review again later to master it."*
+  at 1** (the run is ceilinged at 8). A gentle coach message appears on a
+  throttled rating: *"Quick pass saved. Review again later to master it."*
+- **Persistence (the cap survives sessions).** The rush run and the timestamp
+  of the last rating are stored in their own localStorage key
+  (`thai-fluency-rush-guard-v1`, via `loadRushGuard`/`saveRushGuard` in
+  `lib/storage.js`). The cap survives **refresh, route changes, and immediately
+  leaving/returning to Practice**, closing the previous farm loop where
+  re-entering the page reset the run. The key is **not** wiped by `clearState()`
+  on sign-out (else sign-out/in would be a reset vector) and is device-local —
+  an anti-abuse signal, not user content, so it is not synced to the cloud (no
+  schema change). Signed-in and local users share this path; demo never reviews.
+- **Recovery (honest users are never punished forever):**
+  - Idle **≥ 10 minutes** since the last rating resets the run to 0 (cooldown).
+  - An engaged-pace rating (slower than 1300 ms) decays the run by 1.
+  - An Again/Hard rating (genuine struggle) decays the run by 2.
+- Normal-paced learning therefore always earns full XP; Skip stays **0 XP**.
 - SRS scheduling, learned/seen counts, and stage unlocks are **unaffected** —
   only the XP currency is throttled. Mastery still requires real spaced review,
   so rushing cannot meaningfully "finish" the app.
-- Undo reverses the **exact XP awarded** (throttled or not) and rolls back the
-  rush bookkeeping, so the undo path stays accurate.
+- Undo reverses the **exact XP awarded** (throttled or not) and restores the
+  persisted rush guard to its exact pre-rating state, so there are no duplicate
+  XP or stale-cap issues.
 - Mission completion rewards continue to fire exactly once (existing
   `missionRewardLocksRef` guard), and require all mission cards seen.
+
+### Cards/Practice progress labels (clarified)
+
+The ambiguous "`N` LEFT" / "`N` done" header was replaced with context-aware,
+responsive labels (`CardsTab`). Desktop shows full phrasing; mobile (≤640px)
+shows a compact form via the `qr-full`/`qr-short` CSS toggle:
+
+| Context | Desktop | Mobile |
+| --- | --- | --- |
+| Mission session | "`N` cards left in this mission" | "`N` cards left" |
+| General practice (has new cards) | "`N` cards left in this session" | "`N` cards left" |
+| Pure review (all remaining already seen) | "`N` reviews left" | "`N` reviews left" |
+| Cards done counter | "`N` cards done" | "`N` done" |
+| Nothing left | Empty state ("Mission complete" / "No reviews due right now" / "You're caught up") |
+
+Review vs session is detected from the live queue: if every remaining card has
+SRS progress it is a due-review session, otherwise it is a learning session.
 
 ### Practice empty state (fixed)
 

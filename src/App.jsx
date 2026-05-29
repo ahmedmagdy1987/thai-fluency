@@ -5,7 +5,7 @@ import { STAGES } from './data/taxonomy.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState, clearState } from './lib/storage.js';
+import { loadState, saveState, clearState, loadRushGuard, saveRushGuard } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
@@ -78,15 +78,25 @@ const CLOUD_PROFILE_SETTING_KEYS = [
 const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
 const MINI_UNIT_REWARD_XP = 45;
-// Anti-rushing thresholds. Once a user fires more than RUSH_RUN_LIMIT
-// consecutive high-value ratings (Good/Easy) faster than RUSH_GAP_MS apart —
-// i.e. with no time to actually recall the card — further rushed ratings are
-// capped at RUSH_XP_CAP so XP/progression can't be farmed by spamming Easy.
-// A single slower rating, or any low rating (Again/Hard), resets the run, so
-// honest pace is never penalised.
+// Anti-rushing thresholds. We track a "rush run": consecutive high-value
+// (Good/Easy) ratings entered faster than RUSH_GAP_MS apart — i.e. with no
+// time to actually recall the card. Once the run exceeds RUSH_RUN_LIMIT, XP
+// for those ratings is capped at RUSH_XP_CAP so XP/progression can't be farmed
+// by spamming Easy. The run (and the timestamp of the last rating) is PERSISTED
+// in localStorage so the cap survives refresh, route changes, and immediately
+// leaving/returning to Practice — closing the leave/re-enter farm loop.
+//
+// Recovery, so honest users are never punished forever:
+//   - Idle ≥ RUSH_COOLDOWN_MS (10 min) since the last rating → run resets to 0.
+//   - An engaged-pace rating (slower than RUSH_GAP_MS) decays the run by 1.
+//   - An Again/Hard rating (genuine struggle) decays the run by 2.
+// The run is ceilinged at RUSH_RUN_CEIL so even a heavy spammer recovers after
+// a few honest ratings rather than being stuck until the cooldown.
 const RUSH_GAP_MS = 1300;
 const RUSH_RUN_LIMIT = 5;
+const RUSH_RUN_CEIL = RUSH_RUN_LIMIT + 3; // 8 — bounded so recovery isn't endless
 const RUSH_XP_CAP = 1;
+const RUSH_COOLDOWN_MS = 10 * 60 * 1000;  // 10 min idle resets the rush guard
 const SUPER_PROMPT_STORAGE_KEY = 'tuk-talk-thai-super-prompt-last-shown';
 const TAB_ROUTES = {
   learn: '/learn',
@@ -227,8 +237,10 @@ export default function TukTalkThaiApp() {
   const reviewLocksRef = useRef(new Set());
   const missionRewardLocksRef = useRef(new Set());
   const achievementLocksRef = useRef(new Set());
-  const ratingTimesRef = useRef([]); // recent rating timestamps (rush detection)
-  const rushRunRef = useRef(0);      // consecutive rushed high-value ratings
+  // Persisted anti-rush guard: { rushRun, lastRatingAt }. Lazily hydrated once
+  // from localStorage so the cap survives refresh / route changes / re-entry.
+  const rushGuardRef = useRef(null);
+  if (rushGuardRef.current === null) rushGuardRef.current = loadRushGuard();
 
   useEffect(() => {
     profileSettingsRef.current = (profile?.settings && typeof profile.settings === 'object' && !Array.isArray(profile.settings))
@@ -790,37 +802,44 @@ export default function TukTalkThaiApp() {
     reviewLocksRef.current.add(reviewKey);
     window.setTimeout(() => reviewLocksRef.current.delete(reviewKey), 1500);
 
-    // --- Anti-rushing -------------------------------------------------------
-    // A "rushed" rating is a high-value rating (Good/Easy) entered faster than
-    // RUSH_GAP_MS after the previous one. We count consecutive rushed ratings;
-    // once the run exceeds RUSH_RUN_LIMIT, the XP for those ratings is capped
-    // so blind Easy spam can't farm XP. SRS scheduling, learned/seen counts,
-    // and stage unlocks are unaffected — only the XP currency is throttled.
+    // --- Anti-rushing (persisted across sessions) ---------------------------
+    // The rush run + last-rating timestamp live in localStorage (rushGuardRef),
+    // so the XP cap is NOT reset by refresh / route change / leaving+returning.
+    // Only the XP currency is throttled — SRS scheduling, learned/seen counts,
+    // and stage unlocks are never affected.
     const now = Date.now();
-    const times = ratingTimesRef.current;
-    const prevT = times.length ? times[times.length - 1] : 0;
-    times.push(now);
-    if (times.length > 16) times.shift();
-    const fast = prevT > 0 && (now - prevT) < RUSH_GAP_MS;
+    const guard = rushGuardRef.current || { rushRun: 0, lastRatingAt: 0 };
+    const prevGuard = { rushRun: guard.rushRun || 0, lastRatingAt: guard.lastRatingAt || 0 };
+    const gap = prevGuard.lastRatingAt > 0 ? now - prevGuard.lastRatingAt : Infinity;
     const highValue = rating >= 3;
-    const prevRushRun = rushRunRef.current; // captured pre-mutation for exact undo
-    if (fast && highValue) rushRunRef.current += 1;
-    else rushRunRef.current = 0;
+    let nextRun;
+    if (gap >= RUSH_COOLDOWN_MS) {
+      nextRun = 0;                                              // idle long enough → reset
+    } else if (gap < RUSH_GAP_MS && highValue) {
+      nextRun = Math.min(prevGuard.rushRun + 1, RUSH_RUN_CEIL); // rapid Good/Easy → escalate
+    } else if (rating <= 2) {
+      nextRun = Math.max(0, prevGuard.rushRun - 2);             // Again/Hard → decay fast
+    } else {
+      nextRun = Math.max(0, prevGuard.rushRun - 1);             // engaged pace → decay
+    }
+    const rushed = nextRun > RUSH_RUN_LIMIT;
     const baseXp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
-    const rushed = rushRunRef.current > RUSH_RUN_LIMIT;
     const xp = rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp;
+    // Commit + persist immediately so the cap is durable mid-session.
+    rushGuardRef.current = { rushRun: nextRun, lastRatingAt: now };
+    saveRushGuard(rushGuardRef.current);
     // ------------------------------------------------------------------------
 
     // Snapshot previous state for undo. Store the XP actually awarded so undo
-    // reverses the throttled amount, and the pre-rating rush counter so undo
-    // restores the exact run length (a reset-to-0 is not a simple -1).
+    // reverses the throttled amount, and the pre-rating rush guard so undo
+    // restores the exact persisted run length and timestamp.
     setLastReviewSnapshot({
       cardId,
       rating,
       previousProgress,
       reviewKey,
       xpAwarded: xp,
-      prevRushRun,
+      prevRushGuard: prevGuard,
       timestamp: now,
     });
     setProgress(p => {
@@ -837,12 +856,14 @@ export default function TukTalkThaiApp() {
     if (!lastReviewSnapshot) return;
     const { cardId, rating, previousProgress, reviewKey } = lastReviewSnapshot;
     if (reviewKey) reviewLocksRef.current.delete(reviewKey);
-    // Roll back the rush-detection bookkeeping to its exact pre-rating state
-    // (a reset-to-0 can't be inverted by a blind -1, so restore the snapshot).
-    if (ratingTimesRef.current.length) ratingTimesRef.current.pop();
-    rushRunRef.current = typeof lastReviewSnapshot.prevRushRun === 'number'
-      ? lastReviewSnapshot.prevRushRun
-      : Math.max(0, rushRunRef.current - 1);
+    // Roll back the persisted rush guard to its exact pre-rating state.
+    if (lastReviewSnapshot.prevRushGuard) {
+      rushGuardRef.current = {
+        rushRun: lastReviewSnapshot.prevRushGuard.rushRun || 0,
+        lastRatingAt: lastReviewSnapshot.prevRushGuard.lastRatingAt || 0,
+      };
+      saveRushGuard(rushGuardRef.current);
+    }
     setProgress(p => {
       const next = { ...(p && typeof p === 'object' ? p : {}) };
       if (previousProgress) next[cardId] = previousProgress;
