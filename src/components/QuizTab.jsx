@@ -1,23 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Award, Check, CheckCircle2, ChevronRight, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
-import { CARDS } from '../data/cards.js';
-import { displayCard } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
+import {
+  buildChallenge,
+  countChallengePool,
+  MIN_CHALLENGE_POOL,
+  getDisplayed,
+  getPromptText,
+  getAnswerText,
+} from '../lib/challengeQuestions.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
 
-const QUESTION_COUNT = 12;
-const MIN_DISTRACTORS = 2;
-const MAX_DISTRACTORS = 3;
-const EXCLUDED_CHALLENGE_CARD_IDS = new Set([
-  // Client-reported bad Challenge item: คา / "to obstruct; to be stuck".
-  // It produced a low-quality generic verb question; keep it out of Challenge
-  // until the content can be reviewed without changing the card data.
-  2250,
-]);
-
+// Direction labels/copy for the two Challenge modes. The question-selection
+// logic lives in lib/challengeQuestions.js (stage + learned-card scoping).
 const QUESTION_TYPES = {
   'thai-to-en': {
     label: 'Thai to English',
@@ -33,184 +31,12 @@ const QUESTION_TYPES = {
   },
 };
 
-function shuffle(items) {
-  return [...items].sort(() => Math.random() - 0.5);
-}
-
-function normalizeAnswer(text, type) {
-  const base = String(text || '').trim().toLowerCase();
-  if (type === 'en-to-thai') {
-    return base.replace(/\s+/g, '');
-  }
-  return base
-    .replace(/\([^)]*\)/g, '')
-    .replace(/\b(male|female|formal|casual)\b/g, '')
-    .replace(/[^a-z0-9\u0E00-\u0E7F]+/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function answerMeaningParts(text) {
-  return String(text || '')
-    .toLowerCase()
-    .replace(/\([^)]*\)/g, ' ')
-    .split(/[;\/,|]+|\bor\b/gi)
-    .map(part => part
-      .replace(/[^a-z0-9\u0E00-\u0E7F]+/gi, ' ')
-      .replace(/\b(to|a|an|the|be|is|are|am|for|of|and|or|it|this|that|thing|male|female|formal|casual)\b/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim())
-    .filter(Boolean);
-}
-
-function answerTokens(text) {
-  return new Set(answerMeaningParts(text).join(' ').split(/\s+/).filter(Boolean));
-}
-
-function tokenOverlapRatio(a, b) {
-  if (a.size === 0 || b.size === 0) return 0;
-  let overlap = 0;
-  a.forEach(token => { if (b.has(token)) overlap += 1; });
-  return overlap / Math.min(a.size, b.size);
-}
-
-function sharesMeaningPart(a, b) {
-  const aParts = answerMeaningParts(a);
-  const bParts = answerMeaningParts(b);
-  return aParts.some(aPart => bParts.some(bPart => {
-    if (aPart === bPart) return true;
-    if (aPart.length < 4 || bPart.length < 4) return false;
-    return aPart.includes(bPart) || bPart.includes(aPart);
-  }));
-}
-
-function answersTooSimilar(a, b, type) {
-  const aNorm = normalizeAnswer(a, type);
-  const bNorm = normalizeAnswer(b, type);
-  if (!aNorm || !bNorm) return true;
-  if (aNorm === bNorm) return true;
-  if (type === 'en-to-thai') {
-    if (aNorm.length >= 4 && bNorm.length >= 4 && (aNorm.includes(bNorm) || bNorm.includes(aNorm))) return true;
-    return false;
-  }
-  if (sharesMeaningPart(a, b)) return true;
-  return tokenOverlapRatio(answerTokens(a), answerTokens(b)) >= 0.75;
-}
-
-function choicesTooSimilar(candidate, existing, type, voice) {
-  if (answersTooSimilar(getAnswerText(candidate, type, voice), getAnswerText(existing, type, voice), type)) {
-    return true;
-  }
-  if (type === 'en-to-thai') {
-    return answersTooSimilar(getDisplayed(candidate, voice)?.en, getDisplayed(existing, voice)?.en, 'thai-to-en');
-  }
-  return false;
-}
-
-function getDisplayed(card, voice) {
-  return displayCard(card, voice) || card;
-}
-
-function getPromptText(card, type, voice) {
-  const c = getDisplayed(card, voice);
-  return type === 'thai-to-en' ? c.thai : c.en;
-}
-
-function getAnswerText(card, type, voice) {
-  const c = getDisplayed(card, voice);
-  return type === 'thai-to-en' ? c.en : c.thai;
-}
-
-function isEligible(card, type, voice) {
-  return !!(
-    card &&
-    !EXCLUDED_CHALLENGE_CARD_IDS.has(card.id) &&
-    card.thai &&
-    card.en &&
-    getPromptText(card, type, voice) &&
-    getAnswerText(card, type, voice)
-  );
-}
-
-function collectDistractors(correct, pool, type, voice) {
-  const correctNorm = normalizeAnswer(getAnswerText(correct, type, voice), type);
-  const seenIds = new Set([correct.id]);
-  const seenAnswers = new Set([correctNorm]);
-  const selectedCards = [correct];
-  const picked = [];
-
-  const tiers = [
-    card => (card.stage || 1) === (correct.stage || 1) && card.cat === correct.cat,
-    card => card.cat === correct.cat,
-    card => (card.stage || 1) === (correct.stage || 1),
-    () => true,
-  ];
-
-  tiers.forEach(matchesTier => {
-    if (picked.length >= MAX_DISTRACTORS) return;
-    const candidates = shuffle(pool).filter(card => {
-      if (picked.length >= MAX_DISTRACTORS) return false;
-      if (seenIds.has(card.id) || !matchesTier(card)) return false;
-      const answer = getAnswerText(card, type, voice);
-      const norm = normalizeAnswer(answer, type);
-      if (!norm || seenAnswers.has(norm)) return false;
-      if (selectedCards.some(existing => choicesTooSimilar(card, existing, type, voice))) return false;
-      return true;
-    });
-
-    candidates.forEach(card => {
-      if (picked.length >= MAX_DISTRACTORS) return;
-      const norm = normalizeAnswer(getAnswerText(card, type, voice), type);
-      seenIds.add(card.id);
-      seenAnswers.add(norm);
-      selectedCards.push(card);
-      picked.push(card);
-    });
-  });
-
-  return picked;
-}
-
-function buildQuestions(type, stageId, voice) {
-  // Stage-scoped exam: only cards from the selected stage. Distractors are
-  // drawn from this same stage pool (collectDistractors below), so a Stage N
-  // Challenge tests Stage N content exclusively. Locked stages are never
-  // selectable (the picker only offers unlocked stages), so out-of-scope
-  // cards can't leak in.
-  const stage = stageId || 1;
-  const pool = CARDS
-    .filter(card => (card.stage || 1) === stage)
-    .filter(card => isEligible(card, type, voice));
-
-  const candidates = shuffle(pool);
-  const questions = [];
-  const usedCorrectAnswers = new Set();
-
-  candidates.forEach(correct => {
-    if (questions.length >= QUESTION_COUNT) return;
-    const correctNorm = normalizeAnswer(getAnswerText(correct, type, voice), type);
-    if (!correctNorm || usedCorrectAnswers.has(correctNorm)) return;
-
-    const distractors = collectDistractors(correct, pool, type, voice);
-    if (distractors.length < MIN_DISTRACTORS) return;
-
-    usedCorrectAnswers.add(correctNorm);
-    questions.push({
-      id: `${type}-${correct.id}-${questions.length}`,
-      type,
-      correct,
-      options: shuffle([correct, ...distractors]),
-    });
-  });
-
-  return { poolSize: pool.length, questions };
-}
-
 export default function QuizTab({
   onComplete,
   voice,
   maxUnlockedStage,
   stageState,
+  progress,
   audioRate = 0.95,
   showCharacters = true,
 }) {
@@ -236,6 +62,24 @@ export default function QuizTab({
   const [poolError, setPoolError] = useState(null);
   const checkLockedRef = useRef(false);
 
+  // Is the selected stage fully complete? Completed stages may be challenged on
+  // their whole deck (mastery review); in-progress/unstarted stages only on the
+  // cards the user has actually learned (seen) so far.
+  const selectedStageMeta = useMemo(
+    () => (stageState?.stages || []).find(s => s.id === selectedStage) || null,
+    [stageState, selectedStage]
+  );
+  const selectedStageComplete = !!selectedStageMeta?.complete;
+  // How many cards are actually challengeable for the selected stage under the
+  // learned/unlocked rule. Drives the "needs more learning" empty state so a
+  // stage with too few learned cards never starts a half-empty (or unseen)
+  // quiz, and never silently borrows cards from another stage.
+  const challengePoolCount = useMemo(
+    () => countChallengePool({ stageId: selectedStage, voice, progress, stageComplete: selectedStageComplete }),
+    [selectedStage, voice, progress, selectedStageComplete]
+  );
+  const stageReady = challengePoolCount >= MIN_CHALLENGE_POOL;
+
   const current = questions[idx] || null;
   const correctDisplay = current ? getDisplayed(current.correct, voice) : null;
   const selected = current?.options.find(option => option.id === selectedId) || null;
@@ -253,9 +97,22 @@ export default function QuizTab({
 
   const startQuiz = (nextType) => {
     const stage = selectedStage || upper;
-    const built = buildQuestions(nextType, stage, voice);
+    const built = buildChallenge({
+      type: nextType,
+      stageId: stage,
+      voice,
+      progress,
+      stageComplete: selectedStageComplete,
+    });
     if (built.questions.length < 1) {
-      setPoolError(`Not enough Stage ${stage} cards for this challenge yet. Available cards: ${built.poolSize}.`);
+      // Guide the user instead of failing. Never pad from another stage.
+      setPoolError(
+        selectedStageComplete
+          ? `Not enough Stage ${stage} cards for this challenge yet.`
+          : built.poolSize === 0
+            ? `Start Stage ${stage} in Learn first, then come back for a Challenge.`
+            : `Learn a few more Stage ${stage} cards in Learn, then come back for a Challenge.`
+      );
       return;
     }
     setType(nextType);
@@ -366,15 +223,23 @@ export default function QuizTab({
             </div>
           )}
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
-          <div className="quiz-mode-direction-grid">
-            {Object.entries(QUESTION_TYPES).map(([id, config]) => (
-              <button key={id} className="quiz-mode-direction-btn" onClick={() => startQuiz(id)}>
-                <span className="quiz-mode-direction-title">{config.label}</span>
-                <span className="quiz-mode-direction-sub">{config.intro}</span>
-                <ChevronRight size={18} />
-              </button>
-            ))}
-          </div>
+          {stageReady ? (
+            <div className="quiz-mode-direction-grid">
+              {Object.entries(QUESTION_TYPES).map(([id, config]) => (
+                <button key={id} className="quiz-mode-direction-btn" onClick={() => startQuiz(id)}>
+                  <span className="quiz-mode-direction-title">{config.label}</span>
+                  <span className="quiz-mode-direction-sub">{config.intro}</span>
+                  <ChevronRight size={18} />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="quiz-stage-empty">
+              {challengePoolCount === 0
+                ? `Start Stage ${selectedStage} in Learn first, then come back for a Challenge.`
+                : `Learn a few more Stage ${selectedStage} cards in Learn, then come back for a Challenge.`}
+            </div>
+          )}
         </div>
       </div>
     );

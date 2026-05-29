@@ -220,3 +220,25 @@ QA performed:
 
 No Thai card content, payments, ads, subscriptions, or major UI was changed, and
 no database migration was applied.
+
+## Challenge Stage Scoping (update — May 30, 2026)
+
+The Challenge is now **stage-scoped** with a learned/unlocked-card rule:
+
+- A Stage N Challenge uses **only Stage N cards** — for the question's correct
+  answer and all distractors. Distractors are drawn from the same scoped pool,
+  so they can never come from another stage.
+- **Completed stages** can be challenged on their whole deck (mastery review).
+- **In-progress stages** challenge **only cards the user has already learned
+  (seen)** — never random unseen future cards.
+- **Unstarted stages** (unlocked, 0 learned) show a Learn-first empty state:
+  "Start Stage N in Learn first, then come back for a Challenge." If a stage has
+  too few learned cards to build a question, a "learn a few more" message shows
+  instead of borrowing cards from another stage.
+- Both directions (Thai → English, English → Thai) honor the same stage +
+  learned filter.
+
+Selection logic lives in `src/lib/challengeQuestions.js`. Verified by
+`node scripts/check-challenge-scope.mjs` (stage scope, learned-only, cross-stage
+exclusion, empty states, distractor scope) — all assertions pass. `npm run
+build` passes (pre-existing large-chunk warning only).

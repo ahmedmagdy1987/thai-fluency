@@ -289,3 +289,24 @@ SRS progress it is a due-review session, otherwise it is a learning session.
   → Stages 1–3 unlocked; `getMissionState.stage1Complete` agrees.
 - Routes smoke-checked locally: `/learn`, `/cards`, `/challenge`, `/premium`,
   `/shop`.
+
+## Challenge Stage Scoping (update — May 30, 2026)
+
+Note: the Summary above states Challenge question logic was unchanged as of
+May 26. A later change (this note) made the Challenge **stage-scoped**. It still
+does **not** touch the SRS algorithm, Supabase schema, migrations, payments,
+ads, or subscriptions, and does **not** mark cards learned or advance stage
+progress — Challenge remains XP-only against `user_stats` Challenge aggregates.
+
+Behavior:
+
+- Challenge is stage-scoped: a Stage N Challenge uses only Stage N cards
+  (correct answer and distractors); distractors never cross stages.
+- **Completed stages** can be challenged fully.
+- **In-progress stages** challenge only cards the user has already learned
+  (seen) — never unseen future cards.
+- **Unstarted stages** show a Learn-first message instead of starting a quiz.
+
+Pure selection logic was extracted to `src/lib/challengeQuestions.js` and is
+covered by `scripts/check-challenge-scope.mjs` (all assertions pass). No
+persistence surface changed.
