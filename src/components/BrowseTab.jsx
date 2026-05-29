@@ -106,7 +106,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                   </button>
                 ))}
                 {nextLockedStage && (
-                  <div className="stage-chip stage-chip-locked-preview" style={{ '--chip-color': nextLockedStage.color }} title={`Unlocks when Stage ${upper} is 70% mastered`}>
+                  <div className="stage-chip stage-chip-locked-preview" style={{ '--chip-color': nextLockedStage.color }} title={`Unlocks when Stage ${upper} is fully learned`}>
                     🔒 Stage {nextLockedStage.id}: {nextLockedStage.name} (next)
                   </div>
                 )}
@@ -116,7 +116,7 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
           {!search && unlockedStages.length === 1 && (
             <div className="browse-s1-only-notice">
               📖 Browsing <strong>{unlockedStages[0].name}</strong>. {visibleDeck.length} cards
-              {nextLockedStage ? `. ${nextLockedStage.name} unlocks at 70% mastery` : ''}
+              {nextLockedStage ? `. ${nextLockedStage.name} unlocks when this stage is fully learned` : ''}
             </div>
           )}
 
