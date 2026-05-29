@@ -59,28 +59,27 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     : sessionDone + queue.length;
   const isMissionSession = sessionScope?.type === 'mission';
 
-  // Progress labels. We disambiguate what "left" means: a mission session, a
-  // pure-review session (every remaining card has already been seen → due
-  // reviews, no new cards), or a general learning session. Desktop shows the
-  // full phrasing; mobile uses the shorter form (toggled in CSS via qr-full /
-  // qr-short) so the row stays clean on small screens.
+  // Progress labels. The visible header stays terse on every screen ("22 done",
+  // "10 left", "10 reviews"); the full, context-specific meaning lives in the
+  // title/aria-label so clarity isn't lost. Review mode = every remaining card
+  // has already been seen (due reviews, no new cards).
   const remaining = queue.length;
   const remPlural = remaining === 1 ? '' : 's';
   const isReviewMode = !isMissionSession && remaining > 0 && queue.every(c => progress && progress[c.id]);
-  let leftFull;
-  let leftShort;
+  let leftLabel; // visible (concise)
+  let leftTitle; // full explanation (title + aria-label)
   if (isMissionSession) {
-    leftFull = `${remaining} card${remPlural} left in this mission`;
-    leftShort = `${remaining} card${remPlural} left`;
+    leftLabel = `${remaining} left`;
+    leftTitle = `${remaining} card${remPlural} left in this mission`;
   } else if (isReviewMode) {
-    leftFull = `${remaining} review${remPlural} left`;
-    leftShort = leftFull;
+    leftLabel = `${remaining} review${remPlural}`;
+    leftTitle = `${remaining} card${remPlural} left to review`;
   } else {
-    leftFull = `${remaining} card${remPlural} left in this session`;
-    leftShort = `${remaining} card${remPlural} left`;
+    leftLabel = `${remaining} left`;
+    leftTitle = `${remaining} card${remPlural} left in this practice session`;
   }
-  const doneFull = `${sessionDone} card${sessionDone === 1 ? '' : 's'} done`;
-  const doneShort = `${sessionDone} done`;
+  const doneLabel = `${sessionDone} done`;
+  const doneTitle = `${sessionDone} card${sessionDone === 1 ? '' : 's'} reviewed this session`;
 
   useEffect(() => {
     setRevealed(false);
@@ -265,15 +264,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         <div className="cards-progress-text">
           <span className="cards-progress-text-left">
             {sessionDone > 0 && (
-              <span className="session-done">
-                <span className="qr-full">{doneFull}</span>
-                <span className="qr-short">{doneShort}</span>
-              </span>
+              <span className="session-done" title={doneTitle} aria-label={doneTitle}>{doneLabel}</span>
             )}
-            <span className="queue-remaining">
-              <span className="qr-full">{leftFull}</span>
-              <span className="qr-short">{leftShort}</span>
-            </span>
+            <span className="queue-remaining" title={leftTitle} aria-label={leftTitle}>{leftLabel}</span>
           </span>
           {lastReviewSnapshot && (Date.now() - lastReviewSnapshot.timestamp < 30000) && (
             <button className="cards-undo-btn" onClick={handleUndo} title="Undo last rating">

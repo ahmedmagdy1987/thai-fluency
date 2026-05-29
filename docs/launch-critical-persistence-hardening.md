@@ -231,16 +231,16 @@ Mastery is a long-term review outcome, not a gate. The UI now says
 
 ### Cards/Practice progress labels (clarified)
 
-The ambiguous "`N` LEFT" / "`N` done" header was replaced with context-aware,
-responsive labels (`CardsTab`). Desktop shows full phrasing; mobile (≤640px)
-shows a compact form via the `qr-full`/`qr-short` CSS toggle:
+The header (`CardsTab`) shows **terse** labels on every screen — the full,
+context-specific meaning is carried in the `title`/`aria-label` so clarity is
+preserved without cluttering the UI:
 
-| Context | Desktop | Mobile |
+| Context | Visible label | title / aria-label |
 | --- | --- | --- |
-| Mission session | "`N` cards left in this mission" | "`N` cards left" |
-| General practice (has new cards) | "`N` cards left in this session" | "`N` cards left" |
-| Pure review (all remaining already seen) | "`N` reviews left" | "`N` reviews left" |
-| Cards done counter | "`N` cards done" | "`N` done" |
+| Mission session | "`N` left" | "`N` cards left in this mission" |
+| General practice (has new cards) | "`N` left" | "`N` cards left in this practice session" |
+| Pure review (all remaining already seen) | "`N` reviews" | "`N` cards left to review" |
+| Cards done counter | "`N` done" | "`N` cards reviewed this session" |
 | Nothing left | Empty state ("Mission complete" / "No reviews due right now" / "You're caught up") |
 
 Review vs session is detected from the live queue: if every remaining card has
