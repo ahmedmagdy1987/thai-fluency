@@ -40,7 +40,14 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   const newAllotmentRef = useRef({ key: null, ids: [] });
   const sessionKey = sessionScope?.type === 'mission'
     ? `mission:${sessionScope.missionId}`
-    : 'practice';
+    : sessionScope?.type === 'learn'
+      ? 'learn'
+      : 'practice';
+  // New unseen cards are only introduced in a LEARNING session — a Stage-1
+  // mission or a Learn-path stage session. Entering the Practice/Cards tab
+  // directly (no scope) is REVIEW-ONLY: it shows due SRS cards and never
+  // teaches new cards, so it can't advance stage progress or farm XP.
+  const isLearningSession = sessionScope?.type === 'mission' || sessionScope?.type === 'learn';
 
   const queue = useMemo(() => {
     const now = Date.now();
@@ -58,6 +65,12 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     // one) surfaces its cards here exactly when SRS says they're due.
     const due = getDueCards(progress, filteredCards, now);
 
+    // Review-only Practice (no learning scope): due SRS cards only, never new
+    // learning. This is the bottom-nav Cards tab, the /cards route, completed-
+    // stage review, and quest CTAs. New cards come solely from the Learn path.
+    if (!isLearningSession) return due;
+
+    // --- Learning session (Stage-1 mission or Learn-path stage session) ---
     // New-card candidates exclude completed stages: once a stage is
     // learned/complete its cards only return as due reviews (above), never as
     // fresh learning. New learning flows forward to the current stage/mission.
@@ -92,7 +105,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       .map(id => CARD_BY_ID.get(id))
       .filter(Boolean);
     return [...due, ...newOnes];
-  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope, sessionKey, stageState]);
+  }, [progress, dailyNewLimit, startedStage, maxUnlockedStage, sessionScope, sessionKey, stageState, isLearningSession]);
 
   const rawCard = queue[0];
   const card = useMemo(() => displayCard(rawCard, voice), [rawCard, voice]);
@@ -296,7 +309,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       primaryAction = goChallenge;
     } else {
       emptyTitle = 'No reviews due right now';
-      emptySub = 'Continue your learning path to learn new words, or try a Challenge to test what you know.';
+      emptySub = 'Continue your learning path to unlock new words, or try a Challenge to test what you know.';
       primaryLabel = 'Continue your path';
       primaryAction = goLearn;
     }

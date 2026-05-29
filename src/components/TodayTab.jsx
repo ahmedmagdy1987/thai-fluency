@@ -39,7 +39,9 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
       onStartMissionCards(currentMission);
       return;
     }
-    setTab('cards');
+    // Non-mission continue targets the current learning frontier, so launch a
+    // Learn-path learning session (new + due). The bare Cards tab is review-only.
+    setTab('cards', { sessionScope: { type: 'learn' } });
   };
 
   const greetingThai = voice === 'female' ? 'สวัสดีค่ะ' : 'สวัสดีครับ';

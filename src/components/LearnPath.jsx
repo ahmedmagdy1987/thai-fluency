@@ -62,7 +62,10 @@ export default function LearnPath({
       onStartMissionCards(currentMission);
       return;
     }
-    setTab('cards');
+    // Non-mission: the continue banner targets the current learning frontier,
+    // so launch a Learn-path learning session (teaches new + due cards). The
+    // bare Cards tab (no scope) is review-only and never introduces new cards.
+    setTab('cards', { sessionScope: { type: 'learn' } });
   };
 
   return (
@@ -241,7 +244,14 @@ export default function LearnPath({
                 onStartMissionCards(currentMission);
                 return;
               }
-              setTab('cards');
+              // A completed stage never re-teaches new cards: open review-only
+              // Practice (due cards), which guides to the next stage when none
+              // are due. An active/incomplete stage starts a learning session.
+              if (isDone) {
+                setTab('cards');
+                return;
+              }
+              setTab('cards', { sessionScope: { type: 'learn' } });
             };
 
             return (
