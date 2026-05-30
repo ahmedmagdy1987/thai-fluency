@@ -135,3 +135,19 @@ celebration.
 celebration could re-show once on a brand-new device before the ledger syncs.
 A perfect-challenge overlay renders over the in-quiz results screen (intended).
 Verified by `node scripts/check-celebrations.mjs` (27 assertions).
+
+## Mini-Unit Sentence Builder XP (update — May 30, 2026)
+
+The guided mini-unit now includes a tap-to-build Sentence Builder step (see
+`docs/course-structure-roadmap.md`).
+
+- **Sentence builder completion: +5 XP, once per unit ever.** Guarded by a
+  persisted `stats.builderRewardedUnits` list (in `CLOUD_PROFILE_SETTING_KEYS`),
+  so replaying or refreshing the unit cannot farm the reward. Awarded in
+  `handleMiniUnitProgressChange` the first time `builderComplete` becomes true.
+- The existing **mini-unit completion reward (+45 XP, once)** is unchanged, as
+  is the streak / today-XP machinery.
+- Builder sounds (correct/wrong/celebration) respect the Sound-effects setting;
+  the success state can optionally speak the assembled sentence via TTS.
+- No premium/Super CTA is attached to the builder; it is a small intrinsic
+  reward within the lesson, consistent with the no-fake-purchase rule.

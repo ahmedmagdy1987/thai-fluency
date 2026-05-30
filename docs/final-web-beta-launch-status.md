@@ -310,3 +310,27 @@ Challenge filtering, schema, payments, ads, or subscriptions were touched.
 Verified: `node scripts/check-celebrations.mjs` (27 assertions),
 `check-quest-logic.mjs`, and `check-challenge-scope.mjs` pass; `npm run build`
 passes; adversarial multi-agent review found no confirmed bugs.
+
+## Mini-Unit Sentence Builder (update — May 30, 2026)
+
+Added a tap-to-build Sentence Builder step to the guided mini-unit flow (full
+detail in `docs/course-structure-roadmap.md`). New order:
+`intro → vocab → sentence card → sentence builder → mini challenge → recap →
+complete`. The builder is **required** before unit completion.
+
+- `src/components/SentenceBuilder.jsx` (+ pure `src/lib/sentenceBuilder.js`):
+  mobile-first tap-to-build (no drag), keyboard-usable buttons, icon+text
+  feedback (not color-only), `aria-live`, tiles wrap, dark-mode covered.
+- **Data:** uses the existing pilot sentence card 330 via an explicit
+  `sentenceBuilder` field on the pilot unit — tokens taken from the card +
+  `WORD_LOOKUP`; **no Thai card content changed or invented**.
+- **XP:** +5 once per unit (guarded by persisted `builderRewardedUnits`, no
+  farming); the +45 unit-completion reward is unchanged. Resume returns to the
+  builder step on refresh.
+- Onboarding `FirstLessonFlow` unchanged; builder is in the repeatable
+  mini-unit only.
+
+No Practice review-only, Stage Challenge filtering, Quests, Celebrations,
+schema, payments, ads, or subscriptions were touched. Verified:
+`node scripts/check-sentence-builder.mjs` (18 assertions) + the three existing
+checks pass; `npm run build` passes.

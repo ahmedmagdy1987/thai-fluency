@@ -34,6 +34,9 @@ export const DEFAULT_STATS = {
   activeMiniUnitId: null,
   miniUnitProgress: null,
   completedMiniUnits: [],
+  // Units whose sentence-builder step has already paid out its one-time XP
+  // (prevents replay/refresh from farming the builder reward).
+  builderRewardedUnits: [],
   superPromptLastShownAt: null,
   // Celebration repeat-prevention ledger (see lib/celebrations.js). Date-keyed
   // quest IDs + durable milestone IDs. baselineDone seeds existing completions

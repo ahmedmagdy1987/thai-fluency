@@ -6,6 +6,7 @@ import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCelebration, playCharacterCorrect, playCharacterSelect, playCharacterWrong, playFlip } from '../lib/sounds.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
+import SentenceBuilder from './SentenceBuilder.jsx';
 
 function cardsByIds(ids, voice) {
   return ids
@@ -57,8 +58,13 @@ export default function MiniUnitFlow({
   const [selectedId, setSelectedId] = useState(savedProgress?.selectedId || null);
   const [checked, setChecked] = useState(!!savedProgress?.checked);
   const [challengeScore, setChallengeScore] = useState(savedProgress?.challengeScore || 0);
+  const [builderComplete, setBuilderComplete] = useState(!!savedProgress?.builderComplete);
   const checkLockedRef = useRef(!!savedProgress?.checked);
   const completedSoundRef = useRef(false);
+
+  // The unit has a sentence-builder step only when it ships explicit, safe
+  // token data. Other units skip straight from the sentence card to challenge.
+  const hasBuilder = !!(unit.sentenceBuilder && Array.isArray(unit.sentenceBuilder.tokens) && unit.sentenceBuilder.tokens.length > 0);
 
   const vocabCards = useMemo(() => cardsByIds(unit.vocabCardIds, voice), [unit, voice]);
   const sentenceCard = useMemo(() => cardsByIds([unit.sentenceCardId], voice)[0] || null, [unit, voice]);
@@ -80,9 +86,10 @@ export default function MiniUnitFlow({
       selectedId,
       checked,
       challengeScore,
+      builderComplete,
       updatedAt: new Date().toISOString(),
     });
-  }, [unit.unitId, step, vocabIndex, revealed, challengeIndex, selectedId, checked, challengeScore, onProgressChange]);
+  }, [unit.unitId, step, vocabIndex, revealed, challengeIndex, selectedId, checked, challengeScore, builderComplete, onProgressChange]);
 
   useEffect(() => {
     if (step === 'complete' && !completedSoundRef.current) {
@@ -134,6 +141,22 @@ export default function MiniUnitFlow({
     setChallengeScore(0);
     checkLockedRef.current = false;
     coach.react('greeting', { duration: 1200, message: 'Pick the Thai you just practiced.' });
+  };
+
+  // After the sentence card: build it (if this unit has builder data), then
+  // challenge. The builder must be completed before the unit can finish.
+  const afterSentence = () => {
+    setRevealed(false);
+    if (hasBuilder) {
+      setStep('builder');
+    } else {
+      startChallenge();
+    }
+  };
+
+  const finishBuilder = () => {
+    setBuilderComplete(true);
+    startChallenge();
   };
 
   const selectOption = (option) => {
@@ -273,8 +296,18 @@ export default function MiniUnitFlow({
         <CardPractice
           card={sentenceCard}
           label="Sentence"
-          onNext={startChallenge}
-          nextLabel="Start challenge"
+          onNext={afterSentence}
+          nextLabel={hasBuilder ? 'Build sentence' : 'Start challenge'}
+        />
+      )}
+
+      {step === 'builder' && hasBuilder && (
+        <SentenceBuilder
+          data={unit.sentenceBuilder}
+          audioRate={audioRate}
+          showCharacters={showCharacters}
+          characterId={unit.characterId}
+          onComplete={finishBuilder}
         />
       )}
 

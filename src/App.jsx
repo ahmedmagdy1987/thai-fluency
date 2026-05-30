@@ -86,6 +86,7 @@ const CLOUD_PROFILE_SETTING_KEYS = [
   'activeMiniUnitId',
   'miniUnitProgress',
   'completedMiniUnits',
+  'builderRewardedUnits',
   'superPromptLastShownAt',
   'celebratedIds',
   'celebrationBaselineDone',
@@ -93,6 +94,7 @@ const CLOUD_PROFILE_SETTING_KEYS = [
 const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
 const MINI_UNIT_REWARD_XP = 45;
+const MINI_UNIT_BUILDER_XP = 5;
 // Anti-rushing thresholds. We track a "rush run": consecutive high-value
 // (Good/Easy) ratings entered faster than RUSH_GAP_MS apart — i.e. with no
 // time to actually recall the card. Once the run exceeds RUSH_RUN_LIMIT, XP
@@ -1181,6 +1183,7 @@ export default function TukTalkThaiApp() {
           selectedId: null,
           checked: false,
           challengeScore: 0,
+          builderComplete: false,
         };
     setActiveMiniUnitId(unitId);
     updateSettings({ activeMiniUnitId: unitId, miniUnitProgress: currentProgress });
@@ -1192,6 +1195,14 @@ export default function TukTalkThaiApp() {
       activeMiniUnitId: progressUpdate.unitId,
       miniUnitProgress: progressUpdate,
     };
+    // Sentence-builder reward: 5 XP, once per unit ever (guarded by a persisted
+    // list so replay/refresh can't farm it). Fires when the builder is first
+    // completed, independent of unit completion.
+    const builderRewarded = stats.builderRewardedUnits || [];
+    if (progressUpdate.builderComplete && !builderRewarded.includes(progressUpdate.unitId)) {
+      updates.builderRewardedUnits = [...new Set([...builderRewarded, progressUpdate.unitId])];
+      grantXp(MINI_UNIT_BUILDER_XP);
+    }
     const completed = stats.completedMiniUnits || [];
     if (progressUpdate.step === 'complete' && !completed.includes(progressUpdate.unitId)) {
       updates.completedMiniUnits = [...new Set([
@@ -1210,7 +1221,7 @@ export default function TukTalkThaiApp() {
       });
     }
     updateSettings(updates);
-  }, [grantXp, stats.completedMiniUnits, stats.streak, updateSettings]);
+  }, [grantXp, stats.completedMiniUnits, stats.builderRewardedUnits, stats.streak, updateSettings]);
 
   const handleExitMiniUnit = useCallback(() => {
     setActiveMiniUnitId(null);
