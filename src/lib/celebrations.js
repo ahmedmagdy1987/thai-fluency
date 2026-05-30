@@ -28,6 +28,10 @@ export function allQuestsCelebrationId(date = getLocalDateKey()) {
 export function stageCompleteCelebrationId(stageId) {
   return `stage-complete:${stageId}`;
 }
+// Global "finished every guided mini-unit" milestone (durable, versioned).
+export function courseCompleteCelebrationId() {
+  return 'course-complete:v1';
+}
 export function challengePerfectCelebrationId(stageId, date = getLocalDateKey()) {
   return `challenge-perfect:stage-${stageId}:${date}`;
 }
@@ -66,7 +70,7 @@ export function withCelebrated(ids, idOrIds, today = getLocalDateKey(), yesterda
 // the baseline (so existing completions are not retroactively celebrated). Does
 // NOT include event-only celebrations (perfect challenge), which fire from the
 // completion handler, not from steady-state conditions.
-export function activeCelebrationIds({ quests, stageState, today = getLocalDateKey() } = {}) {
+export function activeCelebrationIds({ quests, stageState, courseComplete = false, today = getLocalDateKey() } = {}) {
   const ids = [];
   if (quests) {
     QUEST_CELEBRATIONS.forEach((q) => {
@@ -77,6 +81,9 @@ export function activeCelebrationIds({ quests, stageState, today = getLocalDateK
   ((stageState && stageState.stages) || []).forEach((s) => {
     if (s.complete && s.total > 0) ids.push(stageCompleteCelebrationId(s.id));
   });
+  // Seed the global course-complete milestone so a user who already finished
+  // every mini-unit before this feature shipped is NOT retroactively celebrated.
+  if (courseComplete) ids.push(courseCompleteCelebrationId());
   return ids;
 }
 

@@ -20,7 +20,9 @@ import {
   hasCelebrated,
   withCelebrated,
   activeCelebrationIds,
+  courseCompleteCelebrationId,
 } from './lib/celebrations.js';
+import { getCourseCompletion } from './lib/courseCompletion.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -71,7 +73,7 @@ import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
-import { getMiniUnit, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
+import { getMiniUnit, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = [
   'viewMode',
@@ -95,6 +97,9 @@ const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
 const MINI_UNIT_REWARD_XP = 45;
 const MINI_UNIT_BUILDER_XP = 5;
+// One-time bonus for finishing every guided mini-unit across all 8 stages.
+// Granted once, guarded by the durable course-complete celebration ledger ID.
+const COURSE_COMPLETE_XP = 250;
 // Anti-rushing thresholds. We track a "rush run": consecutive high-value
 // (Good/Easy) ratings entered faster than RUSH_GAP_MS apart — i.e. with no
 // time to actually recall the card. Once the run exceeds RUSH_RUN_LIMIT, XP
@@ -255,6 +260,7 @@ export default function TukTalkThaiApp() {
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
   const profileSettingsRef = useRef({});
   const celebrationsArmedRef = useRef(false);               // celebrations fire only after the first settled pass (baseline)
+  const courseCompleteAtArmingRef = useRef(false);          // true if the course was ALREADY complete at baseline → never retro-celebrate
   const reviewLocksRef = useRef(new Set());
   const missionRewardLocksRef = useRef(new Set());
   const achievementLocksRef = useRef(new Set());
@@ -1216,15 +1222,21 @@ export default function TukTalkThaiApp() {
         progressUpdate.unitId,
       ])];
       grantXp(MINI_UNIT_REWARD_XP);
-      setRewardScreen({
-        id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
-        title: 'Mini-Unit Complete',
-        subtitle: 'You finished a guided lesson and checked your recall.',
-        xpEarned: MINI_UNIT_REWARD_XP,
-        streak: stats.streak || 0,
-        nextStep: 'Review or Challenge',
-        superPromptReason: 'mini-unit',
-      });
+      // If this is the LAST unit (course now complete), skip the small per-unit
+      // reward screen — the global "Course Complete" overlay (fired by the
+      // celebration effect) takes over and supersedes it.
+      const courseNowComplete = getCourseCompletion(MINI_UNITS, updates.completedMiniUnits).courseComplete;
+      if (!courseNowComplete) {
+        setRewardScreen({
+          id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
+          title: 'Mini-Unit Complete',
+          subtitle: 'You finished a guided lesson and checked your recall.',
+          xpEarned: MINI_UNIT_REWARD_XP,
+          streak: stats.streak || 0,
+          nextStep: 'Review or Challenge',
+          superPromptReason: 'mini-unit',
+        });
+      }
     }
     updateSettings(updates);
   }, [grantXp, stats.completedMiniUnits, stats.builderRewardedUnits, stats.streak, updateSettings]);
@@ -1326,6 +1338,13 @@ export default function TukTalkThaiApp() {
   );
   const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
 
+  // Global course completion (all guided mini-units done). Pure, derived from
+  // completedMiniUnits; drives the course-complete celebration + LearnPath state.
+  const courseCompletion = useMemo(
+    () => getCourseCompletion(MINI_UNITS, stats.completedMiniUnits),
+    [stats.completedMiniUnits]
+  );
+
   // ── Celebration feedback (Levels 1–3) ────────────────────────────────────
   // Quest toasts, all-quests-complete + stage-complete overlays. Perfect
   // Challenge fires from recordQuizComplete; achievements from their own effect.
@@ -1339,8 +1358,13 @@ export default function TukTalkThaiApp() {
 
     if (!celebrationsArmedRef.current) {
       celebrationsArmedRef.current = true;
+      // Snapshot whether the course was ALREADY complete on the first settled
+      // pass. If so, this session must never fire the course-complete overlay
+      // (the user finished before this feature / session) — robust regardless of
+      // StrictMode double-invoke or un-committed baseline writes.
+      courseCompleteAtArmingRef.current = courseCompletion.courseComplete;
       if (!stats.celebrationBaselineDone) {
-        const seed = activeCelebrationIds({ quests, stageState, today });
+        const seed = activeCelebrationIds({ quests, stageState, courseComplete: courseCompletion.courseComplete, today });
         setStats(s => ({
           ...s,
           celebratedIds: withCelebrated(s.celebratedIds, seed, today, previousLocalDateKey()),
@@ -1368,6 +1392,33 @@ export default function TukTalkThaiApp() {
 
     // Level 3 — one overlay at a time.
     if (!celebration) {
+      // Highest priority: the global "Course Complete" milestone. Fires once
+      // (durable ledger ID), suppresses any smaller stage/mini-unit feedback,
+      // and grants a one-time +250 XP bonus guarded by the same ledger ID so it
+      // can never be replayed/farmed. Existing already-complete users were seeded
+      // at baseline, so this never retro-fires for them.
+      const courseId = courseCompleteCelebrationId();
+      if (courseCompletion.courseComplete && !courseCompleteAtArmingRef.current && !hasCelebrated(ids, courseId)) {
+        const showSuper = !hasCelebrated(ids, superCtaId(today));
+        markCelebrated(showSuper ? [courseId, superCtaId(today)] : courseId);
+        grantXp(COURSE_COMPLETE_XP);
+        setRewardScreen(null);   // suppress the per-unit "Mini-Unit Complete" screen
+        setQuestToasts([]);      // overlay supersedes any lingering quest toast
+        setCelebration({
+          eyebrow: 'Course Complete',
+          title: 'Course Complete',
+          subtitle: `You completed the Tuk Talk Thai path — ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} mini-units, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
+          xpEarned: COURSE_COMPLETE_XP,
+          primaryLabel: 'Review due cards',
+          onPrimary: () => { setCelebration(null); handleSetTab('cards'); },
+          secondaryLabel: 'Try a Stage Challenge',
+          onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
+          superCtaText: showSuper ? 'More practice paths and advanced challenges can unlock with Tuk Talk Thai Super soon.' : null,
+          onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
+        });
+        return;
+      }
+
       const stages = stageState.stages || [];
       const newStage = stages.find(
         s => s.complete && s.total > 0 && s.id !== 1 && !hasCelebrated(ids, stageCompleteCelebrationId(s.id))
@@ -1410,7 +1461,7 @@ export default function TukTalkThaiApp() {
         });
       }
     }
-  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, markCelebrated, handleSetTab, handleOpenPremium]);
+  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, courseCompletion, grantXp, markCelebrated, handleSetTab, handleOpenPremium]);
 
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
@@ -1615,7 +1666,7 @@ export default function TukTalkThaiApp() {
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}
-          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} />}
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}

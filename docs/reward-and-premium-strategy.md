@@ -151,3 +151,24 @@ The guided mini-unit now includes a tap-to-build Sentence Builder step (see
   the success state can optionally speak the assembled sentence via TTS.
 - No premium/Super CTA is attached to the builder; it is a small intrinsic
   reward within the lesson, consistent with the no-fake-purchase rule.
+
+## Course Complete milestone (added May 30, 2026)
+
+The global "Course Complete" reward fires once when a user finishes **every**
+guided mini-unit across all 8 stages (derived purely by
+`src/lib/courseCompletion.js` from `completedMiniUnits` — no schema change).
+
+- **Celebration:** reuses the shared `CelebrationOverlay` (Level-3) — "Course
+  Complete / You completed the Tuk Talk Thai path." with a progress summary
+  (stages, mini-units, sentence builders) and a one-time XP count-up.
+- **XP reward:** **+250 XP, once.** Guarded by the durable celebration-ledger ID
+  `course-complete:v1` (localStorage + `profiles.settings.celebratedIds`) AND a
+  per-session arming snapshot, so it can never be replayed or farmed. The +45
+  per-unit reward for the final unit still applies; the +250 is a separate bonus.
+- **Soft Super line:** "More practice paths and advanced challenges can unlock
+  with Tuk Talk Thai Super soon." — shown after the celebration, never gates it,
+  and makes no claim that payments are active (consistent with the no-fake-purchase
+  rule).
+- **Repeat-prevention / fairness:** existing users who were already course-complete
+  before this feature are **not** retro-celebrated (arming snapshot + baseline
+  seed). Refresh never repeats it.

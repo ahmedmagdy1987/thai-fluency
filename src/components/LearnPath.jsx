@@ -20,7 +20,9 @@ export default function LearnPath({
   onStartMiniUnit,
   onLockedFeature,
   onStartMissionCards,
+  courseCompletion,
 }) {
+  const courseComplete = !!(courseCompletion && courseCompletion.courseComplete);
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
   const newAvail = dashboardStats?.newAvail ?? 0;
@@ -87,6 +89,27 @@ export default function LearnPath({
 
   return (
     <div className="tab-content learn-path">
+      {/* Course-complete state — shown when every guided mini-unit across all
+          stages is done. The stage/unit path below is intentionally NOT hidden,
+          so users can keep reviewing any completed unit. */}
+      {courseComplete && (
+        <section className="learn-course-complete" role="status">
+          <div className="learn-course-complete-icon" aria-hidden="true"><Sparkles size={26} /></div>
+          <div className="learn-course-complete-body">
+            <div className="learn-course-complete-eyebrow">Course path complete</div>
+            <h2 className="learn-course-complete-title">You finished all guided stages</h2>
+            <p className="learn-course-complete-sub">
+              Keep reviewing and challenging yourself. Your completed stages and
+              units stay below — revisit any of them anytime.
+            </p>
+            <div className="learn-course-complete-actions">
+              <button type="button" className="btn-primary" onClick={() => setTab('cards')}>Review due cards</button>
+              <button type="button" className="btn-secondary" onClick={() => setTab('quiz')}>Challenge</button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Continue banner — anchored CTA into the actual lesson flow */}
       <section
         className="learn-continue"

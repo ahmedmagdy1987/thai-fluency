@@ -624,11 +624,20 @@ skips are listed in the review matrix.
 | 8 | 13 | 102 / 992 | 13 |
 | **Total** | **96** | **752** | **83** |
 
-### Course-complete state
-A **per-stage** completion state exists (`pathComplete` → LearnPath shows "Stage N
-path complete"). A **global "all 8 stages graduated" course-complete celebration
-does not yet exist — deferred** as a future enhancement (new UI/celebration state,
-out of scope for this content sprint).
+### Course-complete state ✅ (shipped May 30, 2026)
+Both completion states now exist:
+- **Per-stage:** `pathComplete` → LearnPath shows "Stage N path complete".
+- **Global course-complete:** `src/lib/courseCompletion.js` `getCourseCompletion()`
+  derives `courseComplete` (every guided mini-unit done) purely from
+  `completedMiniUnits` (no schema). When it transitions false→true:
+  - a one-time **"Course Complete"** `CelebrationOverlay` fires ("You completed the
+    Tuk Talk Thai path.") with a stages/units/builders summary and **+250 XP**;
+  - LearnPath shows a persistent **"Course path complete"** banner with Review /
+    Challenge CTAs, while keeping the stage/unit path visible for review.
+  - **Repeat-prevention:** durable ledger ID `course-complete:v1` (localStorage +
+    `profiles.settings.celebratedIds`) plus a per-session arming snapshot, so it
+    fires once, never on refresh, and never retro-fires for users who were already
+    complete before this feature. Validated by `scripts/check-course-completion.mjs`.
 
 ### Known limitations
 - Coverage is 752 / ~4,790 cards (the cleanest themed vocab per stage); the rest

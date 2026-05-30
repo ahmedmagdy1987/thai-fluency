@@ -623,3 +623,39 @@ phonetics, and meanings can be reviewed safely:
 (or logs fixes for) at least the HIGH-priority stages (1–2) and MEDIUM stages (3–5).
 This pack is docs + a read-only report only — no Thai card content, product logic,
 schema, payments, ads, or subscriptions were touched.
+
+## Global Course Complete celebration + state (update — May 30, 2026)
+
+Implemented the major end-of-course milestone now that all 8 stages have guided
+paths. Completion is derived purely (`src/lib/courseCompletion.js`,
+`getCourseCompletion()`) from `completedMiniUnits` — `courseComplete` = every one
+of the 96 guided mini-units is complete. No schema, no migration, no card changes.
+
+- **Celebration:** when `courseComplete` transitions false→true, a one-time
+  Level-3 `CelebrationOverlay` fires — "Course Complete / You completed the Tuk
+  Talk Thai path." — with a progress summary (8 stages, 96 mini-units, sentence
+  builders) and a one-time **+250 XP** count-up. Primary CTA "Review due cards",
+  secondary "Try a Stage Challenge", soft Super line (no payment claim).
+- **LearnPath state:** a persistent "Course path complete" banner appears at the
+  top of Learn (Review due cards / Challenge), and the stage/unit path stays
+  visible so completed units remain reviewable.
+- **Repeat-prevention:** durable ledger ID `course-complete:v1` (localStorage +
+  `profiles.settings.celebratedIds`) + a per-session arming snapshot. Fires once;
+  refresh never repeats it; users already course-complete before this feature are
+  not retro-celebrated. The +250 XP is guarded by the same ledger ID so it cannot
+  be replayed/farmed (the per-unit +45 still applies to the final unit).
+- **Reduced motion / sound:** inherited from the existing `CelebrationOverlay`
+  (confetti/XP count-up are reduced-motion aware; sound respects Sound-effects OFF).
+
+`scripts/check-course-completion.mjs` (24 assertions) passes; all existing check
+scripts + the native-review report pass; build passes; local preview smoke passes.
+No Practice review-only, Stage Challenge filtering, payments, ads, or subscriptions
+touched; Quests untouched (course completion is independent of the quest system).
+
+### Known limitations
+- Course completion tracks **guided mini-units** (752 of ~4,790 cards), not 100% of
+  the SRS deck — by design; the rest stays in Practice and the Stage Challenge.
+- The celebration fires only on a live false→true transition in an open session
+  (or the first session after completing); it intentionally does not retro-fire.
+- No separate "course-complete" achievement badge was added (overlay + XP + banner
+  only); a badge could be added later via the existing achievements system.
