@@ -1,30 +1,32 @@
 import React from 'react';
 import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Award, Crown, Lock } from 'lucide-react';
-import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
+import { evaluateDailyQuests } from '../lib/dailyQuests.js';
 
 // Phase 1 quests read real stats where available, but they do not spend
 // rewards or mutate quest state. Lesson flow remains the source of progress.
-export default function QuestsScreen({ stats, dashboardStats, setTab, locked = false, onOpenSuper }) {
-  const goal = stats?.dailyGoal || DEFAULT_DAILY_GOAL;
-  const todayXp = stats?.todayXp || 0;
-  const dailyPct = Math.min(100, Math.round((todayXp / goal) * 100));
-  const dailyDone = todayXp >= goal;
+//
+// All quest LOGIC lives in lib/dailyQuests.js (one source of truth) so the
+// four quests can never contradict each other (e.g. XP goal done but streak
+// says "no study today"). This component only renders that evaluation.
+export default function QuestsScreen({ stats, dashboardStats, progress, setTab, locked = false, onOpenSuper }) {
+  const q = evaluateDailyQuests({ stats, dashboardStats, progress });
+  const goal = q.goal;
+  const todayXp = q.todayXp;
+  const dailyPct = q.daily.pct;
+  const dailyDone = q.daily.done;
 
-  const due = dashboardStats?.due || 0;
-  const dueDone = due === 0 && (dashboardStats?.seen || 0) > 0;
-  const duePct = (() => {
-    const total = (dashboardStats?.seen || 0);
-    if (total <= 0) return 0;
-    return Math.min(100, Math.round(((total - due) / total) * 100));
-  })();
+  const due = q.due.due;
+  const dueDone = q.due.done;
+  const duePct = q.due.pct;
 
-  const cardsTarget = 10;
-  const reviewsToday = Math.min(cardsTarget, Math.max(0, todayXp > 0 ? Math.ceil(todayXp / XP_REWARDS.good) : 0));
-  const cardsPct = Math.min(100, Math.round((reviewsToday / cardsTarget) * 100));
-  const cardsDone = reviewsToday >= cardsTarget;
+  const cardsTarget = q.cards.target;
+  const practicedToday = q.cards.practicedToday;
+  const cardsPct = q.cards.pct;
+  const cardsDone = q.cards.done;
 
-  const streakAlive = (stats?.streak || 0) > 0;
-  const streakPct = streakAlive ? 100 : 0;
+  const streakCount = q.streakCount;
+  const streakDone = q.streak.done;
+  const streakPct = q.streak.pct;
 
   const quests = [
     {
@@ -46,7 +48,7 @@ export default function QuestsScreen({ stats, dashboardStats, setTab, locked = f
       iconBg: '#C9A961',
       title: 'Practice 10 cards today',
       desc: 'Complete cards to earn XP and keep Thai fresh.',
-      progress: `${reviewsToday}/${cardsTarget} cards`,
+      progress: `${Math.min(practicedToday, cardsTarget)}/${cardsTarget} cards`,
       pct: cardsPct,
       done: cardsDone,
       reward: 'Rewards planned',
@@ -73,14 +75,20 @@ export default function QuestsScreen({ stats, dashboardStats, setTab, locked = f
       Icon: Flame,
       iconBg: '#E0823B',
       title: 'Keep your streak alive',
-      desc: streakAlive
-        ? `${stats.streak}-day streak. Study today to keep it.`
-        : 'Build a streak by studying at least one card today.',
-      progress: streakAlive ? `${stats.streak} days` : 'Start today',
+      desc: streakDone
+        ? (streakCount > 1
+            ? `${streakCount}-day streak — kept alive today.`
+            : 'Studied today. Your streak is going.')
+        : (streakCount > 0
+            ? `${streakCount}-day streak. Study once today to keep it.`
+            : 'Study at least once today to start your streak.'),
+      progress: streakDone
+        ? (streakCount > 0 ? `${streakCount} day${streakCount === 1 ? '' : 's'}` : 'Done today')
+        : 'Study today',
       pct: streakPct,
-      done: streakAlive,
+      done: streakDone,
       reward: 'Streak rewards planned',
-      cta: streakAlive ? null : 'Study now',
+      cta: streakDone ? null : 'Study now',
       onClick: () => setTab && setTab('cards'),
     },
   ];

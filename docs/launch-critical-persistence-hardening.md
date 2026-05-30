@@ -310,3 +310,43 @@ Behavior:
 Pure selection logic was extracted to `src/lib/challengeQuestions.js` and is
 covered by `scripts/check-challenge-scope.mjs` (all assertions pass). No
 persistence surface changed.
+
+## Quests / Streak / Achievements Sync (update — May 30, 2026)
+
+No schema, migration, or persistence-surface change. This pass fixes quest
+consistency by using the correct already-persisted signals.
+
+What is Supabase-backed (per-user, RLS, unchanged):
+
+- `user_stats`: `today_xp`, `today_xp_date`, `last_active_date` (lastStudy),
+  `current_streak`, `daily_goal`, `daily_goals_hit`, `total_xp` …
+- `user_progress`: per-card SRS state incl. `last_review` (used to derive
+  "cards practiced today").
+- `user_achievements`: per-user unlocked achievement IDs.
+
+Quest rule after fix (one source of truth — `src/lib/dailyQuests.js`):
+
+- **Keep your streak alive** completes on any valid learning activity TODAY —
+  `last_active_date === today` (XP earned via learn / due review / challenge /
+  mission / mini-unit) OR any card practiced today (covers 0-XP stage-review).
+  It no longer reads the multi-day `current_streak` counter, so it can't
+  contradict the XP / practice / due quests, and it resets at local
+  day-rollover.
+- **Practice 10 cards today** uses a real distinct-card count from
+  `last_review` timestamps (no double-count, no XP estimate).
+- **Daily XP goal** uses date-guarded `today_xp`.
+
+Achievement persistence rule: per-user in `user_achievements`; unlock fires once
+(session lock + persisted list); refresh does not re-fire or re-grant; **no XP
+is tied to an unlock**. Fixed: cloud-init now UNIONs local + cloud
+`unlockedAchievements` (was an overwrite that dropped offline-earned
+achievements). De-duped via Set, so no duplicates after cross-device sign-in.
+
+Remaining limitation: `user_stats`/`user_progress` cloud merge on sign-in is
+cloud-authoritative with no per-field timestamp reconciliation. Quest completion
+is unaffected (derived from today-scoped fields); only the streak COUNTER display
+can briefly trail across a fresh cross-device sign-in until the next sync. A
+timestamp-aware merge would require explicit approval.
+
+Verified: `node scripts/check-quest-logic.mjs` (8 scenarios, 24 assertions) and
+`node scripts/check-challenge-scope.mjs` pass; `npm run build` passes.

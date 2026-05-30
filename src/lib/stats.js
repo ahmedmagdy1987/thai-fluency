@@ -74,6 +74,19 @@ export function dateKeyFromValue(value) {
   return getLocalDateKey(value);
 }
 
+// Count distinct cards the user has practiced (reviewed / learned / marked
+// known) in the current local day, derived live from the progress object. Each
+// card carries a `lastReview` ms timestamp that reviewCard/markCardsKnown set
+// on every touch, so this counts each card once (no double-counting) regardless
+// of how many times it was reviewed today. Covers new learning, due reviews,
+// and stage-review replays alike — no new persistence is required.
+export function countCardsPracticedToday(progress, today = getLocalDateKey()) {
+  const safe = progress && typeof progress === 'object' ? progress : {};
+  return Object.values(safe).filter(
+    (c) => c && c.lastReview && getLocalDateKey(new Date(c.lastReview)) === today
+  ).length;
+}
+
 export function hasStatsLearningActivity(stats = {}) {
   return (
     (stats.totalXp || 0) > 0 ||

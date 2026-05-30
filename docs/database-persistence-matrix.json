@@ -87,7 +87,17 @@
     "rlsProtected": true,
     "riskLevel": "medium",
     "neededBeforeBeta": true,
-    "recommendedNextAction": "Accept client-authored streak for beta. Server-validate before rewards, anti-cheat, or leaderboards."
+    "recommendedNextAction": "Accept client-authored streak for beta. Server-validate before rewards, anti-cheat, or leaderboards. Note: the 'Keep your streak alive' daily quest completes on any valid activity TODAY (last_active_date === today OR a card practiced today), NOT on current_streak > 0, so it cannot contradict the XP/practice quests."
+  },
+  {
+    "feature": "daily quests (XP goal, practice 10, due reviews, keep streak alive)",
+    "classification": "derived live from Supabase-backed signals (no separate persistence)",
+    "tableColumn": "derived from public.user_stats.today_xp/today_xp_date/last_active_date/daily_goal + public.user_progress.last_review (cards practiced today) + live due/seen counts; evaluated by src/lib/dailyQuests.js (evaluateDailyQuests)",
+    "userScoped": true,
+    "rlsProtected": true,
+    "riskLevel": "low",
+    "neededBeforeBeta": true,
+    "recommendedNextAction": "Quests are computed, not stored, so they sync wherever the underlying user_stats/user_progress rows sync and reset correctly at local day-rollover. Add a per-day quest-completion ledger only if rewards or streak-freeze economy require an authoritative server record."
   },
   {
     "feature": "hearts",

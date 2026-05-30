@@ -242,3 +242,47 @@ Selection logic lives in `src/lib/challengeQuestions.js`. Verified by
 `node scripts/check-challenge-scope.mjs` (stage scope, learned-only, cross-stage
 exclusion, empty states, distractor scope) — all assertions pass. `npm run
 build` passes (pre-existing large-chunk warning only).
+
+## Quests, Streak & Achievements Sync (update — May 30, 2026)
+
+Fixed a contradiction where "Keep your streak alive" stayed incomplete while the
+XP-goal / practice / due-review quests were complete (and vice-versa: it could
+show complete on a fresh day with no activity).
+
+Root cause: the streak quest used `done = stats.streak > 0` — the multi-day
+streak COUNTER — which is decoupled from "did the user study today," is reset
+only by `grantXp` (not the day-rollover effect), and is overwritten by cloud on
+sign-in. It is the wrong signal for a daily quest.
+
+What powers each quest now (one source of truth — `src/lib/dailyQuests.js`):
+
+- **Hit your daily XP goal** — `today_xp >= daily_goal` (today_xp date-guarded).
+- **Practice 10 cards today** — real count of distinct cards with `lastReview`
+  today (new learning, due reviews, or stage-review), not an XP estimate; no
+  double-count.
+- **Review your due cards** — live `due === 0 && seen > 0`.
+- **Keep your streak alive** — completes on ANY valid activity today:
+  `last_active_date === today` (earned XP via learn/due/challenge/mission/
+  mini-unit) **or** any card practiced today. NOT the streak counter. Resets at
+  local day-rollover; lifetime streak count is still shown.
+
+Supabase-backed signals (all per-user, RLS-protected, in `user_stats` /
+`user_progress`): `today_xp`, `today_xp_date`, `last_active_date` (lastStudy),
+`current_streak`, `daily_goal`, plus card `last_review` timestamps. Quests are
+derived from these, so they persist through refresh and sync across devices.
+
+Achievements: per-user in `user_achievements`; fire once (session lock +
+persisted `unlockedAchievements`); no XP reward is tied to an unlock (no
+double-grant). Fixed a sign-in bug where cloud achievements OVERWROTE local —
+now unioned (`new Set([...local, ...cloud])`) so offline-earned achievements are
+never lost or duplicated.
+
+Verified by `node scripts/check-quest-logic.mjs` (fresh day, one card, ten cards,
+challenge-only, 0-XP stage-review, no-contradiction, new-day reset, distinct
+count) — all assertions pass. `npm run build` passes.
+
+Known limitation (unchanged, documented): cloud `user_stats`/`user_progress`
+merge on sign-in is last-writer / cloud-authoritative with no timestamp
+reconciliation; the streak COUNTER display can briefly trail after a cross-device
+sign-in before the next sync. Quest completion itself is correct because it is
+derived from today-scoped fields. A timestamp-aware merge would need approval.

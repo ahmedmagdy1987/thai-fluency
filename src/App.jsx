@@ -541,10 +541,12 @@ export default function TukTalkThaiApp() {
               ...s,
               ...cloudStatsData,
               firstLessonCompleted: s.firstLessonCompleted || cloudHasData || cloudStatsData.firstLessonCompleted,
-              unlockedAchievements: cloudAchs || s.unlockedAchievements || [],
+              // Union local + cloud so achievements earned offline (or on this
+              // device) are never lost on sign-in, and never duplicated.
+              unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...(cloudAchs || [])])],
             }));
           } else if (cloudAchs && cloudAchs.length > 0) {
-            setStats(s => ({ ...s, firstLessonCompleted: true, unlockedAchievements: cloudAchs }));
+            setStats(s => ({ ...s, firstLessonCompleted: true, unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...cloudAchs])] }));
           } else if (cloudHasData) {
             setStats(s => ({ ...s, firstLessonCompleted: true }));
           }
@@ -1443,7 +1445,7 @@ export default function TukTalkThaiApp() {
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
-          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
+          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
           {tab === 'leaderboard' && <LeaderboardScreen stats={stats} onOpenSuper={handleOpenPremium} />}
         </>
