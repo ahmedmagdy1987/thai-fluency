@@ -597,3 +597,29 @@ now have guided mini-unit paths (96 units, 752 vocab covered, 83 builders).**
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Course Structure Sprint COMPLETE — Native Review Pack added (update — May 30, 2026)
+
+The Course Structure Sprint is **complete**: all 8 stages have guided mini-unit
+paths — **96 mini-units, 752 guided vocab cards, 83 sentence builders** — validated
+by `check-mini-units.mjs` + the other 5 check scripts, with the build passing.
+
+**Native / owner review is now the next required content-QA step.** A complete
+review package has been added so the Thai phrasing, sentence builders, tokenization,
+phonetics, and meanings can be reviewed safely:
+
+- `docs/native-review-master-checklist.md` — owner/native-friendly checklist
+  (what to review, decision options, HIGH/MEDIUM/LOWER priorities).
+- `docs/native-review-stage-summary.md` — at-a-glance per-stage table (units,
+  guided vocab, builders, risk, review-doc links, recommended action).
+- `docs/native-review-issues.md` — issue/decision tracker (template rows + the four
+  already-documented medium-confidence units).
+- `scripts/report-native-review-coverage.mjs` — read-only coverage report (run with
+  `node scripts/report-native-review-coverage.mjs`).
+- Per-stage detail remains in `docs/stage-2..8-content-review-matrix.md` (Stage 1 in
+  `docs/course-structure-roadmap.md`).
+
+**Remaining limitation:** content is **not final** until a native speaker approves
+(or logs fixes for) at least the HIGH-priority stages (1–2) and MEDIUM stages (3–5).
+This pack is docs + a read-only report only — no Thai card content, product logic,
+schema, payments, ads, or subscriptions were touched.

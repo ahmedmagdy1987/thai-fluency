@@ -5,6 +5,28 @@ Date: May 30, 2026
 Part of the Course Structure Sprint — making each learning unit feel like a real
 guided lesson rather than loose flashcards.
 
+## ✅ Course Structure Sprint COMPLETE — native review is the next required step
+
+All 8 stages now have guided mini-unit paths: **96 mini-units, 752 guided vocab
+cards, 83 sentence builders**, validated by `scripts/check-mini-units.mjs` (and the
+other check scripts) with the build passing. Per-stage review matrices exist for
+Stages 2–8; Stage 1 is documented in this roadmap.
+
+**Next required content-QA step: native / owner review.** The structure is ready,
+but the sentence builders and Thai phrasing were auto-derived from existing cards
+and need a native speaker to confirm naturalness, tokenization, and meaning before
+the content can be called **final**. The review package lives in:
+
+- `docs/native-review-master-checklist.md` — what to review, decisions, priorities.
+- `docs/native-review-stage-summary.md` — at-a-glance per-stage table + links.
+- `docs/native-review-issues.md` — issue/decision tracker (template + the four
+  already-documented medium-confidence items).
+- `scripts/report-native-review-coverage.mjs` — read-only coverage report.
+
+**Remaining limitation:** content is **not final** until a native speaker has
+approved (or logged fixes for) at least the HIGH-priority stages (1–2) and the
+MEDIUM stages (3–5). No Thai card content was changed during the sprint.
+
 ## Mini-unit flow (current)
 
 The guided mini-unit (`src/components/MiniUnitFlow.jsx`, launched from the Learn
