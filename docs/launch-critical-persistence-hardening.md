@@ -350,3 +350,29 @@ timestamp-aware merge would require explicit approval.
 
 Verified: `node scripts/check-quest-logic.mjs` (8 scenarios, 24 assertions) and
 `node scripts/check-challenge-scope.mjs` pass; `npm run build` passes.
+
+## Celebration Ledger Persistence (update — May 30, 2026)
+
+The celebration feedback system stores a repeat-prevention ledger; no schema or
+migration was added.
+
+- **What persists:** `stats.celebratedIds` (array of celebration IDs — date-keyed
+  for daily quests / all-quests / perfect-challenge; durable for stage-complete)
+  and `stats.celebrationBaselineDone` (one-time flag).
+- **Where:** localStorage (via `saveState`, every render) AND
+  `profiles.settings` (added to `CLOUD_PROFILE_SETTING_KEYS`; mirrored by a
+  dedicated effect; `applyProfileSettings` UNIONs celebratedIds and ORs the
+  baseline flag on read so cloud never clobbers locally-seen celebrations).
+  Anonymous users use the localStorage fallback only.
+- **Repeat-prevention rule:** a celebration fires at most once per stable ID. A
+  one-time baseline seeds all currently-satisfied IDs on first run so existing
+  users are not retro-celebrated. The ledger is pruned (stale date-keyed IDs
+  older than yesterday dropped; durable IDs kept) to stay bounded.
+- **Not changed:** SRS scheduling, Learn/Practice/Challenge logic, achievements
+  persistence (still `user_achievements`, fire-once), payments/ads/subscriptions.
+- **Limitation:** the `profiles.settings` merge is cloud-authoritative on
+  sign-in, so a celebration could re-show once on a brand-new device in a rare
+  race before the ledger syncs. localStorage fully prevents same-device repeats.
+
+Verified: `node scripts/check-celebrations.mjs` (27 assertions) passes; build
+passes.

@@ -92,3 +92,46 @@ Before broad beta promotion, verify:
 | Visit `/premium` logged in | Super coming-soon page loads and Back to app works. |
 | Tap locked Quests before Level 2 | Clear locked messaging appears; Super prompt does not repeat more than once per day. |
 | Open Shop and Leaderboard | Copy clearly says preview/coming soon with no fake purchase flow. |
+
+## Celebration Feedback System (update — May 30, 2026)
+
+A three-level celebration system gives every meaningful action clear,
+non-annoying feedback.
+
+**Levels & triggers**
+
+- **Level 1 — `QuestCompleteToast`** (small, auto-dismiss, tiny tick): each
+  daily quest transitioning incomplete → complete (Hit daily XP goal, Practice
+  10 cards, Review your due cards, Keep your streak alive).
+- **Level 2 — `AchievementUnlockedModal`** (centered modal, reward sound,
+  Continue): a newly-unlocked achievement. Reuses the existing achievement
+  detection/queue; shown one at a time.
+- **Level 3 — `CelebrationOverlay`** (confetti, optional XP count-up, CTAs):
+  all daily quests complete; a stage completes (stages ≥2; Stage 1 keeps its
+  existing dedicated celebration); a **perfect Stage N Challenge**. CTAs point
+  forward (Start Stage N+1 / Try Stage N Challenge / Try a Challenge / Continue).
+
+**Repeat prevention** — `src/lib/celebrations.js` + `stats.celebratedIds`
+(date-keyed for daily/quest/perfect, durable for stage-complete) +
+`celebrationBaselineDone`. A one-time baseline seeds all already-satisfied IDs
+so users who met conditions before this feature are never retro-celebrated.
+celebratedIds persists in localStorage and mirrors to `profiles.settings`
+(union merge) for cross-device dedup. Nothing re-fires on refresh or on
+re-opening Quests.
+
+**Sound rules** — `playQuestTick` (L1), `playAchievement` (L2),
+`playCelebration` + `playXpTick` (L3). All gated by the Sound effects setting
+(OFF → fully silent) and by the first-user-gesture AudioContext guard (no
+autoplay warnings). No looping sounds. Reduced motion reduces animation but
+still allows sound when Sound effects is ON.
+
+**Premium CTA rules** — a soft, secondary Super line appears only AFTER the
+all-quests-complete and perfect-challenge celebrations, at most once per day
+(`super-cta:DATE`), never claims payments are active, and never gates the
+celebration.
+
+**Known limitations** — cross-device celebration dedup depends on the
+`profiles.settings` sync (cloud-authoritative on sign-in); in a rare race a
+celebration could re-show once on a brand-new device before the ledger syncs.
+A perfect-challenge overlay renders over the in-quiz results screen (intended).
+Verified by `node scripts/check-celebrations.mjs` (27 assertions).

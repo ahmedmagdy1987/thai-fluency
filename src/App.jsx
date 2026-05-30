@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
 import { CARDS } from './data/cards.js';
-import { STAGES } from './data/taxonomy.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
@@ -9,6 +8,19 @@ import { loadState, saveState, clearState, loadRushGuard, saveRushGuard } from '
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
+import { evaluateDailyQuests } from './lib/dailyQuests.js';
+import {
+  QUEST_CELEBRATIONS,
+  questCelebrationId,
+  allQuestsCelebrationId,
+  allQuestsComplete,
+  stageCompleteCelebrationId,
+  challengePerfectCelebrationId,
+  superCtaId,
+  hasCelebrated,
+  withCelebrated,
+  activeCelebrationIds,
+} from './lib/celebrations.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -43,8 +55,9 @@ import CardsTab from './components/CardsTab.jsx';
 import BrowseTab from './components/BrowseTab.jsx';
 import QuizTab from './components/QuizTab.jsx';
 import GuideTab from './components/GuideTab.jsx';
-import AchievementToast from './components/AchievementToast.jsx';
-import StageUpToast from './components/StageUpToast.jsx';
+import AchievementUnlockedModal from './components/AchievementUnlockedModal.jsx';
+import QuestCompleteToast from './components/QuestCompleteToast.jsx';
+import CelebrationOverlay from './components/CelebrationOverlay.jsx';
 import MissionCompleteRewardScreen from './components/MissionCompleteRewardScreen.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
@@ -74,6 +87,8 @@ const CLOUD_PROFILE_SETTING_KEYS = [
   'miniUnitProgress',
   'completedMiniUnits',
   'superPromptLastShownAt',
+  'celebratedIds',
+  'celebrationBaselineDone',
 ];
 const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
@@ -200,7 +215,10 @@ export default function TukTalkThaiApp() {
   const [loaded, setLoaded] = useState(false);
   const [achievementToast, setAchievementToast] = useState(null);
   const [achievementQueue, setAchievementQueue] = useState([]);
-  const [stageUpToast, setStageUpToast] = useState(null);
+  // Celebration feedback: a single Level-3 overlay descriptor at a time, plus a
+  // queue of Level-1 quest toasts. See the celebration effect below.
+  const [celebration, setCelebration] = useState(null);
+  const [questToasts, setQuestToasts] = useState([]);
   const [showSettings, setShowSettings] = useState(() => initialRoute.type === 'settings');
   const [showProfile, setShowProfile] = useState(() => initialRoute.type === 'profile');
   const [publicPage, setPublicPage] = useState(() => initialRoute.type === 'public' ? initialRoute.page : null);
@@ -234,6 +252,7 @@ export default function TukTalkThaiApp() {
   const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
   const profileSettingsRef = useRef({});
+  const celebrationsArmedRef = useRef(false);               // celebrations fire only after the first settled pass (baseline)
   const reviewLocksRef = useRef(new Set());
   const missionRewardLocksRef = useRef(new Set());
   const achievementLocksRef = useRef(new Set());
@@ -404,7 +423,15 @@ export default function TukTalkThaiApp() {
               cloudSettings.voice = profileData.selected_voice;
             }
             if (Object.keys(cloudSettings).length > 0) {
-              setStats(s => migrateStats({ ...s, ...cloudSettings }));
+              setStats(s => migrateStats({
+                ...s,
+                ...cloudSettings,
+                // Never let cloud clobber locally-seen celebrations: union the
+                // ledger and OR the baseline flag so a celebration can't re-fire
+                // after a cross-device sign-in (and offline-seen ones survive).
+                celebratedIds: [...new Set([...(s.celebratedIds || []), ...(cloudSettings.celebratedIds || [])])],
+                celebrationBaselineDone: s.celebrationBaselineDone || cloudSettings.celebrationBaselineDone || false,
+              }));
             }
           };
           // (1) display_name backfill
@@ -610,14 +637,9 @@ export default function TukTalkThaiApp() {
   useEffect(() => {
     if (!loaded || !stageState) return;
     if (stageState.currentStage > (stats.currentStage || 1)) {
-      // Moving past Stage 1 → the big Stage1CompleteCelebration modal handles
-      // that transition. Suppress the small toast in that case so the user
-      // doesn't see two celebrations stacked.
-      const movingPastS1 = (stats.currentStage || 1) === 1;
-      if (!movingPastS1) {
-        const advancedTo = STAGES.find(S => S.id === stageState.currentStage);
-        if (advancedTo) setStageUpToast(advancedTo);
-      }
+      // Keep stats.currentStage in sync with the unlocked frontier. The
+      // stage-complete celebration itself is handled by the celebration effect
+      // below (CelebrationOverlay), so no separate stage-up toast fires here.
       setStats(s => ({ ...s, currentStage: stageState.currentStage }));
     }
   }, [stageState, loaded]);
@@ -713,6 +735,35 @@ export default function TukTalkThaiApp() {
       return startStudyDay(s, today, newStreak, amount, false);
     });
   }, []);
+
+  // Record one or more celebration IDs as seen (localStorage via saveState;
+  // cloud via the sync effect below). Pruned + idempotent. No external deps so
+  // it stays stable and TDZ-safe for early callers like recordQuizComplete.
+  const markCelebrated = useCallback((idOrIds) => {
+    setStats(s => {
+      const next = withCelebrated(s.celebratedIds, idOrIds, getLocalDateKey(), previousLocalDateKey());
+      return next === s.celebratedIds ? s : { ...s, celebratedIds: next };
+    });
+  }, []);
+
+  // Mirror the celebration ledger into profiles.settings so it dedups across
+  // devices. Decoupled from updateSettings (no extra setStats churn); loop-safe
+  // via the profileSettingsRef reference check.
+  useEffect(() => {
+    if (!loaded || !session || !isEmailConfirmed || !hasSupabaseConfig) return;
+    const prev = profileSettingsRef.current || {};
+    if (prev.celebratedIds === stats.celebratedIds && prev.celebrationBaselineDone === stats.celebrationBaselineDone) return;
+    const nextSettings = {
+      ...prev,
+      celebratedIds: stats.celebratedIds,
+      celebrationBaselineDone: stats.celebrationBaselineDone,
+    };
+    profileSettingsRef.current = nextSettings;
+    setProfile(p => (p ? { ...p, settings: nextSettings } : p));
+    updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
+      console.warn('[App] failed to sync celebration ledger to cloud', e);
+    });
+  }, [stats.celebratedIds, stats.celebrationBaselineDone, loaded, session, isEmailConfirmed]);
 
   // Mission advancement: when currentMission increases past lastSeenMission,
   // celebrate the mission that just finished. The "just finished" mission is
@@ -908,12 +959,32 @@ export default function TukTalkThaiApp() {
     }));
   }, [grantXp]);
 
-  const recordQuizComplete = useCallback((score, total) => {
+  const recordQuizComplete = useCallback((score, total, stage) => {
     const passed = (score / total) >= 0.8;
     const correct = Math.max(0, score || 0);
     const wrong = Math.max(0, (total || 0) - correct);
     const today = getLocalDateKey();
     grantXp(score * XP_REWARDS.quizCorrect);
+    // Level 3 — perfect Stage Challenge celebration (once per stage per day).
+    // Challenge never marks cards learned; this is purely cosmetic feedback.
+    if (total > 0 && score === total) {
+      const stageId = stage || 1;
+      const perfectId = challengePerfectCelebrationId(stageId, today);
+      if (!hasCelebrated(stats.celebratedIds, perfectId)) {
+        const showSuper = !hasCelebrated(stats.celebratedIds, superCtaId(today));
+        markCelebrated(showSuper ? [perfectId, superCtaId(today)] : perfectId);
+        setCelebration({
+          eyebrow: 'Perfect Challenge',
+          title: `Perfect Stage ${stageId} Challenge`,
+          subtitle: 'You got every answer right.',
+          xpEarned: score * XP_REWARDS.quizCorrect,
+          primaryLabel: 'Continue',
+          onPrimary: () => setCelebration(null),
+          superCtaText: showSuper ? 'Super will unlock extra challenge packs when it opens.' : null,
+          onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
+        });
+      }
+    }
     setStats(s => {
       const currentBestScore = s.bestChallengeScore || 0;
       const currentBestTotal = s.bestChallengeTotal || 0;
@@ -932,7 +1003,8 @@ export default function TukTalkThaiApp() {
         bestChallengeTotal: isNewBest ? (total || 0) : currentBestTotal,
       };
     });
-  }, [grantXp]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handleOpenPremium is stable; referenced lazily on Super tap
+  }, [grantXp, markCelebrated, stats.celebratedIds]);
 
   const recordDialogueComplete = useCallback((dialogueId) => {
     setStats(s => {
@@ -1236,6 +1308,93 @@ export default function TukTalkThaiApp() {
     [maxUnlockedStage]
   );
   const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
+
+  // ── Celebration feedback (Levels 1–3) ────────────────────────────────────
+  // Quest toasts, all-quests-complete + stage-complete overlays. Perfect
+  // Challenge fires from recordQuizComplete; achievements from their own effect.
+  // The first settled pass arms a baseline (records already-satisfied IDs) so
+  // existing completions are never retroactively celebrated, and celebratedIds
+  // prevents any repeat after refresh / re-opening Quests.
+  useEffect(() => {
+    if (!loaded || (session && !cloudReady) || !stageState) return;
+    const today = getLocalDateKey();
+    const quests = evaluateDailyQuests({ stats, dashboardStats, progress, today });
+
+    if (!celebrationsArmedRef.current) {
+      celebrationsArmedRef.current = true;
+      if (!stats.celebrationBaselineDone) {
+        const seed = activeCelebrationIds({ quests, stageState, today });
+        setStats(s => ({
+          ...s,
+          celebratedIds: withCelebrated(s.celebratedIds, seed, today, previousLocalDateKey()),
+          celebrationBaselineDone: true,
+        }));
+      }
+      return;
+    }
+
+    const ids = stats.celebratedIds || [];
+    const allDone = allQuestsComplete(quests);
+
+    // Level 1 — individual quest toasts (suppressed when the whole day is done,
+    // which shows the Level 3 overlay instead).
+    if (!allDone) {
+      const newlyDone = QUEST_CELEBRATIONS.filter(
+        q => quests[q.slot] && quests[q.slot].done && !hasCelebrated(ids, questCelebrationId(q.key, today))
+      );
+      if (newlyDone.length > 0) {
+        const items = newlyDone.map(q => ({ id: questCelebrationId(q.key, today), title: q.title }));
+        setQuestToasts(prev => [...prev, ...items]);
+        markCelebrated(items.map(i => i.id));
+      }
+    }
+
+    // Level 3 — one overlay at a time.
+    if (!celebration) {
+      const stages = stageState.stages || [];
+      const newStage = stages.find(
+        s => s.complete && s.total > 0 && s.id !== 1 && !hasCelebrated(ids, stageCompleteCelebrationId(s.id))
+      );
+      if (newStage) {
+        const next = stages.find(s => s.id === newStage.id + 1 && s.total > 0);
+        markCelebrated(stageCompleteCelebrationId(newStage.id));
+        setCelebration({
+          eyebrow: 'Stage Complete',
+          title: `Stage ${newStage.id} Complete`,
+          subtitle: 'Every word in this stage is learned. Keep reviewing to master them.',
+          xpEarned: 0,
+          primaryLabel: next ? `Start Stage ${next.id}` : 'Continue learning',
+          onPrimary: () => { setCelebration(null); handleSetTab('learn'); },
+          secondaryLabel: `Try Stage ${newStage.id} Challenge`,
+          onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
+        });
+        return;
+      }
+
+      if (allDone && !hasCelebrated(ids, allQuestsCelebrationId(today))) {
+        const showSuper = !hasCelebrated(ids, superCtaId(today));
+        markCelebrated([
+          allQuestsCelebrationId(today),
+          ...QUEST_CELEBRATIONS.map(q => questCelebrationId(q.key, today)),
+          ...(showSuper ? [superCtaId(today)] : []),
+        ]);
+        setQuestToasts([]); // overlay supersedes any lingering quest toast
+        setCelebration({
+          eyebrow: 'Daily Quests Complete',
+          title: 'Daily Quests Complete',
+          subtitle: 'You finished today’s goals. Come back tomorrow to keep your streak alive.',
+          xpEarned: 0,
+          primaryLabel: 'Continue learning',
+          onPrimary: () => setCelebration(null),
+          secondaryLabel: 'Try a Challenge',
+          onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
+          superCtaText: showSuper ? 'Want extra practice goals soon? Tuk Talk Thai Super will unlock more ways to keep going.' : null,
+          onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
+        });
+      }
+    }
+  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, markCelebrated, handleSetTab, handleOpenPremium]);
+
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
   const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
@@ -1451,11 +1610,18 @@ export default function TukTalkThaiApp() {
         </>
       )}
 
-      {achievementToast && (
-        <AchievementToast achievement={achievementToast} onClose={handleAchievementToastClose} />
+      {questToasts.length > 0 && (
+        <QuestCompleteToast
+          key={questToasts[0].id}
+          title={questToasts[0].title}
+          onClose={() => setQuestToasts(q => q.slice(1))}
+        />
       )}
-      {stageUpToast && (
-        <StageUpToast stage={stageUpToast} onClose={() => setStageUpToast(null)} />
+      {celebration && (
+        <CelebrationOverlay {...celebration} />
+      )}
+      {!celebration && achievementToast && (
+        <AchievementUnlockedModal achievement={achievementToast} onContinue={handleAchievementToastClose} />
       )}
       {showStage1Celebration && (
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />

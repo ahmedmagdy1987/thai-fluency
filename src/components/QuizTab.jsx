@@ -170,7 +170,8 @@ export default function QuizTab({
       const finalScore = score;
       setDone(true);
       coach.react(finalScore === questions.length ? 'celebrating' : 'idle', { duration: 1800 });
-      if (onComplete) onComplete(finalScore, questions.length);
+      // Pass the selected stage so the app can label/celebrate a Stage N result.
+      if (onComplete) onComplete(finalScore, questions.length, selectedStage);
       return;
     }
     setIdx(prev => prev + 1);

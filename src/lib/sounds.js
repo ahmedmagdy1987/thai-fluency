@@ -141,6 +141,34 @@ export function playCelebration() {
   } catch (_) { /* ignore */ }
 }
 
+// Tiny "tick" for a single daily-quest completion (Level 1). One soft note —
+// deliberately quieter and shorter than the milestone chime so it reinforces
+// without interrupting. Sound-OFF and gesture gating are inherited.
+export function playQuestTick() {
+  if (!effectsEnabled()) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    tone(ctx, 740, 0,    0.05, 0.12, 'triangle');
+    tone(ctx, 988, 0.05, 0.10, 0.10, 'sine'); // gentle lift
+  } catch (_) { /* ignore */ }
+}
+
+// Achievement unlock (Level 2) — a brief bright two-note flourish, distinct
+// from the major-celebration arpeggio so an unlock feels its own thing.
+export function playAchievement() {
+  if (!effectsEnabled()) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    tone(ctx, 659.25, 0.00, 0.12, 0.20, 'triangle'); // E5
+    tone(ctx, 880.00, 0.10, 0.14, 0.20, 'triangle'); // A5
+    tone(ctx, 1174.66, 0.22, 0.26, 0.18, 'sine');    // D6 shimmer
+  } catch (_) { /* ignore */ }
+}
+
 // Rapid XP counter tick. Kept very short because reward screens may call it
 // repeatedly during count-up animation.
 export function playXpTick(step = 0) {

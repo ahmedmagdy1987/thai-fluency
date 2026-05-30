@@ -35,6 +35,11 @@ export const DEFAULT_STATS = {
   miniUnitProgress: null,
   completedMiniUnits: [],
   superPromptLastShownAt: null,
+  // Celebration repeat-prevention ledger (see lib/celebrations.js). Date-keyed
+  // quest IDs + durable milestone IDs. baselineDone seeds existing completions
+  // once so they aren't retroactively celebrated.
+  celebratedIds: [],
+  celebrationBaselineDone: false,
   voice: DEFAULT_VOICE,
   viewMode: DEFAULT_VIEW_MODE,
   theme: 'light',

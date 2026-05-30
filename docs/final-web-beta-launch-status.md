@@ -286,3 +286,27 @@ merge on sign-in is last-writer / cloud-authoritative with no timestamp
 reconciliation; the streak COUNTER display can briefly trail after a cross-device
 sign-in before the next sync. Quest completion itself is correct because it is
 derived from today-scoped fields. A timestamp-aware merge would need approval.
+
+## Celebration Feedback System (update — May 30, 2026)
+
+Added a three-level celebration/achievement feedback system (full detail in
+`docs/reward-and-premium-strategy.md`):
+
+- **Level 1** — `QuestCompleteToast`: each daily quest completing (tiny tick).
+- **Level 2** — `AchievementUnlockedModal`: a newly-unlocked achievement
+  (reuses the existing per-user, fire-once achievement queue).
+- **Level 3** — `CelebrationOverlay`: all daily quests complete, a stage
+  completing (≥2; Stage 1 keeps its existing celebration), and a perfect Stage
+  Challenge — confetti + XP count-up + forward CTAs + a soft, once-per-day Super
+  line.
+
+Repeat prevention via `src/lib/celebrations.js` + `stats.celebratedIds`
+(date-keyed daily IDs, durable stage IDs) and a one-time baseline so existing
+completions are never retro-celebrated; nothing re-fires on refresh. Sounds
+respect the Sound-effects setting and the first-gesture AudioContext guard;
+animations respect reduced motion. No Thai content, SRS, Learn/Practice, Stage
+Challenge filtering, schema, payments, ads, or subscriptions were touched.
+
+Verified: `node scripts/check-celebrations.mjs` (27 assertions),
+`check-quest-logic.mjs`, and `check-challenge-scope.mjs` pass; `npm run build`
+passes; adversarial multi-agent review found no confirmed bugs.
