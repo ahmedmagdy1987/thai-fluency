@@ -460,3 +460,49 @@ listed in the review matrix.
 **Stage 6** ("Intermediate Power") — same approach: themed units from existing
 Stage 6 cards, safe builders only, validated by `check-mini-units.mjs`, with a
 Stage 6 review matrix.
+
+## Stage 6 deepened (update — May 30, 2026)
+
+Stage 6 expanded from **2 units (14 cards)** to **14 units (110 vocab cards)** — a
+real guided "Intermediate Power" section, using existing Stage 6 cards only. A
+native-review matrix lives at `docs/stage-6-content-review-matrix.md`.
+
+### Stage 6 audit
+804 cards (593 words, 1 grammar, 210 sentences). Concept-heavy: words are
+dominated by **"things"/nouns (158), verbs (133), adjectives (105)**. Of 210
+sentence cards, **13 produce a clean ≥3-token breakdown**, and the clean ones are
+squarely intermediate (wants, restaurant requests, scheduling/appointments,
+farewells, past-tense narration, well-wishing, allergies) — several are longer
+4-/5-token lines.
+
+### Units added (12 new; all existing Stage 6 cards)
+People & family · Days & dates · Times & waiting · At a restaurant · Rest & home ·
+Out in town · Banking & paperwork · Emotions & moods · Learning & ability ·
+Everyday verbs · Explaining & confirming · Describing qualities.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 6 units | 2 | 14 |
+| Stage 6 vocab covered | 14 / 804 | 110 / 804 |
+| Stage 6 sentence builders | 2 | 13 |
+
+### sentenceBuilder coverage / skipped
+**13 of 14** Stage 6 units have a builder (3- to 5-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). The
+"Describing qualities" adjectives unit is vocab-only (Stage 6's clean adjective
+sentences are 2-token or idiomatic). Two clean leftover sentences (877 "sorry I'm
+late", 1534 "allergic to this") are held back as one-builder-per-unit extras. All
+skips are listed in the review matrix.
+
+### Known limitations
+- Coverage is 110/804 (the cleanest themed vocab); the rest stays in Practice and
+  the Stage Challenge.
+- "Explaining and confirming" pairs a request builder ("may I have some more") with
+  communication verbs — flagged medium for native review in the matrix.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 7** ("Natural Thai") — same approach: themed units from existing Stage 7
+cards, safe builders only, validated by `check-mini-units.mjs`, with a Stage 7
+review matrix.

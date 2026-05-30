@@ -515,3 +515,30 @@ confidence, needs-review flag, plus skipped candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 6 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 6 expanded from **2 → 14 guided mini-units** (**14 → 110** vocab cards
+covered, **2 → 13** sentence builders), all using existing Stage 6 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** is at
+`docs/stage-6-content-review-matrix.md` (per-unit vocab, sentence, builder tokens,
+confidence, needs-review flag, plus skipped candidates with reasons).
+
+- 12 new themed "Intermediate Power" units (people & family, days & dates, times &
+  waiting, at a restaurant, rest & home, out in town, banking & paperwork,
+  emotions & moods, learning & ability, everyday verbs, explaining & confirming,
+  describing qualities). 11 of the 12 carry a genuine builder — including longer
+  4-/5-token intermediate lines (see-you-again, yesterday-went-to-market,
+  wait-a-moment, menu-please, want-to-rest, come-back-again, can-you-come-today,
+  take-care, speak-Thai, eaten-yet, some-more); the adjectives unit is vocab-only.
+- Builders added **only when safe** (3- to 5-token, auto-derived from the source
+  card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). Two
+  clean leftover sentences held back as one-builder-per-unit extras — documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 6
+  shows its 14-unit sequential path when Stage 6 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change).
+
+`check-mini-units.mjs` (all-stages, Stage 6 now 110/804 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.
