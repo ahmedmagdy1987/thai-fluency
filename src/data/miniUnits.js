@@ -685,6 +685,174 @@ export const STAGE_5_UNIT_DESCRIBE = unit({
     ], answer: ['phom', 'nueai', 'mak'],
   },
 });
+// Stage 5 deepening (Course Structure Sprint) — the "Social Confidence" path.
+// Every id below is an EXISTING Stage 5 card; no card content is changed and no
+// Thai is invented. Builders use only the source sentence card's own pieces (its
+// space-separated phonetic split, meanings from WORD_LOOKUP) — verified by
+// scripts/check-mini-units.mjs against the runtime CARDS. Stage 5 is very
+// sentence-rich (184 sentence cards, 18 with a clean breakdown), so all 12 units
+// carry a genuine social/conversational builder (introductions, feelings, health,
+// weather, time, food, compliments, requests, wants, everyday verbs).
+export const STAGE_5_UNIT_PEOPLE = unit({
+  unitId: 'stage-5-family-people', stageId: 5,
+  title: 'Family and people', subtitle: 'Relative, wife, father, aunt, daughter, person, student, police.',
+  vocabCardIds: [1730, 1735, 2395, 2515, 2677, 1886, 3325, 199], sentenceCardId: 841, challengeCardIds: [1730, 1735, 2395],
+  sentenceBuilder: {
+    sourceCardId: 841, prompt: 'Build this Thai sentence', english: 'Where are you from?', thai: 'คุณมาจากไหน',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'maa', thai: 'มา', ph: 'maa', en: 'to come' },
+      { id: 'jaknai', thai: 'จากไหน', ph: 'jàak nǎi', en: 'from where' },
+    ], answer: ['khun', 'maa', 'jaknai'],
+  },
+});
+export const STAGE_5_UNIT_EMOTIONS = unit({
+  unitId: 'stage-5-emotions-feelings', stageId: 5,
+  title: 'Emotions and feelings', subtitle: 'Happy, satisfied, miss, sad, jealous, angry, startled, glad.',
+  vocabCardIds: [460, 467, 469, 471, 5717, 3587, 2855, 2358], sentenceCardId: 811, challengeCardIds: [460, 471, 3587],
+  sentenceBuilder: {
+    sourceCardId: 811, prompt: 'Build this Thai sentence', english: 'I am very happy (male)', thai: 'ผมดีใจมาก',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'deejai', thai: 'ดีใจ', ph: 'dee jai', en: 'happy / glad' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['phom', 'deejai', 'mak'],
+  },
+});
+export const STAGE_5_UNIT_HEALTH = unit({
+  unitId: 'stage-5-health-and-body', stageId: 5,
+  title: 'Health and the body', subtitle: 'Nurse, breathe, doctor, wound, blood, nose, knee, shoulder.',
+  vocabCardIds: [1215, 1220, 2205, 3043, 2387, 563, 3315, 3327], sentenceCardId: 807, challengeCardIds: [1215, 2205, 3043],
+  sentenceBuilder: {
+    sourceCardId: 807, prompt: 'Build this Thai sentence', english: 'I am not feeling well (male)', thai: 'ผมไม่สบายครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'maisabai', thai: 'ไม่สบาย', ph: 'mâi sàbaai', en: 'not well' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'maisabai', 'khrap'],
+  },
+});
+export const STAGE_5_UNIT_WEATHER = unit({
+  unitId: 'stage-5-weather-seasons', stageId: 5,
+  title: 'Weather and seasons', subtitle: 'Weather, season, storm, snow, grass, island, kite, rock.',
+  vocabCardIds: [600, 2470, 3500, 3644, 2623, 613, 4305, 3558], sentenceCardId: 891, challengeCardIds: [600, 2470, 3500],
+  sentenceBuilder: {
+    sourceCardId: 891, prompt: 'Build this Thai sentence', english: 'It is very hot today', thai: 'วันนี้ร้อนมาก',
+    tokens: [
+      { id: 'wannii', thai: 'วันนี้', ph: 'wan níi', en: 'today' },
+      { id: 'ron', thai: 'ร้อน', ph: 'ráwn', en: 'hot' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['wannii', 'ron', 'mak'],
+  },
+});
+export const STAGE_5_UNIT_TIME = unit({
+  unitId: 'stage-5-days-and-time', stageId: 5,
+  title: 'Days and time', subtitle: 'Today, now, week, Monday, now, just, after, times.',
+  vocabCardIds: [210, 213, 219, 2863, 3205, 258, 297, 279], sentenceCardId: 855, challengeCardIds: [210, 219, 2863],
+  sentenceBuilder: {
+    sourceCardId: 855, prompt: 'Build this Thai sentence', english: 'What day is today?', thai: 'วันนี้วันอะไร',
+    tokens: [
+      { id: 'wannii', thai: 'วันนี้', ph: 'wan níi', en: 'today' },
+      { id: 'wan', thai: 'วัน', ph: 'wan', en: 'day' },
+      { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
+    ], answer: ['wannii', 'wan', 'arai'],
+  },
+});
+export const STAGE_5_UNIT_FOOD = unit({
+  unitId: 'stage-5-food-and-drink', stageId: 5,
+  title: 'Food and drink', subtitle: 'Beer, papaya salad, tom yum, liquor, salt, lime, mango, banana.',
+  vocabCardIds: [136, 147, 148, 155, 521, 524, 527, 528], sentenceCardId: 826, challengeCardIds: [147, 148, 527],
+  sentenceBuilder: {
+    sourceCardId: 826, prompt: 'Build this Thai sentence', english: 'I want to drink coffee (male)', thai: 'ผมอยากดื่มกาแฟ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
+      { id: 'duem', thai: 'ดื่ม', ph: 'dùem', en: 'to drink' },
+      { id: 'gafae', thai: 'กาแฟ', ph: 'gaafae', en: 'coffee' },
+    ], answer: ['phom', 'yak', 'duem', 'gafae'],
+  },
+});
+export const STAGE_5_UNIT_MONEY = unit({
+  unitId: 'stage-5-ordering-and-money', stageId: 5,
+  title: 'Ordering and money', subtitle: 'Menu, banknote, money, cash, prize, coin, sign, stop by.',
+  vocabCardIds: [5711, 5726, 5727, 1107, 2597, 3033, 2784, 2995], sentenceCardId: 828, challengeCardIds: [5711, 1107, 5727],
+  sentenceBuilder: {
+    sourceCardId: 828, prompt: 'Build this Thai sentence', english: 'I will take this one (male)', thai: 'ผมเอาอันนี้ครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ao', thai: 'เอา', ph: 'ao', en: 'to want / take' },
+      { id: 'annii', thai: 'อันนี้', ph: 'annǐi', en: 'this one' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'ao', 'annii', 'khrap'],
+  },
+});
+export const STAGE_5_UNIT_REQUESTS = unit({
+  unitId: 'stage-5-asking-and-giving', stageId: 5,
+  title: 'Asking and giving', subtitle: 'Advise, warn, hand out, feed, scoop, say, call out, inform.',
+  vocabCardIds: [3632, 2555, 2767, 2837, 2982, 1786, 3070, 2257], sentenceCardId: 831, challengeCardIds: [3632, 2555, 1786],
+  sentenceBuilder: {
+    sourceCardId: 831, prompt: 'Build this Thai sentence', english: 'May I have some water (male)', thai: 'ขอน้ำหน่อยครับ',
+    tokens: [
+      { id: 'khaw', thai: 'ขอ', ph: 'khǎw', en: 'may I have / request' },
+      { id: 'nam', thai: 'น้ำ', ph: 'náam', en: 'water' },
+      { id: 'noi', thai: 'หน่อย', ph: 'nàwy', en: 'a little' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['khaw', 'nam', 'noi', 'khrap'],
+  },
+});
+export const STAGE_5_UNIT_COMPLIMENTS = unit({
+  unitId: 'stage-5-compliments', stageId: 5,
+  title: 'Compliments and praise', subtitle: 'Special, great, funny, comfortable, real, neat, pleasing, delighted.',
+  vocabCardIds: [1826, 2404, 2732, 2154, 2241, 2551, 3270, 3531], sentenceCardId: 951, challengeCardIds: [1826, 2404, 3270],
+  sentenceBuilder: {
+    sourceCardId: 951, prompt: 'Build this Thai sentence', english: 'You are very beautiful (male speaker)', thai: 'คุณสวยมากครับ',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'suai', thai: 'สวย', ph: 'sǔai', en: 'beautiful' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['khun', 'suai', 'mak', 'khrap'],
+  },
+});
+export const STAGE_5_UNIT_TOWN = unit({
+  unitId: 'stage-5-around-town', stageId: 5,
+  title: 'Around town', subtitle: 'City, building, shore, sub-district, market, bridge, camp, train.',
+  vocabCardIds: [1648, 2278, 2354, 2370, 4230, 2670, 2897, 2450], sentenceCardId: 952, challengeCardIds: [1648, 2278, 2670],
+  sentenceBuilder: {
+    sourceCardId: 952, prompt: 'Build this Thai sentence', english: 'It is very beautiful here', thai: 'ที่นี่สวยมาก',
+    tokens: [
+      { id: 'thinii', thai: 'ที่นี่', ph: 'thîi nîi', en: 'here' },
+      { id: 'suai', thai: 'สวย', ph: 'sǔai', en: 'beautiful' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['thinii', 'suai', 'mak'],
+  },
+});
+export const STAGE_5_UNIT_WANTS = unit({
+  unitId: 'stage-5-wants-and-plans', stageId: 5,
+  title: 'Wants and plans', subtitle: 'Desire, prepare, schedule, postpone, withdraw, expect, connect, share.',
+  vocabCardIds: [3130, 2044, 1787, 2021, 2616, 2541, 2467, 1958], sentenceCardId: 822, challengeCardIds: [2044, 1787, 2541],
+  sentenceBuilder: {
+    sourceCardId: 822, prompt: 'Build this Thai sentence', english: 'I want to go home (male)', thai: 'ผมอยากกลับบ้าน',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
+      { id: 'glapban', thai: 'กลับบ้าน', ph: 'glàp bâan', en: 'to go home' },
+    ], answer: ['phom', 'yak', 'glapban'],
+  },
+});
+export const STAGE_5_UNIT_VERBS2 = unit({
+  unitId: 'stage-5-everyday-verbs', stageId: 5,
+  title: 'Everyday social verbs', subtitle: 'Know, remember, hate, win, compete, exchange, wai, greet.',
+  vocabCardIds: [1718, 2694, 3125, 2730, 2845, 3064, 2606, 3383], sentenceCardId: 895, challengeCardIds: [1718, 2694, 3383],
+  sentenceBuilder: {
+    sourceCardId: 895, prompt: 'Build this Thai sentence', english: 'I just arrived (male)', thai: 'ผมเพิ่งมาถึง',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'pheung', thai: 'เพิ่ง', ph: 'phêung', en: 'just (recently)' },
+      { id: 'maathueng', thai: 'มาถึง', ph: 'maa thǔeng', en: 'to arrive' },
+    ], answer: ['phom', 'pheung', 'maathueng'],
+  },
+});
 
 // Stage 6 — Intermediate Power.
 export const STAGE_6_UNIT_WANTS = unit({
@@ -805,6 +973,18 @@ export const MINI_UNITS = [
   STAGE_4_UNIT_FOOD,
   STAGE_5_UNIT_VERBS,
   STAGE_5_UNIT_DESCRIBE,
+  STAGE_5_UNIT_PEOPLE,
+  STAGE_5_UNIT_EMOTIONS,
+  STAGE_5_UNIT_HEALTH,
+  STAGE_5_UNIT_WEATHER,
+  STAGE_5_UNIT_TIME,
+  STAGE_5_UNIT_FOOD,
+  STAGE_5_UNIT_MONEY,
+  STAGE_5_UNIT_REQUESTS,
+  STAGE_5_UNIT_COMPLIMENTS,
+  STAGE_5_UNIT_TOWN,
+  STAGE_5_UNIT_WANTS,
+  STAGE_5_UNIT_VERBS2,
   STAGE_6_UNIT_WANTS,
   STAGE_6_UNIT_HEALTH,
   STAGE_7_UNIT_FOOD,

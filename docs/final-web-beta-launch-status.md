@@ -488,3 +488,30 @@ confidence, needs-review flag, plus skipped candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 5 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 5 expanded from **2 → 14 guided mini-units** (**16 → 112** vocab cards
+covered, **2 → 14** sentence builders), all using existing Stage 5 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** is at
+`docs/stage-5-content-review-matrix.md` (per-unit vocab, sentence, builder tokens,
+confidence, needs-review flag, plus skipped candidates with reasons).
+
+- 12 new themed "Social Confidence" units (family & people, emotions & feelings,
+  health & the body, weather & seasons, days & time, food & drink, ordering &
+  money, asking & giving, compliments & praise, around town, wants & plans,
+  everyday social verbs). Stage 5 is the most sentence-rich stage, so **all 12
+  new units carry a genuine conversational builder** (where-from, very-happy,
+  not-well, very-hot-today, what-day, want-coffee, take-this-one, water-please,
+  you're-beautiful, beautiful-here, want-to-go-home, just-arrived).
+- Builders added **only when safe** (3- and 4-token, auto-derived from the source
+  card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). Six
+  clean leftover sentences held back as one-builder-per-unit extras — documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 5
+  shows its 14-unit sequential path when Stage 5 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change).
+
+`check-mini-units.mjs` (all-stages, Stage 5 now 112/701 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

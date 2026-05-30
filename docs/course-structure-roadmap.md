@@ -414,3 +414,49 @@ All skips are listed in the review matrix.
 **Stage 5** ("Social Confidence") — same approach: themed units from existing
 Stage 5 cards, safe builders only, validated by `check-mini-units.mjs`, with a
 Stage 5 review matrix.
+
+## Stage 5 deepened (update — May 30, 2026)
+
+Stage 5 expanded from **2 units (16 cards)** to **14 units (112 vocab cards)** — a
+real guided "Social Confidence" section, using existing Stage 5 cards only. A
+native-review matrix lives at `docs/stage-5-content-review-matrix.md`.
+
+### Stage 5 audit
+701 cards (510 words, 7 grammar, 184 sentences). Stage 5 is the **most
+sentence-rich** stage so far: of its 184 sentence cards, **18 produce a clean
+≥3-token breakdown**, and the phrases are squarely social (introductions,
+feelings, health, weather, time, food/drink, ordering, requests, compliments,
+places, wants, everyday verbs). Vocab is verb-/adjective-/noun-heavy (131/117/110
+free cards).
+
+### Units added (12 new; all existing Stage 5 cards)
+Family & people · Emotions & feelings · Health & the body · Weather & seasons ·
+Days & time · Food & drink · Ordering & money · Asking & giving · Compliments &
+praise · Around town · Wants & plans · Everyday social verbs.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 5 units | 2 | 14 |
+| Stage 5 vocab covered | 16 / 701 | 112 / 701 |
+| Stage 5 sentence builders | 2 | 14 |
+
+### sentenceBuilder coverage / skipped
+**All 14** Stage 5 units have a builder (3- and 4-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS) — the
+richest builder coverage of any stage, because Stage 5's sentence cards are so
+conversational. Six clean leftover sentences (801/802/820/842/849/915) are held
+back as one-builder-per-unit extras — ready to promote later. All skips are
+listed in the review matrix.
+
+### Known limitations
+- Coverage is 112/701 (the cleanest social vocab); the rest stays in Practice and
+  the Stage Challenge.
+- Some planning/speech verbs are formal (กำหนด schedule, เลื่อน postpone, ตรัส
+  speak) — flagged for native review in the matrix.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 6** ("Intermediate Power") — same approach: themed units from existing
+Stage 6 cards, safe builders only, validated by `check-mini-units.mjs`, with a
+Stage 6 review matrix.
