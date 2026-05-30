@@ -57,8 +57,11 @@ export default function LearnPath({
     : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
-  // Stage 1 guided mini-units (data-driven, sequential unlock). Shown in Stage 1.
-  const stage1MiniUnits = getMiniUnitsForStage(1);
+  // Guided mini-units for the CURRENT stage (data-driven, sequential unlock).
+  // Any stage that ships mini-units shows its path; stages without units fall
+  // back to the existing mission/stage UI.
+  const currentStageId = stageState?.currentStage || 1;
+  const currentStageMiniUnits = getMiniUnitsForStage(currentStageId);
   // "Continue" only when there is genuinely mid-flow saved progress (a unit the
   // user started but didn't finish) — a bare intro or a completed save = "Start".
   const savedUnitProgress = fullStats?.miniUnitProgress;
@@ -66,11 +69,11 @@ export default function LearnPath({
     ? savedUnitProgress.unitId
     : null;
   const miniUnitSequence = getMiniUnitProgressState(
-    stage1MiniUnits,
+    currentStageMiniUnits,
     fullStats?.completedMiniUnits || [],
     midFlowUnitId,
   );
-  const showMiniUnits = !!(onStartMiniUnit && stageState && stageState.currentStage === 1 && miniUnitSequence.units.length > 0);
+  const showMiniUnits = !!(onStartMiniUnit && stageState && miniUnitSequence.units.length > 0);
   const startCards = () => {
     if (inMissionView && currentMission && onStartMissionCards) {
       onStartMissionCards(currentMission);
@@ -114,8 +117,8 @@ export default function LearnPath({
             <h2 className="learn-section-title">Guided mini-units</h2>
             <span className="learn-section-meta">
               {miniUnitSequence.pathComplete
-                ? 'Stage 1 path complete'
-                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} complete`}
+                ? `Stage ${currentStageId} path complete`
+                : `Stage ${currentStageId} · ${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} complete`}
             </span>
           </div>
           <div className="learn-miniunit-list">

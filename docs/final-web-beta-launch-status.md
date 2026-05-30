@@ -384,3 +384,28 @@ passes alongside the other 5 checks; build passes. No Thai card content,
 mini-unit content, SRS, Practice review-only, Stage Challenge filtering, Quests,
 Celebrations, Sentence Builder, schema, payments, ads, or subscriptions were
 touched.
+
+## Mini-Units Across All Stages (update — May 30, 2026)
+
+The guided mini-unit system now spans **all 8 stages** (18 units total; full
+detail in `docs/course-structure-roadmap.md`). LearnPath shows the **current
+stage's** unit path with the same sequential unlock / completed-review / resume
+behavior already shipped for Stage 1.
+
+- 13 new themed units (2 per stage for stages 2-7, 1 for stage 8), using **only
+  existing cards of each stage** (`cards.js` unchanged). **17 of 18 units** have
+  a sentence builder; every builder's tokens were derived from the source
+  card's own phonetic via `autoBreakdown`/`WORD_LOOKUP`, so **no Thai was
+  invented** (validated by `check-mini-units.mjs` builder→source fidelity).
+- `LearnPath` uses `getMiniUnitsForStage(currentStage)`; sequencing, XP-safe
+  replay, and resume are unchanged. Stage unlock still follows learned/complete
+  stage logic. Stage 1 is untouched.
+- Coverage is intentionally partial (core themed vocab per stage); the rest of
+  each deck stays available via Practice and the Stage Challenge.
+
+`check-mini-units.mjs` (now all-stages + coverage report) and
+`check-mini-unit-sequence.mjs` (per-stage sequencing) pass, alongside
+`check-sentence-builder`, `check-celebrations`, `check-quest-logic`,
+`check-challenge-scope`; build passes. No SRS, Practice review-only, Stage
+Challenge filtering, Quests, Celebrations, schema, payments, ads, or
+subscriptions touched.

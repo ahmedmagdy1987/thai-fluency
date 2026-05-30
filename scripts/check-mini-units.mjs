@@ -46,11 +46,9 @@ for (const u of MINI_UNITS) {
   // Vocab size in the 6–10 sweet spot (warn outside)
   warn(`[${tag}] vocab size 6–10 (got ${vocab.length})`, vocab.length >= 6 && vocab.length <= 10);
 
-  // Stage-1 units: vocab must be Stage-1 cards
-  if ((u.stageId || 1) === 1) {
-    const offStage = vocab.filter(id => byId.has(id) && (byId.get(id).stage || 1) !== 1);
-    check(`[${tag}] vocab are all Stage 1 cards`, offStage.length === 0, `off-stage ${JSON.stringify(offStage)}`);
-  }
+  // Vocab must be cards of the unit's own stage.
+  const vocabOffStage = vocab.filter(id => byId.has(id) && (byId.get(id).stage || 1) !== (u.stageId || 1));
+  check(`[${tag}] vocab are all Stage ${u.stageId || 1} cards`, vocabOffStage.length === 0, `off-stage ${JSON.stringify(vocabOffStage)}`);
 
   // Challenge cards belong to the unit's cards, or at least the same stage
   const unitCardSet = new Set([...vocab, u.sentenceCardId].filter(Boolean));
@@ -62,7 +60,7 @@ for (const u of MINI_UNITS) {
   // Sentence card exists if provided
   if (u.sentenceCardId != null) {
     check(`[${tag}] sentenceCardId exists`, byId.has(u.sentenceCardId), `id ${u.sentenceCardId}`);
-    warn(`[${tag}] sentenceCardId is a Stage-1 card`, byId.has(u.sentenceCardId) && (byId.get(u.sentenceCardId).stage || 1) === (u.stageId || 1));
+    warn(`[${tag}] sentenceCardId matches the unit stage`, byId.has(u.sentenceCardId) && (byId.get(u.sentenceCardId).stage || 1) === (u.stageId || 1));
   }
 
   // Sentence builder validity + fidelity to source card
@@ -91,6 +89,35 @@ for (const u of MINI_UNITS) {
 
 // Acceptance: at least 2 units carry a sentenceBuilder.
 check(`at least 2 units have a sentenceBuilder (got ${builderUnits})`, builderUnits >= 2);
+
+// Each stage's units must be contiguous in the array (so getMiniUnitsForStage
+// returns them in intended sequential path order).
+{
+  const seen = new Set();
+  let prev = null;
+  let contiguous = true;
+  for (const u of MINI_UNITS) {
+    const st = u.stageId || 1;
+    if (st !== prev) {
+      if (seen.has(st)) contiguous = false; // stage re-appears after another stage
+      seen.add(st);
+      prev = st;
+    }
+  }
+  check('units are grouped contiguously by stage (sequential path order)', contiguous);
+}
+
+// ── Coverage report ──────────────────────────────────────────────────────────
+console.log('\n── Coverage by stage ──');
+const stagesWithUnits = [...new Set(MINI_UNITS.map(u => u.stageId || 1))].sort((a, b) => a - b);
+for (const st of stagesWithUnits) {
+  const units = MINI_UNITS.filter(u => (u.stageId || 1) === st);
+  const covered = new Set();
+  units.forEach(u => (u.vocabCardIds || []).forEach(id => covered.add(id)));
+  const stageTotal = CARDS.filter(c => (c.stage || 1) === st).length;
+  const builders = units.filter(u => u.sentenceBuilder).length;
+  console.log(`  Stage ${st}: ${units.length} unit(s), ${covered.size}/${stageTotal} cards covered, ${builders} sentenceBuilder(s)`);
+}
 
 if (failures > 0) {
   console.error(`\nMini-unit check FAILED: ${failures} assertion(s) failed (${warnings} warning(s)).`);

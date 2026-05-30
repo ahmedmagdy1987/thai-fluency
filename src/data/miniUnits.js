@@ -193,13 +193,239 @@ export const STAGE_1_UNIT_PRICES = {
   },
 };
 
-// Stage 1 guided path order. Unit 1 is the existing pilot.
+// ── Stages 2–8 mini-units ───────────────────────────────────────────────────
+// Every card id below is an EXISTING card of that stage (validated by
+// scripts/check-mini-units.mjs). No card content is changed and no Thai is
+// invented. Each sentenceBuilder's tokens were derived from the source sentence
+// card's own phonetic via the app's WORD_LOOKUP breakdown (autoBreakdown), so
+// the token phonetics reconstruct the card phonetic exactly.
+
+// helper to keep unit literals compact + consistent. Spreads the literal first,
+// then robustly guarantees the fields MiniUnitFlow relies on (recapText /
+// previewText must be non-empty arrays for the recap step's .map; characterId
+// must resolve a coach) — even if a future unit omits or mis-types them.
+function unit(u) {
+  return {
+    ...u,
+    estimatedMinutes: u.estimatedMinutes ?? 7,
+    characterId: u.characterId || 'elephant',
+    introText: u.introText || 'Learn a few related words, see them in a sentence, then build it.',
+    recapText: Array.isArray(u.recapText) && u.recapText.length
+      ? u.recapText
+      : ['Nice work — you practiced a focused set of related words.', 'Keep going to lock them in through review.'],
+    previewText: Array.isArray(u.previewText) && u.previewText.length
+      ? u.previewText
+      : ['The next unit builds on what you just learned.', 'Each short unit moves your Thai forward.'],
+  };
+}
+
+// Stage 2 — Daily Essentials.
+export const STAGE_2_UNIT_ACTIONS = unit({
+  unitId: 'stage-2-everyday-actions', stageId: 2,
+  title: 'Everyday actions', subtitle: 'Common verbs: drink, buy, work, walk, open, close, love.',
+  vocabCardIds: [16, 36, 39, 45, 56, 505, 506, 21], sentenceCardId: 814, challengeCardIds: [16, 36, 21],
+  sentenceBuilder: {
+    sourceCardId: 814, prompt: 'Build this Thai sentence', english: 'I love you (male)', thai: 'ผมรักคุณ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'rak', thai: 'รัก', ph: 'rák', en: 'to love' },
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+    ], answer: ['phom', 'rak', 'khun'],
+  },
+});
+export const STAGE_2_UNIT_DOING = unit({
+  unitId: 'stage-2-getting-things-done', stageId: 2,
+  title: 'Getting things done', subtitle: 'More verbs: meet, send, bring, stop, leave, see, hold.',
+  vocabCardIds: [42, 500, 502, 509, 512, 514, 1609, 1672], sentenceCardId: 813, challengeCardIds: [42, 500, 512],
+  sentenceBuilder: {
+    sourceCardId: 813, prompt: 'Build this Thai sentence', english: 'I do not like it (male)', thai: 'ผมไม่ชอบ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'mai', thai: 'ไม่', ph: 'mâi', en: 'not' },
+      { id: 'chop', thai: 'ชอบ', ph: 'chôp', en: 'to like' },
+    ], answer: ['phom', 'mai', 'chop'],
+  },
+});
+
+// Stage 3 — Getting Around.
+export const STAGE_3_UNIT_DAILY = unit({
+  unitId: 'stage-3-daily-verbs', stageId: 3,
+  title: 'Daily verbs', subtitle: 'Pay, sit, stand, use, study, ask, receive, return.',
+  vocabCardIds: [38, 47, 48, 49, 52, 54, 501, 511], sentenceCardId: 821, challengeCardIds: [38, 52, 54],
+  sentenceBuilder: {
+    sourceCardId: 821, prompt: 'Build this Thai sentence', english: 'I want to sleep (male)', thai: 'ผมอยากนอน',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
+      { id: 'non', thai: 'นอน', ph: 'nawn', en: 'to sleep' },
+    ], answer: ['phom', 'yak', 'non'],
+  },
+});
+export const STAGE_3_UNIT_DESCRIBE = unit({
+  unitId: 'stage-3-describing-things', stageId: 3,
+  title: 'Describing things', subtitle: 'Big, hot, new, easy, hard, busy, full, little.',
+  vocabCardIds: [62, 64, 82, 84, 85, 89, 92, 1624], sentenceCardId: 804, challengeCardIds: [62, 64, 85],
+  sentenceBuilder: {
+    sourceCardId: 804, prompt: 'Build this Thai sentence', english: 'I am hot (male)', thai: 'ผมร้อนครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ron', thai: 'ร้อน', ph: 'ráwn', en: 'hot' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'ron', 'khrap'],
+  },
+});
+
+// Stage 4 — Real Conversations.
+export const STAGE_4_UNIT_TRAVEL = unit({
+  unitId: 'stage-4-actions-travel', stageId: 4,
+  title: 'Out and about', subtitle: 'Read, sell, travel, drive, run, teach, answer, choose.',
+  vocabCardIds: [31, 37, 41, 44, 46, 53, 55, 504], sentenceCardId: 936, challengeCardIds: [31, 44, 53],
+  sentenceBuilder: {
+    sourceCardId: 936, prompt: 'Build this Thai sentence', english: 'I am going traveling (male)', thai: 'ผมจะไปเที่ยว',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'thiao', thai: 'เที่ยว', ph: 'thîao', en: 'to travel' },
+    ], answer: ['phom', 'ja', 'pai', 'thiao'],
+  },
+});
+export const STAGE_4_UNIT_TASTE = unit({
+  unitId: 'stage-4-tastes-describing', stageId: 4,
+  title: 'Tastes and qualities', subtitle: 'Cold, sweet, salty, handsome, near, free, many, like.',
+  vocabCardIds: [66, 69, 71, 75, 80, 88, 1621, 1680], sentenceCardId: 910, challengeCardIds: [69, 71, 80],
+  sentenceBuilder: {
+    sourceCardId: 910, prompt: 'Build this Thai sentence', english: 'It is very delicious (male)', thai: 'อร่อยมากครับ',
+    tokens: [
+      { id: 'aroi', thai: 'อร่อย', ph: 'aròi', en: 'delicious' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['aroi', 'mak', 'khrap'],
+  },
+});
+
+// Stage 5 — Social Confidence.
+export const STAGE_5_UNIT_VERBS = unit({
+  unitId: 'stage-5-useful-verbs', stageId: 5,
+  title: 'Useful verbs', subtitle: 'Know, write, change, start, create, show, move, release.',
+  vocabCardIds: [27, 32, 503, 507, 1685, 1704, 1901, 1907], sentenceCardId: 815, challengeCardIds: [27, 32, 507],
+  sentenceBuilder: {
+    sourceCardId: 815, prompt: 'Build this Thai sentence', english: 'I miss you (male)', thai: 'ผมคิดถึงคุณ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'khitthueng', thai: 'คิดถึง', ph: 'khít thǔeng', en: 'to miss' },
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+    ], answer: ['phom', 'khitthueng', 'khun'],
+  },
+});
+export const STAGE_5_UNIT_DESCRIBE = unit({
+  unitId: 'stage-5-describing-more', stageId: 5,
+  title: 'Describing more', subtitle: 'Bad, old, dirty, tired, short, wide, agree, interested.',
+  vocabCardIds: [61, 83, 87, 90, 1860, 1931, 1972, 1779], sentenceCardId: 808, challengeCardIds: [83, 90, 1860],
+  sentenceBuilder: {
+    sourceCardId: 808, prompt: 'Build this Thai sentence', english: 'I am very tired (male)', thai: 'ผมเหนื่อยมาก',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'nueai', thai: 'เหนื่อย', ph: 'nùeai', en: 'tired' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['phom', 'nueai', 'mak'],
+  },
+});
+
+// Stage 6 — Intermediate Power.
+export const STAGE_6_UNIT_WANTS = unit({
+  unitId: 'stage-6-wants-and-plans', stageId: 6,
+  title: 'Wants and plans', subtitle: 'Rest, need, make, can, try, treat, feel, travel.',
+  vocabCardIds: [40, 50, 1614, 1659, 1683, 1745, 1759, 1823], sentenceCardId: 824, challengeCardIds: [50, 1759, 1823],
+  sentenceBuilder: {
+    sourceCardId: 824, prompt: 'Build this Thai sentence', english: 'I want to learn Thai (male)', thai: 'ผมอยากเรียนภาษาไทย',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
+      { id: 'rian', thai: 'เรียน', ph: 'rian', en: 'to learn' },
+      { id: 'phasathai', thai: 'ภาษาไทย', ph: 'phaa-sǎa thai', en: 'Thai language' },
+    ], answer: ['phom', 'yak', 'rian', 'phasathai'],
+  },
+});
+export const STAGE_6_UNIT_HEALTH = unit({
+  unitId: 'stage-6-health-and-body', stageId: 6,
+  title: 'Health and body', subtitle: 'Headache, vomit, symptom, patient, heart, brain.',
+  vocabCardIds: [1202, 1210, 1984, 2807, 2041, 2222], sentenceCardId: 914, challengeCardIds: [1202, 1984, 2807],
+  sentenceBuilder: {
+    sourceCardId: 914, prompt: 'Build this Thai sentence', english: 'I am allergic to seafood (male)', thai: 'ผมแพ้อาหารทะเล',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'phae', thai: 'แพ้', ph: 'pháe', en: 'allergic to' },
+      { id: 'seafood', thai: 'อาหารทะเล', ph: 'aahǎan thá-leh', en: 'seafood' },
+    ], answer: ['phom', 'phae', 'seafood'],
+  },
+});
+
+// Stage 7 — Natural Thai.
+export const STAGE_7_UNIT_FOOD = unit({
+  unitId: 'stage-7-food-and-flavors', stageId: 7,
+  title: 'Food and flavors', subtitle: 'Noodle soup, pad thai, bread, juice, fried rice, sugar, garlic, fish sauce.',
+  vocabCardIds: [145, 146, 150, 153, 158, 520, 523, 525], sentenceCardId: 954, challengeCardIds: [146, 158, 520],
+  sentenceBuilder: {
+    sourceCardId: 954, prompt: 'Build this Thai sentence', english: 'Thai food is the most delicious', thai: 'อาหารไทยอร่อยที่สุด',
+    tokens: [
+      { id: 'ahan', thai: 'อาหาร', ph: 'aahǎan', en: 'food' },
+      { id: 'thai', thai: 'ไทย', ph: 'thai', en: 'Thai' },
+      { id: 'aroi', thai: 'อร่อย', ph: 'aròi', en: 'delicious' },
+      { id: 'thisut', thai: 'ที่สุด', ph: 'thîi sùt', en: 'most' },
+    ], answer: ['ahan', 'thai', 'aroi', 'thisut'],
+  },
+});
+export const STAGE_7_UNIT_VERBS = unit({
+  unitId: 'stage-7-more-verbs', stageId: 7,
+  title: 'More everyday verbs', subtitle: 'Shower, cook, help, meet, start, learn, notice, explain.',
+  vocabCardIds: [516, 518, 1933, 1947, 2022, 2030, 2058, 2066], sentenceCardId: 894, challengeCardIds: [516, 518, 2030],
+  sentenceBuilder: {
+    sourceCardId: 894, prompt: 'Build this Thai sentence', english: 'Right now I am eating (male)', thai: 'ตอนนี้ผมกำลังกินข้าว',
+    tokens: [
+      { id: 'tawnnii', thai: 'ตอนนี้', ph: 'tawn níi', en: 'now' },
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'gamlang', thai: 'กำลัง', ph: 'gamlang', en: '-ing (now)' },
+      { id: 'ginkhao', thai: 'กินข้าว', ph: 'gin khâao', en: 'to eat (rice)' },
+    ], answer: ['tawnnii', 'phom', 'gamlang', 'ginkhao'],
+  },
+});
+
+// Stage 8 — Thai Mastery (sentence-heavy stage; one lighter "out and about" unit).
+export const STAGE_8_UNIT_OUT = unit({
+  unitId: 'stage-8-out-and-about', stageId: 8,
+  title: 'Out and about', subtitle: 'Restaurant, skytrain, pharmacy, water, juice, sticky rice.',
+  vocabCardIds: [162, 168, 171, 132, 152, 159], sentenceCardId: 386, challengeCardIds: [162, 168, 171],
+  sentenceBuilder: {
+    sourceCardId: 386, prompt: 'Build this Thai sentence', english: 'Is it close? (male)', thai: 'ใกล้ไหมครับ',
+    tokens: [
+      { id: 'glai', thai: 'ใกล้', ph: 'glâi', en: 'near' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['glai', 'mai', 'khrap'],
+  },
+});
+
+// Full guided path. Stage 1 first; each stage's units are in sequence order.
 export const MINI_UNITS = [
   STAGE_1_MINI_UNIT_PILOT,
   STAGE_1_UNIT_GREETINGS,
   STAGE_1_UNIT_YESNO,
   STAGE_1_UNIT_WHERE,
   STAGE_1_UNIT_PRICES,
+  STAGE_2_UNIT_ACTIONS,
+  STAGE_2_UNIT_DOING,
+  STAGE_3_UNIT_DAILY,
+  STAGE_3_UNIT_DESCRIBE,
+  STAGE_4_UNIT_TRAVEL,
+  STAGE_4_UNIT_TASTE,
+  STAGE_5_UNIT_VERBS,
+  STAGE_5_UNIT_DESCRIBE,
+  STAGE_6_UNIT_WANTS,
+  STAGE_6_UNIT_HEALTH,
+  STAGE_7_UNIT_FOOD,
+  STAGE_7_UNIT_VERBS,
+  STAGE_8_UNIT_OUT,
 ];
 
 export function getMiniUnit(unitId) {

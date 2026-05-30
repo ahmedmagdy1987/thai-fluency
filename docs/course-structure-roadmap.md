@@ -209,3 +209,70 @@ Apply the same pattern to Stage 2: themed units from existing Stage 2 cards,
 safe sentence-builders from `sentences-food`/`sentences-want` cards where
 tokenizable, validated by `check-mini-units.mjs`, with the same sequential
 `getMiniUnitProgressState` driving a Stage 2 unit list.
+
+## All-stages expansion (update — May 30, 2026)
+
+The guided mini-unit system now spans **every stage** (18 units total). LearnPath
+shows the **current stage's** unit path (`getMiniUnitsForStage(currentStage)`)
+with the same sequential unlock, completed/review, and resume behavior.
+
+### Audit by stage (card counts; safe builder candidates found via WORD_LOOKUP breakdown)
+| Stage | Cards | Sentence/phrase | Theme (taxonomy) |
+| --- | --- | --- | --- |
+| 1 | 150 | 13 | Survival Thai |
+| 2 | 269 | 72 | Daily Essentials |
+| 3 | 423 | 111 | Getting Around |
+| 4 | 575 | 151 | Real Conversations |
+| 5 | 701 | 184 | Social Confidence |
+| 6 | 804 | 210 | Intermediate Power |
+| 7 | 877 | 229 | Natural Thai |
+| 8 | 992 | 526 | Thai Mastery |
+
+### Mini-units added by stage (all existing card ids; no content changed)
+| Stage | Units | Builders | Cards covered |
+| --- | --- | --- | --- |
+| 1 | 5 (pilot + greetings, yes/no, where, prices) | 4 | 32/150 |
+| 2 | Everyday actions · Getting things done | 2 | 16/269 |
+| 3 | Daily verbs · Describing things | 2 | 16/423 |
+| 4 | Out and about · Tastes and qualities | 2 | 16/575 |
+| 5 | Useful verbs · Describing more | 2 | 16/701 |
+| 6 | Wants and plans · Health and body | 2 | 14/804 |
+| 7 | Food and flavors · More everyday verbs | 2 | 16/877 |
+| 8 | Out and about | 1 | 6/992 |
+
+### sentenceBuilder coverage
+**17 of 18 units** carry a builder. Every builder's tokens were derived from the
+**source sentence card's own phonetic** via the app's `autoBreakdown` /
+`WORD_LOOKUP` (so token phonetics reconstruct the card phonetic exactly and each
+non-blank tile is a real existing word) — **no Thai was invented**. Examples:
+Stage 6 `ผมอยากเรียนภาษาไทย` (I want to learn Thai), Stage 7
+`อาหารไทยอร่อยที่สุด` (Thai food is the most delicious).
+
+### Skipped / unsafe builder candidates
+- Stage 1 Unit 3 (`ไม่เป็นไรครับ`) — single lexical chunk, kept builder-free.
+- Thousands of stage 2-8 sentence cards were **not** tokenized into builders:
+  only sentences that produced a fully-clean `autoBreakdown` (no unknown tokens,
+  2-5 tiles, phonetic reconstructs) were used. Longer/idiomatic sentences and
+  ones with uncertain word boundaries are deferred until reviewed.
+
+### Coverage / known limitations
+- Coverage is intentionally **partial** (core themed vocab per stage), not the
+  whole deck — each stage gets an initial 1-2 unit path; the rest of the cards
+  remain available through Practice and the Stage Challenge.
+- Stage 8 ("Thai Mastery") is sentence-heavy with few clean themed word clusters,
+  so it gets one lighter "out and about" unit.
+- Units render in male polite form (matching source cards); tiles aren't
+  voice-transformed.
+- Within a stage, units are launchable in unlock order; cross-stage review
+  shows only the current stage's path (earlier stages' cards stay in Practice).
+
+### Next steps (native review / content QA)
+- Owner/native review of the auto-derived builder token meanings before scaling.
+- Add more units per stage and expand coverage once token boundaries are
+  reviewed; consider runtime token derivation from `WORD_LOOKUP` to scale.
+
+### Validation
+`node scripts/check-mini-units.mjs` now validates **all stages** (existence,
+stage match, intra-unit duplicates, builder fidelity, contiguous-stage ordering)
+and prints per-stage coverage; `node scripts/check-mini-unit-sequence.mjs`
+verifies sequencing for every stage with units. Both pass.

@@ -97,6 +97,27 @@ console.log('Mini-unit sequence check');
   check('real units, first complete: first is complete', sOne.units[0].status === 'complete');
 }
 
+// ── Sequence logic works for EVERY stage that ships mini-units ────────────────
+{
+  let anyStage = false;
+  for (let st = 1; st <= 8; st++) {
+    const units = getMiniUnitsForStage(st);
+    if (units.length === 0) continue;
+    anyStage = true;
+    const none = getMiniUnitProgressState(units, []);
+    check(`stage ${st}: none complete -> exactly one current, rest locked`,
+      none.units.filter(u => u.status === 'current').length === 1 &&
+      none.units.filter(u => u.status === 'locked').length === units.length - 1);
+    if (units.length >= 2) {
+      const firstDone = getMiniUnitProgressState(units, [units[0].unitId]);
+      check(`stage ${st}: first complete -> second unlocks`, firstDone.units[1].status === 'current');
+    }
+    const allDone = getMiniUnitProgressState(units, units.map(u => u.unitId));
+    check(`stage ${st}: all complete -> pathComplete`, allDone.pathComplete === true && allDone.currentUnitId === null);
+  }
+  check('at least one stage has mini-units', anyStage === true);
+}
+
 if (failures > 0) {
   console.error(`\nMini-unit sequence check FAILED: ${failures} assertion(s) failed.`);
   process.exit(1);
