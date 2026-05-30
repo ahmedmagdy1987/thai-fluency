@@ -246,6 +246,86 @@ export const STAGE_2_UNIT_DOING = unit({
     ], answer: ['phom', 'mai', 'chop'],
   },
 });
+// Stage 2 — expanded coverage. Stage 2's clean vocabulary is verb- and
+// adjective-heavy (the food/shopping cards the taxonomy names mostly live in
+// later stages), so these units group verbs, adjectives, feelings, numbers, and
+// connectors. Builders are added only for safe 3-token sentences.
+export const STAGE_2_UNIT_TALK = unit({
+  unitId: 'stage-2-talking-thinking', stageId: 2,
+  title: 'Talking and thinking', subtitle: 'Chat, think, dream, guess, translate, hope, look, admire.',
+  vocabCardIds: [2128, 2206, 2194, 3222, 2122, 2081, 1727, 1989], sentenceCardId: 818, challengeCardIds: [2128, 2206, 3222],
+  sentenceBuilder: {
+    sourceCardId: 818, prompt: 'Build this Thai sentence', english: 'I do not know (male)', thai: 'ผมไม่รู้',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'mai', thai: 'ไม่', ph: 'mâi', en: 'not' },
+      { id: 'ruu', thai: 'รู้', ph: 'rúu', en: 'to know' },
+    ], answer: ['phom', 'mai', 'ruu'],
+  },
+});
+export const STAGE_2_UNIT_AROUND = unit({
+  unitId: 'stage-2-out-and-about', stageId: 2,
+  title: 'Out and about', subtitle: 'Fly, park, flee, borrow, lift, put, throw away, play.',
+  vocabCardIds: [2336, 2816, 2056, 2774, 1677, 1732, 1974, 1739], sentenceCardId: 5389, challengeCardIds: [2336, 2816, 2774],
+  sentenceBuilder: {
+    sourceCardId: 5389, prompt: 'Build this Thai sentence', english: 'Where did you go?', thai: 'ไปไหนมา',
+    tokens: [
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'nai', thai: 'ไหน', ph: 'nǎi', en: 'where' },
+      { id: 'maa', thai: 'มา', ph: 'maa', en: 'to come' },
+    ], answer: ['pai', 'nai', 'maa'],
+  },
+});
+export const STAGE_2_UNIT_DAILY2 = unit({
+  unitId: 'stage-2-everyday-actions-2', stageId: 2,
+  title: 'Everyday actions II', subtitle: 'Keep, wait, eat, endure, stretch, hit, suck, lead.',
+  vocabCardIds: [1692, 2037, 2646, 2506, 5718, 2013, 2888, 3656], sentenceCardId: 4738, challengeCardIds: [1692, 2037, 2646],
+  sentenceBuilder: {
+    sourceCardId: 4738, prompt: 'Build this Thai sentence', english: 'Go ahead and do it', thai: 'ทำไปเลย',
+    tokens: [
+      { id: 'tham', thai: 'ทำ', ph: 'tham', en: 'to do / make' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'loei', thai: 'เลย', ph: 'loei', en: 'really / go on' },
+    ], answer: ['tham', 'pai', 'loei'],
+  },
+});
+export const STAGE_2_UNIT_SIZES = unit({
+  unitId: 'stage-2-sizes-and-speeds', stageId: 2,
+  title: 'Sizes and speeds', subtitle: 'Small, cool, fast, slow, thick, a little, large, every.',
+  vocabCardIds: [63, 65, 78, 79, 2923, 2737, 1833, 1622], challengeCardIds: [63, 78, 79],
+  // No sentenceBuilder: Stage 2 adjective sentences are 2 tokens (too short).
+});
+export const STAGE_2_UNIT_QUALITIES = unit({
+  unitId: 'stage-2-skills-and-qualities', stageId: 2,
+  title: 'Skills and qualities', subtitle: 'Skilled, done, sure, rich, used to it, gone, most, all.',
+  vocabCardIds: [77, 1973, 2235, 5715, 3012, 2014, 1982, 1762], sentenceCardId: 5228, challengeCardIds: [77, 2235, 5715],
+  // sentenceCard shown for context; no builder (เก่งมาก is 2 tokens — too short).
+});
+export const STAGE_2_UNIT_FEELINGS = unit({
+  unitId: 'stage-2-feelings', stageId: 2,
+  title: 'Feelings', subtitle: 'Afraid, shy, discouraged, awake, drunk, happiness.',
+  vocabCardIds: [473, 477, 5731, 2532, 2969, 1747], sentenceCardId: 800, challengeCardIds: [473, 477, 1747],
+  sentenceBuilder: {
+    sourceCardId: 800, prompt: 'Build this Thai sentence', english: 'I am hungry (male)', thai: 'ผมหิวครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'hiu', thai: 'หิว', ph: 'hǐu', en: 'hungry' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'hiu', 'khrap'],
+  },
+});
+export const STAGE_2_UNIT_NUMBERS = unit({
+  unitId: 'stage-2-counting', stageId: 2,
+  title: 'Counting', subtitle: 'Three, four, six, seven, ten, thousand.',
+  vocabCardIds: [232, 233, 235, 236, 239, 241], challengeCardIds: [232, 233, 239],
+  // No sentenceCard/builder: Stage 2 has no clean number sentence to tokenize.
+});
+export const STAGE_2_UNIT_CONNECTORS = unit({
+  unitId: 'stage-2-connectors-questions', stageId: 2,
+  title: 'Connectors and questions', subtitle: 'Must, with, or, let\'s, "right?", "and you?", is, from.',
+  vocabCardIds: [256, 291, 292, 4038, 5704, 1275, 1625, 1598], sentenceCardId: 857, challengeCardIds: [256, 292, 5704],
+  // sentenceCard shown for context; no builder (ใครครับ is 2 tokens — too short).
+});
 
 // Stage 3 — Getting Around.
 export const STAGE_3_UNIT_DAILY = unit({
@@ -415,6 +495,14 @@ export const MINI_UNITS = [
   STAGE_1_UNIT_PRICES,
   STAGE_2_UNIT_ACTIONS,
   STAGE_2_UNIT_DOING,
+  STAGE_2_UNIT_TALK,
+  STAGE_2_UNIT_AROUND,
+  STAGE_2_UNIT_DAILY2,
+  STAGE_2_UNIT_SIZES,
+  STAGE_2_UNIT_QUALITIES,
+  STAGE_2_UNIT_FEELINGS,
+  STAGE_2_UNIT_NUMBERS,
+  STAGE_2_UNIT_CONNECTORS,
   STAGE_3_UNIT_DAILY,
   STAGE_3_UNIT_DESCRIBE,
   STAGE_4_UNIT_TRAVEL,

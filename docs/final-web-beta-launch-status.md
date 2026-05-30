@@ -409,3 +409,28 @@ behavior already shipped for Stage 1.
 `check-challenge-scope`; build passes. No SRS, Practice review-only, Stage
 Challenge filtering, Quests, Celebrations, schema, payments, ads, or
 subscriptions touched.
+
+## Stage 2 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 2 expanded from **2 → 10 guided mini-units** (**16 → 76** vocab cards
+covered, **2 → 6** sentence builders), all using existing Stage 2 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** for the
+owner/native speaker is at `docs/stage-2-content-review-matrix.md` (per-unit
+vocab, sentence, builder tokens, confidence, needs-review flag, plus skipped
+candidates with reasons).
+
+- 8 new themed units (talking/thinking, out & about, everyday actions II, sizes &
+  speeds, skills & qualities, feelings, counting, connectors & questions);
+  Stage 2's clean vocab is verb/adjective-heavy, so units group those rather than
+  forcing the food/shopping themes (those cards live in later stages).
+- Builders added **only when safe** (3-token, auto-derived from the source card's
+  own phonetic via WORD_LOOKUP); adjective/number/connector units skip the
+  builder (2-token / no clean sentence) — all skips documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 2
+  shows its 10-unit sequential path when Stage 2 is current; sequencing, XP-safe
+  replay, and resume are unchanged.
+
+`check-mini-units.mjs` (all-stages, Stage 2 now 76/269 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

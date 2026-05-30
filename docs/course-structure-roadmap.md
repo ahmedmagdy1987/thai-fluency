@@ -276,3 +276,46 @@ Stage 6 `ผมอยากเรียนภาษาไทย` (I want to lear
 stage match, intra-unit duplicates, builder fidelity, contiguous-stage ordering)
 and prints per-stage coverage; `node scripts/check-mini-unit-sequence.mjs`
 verifies sequencing for every stage with units. Both pass.
+
+## Stage 2 deepened (update — May 30, 2026)
+
+Stage 2 expanded from **2 units (16 cards)** to **10 units (76 vocab cards)** — a
+real guided section, using existing Stage 2 cards only. A native-review matrix
+for the owner/native speaker lives at `docs/stage-2-content-review-matrix.md`.
+
+### Stage 2 audit
+269 cards. Clean vocab is **verb-heavy (61) and adjective-heavy (45)**; other
+themes (food, drinks, numbers, body, health, home, emotions) each have only 2–6
+clean cards — the food/shopping cards the taxonomy *names* for Stage 2 mostly
+live in later stages. So units group verbs / adjectives / feelings / numbers /
+connectors rather than forcing unsupported food/shopping themes.
+
+### Units added (8 new; all existing Stage 2 cards)
+Talking and thinking · Out and about · Everyday actions II · Sizes and speeds ·
+Skills and qualities · Feelings · Counting · Connectors and questions.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 2 units | 2 | 10 |
+| Stage 2 vocab covered | 16 / 269 | 76 / 269 |
+| Stage 2 sentence builders | 2 | 6 |
+
+### sentenceBuilder coverage / skipped
+**6 of 10** Stage 2 units have a builder (all 3-token, derived from the source
+card's own phonetic via WORD_LOOKUP). Adjective / number / connector units skip
+the builder because their candidate sentences are **2 tokens (too short)** or
+have no clean number sentence; ~58 other Stage 2 sentences didn't produce a clean
+breakdown and are deferred. All skips are listed in the review matrix.
+
+### Known limitations
+- Coverage is 76/269 (core themed vocab); the remaining cards stay available via
+  Practice and the Stage Challenge.
+- Three verb units share a broad theme (distinct flavors: actions / talking /
+  out-and-about) because verbs dominate Stage 2's clean vocab.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 3** ("Getting Around", 423 cards, 85 adjectives / 83 verbs / 63 things) —
+same approach: themed units from existing cards, safe builders only, validated by
+`check-mini-units.mjs`, with a Stage 3 review matrix.
