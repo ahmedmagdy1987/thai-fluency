@@ -1172,8 +1172,14 @@ export default function TukTalkThaiApp() {
   const handleStartMiniUnit = useCallback((unitId) => {
     const unit = getMiniUnit(unitId);
     if (!unit) return;
-    const currentProgress = stats.miniUnitProgress?.unitId === unitId
-      ? stats.miniUnitProgress
+    // Resume only a genuinely mid-flow save of the SAME unit. Reviewing a
+    // completed unit (saved step === 'complete') or opening a different unit
+    // starts fresh from intro — a clean replay. Replay grants no XP: the
+    // completion (+45) and builder (+5) rewards are guarded by persisted lists.
+    const saved = stats.miniUnitProgress;
+    const resumable = !!(saved && saved.unitId === unitId && saved.step && saved.step !== 'complete' && saved.step !== 'intro');
+    const currentProgress = resumable
+      ? saved
       : {
           unitId,
           step: 'intro',

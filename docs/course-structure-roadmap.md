@@ -148,3 +148,64 @@ invented.**
 `node scripts/check-mini-units.mjs` validates unique ids, existing cards, Stage-1
 membership, intra-unit duplicates, builder validity, and builder→source-card
 fidelity (no invented content). Passes with 0 warnings.
+
+## Stage 1 sequential unlock (update — May 30, 2026)
+
+Stage 1 mini-units now unlock **sequentially** so the path feels like a guided
+game, not a free-for-all list.
+
+### Sequence logic (`src/lib/miniUnitSequence.js`)
+`getMiniUnitProgressState(units, completedMiniUnits, currentMiniUnitId)` derives,
+from the existing `completedMiniUnits` list (no new persisted field, no
+migration):
+
+- **Unit 1** is unlocked by default; **Unit N** unlocks when **Unit N-1** is
+  completed.
+- Exactly **one** incomplete-unlocked unit is `current` (the frontier); units
+  after it are `locked`; completed units stay `complete` (reviewable).
+- `pathComplete` when all are complete (`currentUnitId` → null).
+- Malformed completed ids (null/number/non-array) are filtered safely.
+- **Existing users**: `completeFirstLesson` already records the pilot in
+  `completedMiniUnits`, so anyone past onboarding sees **Unit 2 unlocked**
+  automatically.
+
+### LearnPath UI
+Each unit card shows a status badge (**Complete / Current / Locked**) and the
+matching action: **Review** ("Completed. Review anytime."), **Start / Continue**
+("Continue your path."), or a disabled **Locked** button ("Complete the previous
+unit to unlock."). The section header shows `N/5 complete` (or "Stage 1 path
+complete"). Locked cards are visually muted with a lock icon; the launch button
+is `disabled` so a locked unit cannot be opened.
+
+### Completed / review behavior (no XP farm)
+Reviewing a completed unit replays it from the start but **grants no XP**: the
+completion (+45) and sentence-builder (+5) rewards are guarded by the persisted
+`completedMiniUnits` / `builderRewardedUnits` lists, and `MiniUnitFlow` itself
+grants no XP (the mini-challenge only updates a local score; no `reviewOne` /
+`markCard`). The completion reward screen does not re-fire on replay.
+
+### Resume behavior
+`handleStartMiniUnit` resumes only a genuinely **mid-flow** save of the *same*
+unit (step not `intro`/`complete`); a completed unit or a different unit starts
+fresh at intro. "Continue" appears only when such mid-flow progress exists. So:
+start Unit 2 → leave at the vocab/builder step → refresh → Unit 2 shows
+**Continue** and resumes, while Unit 3 stays **Locked**.
+
+### Known limitations
+- Sequencing is derived from `completedMiniUnits` (whole-unit granularity); it
+  does not gate the legacy mission rail (unchanged).
+- A completed unit's review is a full replay from intro (not a dedicated summary
+  screen) — acceptable because replay is XP-safe by construction.
+
+### Validation
+`node scripts/check-mini-unit-sequence.mjs` covers: Unit 1 unlocked when none
+complete, Unit 2 locked until Unit 1 complete, sequential unlock, single
+frontier (even on non-sequential sets), all-complete path, malformed-input
+safety, Continue-vs-Start, and consistency with the real Stage-1 catalogue.
+Passes.
+
+## Stage 2 mini-unit work (next)
+Apply the same pattern to Stage 2: themed units from existing Stage 2 cards,
+safe sentence-builders from `sentences-food`/`sentences-want` cards where
+tokenizable, validated by `check-mini-units.mjs`, with the same sequential
+`getMiniUnitProgressState` driving a Stage 2 unit list.

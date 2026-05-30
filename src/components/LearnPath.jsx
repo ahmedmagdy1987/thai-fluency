@@ -4,6 +4,7 @@ import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
 import { getMiniUnitsForStage } from '../data/miniUnits.js';
+import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
 
 // New primary learning view. Renders the 8-stage path with a per-stage
 // character, plus a Stage-1 mission rail while the user is still in S1.
@@ -56,10 +57,20 @@ export default function LearnPath({
     : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
-  // Stage 1 guided mini-units (data-driven). Shown while the user is in Stage 1.
+  // Stage 1 guided mini-units (data-driven, sequential unlock). Shown in Stage 1.
   const stage1MiniUnits = getMiniUnitsForStage(1);
-  const completedUnitIds = fullStats?.completedMiniUnits || [];
-  const showMiniUnits = !!(onStartMiniUnit && stageState && stageState.currentStage === 1 && stage1MiniUnits.length > 0);
+  // "Continue" only when there is genuinely mid-flow saved progress (a unit the
+  // user started but didn't finish) — a bare intro or a completed save = "Start".
+  const savedUnitProgress = fullStats?.miniUnitProgress;
+  const midFlowUnitId = (savedUnitProgress?.step && savedUnitProgress.step !== 'intro' && savedUnitProgress.step !== 'complete')
+    ? savedUnitProgress.unitId
+    : null;
+  const miniUnitSequence = getMiniUnitProgressState(
+    stage1MiniUnits,
+    fullStats?.completedMiniUnits || [],
+    midFlowUnitId,
+  );
+  const showMiniUnits = !!(onStartMiniUnit && stageState && stageState.currentStage === 1 && miniUnitSequence.units.length > 0);
   const startCards = () => {
     if (inMissionView && currentMission && onStartMissionCards) {
       onStartMissionCards(currentMission);
@@ -96,37 +107,65 @@ export default function LearnPath({
         <div className="learn-continue-arrow"><ChevronRight size={26} /></div>
       </section>
 
-      {/* Guided mini-units — the Stage 1 beginner path of short lessons. */}
+      {/* Guided mini-units — the Stage 1 beginner path (sequential unlock). */}
       {showMiniUnits && (
         <section className="learn-section">
           <div className="learn-section-header">
             <h2 className="learn-section-title">Guided mini-units</h2>
-            <span className="learn-section-meta">Stage 1 · short lessons</span>
+            <span className="learn-section-meta">
+              {miniUnitSequence.pathComplete
+                ? 'Stage 1 path complete'
+                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} complete`}
+            </span>
           </div>
           <div className="learn-miniunit-list">
-            {stage1MiniUnits.map((u, idx) => {
-              const done = completedUnitIds.includes(u.unitId);
+            {miniUnitSequence.units.map((u, idx) => {
+              const status = u.status; // 'complete' | 'current' | 'locked'
+              const locked = status === 'locked';
+              const badge = status === 'complete' ? 'Complete' : status === 'current' ? 'Current' : 'Locked';
+              const note = status === 'complete'
+                ? 'Completed. Review anytime.'
+                : status === 'current'
+                  ? 'Continue your path.'
+                  : 'Complete the previous unit to unlock.';
+              const action = status === 'complete'
+                ? 'Review'
+                : status === 'current'
+                  ? (u.inProgress ? 'Continue' : 'Start')
+                  : 'Locked';
               return (
-                <section key={u.unitId} className={`learn-miniunit-card ${done ? 'learn-miniunit-card-done' : ''}`}>
+                <section
+                  key={u.unitId}
+                  className={`learn-miniunit-card learn-miniunit-card-${status}`}
+                  aria-disabled={locked || undefined}
+                >
                   <div className="learn-miniunit-icon" aria-hidden="true">
-                    {done ? <Check size={22} /> : <BookOpen size={24} />}
+                    {status === 'complete' ? <Check size={22} /> : status === 'locked' ? <Lock size={20} /> : <BookOpen size={24} />}
                   </div>
                   <div className="learn-miniunit-body">
-                    <div className="learn-miniunit-eyebrow">{done ? 'Completed' : `Unit ${idx + 1}`}</div>
-                    <h2 className="learn-miniunit-title">{u.title}</h2>
-                    <p className="learn-miniunit-copy">{u.subtitle}</p>
-                    <div className="learn-miniunit-meta">
-                      <span><Clock size={13} /> {u.estimatedMinutes} min</span>
-                      <span>{u.vocabCardIds.length} cards</span>
-                      {u.sentenceBuilder && <span>Sentence builder</span>}
+                    <div className="learn-miniunit-eyebrow">
+                      <span className={`learn-miniunit-badge learn-miniunit-badge-${status}`}>{badge}</span>
+                      <span className="learn-miniunit-num">Unit {idx + 1}</span>
                     </div>
+                    <h2 className="learn-miniunit-title">{u.title}</h2>
+                    <p className="learn-miniunit-copy">{locked ? note : u.subtitle}</p>
+                    {!locked && (
+                      <div className="learn-miniunit-meta">
+                        <span><Clock size={13} /> {u.estimatedMinutes} min</span>
+                        <span>{u.vocabCardIds.length} cards</span>
+                        {u.sentenceBuilder && <span>Sentence builder</span>}
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
                     className="learn-miniunit-btn"
-                    onClick={() => onStartMiniUnit(u.unitId)}
+                    onClick={locked ? undefined : () => onStartMiniUnit(u.unitId)}
+                    disabled={locked}
+                    aria-label={locked ? `${u.title} — locked. ${note}` : `${action} ${u.title}`}
+                    title={locked ? note : undefined}
                   >
-                    {done ? 'Review' : 'Start'} <ChevronRight size={16} />
+                    {locked ? <><Lock size={14} /> Locked</> : <>{action} <ChevronRight size={16} /></>}
                   </button>
                 </section>
               );

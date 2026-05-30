@@ -359,3 +359,28 @@ schema/migrations, payments, ads, or subscriptions were touched. Verified: all
 five check scripts (`check-mini-units`, `check-sentence-builder`,
 `check-celebrations`, `check-quest-logic`, `check-challenge-scope`) and the build
 pass.
+
+## Stage 1 Mini-Unit Sequencing (update — May 30, 2026)
+
+Stage 1 mini-units now **unlock sequentially** (Unit 1 by default; Unit N
+unlocks when Unit N-1 is completed) — full detail in
+`docs/course-structure-roadmap.md`.
+
+- New pure `src/lib/miniUnitSequence.js` (`getMiniUnitProgressState`) derives
+  complete / current / locked from the existing `completedMiniUnits` list — **no
+  new persisted field, no migration**. Existing users (pilot completed via
+  onboarding) auto-see Unit 2 unlocked.
+- `LearnPath` shows status badges (Complete / Current / Locked) + matching
+  actions (Review / Start / Continue / disabled Locked) with clear copy; locked
+  units cannot be launched.
+- **Replay is XP-safe**: completion (+45) and builder (+5) rewards are guarded by
+  persisted lists and the mini-unit flow grants no XP itself, so reviewing a
+  completed unit farms nothing. `handleStartMiniUnit` resumes only genuine
+  mid-flow saves; completed/other units start fresh.
+
+New `scripts/check-mini-unit-sequence.mjs` validates the unlock rules
+(single-frontier, all-complete, malformed-input safety, Continue-vs-Start) and
+passes alongside the other 5 checks; build passes. No Thai card content,
+mini-unit content, SRS, Practice review-only, Stage Challenge filtering, Quests,
+Celebrations, Sentence Builder, schema, payments, ads, or subscriptions were
+touched.
