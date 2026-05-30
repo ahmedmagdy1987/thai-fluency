@@ -434,3 +434,30 @@ candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 3 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 3 expanded from **2 → 12 guided mini-units** (**16 → 96** vocab cards
+covered, **2 → 9** sentence builders), all using existing Stage 3 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** for the
+owner/native speaker is at `docs/stage-3-content-review-matrix.md` (per-unit
+vocab, sentence, builder tokens, confidence, needs-review flag, plus skipped
+candidates with reasons).
+
+- 10 new themed units (people & family, everyday verbs I/II/III, describing
+  things II, qualities & states, time & sequence, connectors & particles, home &
+  places, animals); Stage 3's clean vocab is dominated by single-syllable verbs/
+  adjectives/nouns, so units group those rather than forcing the "Getting Around"
+  travel taxonomy (transport/directions cards are scarce at this stage).
+- Builders added **only when safe** (3-token, auto-derived from the source card's
+  own phonetic via WORD_LOOKUP, verified against the runtime CARDS); the time/
+  home/animals units skip the builder (2-token / no clean split / no theme
+  sentence) — all skips documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 3
+  shows its 12-unit sequential path when Stage 3 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change).
+
+`check-mini-units.mjs` (all-stages, Stage 3 now 96/423 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

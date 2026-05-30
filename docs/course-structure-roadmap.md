@@ -319,3 +319,52 @@ breakdown and are deferred. All skips are listed in the review matrix.
 **Stage 3** ("Getting Around", 423 cards, 85 adjectives / 83 verbs / 63 things) —
 same approach: themed units from existing cards, safe builders only, validated by
 `check-mini-units.mjs`, with a Stage 3 review matrix.
+
+## Stage 3 deepened (update — May 30, 2026)
+
+Stage 3 expanded from **2 units (16 cards)** to **12 units (96 vocab cards)** — a
+real guided section, using existing Stage 3 cards only. A native-review matrix
+for the owner/native speaker lives at `docs/stage-3-content-review-matrix.md`.
+
+### Stage 3 audit
+423 cards (306 words, 6 grammar, 111 sentences). Clean vocab is dominated by
+single-syllable **verbs (75 free), adjectives (77 free), and "things"/nouns
+(63 free)**; the literal "Getting Around" sub-themes the taxonomy names
+(transport, directions, hotel, travel verbs) have very few clean cards at this
+stage (places = 3, transport nouns ≈ 4). So units group the cleanest, most
+teachable cards by theme rather than forcing the travel taxonomy.
+
+### Units added (10 new; all existing Stage 3 cards)
+People and family · Everyday verbs I · Everyday verbs II · Everyday verbs III ·
+Describing things II · Qualities and states · Time and sequence · Connectors and
+particles · Home and places · Animals.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 3 units | 2 | 12 |
+| Stage 3 vocab covered | 16 / 423 | 96 / 423 |
+| Stage 3 sentence builders | 2 | 9 |
+
+### sentenceBuilder coverage / skipped
+**9 of 12** Stage 3 units have a builder (all 3-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). The
+Time, Home, and Animals units skip the builder: their candidate sentences are
+**2 tokens (too short)**, do not split into known word pieces, or no clean theme
+sentence exists. Of Stage 3's 111 sentence cards only 12 produced a clean safe
+breakdown; the remaining ~98 are idiomatic / long / female-voice / unknown-inner-
+word and are deferred. All skips are listed in the review matrix.
+
+### Known limitations
+- Coverage is 96/423 (the cleanest themed vocab); the remaining ~327 cards stay
+  available via Practice and the Stage Challenge.
+- Three verb units share a broad theme (distinct batches: enter/ride, pour/dig,
+  write/sign) because single-syllable verbs dominate Stage 3's clean vocab.
+- The "Getting Around" travel taxonomy is only lightly supported by clean Stage 3
+  vocab; Home/places and Animals cover what exists.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 4** ("Real Conversations") — same approach: themed units from existing
+Stage 4 cards, safe builders only, validated by `check-mini-units.mjs`, with a
+Stage 4 review matrix.

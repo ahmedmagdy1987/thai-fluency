@@ -354,6 +354,125 @@ export const STAGE_3_UNIT_DESCRIBE = unit({
     ], answer: ['phom', 'ron', 'khrap'],
   },
 });
+// Stage 3 deepening (Course Structure Sprint). Every id below is an EXISTING
+// Stage 3 card; no card content is changed and no Thai is invented. Builders use
+// only the source sentence card's own pieces (its space-separated phonetic split,
+// meanings from WORD_LOOKUP) — verified by scripts/check-mini-units.mjs against
+// the runtime CARDS. Stage 3 is a deep-vocabulary stage (heavy on single-syllable
+// verbs/adjectives/"things"); units group the cleanest, most teachable cards by
+// theme rather than forcing the "transport/directions" taxonomy, which Stage 3's
+// clean vocab does not strongly support (documented in the review matrix).
+export const STAGE_3_UNIT_PEOPLE = unit({
+  unitId: 'stage-3-people-family', stageId: 3,
+  title: 'People and family', subtitle: 'Father, mother, friend, doctor, uncle, grandparents.',
+  vocabCardIds: [194, 195, 196, 198, 2788, 2836, 2964, 2359], sentenceCardId: 840, challengeCardIds: [194, 195, 196],
+  sentenceBuilder: {
+    sourceCardId: 840, prompt: 'Build this Thai sentence', english: 'What is your name?', thai: 'คุณชื่ออะไร',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'chue', thai: 'ชื่อ', ph: 'chûe', en: 'name' },
+      { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
+    ], answer: ['khun', 'chue', 'arai'],
+  },
+});
+export const STAGE_3_UNIT_VERBS1 = unit({
+  unitId: 'stage-3-everyday-verbs-1', stageId: 3,
+  title: 'Everyday verbs I', subtitle: 'Enter, should, invite, turn, practice, pull, press, ride.',
+  vocabCardIds: [513, 1675, 2107, 2139, 2288, 2398, 2659, 3004], sentenceCardId: 4729, challengeCardIds: [513, 2288, 3004],
+  sentenceBuilder: {
+    sourceCardId: 4729, prompt: 'Build this Thai sentence', english: 'What are you doing?', thai: 'ทำอะไรอยู่',
+    tokens: [
+      { id: 'tham', thai: 'ทำ', ph: 'tham', en: 'to do' },
+      { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
+      { id: 'yu', thai: 'อยู่', ph: 'yùu', en: '(ongoing)' },
+    ], answer: ['tham', 'arai', 'yu'],
+  },
+});
+export const STAGE_3_UNIT_VERBS2 = unit({
+  unitId: 'stage-3-everyday-verbs-2', stageId: 3,
+  title: 'Everyday verbs II', subtitle: 'Pour, hide, dig, search, throw, smell, scrub, water.',
+  vocabCardIds: [2441, 2726, 2904, 2912, 3247, 3296, 3614, 4068], sentenceCardId: 4767, challengeCardIds: [2441, 2912, 3247],
+  sentenceBuilder: {
+    sourceCardId: 4767, prompt: 'Build this Thai sentence', english: 'Why are you doing that?', thai: 'ทำไปทำไม',
+    tokens: [
+      { id: 'tham', thai: 'ทำ', ph: 'tham', en: 'to do' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: '(away)' },
+      { id: 'thammai', thai: 'ทำไม', ph: 'tham mai', en: 'why' },
+    ], answer: ['tham', 'pai', 'thammai'],
+  },
+});
+export const STAGE_3_UNIT_VERBS3 = unit({
+  unitId: 'stage-3-everyday-verbs-3', stageId: 3,
+  title: 'Everyday verbs III', subtitle: 'Write, tie, get up, wear, give, complain, bow, sign.',
+  vocabCardIds: [2376, 2421, 2474, 2582, 2602, 2987, 3178, 5723], sentenceCardId: 819, challengeCardIds: [2421, 2582, 5723],
+  sentenceBuilder: {
+    sourceCardId: 819, prompt: 'Build this Thai sentence', english: 'I forgot already (male)', thai: 'ผมลืมแล้ว',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'luem', thai: 'ลืม', ph: 'luem', en: 'to forget' },
+      { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already' },
+    ], answer: ['phom', 'luem', 'laew'],
+  },
+});
+export const STAGE_3_UNIT_DESCRIBE2 = unit({
+  unitId: 'stage-3-describing-things-2', stageId: 3,
+  title: 'Describing things II', subtitle: 'Ready, clear, complete, ill, dark, ripe, sleepy, worth it.',
+  vocabCardIds: [1758, 2017, 2042, 2468, 2899, 3166, 3669, 5729], sentenceCardId: 803, challengeCardIds: [1758, 2468, 3669],
+  sentenceBuilder: {
+    sourceCardId: 803, prompt: 'Build this Thai sentence', english: 'I am sleepy (male)', thai: 'ผมง่วงครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'nguang', thai: 'ง่วง', ph: 'ngûang', en: 'sleepy' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'nguang', 'khrap'],
+  },
+});
+export const STAGE_3_UNIT_QUALITIES = unit({
+  unitId: 'stage-3-qualities-states', stageId: 3,
+  title: 'Qualities and states', subtitle: 'Thin/some, exceed, lack, fast, urgent, fierce, confused, excellent.',
+  vocabCardIds: [1613, 1793, 1809, 3022, 3097, 3123, 3169, 5716], sentenceCardId: 810, challengeCardIds: [1793, 3097, 3169],
+  sentenceBuilder: {
+    sourceCardId: 810, prompt: 'Build this Thai sentence', english: 'I am busy (male)', thai: 'ผมยุ่งครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yung', thai: 'ยุ่ง', ph: 'yûng', en: 'busy' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'yung', 'khrap'],
+  },
+});
+export const STAGE_3_UNIT_TIME = unit({
+  unitId: 'stage-3-time-sequence', stageId: 3,
+  title: 'Time and sequence', subtitle: 'Month, currently, before, when, occasion, era, soon, time.',
+  vocabCardIds: [220, 254, 296, 1602, 2177, 2529, 2580, 2852], sentenceCardId: 4749, challengeCardIds: [220, 296, 2580],
+  // sentenceCard shown for context (เดี๋ยวมา uses เดี๋ยว, a vocab card here);
+  // no builder — "เดี๋ยวมา" is 2 tokens, too short to arrange.
+});
+export const STAGE_3_UNIT_CONNECTORS = unit({
+  unitId: 'stage-3-connectors-particles', stageId: 3,
+  title: 'Connectors and particles', subtitle: 'But, if, by, therefore, and casual sentence-final particles.',
+  vocabCardIds: [293, 295, 1617, 1619, 4037, 5719, 5720, 5728], sentenceCardId: 817, challengeCardIds: [293, 295, 1619],
+  sentenceBuilder: {
+    sourceCardId: 817, prompt: 'Build this Thai sentence', english: 'I do not understand (male)', thai: 'ผมไม่เข้าใจ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'mai', thai: 'ไม่', ph: 'mâi', en: 'not' },
+      { id: 'khaojai', thai: 'เข้าใจ', ph: 'khâo jai', en: 'to understand' },
+    ], answer: ['phom', 'mai', 'khaojai'],
+  },
+});
+export const STAGE_3_UNIT_HOME = unit({
+  unitId: 'stage-3-home-places', stageId: 3,
+  title: 'Home and places', subtitle: 'House, building, garden, stove, air-con, cabinet, broken.',
+  vocabCardIds: [160, 1719, 2601, 2080, 3403, 1000, 2631, 1021], sentenceCardId: 1500, challengeCardIds: [160, 2601, 1000],
+  // sentenceCard shown for context (แอร์เสีย uses แอร์, a vocab card here);
+  // no builder — phonetic does not split cleanly into known word pieces.
+});
+export const STAGE_3_UNIT_ANIMALS = unit({
+  unitId: 'stage-3-animals', stageId: 3,
+  title: 'Animals', subtitle: 'Dog, snake, monkey, buffalo, cow, frog, ant, crab.',
+  vocabCardIds: [2598, 3066, 2696, 3318, 2789, 3467, 3519, 2583], challengeCardIds: [2598, 3066, 2789],
+  // No sentenceCard/builder: Stage 3 has no clean animal sentence to tokenize.
+});
 
 // Stage 4 — Real Conversations.
 export const STAGE_4_UNIT_TRAVEL = unit({
@@ -505,6 +624,16 @@ export const MINI_UNITS = [
   STAGE_2_UNIT_CONNECTORS,
   STAGE_3_UNIT_DAILY,
   STAGE_3_UNIT_DESCRIBE,
+  STAGE_3_UNIT_PEOPLE,
+  STAGE_3_UNIT_VERBS1,
+  STAGE_3_UNIT_VERBS2,
+  STAGE_3_UNIT_VERBS3,
+  STAGE_3_UNIT_DESCRIBE2,
+  STAGE_3_UNIT_QUALITIES,
+  STAGE_3_UNIT_TIME,
+  STAGE_3_UNIT_CONNECTORS,
+  STAGE_3_UNIT_HOME,
+  STAGE_3_UNIT_ANIMALS,
   STAGE_4_UNIT_TRAVEL,
   STAGE_4_UNIT_TASTE,
   STAGE_5_UNIT_VERBS,
