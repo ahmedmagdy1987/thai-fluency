@@ -2347,7 +2347,11 @@ button.character-coach-portrait { cursor: pointer; }
 }
 
 /* Stage 1 guided mini-unit pilot */
+.learn-miniunit-list { display: flex; flex-direction: column; gap: 10px; }
 .learn-miniunit-card { display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: center; background: var(--card-bg); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 14px; padding: 16px 18px; }
+.learn-miniunit-card-done { border-left-color: var(--jade); opacity: 0.92; }
+.learn-miniunit-card-done .learn-miniunit-icon { background: color-mix(in srgb, var(--jade) 16%, transparent); }
+.learn-miniunit-card-done .learn-miniunit-eyebrow { color: var(--jade); }
 .learn-miniunit-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
 .learn-miniunit-body { min-width: 0; }
 .learn-miniunit-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 700; margin-bottom: 3px; }

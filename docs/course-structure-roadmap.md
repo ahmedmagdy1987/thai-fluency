@@ -98,3 +98,53 @@ syncs cross-device (in `CLOUD_PROFILE_SETTING_KEYS`).
 to card 330, `isBuilderCorrect`, `shuffleTokens` permutation/anti-pre-solved,
 `assembledThai`) passes, alongside the existing celebration/quest/challenge
 checks. `npm run build` passes.
+
+## Stage 1 mini-units (expansion — May 30, 2026)
+
+### Stage 1 audit
+Stage 1 ("Survival Thai") has **150 cards** across 6 missions (29/26/24/24/28/19),
+categorised (pronouns, verbs, grammar, greetings, questions, numbers, time,
+adjectives, things, …). There are 13 sentence/phrase cards; **4 are safely
+tokenizable** from their own existing content for a sentence builder.
+
+### Units added (`src/data/miniUnits.js`, all existing Stage-1 card ids)
+| # | Unit | Topic | Vocab | Sentence | Builder |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Your first polite introduction | greetings / intro (pilot) | 8 | 330 ผมชื่อ ___ ครับ | ✅ |
+| 2 | Greetings and courtesy | hello / thanks / sorry | 7 | 312 ขอบคุณมากครับ | ✅ |
+| 3 | Yes, no and easy replies | yes / no / replies | 7 | 313 ไม่เป็นไรครับ | ❌ (see below) |
+| 4 | Asking where things are | where / getting around | 8 | 853 ห้องน้ำอยู่ที่ไหนครับ | ✅ |
+| 5 | Prices and shopping | how much / money | 8 | 850 อันนี้เท่าไหร่ครับ | ✅ |
+
+`getMiniUnitsForStage(1)` exposes the path; `LearnPath` lists these units (Stage 1
+only) and each launches via the existing mini-unit flow. The pilot remains Unit 1.
+
+### Sentence-builder coverage
+**4 of 5 units** have a builder. Each builder uses **only the source sentence
+card's own tokens** — token phonetics reconstruct the card's phonetic exactly
+(ignoring the trailing `?` punctuation the card appends) and each non-blank token
+is a real Stage-1 word (ขอบคุณ/2815, มาก/100, ครับ/2, ห้องน้ำ/164, อยู่/11,
+ที่ไหน/112, อันนี้/5701, เท่าไหร่/116). **No Thai content was changed or
+invented.**
+
+### Skipped / unsafe builder candidates (Stage 1)
+- **313 ไม่เป็นไรครับ** (Unit 3): ไม่เป็นไร is a single lexical chunk → only ~2
+  safe tiles (ไม่เป็นไร + ครับ), too trivial. Sentence card is shown, builder
+  omitted.
+- **310 สวัสดีครับ / 314 ขอโทษครับ / 410 เท่าไหร่ครับ**: 1–2 token sentences →
+  too short for a meaningful builder.
+- **380/853 without the ครับ split, 431 ผมไม่เข้าใจครับ, 5700 ผมพูดภาษาไทยไม่ได้ครับ**:
+  longer, but several inner words (เข้าใจ, พูด, ภาษาไทย, ไม่ได้) need careful
+  boundary review before tokenizing — deferred to keep the pilot safe.
+
+### Next steps for Stage 2
+- Build themed Stage 2 mini-units (food/ordering, flavours/quantities, shopping)
+  the same way, using existing Stage 2 cards and their `sentences-food` /
+  `sentences-want` sentence cards for builders where safely tokenizable.
+- Reuse `scripts/check-mini-units.mjs` (it is stage-agnostic) to validate Stage 2.
+- Consider auto-deriving tokens from `WORD_LOOKUP` to scale builder coverage.
+
+### Validation
+`node scripts/check-mini-units.mjs` validates unique ids, existing cards, Stage-1
+membership, intra-unit duplicates, builder validity, and builder→source-card
+fidelity (no invented content). Passes with 0 warnings.

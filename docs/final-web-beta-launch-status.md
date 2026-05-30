@@ -334,3 +334,28 @@ No Practice review-only, Stage Challenge filtering, Quests, Celebrations,
 schema, payments, ads, or subscriptions were touched. Verified:
 `node scripts/check-sentence-builder.mjs` (18 assertions) + the three existing
 checks pass; `npm run build` passes.
+
+## Stage 1 Mini-Units Expansion (update — May 30, 2026)
+
+Stage 1 now has a clearer guided path of **5 mini-units** (was 1 pilot), all
+using existing Stage-1 card ids — full detail in
+`docs/course-structure-roadmap.md`:
+
+1. Your first polite introduction (pilot) · 2. Greetings & courtesy ·
+3. Yes, no & easy replies · 4. Asking where things are · 5. Prices & shopping.
+
+- **Sentence builders on 4 of 5 units** (cards 330/312/853/850), each built only
+  from the source card's own tokens (token phonetics reconstruct the card's
+  phonetic; non-blank tiles are real Stage-1 words). Unit 3 omits its builder
+  (single-lexical-chunk sentence). **No Thai card content changed or invented.**
+- `LearnPath` lists the Stage-1 units (when in Stage 1); each launches via the
+  existing mini-unit flow (`getMiniUnit`/`handleStartMiniUnit`), with a
+  Completed/Review state. The onboarding `FirstLessonFlow` is unchanged.
+- New `scripts/check-mini-units.mjs` validates card existence, Stage-1
+  membership, intra-unit duplicates, and builder→source-card fidelity.
+
+No SRS, Practice review-only, Stage Challenge filtering, Quests, Celebrations,
+schema/migrations, payments, ads, or subscriptions were touched. Verified: all
+five check scripts (`check-mini-units`, `check-sentence-builder`,
+`check-celebrations`, `check-quest-logic`, `check-challenge-scope`) and the build
+pass.

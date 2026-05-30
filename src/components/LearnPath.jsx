@@ -3,7 +3,7 @@ import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Zap } from
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
-import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
+import { getMiniUnitsForStage } from '../data/miniUnits.js';
 
 // New primary learning view. Renders the 8-stage path with a per-stage
 // character, plus a Stage-1 mission rail while the user is still in S1.
@@ -56,7 +56,10 @@ export default function LearnPath({
     : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
-  const showMiniUnitPilot = !!(onStartMiniUnit && stageState && stageState.currentStage === 1);
+  // Stage 1 guided mini-units (data-driven). Shown while the user is in Stage 1.
+  const stage1MiniUnits = getMiniUnitsForStage(1);
+  const completedUnitIds = fullStats?.completedMiniUnits || [];
+  const showMiniUnits = !!(onStartMiniUnit && stageState && stageState.currentStage === 1 && stage1MiniUnits.length > 0);
   const startCards = () => {
     if (inMissionView && currentMission && onStartMissionCards) {
       onStartMissionCards(currentMission);
@@ -93,31 +96,42 @@ export default function LearnPath({
         <div className="learn-continue-arrow"><ChevronRight size={26} /></div>
       </section>
 
-      {/* Guided mini-unit pilot — a safe entry point into the new 75/25 flow */}
-      {showMiniUnitPilot && (
-        <section className="learn-miniunit-card">
-          <div className="learn-miniunit-icon" aria-hidden="true">
-            <BookOpen size={24} />
+      {/* Guided mini-units — the Stage 1 beginner path of short lessons. */}
+      {showMiniUnits && (
+        <section className="learn-section">
+          <div className="learn-section-header">
+            <h2 className="learn-section-title">Guided mini-units</h2>
+            <span className="learn-section-meta">Stage 1 · short lessons</span>
           </div>
-          <div className="learn-miniunit-body">
-            <div className="learn-miniunit-eyebrow">Guided mini-unit pilot</div>
-            <h2 className="learn-miniunit-title">{STAGE_1_MINI_UNIT_PILOT.title}</h2>
-            <p className="learn-miniunit-copy">
-              {STAGE_1_MINI_UNIT_PILOT.subtitle}
-            </p>
-            <div className="learn-miniunit-meta">
-              <span><Clock size={13} /> {STAGE_1_MINI_UNIT_PILOT.estimatedMinutes} min</span>
-              <span>{STAGE_1_MINI_UNIT_PILOT.vocabCardIds.length} cards</span>
-              <span>{STAGE_1_MINI_UNIT_PILOT.challengeCardIds.length} questions</span>
-            </div>
+          <div className="learn-miniunit-list">
+            {stage1MiniUnits.map((u, idx) => {
+              const done = completedUnitIds.includes(u.unitId);
+              return (
+                <section key={u.unitId} className={`learn-miniunit-card ${done ? 'learn-miniunit-card-done' : ''}`}>
+                  <div className="learn-miniunit-icon" aria-hidden="true">
+                    {done ? <Check size={22} /> : <BookOpen size={24} />}
+                  </div>
+                  <div className="learn-miniunit-body">
+                    <div className="learn-miniunit-eyebrow">{done ? 'Completed' : `Unit ${idx + 1}`}</div>
+                    <h2 className="learn-miniunit-title">{u.title}</h2>
+                    <p className="learn-miniunit-copy">{u.subtitle}</p>
+                    <div className="learn-miniunit-meta">
+                      <span><Clock size={13} /> {u.estimatedMinutes} min</span>
+                      <span>{u.vocabCardIds.length} cards</span>
+                      {u.sentenceBuilder && <span>Sentence builder</span>}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="learn-miniunit-btn"
+                    onClick={() => onStartMiniUnit(u.unitId)}
+                  >
+                    {done ? 'Review' : 'Start'} <ChevronRight size={16} />
+                  </button>
+                </section>
+              );
+            })}
           </div>
-          <button
-            type="button"
-            className="learn-miniunit-btn"
-            onClick={() => onStartMiniUnit(STAGE_1_MINI_UNIT_PILOT.unitId)}
-          >
-            Try guided lesson <ChevronRight size={16} />
-          </button>
         </section>
       )}
 
