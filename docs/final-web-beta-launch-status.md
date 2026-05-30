@@ -659,3 +659,55 @@ touched; Quests untouched (course completion is independent of the quest system)
   (or the first session after completing); it intentionally does not retro-fire.
 - No separate "course-complete" achievement badge was added (overlay + XP + banner
   only); a badge could be added later via the existing achievements system.
+
+## Mobile App Foundation (Capacitor) — added May 30, 2026
+
+The Web/PWA is now wrapped for native iOS/Android via **Capacitor 8** without
+changing any product logic or Thai content. The web app remains the source of
+truth and still builds/deploys unchanged.
+
+### Capacitor setup status
+- **Installed (v8.3.4 lockstep):** `@capacitor/core`, `@capacitor/cli`,
+  `@capacitor/android`, plus plugins `@capacitor/app`, `@capacitor/browser`,
+  `@capacitor/haptics`, `@capacitor/preferences`, `@capacitor/splash-screen`,
+  `@capacitor/status-bar`. None are imported in `src/` yet (foundation only), so the
+  web bundle is unaffected — `npm run build` still passes.
+- **Config:** `capacitor.config.json` — `appId: com.tuktalkthai.app`,
+  `appName: Tuk Talk Thai`, `webDir: dist`, splash (#0F3D2E, 1200ms, no spinner),
+  status bar (dark style). No secrets.
+- **Scripts:** `mobile:sync`, `mobile:android`, `mobile:ios`, `mobile:open:android`,
+  `mobile:open:ios` (existing `dev`/`build`/`preview` untouched). `npx cap sync`
+  validated (copies `dist`).
+
+### Android / iOS readiness
+- **Android:** project **scaffolded and committed** (`android/`, source only —
+  build artifacts, `local.properties`, copied web assets, and generated config are
+  gitignored). `applicationId`/`namespace` = `com.tuktalkthai.app`; 6 Capacitor
+  plugins registered. **Building the APK/AAB is blocked on this machine:** needs
+  **JDK 17** (only Java 8 present) and the **Android SDK / Android Studio**
+  (`ANDROID_HOME` unset, no Gradle). Build on a tooled machine or CI.
+- **iOS:** **not generated** — requires **macOS + Xcode** (cannot be created on
+  Windows). On a Mac: `npx cap add ios && npx cap open ios`. Config is ready.
+
+### Mobile UX audit (no redesign needed)
+The existing CSS already handles mobile: `viewport-fit=cover` + apple meta tags in
+`index.html`; bottom navs and modals use `env(safe-area-inset-bottom)`; `overflow-x`
+is clipped and media are `max-width:100%` (no horizontal overflow). The
+Course-Complete banner uses wrapping flex actions. No CSS changes were made.
+
+### Remaining mobile blockers (documented, not done here)
+- **Auth deep links:** bundled-app `window.location.origin` is `localhost`, so email
+  confirm / reset links won't return to the app until deep links (custom scheme or
+  Universal/App Links) + Supabase redirect URLs are configured. See
+  `docs/mobile-auth-notes.md`.
+- **Native push:** web push doesn't work in a native WebView; needs APNs/FCM +
+  OneSignal native plugin. See `docs/mobile-push-notes.md`.
+- **Branded icon/splash:** Android currently uses default Capacitor art — replace
+  before submission. See `docs/mobile-app-launch-checklist.md`.
+
+### Real-device testing needed
+TTS/audio behavior, safe areas, tap targets, persistence across restarts, the
+Course-Complete celebration, push, and Android back-button behavior must be
+verified on real device builds (full list in `docs/mobile-app-launch-checklist.md`).
+No store submission was attempted. No Supabase schema, payments, ads, subscriptions,
+or secrets were touched.

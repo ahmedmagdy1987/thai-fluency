@@ -1,0 +1,21 @@
+{
+  "appId": "com.tuktalkthai.app",
+  "appName": "Tuk Talk Thai",
+  "webDir": "dist",
+  "backgroundColor": "#F5F0E5",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#0F3D2E",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP",
+      "splashImmersive": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0F3D2E",
+      "overlaysWebView": false
+    }
+  }
+}
