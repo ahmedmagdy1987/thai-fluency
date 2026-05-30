@@ -1080,6 +1080,171 @@ export const STAGE_7_UNIT_VERBS = unit({
     ], answer: ['tawnnii', 'phom', 'gamlang', 'ginkhao'],
   },
 });
+// Stage 7 deepening (Course Structure Sprint) — the "Natural Thai" path. Every id
+// below is an EXISTING Stage 7 card; no card content is changed and no Thai is
+// invented. Builders use only the source sentence card's own pieces (its
+// space-separated phonetic split, meanings from WORD_LOOKUP) — verified by
+// scripts/check-mini-units.mjs against the runtime CARDS. Stage 7 is extremely
+// sentence-rich (229 sentence cards, 12 with a clean breakdown); 10 of the 12 new
+// units carry a builder, including several longer 5-/6-token natural lines.
+export const STAGE_7_UNIT_PLACES = unit({
+  unitId: 'stage-7-places-around-town', stageId: 7,
+  title: 'Places around town', subtitle: 'Airport, hospital, school, province, village, countryside, cafeteria, villagers.',
+  vocabCardIds: [166, 170, 1800, 1885, 2049, 2706, 3742, 1748], sentenceCardId: 930, challengeCardIds: [166, 170, 1800],
+  sentenceBuilder: {
+    sourceCardId: 930, prompt: 'Build this Thai sentence', english: 'To the airport please (male)', thai: 'ไปสนามบินครับ',
+    tokens: [
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'sanambin', thai: 'สนามบิน', ph: 'sà-nǎam bin', en: 'airport' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['pai', 'sanambin', 'khrap'],
+  },
+});
+export const STAGE_7_UNIT_DIRECTIONS = unit({
+  unitId: 'stage-7-directions-position', stageId: 7,
+  title: 'Directions and position', subtitle: 'Between, opposite, behind, north, south, look here, yes sir, in front.',
+  vocabCardIds: [1705, 2313, 3484, 3893, 3962, 4248, 3294, 2302], sentenceCardId: 932, challengeCardIds: [2313, 3484, 3893],
+  sentenceBuilder: {
+    sourceCardId: 932, prompt: 'Build this Thai sentence', english: 'Stop up ahead please (male)', thai: 'จอดข้างหน้าครับ',
+    tokens: [
+      { id: 'jot', thai: 'จอด', ph: 'jàwt', en: 'to stop / park' },
+      { id: 'khangna', thai: 'ข้างหน้า', ph: 'khâang nâa', en: 'ahead / in front' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['jot', 'khangna', 'khrap'],
+  },
+});
+export const STAGE_7_UNIT_TALKING = unit({
+  unitId: 'stage-7-talking-discussing', stageId: 7,
+  title: 'Talking and discussing', subtitle: 'Communicate, converse, consult, persuade, negotiate, mention, comment, quarrel.',
+  vocabCardIds: [2507, 2707, 2570, 2714, 2715, 2413, 2669, 2950], sentenceCardId: 950, challengeCardIds: [2507, 2707, 2715],
+  sentenceBuilder: {
+    sourceCardId: 950, prompt: 'Build this Thai sentence', english: 'You speak English very well', thai: 'คุณพูดอังกฤษเก่งมาก',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'phut', thai: 'พูด', ph: 'phûut', en: 'to speak' },
+      { id: 'angkrit', thai: 'อังกฤษ', ph: 'angkrìt', en: 'English' },
+      { id: 'geng', thai: 'เก่ง', ph: 'gèng', en: 'skilled / good at' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['khun', 'phut', 'angkrit', 'geng', 'mak'],
+  },
+});
+export const STAGE_7_UNIT_MEETING = unit({
+  unitId: 'stage-7-meeting-people', stageId: 7,
+  title: 'Meeting people', subtitle: 'Family, student, adult, mother, younger brother, boyfriend, girl, boy.',
+  vocabCardIds: [1723, 1776, 1837, 2516, 3388, 3733, 3411, 3313], sentenceCardId: 958, challengeCardIds: [1723, 1776, 1837],
+  sentenceBuilder: {
+    sourceCardId: 958, prompt: 'Build this Thai sentence', english: 'Glad I got to meet you', thai: 'ดีใจที่ได้เจอคุณ',
+    tokens: [
+      { id: 'deejai', thai: 'ดีใจ', ph: 'dee jai', en: 'glad / happy' },
+      { id: 'thi', thai: 'ที่', ph: 'thîi', en: 'that' },
+      { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'got to / able' },
+      { id: 'jer', thai: 'เจอ', ph: 'jer', en: 'to meet' },
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+    ], answer: ['deejai', 'thi', 'dai', 'jer', 'khun'],
+  },
+});
+export const STAGE_7_UNIT_FLOW = unit({
+  unitId: 'stage-7-conversation-flow', stageId: 7,
+  title: 'Conversation flow', subtitle: 'Maybe, of course, how, but, so, besides, after that, if.',
+  vocabCardIds: [1260, 1265, 1267, 1268, 1270, 1665, 2125, 2666], sentenceCardId: 875, challengeCardIds: [1265, 1268, 1270],
+  sentenceBuilder: {
+    sourceCardId: 875, prompt: 'Build this Thai sentence', english: 'Could you say it again please? (male)', thai: 'พูดอีกทีได้ไหมครับ',
+    tokens: [
+      { id: 'phut', thai: 'พูด', ph: 'phûut', en: 'to speak' },
+      { id: 'ikthi', thai: 'อีกที', ph: 'ìik thii', en: 'again / one more time' },
+      { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'can / able' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phut', 'ikthi', 'dai', 'mai', 'khrap'],
+  },
+});
+export const STAGE_7_UNIT_FEELINGS = unit({
+  unitId: 'stage-7-feelings-reactions', stageId: 7,
+  title: 'Feelings and reactions', subtitle: 'Impatient, happy, surprised, excited, smile, beaming, worry, like that.',
+  vocabCardIds: [464, 470, 474, 476, 3298, 3665, 4027, 2283], sentenceCardId: 878, challengeCardIds: [470, 474, 476],
+  sentenceBuilder: {
+    sourceCardId: 878, prompt: 'Build this Thai sentence', english: 'Thanks for everything', thai: 'ขอบคุณสำหรับทุกอย่าง',
+    tokens: [
+      { id: 'khopkhun', thai: 'ขอบคุณ', ph: 'khàwp khun', en: 'thank you' },
+      { id: 'samrap', thai: 'สำหรับ', ph: 'sǎm-ràp', en: 'for' },
+      { id: 'thukyang', thai: 'ทุกอย่าง', ph: 'thúk yàang', en: 'everything' },
+    ], answer: ['khopkhun', 'samrap', 'thukyang'],
+  },
+});
+export const STAGE_7_UNIT_TIMESOFDAY = unit({
+  unitId: 'stage-7-plans-times-of-day', stageId: 7,
+  title: 'Plans and times of day', subtitle: 'Right now, after, night, morning, afternoon, evening, often, finally.',
+  vocabCardIds: [214, 1761, 2733, 3382, 3678, 3797, 3900, 4282], sentenceCardId: 892, challengeCardIds: [3382, 3678, 3797],
+  sentenceBuilder: {
+    sourceCardId: 892, prompt: 'Build this Thai sentence', english: 'Tomorrow I will go to work (male)', thai: 'พรุ่งนี้ผมจะไปทำงาน',
+    tokens: [
+      { id: 'phrungnii', thai: 'พรุ่งนี้', ph: 'phrûng níi', en: 'tomorrow' },
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'thamngan', thai: 'ทำงาน', ph: 'tham-ngaan', en: 'to work' },
+    ], answer: ['phrungnii', 'phom', 'ja', 'pai', 'thamngan'],
+  },
+});
+export const STAGE_7_UNIT_SCHEDULE = unit({
+  unitId: 'stage-7-days-and-schedule', stageId: 7,
+  title: 'Days and schedule', subtitle: 'Friday, Monday, Saturday, Tuesday, clock, now, new year, daybreak.',
+  vocabCardIds: [3823, 3879, 3940, 4005, 2766, 2958, 3473, 3776], sentenceCardId: 1509, challengeCardIds: [3879, 3823, 2766],
+  sentenceBuilder: {
+    sourceCardId: 1509, prompt: 'Build this Thai sentence', english: 'What time will you arrive? (male)', thai: 'จะมาถึงกี่โมงครับ',
+    tokens: [
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'maathueng', thai: 'มาถึง', ph: 'maa thǔeng', en: 'to arrive' },
+      { id: 'kimong', thai: 'กี่โมง', ph: 'gìi mohng', en: 'what time' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['ja', 'maathueng', 'kimong', 'khrap'],
+  },
+});
+export const STAGE_7_UNIT_DINING = unit({
+  unitId: 'stage-7-dining-out', stageId: 7,
+  title: 'Dining out', subtitle: 'Ice, rice, rice soup, apple, cook, dinner, sweet, things to eat.',
+  vocabCardIds: [133, 2881, 3601, 3692, 3764, 3782, 3980, 4365], sentenceCardId: 919, challengeCardIds: [3601, 3782, 3764],
+  sentenceBuilder: {
+    sourceCardId: 919, prompt: 'Build this Thai sentence', english: 'Can we split the bill? (male)', thai: 'แยกบิลได้ไหมครับ',
+    tokens: [
+      { id: 'yaek', thai: 'แยก', ph: 'yâek', en: 'to split / separate' },
+      { id: 'bin', thai: 'บิล', ph: 'bin', en: 'bill' },
+      { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'can / able' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['yaek', 'bin', 'dai', 'mai', 'khrap'],
+  },
+});
+export const STAGE_7_UNIT_ACTIONS = unit({
+  unitId: 'stage-7-everyday-actions', stageId: 7,
+  title: 'Everyday actions', subtitle: 'Touch, assemble, improve, add, decorate, dress, get ready, jump.',
+  vocabCardIds: [1897, 1914, 2306, 2378, 2554, 2645, 2745, 2940], sentenceCardId: 938, challengeCardIds: [2306, 2645, 2940],
+  sentenceBuilder: {
+    sourceCardId: 938, prompt: 'Build this Thai sentence', english: 'Can you take me here? (male)', thai: 'พาผมไปที่นี่ได้ไหม',
+    tokens: [
+      { id: 'phaa', thai: 'พา', ph: 'phaa', en: 'to take (someone)' },
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I / me (male)' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'thinii', thai: 'ที่นี่', ph: 'thîi nîi', en: 'here' },
+      { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'can / able' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+    ], answer: ['phaa', 'phom', 'pai', 'thinii', 'dai', 'mai'],
+  },
+});
+export const STAGE_7_UNIT_QUALITIES = unit({
+  unitId: 'stage-7-describing-things', stageId: 7,
+  title: 'Describing things', subtitle: 'Cute, many, ordinary, clear, neat, different, safe, dangerous.',
+  vocabCardIds: [76, 1744, 1828, 1846, 1970, 2048, 2147, 2140], challengeCardIds: [76, 2048, 2147],
+  // No sentenceCard/builder: the clean Stage 7 adjective sentences are 2-token or
+  // idiomatic; this unit is taught as vocabulary and used in sentences elsewhere.
+});
+export const STAGE_7_UNIT_NATURE = unit({
+  unitId: 'stage-7-nature-outdoors', stageId: 7,
+  title: 'Nature and outdoors', subtitle: 'River, nature, tree, flower, sky, sunlight, beach, lotus.',
+  vocabCardIds: [611, 1863, 2208, 2416, 3192, 3514, 3618, 4296], challengeCardIds: [611, 2208, 3618],
+  // No sentenceCard/builder: Stage 7 has no clean nature sentence to tokenize;
+  // taught as vocabulary, used in sentences elsewhere.
+});
 
 // Stage 8 — Thai Mastery (sentence-heavy stage; one lighter "out and about" unit).
 export const STAGE_8_UNIT_OUT = unit({
@@ -1169,6 +1334,18 @@ export const MINI_UNITS = [
   STAGE_6_UNIT_QUALITIES,
   STAGE_7_UNIT_FOOD,
   STAGE_7_UNIT_VERBS,
+  STAGE_7_UNIT_PLACES,
+  STAGE_7_UNIT_DIRECTIONS,
+  STAGE_7_UNIT_TALKING,
+  STAGE_7_UNIT_MEETING,
+  STAGE_7_UNIT_FLOW,
+  STAGE_7_UNIT_FEELINGS,
+  STAGE_7_UNIT_TIMESOFDAY,
+  STAGE_7_UNIT_SCHEDULE,
+  STAGE_7_UNIT_DINING,
+  STAGE_7_UNIT_ACTIONS,
+  STAGE_7_UNIT_QUALITIES,
+  STAGE_7_UNIT_NATURE,
   STAGE_8_UNIT_OUT,
 ];
 

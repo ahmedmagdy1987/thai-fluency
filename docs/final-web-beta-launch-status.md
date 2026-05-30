@@ -542,3 +542,31 @@ confidence, needs-review flag, plus skipped candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 7 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 7 expanded from **2 → 14 guided mini-units** (**16 → 112** vocab cards
+covered, **2 → 12** sentence builders), all using existing Stage 7 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** is at
+`docs/stage-7-content-review-matrix.md` (per-unit vocab, sentence, builder tokens,
+confidence, needs-review flag, plus skipped candidates with reasons).
+
+- 12 new themed "Natural Thai" units (places around town, directions & position,
+  talking & discussing, meeting people, conversation flow, feelings & reactions,
+  plans & times of day, days & schedule, dining out, everyday actions, describing
+  things, nature & outdoors). 10 of the 12 carry a genuine builder — including
+  long natural lines (to-the-airport, stop-up-ahead, you-speak-English-well,
+  glad-to-meet-you, say-it-again, thanks-for-everything, tomorrow-go-to-work,
+  what-time-arrive, split-the-bill, take-me-here); the describing/nature units are
+  vocab-only.
+- Builders added **only when safe** (3- to 6-token, auto-derived from the source
+  card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). Two
+  clean leftover sentences held back as one-builder-per-unit extras — documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 7
+  shows its 14-unit sequential path when Stage 7 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change).
+
+`check-mini-units.mjs` (all-stages, Stage 7 now 112/877 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

@@ -506,3 +506,51 @@ skips are listed in the review matrix.
 **Stage 7** ("Natural Thai") — same approach: themed units from existing Stage 7
 cards, safe builders only, validated by `check-mini-units.mjs`, with a Stage 7
 review matrix.
+
+## Stage 7 deepened (update — May 30, 2026)
+
+Stage 7 expanded from **2 units (16 cards)** to **14 units (112 vocab cards)** — a
+real guided "Natural Thai" section, using existing Stage 7 cards only. A
+native-review matrix lives at `docs/stage-7-content-review-matrix.md`.
+
+### Stage 7 audit
+877 cards (648 words, 229 sentences). The most **sentence-rich** stage in the
+course: of 229 sentence cards, **12 produce a clean ≥3-token breakdown**, and the
+clean ones are exactly the natural real-life lines the stage is named for — taxi/
+getting-around, communication, social, scheduling, dining — several are long
+5-/6-token sentences. Words are dominated by "things" (204), verbs (119),
+adjectives (110).
+
+### Units added (12 new; all existing Stage 7 cards)
+Places around town · Directions & position · Talking & discussing · Meeting
+people · Conversation flow · Feelings & reactions · Plans & times of day · Days &
+schedule · Dining out · Everyday actions · Describing things · Nature & outdoors.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 7 units | 2 | 14 |
+| Stage 7 vocab covered | 16 / 877 | 112 / 877 |
+| Stage 7 sentence builders | 2 | 12 |
+
+### sentenceBuilder coverage / skipped
+**12 of 14** Stage 7 units have a builder (3- to 6-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS),
+including long natural lines like "Can you take me here?" (6-token) and "You speak
+English very well" (5-token). The "Describing things" and "Nature and outdoors"
+units are vocab-only (no clean tokenizable sentence). Two clean leftover sentences
+(874 "speak slowly", 933 "wait here") are held back as one-builder-per-unit
+extras. All skips are listed in the review matrix.
+
+### Known limitations
+- Coverage is 112/877 (the cleanest natural-conversation vocab); the rest stays in
+  Practice and the Stage Challenge.
+- "Feelings & reactions" and "Everyday actions" pair a social/taxi builder with
+  themed vocab — flagged medium for native review in the matrix.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 8** ("Thai Mastery") — the final stage. Same approach: themed units from
+existing Stage 8 cards, safe builders only, validated by `check-mini-units.mjs`,
+with a Stage 8 review matrix. Completing Stage 8 finishes the full 8-stage guided
+path.
