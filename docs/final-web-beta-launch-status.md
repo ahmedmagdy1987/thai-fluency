@@ -570,3 +570,30 @@ confidence, needs-review flag, plus skipped candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 8 Deepened — Course Structure Sprint COMPLETE (update — May 30, 2026)
+
+Stage 8 expanded from **1 → 13 guided mini-units** (**6 → 102** vocab cards
+covered, **1 → 13** sentence builders), all using existing Stage 8 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** is at
+`docs/stage-8-content-review-matrix.md`. **This completes the sprint: all 8 stages
+now have guided mini-unit paths (96 units, 752 vocab covered, 83 builders).**
+
+- 12 new "Thai Mastery" units (people & family, everyone & no one, months of the
+  year, days & when, places in town, directions & distance, travel & activities,
+  connectors & nuance, home & documents, decisions & opinions, likes &
+  impressions, society & ideas). **All 12 carry a genuine builder** — Stage 8 is
+  the most sentence-rich stage (526 sentence/phrase cards, 33 with a clean
+  breakdown).
+- Builders added **only when safe** (3- to 5-token, auto-derived from the source
+  card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). ~20
+  extra clean builders held back as one-builder-per-unit extras — documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 8
+  shows its 13-unit sequential path when Stage 8 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change). A per-stage
+  `pathComplete` state exists; a global course-complete celebration is deferred.
+
+`check-mini-units.mjs` (all-stages, Stage 8 now 102/992 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

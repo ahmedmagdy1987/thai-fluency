@@ -1260,6 +1260,175 @@ export const STAGE_8_UNIT_OUT = unit({
     ], answer: ['glai', 'mai', 'khrap'],
   },
 });
+// Stage 8 deepening (Course Structure Sprint, final stage) — the "Thai Mastery"
+// path. Every id below is an EXISTING Stage 8 card; no card content is changed and
+// no Thai is invented. Builders use only the source sentence card's own pieces
+// (its space-separated phonetic split, meanings from WORD_LOOKUP) — verified by
+// scripts/check-mini-units.mjs against the runtime CARDS. Stage 8 is by far the
+// most sentence-rich stage (526 sentence/phrase cards, 33 with a clean
+// breakdown), so all 12 new units carry a genuine mastery-level builder.
+export const STAGE_8_UNIT_PEOPLE = unit({
+  unitId: 'stage-8-people-family', stageId: 8,
+  title: 'People and family', subtitle: 'Boy, girl, sister, uncle, aunt, grandparent, manners, king.',
+  vocabCardIds: [3732, 3828, 3947, 4009, 3696, 3834, 2891, 3575], sentenceCardId: 331, challengeCardIds: [3732, 3828, 3947],
+  sentenceBuilder: {
+    sourceCardId: 331, prompt: 'Build this Thai sentence', english: 'What is your name? (male)', thai: 'คุณชื่ออะไรครับ',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'chue', thai: 'ชื่อ', ph: 'chûe', en: 'name' },
+      { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['khun', 'chue', 'arai', 'khrap'],
+  },
+});
+export const STAGE_8_UNIT_PRONOUNS = unit({
+  unitId: 'stage-8-everyone-no-one', stageId: 8,
+  title: 'Everyone and no one', subtitle: 'Everything, anybody, nobody, nothing, somebody, their, himself, she.',
+  vocabCardIds: [3071, 3687, 3891, 3895, 3957, 3984, 3844, 4308], sentenceCardId: 317, challengeCardIds: [3071, 3957, 3891],
+  sentenceBuilder: {
+    sourceCardId: 317, prompt: 'Build this Thai sentence', english: 'Nice to meet you', thai: 'ยินดีที่ได้รู้จัก',
+    tokens: [
+      { id: 'yindee', thai: 'ยินดี', ph: 'yindee', en: 'glad / pleased' },
+      { id: 'thi', thai: 'ที่', ph: 'thîi', en: 'to / that' },
+      { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'got to / able' },
+      { id: 'rujak', thai: 'รู้จัก', ph: 'rúujàk', en: 'to know / be acquainted' },
+    ], answer: ['yindee', 'thi', 'dai', 'rujak'],
+  },
+});
+export const STAGE_8_UNIT_MONTHS = unit({
+  unitId: 'stage-8-months', stageId: 8,
+  title: 'Months of the year', subtitle: 'January, February, March, April, May, June, July, August.',
+  vocabCardIds: [3853, 3807, 3872, 3693, 3876, 3858, 3856, 3695], sentenceCardId: 937, challengeCardIds: [3853, 3872, 3693],
+  sentenceBuilder: {
+    sourceCardId: 937, prompt: 'Build this Thai sentence', english: 'I will stay for one week (male)', thai: 'ผมจะอยู่หนึ่งอาทิตย์',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'yu', thai: 'อยู่', ph: 'yùu', en: 'to stay' },
+      { id: 'nueng', thai: 'หนึ่ง', ph: 'nèung', en: 'one' },
+      { id: 'athit', thai: 'อาทิตย์', ph: 'aa-thít', en: 'week' },
+    ], answer: ['phom', 'ja', 'yu', 'nueng', 'athit'],
+  },
+});
+export const STAGE_8_UNIT_DAYS = unit({
+  unitId: 'stage-8-days-and-when', stageId: 8,
+  title: 'Days and when', subtitle: 'Sunday, Thursday, tomorrow, yesterday, finally, now, soon, then.',
+  vocabCardIds: [3975, 3989, 3995, 4029, 2347, 2905, 3961, 2216], sentenceCardId: 898, challengeCardIds: [3975, 3995, 4029],
+  sentenceBuilder: {
+    sourceCardId: 898, prompt: 'Build this Thai sentence', english: 'See you tomorrow', thai: 'แล้วเจอกันพรุ่งนี้',
+    tokens: [
+      { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'then / well' },
+      { id: 'jergan', thai: 'เจอกัน', ph: 'jer gan', en: 'see each other' },
+      { id: 'phrungnii', thai: 'พรุ่งนี้', ph: 'phrûng níi', en: 'tomorrow' },
+    ], answer: ['laew', 'jergan', 'phrungnii'],
+  },
+});
+export const STAGE_8_UNIT_PLACES = unit({
+  unitId: 'stage-8-places-in-town', stageId: 8,
+  title: 'Places in town', subtitle: 'University, library, museum, office, shop, country, staff, official.',
+  vocabCardIds: [1913, 3308, 3441, 3899, 3079, 2415, 2151, 2351], sentenceCardId: 852, challengeCardIds: [1913, 3308, 3441],
+  sentenceBuilder: {
+    sourceCardId: 852, prompt: 'Build this Thai sentence', english: 'Where is it? (male)', thai: 'อยู่ที่ไหนครับ',
+    tokens: [
+      { id: 'yu', thai: 'อยู่', ph: 'yùu', en: 'to be (located)' },
+      { id: 'thinai', thai: 'ที่ไหน', ph: 'thîi nǎi', en: 'where' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['yu', 'thinai', 'khrap'],
+  },
+});
+export const STAGE_8_UNIT_DIRECTIONS = unit({
+  unitId: 'stage-8-directions-distance', stageId: 8,
+  title: 'Directions and distance', subtitle: 'East, west, left, distance, past, alongside, eastward, spacing.',
+  vocabCardIds: [2375, 4018, 3864, 3026, 2272, 2951, 3792, 3540], sentenceCardId: 382, challengeCardIds: [2375, 4018, 3864],
+  sentenceBuilder: {
+    sourceCardId: 382, prompt: 'Build this Thai sentence', english: 'Stop here (male)', thai: 'จอดที่นี่ครับ',
+    tokens: [
+      { id: 'jot', thai: 'จอด', ph: 'jàwt', en: 'to stop / park' },
+      { id: 'thinii', thai: 'ที่นี่', ph: 'thîi nîi', en: 'here' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['jot', 'thinii', 'khrap'],
+  },
+});
+export const STAGE_8_UNIT_TRAVEL = unit({
+  unitId: 'stage-8-travel-and-activities', stageId: 8,
+  title: 'Travel and activities', subtitle: 'Tour, travel, swim, exercise, turn to face, exchange, avoid, win.',
+  vocabCardIds: [2478, 4004, 3376, 3404, 3496, 2709, 2827, 3042], sentenceCardId: 389, challengeCardIds: [2478, 4004, 3404],
+  sentenceBuilder: {
+    sourceCardId: 389, prompt: 'Build this Thai sentence', english: 'I am lost (male)', thai: 'ผมหลงทางครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'longthang', thai: 'หลงทาง', ph: 'lǒng thaang', en: 'to be lost' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'longthang', 'khrap'],
+  },
+});
+export const STAGE_8_UNIT_CONNECTORS = unit({
+  unitId: 'stage-8-connectors-nuance', stageId: 8,
+  title: 'Connectors and nuance', subtitle: 'Only, especially, at least, anyway, besides, from now on, generally, extremely.',
+  vocabCardIds: [1656, 1798, 1928, 2317, 2786, 2717, 2979, 2226], sentenceCardId: 433, challengeCardIds: [1656, 1798, 2317],
+  sentenceBuilder: {
+    sourceCardId: 433, prompt: 'Build this Thai sentence', english: 'Say it again please (male)', thai: 'พูดอีกทีครับ',
+    tokens: [
+      { id: 'phut', thai: 'พูด', ph: 'phûut', en: 'to speak' },
+      { id: 'ikthi', thai: 'อีกที', ph: 'ìik thii', en: 'again / one more time' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phut', 'ikthi', 'khrap'],
+  },
+});
+export const STAGE_8_UNIT_HOME = unit({
+  unitId: 'stage-8-home-and-documents', stageId: 8,
+  title: 'Home and documents', subtitle: 'Living room, house, apartment, password, passport, immigration, credit card, fee.',
+  vocabCardIds: [1010, 2939, 5738, 1019, 1113, 1116, 1105, 1124], sentenceCardId: 844, challengeCardIds: [1010, 5738, 1113],
+  sentenceBuilder: {
+    sourceCardId: 844, prompt: 'Build this Thai sentence', english: 'Where do you live?', thai: 'คุณอยู่ที่ไหน',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'yu', thai: 'อยู่', ph: 'yùu', en: 'to live / be at' },
+      { id: 'thinai', thai: 'ที่ไหน', ph: 'thîi nǎi', en: 'where' },
+    ], answer: ['khun', 'yu', 'thinai'],
+  },
+});
+export const STAGE_8_UNIT_DECISIONS = unit({
+  unitId: 'stage-8-decisions-verbs', stageId: 8,
+  title: 'Decisions and opinions', subtitle: 'Consider, decide, support, deny, be responsible, analyze, develop, change.',
+  vocabCardIds: [1827, 1835, 1987, 2016, 2232, 2332, 1736, 1918], sentenceCardId: 823, challengeCardIds: [1835, 2232, 2332],
+  sentenceBuilder: {
+    sourceCardId: 823, prompt: 'Build this Thai sentence', english: 'I want to go there (male)', thai: 'ผมอยากไปที่นั่น',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'thinan', thai: 'ที่นั่น', ph: 'thîi nân', en: 'there' },
+    ], answer: ['phom', 'yak', 'pai', 'thinan'],
+  },
+});
+export const STAGE_8_UNIT_LIKES = unit({
+  unitId: 'stage-8-likes-impressions', stageId: 8,
+  title: 'Likes and impressions', subtitle: 'Interesting, fun, impressed, honest, fair, creative, modern, independent.',
+  vocabCardIds: [2292, 2396, 2783, 2913, 2523, 2512, 2858, 2296], sentenceCardId: 812, challengeCardIds: [2292, 2396, 2783],
+  sentenceBuilder: {
+    sourceCardId: 812, prompt: 'Build this Thai sentence', english: 'I really like it (male)', thai: 'ผมชอบมากเลย',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'chop', thai: 'ชอบ', ph: 'chôp', en: 'to like' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very / a lot' },
+      { id: 'loei', thai: 'เลย', ph: 'loei', en: '(emphasis)' },
+    ], answer: ['phom', 'chop', 'mak', 'loei'],
+  },
+});
+export const STAGE_8_UNIT_SOCIETY = unit({
+  unitId: 'stage-8-society-and-ideas', stageId: 8,
+  title: 'Society and ideas', subtitle: 'Sacred, conserve, harmony, public, hardship, complex, strange, progressive.',
+  vocabCardIds: [2772, 2743, 3159, 2530, 2989, 3090, 3142, 2609], sentenceCardId: 955, challengeCardIds: [2772, 3159, 3090],
+  sentenceBuilder: {
+    sourceCardId: 955, prompt: 'Build this Thai sentence', english: 'Thai people are very kind', thai: 'คนไทยใจดีมาก',
+    tokens: [
+      { id: 'khonthai', thai: 'คนไทย', ph: 'khon thai', en: 'Thai people' },
+      { id: 'jaidee', thai: 'ใจดี', ph: 'jai dee', en: 'kind' },
+      { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
+    ], answer: ['khonthai', 'jaidee', 'mak'],
+  },
+});
 
 // Full guided path. Stage 1 first; each stage's units are in sequence order.
 export const MINI_UNITS = [
@@ -1347,6 +1516,18 @@ export const MINI_UNITS = [
   STAGE_7_UNIT_QUALITIES,
   STAGE_7_UNIT_NATURE,
   STAGE_8_UNIT_OUT,
+  STAGE_8_UNIT_PEOPLE,
+  STAGE_8_UNIT_PRONOUNS,
+  STAGE_8_UNIT_MONTHS,
+  STAGE_8_UNIT_DAYS,
+  STAGE_8_UNIT_PLACES,
+  STAGE_8_UNIT_DIRECTIONS,
+  STAGE_8_UNIT_TRAVEL,
+  STAGE_8_UNIT_CONNECTORS,
+  STAGE_8_UNIT_HOME,
+  STAGE_8_UNIT_DECISIONS,
+  STAGE_8_UNIT_LIKES,
+  STAGE_8_UNIT_SOCIETY,
 ];
 
 export function getMiniUnit(unitId) {

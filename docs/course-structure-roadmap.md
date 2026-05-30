@@ -554,3 +554,70 @@ extras. All skips are listed in the review matrix.
 existing Stage 8 cards, safe builders only, validated by `check-mini-units.mjs`,
 with a Stage 8 review matrix. Completing Stage 8 finishes the full 8-stage guided
 path.
+
+## Stage 8 deepened — Course Structure Sprint COMPLETE (update — May 30, 2026)
+
+Stage 8 expanded from **1 unit (6 cards)** to **13 units (102 vocab cards)** — a
+real guided "Thai Mastery" section, using existing Stage 8 cards only. A
+native-review matrix lives at `docs/stage-8-content-review-matrix.md`. **This
+completes the Course Structure Sprint: all 8 stages now have guided mini-unit
+paths.**
+
+### Stage 8 audit
+992 cards (466 words, 237 phrases, 289 sentences). The largest and most
+**sentence-rich** stage: of its 526 sentence/phrase cards, **33 produce a clean
+≥3-token breakdown** (more than any other stage). Clean sentences span the full
+mastery range — introductions, languages, restaurant, taxi, getting lost,
+shopping, preferences, travel plans, feelings about Thailand. Words dominated by
+"things" (189), adjectives (72), verbs (60).
+
+### Units added (12 new; all existing Stage 8 cards)
+People & family · Everyone & no one · Months of the year · Days & when · Places
+in town · Directions & distance · Travel & activities · Connectors & nuance ·
+Home & documents · Decisions & opinions · Likes & impressions · Society & ideas.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 8 units | 1 | 13 |
+| Stage 8 vocab covered | 6 / 992 | 102 / 992 |
+| Stage 8 sentence builders | 1 | 13 |
+
+### sentenceBuilder coverage / skipped
+**All 13** Stage 8 units have a builder (3- to 5-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). Stage 8
+has ~25 distinct clean builders beyond the 12 used (restaurant, languages,
+shopping lines) — held back as one-builder-per-unit extras, ready to promote. All
+skips are listed in the review matrix.
+
+### All-stage guided path summary
+| Stage | Units | Vocab covered | Builders |
+| --- | --- | --- | --- |
+| 1 | 5 | 32 / 150 | 4 |
+| 2 | 10 | 76 / 269 | 6 |
+| 3 | 12 | 96 / 423 | 9 |
+| 4 | 14 | 112 / 575 | 12 |
+| 5 | 14 | 112 / 701 | 14 |
+| 6 | 14 | 110 / 804 | 13 |
+| 7 | 14 | 112 / 877 | 12 |
+| 8 | 13 | 102 / 992 | 13 |
+| **Total** | **96** | **752** | **83** |
+
+### Course-complete state
+A **per-stage** completion state exists (`pathComplete` → LearnPath shows "Stage N
+path complete"). A **global "all 8 stages graduated" course-complete celebration
+does not yet exist — deferred** as a future enhancement (new UI/celebration state,
+out of scope for this content sprint).
+
+### Known limitations
+- Coverage is 752 / ~4,790 cards (the cleanest themed vocab per stage); the rest
+  stays in Practice and the Stage Challenge by design.
+- A few units pair a conversational builder with a themed vocab set not literally
+  about the sentence (flagged medium): S6 "Explaining & confirming", S7 "Feelings
+  & reactions" / "Everyday actions", S8 "Decisions & opinions".
+- All 96 units' builders want a native-speaker pass via the eight
+  `docs/stage-N-content-review-matrix.md` files before scaling further.
+
+### Next steps (post-sprint)
+- Native-speaker review pass across the eight matrices.
+- Optional: a global course-complete celebration when all 8 stage paths finish.
+- Optional: deepen any stage further (Stage 8 has ~20 unused clean builders).
