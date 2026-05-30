@@ -686,6 +686,13 @@ truth and still builds/deploys unchanged.
   plugins registered. **Building the APK/AAB is blocked on this machine:** needs
   **JDK 17** (only Java 8 present) and the **Android SDK / Android Studio**
   (`ANDROID_HOME` unset, no Gradle). Build on a tooled machine or CI.
+  - **Re-verified May 30, 2026:** toolchain still absent — Java 8 **JRE** only (no
+    `javac`/JDK 17), no Android SDK, no Android Studio, no `adb`/`gradle`,
+    `JAVA_HOME`/`ANDROID_HOME`/`ANDROID_SDK_ROOT` unset. The debug-APK build was
+    **not attempted** (Gradle wrapper would fail on the Java version + missing SDK);
+    no app code changed. Exact one-time install steps are in
+    `docs/mobile-app-launch-checklist.md` → "Android build environment setup". Web
+    build + all 8 validation scripts still pass.
 - **iOS:** **not generated** — requires **macOS + Xcode** (cannot be created on
   Windows). On a Mac: `npx cap add ios && npx cap open ios`. Config is ready.
 

@@ -48,10 +48,74 @@ Legend: ✅ done · 🟡 partial / needs assets · ⬜ owner action · 🔧 need
 | Capacitor configured | ✅ | `capacitor.config.json` (appId, appName, webDir=dist, splash, status bar). |
 | Web build → `dist` | ✅ | `npm run build` passes; `npx cap sync` copies `dist` into native projects. |
 | Android project scaffolded | ✅ | `android/` committed (source only; build artifacts gitignored). |
-| Android build (APK/AAB) | 🔧 | **Blocked on this machine:** needs **JDK 17** (only Java 8 present) + **Android SDK / Android Studio** (`ANDROID_HOME` unset, no Gradle). Build on a machine with those, or CI. |
+| Android build (APK/AAB) | 🔧 | **Blocked on this machine (re-verified May 30, 2026).** Build NOT attempted — environment lacks the toolchain (details + exact install steps below). Build on a machine with JDK 17 + Android SDK, or in CI. |
 | iOS project | 🔧 | **Requires macOS + Xcode** (cannot be generated on Windows). On a Mac: `npx cap add ios` then `npx cap open ios`. |
 | Deep links / auth | ⬜ | See `docs/mobile-auth-notes.md` — needed before mobile sign-in/confirm works. |
 | Native push | ⬜ | See `docs/mobile-push-notes.md` — APNs/FCM + OneSignal native plugin. |
+
+## Android build environment setup (required to build the debug APK)
+
+**Verified on this machine — May 30, 2026 (commit `767aaea`):**
+
+| Tool | Found | Detail |
+| --- | --- | --- |
+| Java | ⚠️ Java **8 JRE only** | `java -version` → `1.8.0_381`; `javac` **not found** (it is a JRE, not a JDK). Path: `C:\Program Files\Java\jre-1.8`. |
+| JDK 17 | ❌ Missing | No JDK 17 anywhere; the Android Gradle Plugin 8.x **requires JDK 17**. Java 8 cannot run it. |
+| `JAVA_HOME` | ❌ Unset | — |
+| Android SDK | ❌ Missing | `C:\Users\bdstd\AppData\Local\Android\Sdk` does not exist. |
+| Android Studio | ❌ Missing | `C:\Program Files\Android\Android Studio` does not exist. |
+| `ANDROID_HOME` / `ANDROID_SDK_ROOT` | ❌ Unset | — |
+| `adb` | ❌ Not found | No platform-tools. |
+| `gradle` | ❌ Not on PATH | (the project ships a Gradle **wrapper** `android\gradlew.bat`, but it still needs a JDK 17 to run). |
+
+**Conclusion:** The debug APK **cannot be built on this machine yet.** The Gradle
+wrapper was intentionally **not run** (it would fail immediately on the Java
+version and the missing SDK, and the first run would also try to download the
+Gradle distribution). No app code was changed.
+
+### Exact install steps to unblock (one-time)
+
+1. **Install a JDK 17** (either option):
+   - **Eclipse Temurin / Adoptium JDK 17** (MSI), or
+   - **Android Studio** (recommended) — it bundles a compatible JDK (JBR) at
+     `C:\Program Files\Android\Android Studio\jbr`.
+   - Then set, for the build shell:
+     - `JAVA_HOME = C:\Program Files\Eclipse Adoptium\jdk-17...` (or the Studio `jbr` path)
+     - add `%JAVA_HOME%\bin` to `PATH`
+   - Verify: `java -version` and `javac -version` both report **17.x**.
+
+2. **Install the Android SDK** (easiest via **Android Studio → SDK Manager**), including:
+   - **Android SDK Platform** (e.g. API 34/35 — match the project's `compileSdk`),
+   - **Android SDK Build-Tools**,
+   - **Android SDK Platform-Tools** (provides `adb`),
+   - **Android Emulator** (only if you want an emulator vs. a physical device).
+   - Set environment variables:
+     - `ANDROID_HOME = C:\Users\bdstd\AppData\Local\Android\Sdk`
+     - `ANDROID_SDK_ROOT = %ANDROID_HOME%`
+     - add `%ANDROID_HOME%\platform-tools` to `PATH` (for `adb`).
+   - Capacitor writes the SDK path to `android\local.properties` (gitignored) on
+     first sync/open; or create it with `sdk.dir=C:\\Users\\bdstd\\AppData\\Local\\Android\\Sdk`.
+
+3. **Build the debug APK** (from repo root):
+   ```
+   set NODE_OPTIONS=--max-old-space-size=4096
+   npm.cmd run build
+   npx cap sync android
+   cd android
+   gradlew.bat assembleDebug
+   ```
+   Expected output APK: `android\app\build\outputs\apk\debug\app-debug.apk`
+   (a build artifact — **do not commit**; it is gitignored).
+
+4. **Install / run on a device** (USB debugging on, or an emulator running):
+   ```
+   adb devices
+   adb install -r android\app\build\outputs\apk\debug\app-debug.apk
+   ```
+   or `npx cap run android --target <device-id>`.
+
+> Easiest path overall: install **Android Studio**, open the `android/` folder, let
+> it provision the SDK + JBR, then Run ▶ to a device/emulator (no manual env vars).
 
 ## Beta testing path
 | Item | Status | Notes |
