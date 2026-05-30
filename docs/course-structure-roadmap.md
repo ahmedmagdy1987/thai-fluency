@@ -368,3 +368,49 @@ word and are deferred. All skips are listed in the review matrix.
 **Stage 4** ("Real Conversations") — same approach: themed units from existing
 Stage 4 cards, safe builders only, validated by `check-mini-units.mjs`, with a
 Stage 4 review matrix.
+
+## Stage 4 deepened (update — May 30, 2026)
+
+Stage 4 expanded from **2 units (16 cards)** to **14 units (112 vocab cards)** — a
+real guided "Real Conversations" section, using existing Stage 4 cards only. A
+native-review matrix lives at `docs/stage-4-content-review-matrix.md`.
+
+### Stage 4 audit
+575 cards (420 words, 4 grammar, 151 sentences). Stage 4 is **sentence-rich** and
+genuinely conversational: of its 151 sentence cards, **14 produce a clean ≥3-token
+breakdown**, so most units carry a real conversational builder (small talk, plans,
+getting around, distance, feelings, understanding, leaving). Vocab is verb-heavy
+(104 free verbs) plus nouns/adjectives, so two everyday-verb batches and a
+describing-states unit group those.
+
+### Units added (12 new; all existing Stage 4 cards)
+Small talk & people · Plans & free time · Out and about · Distance & directions ·
+Feelings & reactions · Knowing & saying · Everyday verbs I · At home · Everyday
+verbs II · Describing states · Leaving & going · Food & dishes.
+
+| | Before | After |
+| --- | --- | --- |
+| Stage 4 units | 2 | 14 |
+| Stage 4 vocab covered | 16 / 575 | 112 / 575 |
+| Stage 4 sentence builders | 2 | 12 |
+
+### sentenceBuilder coverage / skipped
+**12 of 14** Stage 4 units have a builder (3- and 4-token, derived from the source
+card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS). The home
+unit shows a relevant sentence (ไฟดับ) without a builder, and food is vocab-only
+(no clean food sentence). Four clean leftover sentences (courtesy 870/872/879 and
+question 5289) are held back as one-builder-per-unit extras — ready to promote later.
+All skips are listed in the review matrix.
+
+### Known limitations
+- Coverage is 112/575 (the cleanest conversational vocab); the rest stays in
+  Practice and the Stage Challenge.
+- Two verb units share a broad theme (distinct batches) and "Knowing & saying"
+  leans on some literary speech verbs — flagged for native review.
+- Builder token meanings should get the native-speaker pass via the review matrix
+  before scaling further.
+
+### Next recommended stage to expand
+**Stage 5** ("Social Confidence") — same approach: themed units from existing
+Stage 5 cards, safe builders only, validated by `check-mini-units.mjs`, with a
+Stage 5 review matrix.

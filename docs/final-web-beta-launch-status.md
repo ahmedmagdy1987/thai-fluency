@@ -461,3 +461,30 @@ candidates with reasons).
 check scripts pass; build passes. No Thai card content, SRS, Practice
 review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
 ads, or subscriptions touched.
+
+## Stage 4 Deepened + Native-Review Matrix (update — May 30, 2026)
+
+Stage 4 expanded from **2 → 14 guided mini-units** (**16 → 112** vocab cards
+covered, **2 → 12** sentence builders), all using existing Stage 4 cards — detail
+in `docs/course-structure-roadmap.md`. A **native-review matrix** is at
+`docs/stage-4-content-review-matrix.md` (per-unit vocab, sentence, builder tokens,
+confidence, needs-review flag, plus skipped candidates with reasons).
+
+- 12 new themed conversational units (small talk & people, plans & free time, out
+  and about, distance & directions, feelings & reactions, knowing & saying,
+  everyday verbs I/II, at home, describing states, leaving & going, food &
+  dishes). Stage 4 is sentence-rich, so most units carry a genuine conversational
+  builder (what-work, are-you-free, where-going, is-it-far, I'm-cold,
+  I-understand-now, I-forgot, no-longer-needed, I'm-free, I'm-going-now).
+- Builders added **only when safe** (3- and 4-token, auto-derived from the source
+  card's own phonetic via WORD_LOOKUP, verified against the runtime CARDS); the
+  home unit shows a sentence without a builder and food is vocab-only — all
+  documented.
+- `LearnPath` already drives the unit list from the current stage, so Stage 4
+  shows its 14-unit sequential path when Stage 4 is current; sequencing, XP-safe
+  replay, and resume are unchanged (verified, no logic change).
+
+`check-mini-units.mjs` (all-stages, Stage 4 now 112/575 covered) and the other 5
+check scripts pass; build passes. No Thai card content, SRS, Practice
+review-only, Stage Challenge filtering, Quests, Celebrations, schema, payments,
+ads, or subscriptions touched.

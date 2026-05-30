@@ -502,6 +502,161 @@ export const STAGE_4_UNIT_TASTE = unit({
     ], answer: ['aroi', 'mak', 'khrap'],
   },
 });
+// Stage 4 deepening (Course Structure Sprint) — the "Real Conversations" path.
+// Every id below is an EXISTING Stage 4 card; no card content is changed and no
+// Thai is invented. Builders use only the source sentence card's own pieces (its
+// space-separated phonetic split, meanings from WORD_LOOKUP) — verified by
+// scripts/check-mini-units.mjs against the runtime CARDS. Stage 4 is sentence-rich
+// (151 sentence cards, 14 with a clean breakdown), so most units carry a genuine
+// conversational builder; food stays vocab-only and the home unit shows a sentence
+// without a builder (documented in the review matrix).
+export const STAGE_4_UNIT_SMALLTALK = unit({
+  unitId: 'stage-4-small-talk-people', stageId: 4,
+  title: 'Small talk and people', subtitle: 'Husband, friend, child, grandchild, grandpa, family, how, you.',
+  vocabCardIds: [1810, 2153, 2308, 2548, 4053, 2180, 115, 3539], sentenceCardId: 843, challengeCardIds: [1810, 2153, 2308],
+  sentenceBuilder: {
+    sourceCardId: 843, prompt: 'Build this Thai sentence', english: 'What do you do for work?', thai: 'คุณทำงานอะไร',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'thamngan', thai: 'ทำงาน', ph: 'tham-ngaan', en: 'to work' },
+      { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
+    ], answer: ['khun', 'thamngan', 'arai'],
+  },
+});
+export const STAGE_4_UNIT_PLANS = unit({
+  unitId: 'stage-4-plans-free-time', stageId: 4,
+  title: 'Plans and free time', subtitle: 'Morning, afternoon, minute, always, often, frequently, evening, then.',
+  vocabCardIds: [215, 216, 223, 1715, 1825, 2060, 2740, 2792], sentenceCardId: 847, challengeCardIds: [215, 216, 2060],
+  sentenceBuilder: {
+    sourceCardId: 847, prompt: 'Build this Thai sentence', english: 'Are you free?', thai: 'คุณว่างไหม',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'wang', thai: 'ว่าง', ph: 'wâang', en: 'free / available' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+    ], answer: ['khun', 'wang', 'mai'],
+  },
+});
+export const STAGE_4_UNIT_OUT = unit({
+  unitId: 'stage-4-out-and-about', stageId: 4,
+  title: 'Out and about', subtitle: 'Market, temple, beach, shop, hall, sea, forest, sky.',
+  vocabCardIds: [163, 172, 173, 1927, 3112, 608, 612, 606], sentenceCardId: 845, challengeCardIds: [163, 172, 1927],
+  sentenceBuilder: {
+    sourceCardId: 845, prompt: 'Build this Thai sentence', english: 'Where are you going?', thai: 'คุณจะไปไหน',
+    tokens: [
+      { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'nai', thai: 'ไหน', ph: 'nǎi', en: 'where' },
+    ], answer: ['khun', 'ja', 'pai', 'nai'],
+  },
+});
+export const STAGE_4_UNIT_DIRECTIONS = unit({
+  unitId: 'stage-4-distance-directions', stageId: 4,
+  title: 'Distance and directions', subtitle: 'Across, bus, canal, road, metre, zone, pier, fence.',
+  vocabCardIds: [1755, 5724, 2559, 1910, 2585, 1937, 2276, 3290], sentenceCardId: 934, challengeCardIds: [1755, 1910, 5724],
+  sentenceBuilder: {
+    sourceCardId: 934, prompt: 'Build this Thai sentence', english: 'Is it far? (male)', thai: 'ไกลไหมครับ',
+    tokens: [
+      { id: 'glai', thai: 'ไกล', ph: 'glai', en: 'far' },
+      { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['glai', 'mai', 'khrap'],
+  },
+});
+export const STAGE_4_UNIT_FEELINGS = unit({
+  unitId: 'stage-4-feelings-reactions', stageId: 4,
+  title: 'Feelings and reactions', subtitle: 'Kind, bored, fun, lonely, warm, bad, fear, mean.',
+  vocabCardIds: [462, 475, 479, 3374, 3373, 2942, 2536, 2230], sentenceCardId: 805, challengeCardIds: [475, 479, 3374],
+  sentenceBuilder: {
+    sourceCardId: 805, prompt: 'Build this Thai sentence', english: 'I am cold (male)', thai: 'ผมหนาวครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'nao', thai: 'หนาว', ph: 'nǎao', en: 'cold' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'nao', 'khrap'],
+  },
+});
+export const STAGE_4_UNIT_SAYING = unit({
+  unitId: 'stage-4-knowing-saying', stageId: 4,
+  title: 'Knowing and saying', subtitle: 'Believe, emphasize, argue, guess, tell, utter, recite, reflect.',
+  vocabCardIds: [1720, 2142, 3546, 3585, 1801, 2835, 3430, 4313], sentenceCardId: 1590, challengeCardIds: [1720, 1801, 3546],
+  sentenceBuilder: {
+    sourceCardId: 1590, prompt: 'Build this Thai sentence', english: 'I understand now (male)', thai: 'ผมเข้าใจแล้ว',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'khaojai', thai: 'เข้าใจ', ph: 'khâo jai', en: 'to understand' },
+      { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
+    ], answer: ['phom', 'khaojai', 'laew'],
+  },
+});
+export const STAGE_4_UNIT_VERBS1 = unit({
+  unitId: 'stage-4-everyday-verbs-1', stageId: 4,
+  title: 'Everyday verbs I', subtitle: 'Wash, order, call, check, wipe, pick up, add, taste.',
+  vocabCardIds: [517, 519, 1660, 2118, 3483, 2679, 2473, 3474], sentenceCardId: 1587, challengeCardIds: [517, 519, 3474],
+  sentenceBuilder: {
+    sourceCardId: 1587, prompt: 'Build this Thai sentence', english: 'I forgot (male)', thai: 'ผมลืมไปครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'luem', thai: 'ลืม', ph: 'luem', en: 'to forget' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: '(already / off)' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'luem', 'pai', 'khrap'],
+  },
+});
+export const STAGE_4_UNIT_HOME = unit({
+  unitId: 'stage-4-at-home', stageId: 4,
+  title: 'At home', subtitle: 'Sofa, table, key, wifi, repair, sound, quiet, kitchen.',
+  vocabCardIds: [1004, 1005, 1012, 1017, 1022, 1027, 1029, 2930], sentenceCardId: 1503, challengeCardIds: [1004, 1005, 1012],
+  // sentenceCard shown for context (ไฟดับ "the power is out" fits the home theme);
+  // no builder — "ไฟดับ" does not split into known WORD_LOOKUP pieces.
+});
+export const STAGE_4_UNIT_VERBS2 = unit({
+  unitId: 'stage-4-everyday-verbs-2', stageId: 4,
+  title: 'Everyday verbs II', subtitle: 'Cut, catch, deposit, hire, remove, separate, plant, raise.',
+  vocabCardIds: [1650, 1848, 2406, 2446, 2738, 1919, 1943, 1908], sentenceCardId: 4801, challengeCardIds: [1650, 1848, 2738],
+  sentenceBuilder: {
+    sourceCardId: 4801, prompt: 'Build this Thai sentence', english: 'It is no longer needed', thai: 'ไม่ต้องแล้ว',
+    tokens: [
+      { id: 'mai', thai: 'ไม่', ph: 'mâi', en: 'not' },
+      { id: 'tong', thai: 'ต้อง', ph: 'tâwng', en: 'must / need to' },
+      { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
+    ], answer: ['mai', 'tong', 'laew'],
+  },
+});
+export const STAGE_4_UNIT_STATES = unit({
+  unitId: 'stage-4-describing-states', stageId: 4,
+  title: 'Describing states', subtitle: 'Full, heavy, fat, thin, tight, dry, strange, excellent.',
+  vocabCardIds: [1873, 1941, 3067, 3534, 2870, 2625, 2108, 2461], sentenceCardId: 809, challengeCardIds: [1873, 1941, 3534],
+  sentenceBuilder: {
+    sourceCardId: 809, prompt: 'Build this Thai sentence', english: 'I am free / available (male)', thai: 'ผมว่างครับ',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'wang', thai: 'ว่าง', ph: 'wâang', en: 'free / available' },
+      { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
+    ], answer: ['phom', 'wang', 'khrap'],
+  },
+});
+export const STAGE_4_UNIT_LEAVING = unit({
+  unitId: 'stage-4-leaving-going', stageId: 4,
+  title: 'Leaving and going', subtitle: 'Retreat, emerge, make way, hurry, rush, drop, fall, wave.',
+  vocabCardIds: [2997, 3347, 3491, 2721, 2893, 2849, 3470, 4016], sentenceCardId: 896, challengeCardIds: [2997, 2721, 4016],
+  sentenceBuilder: {
+    sourceCardId: 896, prompt: 'Build this Thai sentence', english: 'I am going to go now (male)', thai: 'ผมจะไปแล้ว',
+    tokens: [
+      { id: 'phom', thai: 'ผม', ph: 'phǒm', en: 'I (male)' },
+      { id: 'ja', thai: 'จะ', ph: 'jà', en: 'will (future)' },
+      { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
+      { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
+    ], answer: ['phom', 'ja', 'pai', 'laew'],
+  },
+});
+export const STAGE_4_UNIT_FOOD = unit({
+  unitId: 'stage-4-food-and-dishes', stageId: 4,
+  title: 'Food and dishes', subtitle: 'Rice, vegetable, meat, chicken, shrimp, egg, snack, chili.',
+  vocabCardIds: [130, 138, 139, 140, 143, 144, 149, 522], challengeCardIds: [130, 139, 140],
+  // No sentenceCard/builder: Stage 4's clean food sentences are idiomatic or do
+  // not tokenize cleanly; food is taught as vocab here, used in sentences later.
+});
 
 // Stage 5 — Social Confidence.
 export const STAGE_5_UNIT_VERBS = unit({
@@ -636,6 +791,18 @@ export const MINI_UNITS = [
   STAGE_3_UNIT_ANIMALS,
   STAGE_4_UNIT_TRAVEL,
   STAGE_4_UNIT_TASTE,
+  STAGE_4_UNIT_SMALLTALK,
+  STAGE_4_UNIT_PLANS,
+  STAGE_4_UNIT_OUT,
+  STAGE_4_UNIT_DIRECTIONS,
+  STAGE_4_UNIT_FEELINGS,
+  STAGE_4_UNIT_SAYING,
+  STAGE_4_UNIT_VERBS1,
+  STAGE_4_UNIT_HOME,
+  STAGE_4_UNIT_VERBS2,
+  STAGE_4_UNIT_STATES,
+  STAGE_4_UNIT_LEAVING,
+  STAGE_4_UNIT_FOOD,
   STAGE_5_UNIT_VERBS,
   STAGE_5_UNIT_DESCRIBE,
   STAGE_6_UNIT_WANTS,
