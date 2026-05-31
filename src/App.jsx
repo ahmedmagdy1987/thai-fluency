@@ -169,6 +169,7 @@ function getRouteForPath(pathname) {
   if (path === '/profile') return { type: 'profile', path };
   if (path === '/settings') return { type: 'settings', path };
   if (path === '/get-started') return { type: 'landing', path };
+  if (path === '/demo') return { type: 'demo', path };
   if (PUBLIC_PAGE_ROUTES[path]) return { type: 'public', page: PUBLIC_PAGE_ROUTES[path], path };
   if (AUTH_ROUTES[path]) return { type: 'auth', authScreen: AUTH_ROUTES[path], path };
   return { type: 'tab', tab: 'learn', path: '/learn', unknown: true };
@@ -243,12 +244,13 @@ export default function TukTalkThaiApp() {
   const [profile, setProfile] = useState(null);
   const [authReady, setAuthReady] = useState(!hasSupabaseConfig);
   const [demoMode, setDemoMode] = useState(() => {
+    if (initialRoute.type === 'demo') return true;
     try { return localStorage.getItem('tuk-talk-thai-demo-mode') === 'true'; }
     catch { return false; }
   });
   const [forceAuthGate, setForceAuthGate] = useState(() => initialRoute.type === 'auth');
   const [showPublicLanding, setShowPublicLanding] = useState(() => {
-    if (initialRoute.type === 'public') return false;
+    if (initialRoute.type === 'public' || initialRoute.type === 'demo') return false;
     try { return localStorage.getItem('tuk-talk-thai-demo-mode') !== 'true'; }
     catch { return true; }
   });
@@ -310,6 +312,23 @@ export default function TukTalkThaiApp() {
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
     setCardSession(null);
+
+    // The demo is the only route that turns demo mode ON; every other route
+    // turns it OFF, so a browser/mobile Back out of /demo cleanly exits the demo.
+    setDemoMode(route.type === 'demo');
+    try {
+      if (route.type === 'demo') localStorage.setItem('tuk-talk-thai-demo-mode', 'true');
+      else localStorage.removeItem('tuk-talk-thai-demo-mode');
+    } catch { /* ignore */ }
+
+    if (route.type === 'demo') {
+      setPublicPage(null);
+      setForceAuthGate(false);
+      setShowPublicLanding(false);
+      setShowProfile(false);
+      setShowSettings(false);
+      return;
+    }
 
     if (route.type === 'public') {
       setPublicPage(route.page);
@@ -385,7 +404,7 @@ export default function TukTalkThaiApp() {
     if (!authReady) return;
     const route = getCurrentRoute();
     if (route.unknown) writeRoute(route.path, { replace: true });
-    if (session && (route.type === 'auth' || route.type === 'landing')) {
+    if (session && (route.type === 'auth' || route.type === 'landing' || route.type === 'demo')) {
       setTab('learn');
       setShowProfile(false);
       setShowSettings(false);
@@ -482,12 +501,14 @@ export default function TukTalkThaiApp() {
   }, [stats.theme]);
 
   const startDemo = useCallback(() => {
-    try { localStorage.setItem('tuk-talk-thai-demo-mode', 'true'); } catch { /* ignore */ }
-    setDemoMode(true);
-    setForceAuthGate(false);
-    setShowPublicLanding(false);
-    setPublicPage(null);
-  }, []);
+    // Normalize the entry beneath the demo to the public landing, then push a
+    // dedicated /demo history entry. Browser/mobile Back from the demo then
+    // pops to the landing (handled by the popstate -> applyRouteState path)
+    // instead of trapping the visitor or leaving the site.
+    writeRoute('/get-started', { replace: true });
+    writeRoute('/demo');
+    applyRouteState(getRouteForPath('/demo'));
+  }, [applyRouteState]);
 
   const handleDemoSignUp = useCallback(() => {
     setAuthInitialScreen('signup');
