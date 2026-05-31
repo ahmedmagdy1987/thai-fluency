@@ -108,54 +108,50 @@ Earlier this machine had only a Java 8 JRE, no JDK, no Android SDK, no `adb`,
 assumed JDK 17 — which is necessary but **not sufficient** for Capacitor 8.
 </details>
 
-**Conclusion:** The debug APK **cannot be built on this machine yet.** The Gradle
-wrapper was intentionally **not run** (it would fail immediately on the Java
-version and the missing SDK, and the first run would also try to download the
-Gradle distribution). No app code was changed.
+### One-command build helper
 
-### Exact install steps to unblock (one-time)
+`scripts/android-build.cmd` wraps the steps above: it auto-detects JDK 21 under
+`%USERPROFILE%\toolchain\jdk-21*`, the SDK under `%LOCALAPPDATA%\Android\Sdk`, and
+a local Gradle 8.14.3, then runs web build → `cap sync` → `assembleDebug` (verified
+working from a clean shell). Just run `scripts\android-build.cmd` from the repo
+root. Override any path by exporting `JAVA_HOME` / `ANDROID_HOME` first.
 
-1. **Install a JDK 17** (either option):
-   - **Eclipse Temurin / Adoptium JDK 17** (MSI), or
-   - **Android Studio** (recommended) — it bundles a compatible JDK (JBR) at
-     `C:\Program Files\Android\Android Studio\jbr`.
-   - Then set, for the build shell:
-     - `JAVA_HOME = C:\Program Files\Eclipse Adoptium\jdk-17...` (or the Studio `jbr` path)
-     - add `%JAVA_HOME%\bin` to `PATH`
-   - Verify: `java -version` and `javac -version` both report **17.x**.
+### CI (no local machine needed)
 
-2. **Install the Android SDK** (easiest via **Android Studio → SDK Manager**), including:
-   - **Android SDK Platform** (e.g. API 34/35 — match the project's `compileSdk`),
-   - **Android SDK Build-Tools**,
-   - **Android SDK Platform-Tools** (provides `adb`),
-   - **Android Emulator** (only if you want an emulator vs. a physical device).
-   - Set environment variables:
-     - `ANDROID_HOME = C:\Users\bdstd\AppData\Local\Android\Sdk`
-     - `ANDROID_SDK_ROOT = %ANDROID_HOME%`
-     - add `%ANDROID_HOME%\platform-tools` to `PATH` (for `adb`).
-   - Capacitor writes the SDK path to `android\local.properties` (gitignored) on
-     first sync/open; or create it with `sdk.dir=C:\\Users\\bdstd\\AppData\\Local\\Android\\Sdk`.
+`.github/workflows/android-debug.yml` builds the same debug APK on GitHub Actions
+(JDK 21 + SDK 36) and uploads it as the `app-debug` artifact — run it via
+**Actions → Android debug APK → Run workflow**. Set repo *Variables*
+`VITE_SUPABASE_URL`, `VITE_SUPABASE_KEY`, `VITE_ONESIGNAL_APP_ID` (public frontend
+values) so the web build embeds them.
 
-3. **Build the debug APK** (from repo root):
+### One-time install (if the toolchain is missing — e.g. after a Deep Freeze restore)
+
+Install from official sources only (no Android Studio required):
+
+1. **JDK 21** — Microsoft OpenJDK 21 (`https://aka.ms/download-jdk/microsoft-jdk-21-windows-x64.zip`)
+   or Eclipse Temurin 21; unzip and point `JAVA_HOME` at it. (JDK 17 is **not**
+   enough for Capacitor 8 — see the warning above.)
+2. **Android SDK** — Google command-line tools
+   (`https://dl.google.com/android/repository/commandlinetools-win-*_latest.zip`)
+   into `%LOCALAPPDATA%\Android\Sdk\cmdline-tools\latest`, then:
    ```
-   set NODE_OPTIONS=--max-old-space-size=4096
-   npm.cmd run build
-   npx cap sync android
-   cd android
-   gradlew.bat assembleDebug
+   sdkmanager --licenses
+   sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
    ```
-   Expected output APK: `android\app\build\outputs\apk\debug\app-debug.apk`
-   (a build artifact — **do not commit**; it is gitignored).
+3. **Gradle 8.14.3** — the repo wrapper normally fetches it; if the wrapper
+   download is flaky, grab `https://services.gradle.org/distributions/gradle-8.14.3-bin.zip`
+   and run its `bin\gradle.bat` directly.
 
-4. **Install / run on a device** (USB debugging on, or an emulator running):
-   ```
-   adb devices
-   adb install -r android\app\build\outputs\apk\debug\app-debug.apk
-   ```
-   or `npx cap run android --target <device-id>`.
+Then run `scripts\android-build.cmd`.
 
-> Easiest path overall: install **Android Studio**, open the `android/` folder, let
-> it provision the SDK + JBR, then Run ▶ to a device/emulator (no manual env vars).
+### To persist the toolchain across shells (optional)
+
+```
+setx JAVA_HOME "C:\Users\bdstd\toolchain\jdk-21.0.11+10"
+setx ANDROID_HOME "C:\Users\bdstd\AppData\Local\Android\Sdk"
+setx ANDROID_SDK_ROOT "C:\Users\bdstd\AppData\Local\Android\Sdk"
+```
+(Then add `%JAVA_HOME%\bin` and `%ANDROID_HOME%\platform-tools` to the user PATH.)
 
 ## Beta testing path
 | Item | Status | Notes |
