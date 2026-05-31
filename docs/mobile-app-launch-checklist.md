@@ -17,6 +17,13 @@ review; not submitted). Verify every claim against the live build before publish
 - [Launch copy snippets](store/launch-copy-snippets.md)
 - [Data safety and privacy checklist](store/data-safety-privacy-checklist.md)
 
+A mobile APK UX and audio fix pass (status bar safe-area, native TTS via
+@capacitor-community/text-to-speech, sound-button reset, Challenge speaker
+buttons, em/en dash cleanup, footer/chips/locked-card/theme polish, demo
+back-to-home) is recorded in
+[final-web-beta-launch-status.md](final-web-beta-launch-status.md). Audio and the
+status-bar fix still need a manual on-device retest after sideload.
+
 ## Accounts & identifiers
 | Item | Status | Notes |
 | --- | --- | --- |

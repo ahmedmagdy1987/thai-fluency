@@ -77,7 +77,7 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
       title: 'Keep your streak alive',
       desc: streakDone
         ? (streakCount > 1
-            ? `${streakCount}-day streak — kept alive today.`
+            ? `${streakCount}-day streak, kept alive today.`
             : 'Studied today. Your streak is going.')
         : (streakCount > 0
             ? `${streakCount}-day streak. Study once today to keep it.`

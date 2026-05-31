@@ -74,6 +74,7 @@ import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
 import { getMiniUnit, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
+import { initNativeUi } from './lib/native.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = [
   'viewMode',
@@ -467,6 +468,19 @@ export default function TukTalkThaiApp() {
     return () => { cancelled = true; };
   }, [session?.user?.id]);
 
+  // Wire the native status bar / safe-area once on mount. No-op on web/PWA.
+  useEffect(() => { initNativeUi(); }, []);
+
+  // Make light/dark switching feel instant: briefly suppress transitions on the
+  // whole tree during the flip so no button or card recolors a beat late.
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    const el = document.documentElement;
+    el.classList.add('theme-switching');
+    const t = setTimeout(() => el.classList.remove('theme-switching'), 140);
+    return () => clearTimeout(t);
+  }, [stats.theme]);
+
   const startDemo = useCallback(() => {
     try { localStorage.setItem('tuk-talk-thai-demo-mode', 'true'); } catch { /* ignore */ }
     setDemoMode(true);
@@ -489,6 +503,16 @@ export default function TukTalkThaiApp() {
     setShowPublicLanding(false);
     setPublicPage(null);
     writeRoute('/sign-in');
+  }, []);
+
+  // Leave the demo and return to the public landing/home page without a refresh.
+  const handleExitDemo = useCallback(() => {
+    try { localStorage.removeItem('tuk-talk-thai-demo-mode'); } catch { /* ignore */ }
+    setDemoMode(false);
+    setForceAuthGate(false);
+    setShowPublicLanding(true);
+    setPublicPage(null);
+    writeRoute('/get-started', { replace: true });
   }, []);
 
   const handleAuthSuccess = useCallback(() => {
@@ -1407,7 +1431,7 @@ export default function TukTalkThaiApp() {
         setCelebration({
           eyebrow: 'Course Complete',
           title: 'Course Complete',
-          subtitle: `You completed the Tuk Talk Thai path — ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} mini-units, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
+          subtitle: `You completed the Tuk Talk Thai path: ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} mini-units, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
           xpEarned: COURSE_COMPLETE_XP,
           primaryLabel: 'Review due cards',
           onPrimary: () => { setCelebration(null); handleSetTab('cards'); },
@@ -1564,6 +1588,7 @@ export default function TukTalkThaiApp() {
         <DemoMode
           onSignUp={handleDemoSignUp}
           onSignIn={handleDemoSignIn}
+          onBackToHome={handleExitDemo}
           viewMode={viewMode}
           audioRate={stats.audioRate || 0.95}
           audioAutoPlay={!!stats.audioAutoPlay}

@@ -18,6 +18,7 @@ const DEMO_IDX_KEY = 'tuk-talk-thai-demo-idx';
 export default function DemoMode({
   onSignUp,
   onSignIn,
+  onBackToHome,
   viewMode = DEFAULT_VIEW_MODE,
   audioRate = 0.95,
   audioAutoPlay = false,
@@ -115,6 +116,11 @@ export default function DemoMode({
           <button type="button" className="auth-link demo-end-signin" onClick={onSignIn}>
             Already have an account? Sign in
           </button>
+          {onBackToHome && (
+            <button type="button" className="auth-link demo-end-home" onClick={onBackToHome}>
+              Back to home
+            </button>
+          )}
         </div>
       </div>
     );
@@ -239,9 +245,16 @@ export default function DemoMode({
           </button>
         )}
 
-        <button type="button" className="auth-link demo-signin-link" onClick={onSignIn}>
-          Already have an account? Sign in
-        </button>
+        <div className="demo-footer-links">
+          <button type="button" className="auth-link demo-signin-link" onClick={onSignIn}>
+            Already have an account? Sign in
+          </button>
+          {onBackToHome && (
+            <button type="button" className="auth-link demo-home-link" onClick={onBackToHome}>
+              Back to home
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

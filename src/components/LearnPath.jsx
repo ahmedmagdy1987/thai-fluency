@@ -188,7 +188,7 @@ export default function LearnPath({
                     className="learn-miniunit-btn"
                     onClick={locked ? undefined : () => onStartMiniUnit(u.unitId)}
                     disabled={locked}
-                    aria-label={locked ? `${u.title} — locked. ${note}` : `${action} ${u.title}`}
+                    aria-label={locked ? `${u.title}, locked. ${note}` : `${action} ${u.title}`}
                     title={locked ? note : undefined}
                   >
                     {locked ? <><Lock size={14} /> Locked</> : <>{action} <ChevronRight size={16} /></>}
@@ -347,7 +347,7 @@ export default function LearnPath({
                   className="learn-path-node-btn"
                   onClick={onClick}
                   aria-disabled={isLocked}
-                  aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : isDone ? ' (complete — tap to review)' : ''}`}
+                  aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : isDone ? ' (complete, tap to review)' : ''}`}
                 >
                   <div className="learn-path-character" aria-hidden="true">
                     <span className="learn-path-character-emoji">
@@ -379,7 +379,7 @@ export default function LearnPath({
                     )}
                     {isDone && !isEmpty && (
                       <div className="learn-path-done-note">
-                        Stage {S.id} complete — every word learned. Tap to review Stage {S.id} (review only — due cards earn XP).
+                        Stage {S.id} complete. Every word learned. Tap to review Stage {S.id} (review only, due cards earn XP).
                       </div>
                     )}
                     {isEmpty && (
@@ -387,7 +387,9 @@ export default function LearnPath({
                     )}
                     {isLocked && (
                       <div className="learn-path-locked-note">
-                        Reach Level {S.id} through the path. Super unlocks this early when it opens.
+                        <span className="learn-path-locked-main">Locked</span>
+                        <span className="learn-path-locked-sub">Complete earlier stages to unlock.</span>
+                        <span className="learn-path-locked-super">Super early access coming soon.</span>
                       </div>
                     )}
                   </div>
@@ -403,7 +405,7 @@ export default function LearnPath({
 
       <div className="learn-footnote">
         <Sparkles size={14} />
-        <span>Learn every word in a stage to unlock the next one. Mastery comes later, through review — keep reviewing to lock words in for good.</span>
+        <span>Learn every word in a stage to unlock the next one. Mastery comes later, through review. Keep reviewing to lock words in for good.</span>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ function motivationFor(achievement) {
   if (id.includes('quiz') || id.includes('perfect')) return 'Sharp work under pressure.';
   if (id.includes('cards')) return 'Every card moves your Thai forward.';
   if (id.includes('goal')) return 'Daily habits beat cramming. Nice.';
-  return 'Nice work — keep the momentum going.';
+  return 'Nice work, keep the momentum going.';
 }
 
 // Level 2 feedback: a centered, polished modal for a newly-unlocked

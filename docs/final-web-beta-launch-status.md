@@ -770,3 +770,83 @@ USB device wasn't detected, so the debug APK was run on a **command-line emulato
 Details in `docs/mobile-app-launch-checklist.md` → "Headless emulator — WORKING".
 8/8 validation scripts pass; no product code, Thai content, Supabase, payments, ads,
 subscriptions, or secrets touched.
+
+## Mobile APK UX and Audio Fix Pass (May 31, 2026)
+
+A round of launch-critical fixes for the Android debug APK (and matching mobile
+web) found during manual sideload testing. No Thai card content, app learning
+logic, Supabase schema, payments, ads, subscriptions, or secrets were touched.
+The web build passes, all 8 validation scripts pass, `cap sync` registers the new
+plugin, and the debug APK rebuilds (now about 6.3 MB, up from about 5.94 MB
+because of the native TTS module).
+
+**Status bar / safe area (Android edge-to-edge).** Android targetSdk 36 enforces
+edge-to-edge, so the system status bar drew over the header. Added
+`src/lib/native.js` (`initNativeUi`, called once on mount, no-op on web) which on
+native calls `StatusBar.setOverlaysWebView({ overlay: false })`, `setStyle`, and
+`setBackgroundColor` (brand dark green). Added `env(safe-area-inset-top)` padding
+to the top bars (`.landing-topbar`, `.app-header`, `.app-shell-header`,
+`.onboard-root`); the bottom navs already used `env(safe-area-inset-bottom)`. On
+normal web the inset is 0, so layouts are unchanged.
+
+**Pronunciation audio in the APK.** Web Speech is unreliable inside the Android
+WebView, so `src/lib/audio.js` now routes through the device TTS engine on native
+via `@capacitor-community/text-to-speech@8.0.0` (Capacitor 8 compatible) and keeps
+the hardened browser SpeechSynthesis path on web/PWA. `speakThai` now returns a
+Promise that always resolves (on success, failure, or a safety timeout) so a
+caller can reset a button state without it sticking. Pronunciation is independent
+of the Sound-effects setting (that setting only gates game/reward blips in
+`sounds.js`). Audio plays only on a user tap (no autoplay on load).
+
+**Sound button state.** The landing phrase audio button stayed green on touch
+because its `:hover` rule was not gated. Wrapped it in
+`@media (hover: hover) and (pointer: fine)` and added an `:active` press state, so
+it no longer sticks on mobile.
+
+**Speaker buttons in Challenge.** Added a speaker button to the Quiz feedback row
+(plays the correct Thai in both directions). Cards, first lesson, mini-units, the
+demo, and the sentence builder already had speaker buttons; all use the same
+`speakThai` helper.
+
+**Landing chips.** "Smart review / Quick challenges / Device sync" now center and
+wrap cleanly on narrow phones instead of one chip dropping awkwardly.
+
+**Footer.** On mobile the public footer links now use a two-column grid, so
+"Account deletion" is paired with "Super" instead of orphaned on its own line.
+
+**Elephant coach.** The speech bubble now keeps its text until the next action
+(instead of vanishing after under two seconds) and never blanks to an empty bubble
+(the bare-coach glitch): `useCharacterReaction` only swaps in real text and the
+auto-revert now changes the face only, not the message.
+
+**Locked stage cards.** Replaced the cramped sentence with a clean stacked block:
+"Locked", "Complete earlier stages to unlock.", and a smaller "Super early access
+coming soon." (no claim that Super is active).
+
+**Theme switching.** Light/dark now flips instantly: App.jsx adds a
+`theme-switching` class to `<html>` for about 140 ms during the change and the CSS
+suppresses transitions for that window, so buttons, cards, and nav recolor
+together instead of lagging behind.
+
+**Long dashes.** Removed em and en dashes from visible UI strings (six component
+strings plus one course-complete subtitle in App.jsx). Remaining occurrences are
+code comments and one em-dash sentinel comparison in CardsTab (it filters a
+placeholder out of display and is not user-visible); data and content files were
+left untouched per scope.
+
+### Demo navigation
+The demo now has a clear way back to the public landing page. App.jsx passes
+`onBackToHome` to `DemoMode`, which adds a "Back to home" action on both the demo
+card and the demo-complete screen (alongside Create account and Sign in). No
+refresh or storage clear is needed and the auth flow is unchanged.
+
+### Still needs manual on-device retest (no emulator/USB this pass)
+The APK was rebuilt but could not be installed this pass (emulator deferred, USB
+unreliable). After sideloading the new APK, please verify on the phone:
+- Status bar no longer overlaps the header (top of landing and the main app).
+- Pronunciation audio plays in landing, first lesson, Cards, and Challenge. If the
+  device has no Thai TTS voice installed, audio will be silent (the button still
+  resets); install a Thai voice under Android Settings, Text-to-speech if needed.
+- Sound buttons never stay green.
+- Footer, landing chips, locked stage cards, and the elephant bubble look clean.
+- Light and dark switch feels instant.

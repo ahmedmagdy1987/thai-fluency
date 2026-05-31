@@ -397,7 +397,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
       primaryAction = continueLearnChunk;
     } else if (clearedStage && nextStage) {
       emptyTitle = `Stage ${clearedStage.id} complete. No reviews due right now.`;
-      emptySub = `Nice work — you've learned all of ${clearedStage.name}. Start Stage ${nextStage.id} to keep going.`;
+      emptySub = `Nice work. You've learned all of ${clearedStage.name}. Start Stage ${nextStage.id} to keep going.`;
       primaryLabel = `Start Stage ${nextStage.id}`;
       primaryAction = goLearn;
     } else if (allContentSeen) {

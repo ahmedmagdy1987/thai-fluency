@@ -387,8 +387,21 @@ export default function QuizTab({
               Correct {typeConfig.answerLabel.toLowerCase()}: <strong>{getAnswerText(current.correct, type, voice)}</strong>
             </div>
             <div className="quiz-mode-feedback-pair">
-              {correctDisplay.thai}
-              {correctDisplay.ph ? ` (${correctDisplay.ph})` : ''} = {correctDisplay.en}
+              <span className="quiz-mode-feedback-pair-text">
+                {correctDisplay.thai}
+                {correctDisplay.ph ? ` (${correctDisplay.ph})` : ''} = {correctDisplay.en}
+              </span>
+              {ttsAvailable() && correctDisplay?.thai && (
+                <button
+                  type="button"
+                  className="speaker-btn speaker-btn-inline quiz-feedback-speaker"
+                  onClick={() => { speakThai(correctDisplay.thai, audioRate); coach.react('speaking', { duration: 1400 }); }}
+                  aria-label="Play pronunciation"
+                  title="Play pronunciation"
+                >
+                  <Volume2 size={15} />
+                </button>
+              )}
             </div>
           </div>
         </div>

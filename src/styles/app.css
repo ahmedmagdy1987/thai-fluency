@@ -15,6 +15,11 @@ html:has(.app-root[data-theme="dark"]) {
   --scrollbar-thumb-ring: rgba(26, 29, 28, 0.82);
 }
 html, body { margin: 0; padding: 0; width: 100%; max-width: 100%; min-height: 100vh; background: #F5F0E5; overflow-x: hidden; }
+
+/* Theme switch should feel instant. App.jsx adds .theme-switching to <html>
+   for ~140ms during a light/dark flip; killing transitions on everything for
+   that window stops buttons/cards/nav from recoloring a beat late. */
+html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
 #root { min-height: 100vh; width: 100%; max-width: 100%; display: flex; flex-direction: column; overflow-x: clip; }
 * {
   scrollbar-width: thin;
@@ -205,7 +210,7 @@ img, svg, video { max-width: 100%; }
 .onboard-secondary-btn:hover { border-color: var(--gold); color: var(--gold); border-style: solid; }}
 .onboard-back-btn { background: transparent; border: none; color: var(--ink-soft); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; margin-bottom: 12px; align-self: flex-start; transition: color 0.15s; }@media (hover: hover) and (pointer: fine) {
 .onboard-back-btn:hover { color: var(--jade); }}
-.onboard-root { flex:1; display:flex; flex-direction:column; align-items:center; padding:24px 16px; max-width:600px; margin:0 auto; width:100%; }
+.onboard-root { flex:1; display:flex; flex-direction:column; align-items:center; padding:calc(24px + env(safe-area-inset-top, 0px)) 16px 24px; max-width:600px; margin:0 auto; width:100%; }
 .onboard-card-narrow { max-width:480px; }
 .onboard-section { margin:24px 0; padding:18px; background:var(--cream-warm); border:1px solid var(--line); border-radius:12px; }
 .onboard-section-title { font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--jade); letter-spacing:-0.01em; margin-bottom:4px; }
@@ -247,7 +252,7 @@ img, svg, video { max-width: 100%; }
 .thai-font { font-family: 'Noto Sans Thai', sans-serif; }
 .display-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
 .mono-font { font-family: 'JetBrains Mono', monospace; }
-.app-header { position: sticky; top: 0; z-index: 50; background: rgba(245, 240, 229, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+.app-header { position: sticky; top: 0; z-index: 50; background: rgba(245, 240, 229, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
 .header-inner { max-width: 900px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
 .brand-en { font-family: 'Fraunces', serif; font-size: 18px; color: var(--jade); font-weight: 700; line-height: 1; letter-spacing: 0; }
@@ -1109,7 +1114,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Public landing page shown before the auth gate */
 .landing-page { flex: 1; min-height: 100vh; background: var(--cream); color: var(--ink); overflow: hidden; position: relative; letter-spacing: 0; }
-.landing-topbar { position: relative; z-index: 4; width: 100%; max-width: 1160px; margin: 0 auto; padding: 18px 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.landing-topbar { position: relative; z-index: 4; width: 100%; max-width: 1160px; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .landing-topbar-brand { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
 .landing-brand-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--jade); line-height: 1; white-space: nowrap; letter-spacing: 0; }
 .landing-brand-slogan { color: var(--ink-soft); font-size: 12px; font-weight: 500; line-height: 1.2; white-space: nowrap; }
@@ -1137,7 +1142,10 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .landing-phrase-ph { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--brick); line-height: 1.15; overflow-wrap: anywhere; }
 .landing-phrase-en { font-size: 10px; font-weight: 800; color: var(--ink-soft); text-transform: uppercase; line-height: 1; letter-spacing: 0.08em; }
 .landing-phrase-audio { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--card-bg); color: var(--jade); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s; }
-.landing-phrase-audio:hover { background: var(--jade); border-color: var(--jade); color: var(--gold); transform: translateY(-1px); }
+@media (hover: hover) and (pointer: fine) {
+  .landing-phrase-audio:hover { background: var(--jade); border-color: var(--jade); color: var(--gold); transform: translateY(-1px); }
+}
+.landing-phrase-audio:active { transform: scale(0.94); }
 .landing-phrase-one { top: 28px; right: 18px; }
 .landing-phrase-two { right: 132px; bottom: 88px; }
 .landing-phrase-three { display: none; }
@@ -1169,8 +1177,8 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
   .landing-subtitle,
   .landing-actions { max-width: calc(100vw - 40px); }
   .landing-title { font-size: 44px; }
-  .landing-proof-row { margin-top: 16px; gap: 8px; }
-  .landing-proof-row span { padding: 7px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--card-bg); }
+  .landing-proof-row { margin-top: 16px; gap: 8px; justify-content: center; }
+  .landing-proof-row span { flex: 0 1 auto; justify-content: center; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--card-bg); white-space: nowrap; }
   .landing-mobile-phrases { display: flex; width: 100%; flex-direction: column; gap: 10px; margin-top: 22px; }
   .landing-mobile-phrases-title { font-size: 11px; font-weight: 800; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; }
   .landing-mobile-phrases .landing-phrase { position: static; display: flex; width: 100%; min-width: 0; max-width: none; padding: 12px 12px 12px 14px; gap: 12px; }
@@ -1179,12 +1187,13 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
   .landing-phrase-audio { width: 36px; height: 36px; }
   .landing-benefits { width: 100vw; max-width: 100vw; }
   .landing-benefit { min-width: 0; }
-  .landing-footer { width: 100vw; max-width: 100vw; flex-direction: column; align-items: flex-start; padding-bottom: 28px; }
-  .landing-footer-links { justify-content: flex-start; }
+  .landing-footer { width: 100vw; max-width: 100vw; flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 28px; }
+  .landing-footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; width: 100%; }
+  .landing-footer-links a { white-space: nowrap; }
 }
 
 @media (min-width: 640px) {
-  .landing-topbar { padding-top: 22px; }
+  .landing-topbar { padding-top: max(22px, env(safe-area-inset-top)); }
   .landing-brand-name { font-size: 22px; }
   .landing-actions { max-width: none; flex-direction: row; width: auto; }
   .landing-primary-cta,
@@ -1589,7 +1598,7 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 }
 
 /* === Shell header (replaces .app-header for shell pages) === */
-.app-shell-header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+.app-shell-header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
 .app-shell-header-inner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; max-width: 1180px; margin: 0 auto; }
 .app-shell-header-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; flex: 0 1 172px; }
 @media (min-width: 1024px) {
@@ -1794,7 +1803,16 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .learn-path-node-locked .learn-path-character { background: rgba(15, 61, 46, 0.05); box-shadow: none; }
 .learn-path-node-locked .learn-path-character-emoji { color: var(--ink-soft); }
 .learn-path-node-empty .learn-path-character { background: rgba(15, 61, 46, 0.06); }
-.learn-path-locked-note { margin-top: 10px; display: inline-flex; align-items: center; width: fit-content; max-width: 100%; padding: 6px 10px; border: 1px dashed var(--line-strong); border-radius: 999px; color: var(--ink-soft); background: var(--cream-warm); font-size: 11px; font-weight: 700; line-height: 1.35; }
+.learn-path-locked-note { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; max-width: 100%; padding: 8px 12px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--ink-soft); background: var(--cream-warm); line-height: 1.35; }
+.learn-path-locked-main { font-size: 12px; font-weight: 800; color: var(--ink); letter-spacing: 0.01em; }
+.learn-path-locked-sub { font-size: 11.5px; font-weight: 600; }
+.learn-path-locked-super { font-size: 10.5px; font-weight: 600; opacity: 0.72; }
+
+/* Mobile UX pass: demo footer links stack cleanly; quiz feedback keeps the
+   correct-answer text and its speaker button on one tidy, wrapping row. */
+.demo-footer-links { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.quiz-mode-feedback-pair { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.quiz-feedback-speaker { flex: 0 0 auto; }
 .app-root[data-theme="dark"] .learn-path-locked-note { background: rgba(232, 228, 217, 0.04); }
 .learn-path-done-note { margin-top: 8px; font-size: 11px; color: var(--jade); font-weight: 600; line-height: 1.4; }
 

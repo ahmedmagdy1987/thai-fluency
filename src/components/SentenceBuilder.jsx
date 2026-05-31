@@ -67,7 +67,7 @@ export default function SentenceBuilder({
     } else {
       setStatus('wrong');
       playCharacterWrong(characterId);
-      coach.react('wrong', { duration: 1600, message: 'Close — try a different order.' });
+      coach.react('wrong', { duration: 1600, message: 'Close, try a different order.' });
     }
   };
 
@@ -127,7 +127,7 @@ export default function SentenceBuilder({
           so screen readers announce each tile as a button, not a list item). */}
       <div className="sb-bank" role="group" aria-label="Word tiles">
         {bankIds.length === 0 ? (
-          <span className="sb-bank-empty">All tiles placed — check your answer.</span>
+          <span className="sb-bank-empty">All tiles placed. Check your answer.</span>
         ) : (
           bankIds.map(id => {
             const t = tile(id);
@@ -153,7 +153,7 @@ export default function SentenceBuilder({
       <div className="sb-feedback-row" aria-live="polite">
         {status === 'wrong' && (
           <div className="sb-feedback sb-feedback-wrong">
-            <X size={16} /> <span>Not quite — try a different order. Tap a tile to move it.</span>
+            <X size={16} /> <span>Not quite. Try a different order. Tap a tile to move it.</span>
           </div>
         )}
         {status === 'correct' && (

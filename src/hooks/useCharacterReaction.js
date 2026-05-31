@@ -73,30 +73,31 @@ export function useCharacterReaction({
     const duration = opts.duration ?? DEFAULT_DURATIONS[nextState] ?? 1400;
 
     // Generate a bubble message. opts.message wins; opts.silent suppresses
-    // any bubble entirely; otherwise pull a random line for this state.
-    let nextMessage = null;
-    if (!opts.silent) {
-      messageNonceRef.current += 1;
-      nextMessage = opts.message !== undefined
+    // any bubble entirely; otherwise pull a line for this state.
+    setState(nextState);
+    if (opts.silent) {
+      // Explicit silence: hide the bubble.
+      setMessage(null);
+    } else {
+      const nextMessage = opts.message !== undefined
         ? opts.message
         : pickLine(characterId, nextState, mode);
+      // Only swap in real text. If a state has no line, KEEP the previous
+      // bubble rather than blanking it, so the coach is never shown with an
+      // empty bubble (the bare-coach / no-text glitch).
+      if (nextMessage) {
+        messageNonceRef.current += 1;
+        setMessage(nextMessage);
+      }
     }
-
-    setState(nextState);
-    if (nextMessage !== null) setMessage(nextMessage);
-    else setMessage(null);
 
     if (duration && duration > 0) {
       timerRef.current = setTimeout(() => {
         timerRef.current = null;
+        // Revert the FACE to the resting state, but keep the last bubble text
+        // visible until the next action replaces it. This keeps messages
+        // readable (no sub-2s flash) and avoids a bare coach with no bubble.
         setState(restingRef.current || 'idle');
-        // Let the resting state speak for itself — pick an idle line
-        // occasionally, but only ~30% of the time so it doesn't feel chatty.
-        if (Math.random() < 0.3) {
-          setMessage(pickLine(characterId, restingRef.current || 'idle', mode));
-        } else {
-          setMessage(null);
-        }
       }, duration);
     }
   }, [characterId, mode]);
