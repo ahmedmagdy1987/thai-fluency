@@ -851,6 +851,33 @@ and signed-in users who land on `/demo` are redirected to Learn. The visible "Ba
 to home" link still returns straight to the landing (`/get-started`) by replacing
 the `/demo` entry.
 
+## Web QA Polish Pass (June 1, 2026)
+
+A fast launch QA review (parallel reviews of the public, learn, cards/challenge,
+celebrations, shell, and CSS surfaces) found the web/PWA flow clean overall. A few
+small, safe CSS-only fixes were applied (no app logic, Thai content, schema,
+payments, ads, subscriptions, or features touched):
+
+- **Dark mode:** `.auth-input` used a hardcoded `background: white`, leaving sign-in
+  and sign-up boxes white (and hard to read) in dark mode. Switched to the
+  theme-aware `var(--card-bg)`.
+- **Demo completion:** the "Back to home" link (`.demo-end-home`) had no CSS rule
+  and rendered inconsistently; it now shares the centered, full-width style of the
+  sign-in link.
+- **Buttons:** added a `:disabled` state (used by the Quiz "Check" button) plus
+  keyboard `:focus-visible` and an `:active` press state to
+  `.btn-primary`/`.btn-secondary`, and a `:disabled` state to the sentence-builder
+  Clear button.
+- **Challenge:** tightened the stage-selector chips at 430px and below so an 8-stage
+  picker wraps neatly.
+
+Reviewed and intentionally left as-is (verified not bugs): the milestone toasts
+already cap their width with `max-width: 90%` (no horizontal overflow); the reward
+XP number stays large by design (XP values are short, no overflow); the "N left" and
+"Tap to reveal" labels and the Stage 1 crown emoji are acceptable. No visible em or
+en dashes remain in UI copy. Web build, all 8 validation scripts, and a 13-route
+smoke pass; the debug APK rebuilds.
+
 ### Still needs manual on-device retest (no emulator/USB this pass)
 The APK was rebuilt but could not be installed this pass (emulator deferred, USB
 unreliable). After sideloading the new APK, please verify on the phone:
