@@ -750,3 +750,23 @@ re-run the headless install after a restore or persist with `setx`. Reproducible
 commands + exact paths are in `docs/mobile-app-launch-checklist.md`. Release/store
 upload still needs a signing config (AAB) — an owner action. Android Studio is
 **not** required for debug builds.
+
+## Headless emulator run — WORKING (update — May 31, 2026)
+
+USB device wasn't detected, so the debug APK was run on a **command-line emulator**
+(no Android Studio). **The app installs, launches, renders, and is interactive.**
+- **Accelerator:** **AEHD v2.2** (Android Emulator Hypervisor Driver) installed via
+  its INF — **no reboot**. This box is legacy BIOS with no VBS/Hyper-V, so AEHD (not
+  WHPX) is correct. `emulator -accel-check` → "AEHD … usable".
+- **Image/AVD:** `system-images;android-36;google_apis;x86_64` + AVD
+  `TukTalkThai_API36` (hand-authored; `avdmanager` can't parse the API-36 v4 SDK XML).
+- **Result:** booted (`sys.boot_completed=1`, ~96 s) → `adb install` **Success** →
+  `MainActivity` foregrounded, **0 app FATAL/ANR**. Renders the real landing UI
+  (Thai phrase cards, not a white screen); tapping "Get started" → sign-up screen.
+  Emulator internet works. Full email sign-up + deeper routes need a real test
+  account + not-yet-wired mobile auth deep links (owner action). USB path still
+  unresolved.
+
+Details in `docs/mobile-app-launch-checklist.md` → "Headless emulator — WORKING".
+8/8 validation scripts pass; no product code, Thai content, Supabase, payments, ads,
+subscriptions, or secrets touched.
