@@ -35,7 +35,7 @@ status-bar fix still need a manual on-device retest after sideload.
 ## Brand assets
 | Item | Status | Notes |
 | --- | --- | --- |
-| App icon (store) | 🟡 | Android project currently has the **default Capacitor launcher icon**. Provide branded adaptive icon (Android: 432×432 foreground + background; iOS: 1024×1024). Web favicons/PWA icons exist (`public/pwa-*.png`, `apple-touch-icon.png`) and can seed the design. |
+| App icon (store) | 🟡 | **Android launcher icon now uses the real Tuk Talk Thai web/PWA icon** (May 31, 2026): generated from `public/pwa-512x512.png` into the `mipmap-*` legacy `ic_launcher`/`ic_launcher_round` plus the adaptive `ic_launcher_foreground`, on the existing white adaptive background. The default Capacitor icon is gone. Reinstall the APK to see it; Android caches launcher icons, so uninstall the old app first if it does not refresh. Still needed for store listings: a 1024×1024 iOS/store icon and a branded splash. |
 | Splash screen | 🟡 | Default Capacitor splash images are generated (`android/app/src/main/res/drawable*/splash.png`). Replace with branded splash; config already sets `#0F3D2E` background, 1200ms, no spinner. |
 | Screenshots | ⬜ | Needed per store: iPhone 6.7"/6.5", iPad, and Android phone/tablet. Capture from real device builds (Learn path, a mini-unit, sentence builder, Challenge, Course Complete). |
 | Feature graphic (Play) | ⬜ | 1024×500 PNG/JPG for the Play listing. |
