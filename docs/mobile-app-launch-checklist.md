@@ -153,6 +153,63 @@ setx ANDROID_SDK_ROOT "C:\Users\bdstd\AppData\Local\Android\Sdk"
 ```
 (Then add `%JAVA_HOME%\bin` and `%ANDROID_HOME%\platform-tools` to the user PATH.)
 
+## Headless emulator — WORKING (May 31, 2026)
+
+USB phone wasn't detected, so the debug APK was run on a **command-line emulator**
+(no Android Studio). The app installs, launches, renders, and navigates. ✅
+
+| Component | Status | Detail |
+| --- | --- | --- |
+| `emulator` + system image | ✅ | `system-images;android-36;google_apis;x86_64` via `sdkmanager`. |
+| **AEHD** accelerator | ✅ RUNNING | **Android Emulator Hypervisor Driver v2.2** — `sdkmanager "extras;google;Android_Emulator_Hypervisor_Driver"` then its INF installer (`RUNDLL32 SETUPAPI InstallHinfSection DefaultInstall 132 .\aehd.Inf` + `sc start aehd`). `emulator -accel-check` → *"AEHD … is installed and usable."* **No reboot.** |
+| AVD `TukTalkThai_API36` | ✅ | Pixel-6-class, x86_64, 1024 MB, `swiftshader_indirect`. |
+
+> **Why AEHD, not WHPX/Hyper-V:** this machine is **legacy BIOS** (Secure Boot not
+> supported), **no VBS, no Memory Integrity, no Hyper-V** (`hypervisorlaunchtype =
+> Off`). AEHD is the correct accelerator and installs/starts as a kernel driver
+> **without a reboot** (WHPX left Disabled — it would conflict). A bare `sc create`
+> is not enough; the driver must be installed via its INF (catalog signature).
+>
+> **AVD caveat:** the bundled `avdmanager` (cmdline-tools 12.0) can't create an
+> API-36 AVD (*"SDK XML version 4 … Package path is not valid"*), so the AVD was
+> authored by hand at `~/.android/avd/TukTalkThai_API36.{ini,avd/config.ini}`.
+
+**Verified smoke:**
+- Cold-booted to `sys.boot_completed=1` in ~96 s; `adb devices` → `emulator-5554 device`.
+- `adb install -r …\app-debug.apk` → **Success**; `am start -n
+  com.tuktalkthai.app/.MainActivity` → foregrounded, process stable, **0 app FATAL/ANR**.
+- ✅ Capacitor loads the bundled app (`Loading app at https://localhost` → `App
+  started`; JS/CSS/manifest/SW/assets served).
+- ✅ **Renders the real landing page** (screenshot) — header, "Real Thai for real
+  life.", Get started / I already have an account, Smart review / Quick challenges /
+  Device sync, and live "TRY A PHRASE" cards with Thai script + phonetics
+  (สวัสดีครับ *sàwàtdee khráp* HELLO; เท่าไหร่ครับ *thâo rài khráp?* HOW MUCH?). **Not a white screen.**
+- ✅ **Navigates** — tapping "Get started" routed to the onboarding/sign-up screen
+  ("Create free account", "I already have an account", "Try a quick demo (5 cards)",
+  with Terms / Privacy / Support / Account-deletion links).
+- ✅ Emulator has working internet (`ping 8.8.8.8` OK); no app-level JS/`net::ERR`
+  console errors.
+- ⏭️ Full email sign-up + Learn/Cards/Challenge (behind the auth / guided-first-lesson
+  gate) need a real test account and the not-yet-wired mobile auth deep links (owner
+  action) — the **web** route smoke already covers those routes (11 → 200).
+- ⚠️ Host RAM tight (~1–2 GB free, Chrome-heavy); AVD sized to 1024 MB, booted fine.
+
+**Re-run (after a Deep Freeze restore, re-install AEHD first):**
+```
+REM env per "Build the debug APK" above, then:
+sdkmanager "emulator" "system-images;android-36;google_apis;x86_64" "extras;google;Android_Emulator_Hypervisor_Driver"
+pushd "%ANDROID_HOME%\extras\google\Android_Emulator_Hypervisor_Driver" & silent_install.bat & popd
+emulator -accel-check
+emulator -avd TukTalkThai_API36 -no-window -no-snapshot -no-boot-anim -no-audio -gpu swiftshader_indirect
+adb wait-for-device && adb install -r android\app\build\outputs\apk\debug\app-debug.apk
+adb shell am start -n com.tuktalkthai.app/.MainActivity
+```
+Capture screenshots binary-safe: `adb shell screencap -p /sdcard/x.png` + `adb pull`
+(PowerShell `>` redirection corrupts PNGs).
+
+> **USB device still unresolved** — the phone isn't detected over USB; the emulator
+> is the working substitute for now.
+
 ## Beta testing path
 | Item | Status | Notes |
 | --- | --- | --- |
