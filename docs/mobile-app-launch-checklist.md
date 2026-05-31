@@ -6,6 +6,17 @@ foundation already provides vs. what is still an owner/tooling action._
 
 Legend: ✅ done · 🟡 partial / needs assets · ⬜ owner action · 🔧 needs macOS/SDK tooling
 
+## Store launch materials (drafts)
+
+Launch-facing store listing materials live in `docs/store/` (drafts for owner
+review; not submitted). Verify every claim against the live build before publishing.
+
+- [Google Play listing draft](store/google-play-listing-draft.md)
+- [App Store listing draft](store/app-store-listing-draft.md)
+- [Screenshot plan](store/screenshot-plan.md)
+- [Launch copy snippets](store/launch-copy-snippets.md)
+- [Data safety and privacy checklist](store/data-safety-privacy-checklist.md)
+
 ## Accounts & identifiers
 | Item | Status | Notes |
 | --- | --- | --- |
