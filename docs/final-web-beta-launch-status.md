@@ -840,14 +840,16 @@ The demo now has a clear way back to the public landing page. App.jsx passes
 card and the demo-complete screen (alongside Create account and Sign in). No
 refresh or storage clear is needed and the auth flow is unchanged.
 
-**Browser/mobile Back from the demo (May 31, 2026).** Starting the demo now pushes
-a dedicated `/demo` history entry (with the entry beneath it normalized to the
-landing), so the browser Back button and the Android WebView Back gesture exit the
-demo to the public landing through the existing popstate router, with no full
-reload and no trap. `/demo` is a real route in `getRouteForPath` and
-`applyRouteState`; any non-demo route turns demo mode off, and signed-in users who
-land on `/demo` are redirected to Learn. The visible "Back to home" link still
-works (it resets state and replaces the route with the landing).
+**Browser/mobile Back from the demo (May 31, 2026).** Starting the demo pushes a
+dedicated `/demo` history entry ON TOP of the screen it was launched from (the
+`/welcome` auth gate), without disturbing the entries beneath it. The browser Back
+button and the Android WebView Back gesture therefore exit the demo to `/welcome`,
+and Back again goes to `/get-started`, preserving the real journey through the
+existing popstate router, with no full reload and no trap. `/demo` is a real route
+in `getRouteForPath` and `applyRouteState`; any non-demo route turns demo mode off,
+and signed-in users who land on `/demo` are redirected to Learn. The visible "Back
+to home" link still returns straight to the landing (`/get-started`) by replacing
+the `/demo` entry.
 
 ### Still needs manual on-device retest (no emulator/USB this pass)
 The APK was rebuilt but could not be installed this pass (emulator deferred, USB

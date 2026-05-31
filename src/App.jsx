@@ -501,11 +501,12 @@ export default function TukTalkThaiApp() {
   }, [stats.theme]);
 
   const startDemo = useCallback(() => {
-    // Normalize the entry beneath the demo to the public landing, then push a
-    // dedicated /demo history entry. Browser/mobile Back from the demo then
-    // pops to the landing (handled by the popstate -> applyRouteState path)
-    // instead of trapping the visitor or leaving the site.
-    writeRoute('/get-started', { replace: true });
+    // Push a dedicated /demo history entry ON TOP of the current screen (the
+    // /welcome auth gate the demo is launched from) without touching the entries
+    // beneath it. Browser/mobile Back then returns to /welcome, then /get-started,
+    // preserving the real journey; the popstate -> applyRouteState path turns demo
+    // mode off on the way out. The visible "Back to home" still jumps straight to
+    // the landing via handleExitDemo.
     writeRoute('/demo');
     applyRouteState(getRouteForPath('/demo'));
   }, [applyRouteState]);
