@@ -48,25 +48,65 @@ Legend: ✅ done · 🟡 partial / needs assets · ⬜ owner action · 🔧 need
 | Capacitor configured | ✅ | `capacitor.config.json` (appId, appName, webDir=dist, splash, status bar). |
 | Web build → `dist` | ✅ | `npm run build` passes; `npx cap sync` copies `dist` into native projects. |
 | Android project scaffolded | ✅ | `android/` committed (source only; build artifacts gitignored). |
-| Android build (APK/AAB) | 🔧 | **Blocked on this machine (re-verified May 30, 2026).** Build NOT attempted — environment lacks the toolchain (details + exact install steps below). Build on a machine with JDK 17 + Android SDK, or in CI. |
+| Android build (APK/AAB) | ✅ debug | **Debug APK builds on this machine (May 31, 2026), headlessly — no Android Studio.** Toolchain installed via official downloads: Microsoft OpenJDK **21** (Capacitor 8 needs JDK 21, NOT 17) + Android cmdline-tools + SDK 36. `gradle assembleDebug` → `android\app\build\outputs\apk\debug\app-debug.apk` (~5.94 MB). Release/signed AAB still an owner action. |
 | iOS project | 🔧 | **Requires macOS + Xcode** (cannot be generated on Windows). On a Mac: `npx cap add ios` then `npx cap open ios`. |
 | Deep links / auth | ⬜ | See `docs/mobile-auth-notes.md` — needed before mobile sign-in/confirm works. |
 | Native push | ⬜ | See `docs/mobile-push-notes.md` — APNs/FCM + OneSignal native plugin. |
 
-## Android build environment setup (required to build the debug APK)
+## Android build environment setup (DONE — headless, May 31, 2026)
 
-**Verified on this machine — May 30, 2026 (commit `767aaea`):**
+**The toolchain is installed and the debug APK builds — without Android Studio.**
+No package manager was available (`winget`/`choco`/`scoop` all absent), so each
+tool was fetched from its official source and unpacked under the user profile.
 
-| Tool | Found | Detail |
+> ⚠️ **Capacitor 8 requires JDK 21, not JDK 17.** The Capacitor-generated Gradle
+> files pin `JavaVersion.VERSION_21` (`android/app/capacitor.build.gradle`,
+> `capacitor-cordova-android-plugins/build.gradle`, `@capacitor/android`). A JDK 17
+> build reaches `:capacitor-android:compileDebugJavaWithJavac` then fails with
+> `error: invalid source release: 21`. JDK 17 was installed first (per the old
+> note) and proved insufficient; **JDK 21 is the working requirement.**
+
+| Tool | Status | Detail |
 | --- | --- | --- |
-| Java | ⚠️ Java **8 JRE only** | `java -version` → `1.8.0_381`; `javac` **not found** (it is a JRE, not a JDK). Path: `C:\Program Files\Java\jre-1.8`. |
-| JDK 17 | ❌ Missing | No JDK 17 anywhere; the Android Gradle Plugin 8.x **requires JDK 17**. Java 8 cannot run it. |
-| `JAVA_HOME` | ❌ Unset | — |
-| Android SDK | ❌ Missing | `C:\Users\bdstd\AppData\Local\Android\Sdk` does not exist. |
-| Android Studio | ❌ Missing | `C:\Program Files\Android\Android Studio` does not exist. |
-| `ANDROID_HOME` / `ANDROID_SDK_ROOT` | ❌ Unset | — |
-| `adb` | ❌ Not found | No platform-tools. |
-| `gradle` | ❌ Not on PATH | (the project ships a Gradle **wrapper** `android\gradlew.bat`, but it still needs a JDK 17 to run). |
+| Microsoft OpenJDK **21** | ✅ | `21.0.11` LTS from `https://aka.ms/download-jdk/...`, at `C:\Users\bdstd\toolchain\jdk-21.0.11+10`. `java`/`javac` → 21.0.11. (The pre-existing Java 8 JRE and a JDK 17 install were left in place, untouched.) |
+| Android cmdline-tools | ✅ | Official Google `commandlinetools-win` from `https://dl.google.com/...`, at `…\Android\Sdk\cmdline-tools\latest` (`sdkmanager` v12.0). |
+| `platform-tools` (adb) | ✅ | `adb` 1.0.41 (37.0.0) at `…\Android\Sdk\platform-tools\adb.exe`. |
+| `platforms;android-36` + `build-tools;36.0.0` (+ `build-tools;35.0.0`) | ✅ | Matches project `compileSdk`/`targetSdk` = 36 (`android/variables.gradle`); AGP pulled build-tools 35 too. |
+| Gradle 8.14.3 | ✅ | The wrapper download was flaky, so the full distribution was fetched from `https://services.gradle.org/distributions/gradle-8.14.3-bin.zip` and run directly from `C:\Users\bdstd\toolchain\gradle-8.14.3\bin\gradle.bat`. |
+| Android Studio | ⬜ Not needed | Deliberately not installed. |
+
+- **SDK:** `C:\Users\bdstd\AppData\Local\Android\Sdk`  ·  **JDK 21:** `C:\Users\bdstd\toolchain\jdk-21.0.11+10`
+- `JAVA_HOME`/`ANDROID_HOME` are **not persisted** and the toolchain lives under
+  the user profile (a Deep Freeze restore wipes it). Set them per shell (below) or
+  persist once with `setx`.
+
+### Build the debug APK (reproducible)
+
+```
+set JAVA_HOME=C:\Users\bdstd\toolchain\jdk-21.0.11+10
+set ANDROID_HOME=C:\Users\bdstd\AppData\Local\Android\Sdk
+set ANDROID_SDK_ROOT=%ANDROID_HOME%
+set PATH=%JAVA_HOME%\bin;%ANDROID_HOME%\platform-tools;%PATH%
+
+set NODE_OPTIONS=--max-old-space-size=4096
+npm.cmd run build
+npx cap sync android
+cd android
+C:\Users\bdstd\toolchain\gradle-8.14.3\bin\gradle.bat assembleDebug --no-daemon
+```
+
+Output: `android\app\build\outputs\apk\debug\app-debug.apk` (~5.94 MB, gitignored —
+do not commit). First build ~1.5 min with deps cached (longer cold). As of
+May 31, 2026 no device/emulator was connected, so the APK was built but not
+installed; install later with
+`adb install -r android\app\build\outputs\apk\debug\app-debug.apk`.
+
+<details><summary>Historical (pre-May 31): toolchain absent</summary>
+
+Earlier this machine had only a Java 8 JRE, no JDK, no Android SDK, no `adb`,
+`JAVA_HOME`/`ANDROID_HOME` unset, no Android Studio. The original note also
+assumed JDK 17 — which is necessary but **not sufficient** for Capacitor 8.
+</details>
 
 **Conclusion:** The debug APK **cannot be built on this machine yet.** The Gradle
 wrapper was intentionally **not run** (it would fail immediately on the Java

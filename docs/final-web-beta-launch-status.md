@@ -718,3 +718,35 @@ Course-Complete celebration, push, and Android back-button behavior must be
 verified on real device builds (full list in `docs/mobile-app-launch-checklist.md`).
 No store submission was attempted. No Supabase schema, payments, ads, subscriptions,
 or secrets were touched.
+
+## Headless Android Build Toolchain + first debug APK (update — May 31, 2026)
+
+The Android debug APK now **builds end-to-end on this Windows machine without
+Android Studio**, via a command-line-only toolchain installed from official
+sources (no `winget`/`choco`/`scoop` were present).
+
+- **Key correction:** Capacitor 8 requires **JDK 21**, not JDK 17. JDK 17 was
+  installed first but the build failed at
+  `:capacitor-android:compileDebugJavaWithJavac` with `invalid source release: 21`
+  (Capacitor's generated Gradle files pin `JavaVersion.VERSION_21`). Installing
+  **Microsoft OpenJDK 21.0.11** fixed it.
+- **Installed:** Microsoft OpenJDK 21 (`aka.ms`); Android cmdline-tools
+  (`dl.google.com`) → `sdkmanager` v12.0; `platform-tools` (`adb`),
+  `platforms;android-36`, `build-tools;36.0.0` (AGP also pulled `build-tools;35.0.0`);
+  Gradle 8.14.3 run directly (wrapper download was flaky). AGP 8.13.0.
+- **Result:** `npm run build` → `npx cap sync android` → `gradle assembleDebug` →
+  **BUILD SUCCESSFUL** (1m 28s), producing
+  `android\app\build\outputs\apk\debug\app-debug.apk` (~5.94 MB). The APK is a
+  gitignored artifact and was **not committed**. No device/emulator was connected,
+  so it was built but not installed.
+- **Verified after build:** all 8 validation scripts pass; web build passes.
+- **Untouched:** Thai card content, app learning logic, Supabase schema/migrations,
+  payments, ads, subscriptions, secrets. The only working-tree changes were the two
+  Capacitor-generated gradle files' line endings (restored).
+
+**Caveat / next step:** the toolchain lives under the user profile and
+`JAVA_HOME`/`ANDROID_HOME` are not persisted (a Deep Freeze restore wipes it) —
+re-run the headless install after a restore or persist with `setx`. Reproducible
+commands + exact paths are in `docs/mobile-app-launch-checklist.md`. Release/store
+upload still needs a signing config (AAB) — an owner action. Android Studio is
+**not** required for debug builds.
