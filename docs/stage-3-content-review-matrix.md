@@ -98,3 +98,35 @@ Please mark each "Needs native review" row **approved** or **change**, and note
 any wording/tokenization fixes. Approved builders stay; flagged ones can be
 demoted to sentence-shown-only (drop `sentenceBuilder`) without changing any card
 data. Once approved, this pattern can be reused to deepen Stage 4 next.
+
+## Mission intros + recaps added (Sprint 4, June 8, 2026)
+
+All 12 Stage 3 units above now carry beginner `lessonIntro` and `missionRecap`
+metadata, matching the Stage 1 and Stage 2 teaching model (rendered by the existing
+`MiniUnitFlow` intro and complete steps, no component logic changes): a short intro
+card (You will learn / Why it matters / Listen for / Notice) before the cards, and a
+"now you can..." recap on completion.
+
+- **Metadata only.** No Thai card content, meanings, or phonetics changed, and no
+  Thai was invented. Every Thai string in the new copy is one of the unit's own
+  vocab/sentence/builder words, with glosses aligned to each card's `en`.
+- **Safety.** No culture/religion/statistics, no fluency claims, no em or en dash
+  characters, no money symbols. ไม่ vs ไหม kept distinct.
+- **Checked.** Word counts (lead + four points) fall in 120-220; achievement
+  bullets are 3-5 per unit. Machine-linted and adversarially reviewed (Thai-accuracy
+  + pedagogy/tone lenses) before commit. One gloss fix applied: the connectors unit
+  now describes น่ะ as casual emphasis (matching its card), not "softening" (which is
+  the role of อ่ะ); and a "most common question" superlative was softened.
+- **Native review:** the simple grammar generalizations introduced in the new copy
+  (อยาก before a verb = want to; อยู่ / กำลัง for ongoing action; แล้ว for already;
+  question word near the end; sentence-final particles add tone; แอร์ from English
+  "air") are listed for a native pass in `docs/native-review-master-checklist.md`.
+  Non-blocking.
+
+**Stage-level intro note (Part 5):** no dedicated per-stage intro surface was added.
+`MiniUnitFlow` renders per-unit intros only; building a stage-level note is
+documented as future work rather than forcing a new system. The first Stage 3 unit's
+`lessonIntro` already opens by framing Stage 3 as moving into more useful daily Thai.
+
+**Next:** expanding this intro/recap model to Stages 4-8 is deferred pending owner
+approval (Stages 1-3 are now done).

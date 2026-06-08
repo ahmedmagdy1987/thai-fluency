@@ -188,3 +188,48 @@ still get a quick native confirmation (recommended, non-blocking):
 
 Expanding this model to Stages 3-8 is deferred pending owner approval (Stage 2 is
 now done).
+
+## Stage 3 mission intros + recaps copy — needs a native pass (June 8, 2026)
+
+Sprint 4 added `lessonIntro` and `missionRecap` text to all 12 Stage 3 mini-units
+(see `docs/first-lesson-pedagogy-notes.md` and `docs/stage-3-content-review-matrix.md`).
+Metadata only: no Thai card content/meanings/phonetics changed, no Thai invented
+(every Thai string reuses the unit's own vocab/sentence/builder words), glosses
+aligned to the card `en`. ไม่ vs ไหม kept distinct. No culture/religion/statistics,
+no fluency claims, no em/en dashes, no money symbols. Machine-linted and
+adversarially reviewed before commit (one gloss fix: น่ะ described as casual
+emphasis per its card, not "softening" which is อ่ะ; one superlative softened).
+The simple, beginner-safe generalizations below should still get a quick native
+confirmation (recommended, non-blocking):
+
+- **Daily verbs** (`stage-3-daily-verbs`): อยาก placed before a verb to say "want
+  to" (ผมอยากนอน = I want to sleep).
+- **Describing things** (`stage-3-describing-things`): ง่าย / ยาก presented as an
+  opposites pair; the I + describing word + ครับ order (ผมร้อนครับ).
+- **People and family** (`stage-3-people-family`): the question word อะไร at the
+  end of คุณชื่ออะไร; the breakdown you (คุณ) + name (ชื่อ) + what (อะไร).
+- **Everyday verbs I** (`stage-3-everyday-verbs-1`): อยู่ at the end of ทำอะไรอยู่
+  marking an ongoing action (card note: same as กำลังทำอะไร).
+- **Everyday verbs II** (`stage-3-everyday-verbs-2`): ทำไม (why) at the end of
+  ทำไปทำไม; question word near the end (the card note shows a slightly rhetorical
+  sense, worth a native nod).
+- **Everyday verbs III** (`stage-3-everyday-verbs-3`): แล้ว at the end signalling
+  that something has already happened (ผมลืมแล้ว).
+- **Describing things II** (`stage-3-describing-things-2`): the I + state + ครับ
+  order (ผมง่วงครับ). Data note: ง่วง vocab card ph is "ngûaang" while the
+  sentence/builder use "ngûang" (not cited in copy; reconcile if desired).
+- **Qualities and states** (`stage-3-qualities-states`): the I + describing word +
+  ครับ order (ผมยุ่งครับ); glosses ไว = fast, ด่วน = urgent, เด็ด = excellent.
+- **Time and sequence** (`stage-3-time-sequence`): กำลัง placed before a verb to
+  mark an ongoing action (card note: "Before verb. gamlang gin = eating right
+  now"); เดี๋ยวมา rendered as "I will be right back" (card en: "I'll be right back").
+- **Connectors and particles** (`stage-3-connectors-particles`): ไม่ before a verb
+  to negate (ผมไม่เข้าใจ); casual sentence-final particles add tone (the unit
+  cards label น่ะ as casual emphasis, อ่ะ as soft, เนอะ as sentence-final).
+- **Home and places** (`stage-3-home-places`): แอร์ as a loanword from English
+  "air" (card note); พัง (broken) kept distinct from เสีย inside แอร์เสีย.
+- **Animals** (`stage-3-animals`): the observation that many common animal names
+  are short / one-syllable; vocab-only mission, no grammar claim.
+
+Expanding this model to Stages 4-8 is deferred pending owner approval (Stages 1-3
+are now done).

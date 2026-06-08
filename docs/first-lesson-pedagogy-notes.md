@@ -211,3 +211,43 @@ logged for native review in `docs/native-review-master-checklist.md`.
 **Future plan:** expand the same lessonIntro/missionRecap model to **Stages 3-8
 only after owner approval** (Stage 2 is now done). The shared component and generic
 metadata keep that purely additive.
+
+## Sprint 4: Stage 3 mission intros + recaps (June 8, 2026)
+
+Applied the same guided-teaching style to **all of Stage 3** (Stage 3 only;
+Stages 1, 2, and 4-8 untouched). Metadata only: no Thai card content, meanings, or
+phonetics changed; no Supabase, payments, ads, subscriptions, or build artifacts
+touched.
+
+**What changed**
+- **Lesson intros** (`lessonIntro`) added to all 12 Stage 3 mini-units (You will
+  learn / Why it matters / Listen for / Notice), rendered by the existing
+  `MiniUnitFlow` intro step (no component logic changes).
+- **Mission recaps** (`missionRecap`) added to all 12 Stage 3 mini-units (headline,
+  lead, 3-5 achievement bullets), rendered by the existing complete step.
+- **Reused feedback only:** no new sounds, no confetti, no logic changes.
+
+**Stage 3 units covered (12):** daily-verbs, describing-things, people-family,
+everyday-verbs-1, everyday-verbs-2, everyday-verbs-3, describing-things-2,
+qualities-states, time-sequence, connectors-particles, home-places, animals.
+
+**Thai accuracy:** every Thai string reuses words each unit already teaches (its
+vocab, sentence, or builder tokens), glosses aligned to the card `en`. ไม่ vs ไหม
+kept distinct. New simple grammar generalizations introduced here (อยาก before a
+verb = want to, อยู่ / กำลัง for ongoing action, แล้ว for already/completed, the
+question word near the end, particles add tone, แอร์ as an English loanword) are
+all logged for native review in `docs/native-review-master-checklist.md`. No
+culture/stats, no fluency claims, no em or en dashes, no money symbols. Word counts
+(lead plus four points) fall in 120-220.
+
+**Verification:** machine-linted (word counts, banned characters, labels,
+achievement counts) and adversarially reviewed per unit (Thai-accuracy +
+pedagogy/tone lenses). Minor gloss/scope fixes were applied (for example น่ะ was
+re-described to match its card meaning of casual emphasis rather than "softening",
+which is the role of อ่ะ; and a "most common question" superlative was softened).
+
+> **Native review still recommended** for all new Stage 3 intro/recap copy.
+
+**Future plan:** expand the same model to **Stages 4-8 only after owner approval**
+(Stages 1-3 are now done). The shared component and generic metadata keep that
+purely additive.

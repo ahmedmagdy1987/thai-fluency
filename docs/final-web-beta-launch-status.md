@@ -954,6 +954,28 @@ machine from official sources (Microsoft OpenJDK 21 at
 8.14.3 at `C:\Users\bdstd\toolchain\gradle-8.14.3`). Web build, `npx cap sync
 android`, all validation scripts, and the route smoke pass. The debug APK was rebuilt
 via `scripts\android-build.cmd` (gradle assembleDebug, BUILD SUCCESSFUL):
-`android\app\build\outputs\apk\debug\app-debug.apk`, 6,427,392 bytes (about 6.13 MB),
-built 2026-06-08 18:47 from master `30317a0` (includes the Stage 2 intros/recaps).
-The APK remains a gitignored build artifact and is not committed.
+`android\app\build\outputs\apk\debug\app-debug.apk`, last rebuilt 2026-06-08 19:25,
+6,867,332 bytes (about 6.55 MB), from the latest master including the Stage 1-3
+intros/recaps. The APK remains a gitignored build artifact and is not committed.
+
+## Stage 3 mission intros + recaps (June 8, 2026)
+
+Extended the guided-teaching style to all of Stage 3 (Stage 3 only). Full notes:
+[first-lesson-pedagogy-notes.md](first-lesson-pedagogy-notes.md); review grid:
+[stage-3-content-review-matrix.md](stage-3-content-review-matrix.md).
+- All 12 Stage 3 mini-units now show a short, friendly **lesson intro** before the
+  cards (You will learn / Why it matters / Listen for / Notice).
+- All 12 Stage 3 missions now show a motivational **recap** on completion. Reuses
+  the existing completion sound; no extra confetti/sound on mini-units.
+- Metadata only: no Thai card content changed; new copy uses only words each unit
+  already teaches, glosses aligned to the card data. No culture/stats, no fluency
+  claims, no em/en dashes, no money symbols. Machine-linted and adversarially
+  reviewed; grammar generalizations logged for native review.
+- No schema, payments, ads, subscriptions, or secrets touched. APK rebuilt from the
+  Stage 3 master (see the refreshed APK status note above); it stays gitignored and
+  is not committed.
+
+Manual checks after sideloading: Stage 3 first unlocked mission shows its intro
+before the cards; Stage 3 mission completion shows the recap; later Stage 3 units
+unlock sequentially; no overflow at 360-430px; Sound Effects OFF still silent;
+Stage 1 and Stage 2 primer/intros/recaps still work.

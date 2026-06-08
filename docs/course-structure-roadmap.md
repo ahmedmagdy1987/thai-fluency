@@ -706,3 +706,26 @@ with a "moving from first introductions into everyday actions" framing.
 **Deferred (needs owner approval before starting):** applying the same
 `lessonIntro` / `missionRecap` model to Stages 3-8, plus a dedicated stage-level
 intro/recap surface. Stage 2 is now done.
+
+## Stage 3 mission intros + recaps (June 8, 2026)
+
+Sprint 4 extended the guided-teaching style to all of Stage 3 (Stage 3 only):
+- All 12 Stage 3 mini-units gained a short `lessonIntro` (shown before the cards)
+  and a `missionRecap` (shown on completion). Data lives on each unit in
+  `src/data/miniUnits.js`; rendering uses the existing `MiniUnitFlow` steps with no
+  component logic changes.
+- Metadata only: no Thai card content, meanings, or phonetics changed; no Thai
+  invented (every Thai string reuses the unit's own vocab/sentence/builder words),
+  glosses aligned to the card data. ไม่ vs ไหม kept distinct. No culture/stats, no
+  fluency claims, no em/en dashes, no money symbols.
+- Machine-linted and adversarially reviewed (Thai-accuracy + pedagogy/tone lenses);
+  minor gloss/scope fixes applied. New simple grammar generalizations (อยาก/อยู่/
+  กำลัง/แล้ว, question-word position, sentence-final particles, แอร์ loanword) are
+  logged in `docs/native-review-master-checklist.md` and `docs/stage-3-content-review-matrix.md`.
+
+**Stage-level intro note:** still not added (no per-stage intro slot in
+`MiniUnitFlow`); documented as future work. The first Stage 3 unit's `lessonIntro`
+opens by framing Stage 3 as moving into more useful daily Thai.
+
+**Deferred (needs owner approval before starting):** applying the same
+`lessonIntro` / `missionRecap` model to Stages 4-8. Stages 1-3 are now done.
