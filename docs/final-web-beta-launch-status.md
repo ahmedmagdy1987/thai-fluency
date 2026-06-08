@@ -907,3 +907,20 @@ write-up + Thai accuracy notes: [first-lesson-pedagogy-notes.md](first-lesson-pe
 
 After sideloading the new APK, also verify: primer + quick check appear before
 the first cards; correct/wrong sound + visual fire; recap shows on completion.
+
+## Stage 1 mission intros + recaps (June 8, 2026)
+
+Extended the guided-teaching style to the rest of Stage 1 (Stage 1 only). Full
+notes: [first-lesson-pedagogy-notes.md](first-lesson-pedagogy-notes.md).
+- Every Stage 1 mini-unit now shows a short, friendly **lesson intro** before the
+  cards (You will learn / Why it matters / Listen for / Notice).
+- The 4 remaining Stage 1 missions now show a motivational **recap** on
+  completion (mission-specific headline + "now you can..." bullets). Reuses the
+  existing completion sound; no extra confetti/sound on mini-units.
+- The **Thai Basics primer can be re-opened** anytime via an "Open Thai basics"
+  modal on the Learn path (resolves the earlier "no way to revisit" limitation).
+- No Thai card content changed; new copy uses only words each unit teaches.
+
+Manual checks after sideloading: later Stage 1 missions show intros before cards
+(unlock them by finishing the prior unit); recaps show on completion; "Open Thai
+basics" opens/closes; no overflow at 360-430px; Sound Effects OFF still silent.

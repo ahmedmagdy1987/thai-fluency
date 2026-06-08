@@ -666,3 +666,18 @@ Extensibility (future work, intentionally NOT done in this sprint): the same
 metadata shape can be filled for other missions, plus stage-level recaps,
 cultural notes, and a borrowed-English-word bonus. A user-facing female speaker
 mode and re-opening the primer from Guide/Help are also deferred.
+
+## Stage 1 mission intros + recaps (June 8, 2026)
+
+Sprint 2 extended the guided-teaching style to all of Stage 1 (Stage 1 only):
+- Every Stage 1 mini-unit gained a short `lessonIntro` (shown before the cards in
+  `MiniUnitFlow`) and the 4 non-pilot units gained a `missionRecap` (shown on
+  completion). Data lives on each unit in `src/data/miniUnits.js`; rendering is in
+  `MiniUnitFlow`. Mission 1's pilot first-run is unchanged.
+- The Thai Basics primer is now re-openable from an "Open Thai basics" modal on
+  the Learn path (shared `ThaiBasicsPrimer` component) — the earlier deferred
+  limitation is resolved.
+
+**Deferred (needs owner approval before starting):** applying the same
+`lessonIntro` / `missionRecap` model to Stages 2-8, plus stage-level recaps and
+cultural notes. The shared component + generic metadata keep that additive.

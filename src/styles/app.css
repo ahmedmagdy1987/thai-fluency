@@ -2513,6 +2513,46 @@ button.character-coach-portrait { cursor: pointer; }
   .firstlesson-option-correct,
   .firstlesson-option-wrong { animation: none !important; }
 }
+
+/* ── Stage 1 mission intros + recaps + Thai-basics re-open (sprint 2) ───────── */
+
+/* MiniUnitFlow lesson intro (intro step) */
+.miniunit-intro-card { text-align: left; border: 1px solid var(--line); background: var(--cream-warm); border-radius: 14px; padding: 14px 16px; margin: 4px 0 16px; }
+.miniunit-intro-lead { font-size: 14px; line-height: 1.5; color: var(--ink); font-weight: 650; margin: 0 0 10px; }
+.miniunit-intro-points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.miniunit-intro-points li { font-size: 13px; line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+.miniunit-intro-points strong { color: var(--jade); font-weight: 800; }
+
+/* MiniUnitFlow mission recap (complete step) */
+.miniunit-recap-lead { font-weight: 650; }
+.miniunit-recap-list { list-style: none; margin: 6px auto 14px; padding: 0; display: flex; flex-direction: column; gap: 8px; max-width: 440px; text-align: left; }
+.miniunit-recap-item { display: flex; align-items: flex-start; gap: 9px; border: 1px solid color-mix(in srgb, var(--jade) 22%, var(--line)); background: color-mix(in srgb, var(--jade) 6%, var(--card-bg)); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
+.miniunit-recap-item svg { color: var(--jade); flex-shrink: 0; margin-top: 1px; }
+.miniunit-complete-score { font-size: 13px; margin-top: 4px; }
+
+/* Reuse the soft correct/wrong motion on mini-unit challenge options too. */
+.miniunit-option-correct { animation: fl-correct-glow 480ms ease-out; }
+.miniunit-option-wrong { animation: fl-wrong-nudge 300ms ease-in-out; }
+@media (prefers-reduced-motion: reduce) {
+  .miniunit-option-correct,
+  .miniunit-option-wrong { animation: none !important; }
+}
+
+/* "Thai basics" re-open link on the Learn path */
+.learn-basics-link { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 12px; padding: 7px 12px; border: 1px solid color-mix(in srgb, var(--jade) 28%, var(--line)); background: color-mix(in srgb, var(--jade) 6%, var(--card-bg)); color: var(--jade); border-radius: 999px; font-family: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .learn-basics-link:hover { background: color-mix(in srgb, var(--jade) 12%, var(--card-bg)); }
+}
+
+/* Thai basics modal (re-opens the primer content anytime) */
+.basics-modal-backdrop { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(15, 61, 46, 0.45); }
+.basics-modal-panel { width: min(560px, 100%); max-height: 88vh; display: flex; flex-direction: column; background: var(--card-bg); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 24px 60px rgba(15, 61, 46, 0.28); overflow: hidden; }
+.basics-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.basics-modal-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 800; }
+.basics-modal-close { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: var(--cream-warm); color: var(--ink); border-radius: 999px; cursor: pointer; flex-shrink: 0; }
+.basics-modal-scroll { flex: 1; min-height: 0; padding: 16px; overflow-y: auto; }
+.basics-primer-content .firstlesson-title { font-size: 23px; text-align: left; margin: 2px 0 0; }
+.basics-primer-content .firstlesson-copy { text-align: left; margin: 0 0 16px; }
 .firstlesson-complete-icon { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
 .firstlesson-unlock-preview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 18px 0 16px; }
 .firstlesson-unlock-preview div { min-width: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--cream-warm); padding: 10px; text-align: left; }

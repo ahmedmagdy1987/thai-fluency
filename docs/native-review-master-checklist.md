@@ -122,3 +122,18 @@ review is still recommended before any wider rollout:
 - Romanization consistency for ชื่อ: card 1661 shows `chêu`, card 330's phonetic
   uses `chûe`. Both are existing data; the primer references the card rather than
   picking one. Flag for a consistency decision (no card-data edits were made).
+
+## Stage 1 mission intros + recaps copy — needs a native pass (June 8, 2026)
+
+Sprint 2 added `lessonIntro` and `missionRecap` text to all 5 Stage 1 mini-units
+(see `docs/first-lesson-pedagogy-notes.md`). Every Thai string reuses words the
+unit already teaches (no new Thai, no card-data edits), and ไม่ vs ไหม are kept
+distinct. A native pass on the new beginner copy is recommended before any
+expansion to later stages:
+- Greetings (`stage-1-greetings-courtesy`): สวัสดี, ขอบคุณ, ไม่เป็นไร, เจอกัน.
+- Yes/no (`stage-1-yes-no-replies`): ใช่, ไม่, ไม่ใช่, เหรอ (intro stays within
+  these cards and intentionally does not introduce the question particle ไหม).
+- Asking where (`stage-1-asking-where`): ที่ไหน, ห้องน้ำ, อยู่.
+- Prices (`stage-1-prices-shopping`): เท่าไหร่, เงิน, ถูก, แพง.
+Check English glosses + tone are beginner-accurate and that no claim over-teaches
+grammar. Expanding this model to Stages 2-8 is deferred pending owner approval.

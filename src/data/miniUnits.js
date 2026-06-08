@@ -164,6 +164,19 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     ],
     footnote: 'This is a strong first step. Keep going to add more.',
   },
+
+  // Shown on REPLAY via MiniUnitFlow (the first-time flow uses the full primer
+  // above). FirstLessonFlow ignores lessonIntro, so Mission 1's first impression
+  // is unchanged. Thai here is only words this unit already teaches.
+  lessonIntro: {
+    lead: 'This is your first real Thai conversation: a polite hello and your own name. Short, friendly, and useful from day one.',
+    points: [
+      { label: 'You will learn', text: 'How to greet someone and introduce yourself, using สวัสดี (hello), ผม (I, for a male speaker), ชื่อ (name), and the polite word ครับ.' },
+      { label: 'Why it matters', text: 'A warm, polite hello and your name open almost any conversation in Thailand, from a shop to a new friend.' },
+      { label: 'Listen for', text: 'The polite ending ครับ (khráp) that a male speaker adds to the end of a sentence.' },
+      { label: 'Notice', text: 'Thai builds the sentence ผมชื่อ ___ ครับ one clear piece at a time. You are arranging real words, not memorizing a block.' },
+    ],
+  },
 };
 
 // Additional Stage 1 mini-units. Every card id below is an EXISTING Stage 1
@@ -206,6 +219,26 @@ export const STAGE_1_UNIT_GREETINGS = {
     ],
     answer: ['khopkhun', 'mak', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'A handful of courtesy words covers most first encounters: hello, thank you, and the famous Thai "no worries".',
+    points: [
+      { label: 'You will learn', text: 'Everyday politeness: สวัสดี (hello), ขอบคุณ (thanks), the phrase ไม่เป็นไร (no worries), and เจอกัน (see you).' },
+      { label: 'Why it matters', text: 'Thai people notice politeness right away. A few kind words make daily moments smoother and friendlier.' },
+      { label: 'Listen for', text: 'The soft phrase ไม่เป็นไร, which can mean "no worries", "you are welcome", or "never mind".' },
+      { label: 'Notice', text: 'Adding ครับ to the end keeps a male speaker polite, just like in your first lesson.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can be polite in everyday Thai moments.',
+    lead: 'You are building real travel Thai, one small courtesy at a time.',
+    achievements: [
+      'Greet someone with สวัสดี (hello)',
+      'Say thank you with ขอบคุณ (thanks)',
+      'Smooth things over with ไม่เป็นไร (no worries)',
+      'Say see you with เจอกัน',
+      'Keep it polite with ครับ',
+    ],
+  },
 };
 
 // Unit 3 — Yes, no & easy replies. Sentence card shown, but NO sentenceBuilder:
@@ -233,6 +266,26 @@ export const STAGE_1_UNIT_YESNO = {
     'Politeness particles change with male/female speakers.',
   ],
   // sentenceBuilder intentionally omitted (see comment above).
+  lessonIntro: {
+    lead: 'A few reply words let you respond to almost anything: yes, no, "that is not it", and a casual "really?".',
+    points: [
+      { label: 'You will learn', text: 'Simple answers: ใช่ (yes), ไม่ (no), ไม่ใช่ (that is not it), and เหรอ (really?) to keep a chat going.' },
+      { label: 'Why it matters', text: 'Answering clearly, even with one word, keeps a conversation moving and friendly.' },
+      { label: 'Listen for', text: 'The short word ไม่ (not) at the start of a negative answer, and how ไม่ใช่ means "that is not it".' },
+      { label: 'Notice', text: 'ใช่ and ไม่ are tiny but powerful. Add ครับ or ค่ะ to keep your reply polite.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can answer simple questions politely.',
+    lead: 'Short replies keep a real conversation going.',
+    achievements: [
+      'Say yes with ใช่',
+      'Say no with ไม่',
+      'Correct gently with ไม่ใช่ (that is not it)',
+      'React naturally with เหรอ (really?)',
+      'Stay polite with ครับ or ค่ะ',
+    ],
+  },
 };
 
 // Unit 4 — Asking where things are (builder: card 853 "ห้องน้ำอยู่ที่ไหนครับ").
@@ -270,6 +323,26 @@ export const STAGE_1_UNIT_WHERE = {
     ],
     answer: ['hongnam', 'yuu', 'thinai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Asking "where" is one of the most useful survival skills, starting with the bathroom.',
+    points: [
+      { label: 'You will learn', text: 'How to ask where something is: ที่ไหน (where), อยู่ (to be located), and the example ห้องน้ำอยู่ที่ไหน (where is the bathroom).' },
+      { label: 'Why it matters', text: 'You will need to find places fast: a toilet, an exit, a shop. This question gets you there.' },
+      { label: 'Listen for', text: 'The question word ที่ไหน (where), which comes near the end of the question.' },
+      { label: 'Notice', text: 'You can swap ห้องน้ำ (bathroom) for another place to ask where that is. One pattern, many uses.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can ask where things are.',
+    lead: 'This one question will help you find your way around.',
+    achievements: [
+      'Ask where with ที่ไหน',
+      'Find a bathroom with ห้องน้ำอยู่ที่ไหน',
+      'Talk about being located with อยู่',
+      'Reuse the pattern for any place',
+      'Ask politely with ครับ',
+    ],
+  },
 };
 
 // Unit 5 — Prices & shopping (builder: card 850 "อันนี้เท่าไหร่ครับ").
@@ -305,6 +378,26 @@ export const STAGE_1_UNIT_PRICES = {
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ],
     answer: ['annii', 'thaorai', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Money comes up everywhere: markets, taxis, and shops. Here you learn to ask a price and understand the answer.',
+    points: [
+      { label: 'You will learn', text: 'How to ask the cost: เท่าไหร่ (how much), เงิน (money), and the example อันนี้เท่าไหร่ (how much is this).' },
+      { label: 'Why it matters', text: 'Asking a price, and telling cheap from expensive, helps you shop with confidence.' },
+      { label: 'Listen for', text: 'The question word เท่าไหร่ (how much), plus ถูก (cheap) and แพง (expensive).' },
+      { label: 'Notice', text: 'Add ครับ to ask politely. อันนี้เท่าไหร่ครับ is a complete, polite question you can use today.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can ask prices and talk money.',
+    lead: 'You can shop and ask how much with confidence.',
+    achievements: [
+      'Ask the price with เท่าไหร่',
+      'Ask about this one with อันนี้เท่าไหร่',
+      'Talk money with เงิน',
+      'Tell cheap (ถูก) from expensive (แพง)',
+      'Ask politely with ครับ',
+    ],
   },
 };
 

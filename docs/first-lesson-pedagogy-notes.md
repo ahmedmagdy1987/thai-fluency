@@ -112,3 +112,48 @@ Audio never hard-fails and sound buttons still reset via the existing
 - Extending `lessonPrimer` / `pedagogyQuiz` / `missionRecap` to other missions,
   stage-level recaps, cultural notes, and a borrowed-English-word bonus. The
   data shape is intentionally generic so this is additive.
+
+## Sprint 2: Stage 1 mission intros + recaps (June 8, 2026)
+
+Extended the guided-teaching style to the **rest of Stage 1** (Stage 1 only;
+Stages 2-8 deliberately untouched). Mission 1's pilot is unchanged.
+
+**What changed**
+- **Lesson intros** (`lessonIntro`) added to all 5 Stage 1 units. Each answers
+  four beginner questions in a compact card: *You will learn / Why it matters /
+  Listen for / Notice*. Rendered in `MiniUnitFlow`'s intro step (the pilot's
+  first-run still uses the full primer; its `lessonIntro` only shows on replay).
+- **Mission recaps** (`missionRecap`) added to the 4 remaining Stage 1 units
+  (pilot already had one). Rendered on `MiniUnitFlow`'s complete step: a
+  mission-specific headline, an encouraging lead, and 3-5 "now you can..."
+  achievement bullets. Reuses the existing once-only `playCelebration`; **no new
+  sound, no confetti** on mini-units (keeps Mission 1 special, avoids spam).
+- **Feedback reuse:** `MiniUnitFlow` keeps its existing soft
+  `playCharacterCorrect` / `playCharacterWrong` cues (no duplicate sounds added);
+  the soft glow/nudge visual was extended to `.miniunit-option-*` (reduced-motion
+  guarded). Sound Effects OFF still disables cues.
+- **Thai basics re-open (resolves the 5002fb6 limitation):** the primer markup
+  was extracted into a shared `ThaiBasicsPrimer` component (now used by both the
+  first-lesson primer step and a new lightweight **"Open Thai basics" modal** on
+  the Learn path). No new route, no global state, no schema; Escape / backdrop /
+  close button all dismiss it.
+
+**Data shape (Stage 1 only)**
+```
+lessonIntro: { lead, points: [{ label, text }] }     // ~120-200 words/mission
+missionRecap: { headline, lead, achievements: [..] } // 3-5 bullets
+```
+
+**Thai accuracy:** every Thai string reuses words each unit already teaches
+(verified against the card dataset). Greetings: สวัสดี/ขอบคุณ/ไม่เป็นไร/เจอกัน;
+Yes-no: ใช่/ไม่/ไม่ใช่/เหรอ; Where: ที่ไหน/ห้องน้ำ/อยู่; Prices:
+เท่าไหร่/เงิน/ถูก/แพง. No card content was changed, no Thai invented, ไม่ vs ไหม
+kept distinct (the yes-no intro stays within its own cards and does not introduce
+ไหม), no culture facts, no fluency claims, no em/en dashes.
+
+> **Native review still recommended** for all new Stage 1 intro/recap copy (tone
+> + romanization), logged in `docs/native-review-master-checklist.md`.
+
+**Future plan:** expand this lessonIntro/missionRecap model to Stages 2-8 **only
+after owner approval** — not in this sprint. The shared component and generic
+metadata make that purely additive.

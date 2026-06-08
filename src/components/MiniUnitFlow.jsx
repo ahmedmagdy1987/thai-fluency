@@ -272,6 +272,18 @@ export default function MiniUnitFlow({
           <div className="miniunit-eyebrow">Stage {unit.stageId} guided lesson</div>
           <h1 className="miniunit-title">{unit.title}</h1>
           <p className="miniunit-sub">{unit.subtitle || unit.introText}</p>
+          {unit.lessonIntro && (
+            <div className="miniunit-intro-card">
+              {unit.lessonIntro.lead && <p className="miniunit-intro-lead">{unit.lessonIntro.lead}</p>}
+              {Array.isArray(unit.lessonIntro.points) && unit.lessonIntro.points.length > 0 && (
+                <ul className="miniunit-intro-points">
+                  {unit.lessonIntro.points.map((p, i) => (
+                    <li key={i}><strong>{p.label}:</strong> {p.text}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           <div className="miniunit-stats-row">
             <span>{vocabCards.length} vocab cards</span>
             {sentenceCard && <span>1 sentence</span>}
@@ -403,8 +415,19 @@ export default function MiniUnitFlow({
         <section className="miniunit-complete">
           <div className="miniunit-complete-icon"><Sparkles size={48} /></div>
           <div className="miniunit-eyebrow">Mini-unit complete</div>
-          <h2 className="miniunit-title">Nice! You learned your first Thai words and sentence.</h2>
-          <p className="miniunit-sub">Score: {challengeScore} of {challengeQuestions.length}. Cards did most of the learning; Challenge gave you a quick check.</p>
+          <h2 className="miniunit-title">{unit.missionRecap?.headline || 'Nice! You learned a focused set of Thai words and a sentence.'}</h2>
+          {unit.missionRecap?.lead && <p className="miniunit-sub miniunit-recap-lead">{unit.missionRecap.lead}</p>}
+          {Array.isArray(unit.missionRecap?.achievements) && unit.missionRecap.achievements.length > 0 && (
+            <ul className="miniunit-recap-list">
+              {unit.missionRecap.achievements.map((item, i) => (
+                <li key={i} className="miniunit-recap-item">
+                  <CheckCircle2 size={15} aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="miniunit-sub miniunit-complete-score">Score: {challengeScore} of {challengeQuestions.length}. Cards did most of the learning; Challenge gave you a quick check.</p>
           <div className="miniunit-complete-actions">
             <button type="button" className="btn-primary" onClick={onOpenCards}>Review cards</button>
             <button type="button" className="btn-secondary" onClick={onOpenChallenge}>Open Challenge</button>

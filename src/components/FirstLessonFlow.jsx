@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { BookOpen, Check, CheckCircle2, ChevronRight, Sparkles, Volume2, X } from 'lucide-react';
+import { Check, CheckCircle2, ChevronRight, Sparkles, Volume2, X } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
@@ -7,6 +7,7 @@ import { displayCard } from '../lib/voice.js';
 import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import ConfettiBurst from './ConfettiBurst.jsx';
+import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined' &&
@@ -321,25 +322,7 @@ export default function FirstLessonFlow({
 
         {step === 'primer' && hasPrimer && (
           <section className="firstlesson-panel firstlesson-primer">
-            <div className="firstlesson-primer-head">
-              <span className="firstlesson-primer-icon" aria-hidden="true"><BookOpen size={20} /></span>
-              <div>
-                <div className="firstlesson-eyebrow">Quick primer · about {primer.readMinutes || 2} min</div>
-                <h1 className="firstlesson-title">{primer.title}</h1>
-              </div>
-            </div>
-            <p className="firstlesson-copy">{primer.subtitle}</p>
-            <ul className="firstlesson-primer-list">
-              {primer.sections.map((section, i) => (
-                <li key={section.heading || i} className="firstlesson-primer-item">
-                  <span className="firstlesson-primer-num" aria-hidden="true">{i + 1}</span>
-                  <div className="firstlesson-primer-text">
-                    <h2 className="firstlesson-primer-heading">{section.heading}</h2>
-                    <p className="firstlesson-primer-body">{section.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <ThaiBasicsPrimer primer={primer} />
             <div className="firstlesson-actions firstlesson-actions-stack">
               <button type="button" className="btn-primary firstlesson-primary" onClick={startPrimerQuiz}>
                 {hasQuiz ? 'Start quick check' : 'Start lesson'} <ChevronRight size={16} />

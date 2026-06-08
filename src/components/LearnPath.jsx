@@ -1,10 +1,11 @@
-import React from 'react';
-import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Zap, X } from 'lucide-react';
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
-import { getMiniUnitsForStage } from '../data/miniUnits.js';
+import { getMiniUnitsForStage, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
+import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 
 // New primary learning view. Renders the 8-stage path with a per-stage
 // character, plus a Stage-1 mission rail while the user is still in S1.
@@ -23,6 +24,18 @@ export default function LearnPath({
   courseCompletion,
 }) {
   const courseComplete = !!(courseCompletion && courseCompletion.courseComplete);
+
+  // "Thai basics" re-open: the once-skippable first-lesson primer, available
+  // anytime from the guided path as a lightweight modal (no route, no global
+  // state). Content is the pilot unit's lessonPrimer (single source of truth).
+  const basics = STAGE_1_MINI_UNIT_PILOT.lessonPrimer;
+  const [showBasics, setShowBasics] = useState(false);
+  useEffect(() => {
+    if (!showBasics) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setShowBasics(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showBasics]);
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
   const newAvail = dashboardStats?.newAvail ?? 0;
@@ -144,6 +157,11 @@ export default function LearnPath({
                 : `Stage ${currentStageId} · ${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} complete`}
             </span>
           </div>
+          {basics && (
+            <button type="button" className="learn-basics-link" onClick={() => setShowBasics(true)}>
+              <BookOpen size={14} /> Open Thai basics
+            </button>
+          )}
           <div className="learn-miniunit-list">
             {miniUnitSequence.units.map((u, idx) => {
               const status = u.status; // 'complete' | 'current' | 'locked'
@@ -407,6 +425,33 @@ export default function LearnPath({
         <Sparkles size={14} />
         <span>Learn every word in a stage to unlock the next one. Mastery comes later, through review. Keep reviewing to lock words in for good.</span>
       </div>
+
+      {showBasics && basics && (
+        <div
+          className="basics-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Thai basics primer"
+          onClick={() => setShowBasics(false)}
+        >
+          <div className="basics-modal-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="basics-modal-head">
+              <span className="basics-modal-eyebrow">Thai basics</span>
+              <button
+                type="button"
+                className="basics-modal-close"
+                onClick={() => setShowBasics(false)}
+                aria-label="Close Thai basics"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="basics-modal-scroll">
+              <ThaiBasicsPrimer primer={basics} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
