@@ -278,6 +278,13 @@ export default function QuizTab({
   const typeConfig = QUESTION_TYPES[type];
   const prompt = getPromptText(current.correct, type, voice);
   const progressPct = Math.round((idx / questions.length) * 100);
+  // Clearer prompt label: say "sentence" vs "word" when the answer is a Thai
+  // phrase/sentence so options that mix lengths never read as ambiguous. Purely
+  // presentational — does not affect question selection or challenge scope.
+  const correctIsSentence = current.correct?.type === 's' || current.correct?.type === 'p';
+  const promptLabel = type === 'en-to-thai'
+    ? (correctIsSentence ? 'Choose the Thai sentence' : 'Choose the Thai word')
+    : typeConfig.promptLabel;
 
   return (
     <div className="tab-content quiz-mode">
@@ -301,7 +308,7 @@ export default function QuizTab({
             />
           </div>
         )}
-        <div className="quiz-mode-prompt-label">{typeConfig.promptLabel}</div>
+        <div className="quiz-mode-prompt-label">{promptLabel}</div>
         <div className={`quiz-mode-prompt ${type === 'thai-to-en' ? 'quiz-mode-prompt-thai' : 'quiz-mode-prompt-en'}`}>
           {prompt}
         </div>

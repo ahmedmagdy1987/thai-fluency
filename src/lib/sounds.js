@@ -112,6 +112,35 @@ export function playEasy() {
   } catch (_) { /* ignore */ }
 }
 
+// Generic positive feedback for a correct quiz/challenge answer. Calm rising
+// pair (E5 -> B5), warmer and a touch longer than playEasy so it reads as
+// "well done" rather than a UI blip. Used by the first-lesson primer quiz and
+// challenge where no per-character sound profile applies.
+export function playCorrect() {
+  if (!effectsEnabled()) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    tone(ctx, 659.25, 0,    0.09, 0.16, 'sine'); // E5
+    tone(ctx, 987.77, 0.08, 0.13, 0.15, 'sine'); // B5
+  } catch (_) { /* ignore */ }
+}
+
+// Generic "not quite" feedback for a wrong answer. Deliberately SOFT and
+// supportive — a gentle downward sine pair at modest gain, never a harsh buzz
+// or casino-style sting. Sound-OFF and gesture gating are inherited.
+export function playWrong() {
+  if (!effectsEnabled()) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  try {
+    ensureRunning(ctx);
+    tone(ctx, 392.00, 0,    0.12, 0.12, 'sine'); // G4
+    tone(ctx, 329.63, 0.10, 0.18, 0.11, 'sine'); // E4 (gentle step down)
+  } catch (_) { /* ignore */ }
+}
+
 // 10-card milestone "tin tin" — two clear chime notes (C5, E5).
 export function playMilestone() {
   if (!effectsEnabled()) return;

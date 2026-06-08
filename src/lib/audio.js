@@ -28,14 +28,35 @@ function clampRate(rate) {
   return Math.max(0.1, Math.min(2, r));
 }
 
+// Best-effort gender guess from a voice NAME only. Neither the Web Speech API
+// nor most native TTS engines expose gender metadata, so this is a heuristic
+// over whatever voices the device happens to have installed. The hints are
+// deliberately conservative (real Thai voice names + plain "male"/"man") to
+// avoid mis-tagging. `\bmale\b` does not match "female" (no word boundary before
+// "male" inside "female"), so the two patterns don't collide.
+const MALE_VOICE_HINT = /\bmale\b|\bman\b|niwat/i;
+const FEMALE_VOICE_HINT = /\bfemale\b|\bwoman\b|premwadee|achara|kanya|narisa/i;
+
+function _isThaiVoice(v) {
+  return !!((v.lang && v.lang.toLowerCase().startsWith('th')) || /thai/i.test(v.name || ''));
+}
+
+// Pick a Thai voice, PREFERRING a likely-male one because the course teaches
+// male-form Thai (ผม / ครับ). Order: explicit male Thai voice -> a Thai voice
+// not explicitly tagged female -> th-TH exact -> first Thai voice. Returns null
+// only when the device has no Thai voice at all. Pronunciation must never break
+// for the sake of gender, so every branch degrades gracefully.
 function _resolveThaiVoice() {
   if (typeof window === 'undefined' || !window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices();
   if (!voices || voices.length === 0) return null;
-  return voices.find(v => v.lang === 'th-TH')
-      || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('th'))
-      || voices.find(v => /thai/i.test(v.name))
-      || null;
+  const thai = voices.filter(_isThaiVoice);
+  if (thai.length === 0) return null;
+  const male = thai.find(v => MALE_VOICE_HINT.test(v.name || '') && !FEMALE_VOICE_HINT.test(v.name || ''));
+  if (male) return male;
+  return thai.find(v => !FEMALE_VOICE_HINT.test(v.name || ''))
+      || thai.find(v => v.lang === 'th-TH')
+      || thai[0];
 }
 
 function _loadVoices() {
@@ -57,20 +78,51 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
   }
 }
 
+// Native (Capacitor) best-effort male Thai voice index. getSupportedVoices()
+// returns the device voices with name + lang but usually NO gender, so we apply
+// the same name heuristic. Resolved once and cached: a number = a confident Thai
+// voice index to pass to speak(); null = no confident male match, let the engine
+// use its default th-TH voice (the previous behavior). Never throws.
+let _nativeVoiceIndex; // undefined = unresolved, null = resolved-none, number = index
+
+async function _resolveNativeThaiVoiceIndex() {
+  if (_nativeVoiceIndex !== undefined) return _nativeVoiceIndex;
+  _nativeVoiceIndex = null;
+  try {
+    const res = await TextToSpeech.getSupportedVoices();
+    const voices = (res && res.voices) || [];
+    const thai = voices.map((v, i) => ({ v, i })).filter(({ v }) => _isThaiVoice(v));
+    // Only override the engine default when we have a CONFIDENT male match;
+    // otherwise leave it to lang:'th-TH' so we never pick a worse voice.
+    const male = thai.find(({ v }) => MALE_VOICE_HINT.test(v.name || '') && !FEMALE_VOICE_HINT.test(v.name || ''));
+    if (male) _nativeVoiceIndex = male.i;
+  } catch (_) {
+    // getSupportedVoices unsupported or no voices — keep null (engine default).
+  }
+  return _nativeVoiceIndex;
+}
+
 // Native playback via the device TTS engine. Resolves when speech ends or on
 // any failure (no Thai voice installed, plugin error, etc.).
 function _speakNative(text, rate) {
   return (async () => {
     try {
       try { await TextToSpeech.stop(); } catch (_) { /* nothing playing */ }
-      await TextToSpeech.speak({
+      const opts = {
         text,
         lang: 'th-TH',
         rate: clampRate(rate),
         pitch: 1.0,
         volume: 1.0,
         category: 'playback',
-      });
+      };
+      // Prefer a male Thai voice when the device exposes one; fall back silently
+      // to the default th-TH voice (TTS voice gender depends on installed voices).
+      try {
+        const idx = await _resolveNativeThaiVoiceIndex();
+        if (typeof idx === 'number') opts.voice = idx;
+      } catch (_) { /* keep default voice */ }
+      await TextToSpeech.speak(opts);
     } catch (_) {
       // Device may lack a Thai TTS voice or the plugin may be unavailable.
       // Fail quietly; the caller's button state still resets.

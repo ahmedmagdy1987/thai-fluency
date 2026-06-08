@@ -1,0 +1,114 @@
+# First Lesson Pedagogy + Gamified Feedback (Pilot: Stage 1 Mission 1)
+
+_Last updated: June 8, 2026. Scope: the first ~10 minutes of the app only —
+the guided starter lesson (`FirstLessonFlow`) using `STAGE_1_MINI_UNIT_PILOT`
+(`stage-1-introductions-politeness`). This is a PILOT. It deliberately does NOT
+roll out to the other 95 mini-units, does not change Thai card source content,
+and does not touch Supabase, payments, ads, or subscriptions._
+
+## What changed (owner-feedback sprint)
+
+The first learning experience was made clearer, more motivating, and more
+game-like, while keeping Thai accuracy strict.
+
+1. **Male-default learner perspective made explicit.** The course is already
+   authored male-form (ผม / ครับ; `DEFAULT_VOICE = 'male'` in `lib/voice.js`).
+   A small config (`lib/pedagogy.js`, `DEFAULT_SPEAKER_PERSPECTIVE = 'male'`)
+   now names that decision in one place, the intro states the path uses a male
+   speaker, and the primer explains it. A user-facing female toggle is **future
+   work** (not built here).
+2. **Thai Basics Primer** before the first cards (new `primer` step in
+   `FirstLessonFlow`). Short (~2 min, 7 bite-size rules), friendly, skippable.
+3. **Primer quick check** (new `quiz` step): 5 fast multiple-choice questions
+   with soft audio + visual feedback. Forgiving — wrong never blocks; skippable.
+4. **Correct/wrong feedback** (audio + visual) added to the primer quiz and the
+   first-lesson challenge: `playCorrect()` / `playWrong()` Web Audio cues
+   (calm/soft, not harsh) gated by the existing Sound Effects setting, plus a
+   green glow on correct and a small nudge on wrong (both disabled under
+   `prefers-reduced-motion`).
+5. **Motivational mission recap** on the complete screen (data-driven from
+   `unit.missionRecap`): a headline, a "you are building a real introduction"
+   lead, and 3–5 achievement bullets. No fluency claims; no em/en dashes.
+6. **Clearer quiz wording** (owner saw "Pick the Thai for My name is ___ (male)"
+   mixing a sentence prompt with word options): the first-lesson challenge now
+   says "Pick the Thai **sentence** for:" vs "Pick the Thai **word** for:" based
+   on the card type, and `QuizTab` (Challenge) says "Choose the Thai word /
+   sentence" in the en→Thai direction. Presentational only — challenge scope and
+   selection logic are unchanged.
+
+## Files touched
+
+| File | Change |
+| --- | --- |
+| `src/data/miniUnits.js` | Added optional `lessonPrimer`, `pedagogyQuiz`, `missionRecap` to **STAGE_1_MINI_UNIT_PILOT only**. No card content changed; no Thai invented. |
+| `src/lib/pedagogy.js` (new) | `DEFAULT_SPEAKER_PERSPECTIVE = 'male'` + `prefersMaleVoice()`. |
+| `src/lib/sounds.js` | New `playCorrect()` / `playWrong()` (gesture- and Sound-Effects-gated like the others). |
+| `src/lib/audio.js` | Prefer a male Thai TTS voice (web name heuristic + best-effort native `getSupportedVoices()`), with safe fallback. |
+| `src/components/FirstLessonFlow.jsx` | New `primer` + `quiz` steps; recap on complete; feedback sounds; word/sentence prompt label; confetti (reduced-motion gated). |
+| `src/components/QuizTab.jsx` | Word/sentence-aware prompt label (presentational). |
+| `src/components/MissionCompleteRewardScreen.jsx` | Optional `achievements` prop (extensible; default empty = no change). |
+| `src/styles/app.css` | Primer / quick-check / recap / reward-achievement styles + reduced-motion-guarded correct/wrong animations. |
+
+## Thai accuracy safeguards
+
+Every Thai string in the primer, quiz, and recap **already appears in the cards
+this pilot unit teaches** — nothing was invented:
+
+- สวัสดี (sà-wàt-dee) — hello (card 3396; polite form adds ครับ / ค่ะ)
+- ผม (phǒm) — "I", male (card 1)
+- ครับ (khráp) — male polite particle (card 2)
+- ชื่อ (chêu) — name (card 1661)
+- คุณ (khun) — you, polite (card 3)
+- ใช่ (châi) — yes (card 251)
+- ไม่ (mâi) — not / negation (card 250)
+- ขอบคุณ (kòp kun) — thanks (card 2815)
+- ผมชื่อ ___ ครับ (phǒm chûe ___ khráp) — "My name is ___" (card 330)
+
+Accuracy rules followed:
+- Male speakers commonly use **ครับ (khráp)**; female speakers use **ค่ะ (khâ)**.
+- The app starts from a **male speaker** perspective (toggle = future work).
+- **ผม (phǒm)** = a common male "I". **ฉัน (chán)** is mentioned once as a
+  common "I" for women / general use, but is **not** over-taught or quizzed.
+- **ไม่ (mâi)** = "not" (negation), usually **before** the negated word.
+- **ไหม (mǎi)** = a yes/no **question** particle, usually near the **end**.
+- The primer states explicitly these are written differently and behave
+  differently even though the romanization can look similar. This mirrors the
+  verified note already on card 250.
+- Thai is described as tonal in simple, non-scary terms ("listen and copy the
+  rhythm"). Word order is given as a concept ("a describing word often comes
+  after the thing it describes") with no deep grammar.
+- No culture/religion facts, statistics, or unverified claims were added.
+
+### Needs native review (recommended, non-blocking)
+- The primer/quiz/recap English glosses and romanization (above) are standard
+  and drawn from existing card data, but a quick native pass on the primer copy
+  tone is worthwhile before any wider rollout.
+- ชื่อ romanization: the card dataset shows `chêu` (card 1661) while the pilot's
+  sentence builder uses `chûe` (from card 330's phonetic). Both are existing
+  data; the primer copy avoids picking one by referencing the card. Flagged for
+  a native consistency pass (NOT changed here — no card data edits in scope).
+- ฉัน romanization: the primer uses `chăn` to match the card dataset (card 1712
+  `chăn`; nearly all ฉัน cards use `chăn`). Note `lib/voice.js` renders the
+  female "I" as `chán` (acute) — a pre-existing inconsistency in the transform
+  layer, left unchanged (out of pilot scope). Flag for a native consistency pass.
+
+## TTS voice gender (limitation, documented)
+
+TTS voice gender depends entirely on the **voices installed on the device**.
+Neither the Web Speech API nor most native engines expose gender metadata, so
+`lib/audio.js` uses a conservative name heuristic to prefer a likely-male Thai
+voice and **falls back silently** to the default Thai voice when none is found.
+Audio never hard-fails and sound buttons still reset via the existing
+`.finally()` pattern. Many devices ship only a female Thai voice (e.g. iOS
+"Kanya"); in that case the app still works and simply uses what is available.
+
+## Future work (explicitly deferred)
+
+- **Female speaker mode** (user-facing toggle; render flips already exist in
+  `lib/voice.js`).
+- **Re-open the primer** from Guide/Help after it is skipped (no suitable entry
+  point exists today — deferred rather than forced).
+- Per-answer confetti/stars (kept to a glow + completion confetti for now).
+- Extending `lessonPrimer` / `pedagogyQuiz` / `missionRecap` to other missions,
+  stage-level recaps, cultural notes, and a borrowed-English-word bonus. The
+  data shape is intentionally generic so this is additive.

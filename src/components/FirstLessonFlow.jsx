@@ -1,10 +1,26 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, ChevronRight, Sparkles, Volume2 } from 'lucide-react';
+import { BookOpen, Check, CheckCircle2, ChevronRight, Sparkles, Volume2, X } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { displayCard } from '../lib/voice.js';
+import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
 import CharacterCoach from './CharacterCoach.jsx';
+import ConfettiBurst from './ConfettiBurst.jsx';
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// Whether a card is best described as a sentence/phrase vs a single word, so
+// quiz prompts can say "sentence" or "word" instead of an ambiguous "Pick the
+// Thai for ___" (owner feedback: mixing a sentence prompt with word options
+// reads as confusing). 's' = sentence, 'p' = phrase, 'g' = grammar, 'w' = word.
+function isSentenceLike(card) {
+  return !!card && (card.type === 's' || card.type === 'p');
+}
 
 function cardsByIds(ids, voice) {
   return ids
@@ -56,6 +72,16 @@ export default function FirstLessonFlow({
     () => buildQuestions(challengeCards, lessonCards).slice(0, 3),
     [challengeCards, lessonCards]
   );
+
+  // Optional pedagogy metadata (pilot: Stage 1 Mission 1 only). Absent on every
+  // other unit, so this whole layer is a no-op when the data is not present.
+  const primer = unit.lessonPrimer || null;
+  const quizQuestions = useMemo(() => (unit.pedagogyQuiz?.questions || []), [unit]);
+  const recap = unit.missionRecap || null;
+  const hasPrimer = !!(primer && Array.isArray(primer.sections) && primer.sections.length > 0);
+  const hasQuiz = quizQuestions.length > 0;
+  const reducedMotion = useMemo(() => prefersReducedMotion(), []);
+
   const savedProgress = initialProgress?.unitId === unit.unitId ? initialProgress : null;
   const [step, setStep] = useState(savedProgress?.step || 'intro');
   const [cardIndex, setCardIndex] = useState(() => safeIndex(savedProgress?.cardIndex, Math.max(1, vocabCards.length)));
@@ -66,9 +92,23 @@ export default function FirstLessonFlow({
   const [score, setScore] = useState(savedProgress?.score || 0);
   const checkLockedRef = useRef(!!savedProgress?.checked);
 
+  // Primer-quiz state (mirrors the challenge state shape). Quick and forgiving:
+  // wrong answers never block, the user can skip, and it just warms up the learner.
+  const [quizIndex, setQuizIndex] = useState(() => safeIndex(savedProgress?.quizIndex, Math.max(1, quizQuestions.length)));
+  const [quizSelectedId, setQuizSelectedId] = useState(savedProgress?.quizSelectedId || null);
+  const [quizChecked, setQuizChecked] = useState(!!savedProgress?.quizChecked);
+  const [quizScore, setQuizScore] = useState(savedProgress?.quizScore || 0);
+  const quizLockedRef = useRef(!!savedProgress?.quizChecked);
+  const completeSoundRef = useRef(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const currentCard = step === 'sentence' ? sentenceCard : vocabCards[cardIndex];
   const currentQuestion = challengeQuestions[challengeIndex] || null;
   const selectedIsCorrect = !!(currentQuestion && selectedId === currentQuestion.correct.id);
+
+  const currentQuizQ = quizQuestions[quizIndex] || null;
+  const currentQuizCorrectId = currentQuizQ ? (currentQuizQ.options.find(o => o.correct)?.id ?? null) : null;
+  const quizSelectedIsCorrect = !!(currentQuizQ && quizSelectedId && quizSelectedId === currentQuizCorrectId);
 
   useEffect(() => {
     onProgressChange?.({
@@ -80,19 +120,90 @@ export default function FirstLessonFlow({
       selectedId,
       checked,
       score,
+      quizIndex,
+      quizSelectedId,
+      quizChecked,
+      quizScore,
       updatedAt: new Date().toISOString(),
     });
-  }, [unit.unitId, step, cardIndex, revealed, challengeIndex, selectedId, checked, score, onProgressChange]);
+  }, [unit.unitId, step, cardIndex, revealed, challengeIndex, selectedId, checked, score, quizIndex, quizSelectedId, quizChecked, quizScore, onProgressChange]);
+
+  // One-time celebration cue when the lesson is complete (respects reduced motion
+  // by skipping the flourish; the visual confetti is also gated below).
+  useEffect(() => {
+    if (step === 'complete' && !completeSoundRef.current) {
+      completeSoundRef.current = true;
+      if (!reducedMotion) {
+        playCelebration();
+        setShowConfetti(true);
+      }
+    }
+  }, [step, reducedMotion]);
+
+  // Defensive: if a saved/resumed step points at primer or quiz but that data is
+  // absent (e.g. a future unit without pedagogy metadata, or a swapped unit),
+  // never strand the user on a blank panel — continue into the lesson cards.
+  useEffect(() => {
+    if ((step === 'primer' && !hasPrimer) || (step === 'quiz' && !currentQuizQ)) {
+      setStep('cards');
+      setCardIndex(0);
+      setRevealed(false);
+    }
+  }, [step, hasPrimer, currentQuizQ]);
 
   const triggerSpeak = (text) => {
     if (!text) return;
     try { speakThai(text, audioRate); } catch (_) { /* ignore */ }
   };
 
-  const startLesson = () => {
+  const beginCards = () => {
     setStep('cards');
     setCardIndex(0);
     setRevealed(false);
+  };
+
+  // From the intro: show the Thai Basics Primer first (pilot only), else go
+  // straight to the cards exactly as before.
+  const startLesson = () => {
+    if (hasPrimer) { setStep('primer'); return; }
+    beginCards();
+  };
+
+  // Primer CTAs.
+  const startPrimerQuiz = () => {
+    if (!hasQuiz) { beginCards(); return; }
+    setStep('quiz');
+    setQuizIndex(0);
+    setQuizSelectedId(null);
+    setQuizChecked(false);
+    setQuizScore(0);
+    quizLockedRef.current = false;
+  };
+  const skipPrimer = () => beginCards();
+
+  // Primer-quiz handlers (forgiving: wrong never blocks; skip allowed).
+  const selectQuizOption = (optId) => {
+    if (quizChecked) return;
+    setQuizSelectedId(optId);
+  };
+  const checkQuiz = () => {
+    if (!currentQuizQ || !quizSelectedId || quizChecked || quizLockedRef.current) return;
+    quizLockedRef.current = true;
+    setQuizChecked(true);
+    if (quizSelectedId === currentQuizCorrectId) {
+      setQuizScore(s => s + 1);
+      playCorrect();
+    } else {
+      playWrong();
+    }
+  };
+  const nextQuiz = () => {
+    if (!quizChecked) return;
+    if (quizIndex + 1 >= quizQuestions.length) { beginCards(); return; }
+    setQuizIndex(i => i + 1);
+    setQuizSelectedId(null);
+    setQuizChecked(false);
+    quizLockedRef.current = false;
   };
 
   const nextCard = () => {
@@ -135,6 +246,9 @@ export default function FirstLessonFlow({
     setChecked(true);
     if (selectedId === currentQuestion.correct.id) {
       setScore(current => current + 1);
+      playCorrect();
+    } else {
+      playWrong();
     }
   };
 
@@ -196,9 +310,108 @@ export default function FirstLessonFlow({
               <div><strong>Challenge</strong><span>Complete your first lesson to unlock Challenge.</span></div>
               <div><strong>Quests</strong><span>Reach Level 2 to unlock daily quests.</span></div>
             </div>
+            <p className="firstlesson-perspective-note">
+              This first path uses a male speaker (ผม / ครับ). A female mode can come later.
+            </p>
             <button type="button" className="btn-primary firstlesson-primary" onClick={startLesson}>
               Start lesson <ChevronRight size={16} />
             </button>
+          </section>
+        )}
+
+        {step === 'primer' && hasPrimer && (
+          <section className="firstlesson-panel firstlesson-primer">
+            <div className="firstlesson-primer-head">
+              <span className="firstlesson-primer-icon" aria-hidden="true"><BookOpen size={20} /></span>
+              <div>
+                <div className="firstlesson-eyebrow">Quick primer · about {primer.readMinutes || 2} min</div>
+                <h1 className="firstlesson-title">{primer.title}</h1>
+              </div>
+            </div>
+            <p className="firstlesson-copy">{primer.subtitle}</p>
+            <ul className="firstlesson-primer-list">
+              {primer.sections.map((section, i) => (
+                <li key={section.heading || i} className="firstlesson-primer-item">
+                  <span className="firstlesson-primer-num" aria-hidden="true">{i + 1}</span>
+                  <div className="firstlesson-primer-text">
+                    <h2 className="firstlesson-primer-heading">{section.heading}</h2>
+                    <p className="firstlesson-primer-body">{section.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="firstlesson-actions firstlesson-actions-stack">
+              <button type="button" className="btn-primary firstlesson-primary" onClick={startPrimerQuiz}>
+                {hasQuiz ? 'Start quick check' : 'Start lesson'} <ChevronRight size={16} />
+              </button>
+              <button type="button" className="btn-secondary firstlesson-skip-btn" onClick={skipPrimer}>
+                Skip for now
+              </button>
+            </div>
+          </section>
+        )}
+
+        {step === 'quiz' && currentQuizQ && (
+          <section className="firstlesson-panel firstlesson-challenge firstlesson-quiz">
+            <div className="firstlesson-progress-row">
+              <span className="firstlesson-step-label">Quick check</span>
+              <span className="firstlesson-progress-pill">{quizIndex + 1} of {quizQuestions.length}</span>
+            </div>
+            <div className="firstlesson-question">
+              <span>Choose the best answer:</span>
+              <strong>{currentQuizQ.prompt}</strong>
+            </div>
+            <div className="firstlesson-options">
+              {currentQuizQ.options.map((option, index) => {
+                const isSelected = quizSelectedId === option.id;
+                const isCorrectOpt = quizChecked && option.id === currentQuizCorrectId;
+                const isWrongOpt = quizChecked && isSelected && option.id !== currentQuizCorrectId;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={[
+                      'firstlesson-option',
+                      'firstlesson-option-text',
+                      isSelected ? 'firstlesson-option-selected' : '',
+                      isCorrectOpt ? 'firstlesson-option-correct' : '',
+                      isWrongOpt ? 'firstlesson-option-wrong' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => selectQuizOption(option.id)}
+                    disabled={quizChecked}
+                    aria-pressed={isSelected}
+                  >
+                    <span className="firstlesson-option-letter">{String.fromCharCode(65 + index)}</span>
+                    <span className="firstlesson-option-body">
+                      <span className="firstlesson-option-label">{option.label}</span>
+                    </span>
+                    {isCorrectOpt && <Check size={18} />}
+                    {isWrongOpt && <X size={18} />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {quizChecked && (
+              <div className={`firstlesson-feedback ${quizSelectedIsCorrect ? 'firstlesson-feedback-correct' : 'firstlesson-feedback-wrong'}`}>
+                {quizSelectedIsCorrect ? 'Correct. ' : 'Not quite. '}{currentQuizQ.explain}
+              </div>
+            )}
+
+            <div className="firstlesson-actions firstlesson-actions-stack">
+              {!quizChecked ? (
+                <button type="button" className="btn-primary firstlesson-primary" onClick={checkQuiz} disabled={!quizSelectedId}>
+                  Check answer
+                </button>
+              ) : (
+                <button type="button" className="btn-primary firstlesson-primary" onClick={nextQuiz}>
+                  {quizIndex + 1 >= quizQuestions.length ? 'Start lesson' : 'Next question'} <ChevronRight size={16} />
+                </button>
+              )}
+              <button type="button" className="btn-secondary firstlesson-skip-btn" onClick={beginCards}>
+                Skip to lesson
+              </button>
+            </div>
           </section>
         )}
 
@@ -255,7 +468,7 @@ export default function FirstLessonFlow({
               </span>
             </div>
             <div className="firstlesson-question">
-              <span>Pick the Thai for</span>
+              <span>{isSentenceLike(currentQuestion.correct) ? 'Pick the Thai sentence for:' : 'Pick the Thai word for:'}</span>
               <strong>{currentQuestion.prompt}</strong>
             </div>
             <div className="firstlesson-options">
@@ -314,12 +527,27 @@ export default function FirstLessonFlow({
 
         {step === 'complete' && (
           <section className="firstlesson-panel firstlesson-complete">
+            {showConfetti && <ConfettiBurst variant="strong" onDone={() => setShowConfetti(false)} />}
             <div className="firstlesson-complete-icon">
               <Sparkles size={34} />
             </div>
-            <h1 className="firstlesson-title">Nice! You learned your first Thai words and sentence.</h1>
-            <p className="firstlesson-copy">
+            <h1 className="firstlesson-title">
+              {recap?.headline || 'Nice! You learned your first Thai words and sentence.'}
+            </h1>
+            {recap?.lead && <p className="firstlesson-copy">{recap.lead}</p>}
+            {Array.isArray(recap?.achievements) && recap.achievements.length > 0 && (
+              <ul className="firstlesson-recap-list">
+                {recap.achievements.map((item, i) => (
+                  <li key={i} className="firstlesson-recap-item">
+                    <CheckCircle2 size={16} className="firstlesson-recap-check" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="firstlesson-copy firstlesson-recap-score">
               You got {score} of {challengeQuestions.length} in the mini challenge.
+              {recap?.footnote ? ` ${recap.footnote}` : ''}
             </p>
             <button type="button" className="btn-primary firstlesson-primary" onClick={onComplete}>
               Unlock the app <ChevronRight size={16} />

@@ -888,3 +888,22 @@ unreliable). After sideloading the new APK, please verify on the phone:
 - Sound buttons never stay green.
 - Footer, landing chips, locked stage cards, and the elephant bubble look clean.
 - Light and dark switch feels instant.
+
+## First Lesson Pedagogy + Gamified Feedback (June 8, 2026)
+
+The first ~10 minutes were upgraded (pilot: Stage 1 Mission 1 only). Full
+write-up + Thai accuracy notes: [first-lesson-pedagogy-notes.md](first-lesson-pedagogy-notes.md).
+- Male-default learner perspective is now explicit (config + intro + primer);
+  female toggle is future work.
+- A short **Thai Basics Primer** (~2 min, skippable) and a 5-question **quick
+  check** run before the first cards in the guided starter lesson.
+- Correct/wrong answers get soft Web Audio cues (`playCorrect`/`playWrong`, gated
+  by the Sound Effects setting) plus a green glow / soft nudge that respect
+  `prefers-reduced-motion`.
+- A motivational **mission recap** shows on the first-lesson complete screen.
+- Quiz wording clarified to "word" vs "sentence" (no logic/scope change).
+- TTS prefers a male Thai voice when the device exposes one; safe fallback
+  otherwise (voice gender depends on installed device voices).
+
+After sideloading the new APK, also verify: primer + quick check appear before
+the first cards; correct/wrong sound + visual fire; recap shows on completion.

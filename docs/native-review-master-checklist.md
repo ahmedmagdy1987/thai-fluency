@@ -109,3 +109,16 @@ Content can be called final once a native speaker has gone through the HIGH and
 MEDIUM priority stages and either **Approved** them or logged fixes in
 `docs/native-review-issues.md`, and those fixes have been applied. LOWER-priority
 stages can be approved during or shortly after beta.
+
+## First-lesson primer copy — needs a native pass (June 8, 2026)
+
+The Stage 1 Mission 1 pilot added a Thai Basics Primer, a primer quiz, and a
+mission recap (see `docs/first-lesson-pedagogy-notes.md`). Every Thai string in
+that copy is reused from existing pilot cards (no new Thai invented), and the
+ไม่ vs ไหม wording mirrors the verified note already on card 250. A quick native
+review is still recommended before any wider rollout:
+- Primer/quiz/recap English glosses + romanization tone (beginner-friendly,
+  accurate, not over-teaching ฉัน / chán).
+- Romanization consistency for ชื่อ: card 1661 shows `chêu`, card 330's phonetic
+  uses `chûe`. Both are existing data; the primer references the card rather than
+  picking one. Flag for a consistency decision (no card-data edits were made).

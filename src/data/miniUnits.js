@@ -49,6 +49,121 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     'A future sentence builder can let you arrange the Thai pieces yourself.',
   ],
   unlockMessage: 'Cards help you remember. Challenge helps you test yourself. Learn keeps you moving forward.',
+
+  // ── First-lesson pedagogy metadata (PILOT: Stage 1 Mission 1 only) ────────
+  // These three optional fields drive the Thai Basics Primer, the short primer
+  // quiz, and the motivational mission recap in FirstLessonFlow. They are
+  // intentionally data-driven and extensible: a future sprint can add the same
+  // shape to other units, but ONLY this pilot unit fills them today. No new Thai
+  // content is invented — every Thai string below already appears in the cards
+  // this unit teaches (สวัสดี 3396, ผม 1, ครับ 2, ชื่อ 1661, ใช่ 251, ไม่ 250,
+  // ขอบคุณ 2815, and sentence 330 'ผมชื่อ ___ ครับ'). ไม่/ไหม wording mirrors the
+  // verified note already on card 250. See docs/first-lesson-pedagogy-notes.md.
+  lessonPrimer: {
+    title: 'Before your first Thai words',
+    subtitle: 'Thai works differently from English. These quick rules make the first lesson easier.',
+    readMinutes: 2,
+    sections: [
+      {
+        heading: 'This path uses a male speaker',
+        body: 'You will learn from a male speaker point of view. Male speakers often end polite sentences with ครับ (khráp). Female speakers often use ค่ะ (khâ). A female mode can be added later.',
+      },
+      {
+        heading: 'Saying "I"',
+        body: 'A male speaker commonly says ผม (phǒm) for "I". You will see ผม in your first introduction sentence. Women often use ฉัน (chăn) for "I", but you do not need that yet.',
+      },
+      {
+        heading: 'The polite word ครับ',
+        body: 'ครับ (khráp) is not a word with its own meaning. It makes a sentence sound polite, and a male speaker adds it to the end of many sentences.',
+      },
+      {
+        heading: 'Word order can feel different',
+        body: 'In Thai, a describing word often comes after the thing it describes. So some Thai phrases are built in a different order than English. Do not worry about the grammar yet.',
+      },
+      {
+        heading: 'Asking yes or no',
+        body: 'Thai often turns a sentence into a yes/no question with a small question word near the end, ไหม (mǎi). You do not add a spoken question mark the way English does.',
+      },
+      {
+        heading: '"Not" is a different word',
+        body: 'ไม่ (mâi) means "not" and usually comes before the word it makes negative. This is NOT the same as the question word ไหม (mǎi). They are written differently and behave differently, even though the romanization can look similar.',
+      },
+      {
+        heading: 'Thai has tones',
+        body: 'Thai is a tonal language: the pitch of a syllable is part of the word. At the start, just listen to the audio and copy the rhythm. The app will help you.',
+      },
+    ],
+  },
+
+  pedagogyQuiz: {
+    title: 'Quick check',
+    subtitle: 'Five fast questions. No pressure, this just warms you up.',
+    questions: [
+      {
+        id: 'polite-particle',
+        prompt: 'In this first path, which polite word does a male speaker add at the end of sentences?',
+        options: [
+          { id: 'a', label: 'ครับ (khráp)', correct: true },
+          { id: 'b', label: 'ค่ะ (khâ)' },
+          { id: 'c', label: 'ไม่ (mâi)' },
+        ],
+        explain: 'Male speakers use ครับ (khráp). Female speakers use ค่ะ (khâ).',
+      },
+      {
+        id: 'phom-meaning',
+        prompt: 'What does ผม (phǒm) usually mean in this lesson?',
+        options: [
+          { id: 'a', label: '"I", from a male speaker', correct: true },
+          { id: 'b', label: '"you"' },
+          { id: 'c', label: '"name"' },
+        ],
+        explain: 'ผม (phǒm) is a common way for a male speaker to say "I".',
+      },
+      {
+        id: 'mai-not',
+        prompt: 'Which word means "not" (it makes something negative)?',
+        options: [
+          { id: 'a', label: 'ไม่ (mâi)', correct: true },
+          { id: 'b', label: 'ไหม (mǎi)' },
+          { id: 'c', label: 'ครับ (khráp)' },
+        ],
+        explain: 'ไม่ (mâi) means "not" and usually comes before the word it makes negative.',
+      },
+      {
+        id: 'mai-question',
+        prompt: 'Which word can turn a sentence into a yes or no question?',
+        options: [
+          { id: 'a', label: 'ไหม (mǎi)', correct: true },
+          { id: 'b', label: 'ไม่ (mâi)' },
+          { id: 'c', label: 'ผม (phǒm)' },
+        ],
+        explain: 'ไหม (mǎi) is a question word, often near the end of a sentence. It is different from ไม่ (mâi).',
+      },
+      {
+        id: 'tones-first',
+        prompt: 'What should you do first with Thai tones?',
+        options: [
+          { id: 'a', label: 'Listen and copy the rhythm', correct: true },
+          { id: 'b', label: 'Memorize every tone rule first' },
+          { id: 'c', label: 'Skip the audio' },
+        ],
+        explain: 'At the start, listen to the audio and copy the rhythm. The tone rules come later.',
+      },
+    ],
+  },
+
+  missionRecap: {
+    headline: 'Nice. You can start a polite introduction in Thai.',
+    lead: 'You are not memorizing random words. You are building your first real Thai introduction.',
+    achievements: [
+      'Greet politely: สวัสดีครับ (hello, male)',
+      'Introduce yourself: ผมชื่อ ___ ครับ (my name is ___)',
+      'Recognize ครับ (khráp) as a male polite ending',
+      'Notice how Thai builds short sentences',
+      'Listen and repeat Thai sounds',
+    ],
+    footnote: 'This is a strong first step. Keep going to add more.',
+  },
 };
 
 // Additional Stage 1 mini-units. Every card id below is an EXISTING Stage 1

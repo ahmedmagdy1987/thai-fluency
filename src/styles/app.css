@@ -2458,6 +2458,61 @@ button.character-coach-portrait { cursor: pointer; }
 .firstlesson-feedback { border: 1px solid var(--line); border-radius: 12px; margin-top: 12px; padding: 12px; font-size: 13px; font-weight: 800; }
 .firstlesson-feedback-correct { border-color: color-mix(in srgb, var(--jade) 35%, var(--line)); color: var(--jade); }
 .firstlesson-feedback-wrong { border-color: color-mix(in srgb, var(--brick) 35%, var(--line)); color: var(--brick); }
+
+/* ── First-lesson pedagogy sprint: primer, quick check, recap, feedback motion ── */
+.firstlesson-perspective-note { font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; max-width: 460px; margin: 0 auto 16px; font-weight: 650; }
+
+/* Thai Basics Primer */
+.firstlesson-primer-head { display: flex; align-items: flex-start; gap: 12px; text-align: left; margin-bottom: 6px; }
+.firstlesson-primer-icon { width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); flex-shrink: 0; }
+.firstlesson-primer .firstlesson-title { font-size: 26px; margin: 2px 0 0; text-align: left; }
+.firstlesson-primer .firstlesson-copy { text-align: left; margin: 0 0 16px; }
+.firstlesson-primer-list { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.firstlesson-primer-item { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--line); border-radius: 13px; background: var(--cream-warm); padding: 13px 14px; }
+.firstlesson-primer-num { width: 24px; height: 24px; border-radius: 999px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 900; }
+.firstlesson-primer-text { min-width: 0; }
+.firstlesson-primer-heading { font-family: 'Fraunces', serif; font-size: 16px; line-height: 1.25; color: var(--jade); margin: 1px 0 4px; font-weight: 600; overflow-wrap: anywhere; }
+.firstlesson-primer-body { font-size: 13.5px; line-height: 1.5; color: var(--ink); margin: 0; overflow-wrap: anywhere; }
+.firstlesson-actions-stack { flex-direction: column; align-items: stretch; }
+.firstlesson-actions-stack .firstlesson-primary,
+.firstlesson-skip-btn { width: 100%; justify-content: center; }
+
+/* Quick-check (text-only multiple-choice options) */
+.firstlesson-option-text { min-height: 56px; }
+.firstlesson-option-label { font-size: 16px; font-weight: 750; line-height: 1.32; color: inherit; font-family: inherit; overflow-wrap: anywhere; }
+.firstlesson-quiz .firstlesson-question strong { font-size: 18px; line-height: 1.35; }
+.firstlesson-quiz .firstlesson-feedback { line-height: 1.45; }
+
+/* Motivational recap (complete step) */
+.firstlesson-recap-list { list-style: none; margin: 4px auto 18px; padding: 0; display: flex; flex-direction: column; gap: 8px; max-width: 430px; text-align: left; }
+.firstlesson-recap-item { display: flex; align-items: flex-start; gap: 9px; border: 1px solid color-mix(in srgb, var(--jade) 22%, var(--line)); background: color-mix(in srgb, var(--jade) 6%, var(--card-bg)); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
+.firstlesson-recap-check { color: var(--jade); flex-shrink: 0; margin-top: 1px; }
+.firstlesson-recap-score { font-size: 13px; font-weight: 700; margin-bottom: 18px; }
+
+/* Reward-screen achievements (extensible; unused until a caller passes them) */
+.reward-achievements { list-style: none; margin: 2px 0 16px; padding: 0; display: flex; flex-direction: column; gap: 7px; text-align: left; }
+.reward-achievement-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.reward-achievement-item svg { color: var(--jade); flex-shrink: 0; margin-top: 2px; }
+
+/* Soft, single-shot correct/wrong feedback motion. Glow adds NO layout width
+   (box-shadow only); the wrong nudge is a tiny translate inside a padded panel,
+   so neither causes horizontal overflow. Both disabled under reduced motion. */
+@keyframes fl-correct-glow {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--jade) 55%, transparent); }
+  100% { box-shadow: 0 0 0 9px transparent; }
+}
+@keyframes fl-wrong-nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.firstlesson-option-correct { animation: fl-correct-glow 480ms ease-out; }
+.firstlesson-option-wrong { animation: fl-wrong-nudge 300ms ease-in-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .firstlesson-option-correct,
+  .firstlesson-option-wrong { animation: none !important; }
+}
 .firstlesson-complete-icon { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
 .firstlesson-unlock-preview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 18px 0 16px; }
 .firstlesson-unlock-preview div { min-width: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--cream-warm); padding: 10px; text-align: left; }

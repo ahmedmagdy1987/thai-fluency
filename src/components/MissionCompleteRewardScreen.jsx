@@ -16,6 +16,7 @@ export default function MissionCompleteRewardScreen({
   streak = 0,
   nextStep = 'Keep practicing',
   gemsPreview = true,
+  achievements = [],
   onContinue,
 }) {
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
@@ -73,6 +74,17 @@ export default function MissionCompleteRewardScreen({
           <div className="reward-screen-eyebrow">Mission Complete</div>
           <h1 id="reward-screen-title" className="reward-screen-title">{title}</h1>
           <p className="reward-screen-sub">{subtitle}</p>
+
+          {Array.isArray(achievements) && achievements.length > 0 && (
+            <ul className="reward-achievements">
+              {achievements.map((item, i) => (
+                <li key={i} className="reward-achievement-item">
+                  <CheckCircle2 size={15} aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="reward-xp-card" aria-live="polite">
             <div className="reward-xp-label">

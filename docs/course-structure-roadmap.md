@@ -652,3 +652,17 @@ Both completion states now exist:
 - Native-speaker review pass across the eight matrices.
 - Optional: a global course-complete celebration when all 8 stage paths finish.
 - Optional: deepen any stage further (Stage 8 has ~20 unused clean builders).
+
+## First-lesson pedagogy pilot (June 8, 2026)
+
+Stage 1 Mission 1 (`stage-1-introductions-politeness`) is now a pedagogy pilot:
+a short Thai Basics Primer + a 5-question quick check before the first cards, a
+motivational mission recap, soft correct/wrong feedback, and male-default voice
+preference. The unit carries new **optional** metadata — `lessonPrimer`,
+`pedagogyQuiz`, `missionRecap` — read by `FirstLessonFlow`. See
+`docs/first-lesson-pedagogy-notes.md`.
+
+Extensibility (future work, intentionally NOT done in this sprint): the same
+metadata shape can be filled for other missions, plus stage-level recaps,
+cultural notes, and a borrowed-English-word bonus. A user-facing female speaker
+mode and re-opening the primer from Guide/Help are also deferred.
