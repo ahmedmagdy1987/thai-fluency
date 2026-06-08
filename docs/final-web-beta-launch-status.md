@@ -946,3 +946,15 @@ Manual checks after sideloading: Stage 2 first unlocked mission shows its intro
 before the cards; Stage 2 mission completion shows the recap; later Stage 2 units
 unlock sequentially; no overflow at 360-430px; Sound Effects OFF still silent;
 Stage 1 primer and intros/recaps still work.
+
+**APK status (this sprint):** the web build, all validation scripts, the route
+smoke, and `npx cap sync android` passed, but the debug **APK was not rebuilt in
+this session**: the Android toolchain was absent on the recovery machine (no JDK 21
+- only JRE 1.8 with no `javac` - and no Android SDK or Gradle). Because the Stage 2
+change is metadata-only and the JS compiles cleanly (web build), the APK is a
+packaging step only and carries no committed artifact. Rebuild it on a machine with
+the toolchain via `scripts\android-build.cmd` (installs per
+`docs/mobile-app-launch-checklist.md`: Microsoft OpenJDK 21, Android SDK
+platforms;android-36 + build-tools;36.0.0 + platform-tools, Gradle 8.14.3), then
+verify `android\app\build\outputs\apk\debug\app-debug.apk` and that the Stage 2
+intros/recaps appear. Do not commit the APK.
