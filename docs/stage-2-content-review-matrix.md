@@ -71,3 +71,36 @@ Please mark each "Needs native review" row **approved** or **change**, and note
 any wording/tokenization fixes. Approved builders stay; flagged ones can be
 demoted to sentence-shown-only (drop `sentenceBuilder`) without changing any card
 data. Once approved, this pattern can be reused to deepen Stage 3 next.
+
+## Mission intros + recaps added (Sprint 3, June 8, 2026)
+
+All 10 Stage 2 units above now carry beginner `lessonIntro` and `missionRecap`
+metadata, matching the Stage 1 teaching model (rendered by the existing
+`MiniUnitFlow` intro and complete steps, no component logic changes). This is the
+same lightweight "feel like a teacher and a game" copy: a short intro card (You
+will learn / Why it matters / Listen for / Notice) before the cards, and a
+"now you can..." recap on completion.
+
+- **Metadata only.** No Thai card content, meanings, or phonetics were changed, and
+  no Thai was invented. Every Thai string in the new copy is one of the unit's own
+  vocab/sentence/builder words. English glosses were aligned to each card's `en`
+  (for example เก็บ shown as "save", วาง shown as "lay").
+- **Safety.** No culture/religion/statistics, no fluency claims, no em or en dash
+  characters, no money symbols. ไม่ vs ไหม / มั้ย kept distinct (มั้ย is described
+  as a casual sentence-final question particle, explicitly different from ไม่).
+- **Checked.** Word counts (lead + four points) fall in 120-220; achievement
+  bullets are 3-5 per unit. The copy was machine-linted and adversarially reviewed
+  (Thai-accuracy + pedagogy/tone lenses) before commit.
+- **Native review:** the simple grammar generalizations in the new copy (for
+  example "ไม่ goes before the verb", "มาก follows a describing word", "สิบ helps
+  build larger numbers", เย็น also meaning "evening") are listed for a native pass
+  in `docs/native-review-master-checklist.md`. Non-blocking.
+
+**Stage-level intro note (Part 11):** a dedicated per-stage intro surface was NOT
+added. `MiniUnitFlow` renders per-unit intros and there is no per-stage intro slot
+today; building one is documented here as future work rather than forcing a new
+system. The first Stage 2 unit's `lessonIntro` already opens by framing Stage 2 as
+moving from first introductions into everyday actions.
+
+**Next:** expanding this intro/recap model to Stages 3-8 is deferred pending owner
+approval.

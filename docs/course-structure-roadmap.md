@@ -681,3 +681,28 @@ Sprint 2 extended the guided-teaching style to all of Stage 1 (Stage 1 only):
 **Deferred (needs owner approval before starting):** applying the same
 `lessonIntro` / `missionRecap` model to Stages 2-8, plus stage-level recaps and
 cultural notes. The shared component + generic metadata keep that additive.
+
+## Stage 2 mission intros + recaps (June 8, 2026)
+
+Sprint 3 extended the guided-teaching style to all of Stage 2 (Stage 2 only):
+- All 10 Stage 2 mini-units gained a short `lessonIntro` (shown before the cards
+  in `MiniUnitFlow`) and a `missionRecap` (shown on completion). Data lives on each
+  unit in `src/data/miniUnits.js`; rendering uses the existing `MiniUnitFlow` steps
+  with no component logic changes.
+- Metadata only: no Thai card content, meanings, or phonetics changed; no Thai
+  invented. English glosses were aligned to each card's `en` (for example เก็บ as
+  "save", วาง as "lay"). ไม่ vs ไหม / มั้ย kept distinct. No culture/stats, no
+  fluency claims, no em/en dashes, no money symbols.
+- The new copy was machine-linted and adversarially reviewed (Thai-accuracy +
+  pedagogy/tone lenses); minor overclaim/gloss fixes were applied. All grammar
+  generalizations are logged in `docs/native-review-master-checklist.md`.
+
+**Stage-level intro note:** not added. `MiniUnitFlow` renders per-unit intros, and
+the Learn path has no per-stage intro slot today; a stage-level "now we move into
+more useful daily Thai" note is documented as future work rather than forcing a new
+system (see the review matrix). The first Stage 2 unit's `lessonIntro` already opens
+with a "moving from first introductions into everyday actions" framing.
+
+**Deferred (needs owner approval before starting):** applying the same
+`lessonIntro` / `missionRecap` model to Stages 3-8, plus a dedicated stage-level
+intro/recap surface. Stage 2 is now done.

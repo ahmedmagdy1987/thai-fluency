@@ -440,6 +440,25 @@ export const STAGE_2_UNIT_ACTIONS = unit({
       { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
     ], answer: ['phom', 'rak', 'khun'],
   },
+  lessonIntro: {
+    lead: 'This mission gives you a handful of everyday action words, the verbs you reach for all day long. By the end you can say one of the warmest sentences in Thai, ผมรักคุณ, which means I love you.',
+    points: [
+      { label: 'You will learn', text: 'Common action verbs like ดื่ม (drink), ซื้อ (buy), ทำงาน (work), and เดิน (walk), along with เปิด and ปิด, which cover open and close as well as turn on and turn off.' },
+      { label: 'Why it matters', text: 'Verbs are the engine of every sentence. Once you can name a few everyday actions, you have the building blocks you need for simple sentences about what people do.' },
+      { label: 'Listen for', text: 'The pair เปิด (open) and ปิด (close). They sound similar, so listen closely for the small difference in the vowel sound between them.' },
+      { label: 'Notice', text: 'Thai keeps verbs simple. The word does not change for I, you, or someone else. ผมรักคุณ is just I, then love, then you, placed in that order.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can name the actions you do every day.',
+    lead: 'You are turning single words into things you can actually do and say in Thai.',
+    achievements: [
+      'Use everyday verbs like ดื่ม (drink), ซื้อ (buy), and ทำงาน (work)',
+      'Open and close things with เปิด and ปิด',
+      'Say the warm sentence ผมรักคุณ (I love you)',
+      'Put a simple I plus verb plus you sentence in the right order',
+    ],
+  },
 });
 export const STAGE_2_UNIT_DOING = unit({
   unitId: 'stage-2-getting-things-done', stageId: 2,
@@ -452,6 +471,25 @@ export const STAGE_2_UNIT_DOING = unit({
       { id: 'mai', thai: 'ไม่', ph: 'mâi', en: 'not' },
       { id: 'chop', thai: 'ชอบ', ph: 'chôp', en: 'to like' },
     ], answer: ['phom', 'mai', 'chop'],
+  },
+  lessonIntro: {
+    lead: 'Here you pick up more action verbs for getting things done, plus your first easy way to say that you do not like something. You will build the sentence ผมไม่ชอบ, which means I do not like it.',
+    points: [
+      { label: 'You will learn', text: 'Useful verbs such as ส่ง (send), หยุด (stop), ออก (leave or exit), and ขึ้น (go up or get on), and how the word ไม่ turns a verb negative.' },
+      { label: 'Why it matters', text: 'These verbs come up all the time when you are out and about, and saying clearly that something is not for you with ผมไม่ชอบ is a handy, confident first step.' },
+      { label: 'Listen for', text: 'The short word ไม่ (not) right before a verb. In ผมไม่ชอบ it sits between I and like, and it flips the meaning of the sentence.' },
+      { label: 'Notice', text: 'To make something negative, Thai simply puts ไม่ in front of the verb. The rest of the sentence stays the same, so one small word does all the work.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can take action and say no.',
+    lead: 'You can move through everyday situations and clearly say when something is not for you.',
+    achievements: [
+      'Use action verbs like ส่ง (send), หยุด (stop), and ออก (leave)',
+      'Say you do not like something with ผมไม่ชอบ',
+      'Use ไม่ to make a verb negative',
+      'Handle small moments like stopping or getting on',
+    ],
   },
 });
 // Stage 2 — expanded coverage. Stage 2's clean vocabulary is verb- and
@@ -470,6 +508,25 @@ export const STAGE_2_UNIT_TALK = unit({
       { id: 'ruu', thai: 'รู้', ph: 'rúu', en: 'to know' },
     ], answer: ['phom', 'mai', 'ruu'],
   },
+  lessonIntro: {
+    lead: 'This mission is about talking and thinking, the verbs you use when you chat, guess, or hope. You will also learn an honest and very handy phrase, ผมไม่รู้, which means I do not know.',
+    points: [
+      { label: 'You will learn', text: 'Verbs for conversation and the mind, like คุย (chat), นึก (think), เดา (guess), and หวัง (hope), plus the sentence ผมไม่รู้ (I do not know).' },
+      { label: 'Why it matters', text: 'Real conversations are full of guessing and of not knowing. Being able to say I do not know keeps a chat moving instead of leaving you stuck and silent.' },
+      { label: 'Listen for', text: 'Once again the word ไม่ (not), this time inside ผมไม่รู้. Notice how it comes right before รู้, the word for to know.' },
+      { label: 'Notice', text: 'You are reusing the same pattern from the last mission, I plus ไม่ plus a verb. One small structure already covers many honest, everyday replies.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can talk about thinking and not knowing.',
+    lead: 'You can keep a friendly chat going, even in the moments when you are not sure.',
+    achievements: [
+      'Use conversation verbs like คุย (chat) and เดา (guess)',
+      'Talk about hoping with หวัง',
+      'Say ผมไม่รู้ (I do not know) when you are unsure',
+      'Reuse the I plus not plus verb pattern',
+    ],
+  },
 });
 export const STAGE_2_UNIT_AROUND = unit({
   unitId: 'stage-2-out-and-about', stageId: 2,
@@ -482,6 +539,25 @@ export const STAGE_2_UNIT_AROUND = unit({
       { id: 'nai', thai: 'ไหน', ph: 'nǎi', en: 'where' },
       { id: 'maa', thai: 'มา', ph: 'maa', en: 'to come' },
     ], answer: ['pai', 'nai', 'maa'],
+  },
+  lessonIntro: {
+    lead: 'Now you head out and about with everyday verbs for moving around and handling things, plus a friendly question you will hear a lot, ไปไหนมา, which means where did you go.',
+    points: [
+      { label: 'You will learn', text: 'Action words like จอด (park), ยืม (borrow), วาง (lay), and เล่น (play), plus the casual question ไปไหนมา (where did you go).' },
+      { label: 'Why it matters', text: 'These cover small daily moments such as parking, borrowing, and putting things down, plus the kind of question that friends ask each other all the time.' },
+      { label: 'Listen for', text: 'The question word ไหน (where) inside ไปไหนมา. It sits neatly between ไป (go) and มา (come), so the whole question flows together as one short, smooth phrase.' },
+      { label: 'Notice', text: 'ไปไหนมา is built from just three tiny words, go, where, and come. Short pieces like these stack together into a real, natural question.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can get out and ask where someone has been.',
+    lead: 'You can talk about moving around and start a friendly catch up with someone.',
+    achievements: [
+      'Use everyday verbs like จอด (park), ยืม (borrow), and เล่น (play)',
+      'Ask ไปไหนมา (where did you go)',
+      'Hear the question word ไหน (where) inside a sentence',
+      'Build a short question from go, where, and come',
+    ],
   },
 });
 export const STAGE_2_UNIT_DAILY2 = unit({
@@ -496,17 +572,74 @@ export const STAGE_2_UNIT_DAILY2 = unit({
       { id: 'loei', thai: 'เลย', ph: 'loei', en: 'really / go on' },
     ], answer: ['tham', 'pai', 'loei'],
   },
+  lessonIntro: {
+    lead: 'This mission adds another set of everyday verbs, from saving and waiting to eating, plus a short, encouraging phrase, ทำไปเลย, which means go ahead and do it.',
+    points: [
+      { label: 'You will learn', text: 'Useful verbs like เก็บ (save), คอย (wait), and ทาน (eat), plus the friendly phrase ทำไปเลย (go ahead and do it).' },
+      { label: 'Why it matters', text: 'Waiting, keeping things, and eating come up every single day. A phrase like go ahead also helps you sound relaxed and natural when you are with friends.' },
+      { label: 'Listen for', text: 'The little word เลย at the end of ทำไปเลย. It adds a go on, do it feeling to the whole sentence.' },
+      { label: 'Notice', text: 'Thai often ends a sentence with a small word that adds a feeling. Here เลย gives a gentle push, without changing the main verb ทำ, the word for do.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can talk about daily actions and cheer someone on.',
+    lead: 'You can describe more of what you do and encourage a friend to go for it.',
+    achievements: [
+      'Use verbs like เก็บ (save), คอย (wait), and ทาน (eat)',
+      'Encourage someone with ทำไปเลย (go ahead and do it)',
+      'Hear how เลย adds feeling at the end of a sentence',
+      'Keep the main verb simple while adding a friendly tone',
+    ],
+  },
 });
 export const STAGE_2_UNIT_SIZES = unit({
   unitId: 'stage-2-sizes-and-speeds', stageId: 2,
   title: 'Sizes and speeds', subtitle: 'Small, cool, fast, slow, thick, a little, large, every.',
   vocabCardIds: [63, 65, 78, 79, 2923, 2737, 1833, 1622], challengeCardIds: [63, 78, 79],
   // No sentenceBuilder: Stage 2 adjective sentences are 2 tokens (too short).
+  lessonIntro: {
+    lead: 'This mission moves from action words to describing words. It gives you a small, handy set of adjectives for talking about size and speed in everyday life.',
+    points: [
+      { label: 'You will learn', text: 'Describing words like เล็ก (small) and โต (large), เร็ว (fast) and ช้า (slow), plus เย็น (cool) and นิด (a little bit).' },
+      { label: 'Why it matters', text: 'Sizes and speeds come up when you order food, shop, or ask a driver to slow down. A few clear adjectives make your meaning land right away.' },
+      { label: 'Listen for', text: 'Pairs that are opposites, like เร็ว (fast) and ช้า (slow). Learning two opposites together makes each one much easier to remember.' },
+      { label: 'Notice', text: 'The word เย็น can mean cool, as in a cold drink, and it is also the word for evening. The situation around you tells you which meaning fits.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can describe size and speed.',
+    lead: 'You can make your meaning clearer by saying how big or how fast something is.',
+    achievements: [
+      'Describe size with เล็ก (small) and โต (large)',
+      'Describe speed with เร็ว (fast) and ช้า (slow)',
+      'Ask for just a little with นิด',
+      'Remember that เย็น can mean cool or evening',
+    ],
+  },
 });
 export const STAGE_2_UNIT_QUALITIES = unit({
   unitId: 'stage-2-skills-and-qualities', stageId: 2,
   title: 'Skills and qualities', subtitle: 'Skilled, done, sure, rich, used to it, gone, most, all.',
   vocabCardIds: [77, 1973, 2235, 5715, 3012, 2014, 1982, 1762], sentenceCardId: 5228, challengeCardIds: [77, 2235, 5715],
+  lessonIntro: {
+    lead: 'This mission gives you words for skills and qualities, and one of the nicest little compliments in Thai, เก่งมาก, which means very good or nice job.',
+    points: [
+      { label: 'You will learn', text: 'Describing words like เก่ง (skilled), เสร็จ (done or finished), แน่ (sure), and รวย (rich), plus the warm compliment เก่งมาก (very good).' },
+      { label: 'Why it matters', text: 'Telling someone they did well, or saying that you are sure or already finished, makes everyday talk warmer, kinder, and much clearer. A kind word is always remembered.' },
+      { label: 'Listen for', text: 'The word มาก (very) right after เก่ง. Thai often puts มาก after a describing word to make it stronger, much like stressing a word in English.' },
+      { label: 'Notice', text: 'เก่งมาก is simply skilled plus very. You will hear the same pattern, a word plus มาก, in many other compliments and descriptions.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can describe skills and give a compliment.',
+    lead: 'You can tell someone they did a great job and talk about being sure or finished.',
+    achievements: [
+      'Describe qualities with เก่ง (skilled) and แน่ (sure)',
+      'Say you are finished with เสร็จ',
+      'Give the compliment เก่งมาก (very good)',
+      'Use มาก (very) to make a describing word stronger',
+    ],
+  },
   // sentenceCard shown for context; no builder (เก่งมาก is 2 tokens — too short).
 });
 export const STAGE_2_UNIT_FEELINGS = unit({
@@ -521,17 +654,74 @@ export const STAGE_2_UNIT_FEELINGS = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'hiu', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'This mission is about feelings, the words for how you feel inside, from a little afraid to genuinely happy. You will also build a useful daily sentence, ผมหิวครับ, which means I am hungry.',
+    points: [
+      { label: 'You will learn', text: 'Feeling words like กลัว (afraid), อาย (shy), and สุข (happiness), plus the polite sentence ผมหิวครับ (I am hungry).' },
+      { label: 'Why it matters', text: 'Being able to share how you feel, even in a simple way, helps people understand you and look after you. Saying you are hungry is a friendly, easy place to start.' },
+      { label: 'Listen for', text: 'The polite ending ครับ at the end of ผมหิวครับ, the same male polite word you met in your very first lessons.' },
+      { label: 'Notice', text: 'The sentence is just I, then the word for what you are feeling or needing, then the polite word ครับ. It is short and clear, with no extra grammar to worry about yet.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can talk about how you feel.',
+    lead: 'You can share simple feelings and politely tell someone when you are hungry.',
+    achievements: [
+      'Name feelings like กลัว (afraid) and อาย (shy)',
+      'Talk about happiness with สุข',
+      'Say ผมหิวครับ (I am hungry) politely',
+      'Use the polite ending ครับ once again',
+    ],
+  },
 });
 export const STAGE_2_UNIT_NUMBERS = unit({
   unitId: 'stage-2-counting', stageId: 2,
   title: 'Counting', subtitle: 'Three, four, six, seven, ten, thousand.',
   vocabCardIds: [232, 233, 235, 236, 239, 241], challengeCardIds: [232, 233, 239],
   // No sentenceCard/builder: Stage 2 has no clean number sentence to tokenize.
+  lessonIntro: {
+    lead: 'This mission adds more numbers to the ones you already know. With them you can count further and start to recognize prices, room numbers, and amounts that people say to you.',
+    points: [
+      { label: 'You will learn', text: 'Numbers including สาม (three), สี่ (four), หก (six), เจ็ด (seven), สิบ (ten), and พัน (one thousand), each one a word you will use often.' },
+      { label: 'Why it matters', text: 'Numbers are everywhere, on menus, on signs, and whenever someone tells you an amount. Knowing more of them helps you follow what you hear and reply with confidence.' },
+      { label: 'Listen for', text: 'The word สิบ (ten). In Thai, ten helps build many of the larger numbers that you will meet in later lessons.' },
+      { label: 'Notice', text: 'These numbers join the ones from earlier stages. Little by little your counting reaches higher, and you will not need any new tricks to get there.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can count with more numbers.',
+    lead: 'You can recognize and say more of the numbers you meet every day.',
+    achievements: [
+      'Count with สาม (three), สี่ (four), and หก (six)',
+      'Say เจ็ด (seven) and สิบ (ten)',
+      'Reach bigger amounts with พัน (one thousand)',
+      'Add these to the numbers you already knew',
+    ],
+  },
 });
 export const STAGE_2_UNIT_CONNECTORS = unit({
   unitId: 'stage-2-connectors-questions', stageId: 2,
   title: 'Connectors and questions', subtitle: 'Must, with, or, let\'s, "right?", "and you?", is, from.',
   vocabCardIds: [256, 291, 292, 4038, 5704, 1275, 1625, 1598], sentenceCardId: 857, challengeCardIds: [256, 292, 5704],
+  lessonIntro: {
+    lead: 'This mission gives you small but powerful words that join your ideas together and turn sentences into questions. You will also meet a short, common question, ใครครับ, which means who.',
+    points: [
+      { label: 'You will learn', text: 'Connecting words like กับ (with), หรือ (or), and จาก (from), the casual question word มั้ย, and ล่ะ, which is used for and you.' },
+      { label: 'Why it matters', text: 'These little words glue your sentences together and let you ask simple questions. They make short replies feel natural and warm instead of choppy.' },
+      { label: 'Listen for', text: 'The word มั้ย at the very end of a sentence. In casual, everyday speech it turns a plain statement into a yes or no question.' },
+      { label: 'Notice', text: 'มั้ย is a casual question word that goes at the end of a sentence. It is different from the word that means not, even though the two can look similar when written in English letters.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can join ideas and ask simple questions.',
+    lead: 'You can connect your words together and turn a sentence into a question.',
+    achievements: [
+      'Join ideas with กับ (with), หรือ (or), and จาก (from)',
+      'Ask a yes or no question with มั้ย',
+      'Ask and you with ล่ะ',
+      'Ask who with ใครครับ',
+    ],
+  },
   // sentenceCard shown for context; no builder (ใครครับ is 2 tokens — too short).
 });
 

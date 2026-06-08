@@ -137,3 +137,54 @@ expansion to later stages:
 - Prices (`stage-1-prices-shopping`): เท่าไหร่, เงิน, ถูก, แพง.
 Check English glosses + tone are beginner-accurate and that no claim over-teaches
 grammar. Expanding this model to Stages 2-8 is deferred pending owner approval.
+
+## Stage 2 mission intros + recaps copy — needs a native pass (June 8, 2026)
+
+Sprint 3 added `lessonIntro` and `missionRecap` text to all 10 Stage 2 mini-units
+(see `docs/first-lesson-pedagogy-notes.md` and `docs/stage-2-content-review-matrix.md`).
+Metadata only: no Thai card content, meanings, or phonetics were changed, and no
+Thai was invented (every Thai string reuses the unit's own vocab/sentence/builder
+words). English glosses were aligned to the card `en` values. ไม่ vs ไหม / มั้ย are
+kept distinct (the connectors unit states มั้ย is different from ไม่; it never
+equates them). No culture/religion/statistics, no fluency claims, no em/en dashes,
+no money symbols. The copy was machine-linted and adversarially reviewed before
+commit; the items below are simple, beginner-safe generalizations that should
+still get a quick native confirmation (recommended, non-blocking):
+
+- **Everyday actions** (`stage-2-everyday-actions`): "verbs do not change form";
+  ผมรักคุณ described as I + love + you (subject-verb-object order); เปิด (bpòet)
+  vs ปิด (bpìt) framed as differing mainly in the vowel sound (both are written
+  with a low-tone mark) - confirm this contrast framing is fair for beginners;
+  dual gloss เปิด = open / turn on, ปิด = close / turn off matches the cards.
+- **Getting things done** (`stage-2-getting-things-done`): ไม่ placed before the
+  verb to negate; in ผมไม่ชอบ, ไม่ sits between ผม (I) and ชอบ (like).
+- **Talking and thinking** (`stage-2-talking-thinking`): same ไม่-before-verb
+  negation ("I + ไม่ + verb") and the cross-unit "same pattern as the last
+  mission" continuity reference.
+- **Out and about** (`stage-2-out-and-about`): ไปไหนมา presented as ไป (go) +
+  ไหน (where) + มา (come) and as a natural everyday question; gloss "where did you
+  go" for a sentence whose card en is "Where did you go? / Where have you been?";
+  วาง glossed "lay" (matches card).
+- **Everyday actions II** (`stage-2-everyday-actions-2`): the sentence-final
+  particle เลย described as "adding a feeling / a gentle push"; ทำไปเลย shown as
+  a simple stack (note ไป here is aspectual, not literal "to go"); เก็บ glossed
+  "save" (matches card).
+- **Sizes and speeds** (`stage-2-sizes-and-speeds`): the secondary meaning that
+  เย็น also means "evening" (correct, but beyond the card en "cool / cold");
+  เร็ว / ช้า presented as an opposites pair; describing words treated as
+  adjectives.
+- **Skills and qualities** (`stage-2-skills-and-qualities`): มาก placed after a
+  describing word to intensify it; เก่งมาก decomposed as skilled + very; เสร็จ
+  glossed "done or finished" (card en is "completed").
+- **Feelings** (`stage-2-feelings`): ผมหิวครับ described as I + the feeling/need
+  word + the male polite particle ครับ; หิว (hungry) grouped with the feelings
+  vocab; ครับ continuity callback to the first lessons.
+- **Counting** (`stage-2-counting`): the generalization that สิบ (ten) helps build
+  larger numbers met in later lessons.
+- **Connectors and questions** (`stage-2-connectors-questions`): มั้ย as a casual
+  sentence-final yes/no question particle; ล่ะ used for "and you? / what about?";
+  the statement that มั้ย is different from ไม่ (confirm the phrasing reads as
+  clearly distinct, not as equating them); ใครครับ glossed simply as "who".
+
+Expanding this model to Stages 3-8 is deferred pending owner approval (Stage 2 is
+now done).

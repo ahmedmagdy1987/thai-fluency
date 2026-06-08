@@ -157,3 +157,57 @@ kept distinct (the yes-no intro stays within its own cards and does not introduc
 **Future plan:** expand this lessonIntro/missionRecap model to Stages 2-8 **only
 after owner approval** — not in this sprint. The shared component and generic
 metadata make that purely additive.
+
+## Sprint 3: Stage 2 mission intros + recaps (June 8, 2026)
+
+Applied the same guided-teaching style to **all of Stage 2** (Stage 2 only;
+Stages 1 and 3-8 deliberately untouched). This is metadata-only: no Thai card
+content, meanings, or phonetics were changed, and no Supabase, payments, ads,
+subscriptions, or build artifacts were touched.
+
+**What changed**
+- **Lesson intros** (`lessonIntro`) added to all 10 Stage 2 mini-units. Each
+  answers four beginner questions in a compact card: You will learn / Why it
+  matters / Listen for / Notice. Rendered by the existing `MiniUnitFlow` intro
+  step (no component logic changes were needed; it already reads `lessonIntro`).
+- **Mission recaps** (`missionRecap`) added to all 10 Stage 2 mini-units: a
+  mission-specific headline, an encouraging lead, and 3-5 "now you can..."
+  achievement bullets. Rendered by the existing `MiniUnitFlow` complete step.
+- **Reused feedback only:** no new sounds, no confetti, no logic changes. The
+  correct/wrong cues and option glow/nudge from earlier sprints are unchanged.
+
+**Data shape (Stage 2, same as Stage 1)**
+```
+lessonIntro: { lead, points: [{ label, text }] }     // ~120-220 words/mission
+missionRecap: { headline, lead, achievements: [..] } // 3-5 bullets
+```
+
+**Stage 2 units covered (10):** stage-2-everyday-actions, stage-2-getting-things-done,
+stage-2-talking-thinking, stage-2-out-and-about, stage-2-everyday-actions-2,
+stage-2-sizes-and-speeds, stage-2-skills-and-qualities, stage-2-feelings,
+stage-2-counting, stage-2-connectors-questions.
+
+**Thai accuracy:** every Thai string in the new copy reuses words each unit
+already teaches (its vocab cards, its sentence card, or its sentence-builder
+tokens), verified against the card dataset. English glosses were aligned to the
+card `en` values (for example เก็บ shown as "save", วาง shown as "lay"). No Thai
+was invented, no card data changed. ไม่ vs ไหม are kept distinct: the connectors
+unit describes มั้ย as a casual sentence-final question particle and states it is
+different from ไม่ (not), without ever equating them. No culture, religion, or
+statistics facts; no fluency claims; no em or en dash characters; no money symbols.
+Word counts (lead plus the four point texts) were checked to fall in 120-220.
+
+**Verification:** the new copy was machine-linted (word counts, banned characters,
+required point labels, achievement counts) and adversarially reviewed by an
+independent per-unit pass (Thai-accuracy lens + pedagogy/tone-safety lens). Minor
+overclaim and gloss-consistency findings were corrected (for example a "talk about
+what you are doing now / next" line that implied untaught tense/aspect, and a
+"you already know" prior-knowledge assumption). All grammar generalizations are
+logged for native review in `docs/native-review-master-checklist.md`.
+
+> **Native review still recommended** for all new Stage 2 intro/recap copy (tone,
+> glosses, and the simple grammar generalizations listed in the checklist).
+
+**Future plan:** expand the same lessonIntro/missionRecap model to **Stages 3-8
+only after owner approval** (Stage 2 is now done). The shared component and generic
+metadata keep that purely additive.

@@ -924,3 +924,25 @@ notes: [first-lesson-pedagogy-notes.md](first-lesson-pedagogy-notes.md).
 Manual checks after sideloading: later Stage 1 missions show intros before cards
 (unlock them by finishing the prior unit); recaps show on completion; "Open Thai
 basics" opens/closes; no overflow at 360-430px; Sound Effects OFF still silent.
+
+## Stage 2 mission intros + recaps (June 8, 2026)
+
+Extended the guided-teaching style to all of Stage 2 (Stage 2 only). Full notes:
+[first-lesson-pedagogy-notes.md](first-lesson-pedagogy-notes.md);
+review grid: [stage-2-content-review-matrix.md](stage-2-content-review-matrix.md).
+- All 10 Stage 2 mini-units now show a short, friendly **lesson intro** before the
+  cards (You will learn / Why it matters / Listen for / Notice).
+- All 10 Stage 2 missions now show a motivational **recap** on completion
+  (mission-specific headline + "now you can..." bullets). Reuses the existing
+  completion sound; no extra confetti/sound on mini-units.
+- Metadata only: no Thai card content changed; new copy uses only words each unit
+  already teaches, with glosses aligned to the card data. No culture/stats, no
+  fluency claims, no em/en dashes, no money symbols. Machine-linted and
+  adversarially reviewed; grammar generalizations logged for native review.
+- No schema, payments, ads, subscriptions, or secrets touched. APK is a build
+  artifact and is not committed.
+
+Manual checks after sideloading: Stage 2 first unlocked mission shows its intro
+before the cards; Stage 2 mission completion shows the recap; later Stage 2 units
+unlock sequentially; no overflow at 360-430px; Sound Effects OFF still silent;
+Stage 1 primer and intros/recaps still work.
