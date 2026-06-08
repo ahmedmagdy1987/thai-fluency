@@ -947,14 +947,13 @@ before the cards; Stage 2 mission completion shows the recap; later Stage 2 unit
 unlock sequentially; no overflow at 360-430px; Sound Effects OFF still silent;
 Stage 1 primer and intros/recaps still work.
 
-**APK status (this sprint):** the web build, all validation scripts, the route
-smoke, and `npx cap sync android` passed, but the debug **APK was not rebuilt in
-this session**: the Android toolchain was absent on the recovery machine (no JDK 21
-- only JRE 1.8 with no `javac` - and no Android SDK or Gradle). Because the Stage 2
-change is metadata-only and the JS compiles cleanly (web build), the APK is a
-packaging step only and carries no committed artifact. Rebuild it on a machine with
-the toolchain via `scripts\android-build.cmd` (installs per
-`docs/mobile-app-launch-checklist.md`: Microsoft OpenJDK 21, Android SDK
-platforms;android-36 + build-tools;36.0.0 + platform-tools, Gradle 8.14.3), then
-verify `android\app\build\outputs\apk\debug\app-debug.apk` and that the Stage 2
-intros/recaps appear. Do not commit the APK.
+**APK status (rebuilt June 8, 2026):** the Android toolchain was installed on this
+machine from official sources (Microsoft OpenJDK 21 at
+`C:\Users\bdstd\toolchain\jdk-21.0.11+10`; Android SDK cmdline-tools + platform-tools
++ platforms;android-36 + build-tools;36.0.0 at `%LOCALAPPDATA%\Android\Sdk`; Gradle
+8.14.3 at `C:\Users\bdstd\toolchain\gradle-8.14.3`). Web build, `npx cap sync
+android`, all validation scripts, and the route smoke pass. The debug APK was rebuilt
+via `scripts\android-build.cmd` (gradle assembleDebug, BUILD SUCCESSFUL):
+`android\app\build\outputs\apk\debug\app-debug.apk`, 6,427,392 bytes (about 6.13 MB),
+built 2026-06-08 18:47 from master `30317a0` (includes the Stage 2 intros/recaps).
+The APK remains a gitignored build artifact and is not committed.
