@@ -1,38 +1,60 @@
 import React from 'react';
 import {
   ArrowRight,
+  BookOpen,
   CheckCircle2,
-  Clock3,
-  Cloud,
+  Compass,
   MessageCircle,
   Repeat2,
+  Sparkles,
+  Target,
+  Trophy,
   Volume2,
 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { speakThai } from '../lib/audio.js';
 import { SITE_CONFIG } from '../config/site.js';
 
-const BENEFITS = [
+// Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
+// real part of the app (guided mini-units, the challenge step, mission recaps,
+// account sync) so nothing here is an unverified claim.
+const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'Mission recaps', 'Device sync'];
+
+// The early-stage "journey" preview. Stage names + themes match the real course
+// (Stage 1 Survival Thai, Stage 2 Daily Essentials, Stage 3 Getting Around) and
+// the mission content already shipped for Stages 1 to 3. No Thai content here.
+const JOURNEY = [
   {
+    n: 1,
     Icon: MessageCircle,
-    title: 'Speak from day one',
-    text: 'Start with useful phrases for greetings, food, taxis, prices, and help.',
+    stage: 'Stage 1',
+    title: 'First words and politeness',
+    text: 'Say hello, thank you, yes and no.',
+    start: true,
   },
   {
-    Icon: Repeat2,
-    title: 'Practice that adapts',
-    text: 'Smart flashcards and quick challenges keep the right words in rotation.',
+    n: 2,
+    Icon: Sparkles,
+    stage: 'Stage 2',
+    title: 'Daily essentials',
+    text: 'Everyday actions, feelings, and counting.',
   },
   {
-    Icon: Clock3,
-    title: 'Short daily lessons',
-    text: 'Build confidence in focused sessions that fit around real travel days.',
+    n: 3,
+    Icon: Compass,
+    stage: 'Stage 3',
+    title: 'Getting around',
+    text: 'People, places, time, and directions.',
   },
-  {
-    Icon: Cloud,
-    title: 'Progress everywhere',
-    text: 'Sync your learning across devices when you create your account.',
-  },
+];
+
+// The teacher-and-game loop every mission follows. Each step is something the
+// app actually does today (intro, flashcards, challenge, recap).
+const LOOP = [
+  { Icon: BookOpen, step: 'Learn', text: 'A short, friendly intro tells you what you are about to learn, with no grammar walls.' },
+  { Icon: Repeat2, step: 'Practice', text: 'Smart flashcards keep the right words and phrases in rotation.' },
+  { Icon: Target, step: 'Challenge', text: 'A quick challenge checks what stuck, with gentle hints.' },
+  { Icon: Trophy, step: 'Win', text: 'A proud recap and small wins celebrate what you just learned.' },
 ];
 
 const PHRASE_SOURCES = [
@@ -126,30 +148,35 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
         <div className="landing-hero-inner">
           <div className="landing-kicker">
-            <Volume2 size={16} />
-            Practical Thai for real places
+            <Sparkles size={16} aria-hidden="true" />
+            Your Thai adventure starts here
           </div>
           <h1 id="landing-title" className="landing-title">
-            Real Thai for real life.
+            Start speaking useful Thai, one mission at a time.
           </h1>
           <p className="landing-subtitle">
-            Learn the words, sounds, and phrases you actually need in Thailand.
+            Short guided missions teach the words, phrases, and patterns that help in real Thai moments.
           </p>
 
           <div className="landing-actions" aria-label="Start learning">
             <button type="button" className="btn-primary landing-primary-cta" onClick={onGetStarted}>
-              Get started
-              <ArrowRight size={17} />
+              Start your first mission
+              <ArrowRight size={17} aria-hidden="true" />
             </button>
             <button type="button" className="btn-secondary landing-secondary-cta" onClick={onSignIn}>
               I already have an account
             </button>
           </div>
 
+          <p className="landing-comfort">
+            <Sparkles size={15} aria-hidden="true" />
+            New to Thai? Perfect. Every mission opens with a simple, friendly explanation.
+          </p>
+
           <div className="landing-proof-row" aria-label="Highlights">
-            <span><CheckCircle2 size={15} /> Smart review</span>
-            <span><CheckCircle2 size={15} /> Quick challenges</span>
-            <span><CheckCircle2 size={15} /> Device sync</span>
+            {HERO_CHIPS.map(chip => (
+              <span key={chip}><CheckCircle2 size={15} aria-hidden="true" /> {chip}</span>
+            ))}
           </div>
 
           <div className="landing-mobile-phrases" aria-label="Try a phrase">
@@ -166,16 +193,64 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
       </section>
 
-      <section className="landing-benefits" aria-label="Key benefits">
-        {BENEFITS.map(({ Icon, title, text }) => (
-          <article className="landing-benefit" key={title}>
-            <div className="landing-benefit-icon">
-              <Icon size={20} />
+      <section className="landing-journey" aria-labelledby="landing-journey-title">
+        <div className="landing-section-head">
+          <span className="landing-eyebrow">Your journey</span>
+          <h2 id="landing-journey-title" className="landing-section-title">
+            Your first missions, one step at a time
+          </h2>
+        </div>
+        <ol className="landing-path">
+          {JOURNEY.map(({ n, Icon, stage, title, text, start }) => (
+            <li className={`landing-step${start ? ' landing-step-start' : ''}`} key={n}>
+              <div className="landing-step-node" aria-hidden="true">
+                <Icon size={20} />
+                <span className="landing-step-n">{n}</span>
+              </div>
+              <div className="landing-step-copy">
+                <span className="landing-step-stage">
+                  {stage}
+                  {start && <span className="landing-step-badge">Start here</span>}
+                </span>
+                <span className="landing-step-title">{title}</span>
+                <span className="landing-step-text">{text}</span>
+              </div>
+            </li>
+          ))}
+          <li className="landing-step landing-step-goal">
+            <div className="landing-step-node landing-step-node-goal" aria-hidden="true">
+              <Trophy size={20} />
             </div>
-            <h2>{title}</h2>
-            <p>{text}</p>
-          </article>
-        ))}
+            <div className="landing-step-copy">
+              <span className="landing-step-stage">Keep going</span>
+              <span className="landing-step-title">More missions ahead</span>
+              <span className="landing-step-text">Unlock new themes as you finish each one.</span>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section className="landing-loop" aria-labelledby="landing-loop-title">
+        <div className="landing-section-head">
+          <span className="landing-eyebrow">How it works</span>
+          <h2 id="landing-loop-title" className="landing-section-title">
+            Every mission is a small, friendly loop
+          </h2>
+        </div>
+        <div className="landing-benefits">
+          {LOOP.map(({ Icon, step, text }, index) => (
+            <article className="landing-benefit landing-loop-card" key={step}>
+              <div className="landing-benefit-icon">
+                <Icon size={20} aria-hidden="true" />
+              </div>
+              <h3 className="landing-loop-step">
+                <span className="landing-loop-num">{index + 1}</span>
+                {step}
+              </h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <footer className="landing-footer" aria-label="Public links">

@@ -62,22 +62,22 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
           <div className="auth-welcome-brand-wordmark">{SITE_CONFIG.siteName}</div>
           <div className="auth-welcome-brand-slogan">{SITE_CONFIG.slogan}</div>
         </div>
-        <h1 className="auth-welcome-title">Real Thai for real life.</h1>
+        <h1 className="auth-welcome-title">Ready for your first mission?</h1>
         <p className="auth-welcome-sub">
-          Learn the 150 essentials and you'll handle Bangkok in 6 weeks. Speak first, polish later.
+          Save your progress with a free account, or try a quick demo first. Every mission opens with a simple, friendly explanation.
         </p>
 
         <div className="auth-welcome-bullets">
           <div className="auth-welcome-bullet">
-            <span className="auth-welcome-bullet-icon">🌱</span>
-            <div><strong>Start with 6 missions.</strong> Practice greetings, food, taxis, prices, and help.</div>
+            <span className="auth-welcome-bullet-icon" aria-hidden="true">🌱</span>
+            <div><strong>Start with guided missions.</strong> Practice greetings, food, taxis, prices, and asking for help.</div>
           </div>
           <div className="auth-welcome-bullet">
-            <span className="auth-welcome-bullet-icon">🔄</span>
+            <span className="auth-welcome-bullet-icon" aria-hidden="true">🔄</span>
             <div><strong>Sync across devices.</strong> Your progress follows you from laptop to phone.</div>
           </div>
           <div className="auth-welcome-bullet">
-            <span className="auth-welcome-bullet-icon">🎯</span>
+            <span className="auth-welcome-bullet-icon" aria-hidden="true">🎯</span>
             <div><strong>Speak from day one.</strong> Use real phrases for Thailand, not textbook drills.</div>
           </div>
         </div>

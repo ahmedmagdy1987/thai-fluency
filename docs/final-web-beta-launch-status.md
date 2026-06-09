@@ -979,3 +979,34 @@ Manual checks after sideloading: Stage 3 first unlocked mission shows its intro
 before the cards; Stage 3 mission completion shows the recap; later Stage 3 units
 unlock sequentially; no overflow at 360-430px; Sound Effects OFF still silent;
 Stage 1 and Stage 2 primer/intros/recaps still work.
+
+## Homepage first impression polish (June 10, 2026)
+
+Polished the public landing (`PublicLanding.jsx`) and the `/welcome` AuthGate to
+feel more modern, gamified, and beginner-friendly, without a redesign or any
+route/flow change.
+- **Hero:** punchier gamified copy ("Start speaking useful Thai, one mission at a
+  time"), a clearer kicker and primary CTA ("Start your first mission"), a beginner
+  comfort note, and verifiable highlight chips. The character and tappable Thai
+  phrase cards (hello / how much? / this one) are kept.
+- **New "Your journey":** a small vertical path previewing the first three stages
+  (first words, daily essentials, getting around) with a "Start here" marker and a
+  goal node. Stage themes match the real course.
+- **New "How it works":** the teacher-and-game loop (Learn, Practice, Challenge,
+  Win), describing what each mission actually does today.
+- **/welcome:** removed an unverified timeframe claim ("handle Bangkok in 6 weeks")
+  and an inaccurate "6 missions" count; tone now matches the homepage.
+- **Safety/quality:** no Thai card content, lesson data, schema, payments, ads, or
+  audio touched. No fluency/timeframe/native claims, no money symbols, no em/en
+  dashes. CSS-only decoration; dark mode covered; reduced-motion respected; new
+  section labels darkened to meet AA contrast; decorative icons/emoji are
+  aria-hidden. Adversarially reviewed (copy, responsive/dark-mode, behavior,
+  accessibility) before commit.
+
+**Owner to verify manually:** eyeball the first impression on a real phone at 360
+to 430px (hero height, journey path, dark mode). The brand slogan ("Learn Thai the
+fast and fun way", in `config/site.js`) was left as the existing brand voice.
+
+Manual checks: homepage at 360/390/430px and tablet/desktop; no horizontal overflow
+or text overlap; dark mode; primary CTA, /get-started, /welcome, /demo, and Back
+from /demo to /welcome to /get-started all work; first lesson still starts.

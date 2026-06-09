@@ -729,3 +729,13 @@ opens by framing Stage 3 as moving into more useful daily Thai.
 
 **Deferred (needs owner approval before starting):** applying the same
 `lessonIntro` / `missionRecap` model to Stages 4-8. Stages 1-3 are now done.
+
+## Homepage first impression polish (June 10, 2026)
+
+Polished the public landing (`PublicLanding.jsx`) and the `/welcome` AuthGate to
+feel more modern and gamified: a stronger hero, a "Your journey" path previewing
+Stages 1 to 3, and a "Learn / Practice / Challenge / Win" mission-loop section
+(full notes in `docs/final-web-beta-launch-status.md`). Copy and CSS only; no route,
+flow, lesson-data, or audio changes. An unverified "6 weeks" timeframe claim on the
+/welcome screen was removed. Owner should review the first impression on a real
+phone (360 to 430px) and in dark mode.
