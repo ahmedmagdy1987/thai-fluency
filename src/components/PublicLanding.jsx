@@ -158,6 +158,26 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             Short guided missions teach the words, phrases, and patterns that help in real Thai moments.
           </p>
 
+          <div className="landing-hero-stage">
+            <span className="landing-hero-stage-glow" aria-hidden="true" />
+            <img
+              className="landing-hero-stage-mascot"
+              src="/characters/muay-thai/speaking.webp"
+              alt=""
+              aria-hidden="true"
+            />
+            <LandingPhraseCard
+              phrase={phrases[0]}
+              onPlay={playPhrase}
+              className="landing-stage-phrase landing-stage-phrase-a"
+            />
+            <LandingPhraseCard
+              phrase={phrases[1]}
+              onPlay={playPhrase}
+              className="landing-stage-phrase landing-stage-phrase-b"
+            />
+          </div>
+
           <div className="landing-actions" aria-label="Start learning">
             <button type="button" className="btn-primary landing-primary-cta" onClick={onGetStarted}>
               Start your first mission
@@ -176,18 +196,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           <div className="landing-proof-row" aria-label="Highlights">
             {HERO_CHIPS.map(chip => (
               <span key={chip}><CheckCircle2 size={15} aria-hidden="true" /> {chip}</span>
-            ))}
-          </div>
-
-          <div className="landing-mobile-phrases" aria-label="Try a phrase">
-            <div className="landing-mobile-phrases-title">Try a phrase</div>
-            {phrases.map(phrase => (
-              <LandingPhraseCard
-                phrase={phrase}
-                onPlay={playPhrase}
-                className="landing-mobile-phrase"
-                key={`mobile-${phrase.cardId}`}
-              />
             ))}
           </div>
         </div>
@@ -240,13 +248,15 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         <div className="landing-benefits">
           {LOOP.map(({ Icon, step, text }, index) => (
             <article className="landing-benefit landing-loop-card" key={step}>
-              <div className="landing-benefit-icon">
-                <Icon size={20} aria-hidden="true" />
+              <div className="landing-loop-head">
+                <div className="landing-benefit-icon">
+                  <Icon size={20} aria-hidden="true" />
+                </div>
+                <h3 className="landing-loop-step">
+                  <span className="landing-loop-num">{index + 1}</span>
+                  {step}
+                </h3>
               </div>
-              <h3 className="landing-loop-step">
-                <span className="landing-loop-num">{index + 1}</span>
-                {step}
-              </h3>
               <p>{text}</p>
             </article>
           ))}
