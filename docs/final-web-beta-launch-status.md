@@ -1026,3 +1026,12 @@ from /demo to /welcome to /get-started all work; first lesson still starts.
   the homepage upgrade from the same sprint is unaffected.
 - Native review: see the new "Mission intros and recaps" sections in
   `docs/stage-4..8-content-review-matrix.md` and the master checklist.
+
+## Borrowed English Words bonus (June 12, 2026)
+
+- New optional "Words You Already Know" bonus on the Learn path: 13 borrowed
+  words in a lightweight modal (same shell as Thai basics), TTS per word, no XP,
+  no schema, no progression impact, existing cards untouched.
+- All 13 entries are pending native review (see
+  docs/borrowed-english-words-notes.md for the list, exclusions, and review
+  checklist).

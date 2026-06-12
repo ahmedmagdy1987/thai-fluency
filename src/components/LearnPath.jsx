@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Zap, X } from 'lucide-react';
+import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
 import { getMiniUnitsForStage, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
+import { BORROWED_WORDS } from '../data/borrowedWords.js';
 import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
+import BorrowedWordsBonus from './BorrowedWordsBonus.jsx';
 
 // New primary learning view. Renders the 8-stage path with a per-stage
 // character, plus a Stage-1 mission rail while the user is still in S1.
@@ -36,6 +38,16 @@ export default function LearnPath({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [showBasics]);
+
+  // "Words You Already Know" bonus: optional borrowed-words list in the same
+  // lightweight modal pattern as Thai basics (no route, no progress writes).
+  const [showBorrowed, setShowBorrowed] = useState(false);
+  useEffect(() => {
+    if (!showBorrowed) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setShowBorrowed(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showBorrowed]);
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
   const newAvail = dashboardStats?.newAvail ?? 0;
@@ -217,6 +229,21 @@ export default function LearnPath({
           </div>
         </section>
       )}
+
+      {/* Bonus: borrowed "Words You Already Know" — optional, no XP, no progress */}
+      <section className="learn-section learn-bonus-section">
+        <button type="button" className="learn-bonus-card" onClick={() => setShowBorrowed(true)}>
+          <span className="learn-bonus-icon" aria-hidden="true"><Gift size={20} /></span>
+          <span className="learn-bonus-body">
+            <span className="learn-bonus-eyebrow">Bonus</span>
+            <span className="learn-bonus-title">Words You Already Know</span>
+            <span className="learn-bonus-copy">
+              {BORROWED_WORDS.length} Thai words that sound familiar from day one. A quick confidence boost.
+            </span>
+          </span>
+          <ChevronRight size={18} aria-hidden="true" />
+        </button>
+      </section>
 
       {/* Daily goal — mirrors TodayTab's ring so users get the same dopamine signal */}
       <section className="learn-goal-card">
@@ -448,6 +475,33 @@ export default function LearnPath({
             </div>
             <div className="basics-modal-scroll">
               <ThaiBasicsPrimer primer={basics} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBorrowed && (
+        <div
+          className="basics-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Words You Already Know"
+          onClick={() => setShowBorrowed(false)}
+        >
+          <div className="basics-modal-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="basics-modal-head">
+              <span className="basics-modal-eyebrow">Bonus: Words You Already Know</span>
+              <button
+                type="button"
+                className="basics-modal-close"
+                onClick={() => setShowBorrowed(false)}
+                aria-label="Close Words You Already Know"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="basics-modal-scroll">
+              <BorrowedWordsBonus audioRate={fullStats?.audioRate || 0.95} />
             </div>
           </div>
         </div>

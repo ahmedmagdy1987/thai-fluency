@@ -762,3 +762,12 @@ unit of the course.
 
 Native review: per-stage matrices each gained a "Mission intros and recaps"
 section (glosses + teaching claims only; no new Thai).
+
+## Bonus: Words You Already Know (June 12, 2026)
+
+Added an optional borrowed-words bonus outside the mission path: a gold teaser
+card on the Learn path opens a modal listing 13 Thai words borrowed from (or
+close to) English (taxi, coffee, wifi, and more), each with Thai script,
+romanization, a sounds-familiar note, and a TTS speaker button. No XP, no
+schema, no SRS or Challenge involvement, existing cards untouched; all content
+flagged pending native review. Details: docs/borrowed-english-words-notes.md.

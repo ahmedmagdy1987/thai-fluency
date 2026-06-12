@@ -249,3 +249,13 @@ pass: the English gloss next to each Thai word, and the small "Listen for" /
 "Notice" teaching claims (e.g. which word turns a sentence into a question).
 Each per-stage matrix file now has a "Mission intros and recaps" section with the
 same guidance. Priority follows the existing stage order (HIGH first).
+
+## New since June 12: borrowed words bonus (13 items)
+
+The optional "Words You Already Know" bonus list (`src/data/borrowedWords.js`)
+is NEW Thai content written for this feature, so unlike the mission intros it
+DOES need full review: spelling, romanization, tone marks, and the notes. It is
+13 everyday borrowed words (taxi, coffee, wifi, and more). See
+docs/borrowed-english-words-notes.md for the exact list, the candidates excluded
+on accuracy grounds, and the per-word checklist. Until reviewed, the UI labels
+it as bonus content pending native review.
