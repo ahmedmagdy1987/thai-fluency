@@ -5,24 +5,39 @@ import {
   CheckCircle2,
   Compass,
   MessageCircle,
+  Play,
   Repeat2,
   Sparkles,
+  Star,
   Target,
   Trophy,
   Volume2,
 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
+import { getMiniUnitsForStage, MINI_UNITS } from '../data/miniUnits.js';
+import { STAGES } from '../data/taxonomy.js';
 import { speakThai } from '../lib/audio.js';
 import { SITE_CONFIG } from '../config/site.js';
 
 // Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
-// real part of the app (guided mini-units, the challenge step, mission recaps,
-// account sync) so nothing here is an unverified claim.
-const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'Mission recaps', 'Device sync'];
+// real part of the app (guided mini-units, the challenge step, XP/streak
+// quests, account sync) so nothing here is an unverified claim.
+const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'XP and streaks', 'Device sync'];
+
+// Real course size, derived from the data files so the numbers can never
+// drift from the product. Card count is floored to a clean "N+" figure.
+const COURSE_STATS = [
+  { value: String(STAGES.length), label: 'stages' },
+  { value: String(MINI_UNITS.length), label: 'guided missions' },
+  {
+    value: `${(Math.floor(CARDS.length / 100) * 100).toLocaleString('en-US')}+`,
+    label: 'words and phrases',
+  },
+];
 
 // The early-stage "journey" preview. Stage names + themes match the real course
 // (Stage 1 Survival Thai, Stage 2 Daily Essentials, Stage 3 Getting Around) and
-// the mission content already shipped for Stages 1 to 3. No Thai content here.
+// mission counts come straight from the mini-unit data. No Thai content here.
 const JOURNEY = [
   {
     n: 1,
@@ -30,6 +45,7 @@ const JOURNEY = [
     stage: 'Stage 1',
     title: 'First words and politeness',
     text: 'Say hello, thank you, yes and no.',
+    missions: getMiniUnitsForStage(1).length,
     start: true,
   },
   {
@@ -38,6 +54,7 @@ const JOURNEY = [
     stage: 'Stage 2',
     title: 'Daily essentials',
     text: 'Everyday actions, feelings, and counting.',
+    missions: getMiniUnitsForStage(2).length,
   },
   {
     n: 3,
@@ -45,6 +62,7 @@ const JOURNEY = [
     stage: 'Stage 3',
     title: 'Getting around',
     text: 'People, places, time, and directions.',
+    missions: getMiniUnitsForStage(3).length,
   },
 ];
 
@@ -97,6 +115,17 @@ function LandingPhraseCard({ phrase, onPlay, className = '' }) {
   );
 }
 
+// Gamified "next mission" chip pinned near the mascot. Mission 1 really is the
+// polite introduction unit, so "Say hello" is its honest one-line summary.
+function MissionBadge({ className = '' }) {
+  return (
+    <div className={`landing-mission-badge ${className}`.trim()} aria-hidden="true">
+      <Star size={13} />
+      <span>Mission 1: Say hello</span>
+    </div>
+  );
+}
+
 const FOOTER_LINKS = [
   { path: '/privacy', label: 'Privacy' },
   { path: '/terms', label: 'Terms' },
@@ -135,12 +164,15 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
       <section className="landing-hero" aria-labelledby="landing-title">
         <div className="landing-hero-scene">
+          <span className="landing-scene-glow" aria-hidden="true" />
+          <span className="landing-scene-ground" aria-hidden="true" />
           <img
             className="landing-character"
-            src="/characters/muay-thai/speaking.webp"
+            src="/characters/muay-thai/happy.webp"
             alt=""
             aria-hidden="true"
           />
+          <MissionBadge className="landing-scene-badge" />
           {phrases.map(phrase => (
             <LandingPhraseCard phrase={phrase} onPlay={playPhrase} key={phrase.cardId} />
           ))}
@@ -152,20 +184,22 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             Your Thai adventure starts here
           </div>
           <h1 id="landing-title" className="landing-title">
-            Start speaking useful Thai, one mission at a time.
+            Speak useful Thai from your very first mission.
           </h1>
           <p className="landing-subtitle">
-            Short guided missions teach the words, phrases, and patterns that help in real Thai moments.
+            Short, game-like missions teach you the words and phrases that matter in real
+            Thai moments, from street food to taxi rides.
           </p>
 
           <div className="landing-hero-stage">
             <span className="landing-hero-stage-glow" aria-hidden="true" />
             <img
               className="landing-hero-stage-mascot"
-              src="/characters/muay-thai/speaking.webp"
+              src="/characters/muay-thai/happy.webp"
               alt=""
               aria-hidden="true"
             />
+            <MissionBadge className="landing-stage-badge" />
             <LandingPhraseCard
               phrase={phrases[0]}
               onPlay={playPhrase}
@@ -188,6 +222,17 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </button>
           </div>
 
+          {onOpenPublicPage && (
+            <button
+              type="button"
+              className="landing-demo-link"
+              onClick={() => onOpenPublicPage('/demo')}
+            >
+              <Play size={14} aria-hidden="true" />
+              Or try a quick demo first, no account needed
+            </button>
+          )}
+
           <p className="landing-comfort">
             <Sparkles size={15} aria-hidden="true" />
             New to Thai? Perfect. Every mission opens with a simple, friendly explanation.
@@ -201,6 +246,17 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
       </section>
 
+      <section className="landing-stats" aria-label="Course size">
+        <div className="landing-stats-inner">
+          {COURSE_STATS.map(stat => (
+            <div className="landing-stat" key={stat.label}>
+              <span className="landing-stat-value">{stat.value}</span>
+              <span className="landing-stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="landing-journey" aria-labelledby="landing-journey-title">
         <div className="landing-section-head">
           <span className="landing-eyebrow">Your journey</span>
@@ -209,7 +265,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </h2>
         </div>
         <ol className="landing-path">
-          {JOURNEY.map(({ n, Icon, stage, title, text, start }) => (
+          {JOURNEY.map(({ n, Icon, stage, title, text, missions, start }) => (
             <li className={`landing-step${start ? ' landing-step-start' : ''}`} key={n}>
               <div className="landing-step-node" aria-hidden="true">
                 <Icon size={20} />
@@ -219,6 +275,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 <span className="landing-step-stage">
                   {stage}
                   {start && <span className="landing-step-badge">Start here</span>}
+                  <span className="landing-step-missions">{missions} missions</span>
                 </span>
                 <span className="landing-step-title">{title}</span>
                 <span className="landing-step-text">{text}</span>
@@ -227,7 +284,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           ))}
           <li className="landing-step landing-step-goal">
             <div className="landing-step-node landing-step-node-goal" aria-hidden="true">
-              <Trophy size={20} />
+              <img
+                className="landing-step-goal-img"
+                src="/characters/muay-thai/celebrating.webp"
+                alt=""
+              />
             </div>
             <div className="landing-step-copy">
               <span className="landing-step-stage">Keep going</span>
@@ -247,7 +308,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
         <div className="landing-benefits">
           {LOOP.map(({ Icon, step, text }, index) => (
-            <article className="landing-benefit landing-loop-card" key={step}>
+            <article className="landing-benefit landing-loop-card" data-step={step.toLowerCase()} key={step}>
               <div className="landing-loop-head">
                 <div className="landing-benefit-icon">
                   <Icon size={20} aria-hidden="true" />
