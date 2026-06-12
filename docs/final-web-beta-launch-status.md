@@ -1035,3 +1035,18 @@ from /demo to /welcome to /get-started all work; first lesson still starts.
 - All 13 entries are pending native review (see
   docs/borrowed-english-words-notes.md for the list, exclusions, and review
   checklist).
+
+
+## iOS Capacitor platform scaffolded (June 12, 2026)
+
+The ios/ Capacitor platform now EXISTS in the repo (supersedes the May 30 note
+that it could not be created on Windows: Capacitor 8 uses Swift Package
+Manager, so scaffolding works on any OS; only BUILDING/SIGNING needs a Mac).
+Bundle id com.tuktalkthai.app, deployment target iOS 15, all 7 plugins
+registered, copied web assets and generated config gitignored by the template.
+No signed iOS build exists yet and TestFlight is NOT configured; the practical
+path (PWA today, physical Mac or cloud-Mac CI for TestFlight, required Apple
+items, secret names only) is documented in docs/ios-testflight-plan.md.
+Note: cap sync ios on Windows rewrites CapApp-SPM/Package.swift with
+backslash paths; the committed file uses forward slashes (restore noise-only
+diffs like the Android gradle CRLF dance).
