@@ -282,3 +282,16 @@ corrected in copy and need confirming, the rest need a native decision):
    confirm.
 5. stage-7-food-and-flavors (LOW): the Listen-for note about naam was reworded
    to note sugar as a non-literal case; confirm it reads correctly.
+
+
+## Owner review feedback sprint addendum (June 12, 2026)
+
+- Stage 1 copy (primer, primer quiz, unit recaps/intros/achievements) was
+  rewritten romanization-first with script in parentheses. The romanization is
+  copied from existing card ph fields, so the existing ph review items cover
+  it; no new Thai content was introduced. Re-check during the Stage 1 pass
+  that the flipped order reads naturally.
+- The demo and homepage now show example content from cards 310, 312, 853,
+  251, 250 and the pilot unit lessonIntro; these are existing reviewed cards.
+- Audio note for reviewers: device TTS is now tuned slower (default 0.8,
+  beginner surfaces 0.72). Audio remains device TTS, not recorded human audio.

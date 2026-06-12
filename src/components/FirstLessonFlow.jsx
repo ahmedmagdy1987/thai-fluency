@@ -8,6 +8,7 @@ import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import ConfettiBurst from './ConfettiBurst.jsx';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
+import CardDirectionToggle from './CardDirectionToggle.jsx';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined' &&
@@ -56,7 +57,9 @@ function safeIndex(value, max) {
 export default function FirstLessonFlow({
   unit = STAGE_1_MINI_UNIT_PILOT,
   voice,
-  audioRate = 0.95,
+  cardDirection = 'en-first',
+  onChangeCardDirection,
+  audioRate = 0.8,
   showCharacters = true,
   initialProgress,
   onProgressChange,
@@ -103,6 +106,7 @@ export default function FirstLessonFlow({
   const completeSoundRef = useRef(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const isEnglishFirst = cardDirection !== 'th-first';
   const currentCard = step === 'sentence' ? sentenceCard : vocabCards[cardIndex];
   const currentQuestion = challengeQuestions[challengeIndex] || null;
   const selectedIsCorrect = !!(currentQuestion && selectedId === currentQuestion.correct.id);
@@ -269,7 +273,7 @@ export default function FirstLessonFlow({
     ? 'Sentence'
     : `Word ${Math.min(cardIndex + 1, vocabCards.length)} of ${vocabCards.length}`;
   const nextLabel = !revealed
-    ? 'Reveal meaning'
+    ? (isEnglishFirst ? 'Reveal the Thai' : 'Reveal meaning')
     : step === 'sentence'
       ? 'Start challenge'
       : cardIndex + 1 >= vocabCards.length
@@ -312,7 +316,7 @@ export default function FirstLessonFlow({
               <div><strong>Quests</strong><span>Reach Level 2 to unlock daily quests.</span></div>
             </div>
             <p className="firstlesson-perspective-note">
-              This first path uses a male speaker (ผม / ครับ). A female mode can come later.
+              This first path uses a male speaker: phǒm (ผม) and khráp (ครับ). A female mode can come later.
             </p>
             <button type="button" className="btn-primary firstlesson-primary" onClick={startLesson}>
               Start lesson <ChevronRight size={16} />
@@ -407,6 +411,8 @@ export default function FirstLessonFlow({
               </span>
             </div>
 
+            <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="firstlesson-direction-toggle" />
+
             <button
               type="button"
               className={`firstlesson-flash ${revealed ? 'firstlesson-flash-revealed' : ''}`}
@@ -415,17 +421,35 @@ export default function FirstLessonFlow({
               <span className="firstlesson-card-kind">
                 {currentCard.type === 's' || currentCard.type === 'p' ? 'Phrase' : 'Word'}
               </span>
-              <span className="firstlesson-card-thai">{currentCard.thai}</span>
-              {currentCard.ph && <span className="firstlesson-card-ph">{currentCard.ph}</span>}
-              {revealed ? (
-                <span className="firstlesson-card-en">{currentCard.en}</span>
+              {isEnglishFirst ? (
+                <>
+                  <span className="firstlesson-card-en-primary">{currentCard.en}</span>
+                  {revealed ? (
+                    <>
+                      {currentCard.ph && <span className="firstlesson-card-ph firstlesson-card-ph-answer">{currentCard.ph}</span>}
+                      <span className="firstlesson-card-thai firstlesson-card-thai-secondary">{currentCard.thai}</span>
+                    </>
+                  ) : (
+                    <span className="firstlesson-card-hint">Tap to reveal the Thai</span>
+                  )}
+                </>
               ) : (
-                <span className="firstlesson-card-hint">Tap to reveal</span>
+                <>
+                  <span className="firstlesson-card-thai">{currentCard.thai}</span>
+                  {currentCard.ph && <span className="firstlesson-card-ph">{currentCard.ph}</span>}
+                  {revealed ? (
+                    <span className="firstlesson-card-en">{currentCard.en}</span>
+                  ) : (
+                    <span className="firstlesson-card-hint">Tap to reveal</span>
+                  )}
+                </>
               )}
             </button>
 
             <div className="firstlesson-actions">
-              {ttsAvailable() && currentCard.thai && (
+              {/* English-first keeps the speaker for after reveal only, so the
+                  audio can't give the Thai answer away. */}
+              {(!isEnglishFirst || revealed) && ttsAvailable() && currentCard.thai && (
                 <button
                   type="button"
                   className="btn-secondary firstlesson-icon-btn"

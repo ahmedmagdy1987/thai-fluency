@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
-import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, transformThai } from '../lib/voice.js';
-import { speakThai } from '../lib/audio.js';
+import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION, transformThai } from '../lib/voice.js';
+import { speakThai, DEFAULT_AUDIO_RATE } from '../lib/audio.js';
 import PrivacyPolicy from './legal/PrivacyPolicy.jsx';
 import TermsOfService from './legal/TermsOfService.jsx';
 
 const PREVIEW_THAI = '\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35\u0e04\u0e23\u0e31\u0e1a';
 
+// Tuned slower than typical TTS defaults: beginner review needs clear tones.
 const AUDIO_RATE_OPTIONS = [
-  { value: 0.7, label: 'Slow', helper: 'Clear tone practice' },
-  { value: 0.95, label: 'Natural', helper: 'Everyday pace' },
-  { value: 1.15, label: 'Fast', helper: 'Challenge pace' },
+  { value: 0.65, label: 'Slow', helper: 'Extra clear tones' },
+  { value: 0.8, label: 'Clear', helper: 'Beginner review pace' },
+  { value: 1.0, label: 'Fast', helper: 'Closer to street speed' },
 ];
 
 export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage }) {
@@ -22,7 +23,8 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
   const dailyGoal = stats.dailyGoal || DEFAULT_DAILY_GOAL;
   const theme = stats.theme || 'light';
-  const audioRate = stats.audioRate || 0.95;
+  const cardDirection = stats.cardDirection === 'th-first' ? 'th-first' : DEFAULT_CARD_DIRECTION;
+  const audioRate = stats.audioRate || DEFAULT_AUDIO_RATE;
   const audioAutoPlay = !!stats.audioAutoPlay;
   const showCharacters = stats.showCharacters !== false;
   const soundEffects = stats.soundEffects !== false;
@@ -76,6 +78,31 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
               <button type="button" className={`setting-toggle-btn ${voice === 'female' ? 'setting-toggle-active' : ''}`} onClick={() => updateSettings({ voice: 'female' })} aria-pressed={voice === 'female'}>
                 <span>Female</span>
                 <span className="setting-toggle-sub">chan / kha</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="setting-group">
+            <div className="setting-label">Flashcard direction</div>
+            <div className="setting-sub">English first helps you practice saying the Thai phrase from the idea.</div>
+            <div className="setting-toggle">
+              <button
+                type="button"
+                className={`setting-toggle-btn ${cardDirection === 'en-first' ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ cardDirection: 'en-first' })}
+                aria-pressed={cardDirection === 'en-first'}
+              >
+                <span>English first</span>
+                <span className="setting-toggle-sub">See the meaning, recall the Thai</span>
+              </button>
+              <button
+                type="button"
+                className={`setting-toggle-btn ${cardDirection === 'th-first' ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ cardDirection: 'th-first' })}
+                aria-pressed={cardDirection === 'th-first'}
+              >
+                <span>Thai first</span>
+                <span className="setting-toggle-sub">See the Thai, recall the meaning</span>
               </button>
             </div>
           </div>

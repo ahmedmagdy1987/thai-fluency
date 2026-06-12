@@ -63,18 +63,20 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     title: 'Before your first Thai words',
     subtitle: 'Thai works differently from English. These quick rules make the first lesson easier.',
     readMinutes: 2,
+    // Beginner guidance is romanization-first (the app does not teach Thai
+    // reading yet); Thai script stays in parentheses as a secondary reference.
     sections: [
       {
         heading: 'This path uses a male speaker',
-        body: 'You will learn from a male speaker point of view. Male speakers often end polite sentences with ครับ (khráp). Female speakers often use ค่ะ (khâ). A female mode can be added later.',
+        body: 'You will learn from a male speaker point of view. Male speakers often end polite sentences with khráp (ครับ). Female speakers often use khâ (ค่ะ). A female mode can be added later.',
       },
       {
         heading: 'Saying "I"',
-        body: 'A male speaker commonly says ผม (phǒm) for "I". You will see ผม in your first introduction sentence. Women often use ฉัน (chăn) for "I", but you do not need that yet.',
+        body: 'A male speaker commonly says phǒm (ผม) for "I". You will see phǒm in your first introduction sentence. Women often use chăn (ฉัน) for "I", but you do not need that yet.',
       },
       {
-        heading: 'The polite word ครับ',
-        body: 'ครับ (khráp) is not a word with its own meaning. It makes a sentence sound polite, and a male speaker adds it to the end of many sentences.',
+        heading: 'The polite word khráp',
+        body: 'khráp (ครับ) is not a word with its own meaning. It makes a sentence sound polite, and a male speaker adds it to the end of many sentences.',
       },
       {
         heading: 'Word order can feel different',
@@ -82,11 +84,11 @@ export const STAGE_1_MINI_UNIT_PILOT = {
       },
       {
         heading: 'Asking yes or no',
-        body: 'Thai often turns a sentence into a yes/no question with a small question word near the end, ไหม (mǎi). You do not add a spoken question mark the way English does.',
+        body: 'Thai often turns a sentence into a yes/no question with a small question word near the end, mǎi (ไหม). You do not add a spoken question mark the way English does.',
       },
       {
         heading: '"Not" is a different word',
-        body: 'ไม่ (mâi) means "not" and usually comes before the word it makes negative. This is NOT the same as the question word ไหม (mǎi). They are written differently and behave differently, even though the romanization can look similar.',
+        body: 'mâi (ไม่) means "not" and usually comes before the word it makes negative. This is NOT the same as the question word mǎi (ไหม). They sound similar in romanization, but they are written differently in Thai script and behave differently.',
       },
       {
         heading: 'Thai has tones',
@@ -103,41 +105,41 @@ export const STAGE_1_MINI_UNIT_PILOT = {
         id: 'polite-particle',
         prompt: 'In this first path, which polite word does a male speaker add at the end of sentences?',
         options: [
-          { id: 'a', label: 'ครับ (khráp)', correct: true },
-          { id: 'b', label: 'ค่ะ (khâ)' },
-          { id: 'c', label: 'ไม่ (mâi)' },
+          { id: 'a', label: 'khráp (ครับ)', correct: true },
+          { id: 'b', label: 'khâ (ค่ะ)' },
+          { id: 'c', label: 'mâi (ไม่)' },
         ],
-        explain: 'Male speakers use ครับ (khráp). Female speakers use ค่ะ (khâ).',
+        explain: 'Male speakers use khráp (ครับ). Female speakers use khâ (ค่ะ).',
       },
       {
         id: 'phom-meaning',
-        prompt: 'What does ผม (phǒm) usually mean in this lesson?',
+        prompt: 'What does phǒm (ผม) usually mean in this lesson?',
         options: [
           { id: 'a', label: '"I", from a male speaker', correct: true },
           { id: 'b', label: '"you"' },
           { id: 'c', label: '"name"' },
         ],
-        explain: 'ผม (phǒm) is a common way for a male speaker to say "I".',
+        explain: 'phǒm (ผม) is a common way for a male speaker to say "I".',
       },
       {
         id: 'mai-not',
         prompt: 'Which word means "not" (it makes something negative)?',
         options: [
-          { id: 'a', label: 'ไม่ (mâi)', correct: true },
-          { id: 'b', label: 'ไหม (mǎi)' },
-          { id: 'c', label: 'ครับ (khráp)' },
+          { id: 'a', label: 'mâi (ไม่)', correct: true },
+          { id: 'b', label: 'mǎi (ไหม)' },
+          { id: 'c', label: 'khráp (ครับ)' },
         ],
-        explain: 'ไม่ (mâi) means "not" and usually comes before the word it makes negative.',
+        explain: 'mâi (ไม่) means "not" and usually comes before the word it makes negative.',
       },
       {
         id: 'mai-question',
         prompt: 'Which word can turn a sentence into a yes or no question?',
         options: [
-          { id: 'a', label: 'ไหม (mǎi)', correct: true },
-          { id: 'b', label: 'ไม่ (mâi)' },
-          { id: 'c', label: 'ผม (phǒm)' },
+          { id: 'a', label: 'mǎi (ไหม)', correct: true },
+          { id: 'b', label: 'mâi (ไม่)' },
+          { id: 'c', label: 'phǒm (ผม)' },
         ],
-        explain: 'ไหม (mǎi) is a question word, often near the end of a sentence. It is different from ไม่ (mâi).',
+        explain: 'mǎi (ไหม) is a question word, often near the end of a sentence. It is different from mâi (ไม่), which is written differently in Thai script.',
       },
       {
         id: 'tones-first',
@@ -156,9 +158,9 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     headline: 'Nice. You can start a polite introduction in Thai.',
     lead: 'You are not memorizing random words. You are building your first real Thai introduction.',
     achievements: [
-      'Greet politely: สวัสดีครับ (hello, male)',
-      'Introduce yourself: ผมชื่อ ___ ครับ (my name is ___)',
-      'Recognize ครับ (khráp) as a male polite ending',
+      'Greet politely: sà-wàt-dee khráp (สวัสดีครับ)',
+      'Introduce yourself: phǒm chûe ___ khráp (my name is ___)',
+      'Recognize khráp (ครับ) as a male polite ending',
       'Notice how Thai builds short sentences',
       'Listen and repeat Thai sounds',
     ],
@@ -171,10 +173,10 @@ export const STAGE_1_MINI_UNIT_PILOT = {
   lessonIntro: {
     lead: 'This is your first real Thai conversation: a polite hello and your own name. Short, friendly, and useful from day one.',
     points: [
-      { label: 'You will learn', text: 'How to greet someone and introduce yourself, using สวัสดี (hello), ผม (I, for a male speaker), ชื่อ (name), and the polite word ครับ.' },
+      { label: 'You will learn', text: 'How to greet someone and introduce yourself, using sà-wàt-dee (สวัสดี, hello), phǒm (ผม, I for a male speaker), chûe (ชื่อ, name), and the polite word khráp (ครับ).' },
       { label: 'Why it matters', text: 'A warm, polite hello and your name open almost any conversation in Thailand, from a shop to a new friend.' },
-      { label: 'Listen for', text: 'The polite ending ครับ (khráp) that a male speaker adds to the end of a sentence.' },
-      { label: 'Notice', text: 'Thai builds the sentence ผมชื่อ ___ ครับ one clear piece at a time. You are arranging real words, not memorizing a block.' },
+      { label: 'Listen for', text: 'The polite ending khráp (ครับ) that a male speaker adds to the end of a sentence.' },
+      { label: 'Notice', text: 'Thai builds the sentence phǒm chûe ___ khráp (ผมชื่อ ___ ครับ) one clear piece at a time. You are arranging real words, not memorizing a block.' },
     ],
   },
 };
@@ -200,8 +202,8 @@ export const STAGE_1_UNIT_GREETINGS = {
   introText: 'A handful of polite words covers most first encounters.',
   recapText: [
     'You practiced the core courtesy words: hello, thanks, sorry.',
-    '"No worries" (ไม่เป็นไร) softens almost any situation.',
-    'Add ครับ to stay polite (male form).',
+    '"No worries" (mâi-bpen-rai, ไม่เป็นไร) softens almost any situation.',
+    'Add khráp (ครับ) to stay polite (male form).',
   ],
   previewText: [
     'Next you can put these together in short replies.',
@@ -222,21 +224,21 @@ export const STAGE_1_UNIT_GREETINGS = {
   lessonIntro: {
     lead: 'A handful of courtesy words covers most first encounters: hello, thank you, and the famous Thai "no worries".',
     points: [
-      { label: 'You will learn', text: 'Everyday politeness: สวัสดี (hello), ขอบคุณ (thanks), the phrase ไม่เป็นไร (no worries), and เจอกัน (see you).' },
+      { label: 'You will learn', text: 'Everyday politeness: sà-wàt-dee (สวัสดี, hello), kòp kun (ขอบคุณ, thanks), the phrase mâi-bpen-rai (ไม่เป็นไร, no worries), and jer gan (เจอกัน, see you).' },
       { label: 'Why it matters', text: 'Thai people notice politeness right away. A few kind words make daily moments smoother and friendlier.' },
-      { label: 'Listen for', text: 'The soft phrase ไม่เป็นไร, which can mean "no worries", "you are welcome", or "never mind".' },
-      { label: 'Notice', text: 'Adding ครับ to the end keeps a male speaker polite, just like in your first lesson.' },
+      { label: 'Listen for', text: 'The soft phrase mâi-bpen-rai (ไม่เป็นไร), which can mean "no worries", "you are welcome", or "never mind".' },
+      { label: 'Notice', text: 'Adding khráp (ครับ) to the end keeps a male speaker polite, just like in your first lesson.' },
     ],
   },
   missionRecap: {
     headline: 'Nice. You can be polite in everyday Thai moments.',
     lead: 'You are building real travel Thai, one small courtesy at a time.',
     achievements: [
-      'Greet someone with สวัสดี (hello)',
-      'Say thank you with ขอบคุณ (thanks)',
-      'Smooth things over with ไม่เป็นไร (no worries)',
-      'Say see you with เจอกัน',
-      'Keep it polite with ครับ',
+      'Greet someone with sà-wàt-dee (สวัสดี)',
+      'Say thank you with kòp kun (ขอบคุณ)',
+      'Smooth things over with mâi-bpen-rai (ไม่เป็นไร)',
+      'Say see you with jer gan (เจอกัน)',
+      'Keep it polite with khráp (ครับ)',
     ],
   },
 };
@@ -257,9 +259,9 @@ export const STAGE_1_UNIT_YESNO = {
   challengeCardIds: [251, 250, 5703],
   introText: 'A few reply words let you respond to almost anything.',
   recapText: [
-    'ใช่ = yes, ไม่ = no, ไม่ใช่ = "that\'s not it".',
-    'เหรอ is a casual "really?" to keep a chat going.',
-    'ครับ / ค่ะ keep your replies polite.',
+    'châi (ใช่) = yes, mâi (ไม่) = no, mâi châi (ไม่ใช่) = "that\'s not it".',
+    'rěr (เหรอ) is a casual "really?" to keep a chat going.',
+    'khráp (ครับ) or khâ (ค่ะ) keep your replies polite.',
   ],
   previewText: [
     'Combine these with the courtesy words for natural replies.',
@@ -269,21 +271,21 @@ export const STAGE_1_UNIT_YESNO = {
   lessonIntro: {
     lead: 'A few reply words let you respond to almost anything: yes, no, "that is not it", and a casual "really?".',
     points: [
-      { label: 'You will learn', text: 'Simple answers: ใช่ (yes), ไม่ (no), ไม่ใช่ (that is not it), and เหรอ (really?) to keep a chat going.' },
+      { label: 'You will learn', text: 'Simple answers: châi (ใช่, yes), mâi (ไม่, no), mâi châi (ไม่ใช่, that is not it), and rěr (เหรอ, really?) to keep a chat going.' },
       { label: 'Why it matters', text: 'Answering clearly, even with one word, keeps a conversation moving and friendly.' },
-      { label: 'Listen for', text: 'The short word ไม่ (not) at the start of a negative answer, and how ไม่ใช่ means "that is not it".' },
-      { label: 'Notice', text: 'ใช่ and ไม่ are tiny but powerful. Add ครับ or ค่ะ to keep your reply polite.' },
+      { label: 'Listen for', text: 'The short word mâi (ไม่, not) at the start of a negative answer, and how mâi châi (ไม่ใช่) means "that is not it".' },
+      { label: 'Notice', text: 'châi and mâi are tiny but powerful. Add khráp (ครับ) or khâ (ค่ะ) to keep your reply polite.' },
     ],
   },
   missionRecap: {
     headline: 'Nice. You can answer simple questions politely.',
     lead: 'Short replies keep a real conversation going.',
     achievements: [
-      'Say yes with ใช่',
-      'Say no with ไม่',
-      'Correct gently with ไม่ใช่ (that is not it)',
-      'React naturally with เหรอ (really?)',
-      'Stay polite with ครับ or ค่ะ',
+      'Say yes with châi (ใช่)',
+      'Say no with mâi (ไม่)',
+      'Correct gently with mâi châi (ไม่ใช่)',
+      'React naturally with rěr (เหรอ, really?)',
+      'Stay polite with khráp (ครับ) or khâ (ค่ะ)',
     ],
   },
 };
@@ -302,12 +304,12 @@ export const STAGE_1_UNIT_WHERE = {
   challengeCardIds: [112, 164, 13],
   introText: 'Asking "where" is one of the most useful survival skills.',
   recapText: [
-    'ที่ไหน = where, อยู่ = to be located.',
-    'ห้องน้ำอยู่ที่ไหน asks where the bathroom is.',
-    'ไป / มา (go / come) help you move around.',
+    'thîi nǎi (ที่ไหน) = where, yùu (อยู่) = to be located.',
+    'hông náam yùu thîi nǎi (ห้องน้ำอยู่ที่ไหน) asks where the bathroom is.',
+    'bpai / maa (ไป / มา, go / come) help you move around.',
   ],
   previewText: [
-    'Swap ห้องน้ำ for other places to ask where they are.',
+    'Swap hông náam (ห้องน้ำ, bathroom) for other places to ask where they are.',
     'Directions and transport build on these question words.',
   ],
   sentenceBuilder: {
@@ -326,21 +328,21 @@ export const STAGE_1_UNIT_WHERE = {
   lessonIntro: {
     lead: 'Asking "where" is one of the most useful survival skills, starting with the bathroom.',
     points: [
-      { label: 'You will learn', text: 'How to ask where something is: ที่ไหน (where), อยู่ (to be located), and the example ห้องน้ำอยู่ที่ไหน (where is the bathroom).' },
+      { label: 'You will learn', text: 'How to ask where something is: thîi nǎi (ที่ไหน, where), yùu (อยู่, to be located), and the example hông náam yùu thîi nǎi (ห้องน้ำอยู่ที่ไหน, where is the bathroom).' },
       { label: 'Why it matters', text: 'You will need to find places fast: a toilet, an exit, a shop. This question gets you there.' },
-      { label: 'Listen for', text: 'The question word ที่ไหน (where), which comes near the end of the question.' },
-      { label: 'Notice', text: 'You can swap ห้องน้ำ (bathroom) for another place to ask where that is. One pattern, many uses.' },
+      { label: 'Listen for', text: 'The question word thîi nǎi (ที่ไหน, where), which comes near the end of the question.' },
+      { label: 'Notice', text: 'You can swap hông náam (ห้องน้ำ, bathroom) for another place to ask where that is. One pattern, many uses.' },
     ],
   },
   missionRecap: {
     headline: 'Nice. You can ask where things are.',
     lead: 'This one question will help you find your way around.',
     achievements: [
-      'Ask where with ที่ไหน',
-      'Find a bathroom with ห้องน้ำอยู่ที่ไหน',
-      'Talk about being located with อยู่',
+      'Ask where with thîi nǎi (ที่ไหน)',
+      'Find a bathroom with hông náam yùu thîi nǎi (ห้องน้ำอยู่ที่ไหน)',
+      'Talk about being located with yùu (อยู่)',
       'Reuse the pattern for any place',
-      'Ask politely with ครับ',
+      'Ask politely with khráp (ครับ)',
     ],
   },
 };
@@ -357,11 +359,11 @@ export const STAGE_1_UNIT_PRICES = {
   vocabCardIds: [116, 117, 176, 73, 72, 1746, 5701, 231],
   sentenceCardId: 850,
   challengeCardIds: [116, 176, 72],
-  introText: 'Prices come up everywhere — markets, taxis, shops.',
+  introText: 'Prices come up everywhere: markets, taxis, shops.',
   recapText: [
-    'เท่าไหร่ = how much, เงิน = money.',
-    'ถูก = cheap, แพง = expensive, ลด = reduce (discount).',
-    'อันนี้เท่าไหร่ asks the price of this one.',
+    'thâo rài (เท่าไหร่) = how much, ngern (เงิน) = money.',
+    'thùuk (ถูก) = cheap, phaeng (แพง) = expensive, lóht (ลด) = reduce (discount).',
+    'annǐi thâo rài (อันนี้เท่าไหร่) asks the price of this one.',
   ],
   previewText: [
     'Numbers let you understand the answer to "how much".',
@@ -382,21 +384,21 @@ export const STAGE_1_UNIT_PRICES = {
   lessonIntro: {
     lead: 'Money comes up everywhere: markets, taxis, and shops. Here you learn to ask a price and understand the answer.',
     points: [
-      { label: 'You will learn', text: 'How to ask the cost: เท่าไหร่ (how much), เงิน (money), and the example อันนี้เท่าไหร่ (how much is this).' },
+      { label: 'You will learn', text: 'How to ask the cost: thâo rài (เท่าไหร่, how much), ngern (เงิน, money), and the example annǐi thâo rài (อันนี้เท่าไหร่, how much is this).' },
       { label: 'Why it matters', text: 'Asking a price, and telling cheap from expensive, helps you shop with confidence.' },
-      { label: 'Listen for', text: 'The question word เท่าไหร่ (how much), plus ถูก (cheap) and แพง (expensive).' },
-      { label: 'Notice', text: 'Add ครับ to ask politely. อันนี้เท่าไหร่ครับ is a complete, polite question you can use today.' },
+      { label: 'Listen for', text: 'The question word thâo rài (เท่าไหร่, how much), plus thùuk (ถูก, cheap) and phaeng (แพง, expensive).' },
+      { label: 'Notice', text: 'Add khráp (ครับ) to ask politely. annǐi thâo rài khráp (อันนี้เท่าไหร่ครับ) is a complete, polite question you can use today.' },
     ],
   },
   missionRecap: {
     headline: 'Nice. You can ask prices and talk money.',
     lead: 'You can shop and ask how much with confidence.',
     achievements: [
-      'Ask the price with เท่าไหร่',
-      'Ask about this one with อันนี้เท่าไหร่',
-      'Talk money with เงิน',
-      'Tell cheap (ถูก) from expensive (แพง)',
-      'Ask politely with ครับ',
+      'Ask the price with thâo rài (เท่าไหร่)',
+      'Ask about this one with annǐi thâo rài (อันนี้เท่าไหร่)',
+      'Talk money with ngern (เงิน)',
+      'Tell cheap (thùuk, ถูก) from expensive (phaeng, แพง)',
+      'Ask politely with khráp (ครับ)',
     ],
   },
 };

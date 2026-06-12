@@ -2899,3 +2899,121 @@ button.character-coach-portrait { cursor: pointer; }
   .miniunit-lesson-grid { grid-template-columns: 1fr; }
   .miniunit-check-btn { width: 100%; }
 }
+
+/* ============ CARD DIRECTION TOGGLE (shared: Cards, lessons, demo) ======== */
+.card-direction-toggle { display: inline-flex; align-self: center; gap: 0; margin: 0 auto 12px; padding: 3px; background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; }
+.card-direction-btn { border: none; background: transparent; border-radius: 999px; padding: 6px 14px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--ink-soft); cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.card-direction-btn-active { background: var(--jade); color: white; }
+@media (hover: hover) and (pointer: fine) {
+  .card-direction-btn:not(.card-direction-btn-active):hover { color: var(--ink); }
+}
+.cards-direction-toggle { display: flex; width: max-content; }
+.miniunit-direction-toggle,
+.firstlesson-direction-toggle,
+.demo-direction-toggle { display: flex; width: max-content; }
+.app-root[data-theme="dark"] .card-direction-toggle { background: rgba(232, 228, 217, 0.06); }
+.app-root[data-theme="dark"] .card-direction-btn { color: var(--ink-soft); }
+.app-root[data-theme="dark"] .card-direction-btn-active { color: #10231b; background: var(--jade); }
+
+/* English-first card faces: the meaning is the prompt, the Thai is the answer */
+.srs-card-en-primary { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 550; color: var(--ink); text-align: center; margin: 14px 0 8px; line-height: 1.25; overflow-wrap: anywhere; }
+.srs-card-en-confirm { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500; color: var(--ink-soft); text-align: center; margin: 6px 0 14px; line-height: 1.3; }
+.miniunit-card-en-primary { font-family: 'Fraunces', serif; font-size: 28px; color: var(--ink); line-height: 1.25; overflow-wrap: anywhere; }
+.miniunit-card-ph-answer { font-size: 22px; }
+.miniunit-card-thai-secondary { font-size: 24px !important; font-weight: 500 !important; opacity: 0.75; }
+.firstlesson-card-en-primary { font-family: 'Fraunces', serif; color: var(--ink); font-size: 28px; line-height: 1.25; max-width: 560px; overflow-wrap: anywhere; }
+.firstlesson-card-ph-answer { font-size: 21px; }
+.firstlesson-card-thai-secondary { font-size: 26px !important; font-weight: 600 !important; opacity: 0.75; }
+.app-root[data-theme="dark"] .srs-card-en-primary,
+.app-root[data-theme="dark"] .miniunit-card-en-primary,
+.app-root[data-theme="dark"] .firstlesson-card-en-primary { color: #f2eee5; }
+
+/* ============ DEMO: ratings, quick check, mini-lesson preview ============= */
+.demo-rate-block { margin: 0 0 6px; }
+/* minmax(0, 1fr) + compact buttons: the demo card is narrower than the cards
+   tab (onboard padding), so the four labels must be allowed to shrink or the
+   row overflows the card on 280-320px phones. */
+.demo-rate-row { margin-bottom: 8px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.demo-rate-row .rate-btn { min-width: 0; padding: 9px 4px; }
+.demo-rate-row .rate-btn-label { font-size: 11px; }
+.demo-rate-row .rate-btn-sub { font-size: 9px; }
+.demo-smart-note { margin: 8px 0 0; text-align: center; font-size: 12px; line-height: 1.45; color: var(--ink-soft); }
+.demo-quiz { text-align: left; margin-bottom: 16px; }
+.demo-quiz-question { margin-bottom: 12px; }
+.demo-quiz-options { margin-bottom: 10px; }
+.demo-quiz-option-ph { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--jade); }
+.demo-quiz-option-thai { font-size: 16px; opacity: 0.8; }
+.demo-lesson-preview { text-align: left; margin-bottom: 16px; }
+.demo-lesson-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.demo-lesson-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--jade) 10%, var(--card-bg)); color: var(--jade); flex-shrink: 0; }
+.demo-lesson-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); }
+.demo-lesson-title { margin: 2px 0 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 650; line-height: 1.2; color: var(--jade); }
+.demo-lesson-intro-card { background: color-mix(in srgb, var(--jade) 5%, var(--card-bg)); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.demo-lesson-lead { margin: 0 0 8px; font-size: 14px; line-height: 1.5; color: var(--ink); }
+.demo-lesson-points { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.demo-lesson-points strong { color: var(--ink); }
+.demo-lesson-note { margin: 0 0 10px; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.demo-lesson-note-structure { margin: 10px 0 0; }
+.demo-lesson-recap { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.demo-lesson-recap li { display: flex; align-items: flex-start; gap: 7px; font-size: 13px; line-height: 1.45; color: var(--ink); }
+.demo-lesson-recap svg { color: var(--jade); flex-shrink: 0; margin-top: 2px; }
+.app-root[data-theme="dark"] .demo-lesson-intro-card { background: rgba(232, 228, 217, 0.05); border-color: rgba(232, 228, 217, 0.14); }
+
+/* ============ LANDING: "How it works" product mockups ==================== */
+.landing-how { position: relative; z-index: 3; padding: 34px 0 10px; }
+.landing-how-sub { margin: 8px auto 0; max-width: 560px; font-size: 13.5px; line-height: 1.55; color: var(--ink-soft); }
+.landing-how-grid { width: 100%; max-width: 1120px; margin: 20px auto 0; padding: 0 20px; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.landing-how-card { display: flex; flex-direction: column; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 10px 26px rgba(15, 61, 46, 0.06); min-width: 0; }
+.landing-how-card-title { margin: 0 0 6px; font-family: 'Fraunces', serif; font-size: 19px; font-weight: 650; line-height: 1.2; color: var(--ink); }
+.landing-how-card-copy { margin: 0 0 14px; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+.landing-how-card-foot { margin: 12px 0 0; font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--jade) 80%, var(--ink)); }
+.landing-mock { background: color-mix(in srgb, var(--jade) 4%, var(--card-bg)); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-top: auto; min-width: 0; }
+.landing-mock-toggle { display: inline-flex; align-self: center; padding: 3px; background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; }
+.landing-mock-toggle-opt { padding: 4px 11px; border-radius: 999px; font-size: 11px; font-weight: 700; color: var(--ink-soft); white-space: nowrap; }
+.landing-mock-toggle-active { background: var(--jade); color: white; }
+.landing-mock-card { display: flex; flex-direction: column; align-items: center; gap: 4px; background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 12px; padding: 16px 12px; text-align: center; }
+.landing-mock-card-kicker { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.13em; color: var(--gold); }
+.landing-mock-card-en { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.landing-mock-card-answer { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--line-strong); width: 100%; }
+.landing-mock-card-ph { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--jade); }
+.landing-mock-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 15px; color: var(--ink-soft); }
+.landing-mock-card-audio { width: 30px; height: 30px; }
+.landing-mock-rate-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.landing-mock-rate-btn { display: flex; align-items: center; justify-content: center; padding: 7px 2px; border-radius: 9px; border: 1px solid color-mix(in srgb, var(--rate-color) 45%, var(--line)); background: color-mix(in srgb, var(--rate-color) 9%, var(--card-bg)); color: var(--rate-color); font-size: 11.5px; font-weight: 800; min-width: 0; }
+.landing-mock-quiz { gap: 8px; }
+.landing-mock-quiz-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.13em; color: var(--gold); }
+.landing-mock-quiz-prompt { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--ink); line-height: 1.25; }
+.landing-mock-quiz-options { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
+.landing-mock-quiz-opt { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card-bg); min-width: 0; }
+.landing-mock-quiz-opt-correct { border-color: var(--jade); background: color-mix(in srgb, var(--jade) 8%, var(--card-bg)); }
+.landing-mock-quiz-letter { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 6px; background: var(--cream-warm); font-size: 11px; font-weight: 800; color: var(--ink-soft); flex-shrink: 0; }
+.landing-mock-quiz-ph { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; min-width: 0; }
+.landing-mock-quiz-check { margin-left: auto; color: var(--jade); flex-shrink: 0; }
+.landing-mock-lesson { gap: 8px; }
+.landing-mock-lesson-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.13em; color: var(--gold); }
+.landing-mock-lesson-lead { font-size: 13px; line-height: 1.55; color: var(--ink); }
+.landing-mock-lesson-point { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px; overflow-wrap: anywhere; }
+.landing-mock-lesson-point strong { color: var(--ink); }
+.landing-how-cta-row { display: flex; justify-content: center; margin-top: 18px; padding: 0 20px; }
+.landing-how-demo-cta { display: inline-flex; align-items: center; gap: 8px; }
+.app-root[data-theme="dark"] .landing-mock { background: rgba(232, 228, 217, 0.04); border-color: rgba(232, 228, 217, 0.12); }
+.app-root[data-theme="dark"] .landing-mock-card,
+.app-root[data-theme="dark"] .landing-mock-quiz-opt,
+.app-root[data-theme="dark"] .landing-mock-lesson-point { background: rgba(232, 228, 217, 0.05); }
+/* Declared after the generic dark opt override so the correct answer keeps
+   its jade tint in dark mode too. */
+.app-root[data-theme="dark"] .landing-mock-quiz-opt-correct { background: color-mix(in srgb, var(--jade) 14%, transparent); }
+.app-root[data-theme="dark"] .landing-mock-toggle,
+.app-root[data-theme="dark"] .landing-mock-quiz-letter { background: rgba(232, 228, 217, 0.08); }
+.app-root[data-theme="dark"] .landing-mock-toggle-active { color: #10231b; }
+.app-root[data-theme="dark"] .landing-mock-card-en,
+.app-root[data-theme="dark"] .landing-mock-quiz-prompt { color: #f2eee5; }
+
+@media (min-width: 760px) {
+  .landing-how-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+}
+@media (max-width: 360px) {
+  .card-direction-btn { padding: 6px 10px; font-size: 11px; }
+  .landing-mock-card-en { font-size: 21px; }
+  .landing-mock-rate-btn { font-size: 10.5px; }
+}

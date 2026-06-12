@@ -253,3 +253,21 @@ which is the role of อ่ะ; and a "most common question" superlative was sof
 **Future plan:** expand the same model to **Stages 4-8 only after owner approval**
 (Stages 1-3 are now done). The shared component and generic metadata keep that
 purely additive.
+
+
+## Owner review feedback sprint addendum (June 12, 2026)
+
+- Beginner copy is now romanization-first: the lessonPrimer bodies/headings,
+  pedagogyQuiz labels and explains, the pilot missionRecap/lessonIntro, and all
+  Stage 1 unit recaps/intros/achievements lead with romanization and keep Thai
+  script in parentheses. Every romanization is copied verbatim from the ph of
+  the card the unit teaches (e.g. khrap from card 2, sa-wat-dee from 3396,
+  kop kun from 2815, mai-bpen-rai from 5361, rer from 5709, chue from card
+  330's sentence). Known ph inconsistencies (chue vs cheu, sawatdee vs
+  sa-wat-dee, mai-bpen-rai vs mai pen rai) remain native-review items.
+- Flashcards default to English first (front = meaning, reveal = romanization
+  then script). The first lesson and mini-units honor the same cardDirection
+  preference and expose the toggle. The quiz direction wording ("Pick the Thai
+  word/sentence for") is unchanged.
+- First lesson, demo, and landing audio are capped at rate 0.72 (device TTS,
+  tuned for beginner clarity); the app-wide default is 0.8.

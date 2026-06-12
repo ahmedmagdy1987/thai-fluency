@@ -37,12 +37,12 @@ export default function PlacementOnboarding({ onComplete }) {
               <button className={`onboard-toggle-btn ${voice === 'male' ? 'onboard-toggle-active' : ''}`} onClick={() => setVoice('male')}>
                 <div className="onboard-toggle-icon">♂</div>
                 <div className="onboard-toggle-label">Male</div>
-                <div className="onboard-toggle-sub">ผม / ครับ</div>
+                <div className="onboard-toggle-sub">phǒm / khráp (ผม / ครับ)</div>
               </button>
               <button className={`onboard-toggle-btn ${voice === 'female' ? 'onboard-toggle-active' : ''}`} onClick={() => setVoice('female')}>
                 <div className="onboard-toggle-icon">♀</div>
                 <div className="onboard-toggle-label">Female</div>
-                <div className="onboard-toggle-sub">ฉัน / ค่ะ</div>
+                <div className="onboard-toggle-sub">chăn / khâ (ฉัน / ค่ะ)</div>
               </button>
             </div>
           </div>

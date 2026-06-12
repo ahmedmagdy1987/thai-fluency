@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Volume2, RotateCcw, ChevronRight } from 'lucide-react';
 import { DIALOGUES } from '../data/reference.js';
 import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
-import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { speakThai, stopSpeaking, ttsAvailable } from '../lib/audio.js';
 
 export default function DialoguesView({ recordDialogueComplete, dialoguesCompleted = [], voice, audioRate }) {
   const [openId, setOpenId] = useState(DIALOGUES[0].id);
   const [revealed, setRevealed] = useState(0);
+  // Bumped to cancel an in-flight play-all run (new run, tab change, unmount).
+  const playAllRunRef = useRef(0);
   const dlg = DIALOGUES.find(d => d.id === openId);
   const isAtEnd = revealed + 1 >= dlg.lines.length;
   const isCompleted = dialoguesCompleted.includes(openId);
@@ -17,13 +19,31 @@ export default function DialoguesView({ recordDialogueComplete, dialoguesComplet
     }
   }, [isAtEnd, isCompleted, openId, recordDialogueComplete]);
 
+  useEffect(() => () => { playAllRunRef.current += 1; }, []);
+
+  // Speak each visible line in sequence. speakThai resolves when a line ends
+  // (or errors / hits its safety timeout), so chaining on it never cuts a line
+  // mid-sentence the way fixed timers did, at any playback rate.
+  const playAll = async () => {
+    const run = ++playAllRunRef.current;
+    stopSpeaking();
+    const lines = dlg.lines.slice(0, revealed + 1);
+    for (const rawLine of lines) {
+      if (playAllRunRef.current !== run) return;
+      const line = displayLine(rawLine, voice);
+      await speakThai(line.thai, audioRate);
+      if (playAllRunRef.current !== run) return;
+      await new Promise(resolve => setTimeout(resolve, 350));
+    }
+  };
+
   return (
     <div className="dialogues-view">
       <div className="dialogue-tabs">
         {DIALOGUES.map(d => {
           const done = dialoguesCompleted.includes(d.id);
           return (
-            <button key={d.id} className={`dialogue-tab ${openId === d.id ? 'dialogue-tab-active' : ''} ${done ? 'dialogue-tab-done' : ''}`} onClick={() => { setOpenId(d.id); setRevealed(0); }}>
+            <button key={d.id} className={`dialogue-tab ${openId === d.id ? 'dialogue-tab-active' : ''} ${done ? 'dialogue-tab-done' : ''}`} onClick={() => { playAllRunRef.current += 1; stopSpeaking(); setOpenId(d.id); setRevealed(0); }}>
               <span className="dialogue-tab-icon">{d.icon}</span>
               <span>{d.title}</span>
               {done && <span className="dialogue-tab-check">✓</span>}
@@ -62,15 +82,7 @@ export default function DialoguesView({ recordDialogueComplete, dialoguesComplet
 
       <div className="dialogue-controls">
         {ttsAvailable() && (
-          <button className="dialogue-playall-btn" onClick={() => {
-            // Speak each visible line in sequence with small gaps
-            const lines = dlg.lines.slice(0, revealed + 1);
-            window.speechSynthesis.cancel();
-            lines.forEach((rawLine, i) => {
-              const line = displayLine(rawLine, voice);
-              setTimeout(() => speakThai(line.thai, audioRate), i * 1800);
-            });
-          }} title="Play all visible lines">
+          <button className="dialogue-playall-btn" onClick={playAll} title="Play all visible lines">
             <Volume2 size={14} /> Play
           </button>
         )}

@@ -1050,3 +1050,58 @@ items, secret names only) is documented in docs/ios-testflight-plan.md.
 Note: cap sync ios on Windows rewrites CapApp-SPM/Package.swift with
 backslash paths; the committed file uses forward slashes (restore noise-only
 diffs like the Android gradle CRLF dance).
+
+
+## Owner review feedback sprint (June 12, 2026)
+
+Implements the owner's review-video feedback. All changes are display/copy and
+client preferences; no schema changes, no migrations, no card source data
+changes, no audio assets.
+
+- **English-first flashcards with a direction toggle.** New `cardDirection`
+  preference ('en-first' default, 'th-first' optional) lives in stats, persists
+  through the normal saveState blob, and syncs through profiles.settings via
+  CLOUD_PROFILE_SETTING_KEYS (free-form jsonb; no schema change). A shared
+  CardDirectionToggle component appears on the Cards tab, mini-unit lessons,
+  the first lesson, and the demo (demo keeps a local, unpersisted choice).
+  English-first fronts show the meaning; reveal shows romanization first with
+  script secondary per viewMode. Auto-play and the front speaker button are
+  gated in English-first mode so audio cannot leak the answer before reveal.
+  Quizzes and the sentence builder are untouched by the preference.
+- **Demo upgraded to show the real product.** /demo is now: 3 smart flashcards
+  with the real Again/Hard/Good/Easy rating buttons (simulated; the demo still
+  writes no progress, XP, or streaks), the adaptive-review explanation line, a
+  multiple-choice quick check (real miniunit markup), a mini-lesson preview
+  built from the pilot unit's real lessonIntro/missionRecap data, then the
+  existing signup end screen. Back behavior and routes are unchanged; the only
+  persistence remains the demo position key.
+- **Homepage "How it works" section.** CSS-only product mockups built from real
+  cards (hello / thank you very much / yes): a flashcard with the direction
+  toggle and the four rating pills, a quick-check example, and a mission-intro
+  example, plus derived counts (STAGES.length stages, MINI_UNITS.length guided
+  missions). Journey section retitled "Your first stages" with a line that each
+  stage is a set of short, guided missions. The loop section eyebrow became
+  "The mission loop" to avoid duplicate "How it works" labels.
+- **Romanization-first beginner copy.** The first-lesson primer, primer quiz
+  labels/explains, pilot recap/lessonIntro, Stage 1 unit recaps/intros/
+  achievements, placement onboarding voice labels, TodayTab footer, Stage 1
+  celebration, tones callout, and demo end screen now lead with romanization
+  (khrap/kha style) with Thai script secondary in parentheses. All added
+  romanization is copied verbatim from the ph of the cards each unit teaches.
+  Stage 2-8 unit copy is deferred to a scripted bulk pass. Card source data,
+  sentence-builder tokens, lookup, and borrowedWords data untouched.
+- **TTS tuned slower + start hardened.** DEFAULT_AUDIO_RATE is 0.8 (was 0.95);
+  Settings options are now 0.65 Slow / 0.8 Clear / 1.0 Fast; migrateStats maps
+  old cached rates (0.7 to 0.65, 0.85/0.95 to 0.8, 1/1.15 to 1.0). Demo, first
+  lesson, and landing audio are capped at BEGINNER_AUDIO_RATE 0.72. Web speech
+  now cancels only when something is queued/playing, waits 180ms after a
+  cancel (40ms when idle) before speak(), and calls resume() right after
+  speak() to defeat Chrome's unreported idle suspend. Native adds an 80ms
+  settle after stop(). Audio is still device TTS; no human-audio claims.
+- **Stage vs mission wording.** LearnPath mini-unit rail is now "Stage N
+  missions" with items "Mission N"; the journey summary shows "96 guided
+  missions" (derived) instead of the contradictory "6 missions in Stage 1".
+  Known residual: the legacy Stage-1 card-batch rail still uses "Mission 1-6"
+  naming alongside the guided missions; consolidating the two systems is a
+  future pass.
+- Verified: web build passes; all 8 validation scripts pass.

@@ -771,3 +771,18 @@ close to) English (taxi, coffee, wifi, and more), each with Thai script,
 romanization, a sounds-familiar note, and a TTS speaker button. No XP, no
 schema, no SRS or Challenge involvement, existing cards untouched; all content
 flagged pending native review. Details: docs/borrowed-english-words-notes.md.
+
+
+## Owner review feedback sprint (June 12, 2026)
+
+- User-facing naming: the guided mini-units are presented as "missions"
+  (LearnPath rail "Stage N missions", homepage "96 guided missions"). The
+  internal data name remains mini-units; the legacy Stage-1 6-mission card
+  rail is unchanged and its consolidation with the guided missions is a
+  planned future pass.
+- Stage 1 unit copy strings are now romanization-first (see
+  first-lesson-pedagogy-notes addendum). Stage 2-8 unit copy still leads with
+  Thai script and is queued for a scripted bulk pass that sources romanization
+  from card ph / WORD_LOOKUP.
+- New cardDirection preference (English first default) affects flashcard
+  presentation only; unit data, quizzes, and sentence builders are unchanged.

@@ -5,7 +5,8 @@ import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamificatio
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState, clearState, loadRushGuard, saveRushGuard } from './lib/storage.js';
-import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './lib/voice.js';
+import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
+import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { evaluateDailyQuests } from './lib/dailyQuests.js';
@@ -78,6 +79,7 @@ import { initNativeUi } from './lib/native.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = [
   'viewMode',
+  'cardDirection',
   'audioRate',
   'audioAutoPlay',
   'showCharacters',
@@ -805,6 +807,11 @@ export default function TukTalkThaiApp() {
   // via the profileSettingsRef reference check.
   useEffect(() => {
     if (!loaded || !session || !isEmailConfirmed || !hasSupabaseConfig) return;
+    // Never write before the profile fetch has resolved: profileSettingsRef is
+    // {} until then, and updateProfile replaces the whole settings blob, so an
+    // early write would wipe every synced setting (cardDirection, viewMode,
+    // completedMiniUnits, ...) for the race window.
+    if (!profileChecked) return;
     const prev = profileSettingsRef.current || {};
     if (prev.celebratedIds === stats.celebratedIds && prev.celebrationBaselineDone === stats.celebrationBaselineDone) return;
     const nextSettings = {
@@ -817,7 +824,7 @@ export default function TukTalkThaiApp() {
     updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
       console.warn('[App] failed to sync celebration ledger to cloud', e);
     });
-  }, [stats.celebratedIds, stats.celebrationBaselineDone, loaded, session, isEmailConfirmed]);
+  }, [stats.celebratedIds, stats.celebrationBaselineDone, loaded, session, isEmailConfirmed, profileChecked]);
 
   // Mission advancement: when currentMission increases past lastSeenMission,
   // celebrate the mission that just finished. The "just finished" mission is
@@ -1522,6 +1529,15 @@ export default function TukTalkThaiApp() {
 
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
+  const cardDirection = stats.cardDirection === 'th-first' ? 'th-first' : DEFAULT_CARD_DIRECTION;
+  const setCardDirection = useCallback(
+    (direction) => updateSettings({ cardDirection: direction === 'th-first' ? 'th-first' : 'en-first' }),
+    [updateSettings]
+  );
+  const audioRate = stats.audioRate || DEFAULT_AUDIO_RATE;
+  // First lesson and demo always play at a beginner-clear pace, even if the
+  // user's saved speed is faster. A slower saved speed is respected.
+  const beginnerAudioRate = Math.min(audioRate, BEGINNER_AUDIO_RATE);
   const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
 
   if (publicPage) {
@@ -1589,7 +1605,7 @@ export default function TukTalkThaiApp() {
           onGetStarted={() => openAuthGate('welcome')}
           onSignIn={() => openAuthGate('signin')}
           onOpenPublicPage={handleNavigatePath}
-          audioRate={stats.audioRate || 0.95}
+          audioRate={beginnerAudioRate}
         />
       </div>
     );
@@ -1623,7 +1639,7 @@ export default function TukTalkThaiApp() {
           onSignIn={handleDemoSignIn}
           onBackToHome={handleExitDemo}
           viewMode={viewMode}
-          audioRate={stats.audioRate || 0.95}
+          audioRate={beginnerAudioRate}
           audioAutoPlay={!!stats.audioAutoPlay}
           showCharacters={stats.showCharacters !== false}
         />
@@ -1658,7 +1674,9 @@ export default function TukTalkThaiApp() {
         <FirstLessonFlow
           unit={STAGE_1_MINI_UNIT_PILOT}
           voice={voice}
-          audioRate={stats.audioRate || 0.95}
+          cardDirection={cardDirection}
+          onChangeCardDirection={setCardDirection}
+          audioRate={beginnerAudioRate}
           showCharacters={stats.showCharacters !== false}
           initialProgress={stats.firstLessonProgress}
           onProgressChange={handleFirstLessonProgressChange}
@@ -1708,7 +1726,9 @@ export default function TukTalkThaiApp() {
         <MiniUnitFlow
           unit={activeMiniUnit}
           voice={voice}
-          audioRate={stats.audioRate || 0.95}
+          cardDirection={cardDirection}
+          onChangeCardDirection={setCardDirection}
+          audioRate={audioRate}
           showCharacters={stats.showCharacters !== false}
           initialProgress={stats.miniUnitProgress}
           onProgressChange={handleMiniUnitProgressChange}
@@ -1726,9 +1746,9 @@ export default function TukTalkThaiApp() {
           )}
           {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
-          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={stats.audioRate || 0.95} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
-          {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} />}
-          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={stats.audioRate || 0.95} showCharacters={stats.showCharacters !== false} />}
+          {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
+          {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} />}
+          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}

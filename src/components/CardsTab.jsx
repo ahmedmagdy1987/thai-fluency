@@ -18,6 +18,7 @@ import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import RateBtn from './RateBtn.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
+import CardDirectionToggle from './CardDirectionToggle.jsx';
 
 // The card flip is 550ms in CSS; 3400ms keeps the reveal prompt readable
 // for roughly 2.8s after the back face settles, then returns to resting.
@@ -27,7 +28,7 @@ const REVEAL_PROMPT_DURATION_MS = 3400;
 // card objects without scanning the whole deck on every render.
 const CARD_BY_ID = new Map(CARDS.map(c => [c.id, c]));
 
-export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope, setTab, stageState }) {
+export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, cardDirection = 'en-first', onChangeCardDirection, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope, setTab, stageState }) {
   const [revealed, setRevealed] = useState(false);
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
@@ -221,12 +222,22 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     coach.setRestingState(revealed ? 'thinking' : 'idle');
   }, [revealed]);
 
+  // Auto-play fires when the Thai side becomes visible: on card mount for
+  // Thai-first, but only AFTER reveal for English-first (hearing the Thai
+  // before answering would give the answer away). Two effects on purpose:
+  // folding them together puts `revealed` in the Thai-first path's deps, and
+  // revealing within the 350ms delay would then cancel the prompt audio.
+  const isEnglishFirst = cardDirection !== 'th-first';
   useEffect(() => {
-    if (audioAutoPlay && card && card.thai) {
-      const t = setTimeout(() => triggerSpeak(card.thai), 350);
-      return () => clearTimeout(t);
-    }
-  }, [card && card.id, audioAutoPlay, audioRate]);
+    if (!audioAutoPlay || isEnglishFirst || !card || !card.thai) return undefined;
+    const t = setTimeout(() => triggerSpeak(card.thai), 350);
+    return () => clearTimeout(t);
+  }, [card && card.id, audioAutoPlay, audioRate, isEnglishFirst]);
+  useEffect(() => {
+    if (!audioAutoPlay || !isEnglishFirst || !revealed || !card || !card.thai) return undefined;
+    const t = setTimeout(() => triggerSpeak(card.thai), 350);
+    return () => clearTimeout(t);
+  }, [card && card.id, audioAutoPlay, audioRate, isEnglishFirst, revealed]);
 
   // Clean up the speaking timer on unmount so we don't leak state.
   useEffect(() => () => {
@@ -474,6 +485,8 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         </div>
       </div>
 
+      <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="cards-direction-toggle" />
+
       <div className="srs-card-wrap">
         <div className="srs-card-flip-wrap">
           <div className={`srs-card-flip ${revealed ? 'srs-card-flip-revealed' : ''}`}>
@@ -482,16 +495,22 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
               className={`srs-card srs-card-face srs-card-face-front srs-card-mode-${viewMode || 'speak'} ${showCharacters ? 'srs-card-with-coach' : ''}`}
               onClick={handleReveal}
               role="button"
-              tabIndex={0}
+              tabIndex={revealed ? -1 : 0}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleReveal(); } }}
-              aria-label="Reveal answer"
+              aria-hidden={revealed}
+              aria-label={isEnglishFirst
+                ? `${card.en}. Tap to reveal the Thai`
+                : `${card.ph || card.thai}. Tap to reveal the meaning`}
             >
               <div className="srs-card-meta">
                 {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
                 <div className="srs-card-meta-right">
                   {isNew && <span className="srs-card-new-badge">new</span>}
                   {!isNew && cardState && <span className="srs-card-interval">{cardState.learning ? 'learning' : `${cardState.interval}d interval`}</span>}
-                  {ttsAvailable() && card.thai && (
+                  {/* English-first hides the front speaker: hearing the Thai
+                      before answering would give the answer away. Hidden after
+                      reveal too, so the flipped-away face is never focusable. */}
+                  {!isEnglishFirst && !revealed && ttsAvailable() && card.thai && (
                     <button
                       className="speaker-btn speaker-btn-card"
                       onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
@@ -520,7 +539,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
               )}
 
               <div className="srs-card-front-body">
-                {viewMode === 'read' ? (
+                {isEnglishFirst ? (
+                  /* English-first: the meaning is the prompt; recall the Thai. */
+                  <div className="srs-card-en-primary">{card.en}</div>
+                ) : viewMode === 'read' ? (
                   <div className="srs-card-thai srs-card-thai-primary">{card.thai}</div>
                 ) : viewMode === 'both' ? (
                   <>
@@ -538,7 +560,9 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
 
               <div className="srs-card-prompt">
                 <div className="srs-card-prompt-text">Tap to reveal</div>
-                <div className="srs-card-prompt-hint">Try to recall the meaning first</div>
+                <div className="srs-card-prompt-hint">
+                  {isEnglishFirst ? 'Try to say it in Thai first' : 'Try to recall the meaning first'}
+                </div>
               </div>
             </div>
 
@@ -546,7 +570,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
             <div className="srs-card srs-card-face srs-card-face-back" aria-hidden={!revealed}>
               <div className="srs-card-back-meta">
                 {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
-                {ttsAvailable() && card.thai && (
+                {/* Rendered only after reveal: the hidden flip face must never
+                    hold a focusable button that could speak the Thai answer
+                    early (keyboard users could Tab to it otherwise). */}
+                {revealed && ttsAvailable() && card.thai && (
                   <button
                     className="speaker-btn speaker-btn-card"
                     onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
@@ -571,9 +598,31 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
               )}
 
               <div className="srs-card-back-body">
-                <div className="srs-card-back-eyebrow">Meaning</div>
-                {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}
-                <div className="srs-card-en">{card.en}</div>
+                {isEnglishFirst ? (
+                  /* English-first reveal: the Thai is the answer. Phonetic
+                     leads (speak-first app), script secondary per viewMode. */
+                  <>
+                    <div className="srs-card-back-eyebrow">In Thai</div>
+                    {viewMode === 'read' || viewMode === 'both' ? (
+                      <>
+                        <div className="srs-card-thai">{card.thai}</div>
+                        {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}
+                      </>
+                    ) : (
+                      <>
+                        <div className="srs-card-ph-primary">{card.ph || <span className="srs-card-ph-pending">phonetic unavailable</span>}</div>
+                        <div className="srs-card-thai srs-card-thai-secondary">{card.thai}</div>
+                      </>
+                    )}
+                    <div className="srs-card-en srs-card-en-confirm">{card.en}</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="srs-card-back-eyebrow">Meaning</div>
+                    {card.ph && <div className="srs-card-back-ph">{card.ph}</div>}
+                    <div className="srs-card-en">{card.en}</div>
+                  </>
+                )}
 
                 {(() => {
                   const bd = card.breakdown && card.breakdown.length > 0 ? card.breakdown

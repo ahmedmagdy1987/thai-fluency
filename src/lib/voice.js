@@ -4,6 +4,13 @@
 export const DEFAULT_VOICE = 'male';
 export const DEFAULT_VIEW_MODE = 'speak';
 
+// Flashcard direction preference. 'en-first' shows the English meaning on the
+// front and reveals the Thai (phonetic first); 'th-first' is the classic
+// Thai-front card. English-first is the default because a learner usually
+// starts from the idea: "How do I say hello in Thai?"
+export const DEFAULT_CARD_DIRECTION = 'en-first';
+export const CARD_DIRECTIONS = ['en-first', 'th-first'];
+
 export function transformThai(thai, voice) {
   if (!thai || voice !== 'female') return thai;
   // Pronoun: ผม -> ฉัน

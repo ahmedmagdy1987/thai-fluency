@@ -7,6 +7,7 @@ import { playCelebration, playCharacterCorrect, playCharacterSelect, playCharact
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import SentenceBuilder from './SentenceBuilder.jsx';
+import CardDirectionToggle from './CardDirectionToggle.jsx';
 
 function cardsByIds(ids, voice) {
   return ids
@@ -39,10 +40,96 @@ function safeNonNegativeIndex(value) {
   return Math.max(0, index);
 }
 
+// Module-scope on purpose: defining this inside MiniUnitFlow would give React
+// a new component type every render, remounting the whole card subtree and
+// dropping keyboard focus on each reveal/toggle/coach tick.
+function CardPractice({ card, label, onNext, nextLabel, revealed, onReveal, onHide, onSpeak, cardDirection, onChangeCardDirection }) {
+  const isEnglishFirst = cardDirection !== 'th-first';
+  return (
+    <section className="miniunit-practice-card">
+      <div className="miniunit-step-label">{label}</div>
+      <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="miniunit-direction-toggle" />
+      <div
+        className={`miniunit-flash-card ${revealed ? 'miniunit-flash-card-revealed' : ''}`}
+        onClick={onReveal}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onReveal();
+          }
+        }}
+        aria-label={isEnglishFirst
+          ? `${card.en}. Tap to reveal the Thai`
+          : `${card.ph || card.thai}. Tap to reveal the meaning`}
+      >
+        <div className="miniunit-card-top">
+          <span>{card.type === 's' || card.type === 'p' ? 'Phrase' : 'Word'}</span>
+          {/* English-first hides the speaker until reveal so the audio can't
+              give the Thai answer away. */}
+          {(!isEnglishFirst || revealed) && ttsAvailable() && card.thai && (
+            <span
+              role="button"
+              tabIndex={0}
+              className="speaker-btn speaker-btn-card miniunit-speaker"
+              onClick={(e) => { e.stopPropagation(); onSpeak(card.thai); }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onSpeak(card.thai);
+                }
+              }}
+              title="Hear pronunciation"
+              aria-label="Play pronunciation"
+            >
+              <Volume2 size={16} />
+            </span>
+          )}
+        </div>
+        {isEnglishFirst ? (
+          <>
+            <div className="miniunit-card-en-primary">{card.en}</div>
+            {revealed ? (
+              <>
+                {card.ph && <div className="miniunit-card-ph miniunit-card-ph-answer">{card.ph}</div>}
+                <div className="miniunit-card-thai miniunit-card-thai-secondary">{card.thai}</div>
+              </>
+            ) : (
+              <div className="miniunit-card-hint">Tap to reveal the Thai</div>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="miniunit-card-thai">{card.thai}</div>
+            {card.ph && <div className="miniunit-card-ph">{card.ph}</div>}
+            {revealed ? (
+              <div className="miniunit-card-en">{card.en}</div>
+            ) : (
+              <div className="miniunit-card-hint">Tap to reveal meaning</div>
+            )}
+          </>
+        )}
+      </div>
+      <div className="miniunit-card-actions">
+        <button type="button" className="btn-secondary" onClick={onHide} disabled={!revealed}>
+          <RotateCcw size={14} /> Hide
+        </button>
+        <button type="button" className="btn-primary" onClick={onNext}>
+          {nextLabel} <ChevronRight size={16} />
+        </button>
+      </div>
+    </section>
+  );
+}
+
 export default function MiniUnitFlow({
   unit,
   voice,
-  audioRate = 0.95,
+  cardDirection = 'en-first',
+  onChangeCardDirection,
+  audioRate = 0.8,
   showCharacters = true,
   initialProgress,
   onProgressChange,
@@ -192,62 +279,6 @@ export default function MiniUnitFlow({
     checkLockedRef.current = false;
   };
 
-  const CardPractice = ({ card, label, onNext, nextLabel }) => (
-    <section className="miniunit-practice-card">
-      <div className="miniunit-step-label">{label}</div>
-      <div
-        className={`miniunit-flash-card ${revealed ? 'miniunit-flash-card-revealed' : ''}`}
-        onClick={revealCard}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            revealCard();
-          }
-        }}
-      >
-        <div className="miniunit-card-top">
-          <span>{card.type === 's' || card.type === 'p' ? 'Phrase' : 'Word'}</span>
-          {ttsAvailable() && card.thai && (
-            <span
-              role="button"
-              tabIndex={0}
-              className="speaker-btn speaker-btn-card miniunit-speaker"
-              onClick={(e) => { e.stopPropagation(); triggerSpeak(card.thai); }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  triggerSpeak(card.thai);
-                }
-              }}
-              title="Hear pronunciation"
-              aria-label="Play pronunciation"
-            >
-              <Volume2 size={16} />
-            </span>
-          )}
-        </div>
-        <div className="miniunit-card-thai">{card.thai}</div>
-        {card.ph && <div className="miniunit-card-ph">{card.ph}</div>}
-        {revealed ? (
-          <div className="miniunit-card-en">{card.en}</div>
-        ) : (
-          <div className="miniunit-card-hint">Tap to reveal meaning</div>
-        )}
-      </div>
-      <div className="miniunit-card-actions">
-        <button type="button" className="btn-secondary" onClick={() => setRevealed(false)} disabled={!revealed}>
-          <RotateCcw size={14} /> Hide
-        </button>
-        <button type="button" className="btn-primary" onClick={onNext}>
-          {nextLabel} <ChevronRight size={16} />
-        </button>
-      </div>
-    </section>
-  );
-
   return (
     <div className="tab-content miniunit-flow">
       <div className="miniunit-topbar">
@@ -301,6 +332,12 @@ export default function MiniUnitFlow({
           label={`Vocabulary ${vocabIndex + 1} of ${vocabCards.length}`}
           onNext={nextVocab}
           nextLabel={vocabIndex + 1 >= vocabCards.length ? 'Sentence' : 'Next word'}
+          revealed={revealed}
+          onReveal={revealCard}
+          onHide={() => setRevealed(false)}
+          onSpeak={triggerSpeak}
+          cardDirection={cardDirection}
+          onChangeCardDirection={onChangeCardDirection}
         />
       )}
 
@@ -310,6 +347,12 @@ export default function MiniUnitFlow({
           label="Sentence"
           onNext={afterSentence}
           nextLabel={hasBuilder ? 'Build sentence' : 'Start challenge'}
+          revealed={revealed}
+          onReveal={revealCard}
+          onHide={() => setRevealed(false)}
+          onSpeak={triggerSpeak}
+          cardDirection={cardDirection}
+          onChangeCardDirection={onChangeCardDirection}
         />
       )}
 
@@ -340,7 +383,7 @@ export default function MiniUnitFlow({
             <div className="miniunit-question-label">Choose the Thai</div>
             <div className="miniunit-question-prompt">{currentChallenge.prompt}</div>
           </div>
-          <div className="miniunit-options" role="list">
+          <div className="miniunit-options" role="group" aria-label="Answer choices">
             {currentChallenge.options.map((option, index) => {
               const isSelected = selectedId === option.id;
               const isCorrect = option.id === currentChallenge.correct.id;

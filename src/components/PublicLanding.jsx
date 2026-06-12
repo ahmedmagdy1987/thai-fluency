@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ArrowRight,
   BookOpen,
+  Check,
   CheckCircle2,
   Compass,
   MessageCircle,
@@ -14,7 +15,7 @@ import {
   Volume2,
 } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
-import { getMiniUnitsForStage, MINI_UNITS } from '../data/miniUnits.js';
+import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { STAGES } from '../data/taxonomy.js';
 import { speakThai } from '../lib/audio.js';
 import { SITE_CONFIG } from '../config/site.js';
@@ -64,6 +65,20 @@ const JOURNEY = [
     text: 'People, places, time, and directions.',
     missions: getMiniUnitsForStage(3).length,
   },
+];
+
+// Source cards for the "How it works" product mockups. All content is pulled
+// from the real deck so the examples can never drift from the product.
+const HOW_FLASHCARD_ID = 310;            // hello, the canonical first word
+const HOW_QUIZ_CORRECT_ID = 312;         // thank you very much
+const HOW_QUIZ_OPTION_IDS = [310, 312, 251]; // hello / thank you very much / yes
+
+// Rating buttons exactly as they appear on the real review screen.
+const HOW_RATINGS = [
+  { label: 'Again', color: '#A03B2C' },
+  { label: 'Hard', color: '#E0823B' },
+  { label: 'Good', color: '#2E7D5B' },
+  { label: 'Easy', color: '#2563A8' },
 ];
 
 // The teacher-and-game loop every mission follows. Each step is something the
@@ -135,8 +150,15 @@ const FOOTER_LINKS = [
   { path: '/delete-account', label: 'Account deletion' },
 ];
 
-export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.95 }) {
+export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.8 }) {
   const phrases = PHRASE_SOURCES.map(getPhrase);
+  // Real product content for the "How it works" mockups.
+  const howFlashcard = getPhrase({ cardId: HOW_FLASHCARD_ID, meaning: 'Hello' });
+  const howQuizCorrect = CARDS.find(c => c.id === HOW_QUIZ_CORRECT_ID);
+  const howQuizOptions = HOW_QUIZ_OPTION_IDS
+    .map(id => CARDS.find(c => c.id === id))
+    .filter(Boolean);
+  const howLessonIntro = STAGE_1_MINI_UNIT_PILOT.lessonIntro || null;
 
   const playPhrase = (thai) => {
     if (!thai) return;
@@ -257,12 +279,137 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
       </section>
 
+      <section className="landing-how" aria-labelledby="landing-how-title">
+        <div className="landing-section-head">
+          <span className="landing-eyebrow">How it works</span>
+          <h2 id="landing-how-title" className="landing-section-title">
+            What you&apos;ll actually do
+          </h2>
+          <p className="landing-how-sub">
+            Real examples from the app. {STAGES.length} stages, {MINI_UNITS.length} guided
+            missions. Each stage is a set of short missions.
+          </p>
+        </div>
+
+        <div className="landing-how-grid">
+          {/* 1: Smart flashcards, English first, with the real rating buttons */}
+          <article className="landing-how-card">
+            <h3 className="landing-how-card-title">Smart flashcards</h3>
+            <p className="landing-how-card-copy">
+              Think &quot;how do I say hello in Thai?&quot;, flip the card, then rate
+              yourself. The app uses your answer to decide what to review sooner.
+            </p>
+            <div className="landing-mock landing-mock-flashcard">
+              <div className="landing-mock-toggle" aria-hidden="true">
+                <span className="landing-mock-toggle-opt landing-mock-toggle-active">English first</span>
+                <span className="landing-mock-toggle-opt">Thai first</span>
+              </div>
+              <div className="landing-mock-card">
+                <span className="landing-mock-card-kicker">How do you say</span>
+                <span className="landing-mock-card-en">{howFlashcard.en}</span>
+                <span className="landing-mock-card-answer">
+                  <span className="landing-mock-card-ph">{howFlashcard.ph}</span>
+                  <span className="landing-mock-card-thai">{howFlashcard.thai}</span>
+                  <button
+                    type="button"
+                    className="landing-phrase-audio landing-mock-card-audio"
+                    onClick={() => playPhrase(howFlashcard.thai)}
+                    aria-label={`Play ${howFlashcard.en} pronunciation`}
+                  >
+                    <Volume2 size={14} />
+                  </button>
+                </span>
+              </div>
+              <div className="landing-mock-rate-row" aria-hidden="true">
+                {HOW_RATINGS.map(({ label, color }) => (
+                  <span className="landing-mock-rate-btn" style={{ '--rate-color': color }} key={label}>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <p className="landing-how-card-foot">Practice the words that need more attention.</p>
+          </article>
+
+          {/* 2: Multiple choice quick checks */}
+          <article className="landing-how-card">
+            <h3 className="landing-how-card-title">Quick checks</h3>
+            <p className="landing-how-card-copy">
+              Short multiple-choice questions right after you learn, so new words
+              stick before you move on.
+            </p>
+            {howQuizCorrect && (
+              <div className="landing-mock landing-mock-quiz" aria-hidden="true">
+                <span className="landing-mock-quiz-label">Choose the Thai</span>
+                <span className="landing-mock-quiz-prompt">{howQuizCorrect.en}</span>
+                <div className="landing-mock-quiz-options">
+                  {howQuizOptions.map((option, index) => {
+                    const isCorrect = option.id === HOW_QUIZ_CORRECT_ID;
+                    return (
+                      <span
+                        className={`landing-mock-quiz-opt ${isCorrect ? 'landing-mock-quiz-opt-correct' : ''}`}
+                        key={option.id}
+                      >
+                        <span className="landing-mock-quiz-letter">{String.fromCharCode(65 + index)}</span>
+                        <span className="landing-mock-quiz-ph">{option.ph}</span>
+                        {isCorrect && <Check size={14} className="landing-mock-quiz-check" />}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            <p className="landing-how-card-foot">A quick win after every few cards.</p>
+          </article>
+
+          {/* 3: Mini lessons around every mission */}
+          <article className="landing-how-card">
+            <h3 className="landing-how-card-title">Mini lessons</h3>
+            <p className="landing-how-card-copy">
+              Every mission opens with a short, friendly explanation and ends
+              with a recap. No grammar walls.
+            </p>
+            {howLessonIntro && (
+              <div className="landing-mock landing-mock-lesson" aria-hidden="true">
+                <span className="landing-mock-lesson-eyebrow">
+                  <BookOpen size={13} /> Mission intro
+                </span>
+                <span className="landing-mock-lesson-lead">{howLessonIntro.lead}</span>
+                {Array.isArray(howLessonIntro.points) && howLessonIntro.points[0] && (
+                  <span className="landing-mock-lesson-point">
+                    <strong>{howLessonIntro.points[0].label}:</strong> {howLessonIntro.points[0].text}
+                  </span>
+                )}
+              </div>
+            )}
+            <p className="landing-how-card-foot">Learn the why, not just the words.</p>
+          </article>
+        </div>
+
+        {onOpenPublicPage && (
+          <div className="landing-how-cta-row">
+            <button
+              type="button"
+              className="btn-secondary landing-how-demo-cta"
+              onClick={() => onOpenPublicPage('/demo')}
+            >
+              <Play size={15} aria-hidden="true" />
+              Try it now in the quick demo
+            </button>
+          </div>
+        )}
+      </section>
+
       <section className="landing-journey" aria-labelledby="landing-journey-title">
         <div className="landing-section-head">
           <span className="landing-eyebrow">Your journey</span>
           <h2 id="landing-journey-title" className="landing-section-title">
-            Your first missions, one step at a time
+            Your first stages
           </h2>
+          <p className="landing-how-sub">
+            Each stage is a set of short, guided missions. Finish a mission and
+            the next one unlocks.
+          </p>
         </div>
         <ol className="landing-path">
           {JOURNEY.map(({ n, Icon, stage, title, text, missions, start }) => (
@@ -292,8 +439,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </div>
             <div className="landing-step-copy">
               <span className="landing-step-stage">Keep going</span>
-              <span className="landing-step-title">More missions ahead</span>
-              <span className="landing-step-text">Unlock new themes as you finish each one.</span>
+              <span className="landing-step-title">More stages ahead</span>
+              <span className="landing-step-text">Stages 4 to 8 take you from real conversations to Thai Mastery.</span>
             </div>
           </li>
         </ol>
@@ -301,7 +448,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
       <section className="landing-loop" aria-labelledby="landing-loop-title">
         <div className="landing-section-head">
-          <span className="landing-eyebrow">How it works</span>
+          <span className="landing-eyebrow">The mission loop</span>
           <h2 id="landing-loop-title" className="landing-section-title">
             Every mission is a small, friendly loop
           </h2>

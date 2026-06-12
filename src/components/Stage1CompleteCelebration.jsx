@@ -20,7 +20,7 @@ export default function Stage1CompleteCelebration({ onClose }) {
         <div className="s1-complete-icon"><Sparkles size={56} /></div>
         <div className="s1-complete-eyebrow">Survival Thai Complete</div>
         <h1 className="s1-complete-title">👑 You can handle real Thailand.</h1>
-        <p className="s1-complete-thai">เก่งมาก (gèng mâak)</p>
+        <p className="s1-complete-thai">gèng mâak (เก่งมาก)</p>
         <p className="s1-complete-body">
           You've mastered the 150 essentials. You can greet, order food, ask directions,
           handle prices, and call for help in Thai.

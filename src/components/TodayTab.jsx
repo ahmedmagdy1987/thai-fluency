@@ -233,7 +233,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
       </div>
 
       <div className="footer-ornament">
-        <span>{voice === 'female' ? 'โชคดีค่ะ (chôhk dee khâ)' : 'โชคดีครับ (chôhk dee khráp)'}</span>
+        <span>{voice === 'female' ? 'chôhk dee khâ (โชคดีค่ะ)' : 'chôhk dee khráp (โชคดีครับ)'}</span>
       </div>
 
       {showAchievements && <AchievementsModal achievements={allAchievements} unlocked={fullStats.unlockedAchievements || []} onClose={() => setShowAchievements(false)} />}

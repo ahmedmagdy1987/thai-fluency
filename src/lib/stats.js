@@ -1,5 +1,5 @@
 import { XP_REWARDS, DEFAULT_DAILY_GOAL } from '../data/gamification.js';
-import { DEFAULT_VOICE, DEFAULT_VIEW_MODE } from './voice.js';
+import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './voice.js';
 
 export const DEFAULT_STATS = {
   streak: 0,
@@ -45,8 +45,9 @@ export const DEFAULT_STATS = {
   celebrationBaselineDone: false,
   voice: DEFAULT_VOICE,
   viewMode: DEFAULT_VIEW_MODE,
+  cardDirection: DEFAULT_CARD_DIRECTION,
   theme: 'light',
-  audioRate: 0.95,
+  audioRate: 0.8,
   audioAutoPlay: false,
   soundEffects: true,
   streakFreezes: 1,
@@ -118,10 +119,15 @@ export function migrateStats(stats) {
   migrated.todayDate = dateKeyFromValue(migrated.todayDate);
   migrated.lastStudy = dateKeyFromValue(migrated.lastStudy);
   migrated.lastChallengeDate = dateKeyFromValue(migrated.lastChallengeDate);
-  // Legacy Settings used 0.85 as "Natural" and 1 as "Fast". Normalize old
-  // cached values to the clearer speed spread used by the current selector.
-  if (migrated.audioRate === 0.85) migrated.audioRate = 0.95;
-  if (migrated.audioRate === 1) migrated.audioRate = 1.15;
+  // Normalize cached audio rates from older Settings selectors onto the
+  // current, slower beginner-tuned spread (0.65 / 0.8 / 1.0). Owner feedback:
+  // the previous "Natural" 0.95 was too fast for beginner review.
+  if (migrated.audioRate === 0.85 || migrated.audioRate === 0.95) migrated.audioRate = 0.8;
+  if (migrated.audioRate === 0.7) migrated.audioRate = 0.65;
+  if (migrated.audioRate === 1 || migrated.audioRate === 1.15) migrated.audioRate = 1.0;
+  if (migrated.cardDirection !== 'th-first' && migrated.cardDirection !== 'en-first') {
+    migrated.cardDirection = DEFAULT_CARD_DIRECTION;
+  }
   if (!migrated.firstLessonCompleted && hasStatsLearningActivity(migrated)) {
     migrated.firstLessonCompleted = true;
   }

@@ -34,7 +34,7 @@ export default function TonesSection() {
 
       <div className="guide-callout">
         <div className="guide-callout-title">The classic five-mai sentence</div>
-        <p className="guide-callout-body">"ไม้ใหม่ไม่ไหม้ไหม" <em>(mái mài mâi mâi mǎi)</em>: "New wood doesn't burn, does it?" Five different tones on the same syllable.</p>
+        <p className="guide-callout-body">"mái mài mâi mâi mǎi" <em>(ไม้ใหม่ไม่ไหม้ไหม)</em>: "New wood doesn't burn, does it?" Five different tones on the same syllable.</p>
         <div className="tone-examples-grid">
           {[
             { syl: 'mái', tone: 'high', mean: 'wood' },

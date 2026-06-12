@@ -19,12 +19,21 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech';
 let _cachedThaiVoice = null;
 let _voicesReady = false;
 
+// Default Thai pronunciation rate. Tuned slower than typical device defaults
+// because beginner review needs clear tones; owner feedback flagged the old
+// 0.9-0.95 range as too fast. Keep in sync with DEFAULT_STATS.audioRate.
+export const DEFAULT_AUDIO_RATE = 0.8;
+
+// Cap applied to first-lesson and demo playback so brand-new learners always
+// hear an extra-clear pace, even before they discover the speed setting.
+export const BEGINNER_AUDIO_RATE = 0.72;
+
 function isNative() {
   try { return Capacitor.isNativePlatform(); } catch (_) { return false; }
 }
 
 function clampRate(rate) {
-  const r = typeof rate === 'number' && isFinite(rate) ? rate : 0.9;
+  const r = typeof rate === 'number' && isFinite(rate) ? rate : DEFAULT_AUDIO_RATE;
   return Math.max(0.1, Math.min(2, r));
 }
 
@@ -108,6 +117,10 @@ function _speakNative(text, rate) {
   return (async () => {
     try {
       try { await TextToSpeech.stop(); } catch (_) { /* nothing playing */ }
+      // Short settle after stop(): the engine's audio focus / output route can
+      // still be winding down when speak() starts, which clips the first
+      // syllable on some Android devices and Bluetooth routes.
+      await new Promise(resolve => setTimeout(resolve, 80));
       const opts = {
         text,
         lang: 'th-TH',
@@ -130,6 +143,12 @@ function _speakNative(text, rate) {
   })();
 }
 
+// Monotonic call counter so only the NEWEST speak request actually reaches
+// synth.speak(). speak() is deferred (see below), so without this a second tap
+// landing inside the deferral window would queue BOTH utterances (the engine
+// looks idle to it) and they would play back to back, or even out of order.
+let _webSpeakGen = 0;
+
 // Web playback via SpeechSynthesis. Resolves on end/error and always within a
 // safety timeout so a silent/stuck engine never leaves a caller hanging.
 function _speakWeb(text, rate) {
@@ -144,8 +163,13 @@ function _speakWeb(text, rate) {
 
     const doSpeak = () => {
       try {
+        const myGen = ++_webSpeakGen;
         if (synth.paused) synth.resume();
-        synth.cancel();
+        // Only cancel when something is actually queued/playing. cancel() tears
+        // down the engine's output route; doing it while idle just forces the
+        // route to reopen, which is what clips the first syllable.
+        const needsCancel = !!(synth.speaking || synth.pending);
+        if (needsCancel) synth.cancel();
 
         const u = new SpeechSynthesisUtterance(text);
         u.lang = (_cachedThaiVoice && _cachedThaiVoice.lang) || 'th-TH';
@@ -156,10 +180,22 @@ function _speakWeb(text, rate) {
         u.onend = () => { clearTimeout(safety); finish(); };
         u.onerror = () => { clearTimeout(safety); finish(); };
 
-        // Chrome bug: speak() in the same tick as cancel() can be dropped.
+        // Chrome bugs: speak() in the same tick as cancel() can be dropped
+        // entirely, and speaking too soon after cancel() clips the first
+        // syllable while the output stream reopens. Hence the longer gap
+        // after a cancel and only a short tick when the engine was idle.
         setTimeout(() => {
-          try { synth.speak(u); } catch (_) { clearTimeout(safety); finish(); }
-        }, 60);
+          try {
+            // A newer speak request arrived during the deferral: yield to it
+            // (last tap wins) instead of queueing two utterances.
+            if (myGen !== _webSpeakGen) { clearTimeout(safety); finish(); return; }
+            synth.speak(u);
+            // Chrome auto-suspends the engine after ~15s idle WITHOUT
+            // reporting paused === true; resume() right after speak() is the
+            // standard fix and is a harmless no-op on other engines.
+            synth.resume();
+          } catch (_) { clearTimeout(safety); finish(); }
+        }, needsCancel ? 180 : 40);
       } catch (_) { clearTimeout(safety); finish(); }
     };
 
@@ -185,7 +221,7 @@ function _speakWeb(text, rate) {
 
 // Speak a Thai string. Returns a Promise that always resolves (never rejects).
 // Should only be called from a user gesture (no autoplay on load).
-export function speakThai(text, rate = 0.9) {
+export function speakThai(text, rate = DEFAULT_AUDIO_RATE) {
   if (!text) return Promise.resolve();
   try {
     return isNative() ? _speakNative(text, rate) : _speakWeb(text, rate);

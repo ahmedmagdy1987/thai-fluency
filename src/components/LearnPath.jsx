@@ -3,7 +3,7 @@ import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Gift, Zap,
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
-import { getMiniUnitsForStage, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
+import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { BORROWED_WORDS } from '../data/borrowedWords.js';
 import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
@@ -162,11 +162,11 @@ export default function LearnPath({
       {showMiniUnits && (
         <section className="learn-section">
           <div className="learn-section-header">
-            <h2 className="learn-section-title">Guided mini-units</h2>
+            <h2 className="learn-section-title">Stage {currentStageId} missions</h2>
             <span className="learn-section-meta">
               {miniUnitSequence.pathComplete
                 ? `Stage ${currentStageId} path complete`
-                : `Stage ${currentStageId} · ${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} complete`}
+                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} missions complete`}
             </span>
           </div>
           {basics && (
@@ -183,7 +183,7 @@ export default function LearnPath({
                 ? 'Completed. Review anytime.'
                 : status === 'current'
                   ? 'Continue your path.'
-                  : 'Complete the previous unit to unlock.';
+                  : 'Complete the previous mission to unlock.';
               const action = status === 'complete'
                 ? 'Review'
                 : status === 'current'
@@ -201,7 +201,7 @@ export default function LearnPath({
                   <div className="learn-miniunit-body">
                     <div className="learn-miniunit-eyebrow">
                       <span className={`learn-miniunit-badge learn-miniunit-badge-${status}`}>{badge}</span>
-                      <span className="learn-miniunit-num">Unit {idx + 1}</span>
+                      <span className="learn-miniunit-num">Mission {idx + 1}</span>
                     </div>
                     <h2 className="learn-miniunit-title">{u.title}</h2>
                     <p className="learn-miniunit-copy">{locked ? note : u.subtitle}</p>
@@ -340,7 +340,7 @@ export default function LearnPath({
           <h2 className="learn-section-title">Your Thai journey</h2>
           <span className="learn-section-meta learn-journey-summary">
             <span>{STAGES.length} stages</span>
-            <span>{MISSIONS.length} missions in Stage 1</span>
+            <span>{MINI_UNITS.length} guided missions</span>
           </span>
         </div>
 
@@ -501,7 +501,7 @@ export default function LearnPath({
               </button>
             </div>
             <div className="basics-modal-scroll">
-              <BorrowedWordsBonus audioRate={fullStats?.audioRate || 0.95} />
+              <BorrowedWordsBonus audioRate={fullStats?.audioRate || 0.8} />
             </div>
           </div>
         </div>
