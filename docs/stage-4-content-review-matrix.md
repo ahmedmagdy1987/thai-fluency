@@ -99,3 +99,17 @@ demoted to sentence-shown-only (drop `sentenceBuilder`) without changing any car
 data. Once approved, this pattern can be reused to deepen Stage 5 next. The 3–4
 clean leftover courtesy/question sentences above are ready to promote into extra
 units if you want even deeper Stage 4 coverage.
+
+## Mission intros and recaps (added June 12, 2026)
+
+Every Stage 4 unit above now carries a `lessonIntro` (what you will learn, why
+it matters, what to listen for, what to notice) and a `missionRecap` (headline,
+lead, 3-5 achievement bullets) shown by the guided mini-unit flow, matching the
+pattern already shipped for Stages 1-3. All Thai strings inside them are reused
+verbatim from the unit's own cards and builder tokens listed above (no new Thai
+was written); phonetics are copied from the same cards.
+
+**Native review for this section:** confirm the English gloss shown next to each
+Thai word matches the card meaning, and flag any "Listen for" / "Notice" teaching
+claim that reads wrong for Thai (for example which word marks the question, or
+where a booster like มาก sits). Wording-only fixes; no card data is involved.

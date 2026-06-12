@@ -1,10 +1,12 @@
 # First Lesson Pedagogy + Gamified Feedback (Pilot: Stage 1 Mission 1)
 
-_Last updated: June 8, 2026. Scope: the first ~10 minutes of the app only —
+_Last updated: June 12, 2026. Original scope: the first ~10 minutes of the app —
 the guided starter lesson (`FirstLessonFlow`) using `STAGE_1_MINI_UNIT_PILOT`
-(`stage-1-introductions-politeness`). This is a PILOT. It deliberately does NOT
-roll out to the other 95 mini-units, does not change Thai card source content,
-and does not touch Supabase, payments, ads, or subscriptions._
+(`stage-1-introductions-politeness`). The full primer + quiz remains exclusive to
+the pilot, but the `lessonIntro` / `missionRecap` teaching pattern born here has
+since rolled out to ALL 96 mini-units (Stages 1-3 first, Stages 4-8 on June 12,
+2026; see `docs/course-structure-roadmap.md`). No Thai card source content was
+changed and Supabase, payments, ads, and subscriptions remain untouched._
 
 ## What changed (owner-feedback sprint)
 

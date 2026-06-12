@@ -134,3 +134,17 @@ any wording/tokenization fixes. Approved builders stay; flagged ones can be
 demoted to sentence-shown-only (drop `sentenceBuilder`) without changing any card
 data. Stage 8's ~20 unused clean builders make it the easiest stage to deepen
 further (e.g. dedicated restaurant / languages / shopping units) once reviewed.
+
+## Mission intros and recaps (added June 12, 2026)
+
+Every Stage 8 unit above now carries a `lessonIntro` (what you will learn, why
+it matters, what to listen for, what to notice) and a `missionRecap` (headline,
+lead, 3-5 achievement bullets) shown by the guided mini-unit flow, matching the
+pattern already shipped for Stages 1-3. All Thai strings inside them are reused
+verbatim from the unit's own cards and builder tokens listed above (no new Thai
+was written); phonetics are copied from the same cards.
+
+**Native review for this section:** confirm the English gloss shown next to each
+Thai word matches the card meaning, and flag any "Listen for" / "Notice" teaching
+claim that reads wrong for Thai (for example which word marks the question, or
+where a booster like มาก sits). Wording-only fixes; no card data is involved.

@@ -73,7 +73,7 @@ import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
-import { getMiniUnit, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
+import { getMiniUnit, getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 import { initNativeUi } from './lib/native.js';
 
 const CLOUD_PROFILE_SETTING_KEYS = [
@@ -1273,13 +1273,24 @@ export default function TukTalkThaiApp() {
       // celebration effect) takes over and supersedes it.
       const courseNowComplete = getCourseCompletion(MINI_UNITS, updates.completedMiniUnits).courseComplete;
       if (!courseNowComplete) {
+        // Completing the stage's LAST guided unit reads as a bigger milestone
+        // than a normal mission recap. Derived purely from existing progress
+        // state; any lookup miss falls back to the standard screen.
+        const completedUnit = getMiniUnit(progressUpdate.unitId);
+        const stageUnits = completedUnit ? getMiniUnitsForStage(completedUnit.stageId) : [];
+        const stagePathNowComplete = stageUnits.length > 0 &&
+          stageUnits.every(u => updates.completedMiniUnits.includes(u.unitId));
         setRewardScreen({
           id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
-          title: 'Mini-Unit Complete',
-          subtitle: 'You finished a guided lesson and checked your recall.',
+          title: stagePathNowComplete
+            ? `Stage ${completedUnit.stageId} Path Complete`
+            : 'Mini-Unit Complete',
+          subtitle: stagePathNowComplete
+            ? `You finished every guided mission in Stage ${completedUnit.stageId}. That is a real milestone.`
+            : 'You finished a guided lesson and checked your recall.',
           xpEarned: MINI_UNIT_REWARD_XP,
           streak: stats.streak || 0,
-          nextStep: 'Review or Challenge',
+          nextStep: stagePathNowComplete ? 'Keep going in Learn' : 'Review or Challenge',
           superPromptReason: 'mini-unit',
         });
       }

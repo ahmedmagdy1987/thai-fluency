@@ -233,3 +233,19 @@ confirmation (recommended, non-blocking):
 
 Expanding this model to Stages 4-8 is deferred pending owner approval (Stages 1-3
 are now done).
+
+## New since May 30: mission intros and recaps (all 96 units)
+
+_Added June 12, 2026._ Each guided mini-unit now opens with a short teaching
+intro (`lessonIntro`: you will learn / why it matters / listen for / notice) and
+ends with a motivational recap (`missionRecap`: headline + 3-5 achievements).
+Stages 1-3 shipped earlier; Stages 4-8 were completed in this pass, so the whole
+course now teaches before it tests.
+
+These are English teaching copy drafted around each unit's existing cards. Every
+Thai string and phonetic inside them is copied from that unit's own cards or
+builder tokens, so there is **no new Thai to verify**. What IS worth a native
+pass: the English gloss next to each Thai word, and the small "Listen for" /
+"Notice" teaching claims (e.g. which word turns a sentence into a question).
+Each per-stage matrix file now has a "Mission intros and recaps" section with the
+same guidance. Priority follows the existing stage order (HIGH first).

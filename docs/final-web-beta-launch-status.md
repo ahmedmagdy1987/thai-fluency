@@ -1010,3 +1010,19 @@ fast and fun way", in `config/site.js`) was left as the existing brand voice.
 Manual checks: homepage at 360/390/430px and tablet/desktop; no horizontal overflow
 or text overlap; dark mode; primary CTA, /get-started, /welcome, /demo, and Back
 from /demo to /welcome to /get-started all work; first lesson still starts.
+
+## Guided mission intros/recaps through Stage 8 + stage-path recap (June 12, 2026)
+
+- All **96 mini-units (8 stages)** now have `lessonIntro` + `missionRecap`;
+  this pass added the 69 Stage 4-8 units. No Thai card content changed; all Thai
+  in the new copy is reused from each unit's own cards/builder tokens (verified
+  mechanically against the runtime data). No em/en dashes, no fluency or
+  timeframe claims.
+- Completing a stage's final guided unit now shows a **"Stage N Path Complete"**
+  reward screen (copy-level upgrade of the existing reward screen; no schema, no
+  new XP, no progression change; Course Complete overlay still wins on the last
+  unit).
+- Verified: web build passes; all 8 validation scripts pass; route smoke 16/16;
+  the homepage upgrade from the same sprint is unaffected.
+- Native review: see the new "Mission intros and recaps" sections in
+  `docs/stage-4..8-content-review-matrix.md` and the master checklist.

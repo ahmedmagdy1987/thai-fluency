@@ -1114,6 +1114,25 @@ export const STAGE_4_UNIT_TRAVEL = unit({
       { id: 'thiao', thai: 'เที่ยว', ph: 'thîao', en: 'to travel' },
     ], answer: ['phom', 'ja', 'pai', 'thiao'],
   },
+  lessonIntro: {
+    lead: 'Eight action verbs for life on the move, from reading and driving to running and traveling, plus a short sentence for announcing your next trip.',
+    points: [
+      { label: 'You will learn', text: 'Action verbs: อ่าน (read), ขาย (sell), เที่ยว (travel or hang out), ขับ (drive), วิ่ง (run), สอน (teach), ตอบ (answer), and เลือก (choose).' },
+      { label: 'Why it matters', text: 'Verbs carry the action in any chat. With these you can describe what you do each day, answer simple questions, and talk about getting around town on your own.' },
+      { label: 'Listen for', text: 'The little word จะ (jà) before ไป. It marks the future, so ผมจะไปเที่ยว describes a trip that is still coming up, not one already finished.' },
+      { label: 'Notice', text: 'Thai verbs keep one fixed form no matter the sentence. เที่ยว looks exactly the same on its vocab card and at the end of ผมจะไปเที่ยว.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great work. Eight everyday verbs are in your pocket.',
+    lead: 'Small action words like these power real talk about your day.',
+    achievements: [
+      'Announce a trip with ผมจะไปเที่ยว (I am going traveling)',
+      'Talk about reading with อ่าน and driving with ขับ',
+      'Mark the future with จะ (will)',
+      'Use เลือก (choose) and ตอบ (answer) in everyday moments',
+    ],
+  },
 });
 export const STAGE_4_UNIT_TASTE = unit({
   unitId: 'stage-4-tastes-describing', stageId: 4,
@@ -1126,6 +1145,25 @@ export const STAGE_4_UNIT_TASTE = unit({
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['aroi', 'mak', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Describing words bring small talk to life: taste, weather, distance, and even a compliment, plus the classic line of praise that every cook loves to hear after a good meal.',
+    points: [
+      { label: 'You will learn', text: 'Eight describing words: หนาว (cold weather), หวาน (sweet), เค็ม (salty), หล่อ (handsome), ใกล้ (near), ว่าง (free), หลาย (many), and เหมือน (like).' },
+      { label: 'Why it matters', text: 'Food and weather are the easiest openers for small talk almost anywhere. One well placed describing word can keep a friendly chat going, and a kind compliment never hurts.' },
+      { label: 'Listen for', text: 'The booster มาก (mâak) right after อร่อย in อร่อยมากครับ. It turns delicious into very delicious, and it works after many describing words.' },
+      { label: 'Notice', text: 'In อร่อยมากครับ the describing word stands on its own as the whole statement. Thai does not need a separate word for "is" here.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. You can describe tastes and qualities.',
+    lead: 'A few describing words go a long way at the table and beyond.',
+    achievements: [
+      'Praise a meal with อร่อยมากครับ (very delicious)',
+      'Describe flavors with หวาน (sweet) and เค็ม (salty)',
+      'Say something is nearby with ใกล้ (near)',
+      'Boost any description with มาก (very)',
+    ],
   },
 });
 // Stage 4 deepening (Course Structure Sprint) — the "Real Conversations" path.
@@ -1148,6 +1186,25 @@ export const STAGE_4_UNIT_SMALLTALK = unit({
       { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
     ], answer: ['khun', 'thamngan', 'arai'],
   },
+  lessonIntro: {
+    lead: 'Words for the people in your life, plus one of the most useful and most common small talk questions you can ask anyone new: what do you do for work?',
+    points: [
+      { label: 'You will learn', text: 'Family and people words: สามี (husband), มิตร (friend), บุตร (child), หลาน (grandchild), ก๋ง (grandfather), วงศ์ (family), plus ยังไง (how, informal) and เอ็ง (you).' },
+      { label: 'Why it matters', text: 'Small talk often turns to family and work. These words help you follow the friendly questions new acquaintances like to ask, and answer a few of them too.' },
+      { label: 'Listen for', text: 'อะไร (àrai) at the end of คุณทำงานอะไร. That final word is what turns the sentence into a "what" question.' },
+      { label: 'Notice', text: 'The question word comes last in this pattern. The sentence opens with คุณ (you), names the action, and saves "what" for the very end.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Strong step. You can handle getting-to-know-you talk.',
+    lead: 'Family words and one key question open many friendly chats.',
+    achievements: [
+      'Ask about work with คุณทำงานอะไร (what do you do for work?)',
+      'Name family like สามี (husband) and หลาน (grandchild)',
+      'Talk about grandfather with ก๋ง',
+      'Ask how with the informal ยังไง',
+    ],
+  },
 });
 export const STAGE_4_UNIT_PLANS = unit({
   unitId: 'stage-4-plans-free-time', stageId: 4,
@@ -1160,6 +1217,25 @@ export const STAGE_4_UNIT_PLANS = unit({
       { id: 'wang', thai: 'ว่าง', ph: 'wâang', en: 'free / available' },
       { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
     ], answer: ['khun', 'wang', 'mai'],
+  },
+  lessonIntro: {
+    lead: 'Times of day and how-often words for talking about your schedule, plus the short friendly question that starts almost every plan: are you free?',
+    points: [
+      { label: 'You will learn', text: 'Time words เช้า (morning), บ่าย (afternoon), ค่ำ (evening), and นาที (minute), with เสมอ (always), มัก (often), บ่อย (frequent), and งั้น (then).' },
+      { label: 'Why it matters', text: 'Making plans is real conversation. Saying when, and how often, turns a vague idea into an actual meetup with a real time attached, which is how plans actually happen.' },
+      { label: 'Listen for', text: 'The rising ไหม (mǎi) at the end of คุณว่างไหม. That single word is what turns a plain statement into a yes or no question.' },
+      { label: 'Notice', text: 'คุณว่างไหม is only three words: you, free, question. Thai questions can be this compact and still come across perfectly clear to everyone involved.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great progress. You can start making plans.',
+    lead: 'Time words plus one little question word take you a long way.',
+    achievements: [
+      'Invite someone with คุณว่างไหม (are you free?)',
+      'Name times of day with เช้า (morning), บ่าย (afternoon), and ค่ำ (evening)',
+      'Say how often with เสมอ (always) and บ่อย (frequent)',
+      'Move a plan along with งั้น (then, in that case)',
+    ],
   },
 });
 export const STAGE_4_UNIT_OUT = unit({
@@ -1175,6 +1251,25 @@ export const STAGE_4_UNIT_OUT = unit({
       { id: 'nai', thai: 'ไหน', ph: 'nǎi', en: 'where' },
     ], answer: ['khun', 'ja', 'pai', 'nai'],
   },
+  lessonIntro: {
+    lead: 'Places you will actually visit on any trip, from markets and temples to the beach and the sea, plus the question everyone asks a traveler: where are you going?',
+    points: [
+      { label: 'You will learn', text: 'Place words: ตลาด (market), วัด (temple), หาด (beach), ร้าน (shop), หอ (hall), ทะเล (sea), ป่า (forest), and ฟ้า (sky).' },
+      { label: 'Why it matters', text: 'Naming places lets you say where you are headed, and it helps you understand the friendly question you will hear again and again, wherever the day happens to take you.' },
+      { label: 'Listen for', text: 'ไหน (nǎi) with its rising tone at the end of คุณจะไปไหน. It is the "where" that turns the whole sentence into a question.' },
+      { label: 'Notice', text: 'จะ plus ไป means "will go". Swap ไหน for a place word like ตลาด and the same question pattern becomes your own answer.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice one. You can talk about where you are headed.',
+    lead: 'Place names plus one question pattern cover a lot of daily movement.',
+    achievements: [
+      'Ask where someone is going with คุณจะไปไหน (where are you going?)',
+      'Name spots like ตลาด (market), วัด (temple), and หาด (beach)',
+      'Talk about nature with ทะเล (sea) and ป่า (forest)',
+      'Build \'will go\' with จะ and ไป',
+    ],
+  },
 });
 export const STAGE_4_UNIT_DIRECTIONS = unit({
   unitId: 'stage-4-distance-directions', stageId: 4,
@@ -1187,6 +1282,25 @@ export const STAGE_4_UNIT_DIRECTIONS = unit({
       { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['glai', 'mai', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Getting around town: roads, canals, and distances counted in meters, plus the smart little check that is worth making before you set off anywhere: is it far?',
+    points: [
+      { label: 'You will learn', text: 'Distance and direction words: ข้าม (across), บัส (bus), คลอง (canal), ถนน (road), เมตร (meter), เขต (zone), ท่า (position), and รั้ว (fence).' },
+      { label: 'Why it matters', text: 'Asking about distance before you walk or ride saves real effort on a long day, and these words also help you follow simple directions around an unfamiliar neighborhood on foot.' },
+      { label: 'Listen for', text: 'Two words right at the end of ไกลไหมครับ: ไหม asks the yes or no question, and ครับ keeps a male speaker sounding polite.' },
+      { label: 'Notice', text: 'ไกลไหมครับ has no word for "it" or "is". One describing word, ไกล (far), plus a question word makes a complete and useful question.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good thinking. You can check the distance before you go.',
+    lead: 'Short questions like this one are the workhorses of getting around.',
+    achievements: [
+      'Check distance with ไกลไหมครับ (is it far?)',
+      'Name the way with ถนน (road) and คลอง (canal)',
+      'Talk about crossing with ข้าม (across)',
+      'Measure things in เมตร (meters)',
+    ],
   },
 });
 export const STAGE_4_UNIT_FEELINGS = unit({
@@ -1201,6 +1315,25 @@ export const STAGE_4_UNIT_FEELINGS = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'nao', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Words for how you feel and how the day is going, from fun and kind-hearted to bored and lonely, plus a simple way to tell someone you are cold.',
+    points: [
+      { label: 'You will learn', text: 'Feeling words: ใจดี (kind-hearted), เบื่อ (bored), สนุก (fun), เหงา (lonely), อุ่น (warm up), แย่ (bad), เกรง (fear), and ร้าย (evil).' },
+      { label: 'Why it matters', text: 'Real conversation includes feelings. Saying you are bored, having fun, or freezing makes your Thai sound human, keeps your chats honest, and invites people to open up too.' },
+      { label: 'Listen for', text: 'The rising tone of หนาว (nǎao) in ผมหนาวครับ. That one short word carries the whole meaning of feeling cold here.' },
+      { label: 'Notice', text: 'Feelings follow one simple shape here: ผม plus a feeling word plus ครับ. Swap in เบื่อ or เหงา and the same pattern still works for you.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Big step. You can put feelings into words.',
+    lead: 'Sharing how you feel turns set phrases into real conversation.',
+    achievements: [
+      'Say you are cold with ผมหนาวครับ (I am cold)',
+      'Call a day สนุก (fun) or แย่ (bad)',
+      'Admit you feel เบื่อ (bored) or เหงา (lonely)',
+      'Describe someone as ใจดี (kind-hearted)',
+    ],
+  },
 });
 export const STAGE_4_UNIT_SAYING = unit({
   unitId: 'stage-4-knowing-saying', stageId: 4,
@@ -1213,6 +1346,25 @@ export const STAGE_4_UNIT_SAYING = unit({
       { id: 'khaojai', thai: 'เข้าใจ', ph: 'khâo jai', en: 'to understand' },
       { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
     ], answer: ['phom', 'khaojai', 'laew'],
+  },
+  lessonIntro: {
+    lead: 'Verbs for thinking and talking, from believing and guessing to arguing, plus the small satisfying sentence every learner needs in a real conversation: I understand now.',
+    points: [
+      { label: 'You will learn', text: 'Thinking and speaking verbs: เชื่อ (believe), เน้น (emphasize), เถียง (argue), ทาย (guess), เล่า (tell), เอ่ย (mention), ท่อง (recite), and ตรอง (reflect).' },
+      { label: 'Why it matters', text: 'Conversation is more than trading facts. These verbs let you react to what you hear: believe it, doubt it, guess at it, or ask someone for the full story.' },
+      { label: 'Listen for', text: 'แล้ว (láew) at the end of ผมเข้าใจแล้ว. This little word signals that something has just happened or changed.' },
+      { label: 'Notice', text: 'เข้าใจ (understand) is one idea built from two smaller syllables. Thai often joins little pieces together into bigger words, and you will meet this pattern again.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Way to go. You can say the message landed.',
+    lead: 'Thinking and telling verbs add real depth to your chats.',
+    achievements: [
+      'Confirm understanding with ผมเข้าใจแล้ว (I understand now)',
+      'Say you believe it with เชื่อ (believe)',
+      'Ask for the story with เล่า (tell)',
+      'Take a guess with ทาย (guess)',
+    ],
   },
 });
 export const STAGE_4_UNIT_VERBS1 = unit({
@@ -1228,6 +1380,25 @@ export const STAGE_4_UNIT_VERBS1 = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'luem', 'pai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Hands-on verbs for errands and meals, from washing and ordering to tasting, plus an honest and very human little sentence for when something slips your mind.',
+    points: [
+      { label: 'You will learn', text: 'Daily verbs: ล้าง (wash), สั่ง (order), เรียก (call), ตรวจ (check), เช็ด (wipe), หยิบ (pick up), เติม (add), and ชิม (taste).' },
+      { label: 'Why it matters', text: 'These are kitchen, market, and errand verbs. They appear whenever you order food, check a bill, call for service, or ask to taste something before you commit.' },
+      { label: 'Listen for', text: 'ไป tucked inside ผมลืมไปครับ. Here it does not mean "to go": instead it softens the verb, as if the thought already slipped quietly away.' },
+      { label: 'Notice', text: 'The sentence ends with ครับ once again. Whatever you admit or ask for, that final polite word keeps the whole moment friendly.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good progress. These verbs power real errands.',
+    lead: 'Ordering, checking, and tasting: daily life runs on verbs like these.',
+    achievements: [
+      'Own a slip-up with ผมลืมไปครับ (I forgot)',
+      'Order with สั่ง and ask to taste with ชิม',
+      'Say wash with ล้าง and wipe with เช็ด',
+      'Use เติม (add) when something needs topping up',
+    ],
+  },
 });
 export const STAGE_4_UNIT_HOME = unit({
   unitId: 'stage-4-at-home', stageId: 4,
@@ -1235,6 +1406,25 @@ export const STAGE_4_UNIT_HOME = unit({
   vocabCardIds: [1004, 1005, 1012, 1017, 1022, 1027, 1029, 2930], sentenceCardId: 1503, challengeCardIds: [1004, 1005, 1012],
   // sentenceCard shown for context (ไฟดับ "the power is out" fits the home theme);
   // no builder — "ไฟดับ" does not split into known WORD_LOOKUP pieces.
+  lessonIntro: {
+    lead: 'Around-the-house words for renters, guests, and longer stays: furniture, keys, wifi, and the short two-syllable phrase you will need when the lights suddenly go out.',
+    points: [
+      { label: 'You will learn', text: 'Home words: โซฟา (sofa), โต๊ะ (table), กุญแจ (key), ไวไฟ (wifi), ซ่อม (repair), เสียง (sound), เงียบ (quiet), and ครัว (kitchen).' },
+      { label: 'Why it matters', text: 'If you stay anywhere longer than a night, things need naming and sometimes fixing. These words cover keys, noise, quiet, and the small repairs that come along with daily life in any rented room.' },
+      { label: 'Listen for', text: 'The two quick syllables of ไฟดับ (fai dàp). When you hear them from someone nearby, the power has just gone out.' },
+      { label: 'Notice', text: 'ไฟดับ is a complete sentence with no word for "the" or "is". Thai often states a situation exactly that directly, with nothing extra added.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Solid work. Your home vocabulary is taking shape.',
+    lead: 'Keys, wifi, and quiet rooms: these words make any stay smoother.',
+    achievements: [
+      'Report a blackout with ไฟดับ (the power is out)',
+      'Ask about the ไวไฟ (wifi) and the กุญแจ (key)',
+      'Get something fixed with ซ่อม (repair)',
+      'Describe noise with เสียง (sound) and calm with เงียบ (quiet)',
+    ],
+  },
 });
 export const STAGE_4_UNIT_VERBS2 = unit({
   unitId: 'stage-4-everyday-verbs-2', stageId: 4,
@@ -1248,6 +1438,25 @@ export const STAGE_4_UNIT_VERBS2 = unit({
       { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
     ], answer: ['mai', 'tong', 'laew'],
   },
+  lessonIntro: {
+    lead: 'A second round of practical verbs, from cutting and hiring to planting and raising, plus a graceful three-word way to say that something is no longer needed.',
+    points: [
+      { label: 'You will learn', text: 'Practical verbs: ตัด (cut), จับ (catch), ฝาก (deposit), จ้าง (hire), ถอด (remove), แยก (separate), ปลูก (plant), and เลี้ยง (raise).' },
+      { label: 'Why it matters', text: 'Daily life is full of small tasks and small refusals. These verbs cover haircuts, bank stops, and daily errands, and the sentence lets you decline an offer kindly and clearly.' },
+      { label: 'Listen for', text: 'ไม่ (mâi) with its falling tone right at the start of ไม่ต้องแล้ว. That one opening sound flips the whole sentence over to "not".' },
+      { label: 'Notice', text: 'ไม่ plus ต้อง means "no need to". Adding แล้ว shows the need has already passed, so the offer is gently and politely waved off.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. More working verbs, plus a polite way out.',
+    lead: 'Saying what you need, and what you no longer need, keeps errands smooth.',
+    achievements: [
+      'Decline gently with ไม่ต้องแล้ว (no longer needed)',
+      'Say cut with ตัด and remove with ถอด',
+      'Use ฝาก (deposit) at the counter',
+      'Talk about growing things with ปลูก (plant)',
+    ],
+  },
 });
 export const STAGE_4_UNIT_STATES = unit({
   unitId: 'stage-4-describing-states', stageId: 4,
@@ -1260,6 +1469,25 @@ export const STAGE_4_UNIT_STATES = unit({
       { id: 'wang', thai: 'ว่าง', ph: 'wâang', en: 'free / available' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'wang', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Words that describe how things are, from full and heavy to strange and excellent, plus a short and handy reply to use when friendly invitations come your way: I am free.',
+    points: [
+      { label: 'You will learn', text: 'State words: เต็ม (full), หนัก (heavy), อ้วน (fat), ผอม (thin), แน่น (tight), แห้ง (dry), แปลก (strange), and เลิศ (excellent).' },
+      { label: 'Why it matters', text: 'Describing states lets you comment on a packed bus, a heavy bag, or an excellent meal using just one well chosen word delivered at the right moment.' },
+      { label: 'Listen for', text: 'ว่าง (wâang) with its falling tone in ผมว่างครับ. It is the word for "free" that you can use any time you accept a friendly invitation.' },
+      { label: 'Notice', text: 'One describing word plus ครับ makes a full and polite answer. ผมว่างครับ needs no verb "to be" anywhere at all.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Steady progress. You can describe how things are.',
+    lead: 'One sharp describing word often says more than a long sentence.',
+    achievements: [
+      'Accept an invitation with ผมว่างครับ (I am free)',
+      'Call a bag หนัก (heavy) or a room เต็ม (full)',
+      'Label something แปลก (strange) or เลิศ (excellent)',
+      'Say dry with แห้ง and tight with แน่น',
+    ],
   },
 });
 export const STAGE_4_UNIT_LEAVING = unit({
@@ -1275,6 +1503,25 @@ export const STAGE_4_UNIT_LEAVING = unit({
       { id: 'laew', thai: 'แล้ว', ph: 'láew', en: 'already / now' },
     ], answer: ['phom', 'ja', 'pai', 'laew'],
   },
+  lessonIntro: {
+    lead: 'Movement verbs for busy streets and quick exits, from hurrying and rushing to waving, plus the classic friendly goodbye line: I am going to go now.',
+    points: [
+      { label: 'You will learn', text: 'Movement verbs: ถอย (move back), โผล่ (emerge), หลีก (make way), เร่ง (hurry), พุ่ง (rush), ร่วง (fall off), หล่น (drop), and โบก (wave).' },
+      { label: 'Why it matters', text: 'Streets, markets, and goodbyes all involve movement. These verbs describe stepping back, speeding up, dropping things, and waving someone down when you need a ride somewhere.' },
+      { label: 'Listen for', text: 'จะ (jà) and แล้ว (láew) around ไป in ผมจะไปแล้ว: "will go" plus "now" together make a soft and easy announcement that you are leaving.' },
+      { label: 'Notice', text: 'หล่น (drop) and ร่วง (fall off) are a close pair of words about falling. Meeting them side by side now helps you keep the two apart later.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. You can make a graceful exit.',
+    lead: 'Movement words plus one goodbye line keep you in charge of the moment.',
+    achievements: [
+      'Announce your exit with ผมจะไปแล้ว (I am going to go now)',
+      'Flag someone down with โบก (wave)',
+      'Hurry things up with เร่ง (hurry)',
+      'Step back with ถอย (move back)',
+    ],
+  },
 });
 export const STAGE_4_UNIT_FOOD = unit({
   unitId: 'stage-4-food-and-dishes', stageId: 4,
@@ -1282,6 +1529,26 @@ export const STAGE_4_UNIT_FOOD = unit({
   vocabCardIds: [130, 138, 139, 140, 143, 144, 149, 522], challengeCardIds: [130, 139, 140],
   // No sentenceCard/builder: Stage 4's clean food sentences are idiomatic or do
   // not tokenize cleanly; food is taught as vocab here, used in sentences later.
+  lessonIntro: {
+    lead: 'The core food words behind countless menus and market stalls: rice, vegetables, meats, eggs, snacks, and the chili that decides how spicy your dinner gets.',
+    points: [
+      { label: 'You will learn', text: 'Food basics: ข้าว (rice), ผัก (vegetable), เนื้อ (meat), ไก่ (chicken), กุ้ง (shrimp), ไข่ (egg), ขนม (snack), and พริก (chili).' },
+      { label: 'Why it matters', text: 'Knowing the main ingredients means you can read a dish name, pick out what you actually want to eat, and steer politely around the things you do not.' },
+      { label: 'Listen for', text: 'The low tones of ไก่ (gài) and ไข่ (khài). These two short little words sound very close, but one is chicken and one is egg.' },
+      { label: 'Notice', text: 'ข้าว can mean plain rice or food in general, so this one small and common word very often stands in for a whole meal.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'You did it. Eight core food words are yours.',
+    lead: 'Ingredient words are the keys to ordering food you actually want.',
+    achievements: [
+      'Spot ไก่ (chicken) and กุ้ง (shrimp) in dish names',
+      'Ask for ผัก (vegetables) or ไข่ (egg)',
+      'Watch for พริก (chili) when you order',
+      'Use ข้าว (rice) to talk about food in general',
+      'Pick up a ขนม (snack) between meals',
+    ],
+  },
 });
 
 // Stage 5 — Social Confidence.
@@ -1297,6 +1564,25 @@ export const STAGE_5_UNIT_VERBS = unit({
       { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
     ], answer: ['phom', 'khitthueng', 'khun'],
   },
+  lessonIntro: {
+    lead: 'Eight action words power everyday talk: knowing, writing, changing, starting, and more, plus one sweet practice sentence worth keeping close.',
+    points: [
+      { label: 'You will learn', text: 'Eight handy verbs: รู้จัก (to know a person or place), เขียน (to write), เปลี่ยน (to change), เริ่ม (to start), สร้าง (create), แสดง (show), ย้าย (move), and ปล่อย (release).' },
+      { label: 'Why it matters', text: 'Verbs carry the action in every sentence. A small, focused set like this lets you talk about what you start, change, or create as you go about daily life.' },
+      { label: 'Listen for', text: 'The phrase คิดถึง (khít thǔeng) in the practice sentence: a high tone then a rising tone, two short beats you can copy.' },
+      { label: 'Notice', text: 'The sentence ผมคิดถึงคุณ is just three pieces in order: ผม (I), คิดถึง (to miss), คุณ (you). The verb sits in the middle and never changes its form.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great work. Eight new verbs are in your pocket.',
+    lead: 'Action words like these make your Thai sentences move.',
+    achievements: [
+      'Say you know a person or place with รู้จัก (to know)',
+      'Use เริ่ม (to start) and เปลี่ยน (to change) when plans shift',
+      'Tell someone ผมคิดถึงคุณ (I miss you)',
+      'Recognize เขียน (to write) and ย้าย (to move)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_DESCRIBE = unit({
   unitId: 'stage-5-describing-more', stageId: 5,
@@ -1309,6 +1595,26 @@ export const STAGE_5_UNIT_DESCRIBE = unit({
       { id: 'nueai', thai: 'เหนื่อย', ph: 'nùeai', en: 'tired' },
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['phom', 'nueai', 'mak'],
+  },
+  lessonIntro: {
+    lead: 'Time to describe the rough edges of a day: things that are old, dirty, short, or wide, plus the very honest sentence for being worn out.',
+    points: [
+      { label: 'You will learn', text: 'Eight describing words: ไม่ดี (bad), เก่า (old, for things), สกปรก (dirty), เหนื่อย (tired), สั้น (short), กว้าง (wide), plus ตกลง (agree) and สนใจ (interested).' },
+      { label: 'Why it matters', text: 'Travel days bring tired feet and worn out rooms. These words help you say how things look and how you feel, simply and honestly, without hunting for big words.' },
+      { label: 'Listen for', text: 'The falling tone of มาก (mâak, very) at the end of ผมเหนื่อยมาก. It lands heavily and adds real strength to a description.' },
+      { label: 'Notice', text: 'In ผมเหนื่อยมาก, the describing word เหนื่อย (tired) follows ผม (I) directly, and the booster มาก comes after the quality, never before it.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. You can describe how things really are.',
+    lead: 'Honest describing words make your Thai sound natural and clear.',
+    achievements: [
+      'Say ผมเหนื่อยมาก (I am very tired) after a long day',
+      'Call something เก่า (old) or สกปรก (dirty)',
+      'Agree to a plan with ตกลง (agree)',
+      'Show interest with สนใจ (interested)',
+      'Boost any description with มาก (very)',
+    ],
   },
 });
 // Stage 5 deepening (Course Structure Sprint) — the "Social Confidence" path.
@@ -1331,6 +1637,25 @@ export const STAGE_5_UNIT_PEOPLE = unit({
       { id: 'jaknai', thai: 'จากไหน', ph: 'jàak nǎi', en: 'from where' },
     ], answer: ['khun', 'maa', 'jaknai'],
   },
+  lessonIntro: {
+    lead: 'Words for the people in your world: relatives, a wife, a father, an aunt, plus the everyday people, like students and police, you may need to find.',
+    points: [
+      { label: 'You will learn', text: 'People words: ญาติ (relative), ภรรยา (wife), บิดา (father), ป้า (aunt), ธิดา (daughter), บุคคล (person), ศิษย์ (student), and ตำรวจ (police).' },
+      { label: 'Why it matters', text: 'Friendly conversations quickly turn to family and where you come from. These words help you follow along, name the people who matter, and answer with a little more confidence.' },
+      { label: 'Listen for', text: 'The rising tone at the end of จากไหน (jàak nǎi, from where). That lift is your cue that someone is asking about a place.' },
+      { label: 'Notice', text: 'The question คุณมาจากไหน keeps a plain order: คุณ (you), มา (to come), then จากไหน (from where). The question part comes last, not first.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Strong step. People words are now on your side.',
+    lead: 'Talking about people opens most friendly conversations.',
+    achievements: [
+      'Ask คุณมาจากไหน (Where are you from?)',
+      'Talk family with ญาติ (relative) and ป้า (aunt)',
+      'Mention a ภรรยา (wife) or ธิดา (daughter)',
+      'Spot the word ตำรวจ (police) when you need help',
+    ],
+  },
 });
 export const STAGE_5_UNIT_EMOTIONS = unit({
   unitId: 'stage-5-emotions-feelings', stageId: 5,
@@ -1343,6 +1668,25 @@ export const STAGE_5_UNIT_EMOTIONS = unit({
       { id: 'deejai', thai: 'ดีใจ', ph: 'dee jai', en: 'happy / glad' },
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['phom', 'deejai', 'mak'],
+  },
+  lessonIntro: {
+    lead: 'Feelings come up fast in warm conversation. This unit gives you eight emotion words, from happy and satisfied all the way to sad, angry, and startled.',
+    points: [
+      { label: 'You will learn', text: 'Emotion words: ดีใจ (happy), พอใจ (satisfied), คิดถึง (to miss someone), เศร้า (sad), อิจฉา (jealous), โมโห (angry), ตกใจ (frightened), and ยินดี (happy).' },
+      { label: 'Why it matters', text: 'Sharing a feeling, even in a single word, warms up any chat and helps people understand you. These words let you react honestly when something delights, saddens, or startles you.' },
+      { label: 'Listen for', text: 'The matching final syllable in ดีใจ (dee jai), พอใจ (phaw jai), and ตกใจ (dtòhk jai): three feelings that end with the very same sound.' },
+      { label: 'Notice', text: 'The sentence ผมดีใจมาก uses a simple frame: ผม (I), then the feeling ดีใจ (happy), then มาก (very). Swap in เศร้า (sad) and the frame still works.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Lovely progress. You can put feelings into Thai words.',
+    lead: 'Naming emotions brings real warmth to your conversations.',
+    achievements: [
+      'Say ผมดีใจมาก (I am very happy)',
+      'Tell someone you miss them with คิดถึง (to miss)',
+      'Name a low moment with เศร้า (sad) or โมโห (angry)',
+      'Describe a shock with ตกใจ (frightened)',
+    ],
   },
 });
 export const STAGE_5_UNIT_HEALTH = unit({
@@ -1357,6 +1701,25 @@ export const STAGE_5_UNIT_HEALTH = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'maisabai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'A small health kit in words: the people who can help you, a few key body parts, and the simple sentence that tells someone you are unwell.',
+    points: [
+      { label: 'You will learn', text: 'Health words: พยาบาล (nurse), แพทย์ (doctor), แผล (wound), เลือด (blood), หายใจ (to breathe), plus the body parts จมูก (nose), เข่า (knee), and ไหล่ (shoulder).' },
+      { label: 'Why it matters', text: 'When you feel sick or pick up a scrape, a few clear words help you find the right person quickly, explain the problem, and point to exactly where it hurts.' },
+      { label: 'Listen for', text: 'The polite ครับ (khráp) closing ผมไม่สบายครับ. A male speaker adds it to keep even an uncomfortable report sounding respectful.' },
+      { label: 'Notice', text: 'ไม่สบาย (mâi sàbaai) bundles "not" and "well" into one tidy chunk, so a single short word group tells a helper how you feel.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good going. You can ask for help when you feel rough.',
+    lead: 'Health words are the ones you want ready before you need them.',
+    achievements: [
+      'Say ผมไม่สบายครับ (I am not feeling well)',
+      'Ask for a พยาบาล (nurse) or แพทย์ (doctor)',
+      'Point out a แผล (wound) or เลือด (blood)',
+      'Name จมูก (nose), เข่า (knee), and ไหล่ (shoulder)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_WEATHER = unit({
   unitId: 'stage-5-weather-seasons', stageId: 5,
@@ -1370,6 +1733,25 @@ export const STAGE_5_UNIT_WEATHER = unit({
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['wannii', 'ron', 'mak'],
   },
+  lessonIntro: {
+    lead: 'Small talk nearly always starts with the sky. This unit brings you weather and nature words, plus the one sentence every visitor needs on a hot afternoon.',
+    points: [
+      { label: 'You will learn', text: 'Weather and nature words: อากาศ (weather), ฤดู (season), พายุ (storm), หิมะ (snow), หญ้า (grass), เกาะ (island), ว่าว (kite), and ศิลา (stone).' },
+      { label: 'Why it matters', text: 'Weather chat is the easiest doorway into friendly conversation with someone new, and nature words like เกาะ (island) come up constantly when you plan trips along the coast.' },
+      { label: 'Listen for', text: 'The pair ร้อน (ráwn) and มาก (mâak) closing the practice sentence: hot, then very, in that exact order, two strong sounds you will hear again and again.' },
+      { label: 'Notice', text: 'วันนี้ร้อนมาก opens with the time word วันนี้ (today). The sentence sets the time first, then gives the description right after it.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice one. Weather small talk is now within reach.',
+    lead: 'Sky and season words give every chat an easy starting point.',
+    achievements: [
+      'Say วันนี้ร้อนมาก (It is very hot today)',
+      'Bring up the อากาศ (weather)',
+      'Plan an island trip with เกาะ (island)',
+      'Name a พายุ (storm) or หิมะ (snow)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_TIME = unit({
   unitId: 'stage-5-days-and-time', stageId: 5,
@@ -1382,6 +1764,25 @@ export const STAGE_5_UNIT_TIME = unit({
       { id: 'wan', thai: 'วัน', ph: 'wan', en: 'day' },
       { id: 'arai', thai: 'อะไร', ph: 'àrai', en: 'what' },
     ], answer: ['wannii', 'wan', 'arai'],
+  },
+  lessonIntro: {
+    lead: 'Time words anchor your plans: today, now, this week, plus the handy little question for working out exactly what day it is.',
+    points: [
+      { label: 'You will learn', text: 'Time words: วันนี้ (today), ตอนนี้ (now), อาทิตย์ (week), จันทร์ (Monday), ทีนี้ (now), เพิ่ง (just recently), หลัง (after), and ครั้ง (times).' },
+      { label: 'Why it matters', text: 'Plans live or die on time words. Saying clearly when something happens, today, right now, or after, keeps meetups, bookings, and travel days running on track.' },
+      { label: 'Listen for', text: 'อะไร (àrai, what) at the very end of วันนี้วันอะไร. Question words often sit last, so keep listening right to the end of the question.' },
+      { label: 'Notice', text: 'วันนี้ (today) is built from วัน (day), and the practice question uses both, so you hear the word for day twice in one short question.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Right on time. You can pin plans to days and times.',
+    lead: 'Time words keep plans clear and meetups on schedule.',
+    achievements: [
+      'Ask วันนี้วันอะไร (What day is today?)',
+      'Pin down a moment with วันนี้ (today) and ตอนนี้ (now)',
+      'Say something just happened with เพิ่ง (just recently)',
+      'Count occasions with ครั้ง (times)',
+    ],
   },
 });
 export const STAGE_5_UNIT_FOOD = unit({
@@ -1397,6 +1798,25 @@ export const STAGE_5_UNIT_FOOD = unit({
       { id: 'gafae', thai: 'กาแฟ', ph: 'gaafae', en: 'coffee' },
     ], answer: ['phom', 'yak', 'duem', 'gafae'],
   },
+  lessonIntro: {
+    lead: 'Menu favorites and fresh market fruit: famous dishes, drink words, and a simple, useful sentence for saying what you would like to drink.',
+    points: [
+      { label: 'You will learn', text: 'Food and drink words: เบียร์ (beer), ส้มตำ (papaya salad), ต้มยำ (tom yum soup), เหล้า (liquor), เกลือ (salt), มะนาว (lime), มะม่วง (mango), and กล้วย (banana).' },
+      { label: 'Why it matters', text: 'Eating out is where your Thai gets the most use every day. Naming dishes and fruit gets you exactly what you are craving at a stall, market, or restaurant.' },
+      { label: 'Listen for', text: 'The matching first syllable of มะนาว (má-naao, lime) and มะม่วง (má-mûang, mango): two fruit names that open with the same sound.' },
+      { label: 'Notice', text: 'In ผมอยากดื่มกาแฟ, the word อยาก (to want to) goes right before the action ดื่ม (to drink). Swap in another verb to want something new.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Tasty work. Ordering food just got easier.',
+    lead: 'Food words pay off every single mealtime.',
+    achievements: [
+      'Say ผมอยากดื่มกาแฟ (I want to drink coffee)',
+      'Order ส้มตำ (papaya salad) or ต้มยำ (tom yum)',
+      'Shop for มะม่วง (mango) and กล้วย (banana)',
+      'Ask for เกลือ (salt) or มะนาว (lime)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_MONEY = unit({
   unitId: 'stage-5-ordering-and-money', stageId: 5,
@@ -1410,6 +1830,25 @@ export const STAGE_5_UNIT_MONEY = unit({
       { id: 'annii', thai: 'อันนี้', ph: 'annǐi', en: 'this one' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'ao', 'annii', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Shopping and paying made simpler: menu and money words, plus an all purpose little sentence for taking the thing you are pointing at.',
+    points: [
+      { label: 'You will learn', text: 'Ordering words: เมนู (menu), แบงค์ (banknote), ตังค์ (money), เงินสด (cash), เหรียญ (coin), ป้าย (sign), รางวัล (prize), and แวะ (to stop by).' },
+      { label: 'Why it matters', text: 'Markets and street stalls move quickly. Knowing the words for cash, coins, and the menu helps you pay smoothly and follow what the seller says back to you.' },
+      { label: 'Listen for', text: 'The tiny word เอา (ao) right after ผม in the practice sentence. That single syllable carries the whole meaning of taking or wanting a thing.' },
+      { label: 'Notice', text: 'อันนี้ (this one) stands in for any item, so ผมเอาอันนี้ครับ works at a stall, a shop, or a cafe while you simply point.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Smooth work. Paying and ordering feel less mysterious now.',
+    lead: 'Money words keep market moments quick and friendly.',
+    achievements: [
+      'Order anything with ผมเอาอันนี้ครับ (I will take this one)',
+      'Ask for the เมนู (menu)',
+      'Pay with เงินสด (cash) or เหรียญ (coin)',
+      'Suggest a quick stop with แวะ (to stop by)',
+    ],
   },
 });
 export const STAGE_5_UNIT_REQUESTS = unit({
@@ -1425,6 +1864,25 @@ export const STAGE_5_UNIT_REQUESTS = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['khaw', 'nam', 'noi', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Verbs for passing things and information along: advising, warning, handing out, plus the polite, reusable pattern for requesting a glass of water.',
+    points: [
+      { label: 'You will learn', text: 'Giving and telling verbs: แนะ (advise), เตือน (warn), แจก (give out), ป้อน (feed), ตัก (scoop), กล่าว (say), ขาน (call out), and แจ้ง (inform).' },
+      { label: 'Why it matters', text: 'Asking nicely is a daily skill anywhere. The request sentence here is a simple template you will reuse for water, help, directions, and all kinds of small favors.' },
+      { label: 'Listen for', text: 'The softener หน่อย (nàwy, a little) near the end of ขอน้ำหน่อยครับ. It makes a request sound gentle and friendly instead of demanding.' },
+      { label: 'Notice', text: 'The request follows a clear three part frame: ขอ (may I have) opens it, น้ำ (water) names the thing, and หน่อย plus ครับ round it off politely.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well asked. You can request things the gentle way.',
+    lead: 'Polite requests smooth out countless daily moments.',
+    achievements: [
+      'Make a polite request with ขอน้ำหน่อยครับ (May I have some water)',
+      'Warn someone kindly with เตือน (warn)',
+      'Pass news along with แจ้ง (inform)',
+      'Hand things out with แจก (give out)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_COMPLIMENTS = unit({
   unitId: 'stage-5-compliments', stageId: 5,
@@ -1439,6 +1897,25 @@ export const STAGE_5_UNIT_COMPLIMENTS = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['khun', 'suai', 'mak', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Kind words open doors everywhere. This unit gives you eight friendly ways to praise food, places, and people, plus one classic compliment sentence to finish.',
+    points: [
+      { label: 'You will learn', text: 'Praise words: พิเศษ (special), เยี่ยม (great), ตลก (funny), สบาย (comfortable), แท้ (real), เรียบ (smooth), ถูกใจ (pleased), and ปลื้ม (delighted).' },
+      { label: 'Why it matters', text: 'A genuine compliment warms any exchange with hosts, vendors, or new friends. These words let you say clearly what you liked and why, plainly and kindly.' },
+      { label: 'Listen for', text: 'The rising tone in สวย (sǔai, beautiful). The sound climbs upward as you say it, which makes the compliment easy to pick out of fast speech.' },
+      { label: 'Notice', text: 'The compliment builds piece by piece, in a steady order: คุณ (you), สวย (beautiful), มาก (very), ครับ (polite, male). The booster มาก comes after the quality it boosts.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Charming work. Your praise now lands in Thai.',
+    lead: 'Compliments are small gifts, and you have a pocketful.',
+    achievements: [
+      'Offer the compliment คุณสวยมากครับ (You are very beautiful)',
+      'Call something เยี่ยม (great) or พิเศษ (special)',
+      'Say a joke was ตลก (funny)',
+      'Show you are pleased with ถูกใจ (pleased) or ปลื้ม (delighted)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_TOWN = unit({
   unitId: 'stage-5-around-town', stageId: 5,
@@ -1451,6 +1928,25 @@ export const STAGE_5_UNIT_TOWN = unit({
       { id: 'suai', thai: 'สวย', ph: 'sǔai', en: 'beautiful' },
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['thinii', 'suai', 'mak'],
+  },
+  lessonIntro: {
+    lead: 'Get your bearings with useful town words: the city, a building, the market, a bridge, and the train, plus a ready sentence for praising a beautiful spot.',
+    points: [
+      { label: 'You will learn', text: 'Places around town: เมือง (city), อาคาร (building), ฝั่ง (shore), ตำบล (sub district), กาด (market), สะพาน (bridge), ค่าย (camp), and รถไฟ (train).' },
+      { label: 'Why it matters', text: 'Place words turn vague directions into clear ones. Naming the bridge, the market, or the train makes finding your way around town far less stressful.' },
+      { label: 'Listen for', text: 'The two falling tones of ที่นี่ (thîi nîi, here): both syllables drop the same way, which makes the word easy to catch in everyday speech.' },
+      { label: 'Notice', text: 'ที่นี่สวยมาก needs no extra linking word at all: the place ที่นี่ (here), the quality สวย (beautiful), and the booster มาก (very) simply line up in order.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good progress. The town around you has names now.',
+    lead: 'Place words make every outing easier to talk about.',
+    achievements: [
+      'Praise a place with ที่นี่สวยมาก (It is very beautiful here)',
+      'Find the รถไฟ (train) or the สะพาน (bridge)',
+      'Head to the กาด (market)',
+      'Talk about the เมือง (city) you are exploring',
+    ],
   },
 });
 export const STAGE_5_UNIT_WANTS = unit({
@@ -1465,6 +1961,26 @@ export const STAGE_5_UNIT_WANTS = unit({
       { id: 'glapban', thai: 'กลับบ้าน', ph: 'glàp bâan', en: 'to go home' },
     ], answer: ['phom', 'yak', 'glapban'],
   },
+  lessonIntro: {
+    lead: 'Words for plans that move and change: prepare, schedule, postpone, cancel, and share, plus the honest little sentence for the very end of a long day.',
+    points: [
+      { label: 'You will learn', text: 'Planning verbs: ใคร่ (desire), เตรียม (prepare), กำหนด (schedule), เลื่อน (postpone), ถอน (cancel), คาด (expect), เชื่อม (connect), and แบ่ง (share).' },
+      { label: 'Why it matters', text: 'Plans shift constantly when you travel. Words for preparing, postponing, and canceling let you talk through those changes calmly instead of guessing what happens next.' },
+      { label: 'Listen for', text: 'The low tone of อยาก (yàak) sitting between ผม and the action. That small word always flags a want before you hear what is wanted.' },
+      { label: 'Notice', text: 'กลับบ้าน (to go home) works as one ready made chunk, so the whole wish is just three easy pieces: ผม (I), อยาก (to want to), กลับบ้าน.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Solid step. You can talk about plans that change.',
+    lead: 'Flexible plans need flexible words, and now you have them.',
+    achievements: [
+      'Say ผมอยากกลับบ้าน (I want to go home)',
+      'Get ready with เตรียม (prepare)',
+      'Move a plan with เลื่อน (postpone)',
+      'Set a time with กำหนด (schedule)',
+      'Split things fairly with แบ่ง (share)',
+    ],
+  },
 });
 export const STAGE_5_UNIT_VERBS2 = unit({
   unitId: 'stage-5-everyday-verbs', stageId: 5,
@@ -1477,6 +1993,25 @@ export const STAGE_5_UNIT_VERBS2 = unit({
       { id: 'pheung', thai: 'เพิ่ง', ph: 'phêung', en: 'just (recently)' },
       { id: 'maathueng', thai: 'มาถึง', ph: 'maa thǔeng', en: 'to arrive' },
     ], answer: ['phom', 'pheung', 'maathueng'],
+  },
+  lessonIntro: {
+    lead: 'Social verbs for meeting people and mixing in: greeting, remembering, competing, and exchanging, plus the perfect short sentence for the moment you finally arrive.',
+    points: [
+      { label: 'You will learn', text: 'Social verbs: ทราบ (know), จดจำ (remember), เกลียด (hate), ชนะ (win), แข่ง (compete), แลก (exchange), ไหว้ (to wai), and ทัก (greet).' },
+      { label: 'Why it matters', text: 'Meeting people means greeting them, remembering them, and swapping things with them. These eight verbs cover the small social moves that come up over and over, every single day.' },
+      { label: 'Listen for', text: 'เพิ่ง (phêung) right after ผม in ผมเพิ่งมาถึง. This one small word tells the listener that something happened only a few moments ago.' },
+      { label: 'Notice', text: 'Time words like เพิ่ง (just recently) slot in right before the verb มาถึง (to arrive). No verb ending is ever needed to show the recent past.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Friendly finish. Your social verbs are ready to use.',
+    lead: 'Small social moves add up to easy, warm encounters.',
+    achievements: [
+      'Announce ผมเพิ่งมาถึง (I just arrived)',
+      'Greet someone with ทัก (greet) or a ไหว้ (wai gesture)',
+      'Say you remember with จดจำ (remember)',
+      'Swap or trade with แลก (exchange)',
+    ],
   },
 });
 
@@ -1494,6 +2029,26 @@ export const STAGE_6_UNIT_WANTS = unit({
       { id: 'phasathai', thai: 'ภาษาไทย', ph: 'phaa-sǎa thai', en: 'Thai language' },
     ], answer: ['phom', 'yak', 'rian', 'phasathai'],
   },
+  lessonIntro: {
+    lead: 'These verbs carry wants and plans: rest, need, try, feel, and travel, plus a sentence about the very thing you are doing right now, learning Thai.',
+    points: [
+      { label: 'You will learn', text: 'Eight workhorse verbs, including พักผ่อน (to rest), ต้องการ (to need), พยายาม (to try), รู้สึก (to feel), and เดินทาง (to travel).' },
+      { label: 'Why it matters', text: 'Verbs like these let you say what you want and what you are trying to do. That is the heart of longer, more useful sentences, and the step beyond single words.' },
+      { label: 'Listen for', text: 'The phonetic pá-yaa-yaam for พยายาม: three steady syllables that stand out clearly once you know them. Try to catch all three.' },
+      { label: 'Notice', text: 'The sentence ผมอยากเรียนภาษาไทย stacks ผม, then อยาก, then เรียน, then ภาษาไทย: the person, the want, the verb, the thing, in that order.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great work. Your wants and plans now fit into Thai.',
+    lead: 'You practiced verbs that explain what you need and what you are trying to do.',
+    achievements: [
+      'Say your goal with ผมอยากเรียนภาษาไทย (I want to learn Thai)',
+      'Talk about resting with พักผ่อน (to rest)',
+      'Express needs with ต้องการ (to need)',
+      'Describe effort with พยายาม (to try)',
+      'Mention a trip with เดินทาง (to travel)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_HEALTH = unit({
   unitId: 'stage-6-health-and-body', stageId: 6,
@@ -1506,6 +2061,25 @@ export const STAGE_6_UNIT_HEALTH = unit({
       { id: 'phae', thai: 'แพ้', ph: 'pháe', en: 'allergic to' },
       { id: 'seafood', thai: 'อาหารทะเล', ph: 'aahǎan thá-leh', en: 'seafood' },
     ], answer: ['phom', 'phae', 'seafood'],
+  },
+  lessonIntro: {
+    lead: 'A small health kit for the harder days: words for symptoms and for the body, plus one clear sentence that every traveler with a food allergy should learn well and keep ready.',
+    points: [
+      { label: 'You will learn', text: 'Six health words, including ปวดหัว (headache), อาการ (symptom), คนไข้ (patient), หัวใจ (heart), and สมอง (brain).' },
+      { label: 'Why it matters', text: 'When you feel unwell, a few clear words help a pharmacist or a doctor understand you faster, with much less guessing on both sides. Clear words save time exactly when you have the least patience for confusion.' },
+      { label: 'Listen for', text: 'The short word pháe inside ผมแพ้อาหารทะเล. That one small syllable carries the whole meaning of allergic.' },
+      { label: 'Notice', text: 'The sentence ผมแพ้อาหารทะเล needs only three parts: ผม, แพ้, and อาหารทะเล. Short pieces, serious message, and a pattern small enough to recall under pressure.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. You can describe how you feel when it counts.',
+    lead: 'These are words you hope not to need, and will be glad to have.',
+    achievements: [
+      'Warn about allergies with ผมแพ้อาหารทะเล (I am allergic to seafood)',
+      'Point to a headache with ปวดหัว (headache)',
+      'Describe what is wrong with อาการ (symptom)',
+      'Name the heart with หัวใจ (heart)',
+    ],
   },
 });
 // Stage 6 deepening (Course Structure Sprint) — the "Intermediate Power" path.
@@ -1528,6 +2102,25 @@ export const STAGE_6_UNIT_PEOPLE = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['jergan', 'mai', 'na', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Words for the people around you: family members, a friend, a girlfriend, plus a warm goodbye to use when it is time to part ways for the day.',
+    points: [
+      { label: 'You will learn', text: 'People words like ผู้ชาย (man), ผู้หญิง (woman), ลูกชาย (son), ลูกสาว (daughter), and แฟนสาว (girlfriend).' },
+      { label: 'Why it matters', text: 'Small talk often turns to family. Being able to name who is who keeps the conversation going and makes it feel personal. People enjoy hearing their family named correctly.' },
+      { label: 'Listen for', text: 'The soft particle นะ in เจอกันใหม่นะครับ. It gently warms the goodbye so it sounds friendly, not abrupt. You will hear it constantly in farewells.' },
+      { label: 'Notice', text: 'ลูกชาย (son) and ลูกสาว (daughter) share their first part. Spotting shared pieces like this makes new family words easier to remember.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Strong step. You can talk about the people in your life.',
+    lead: 'Family words plus a friendly goodbye make conversations feel warmer.',
+    achievements: [
+      'Part warmly with เจอกันใหม่นะครับ (see you again)',
+      'Talk about a son or daughter with ลูกชาย and ลูกสาว',
+      'Say man and woman with ผู้ชาย and ผู้หญิง',
+      'Mention a girlfriend with แฟนสาว',
+    ],
+  },
 });
 export const STAGE_6_UNIT_DAYS = unit({
   unitId: 'stage-6-days-and-dates', stageId: 6,
@@ -1541,6 +2134,26 @@ export const STAGE_6_UNIT_DAYS = unit({
       { id: 'pai', thai: 'ไป', ph: 'bpai', en: 'to go' },
       { id: 'talat', thai: 'ตลาด', ph: 'talàat', en: 'market' },
     ], answer: ['mueawaan', 'phom', 'pai', 'talat'],
+  },
+  lessonIntro: {
+    lead: 'Time words that anchor your plans: tomorrow, yesterday, tonight, and the holiday, plus a small story sentence about going to the market.',
+    points: [
+      { label: 'You will learn', text: 'Calendar words like พรุ่งนี้ (tomorrow), เมื่อวาน (yesterday), คืนนี้ (tonight), วันหยุด (holiday), and สัปดาห์ (week).' },
+      { label: 'Why it matters', text: 'Booking, meeting, and rescheduling all hang on time words. They are what turn a vague idea into a real plan with a real day. Drop one into a sentence and your plans become easy to follow.' },
+      { label: 'Listen for', text: 'mêua waan at the start of the sentence. Hearing the time word first tells you when it happened before anything else arrives. Train your ear to grab it.' },
+      { label: 'Notice', text: 'เมื่อวานผมไปตลาด uses no special past form. The word เมื่อวาน alone is enough to set the whole sentence in the past.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nicely done. Your Thai now has a calendar.',
+    lead: 'You can place plans and little stories in time, from yesterday to tonight.',
+    achievements: [
+      'Tell a small story with เมื่อวานผมไปตลาด (yesterday I went to the market)',
+      'Plan ahead with พรุ่งนี้ (tomorrow)',
+      'Talk about tonight with คืนนี้ (tonight)',
+      'Ask about dates with วันที่ (date)',
+      'Mark a day off with วันหยุด (holiday)',
+    ],
   },
 });
 export const STAGE_6_UNIT_TIMES = unit({
@@ -1556,6 +2169,25 @@ export const STAGE_6_UNIT_TIMES = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['raw', 'sakkhru', 'na', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Parts of the day, two weekdays to anchor your plans, and the polite line you will hear at counters everywhere: please wait a moment.',
+    points: [
+      { label: 'You will learn', text: 'Time words like กลางวัน (daytime), ตอนเย็น (evening), เสาร์ (Saturday), วันพุธ (Wednesday), and สักครู่ (a moment).' },
+      { label: 'Why it matters', text: 'Waiting is part of daily life. Understanding รอสักครู่นะครับ, and saying it yourself, keeps those small moments calm and friendly. It also tells you exactly what is about to happen next.' },
+      { label: 'Listen for', text: 'sàk khrûu, the phrase for a short wait. Staff say it all the time, so your ear will get plenty of real practice.' },
+      { label: 'Notice', text: 'The sentence ends with นะ and then ครับ: first a softener, then politeness. That order stays the same in many polite sentences, so it is worth noticing early.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good progress. You can handle times and short waits.',
+    lead: 'From Saturday plans to a moment of patience, you have the words.',
+    achievements: [
+      'Ask someone to wait with รอสักครู่นะครับ (please wait a moment)',
+      'Name the evening with ตอนเย็น (evening)',
+      'Plan around เสาร์ (Saturday) and วันพุธ (Wednesday)',
+      'Say still with ยังคง (still)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_RESTAURANT = unit({
   unitId: 'stage-6-at-a-restaurant', stageId: 6,
@@ -1570,6 +2202,26 @@ export const STAGE_6_UNIT_RESTAURANT = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['khaw', 'menu', 'noi', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Restaurant moves you will actually use: asking for the menu, naming fruit like ทุเรียน (durian), and the short phrase that calls for the bill.',
+    points: [
+      { label: 'You will learn', text: 'Eating words like ผลไม้ (fruit), ทุเรียน (durian), กินข้าว (eat a meal), เปรี้ยว (sour), and เช็คบิล (check please).' },
+      { label: 'Why it matters', text: 'Ordering, tasting, and paying are everyday moves. A few set phrases make each restaurant visit smoother from the first request to the last. A confident order also puts the staff at ease with you.' },
+      { label: 'Listen for', text: 'khǎw at the start of ขอเมนูหน่อยครับ. That little rising-tone word opens most polite requests, and you will use it many times a day.' },
+      { label: 'Notice', text: 'The request pattern: ขอ, then เมนู, then หน่อย, then ครับ. Swap the middle word and you can ask for other things the same way.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Tasty work. You can steer a meal from menu to bill.',
+    lead: 'You practiced ordering, naming fruit, and wrapping up politely.',
+    achievements: [
+      'Ask for the menu with ขอเมนูหน่อยครับ (may I have the menu)',
+      'Call for the bill with เช็คบิล (check please)',
+      'Name fruit with ผลไม้ (fruit) and ทุเรียน (durian)',
+      'Describe a flavor with เปรี้ยว (sour)',
+      'Talk about eating with กินข้าว (eat a meal)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_HOME = unit({
   unitId: 'stage-6-rest-and-home', stageId: 6,
@@ -1582,6 +2234,26 @@ export const STAGE_6_UNIT_HOME = unit({
       { id: 'yak', thai: 'อยาก', ph: 'yàak', en: 'to want to' },
       { id: 'phakphon', thai: 'พักผ่อน', ph: 'phák-phàwn', en: 'to rest' },
     ], answer: ['phom', 'yak', 'phakphon'],
+  },
+  lessonIntro: {
+    lead: 'Home words for apartments and hotel rooms: the fridge, the bedroom, the balcony, plus a simple, honest way to say you want to rest after a long day.',
+    points: [
+      { label: 'You will learn', text: 'Home words like ตู้เย็น (refrigerator), ห้องนอน (bedroom), ระเบียง (balcony), ที่นอน (bed), and สะอาด (clean).' },
+      { label: 'Why it matters', text: 'Renting a room, checking in, or reporting a problem needs exactly these words: which room, which item, and whether it is clean. Naming the exact item gets a problem fixed much sooner.' },
+      { label: 'Listen for', text: 'phák-phàwn at the end of ผมอยากพักผ่อน. Those two snappy syllables mean to rest, and you will want them often.' },
+      { label: 'Notice', text: 'ห้องนอน (bedroom) and ที่นอน (bed) share the same final part. Spotting shared pieces helps new home words stick faster. Watch for that ending in both.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Cozy progress. Your home vocabulary just moved in.',
+    lead: 'You can name rooms and furniture, and say when you need a break.',
+    achievements: [
+      'Say you want to rest with ผมอยากพักผ่อน (I want to rest)',
+      'Name the bedroom with ห้องนอน (bedroom)',
+      'Point out the fridge with ตู้เย็น (refrigerator)',
+      'Praise a clean room with สะอาด (clean)',
+      'Step out on the ระเบียง (balcony)',
+    ],
   },
 });
 export const STAGE_6_UNIT_TOWN = unit({
@@ -1598,6 +2270,26 @@ export const STAGE_6_UNIT_TOWN = unit({
       { id: 'ik', thai: 'อีก', ph: 'ìik', en: 'again' },
     ], answer: ['phom', 'ja', 'glap', 'maa', 'ik'],
   },
+  lessonIntro: {
+    lead: 'Places that organize a trip: the hotel, the station, the bank, and the mountain, plus a promise travelers love to make, I will come back.',
+    points: [
+      { label: 'You will learn', text: 'Place words like โรงแรม (hotel), สถานี (station), ธนาคาร (bank), อำเภอ (district), and ภูเขา (mountain).' },
+      { label: 'Why it matters', text: 'Taxis, tickets, and directions all start with naming a place. These words tell people exactly where you are headed next, and help you catch the answer when it comes back fast.' },
+      { label: 'Listen for', text: 'jà in ผมจะกลับมาอีก. That tiny word signals the future before the main verb even arrives. Catching it tells you a plan is coming.' },
+      { label: 'Notice', text: 'The sentence stacks กลับ, then มา, then อีก: return, come, again. Each short word adds one clear piece of meaning. Thai often builds longer ideas this way.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Wonderful. You can name the places that shape a trip.',
+    lead: 'Hotels, stations, and banks, plus a line for places worth a return.',
+    achievements: [
+      'Promise a return with ผมจะกลับมาอีก (I will come back again)',
+      'Find your โรงแรม (hotel)',
+      'Head to the สถานี (station)',
+      'Locate the ธนาคาร (bank)',
+      'Point out a ภูเขา (mountain)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_BANKING = unit({
   unitId: 'stage-6-banking-paperwork', stageId: 6,
@@ -1613,6 +2305,26 @@ export const STAGE_6_UNIT_BANKING = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['maa', 'wannii', 'dai', 'mai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Paperwork Thai for grown-up errands: the bank, the ATM, signatures and receipts, plus a useful question for arranging when things can actually happen.',
+    points: [
+      { label: 'You will learn', text: 'Errand words like ธนาคาร (bank), เอทีเอ็ม (ATM), ลายเซ็น (signature), เอกสาร (document), and ใบเสร็จ (receipt).' },
+      { label: 'Why it matters', text: 'Accounts, forms, and deliveries are where life abroad gets practical. These words keep counter visits and paperwork manageable, and recognizing them on a form is half the battle won.' },
+      { label: 'Listen for', text: 'The pair ได้ plus ไหม near the end of มาวันนี้ได้ไหมครับ. Together they ask whether something is possible. You will hear that pair in offices, shops, and phone calls.' },
+      { label: 'Notice', text: 'วันนี้ (today) sits inside the question, right after มา. Time words can slot into the middle of a sentence, not only the start.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Solid work. Bank errands just got less intimidating.',
+    lead: 'You met the words that appear on counters, forms, and receipts.',
+    achievements: [
+      'Ask about timing with มาวันนี้ได้ไหมครับ (can you come today?)',
+      'Find an เอทีเอ็ม (ATM)',
+      'Sign with your ลายเซ็น (signature)',
+      'Keep the ใบเสร็จ (receipt)',
+      'Ask about ประกัน (insurance)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_EMOTIONS = unit({
   unitId: 'stage-6-emotions-moods', stageId: 6,
@@ -1625,6 +2337,26 @@ export const STAGE_6_UNIT_EMOTIONS = unit({
       { id: 'duai', thai: 'ด้วย', ph: 'dûai', en: 'too / as well' },
       { id: 'na', thai: 'นะ', ph: 'ná', en: '(softener)' },
     ], answer: ['raksatua', 'duai', 'na'],
+  },
+  lessonIntro: {
+    lead: 'Feeling words for real conversations: calm, at ease, irritated, and love, plus a caring line to send someone off, take care of yourself.',
+    points: [
+      { label: 'You will learn', text: 'Mood words like เสียใจ (sad), ใจเย็น (calm), สบายใจ (at ease), หงุดหงิด (irritated), and ความรัก (love).' },
+      { label: 'Why it matters', text: 'Sharing how you feel builds friendships better than any list of facts. These words let you be honest and kind at the same time. A single mood word can explain a whole quiet evening.' },
+      { label: 'Listen for', text: 'The closing นะ in รักษาตัวด้วยนะ. It softens the line into something caring rather than bossy. It turns an instruction into warmth.' },
+      { label: 'Notice', text: 'เสียใจ, สบายใจ, ตั้งใจ, and ไว้ใจ all share the syllable jai. Many feeling words in this set are built around it, so each new one feels familiar.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Heartfelt work. You can share moods, not just facts.',
+    lead: 'Feelings are where conversations turn real, and you have words for them.',
+    achievements: [
+      'Send someone off with รักษาตัวด้วยนะ (take care of yourself)',
+      'Stay calm with ใจเย็น (calm)',
+      'Admit feeling หงุดหงิด (irritated)',
+      'Say you are at ease with สบายใจ (at ease)',
+      'Talk about ความรัก (love)',
+    ],
   },
 });
 export const STAGE_6_UNIT_LEARNING = unit({
@@ -1641,6 +2373,26 @@ export const STAGE_6_UNIT_LEARNING = unit({
       { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'can / able' },
     ], answer: ['phom', 'yak', 'phut', 'thai', 'dai'],
   },
+  lessonIntro: {
+    lead: 'Verbs for studying and noticing the world: study, see, hear, recommend, and search, plus a sentence that says exactly why you opened this app today.',
+    points: [
+      { label: 'You will learn', text: 'Learning verbs like ศึกษา (study), ได้ยิน (hear), มองเห็น (see), แนะนำ (recommend), and สรุป (summarize).' },
+      { label: 'Why it matters', text: 'Asking for recommendations and saying what you saw or heard keeps real conversations moving, especially when you need to explain yourself. These verbs also help you ask better questions.' },
+      { label: 'Listen for', text: 'dâai at the very end of ผมอยากพูดไทยได้. Placed there, it means to be able to. One small word with a lot of power.' },
+      { label: 'Notice', text: 'ได้ยิน (hear) begins with ได้, the same word that ends the sentence. Its position changes the job it does, so watch closely where it lands in each sentence.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Sharp work. You can talk about learning itself.',
+    lead: 'You practiced verbs for studying, noticing, and asking for guidance.',
+    achievements: [
+      'State your goal with ผมอยากพูดไทยได้ (I want to be able to speak Thai)',
+      'Ask for tips with แนะนำ (recommend)',
+      'Say what you heard with ได้ยิน (hear)',
+      'Look things up with ค้นหา (search)',
+      'Wrap up ideas with สรุป (summarize)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_VERBS = unit({
   unitId: 'stage-6-everyday-verbs', stageId: 6,
@@ -1653,6 +2405,26 @@ export const STAGE_6_UNIT_VERBS = unit({
       { id: 'ginkhao', thai: 'กินข้าว', ph: 'gin khâao', en: 'to eat (a meal)' },
       { id: 'rueyang', thai: 'หรือยัง', ph: 'rǔe yang', en: 'yet? / or not yet' },
     ], answer: ['khun', 'ginkhao', 'rueyang'],
+  },
+  lessonIntro: {
+    lead: 'Verbs for life with people: chat, laugh, follow, accept, plus the friendly question you will hear again and again, have you eaten yet?',
+    points: [
+      { label: 'You will learn', text: 'Social verbs like พูดคุย (chat), หัวเราะ (laugh), ติดตาม (follow), ยอมรับ (accept), and นึกถึง (think about).' },
+      { label: 'Why it matters', text: 'These verbs describe time spent with people, which is exactly where your Thai gets its daily exercise and its best rewards. Friendly verbs invite friendly replies, and those replies give you real practice.' },
+      { label: 'Listen for', text: 'The tail หรือยัง in คุณกินข้าวหรือยัง. It asks whether something has happened yet. It is one of the most common question tails you will hear.' },
+      { label: 'Notice', text: 'กินข้าว works as one unit meaning to eat a meal. The question simply wraps คุณ and หรือยัง around it. Three pieces, one friendly question.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Lovely work. Your everyday verbs are getting social.',
+    lead: 'Chatting, laughing, and checking in: these are the verbs of friendship.',
+    achievements: [
+      'Check in with คุณกินข้าวหรือยัง (have you eaten yet?)',
+      'Invite a chat with พูดคุย (chat)',
+      'Share a laugh with หัวเราะ (laugh)',
+      'Say you think of someone with นึกถึง (think about)',
+      'Accept a point with ยอมรับ (accept)',
+    ],
   },
 });
 export const STAGE_6_UNIT_COMM = unit({
@@ -1668,6 +2440,26 @@ export const STAGE_6_UNIT_COMM = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['khaw', 'phoem', 'noi', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Verbs for getting things settled: explain, confirm, promise, and guarantee, plus a handy little request you can use whenever you politely need a bit more of something.',
+    points: [
+      { label: 'You will learn', text: 'Settling verbs like บรรยาย (explain), ยืนยัน (confirm), สัญญา (promise), รับรอง (guarantee), and ทดลอง (test).' },
+      { label: 'Why it matters', text: 'Bookings, repairs, and agreements all need confirming words. They help you pin down what was actually promised and by whom. When plans change later, these are the calm words that sort things out.' },
+      { label: 'Listen for', text: 'yeuun yan, the phonetic for ยืนยัน. Its two steady syllables come up whenever details are being checked. Expect to hear it around bookings and bills.' },
+      { label: 'Notice', text: 'ขอเพิ่มหน่อยครับ reuses a familiar request frame: ขอ plus หน่อย plus ครับ, with เพิ่ม (more) dropped neatly in the middle. One frame, many uses.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Steady work. You can pin down plans and promises.',
+    lead: 'Confirming and explaining are the muscles of practical Thai.',
+    achievements: [
+      'Ask for more with ขอเพิ่มหน่อยครับ (may I have some more)',
+      'Double-check with ยืนยัน (confirm)',
+      'Make a promise with สัญญา (promise)',
+      'Get it guaranteed with รับรอง (guarantee)',
+      'Try something out with ทดลอง (test)',
+    ],
+  },
 });
 export const STAGE_6_UNIT_QUALITIES = unit({
   unitId: 'stage-6-describing-qualities', stageId: 6,
@@ -1675,6 +2467,26 @@ export const STAGE_6_UNIT_QUALITIES = unit({
   vocabCardIds: [1923, 2053, 2337, 2594, 3034, 2589, 2603, 2256], challengeCardIds: [1923, 2594, 3034],
   // No sentenceCard/builder: the clean Stage 6 adjective sentences are 2-token or
   // idiomatic; this unit is taught as vocabulary and used in sentences elsewhere.
+  lessonIntro: {
+    lead: 'Describing words with more nuance: convenient, correct, confused, diligent, warm, and familiar. Useful both for compliments and for clear, honest, friendly feedback.',
+    points: [
+      { label: 'You will learn', text: 'Quality words like สะดวก (convenient), ถูกต้อง (right), สับสน (confused), ขยัน (diligent), and อบอุ่น (warm).' },
+      { label: 'Why it matters', text: 'Compliments and honest feedback both run on words like these. Saying something is convenient or correct moves a conversation forward fast. Precise words also make your questions easier to answer.' },
+      { label: 'Listen for', text: 'sàp sǒhn, the phonetic for สับสน. Keep it ready for the days when directions or paperwork stop making sense. Naming the feeling is the first step to fixing it.' },
+      { label: 'Notice', text: 'Every word in this set has two syllables, like khà yǎn and òp ùn. The even rhythm makes them satisfying to drill out loud in pairs.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Fine work. Your descriptions just got more precise.',
+    lead: 'You can now praise, agree, and admit confusion with the right word.',
+    achievements: [
+      'Call a plan สะดวก (convenient)',
+      'Confirm something is ถูกต้อง (right)',
+      'Admit you feel สับสน (confused)',
+      'Compliment someone as ขยัน (diligent)',
+      'Describe a welcome as อบอุ่น (warm)',
+    ],
+  },
 });
 
 // Stage 7 — Natural Thai.
@@ -1691,6 +2503,25 @@ export const STAGE_7_UNIT_FOOD = unit({
       { id: 'thisut', thai: 'ที่สุด', ph: 'thîi sùt', en: 'most' },
     ], answer: ['ahan', 'thai', 'aroi', 'thisut'],
   },
+  lessonIntro: {
+    lead: 'Eight words from Thai menus and kitchens, from noodle soup to fish sauce, plus one short sentence to praise a good meal.',
+    points: [
+      { label: 'You will learn', text: 'Popular dishes and staples: ก๋วยเตี๋ยว (noodle soup), ผัดไทย (pad thai), ข้าวผัด (fried rice), ขนมปัง (bread), น้ำส้ม (orange juice), น้ำตาล (sugar), กระเทียม (garlic), and น้ำปลา (fish sauce).' },
+      { label: 'Why it matters', text: 'You will order food every single day, and knowing dish names and a few common ingredients helps you ask for exactly what you like and steer around what you do not.' },
+      { label: 'Listen for', text: 'The little word náam at the start of น้ำส้ม (orange juice), น้ำตาล (sugar), and น้ำปลา (fish sauce). Hearing it tells you a drink or liquid is nearby.' },
+      { label: 'Notice', text: 'In อาหารไทยอร่อยที่สุด, describing words follow the noun: อาหาร (food) comes first, then ไทย (Thai), then อร่อย (delicious), with ที่สุด (most) closing the sentence.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great work. Thai menus just got friendlier.',
+    lead: 'You are building real restaurant Thai, one dish at a time.',
+    achievements: [
+      'Order ก๋วยเตี๋ยว (noodle soup) by name',
+      'Ask for ผัดไทย (pad thai) or ข้าวผัด (fried rice)',
+      'Spot น้ำปลา (fish sauce) and กระเทียม (garlic) in a recipe',
+      'Praise a meal with อาหารไทยอร่อยที่สุด (Thai food is the most delicious)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_VERBS = unit({
   unitId: 'stage-7-more-verbs', stageId: 7,
@@ -1704,6 +2535,26 @@ export const STAGE_7_UNIT_VERBS = unit({
       { id: 'gamlang', thai: 'กำลัง', ph: 'gamlang', en: '-ing (now)' },
       { id: 'ginkhao', thai: 'กินข้าว', ph: 'gin khâao', en: 'to eat (rice)' },
     ], answer: ['tawnnii', 'phom', 'gamlang', 'ginkhao'],
+  },
+  lessonIntro: {
+    lead: 'Eight verbs for daily routines and working life, plus a sentence pattern that says what you are doing right now.',
+    points: [
+      { label: 'You will learn', text: 'Action words: อาบน้ำ (take a shower), ทำอาหาร (cook), ช่วยเหลือ (help), ประชุม (meeting), เริ่มต้น (start), เรียนรู้ (learn), สังเกต (notice), and อธิบาย (explain).' },
+      { label: 'Why it matters', text: 'These verbs let you describe your day, offer help when it is needed, and follow along when someone explains plans at work or at home. Small, common verbs like these carry a surprising share of daily speech.' },
+      { label: 'Listen for', text: 'กำลัง (gamlang) in ตอนนี้ผมกำลังกินข้าว. It sits right before the verb and means the action is happening at this very moment.' },
+      { label: 'Notice', text: 'Several verbs here are two-part words: เริ่มต้น (start), เรียนรู้ (learn), and ช่วยเหลือ (help) each pair two pieces, which makes them feel fuller and clearer.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. Your verb toolkit is growing.',
+    lead: 'With more action words, you can say what is happening around you.',
+    achievements: [
+      'Say you are cooking with ทำอาหาร (to cook)',
+      'Offer a hand with ช่วยเหลือ (help)',
+      'Mention a work ประชุม (meeting)',
+      'Ask someone to explain with อธิบาย (explain)',
+      'Say what is happening now: ตอนนี้ผมกำลังกินข้าว (right now I am eating)',
+    ],
   },
 });
 // Stage 7 deepening (Course Structure Sprint) — the "Natural Thai" path. Every id
@@ -1725,6 +2576,25 @@ export const STAGE_7_UNIT_PLACES = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['pai', 'sanambin', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Eight places you will name in taxis and conversations, from the airport to a quiet village, plus the classic taxi sentence.',
+    points: [
+      { label: 'You will learn', text: 'Key places: สนามบิน (airport), โรงพยาบาล (hospital), โรงเรียน (school), โรงอาหาร (cafeteria), หมู่บ้าน (village), จังหวัด (province), ชนบท (countryside), and ชาวบ้าน (villagers).' },
+      { label: 'Why it matters', text: 'Naming your destination clearly is half of every taxi ride, and these words also help you follow talk about where people live, study, and work. They are also the words you will spot on signs and hear in announcements.' },
+      { label: 'Listen for', text: 'The repeated opener rohng in โรงพยาบาล (hospital), โรงเรียน (school), and โรงอาหาร (cafeteria). It signals a building, so it is a useful sound to catch.' },
+      { label: 'Notice', text: 'The sentence ไปสนามบินครับ needs only three pieces: ไป (to go), the place สนามบิน (airport), and polite ครับ. No extra word for "to" is required.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Strong step. You can name the places that matter.',
+    lead: 'Real destinations make your Thai instantly useful on the move.',
+    achievements: [
+      'Tell a driver ไปสนามบินครับ (to the airport, please)',
+      'Say โรงพยาบาล (hospital) when it really counts',
+      'Talk about a หมู่บ้าน (village) or the ชนบท (countryside)',
+      'Find the โรงอาหาร (cafeteria) by name',
+    ],
+  },
 });
 export const STAGE_7_UNIT_DIRECTIONS = unit({
   unitId: 'stage-7-directions-position', stageId: 7,
@@ -1737,6 +2607,26 @@ export const STAGE_7_UNIT_DIRECTIONS = unit({
       { id: 'khangna', thai: 'ข้างหน้า', ph: 'khâang nâa', en: 'ahead / in front' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['jot', 'khangna', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Position words that guide drivers and friends: in front, behind, opposite, between, plus compass points and one handy stop-here sentence.',
+    points: [
+      { label: 'You will learn', text: 'Location words: ข้างหน้า (in front), ข้างหลัง (behind), ตรงข้าม (opposite), ระหว่าง (between), ทิศเหนือ (north), ทิศใต้ (south), plus นี่แน่ะ (look here!) and ขอรับ (yes, sir).' },
+      { label: 'Why it matters', text: 'Getting out of a taxi at the right spot, or telling someone where a place sits, depends on exactly these small position words. A missed stop often comes down to one missing word, so this little set earns its keep fast.' },
+      { label: 'Listen for', text: 'The shared opener tít in ทิศเหนือ (north) and ทิศใต้ (south). When you hear it, a compass direction is on its way.' },
+      { label: 'Notice', text: 'ข้างหน้า (in front) and ข้างหลัง (behind) begin with the same first part. Position words often come in matched pairs, so learn them together.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nicely done. You can point the way.',
+    lead: 'Small direction words do big work when you are on the move.',
+    achievements: [
+      'Stop a driver with จอดข้างหน้าครับ (stop up ahead, please)',
+      'Say something is ตรงข้าม (opposite) a landmark',
+      'Place things ข้างหลัง (behind) or ข้างหน้า (in front)',
+      'Pin a spot with ระหว่าง (between)',
+      'Tell ทิศเหนือ (north) from ทิศใต้ (south)',
+    ],
   },
 });
 export const STAGE_7_UNIT_TALKING = unit({
@@ -1753,6 +2643,26 @@ export const STAGE_7_UNIT_TALKING = unit({
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['khun', 'phut', 'angkrit', 'geng', 'mak'],
   },
+  lessonIntro: {
+    lead: 'Verbs for real conversations: communicating, consulting, negotiating, even quarreling, plus a compliment you will hear and can give back.',
+    points: [
+      { label: 'You will learn', text: 'Discussion verbs: สื่อสาร (communicate), สนทนา (discuss), ปรึกษา (consult), ชักชวน (persuade), เจรจา (negotiate), กล่าวถึง (mention), คิดเห็น (comment), and ทะเลาะ (quarrel).' },
+      { label: 'Why it matters', text: 'These words let you describe how a talk went, ask for advice, and understand when someone wants to discuss or negotiate something with you. They also prepare you to follow faster, more natural speech as conversations get longer.' },
+      { label: 'Listen for', text: 'มาก (mâak) at the very end of คุณพูดอังกฤษเก่งมาก. That one small word turns good into very good.' },
+      { label: 'Notice', text: 'In the sentence, เก่ง (skilled) comes after พูด (to speak) and อังกฤษ (English). Thai puts the skill after the activity it describes, then adds มาก (very) last.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice one. You have words for real conversations.',
+    lead: 'Talking about talking is a quiet superpower in a new language.',
+    achievements: [
+      'Give a compliment with คุณพูดอังกฤษเก่งมาก (you speak English very well)',
+      'Ask to consult someone with ปรึกษา (consult)',
+      'Talk about negotiating with เจรจา (negotiate)',
+      'Bring up a topic with กล่าวถึง (mention)',
+      'Name a quarrel with ทะเลาะ (quarrel)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_MEETING = unit({
   unitId: 'stage-7-meeting-people', stageId: 7,
@@ -1767,6 +2677,26 @@ export const STAGE_7_UNIT_MEETING = unit({
       { id: 'jer', thai: 'เจอ', ph: 'jer', en: 'to meet' },
       { id: 'khun', thai: 'คุณ', ph: 'khun', en: 'you' },
     ], answer: ['deejai', 'thi', 'dai', 'jer', 'khun'],
+  },
+  lessonIntro: {
+    lead: 'Words for the people in your life: family, students, a younger brother, plus one warm sentence for new acquaintances.',
+    points: [
+      { label: 'You will learn', text: 'People words: ครอบครัว (family), คุณแม่ (mother), น้องชาย (younger brother), แฟนหนุ่ม (boyfriend), นักเรียน (student), ผู้ใหญ่ (adult), เด็กหญิง (girl), and เด็กชาย (boy).' },
+      { label: 'Why it matters', text: 'When you meet someone new, family comes up fast. These words help you introduce your people and follow along when others talk about theirs. A few person words also make stories about your day much easier to tell.' },
+      { label: 'Listen for', text: 'ดีใจ (dee jai) opening the sentence ดีใจที่ได้เจอคุณ. The feeling word leads, and no separate word for "I" is needed.' },
+      { label: 'Notice', text: 'The ending chaai appears in both น้องชาย (younger brother) and เด็กชาย (boy). Spotting shared parts like this makes new people words easier to remember.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Lovely progress. People words bring people closer.',
+    lead: 'You can now talk about the people who matter most.',
+    achievements: [
+      'Welcome a new acquaintance with ดีใจที่ได้เจอคุณ (glad I got to meet you)',
+      'Talk about your ครอบครัว (family)',
+      'Introduce your น้องชาย (younger brother)',
+      'Mention your คุณแม่ (mother)',
+      'Tell เด็กชาย (boy) from เด็กหญิง (girl)',
+    ],
   },
 });
 export const STAGE_7_UNIT_FLOW = unit({
@@ -1783,6 +2713,26 @@ export const STAGE_7_UNIT_FLOW = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phut', 'ikthi', 'dai', 'mai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Connector words that keep a conversation moving: maybe, of course, but, so, and if, plus the most useful repair question a learner can carry.',
+    points: [
+      { label: 'You will learn', text: 'Connectors: อาจจะ (maybe), แน่นอน (of course), แต่ว่า (but), ดังนั้น (so), ถ้าหาก (if), อย่างไร (how), นอกจาก (in addition to), and จากนั้น (from that).' },
+      { label: 'Why it matters', text: 'Linking words turn single phrases into longer thoughts, and the question พูดอีกทีได้ไหมครับ rescues you whenever something goes by too fast. Even a short answer sounds friendlier with the right connector in front of it.' },
+      { label: 'Listen for', text: 'ไหม (mǎi) right before ครับ at the end of the sentence. That rising sound is the signal that you are being asked a yes or no question.' },
+      { label: 'Notice', text: 'The piece jàak appears in both นอกจาก (in addition to) and จากนั้น (from that). Thai builds many connectors from the same small parts.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Smooth work. Your ideas can link up now.',
+    lead: 'Connectors are the glue between everything you have learned.',
+    achievements: [
+      'Ask for a repeat with พูดอีกทีได้ไหมครับ (could you say it again, please?)',
+      'Soften plans with อาจจะ (maybe)',
+      'Agree firmly with แน่นอน (of course)',
+      'Contrast ideas with แต่ว่า (but)',
+      'Set a condition with ถ้าหาก (if)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_FEELINGS = unit({
   unitId: 'stage-7-feelings-reactions', stageId: 7,
@@ -1795,6 +2745,26 @@ export const STAGE_7_UNIT_FEELINGS = unit({
       { id: 'samrap', thai: 'สำหรับ', ph: 'sǎm-ràp', en: 'for' },
       { id: 'thukyang', thai: 'ทุกอย่าง', ph: 'thúk yàang', en: 'everything' },
     ], answer: ['khopkhun', 'samrap', 'thukyang'],
+  },
+  lessonIntro: {
+    lead: 'Feeling words from excitement to worry, two ways to smile, and a thank-you sentence for moments that deserve more than a quick thanks.',
+    points: [
+      { label: 'You will learn', text: 'Emotions: มีความสุข (happy), ตื่นเต้น (excited), แปลกใจ (surprised), ใจร้อน (impatient), ความกังวล (worry), plus รอยยิ้ม (smile), ยิ้มแย้ม (smile widely), and เช่นนั้น (like that).' },
+      { label: 'Why it matters', text: 'Naming feelings makes conversations warmer and more honest, and ขอบคุณสำหรับทุกอย่าง is the right send-off for hosts, helpers, and new friends. People remember how you made them feel, and these words help you say it.' },
+      { label: 'Listen for', text: 'The repeated sound yím in รอยยิ้ม (smile) and ยิ้มแย้ม (smile widely). One little syllable carries the whole idea of smiling.' },
+      { label: 'Notice', text: 'The piece jai sits at the front of ใจร้อน (impatient) and at the end of แปลกใจ (surprised). Thai often builds feeling words around this small piece.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Beautiful work. You can say how you feel.',
+    lead: 'Feeling words turn small talk into real talk.',
+    achievements: [
+      'Say a big thanks with ขอบคุณสำหรับทุกอย่าง (thanks for everything)',
+      'Share joy with มีความสุข (happy)',
+      'Admit you are ตื่นเต้น (excited)',
+      'Name a worry with ความกังวล (worry)',
+      'Describe a รอยยิ้ม (smile)',
+    ],
   },
 });
 export const STAGE_7_UNIT_TIMESOFDAY = unit({
@@ -1811,6 +2781,26 @@ export const STAGE_7_UNIT_TIMESOFDAY = unit({
       { id: 'thamngan', thai: 'ทำงาน', ph: 'tham-ngaan', en: 'to work' },
     ], answer: ['phrungnii', 'phom', 'ja', 'pai', 'thamngan'],
   },
+  lessonIntro: {
+    lead: 'Time words that anchor your plans: morning, afternoon, evening, night, and right now, plus one clear sentence about tomorrow.',
+    points: [
+      { label: 'You will learn', text: 'Time expressions: เดี๋ยวนี้ (right now), ตอนเช้า (morning), ช่วงบ่าย (afternoon), ช่วงเย็น (evening), กลางคืน (night), หลังจาก (after), บ่อยครั้ง (often), and ลงท้าย (finally).' },
+      { label: 'Why it matters', text: 'Making plans means saying when. These words let you suggest a morning meetup, an evening meal, or something that has to happen right now. Once the time of day is clear, the rest of the plan usually falls into place.' },
+      { label: 'Listen for', text: 'จะ (jà) in พรุ่งนี้ผมจะไปทำงาน. This tiny word before the verb is how Thai points at the future.' },
+      { label: 'Notice', text: 'ช่วงบ่าย (afternoon) and ช่วงเย็น (evening) share the same first word, and the time word พรุ่งนี้ (tomorrow) leads the sentence. Time information likes to come up front.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good going. Your plans now have a clock.',
+    lead: 'Saying when is half of making any plan work.',
+    achievements: [
+      'Talk about tomorrow with พรุ่งนี้ผมจะไปทำงาน (tomorrow I will go to work)',
+      'Suggest ตอนเช้า (morning) or ช่วงเย็น (evening)',
+      'Say something happens บ่อยครั้ง (often)',
+      'Use เดี๋ยวนี้ (right now) when it cannot wait',
+      'Sequence events with หลังจาก (after)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_SCHEDULE = unit({
   unitId: 'stage-7-days-and-schedule', stageId: 7,
@@ -1824,6 +2814,25 @@ export const STAGE_7_UNIT_SCHEDULE = unit({
       { id: 'kimong', thai: 'กี่โมง', ph: 'gìi mohng', en: 'what time' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['ja', 'maathueng', 'kimong', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Four days of the week, the clock, and the new year, plus the question that pins down any meeting time.',
+    points: [
+      { label: 'You will learn', text: 'Schedule words: วันจันทร์ (Monday), วันอังคาร (Tuesday), วันศุกร์ (Friday), วันเสาร์ (Saturday), นาฬิกา (clock), บัดนี้ (now), ปีใหม่ (new year), and รุ่งเช้า (daylight).' },
+      { label: 'Why it matters', text: 'Appointments live and die on days and times. These words plus one good question keep your schedule clear and your meetings on track. Knowing the day names also helps you read posters, timetables, and chat messages.' },
+      { label: 'Listen for', text: 'The repeated opener wan in วันจันทร์ (Monday), วันอังคาร (Tuesday), วันศุกร์ (Friday), and วันเสาร์ (Saturday). It tells you a day name is coming.' },
+      { label: 'Notice', text: 'In จะมาถึงกี่โมงครับ, the question part กี่โมง (what time) sits inside the sentence rather than at the start, and ครับ still closes it politely.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Solid work. Your week has Thai names now.',
+    lead: 'Days plus one time question keep your schedule running.',
+    achievements: [
+      'Ask arrival time with จะมาถึงกี่โมงครับ (what time will you arrive?)',
+      'Plan around วันจันทร์ (Monday) and วันศุกร์ (Friday)',
+      'Save วันเสาร์ (Saturday) for the fun stuff',
+      'Wish someone a happy ปีใหม่ (new year)',
+    ],
   },
 });
 export const STAGE_7_UNIT_DINING = unit({
@@ -1839,6 +2848,26 @@ export const STAGE_7_UNIT_DINING = unit({
       { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['yaek', 'bin', 'dai', 'mai', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'Restaurant essentials from ice to dinner, plus the question that ends every shared meal smoothly: can we split the bill?',
+    points: [
+      { label: 'You will learn', text: 'Dining words: น้ำแข็ง (ice), ข้าวสาร (rice), ข้าวต้ม (boiled rice soup), อาหารเย็น (dinner), ของกิน (things to eat), พ่อครัว (cook), แอปเปิ้ล (apple), and ลูกกวาด (sweet).' },
+      { label: 'Why it matters', text: 'Meals with friends always end at the bill. แยกบิลได้ไหมครับ settles it politely, and the food words help you order and chat along the way. A few extra food words also make menus far less mysterious.' },
+      { label: 'Listen for', text: 'ได้ (dâai) followed by ไหม (mǎi) near the end of the sentence. This pair turns a plain statement into a polite can-we question.' },
+      { label: 'Notice', text: 'ข้าวสาร (rice) and ข้าวต้ม (boiled rice soup) share their first part, khâao. Rice words form a little family you will keep meeting on menus.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Tasty progress. Shared meals just got easier.',
+    lead: 'You can handle the food talk and the bill that follows it.',
+    achievements: [
+      'Ask แยกบิลได้ไหมครับ (can we split the bill?)',
+      'Request น้ำแข็ง (ice) for your drink',
+      'Order ข้าวต้ม (boiled rice soup)',
+      'Talk about อาหารเย็น (dinner) plans',
+      'Compliment the พ่อครัว (cook)',
+    ],
   },
 });
 export const STAGE_7_UNIT_ACTIONS = unit({
@@ -1856,6 +2885,26 @@ export const STAGE_7_UNIT_ACTIONS = unit({
       { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
     ], answer: ['phaa', 'phom', 'pai', 'thinii', 'dai', 'mai'],
   },
+  lessonIntro: {
+    lead: 'Eight doing words for getting ready, fixing, and improving things, plus a sentence that gets a driver to take you exactly where you point.',
+    points: [
+      { label: 'You will learn', text: 'Action verbs: สัมผัส (touch), ประกอบ (put together), ปรับปรุง (improve), เพิ่มเติม (add), ประดับ (decorate), แต่งตัว (dress), เตรียมตัว (get ready), and กระโดด (jump).' },
+      { label: 'Why it matters', text: 'These verbs cover real daily situations, from getting dressed to making improvements, and the taxi sentence works anywhere you can show an address. Verbs like these also help you understand simple instructions when someone shows you what to do.' },
+      { label: 'Listen for', text: 'The pair ได้ (dâai) and ไหม (mǎi) closing พาผมไปที่นี่ได้ไหม. Together they ask permission softly: can you?' },
+      { label: 'Notice', text: 'Two verbs sit side by side in the sentence: พา (to take) and then ไป (to go). Thai often chains verbs directly, one right after another.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Excellent. Your action words multiplied.',
+    lead: 'Everyday verbs make everyday life easier to describe.',
+    achievements: [
+      'Show an address and say พาผมไปที่นี่ได้ไหม (can you take me here?)',
+      'Say you are getting ready with เตรียมตัว (get ready)',
+      'Talk about getting dressed with แต่งตัว (dress)',
+      'Suggest changes with ปรับปรุง (improve)',
+      'Add something extra with เพิ่มเติม (add)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_QUALITIES = unit({
   unitId: 'stage-7-describing-things', stageId: 7,
@@ -1863,6 +2912,26 @@ export const STAGE_7_UNIT_QUALITIES = unit({
   vocabCardIds: [76, 1744, 1828, 1846, 1970, 2048, 2147, 2140], challengeCardIds: [76, 2048, 2147],
   // No sentenceCard/builder: the clean Stage 7 adjective sentences are 2-token or
   // idiomatic; this unit is taught as vocabulary and used in sentences elsewhere.
+  lessonIntro: {
+    lead: 'Eight describing words that bring opinions to life: cute, neat, clear, different, and the important pair of safe and dangerous.',
+    points: [
+      { label: 'You will learn', text: 'Descriptions: น่ารัก (cute), มากมาย (many), ธรรมดา (plain, normal), ชัดเจน (clear), เรียบร้อย (neat), แตกต่าง (different), ปลอดภัย (safe), and อันตราย (danger).' },
+      { label: 'Why it matters', text: 'Describing words let you react to the world, praise what you see, and ask whether a place or a plan is safe before you commit to it. One good describing word often says more than a whole struggling sentence.' },
+      { label: 'Listen for', text: 'The echoing syllables of มากมาย (mâak maai). The two halves start with the same sound, which makes this word for many easy to catch by ear.' },
+      { label: 'Notice', text: 'ปลอดภัย (safe) and อันตราย (danger) form a natural opposite pair. Learning them together means you can both reassure people and warn them.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Sharp eye. You can describe what you see.',
+    lead: 'Opinions and descriptions make your Thai feel alive.',
+    achievements: [
+      'Call something น่ารัก (cute)',
+      'Check safety with ปลอดภัย (safe)',
+      'Warn about อันตราย (danger)',
+      'Point out something แตกต่าง (different)',
+      'Praise tidy work with เรียบร้อย (neat)',
+    ],
+  },
 });
 export const STAGE_7_UNIT_NATURE = unit({
   unitId: 'stage-7-nature-outdoors', stageId: 7,
@@ -1870,6 +2939,26 @@ export const STAGE_7_UNIT_NATURE = unit({
   vocabCardIds: [611, 1863, 2208, 2416, 3192, 3514, 3618, 4296], challengeCardIds: [611, 2208, 3618],
   // No sentenceCard/builder: Stage 7 has no clean nature sentence to tokenize;
   // taught as vocabulary, used in sentences elsewhere.
+  lessonIntro: {
+    lead: 'Nature words for trips out of the city: rivers, trees, flowers, the sky, sunlight, and the beach, all in one small set.',
+    points: [
+      { label: 'You will learn', text: 'Outdoor words: แม่น้ำ (river), ธรรมชาติ (nature), ต้นไม้ (tree), ดอกไม้ (flower), ดอกบัว (lotus flower), ท้องฟ้า (sky), แสงแดด (sunlight), and ชายหาด (beach).' },
+      { label: 'Why it matters', text: 'Trips to beaches, rivers, and gardens fill many free days. These words help you talk about what you saw and plan where to go next. They are handy for photos, walks, and weekend stories too.' },
+      { label: 'Listen for', text: 'The shared ending máai in ต้นไม้ (tree) and ดอกไม้ (flower). Hearing it tells you a plant word just went by.' },
+      { label: 'Notice', text: 'ดอกไม้ (flower) and ดอกบัว (lotus flower) start with the same piece. Thai builds plant names from small reusable parts, so each new word helps with the next one.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Fresh progress. The outdoors has Thai names now.',
+    lead: 'Nature words turn trips and views into conversation.',
+    achievements: [
+      'Plan a day at the ชายหาด (beach)',
+      'Point out a แม่น้ำ (river)',
+      'Admire a ดอกบัว (lotus flower)',
+      'Talk about ธรรมชาติ (nature) on your travels',
+      'Describe แสงแดด (sunlight) and the ท้องฟ้า (sky)',
+    ],
+  },
 });
 
 // Stage 8 — Thai Mastery (sentence-heavy stage; one lighter "out and about" unit).
@@ -1884,6 +2973,26 @@ export const STAGE_8_UNIT_OUT = unit({
       { id: 'mai', thai: 'ไหม', ph: 'mǎi', en: '? (yes/no)' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['glai', 'mai', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'A short, practical set for getting around town: places to eat, ride, and buy medicine, plus three things you will order again and again.',
+    points: [
+      { label: 'You will learn', text: 'Six words for daily errands: ร้านอาหาร (restaurant), รถไฟฟ้า (skytrain), and ร้านขายยา (pharmacy), plus the orders น้ำเปล่า (plain water), น้ำผลไม้ (fruit juice), and ข้าวเหนียว (sticky rice).' },
+      { label: 'Why it matters', text: 'Eating, riding, and finding a pharmacy fill most days out. Naming the place you need makes every request faster and far less stressful.' },
+      { label: 'Listen for', text: 'The question particle ไหม in ใกล้ไหมครับ (is it close?). Its rising sound is what turns a plain statement into a yes or no question.' },
+      { label: 'Notice', text: 'Both ร้านอาหาร (restaurant) and ร้านขายยา (pharmacy) open with the same shop word, and น้ำเปล่า and น้ำผลไม้ share the word for water. Thai builds new names from familiar parts.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Great work. You can name the places a day out depends on.',
+    lead: 'Real errands need real words, and you just picked up six of them.',
+    achievements: [
+      'Find food with ร้านอาหาร (restaurant)',
+      'Ride the city with รถไฟฟ้า (skytrain)',
+      'Get medicine help at ร้านขายยา (pharmacy)',
+      'Order น้ำเปล่า (plain water) or น้ำผลไม้ (fruit juice)',
+      'Ask ใกล้ไหมครับ (is it close?)',
+    ],
   },
 });
 // Stage 8 deepening (Course Structure Sprint, final stage) — the "Thai Mastery"
@@ -1906,6 +3015,26 @@ export const STAGE_8_UNIT_PEOPLE = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['khun', 'chue', 'arai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Family comes up in nearly every friendly chat. This unit gathers child, sibling, and grandparent words, plus two respectful society terms, manners and king.',
+    points: [
+      { label: 'You will learn', text: 'Words for people around you: เด็กผู้ชาย (boy), เด็กผู้หญิง (girl), and ปู่ย่า / ตายาย (grandparent), along with two society words, มารยาท (manners) and พระราชา (king).' },
+      { label: 'Why it matters', text: 'When neighbors and hosts chat, talk turns to family quickly. Knowing a few person words helps you follow the conversation and add to it.' },
+      { label: 'Listen for', text: 'อะไร (what) tucked inside คุณชื่ออะไรครับ (what is your name?). In Thai the question word follows the noun instead of leading the sentence.' },
+      { label: 'Notice', text: 'เด็กผู้ชาย (boy) and เด็กผู้หญิง (girl) begin exactly the same way. Only the final part changes, and that small ending is what marks male or female.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Well done. Family talk just got easier to follow.',
+    lead: 'You are ready for the family questions that friendly chats bring.',
+    achievements: [
+      'Point out เด็กผู้ชาย (boy) and เด็กผู้หญิง (girl)',
+      'Talk about ปู่ย่า / ตายาย (grandparents)',
+      'Bring up มารยาท (manners) when politeness matters',
+      'Recognize พระราชา (king)',
+      'Ask คุณชื่ออะไรครับ (what is your name?)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_PRONOUNS = unit({
   unitId: 'stage-8-everyone-no-one', stageId: 8,
@@ -1919,6 +3048,26 @@ export const STAGE_8_UNIT_PRONOUNS = unit({
       { id: 'dai', thai: 'ได้', ph: 'dâai', en: 'got to / able' },
       { id: 'rujak', thai: 'รู้จัก', ph: 'rúujàk', en: 'to know / be acquainted' },
     ], answer: ['yindee', 'thi', 'dai', 'rujak'],
+  },
+  lessonIntro: {
+    lead: 'Everyone, no one, somebody, nothing: these little pointer words let you talk about people and things without naming a single one of them, and they appear constantly in everyday speech.',
+    points: [
+      { label: 'You will learn', text: 'A set of wide-reaching pronouns: ทุกสิ่งทุกอย่าง (everything), ใครบางคน (somebody), ไม่มีใคร (nobody), and ไม่มีอะไร (nothing), plus the possessive ของพวกเขา (their) for talking about other people\'s things.' },
+      { label: 'Why it matters', text: 'Honest answers often need vague words. With somebody, nothing, and everything you can reply truthfully even when you do not know or remember the details.' },
+      { label: 'Listen for', text: 'The same who sound running through ใครก็ตาม (anybody), ไม่มีใคร (nobody), and ใครบางคน (somebody). One tiny word anchors all three.' },
+      { label: 'Notice', text: 'ไม่มีใคร (nobody) and ไม่มีอะไร (nothing) open identically, then swap one word at the end. Learn the frame once and you get both phrases.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Strong step. You can point at people and things without naming them.',
+    lead: 'These small pronouns quietly carry a lot of everyday Thai.',
+    achievements: [
+      'Say ยินดีที่ได้รู้จัก (nice to meet you)',
+      'Cover it all with ทุกสิ่งทุกอย่าง (everything)',
+      'Reply with ไม่มีอะไร (nothing)',
+      'Mention ใครบางคน (somebody)',
+      'Say ไม่มีใคร (nobody) when no one is around',
+    ],
   },
 });
 export const STAGE_8_UNIT_MONTHS = unit({
@@ -1935,6 +3084,25 @@ export const STAGE_8_UNIT_MONTHS = unit({
       { id: 'athit', thai: 'อาทิตย์', ph: 'aa-thít', en: 'week' },
     ], answer: ['phom', 'ja', 'yu', 'nueng', 'athit'],
   },
+  lessonIntro: {
+    lead: 'Eight month names, January through August, plus a handy sentence for telling someone exactly how long you plan to stay.',
+    points: [
+      { label: 'You will learn', text: 'The first eight months of the year, from เดือนมกราคม (January) and เดือนกุมภาพันธ์ (February) all the way through เดือนกรกฎาคม (July) and เดือนสิงหาคม (August).' },
+      { label: 'Why it matters', text: 'Bookings, visa dates, and travel plans all hang on month names. Saying the right one slowly and clearly prevents confusing and expensive mix-ups.' },
+      { label: 'Listen for', text: 'The shared opening sound of every month here, easy to catch in เดือนมีนาคม (March) and เดือนมิถุนายน (June). That repeated first word simply means month.' },
+      { label: 'Notice', text: 'In ผมจะอยู่หนึ่งอาทิตย์ (I will stay for one week), the small word จะ sits before the verb to mark the future. Watch for it whenever plans come up.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Month by month, your calendar Thai is growing.',
+    lead: 'One month at a time, your dates and plans get clearer.',
+    achievements: [
+      'Name เดือนมกราคม (January) at the start of the year',
+      'Say เดือนเมษายน (April) when booking ahead',
+      'Finish the set with เดือนสิงหาคม (August)',
+      'Tell hosts ผมจะอยู่หนึ่งอาทิตย์ (I will stay for one week)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_DAYS = unit({
   unitId: 'stage-8-days-and-when', stageId: 8,
@@ -1947,6 +3115,26 @@ export const STAGE_8_UNIT_DAYS = unit({
       { id: 'jergan', thai: 'เจอกัน', ph: 'jer gan', en: 'see each other' },
       { id: 'phrungnii', thai: 'พรุ่งนี้', ph: 'phrûng níi', en: 'tomorrow' },
     ], answer: ['laew', 'jergan', 'phrungnii'],
+  },
+  lessonIntro: {
+    lead: 'Two days of the week, the words for tomorrow and yesterday, and a handful of when markers that put your plans in order.',
+    points: [
+      { label: 'You will learn', text: 'Time anchors for real plans: วันอาทิตย์ (Sunday), วันพฤหัสบดี (Thursday), วันพรุ่งนี้ (tomorrow), and เมื่อวานนี้ (yesterday), plus the softer markers ขณะนี้ (now) and ในไม่ช้า (soon).' },
+      { label: 'Why it matters', text: 'Meetups only happen when both people agree on the day. These words let you anchor a plan to a date or gently push it back to later in the week.' },
+      { label: 'Listen for', text: 'พรุ่งนี้ (tomorrow) landing at the very end of แล้วเจอกันพรุ่งนี้ (see you tomorrow). Thai often saves the time word for last.' },
+      { label: 'Notice', text: 'Sunday, Thursday, and tomorrow all begin with the same day word: compare วันอาทิตย์, วันพฤหัสบดี, and วันพรุ่งนี้. Spot that shared start and new day words get easier.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good work. Your plans now come with a clear when.',
+    lead: 'You can now pin a plan to a day, or push it to soon.',
+    achievements: [
+      'Pick a day with วันอาทิตย์ (Sunday) or วันพฤหัสบดี (Thursday)',
+      'Look back with เมื่อวานนี้ (yesterday)',
+      'Promise ในไม่ช้า (soon)',
+      'Move a story along with หลังจากนั้น (then)',
+      'Part with แล้วเจอกันพรุ่งนี้ (see you tomorrow)',
+    ],
   },
 });
 export const STAGE_8_UNIT_PLACES = unit({
@@ -1961,6 +3149,25 @@ export const STAGE_8_UNIT_PLACES = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['yu', 'thinai', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'From the university to the museum, this unit names a few of the public buildings around town and the staff you will meet inside them.',
+    points: [
+      { label: 'You will learn', text: 'Places around town: มหาวิทยาลัย (university), ห้องสมุด (library), พิพิธภัณฑ์ (museum), ที่ทำงาน (office), and ร้านค้า (shop), plus เจ้าหน้าที่ (staff), the person who can actually help you.' },
+      { label: 'Why it matters', text: 'Asking where something is only works if you can name the place. These words cover study, errands, and official business in one small set.' },
+      { label: 'Listen for', text: 'ที่ไหน (where) inside อยู่ที่ไหนครับ (where is it?). This tiny question follows you through every search for a building or an office.' },
+      { label: 'Notice', text: 'Official words run long here: มหาวิทยาลัย (university) and ข้าราชการ (government officer) carry many syllables. Take them slowly, piece by piece, and they stop being intimidating.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Nice. You can name the big buildings in town.',
+    lead: 'From the library to the office, you know what to ask for.',
+    achievements: [
+      'Ask for ห้องสมุด (library) or พิพิธภัณฑ์ (museum)',
+      'Say where you work with ที่ทำงาน (office)',
+      'Spot เจ้าหน้าที่ (staff) when you need help',
+      'Ask อยู่ที่ไหนครับ (where is it?)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_DIRECTIONS = unit({
   unitId: 'stage-8-directions-distance', stageId: 8,
@@ -1973,6 +3180,25 @@ export const STAGE_8_UNIT_DIRECTIONS = unit({
       { id: 'thinii', thai: 'ที่นี่', ph: 'thîi nîi', en: 'here' },
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['jot', 'thinii', 'khrap'],
+  },
+  lessonIntro: {
+    lead: 'East, west, left, and how far: compass and route words for getting yourself pointed the right way, plus a short sentence every taxi ride eventually needs.',
+    points: [
+      { label: 'You will learn', text: 'Direction basics: ตะวันออก (east), ทิศตะวันตก (west), and ด้านซ้าย (left), together with ระยะทาง (distance) and the connector พร้อมทั้ง (along with) for joining details.' },
+      { label: 'Why it matters', text: 'Rides and walking routes run on direction words. A clear left or east spoken at the right moment can save you a long detour.' },
+      { label: 'Listen for', text: 'จอด (to stop / park) opening จอดที่นี่ครับ (stop here). The sentence starts straight at the verb, with no I or you needed.' },
+      { label: 'Notice', text: 'Thai gives you two distance words here, ระยะทาง and ระยะห่าง, opening the same way. The compass pair ทิศตะวันตก (west) and ทิศตะวันออก (east) matches the same pattern.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Good going. You can steer a ride with real direction words.',
+    lead: 'Every ride gets easier when you can say which way to go.',
+    achievements: [
+      'Point the way with ด้านซ้าย (left)',
+      'Tell east from west with ตะวันออก and ทิศตะวันตก',
+      'Talk about ระยะทาง (distance)',
+      'Tell the driver จอดที่นี่ครับ (stop here)',
+    ],
   },
 });
 export const STAGE_8_UNIT_TRAVEL = unit({
@@ -1987,6 +3213,26 @@ export const STAGE_8_UNIT_TRAVEL = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phom', 'longthang', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Touring, swimming, exercising, exchanging: a verb set for active days out, finished with the one sentence you hope to never need on a trip.',
+    points: [
+      { label: 'You will learn', text: 'Activity verbs for days out: ท่องเที่ยว (tour), ว่ายน้ำ (swim), ออกกำลังกาย (exercise), and แลกเปลี่ยน (exchange), plus a careful pair, หลีกเลี่ยง (avoid) and เอาชนะ (win).' },
+      { label: 'Why it matters', text: 'These verbs describe what travelers actually do all day. They let you share plans, ask about activities, and understand what new friends suggest.' },
+      { label: 'Listen for', text: 'หลงทาง (to be lost) in ผมหลงทางครับ (I am lost). Recognize it instantly, whether you are saying it or hearing someone else say it.' },
+      { label: 'Notice', text: 'The long word เดินทางท่องเที่ยว (travel) carries the shorter ท่องเที่ยว (tour) whole inside it. Thai often grows a bigger word by joining smaller ones together.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Solid work. Your active days have their verbs now.',
+    lead: 'Your trips now come with verbs, and a safety phrase too.',
+    achievements: [
+      'Talk trips with ท่องเที่ยว (tour)',
+      'Plan a swim with ว่ายน้ำ',
+      'Mention ออกกำลังกาย (exercise)',
+      'Sidestep trouble with หลีกเลี่ยง (avoid)',
+      'Get help fast with ผมหลงทางครับ (I am lost)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_CONNECTORS = unit({
   unitId: 'stage-8-connectors-nuance', stageId: 8,
@@ -2000,6 +3246,26 @@ export const STAGE_8_UNIT_CONNECTORS = unit({
       { id: 'khrap', thai: 'ครับ', ph: 'khráp', en: 'polite (male)' },
     ], answer: ['phut', 'ikthi', 'khrap'],
   },
+  lessonIntro: {
+    lead: 'Welcome to glue-word territory: only, especially, at least, anyway. These small connectors do not name things, they sharpen exactly what you mean.',
+    points: [
+      { label: 'You will learn', text: 'Five shading words: เท่านั้น (only), โดยเฉพาะ (especially), อย่างน้อย (at least), นอกจากนั้น (besides that), and โดยทั่วไป (generally), each one adjusting how strong a statement sounds.' },
+      { label: 'Why it matters', text: 'Connectors turn short statements into real opinions. With only, especially, and at least in place, what you say gets much closer to what you actually think.' },
+      { label: 'Listen for', text: 'อีกที (again / one more time) in พูดอีกทีครับ (say it again please). This is the phrase that politely rescues you when speech moves too fast.' },
+      { label: 'Notice', text: 'Three connectors here open the same way: อย่างน้อย (at least), อย่างไรก็ตาม (anyway), and อย่างยิ่ง (extremely). Spotting a shared opening makes long words far less scary.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Big step. Your sentences can carry real nuance.',
+    lead: 'Little connector words, big upgrade to how precise you sound.',
+    achievements: [
+      'Limit things with เท่านั้น (only)',
+      'Highlight favorites with โดยเฉพาะ (especially)',
+      'Soften claims with อย่างน้อย (at least)',
+      'Add more with นอกจากนั้น (besides that)',
+      'Ask พูดอีกทีครับ (say it again please)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_HOME = unit({
   unitId: 'stage-8-home-and-documents', stageId: 8,
@@ -2012,6 +3278,26 @@ export const STAGE_8_UNIT_HOME = unit({
       { id: 'yu', thai: 'อยู่', ph: 'yùu', en: 'to live / be at' },
       { id: 'thinai', thai: 'ที่ไหน', ph: 'thîi nǎi', en: 'where' },
     ], answer: ['khun', 'yu', 'thinai'],
+  },
+  lessonIntro: {
+    lead: 'Where you live and the paperwork that comes with it: rooms and apartments on one side, passports, passwords, and fees on the other.',
+    points: [
+      { label: 'You will learn', text: 'Settling-in words: ห้องนั่งเล่น (living room) and อพาร์ทเมนท์ (apartment) for home, then รหัสผ่าน (password), พาสปอร์ต (passport), บัตรเครดิต (credit card), and ค่าธรรมเนียม (fee) for the practical side.' },
+      { label: 'Why it matters', text: 'Living somewhere new means forms, counters, and wifi logins. Naming the document or the fee in question keeps those moments short and calm.' },
+      { label: 'Listen for', text: 'ตรวจคนเข้าเมือง (immigration), said trùat khon khâo mueang. It is long and official, and worth recognizing the moment a counter agent says it.' },
+      { label: 'Notice', text: 'The question คุณอยู่ที่ไหน (where do you live?) needs no extra words for do or is. Subject, verb, question word: three pieces and the sentence is complete.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Smooth work. The paperwork side of life just got easier.',
+    lead: 'Forms and fees feel smaller once you can name them.',
+    achievements: [
+      'Name your place: อพาร์ทเมนท์ (apartment) or บ้านเรือน (house)',
+      'Ask about the รหัสผ่าน (password)',
+      'Keep your พาสปอร์ต (passport) ready at ตรวจคนเข้าเมือง (immigration)',
+      'Check the ค่าธรรมเนียม (fee) before paying',
+      'Ask คุณอยู่ที่ไหน (where do you live?)',
+    ],
   },
 });
 export const STAGE_8_UNIT_DECISIONS = unit({
@@ -2027,6 +3313,26 @@ export const STAGE_8_UNIT_DECISIONS = unit({
       { id: 'thinan', thai: 'ที่นั่น', ph: 'thîi nân', en: 'there' },
     ], answer: ['phom', 'yak', 'pai', 'thinan'],
   },
+  lessonIntro: {
+    lead: 'Consider, decide, support, deny: this unit hands you the verbs of weighing your options carefully and saying where you stand once you have.',
+    points: [
+      { label: 'You will learn', text: 'Verbs for serious moments: พิจารณา (consider), ตัดสินใจ (decide), สนับสนุน (support), and ปฏิเสธ (deny), plus เปลี่ยนแปลง (change) for when plans need rewriting.' },
+      { label: 'Why it matters', text: 'Grown-up conversations turn on these verbs. They let you say clearly what you support, what you politely refuse, and what you would honestly like to change.' },
+      { label: 'Listen for', text: 'ตัดสินใจ (decide), said dtàt sǐn jai: three crisp beats you will hear whenever a real choice is on the table.' },
+      { label: 'Notice', text: 'In ผมอยากไปที่นั่น (I want to go there), อยาก (to want to) sits directly before ไป (to go). Want plus a verb is how Thai states an intention.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Decisive. You now have verbs for making up your mind.',
+    lead: 'Choices, support, refusals: you have words for all three.',
+    achievements: [
+      'Weigh options with พิจารณา (consider)',
+      'Commit with ตัดสินใจ (decide)',
+      'Back an idea with สนับสนุน (support)',
+      'Turn things down with ปฏิเสธ (deny)',
+      'State a goal: ผมอยากไปที่นั่น (I want to go there)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_LIKES = unit({
   unitId: 'stage-8-likes-impressions', stageId: 8,
@@ -2041,6 +3347,26 @@ export const STAGE_8_UNIT_LIKES = unit({
       { id: 'loei', thai: 'เลย', ph: 'loei', en: '(emphasis)' },
     ], answer: ['phom', 'chop', 'mak', 'loei'],
   },
+  lessonIntro: {
+    lead: 'Time to react like yourself: interesting, fun, impressed, honest, fair, modern. This unit collects words for sharing real impressions of people and places.',
+    points: [
+      { label: 'You will learn', text: 'A palette of impression words: น่าสนใจ (interesting), สนุกสนาน (fun), and ประทับใจ (impressed) for reactions, then ซื่อสัตย์ (honest), ยุติธรรม (fair), and สมัยใหม่ (modern) for describing people and places.' },
+      { label: 'Why it matters', text: 'Sharing what you like is how friendships start. These adjectives carry your honest reactions well past a plain good or a plain bad.' },
+      { label: 'Listen for', text: 'The little word เลย closing ผมชอบมากเลย (I really like it). It adds emphasis, working like a spoken exclamation point.' },
+      { label: 'Notice', text: 'สนุกสนาน (fun) is said sà nòok sà nǎan, with its opening sound repeated. Thai sometimes doubles a word\'s rhythm this way, and it makes the word easier to remember.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Lovely work. Your opinions have real color now.',
+    lead: 'Honest reactions make better conversations, and you have them now.',
+    achievements: [
+      'Call something น่าสนใจ (interesting)',
+      'Praise a day as สนุกสนาน (fun)',
+      'Say you are ประทับใจ (impressed)',
+      'Describe a friend as ซื่อสัตย์ (honest)',
+      'Gush a little with ผมชอบมากเลย (I really like it)',
+    ],
+  },
 });
 export const STAGE_8_UNIT_SOCIETY = unit({
   unitId: 'stage-8-society-and-ideas', stageId: 8,
@@ -2053,6 +3379,26 @@ export const STAGE_8_UNIT_SOCIETY = unit({
       { id: 'jaidee', thai: 'ใจดี', ph: 'jai dee', en: 'kind' },
       { id: 'mak', thai: 'มาก', ph: 'mâak', en: 'very' },
     ], answer: ['khonthai', 'jaidee', 'mak'],
+  },
+  lessonIntro: {
+    lead: 'Sacred, public, complex, progress: a compact set of idea words. They are abstract, but they unlock signs, news, and deeper conversations with Thai friends.',
+    points: [
+      { label: 'You will learn', text: 'Idea words for bigger topics: ศักดิ์สิทธิ์ (sacred), อนุรักษ์ (conserve), สามัคคี (harmony), and สาธารณะ (public), alongside ซับซ้อน (complex) and ก้าวหน้า (progress).' },
+      { label: 'Why it matters', text: 'Notices, public signs, news, and thoughtful chats all lean on abstract words like these. A small set of them lets you follow ideas, not just name objects.' },
+      { label: 'Listen for', text: 'ซับซ้อน (complex), said sáp sáawn: its two echoing syllables make this word surprisingly easy to catch even in fast everyday speech.' },
+      { label: 'Notice', text: 'In คนไทยใจดีมาก (Thai people are very kind), the description ใจดี (kind) follows คนไทย (Thai people) directly, and มาก (very) comes last. No extra word for are is needed.' },
+    ],
+  },
+  missionRecap: {
+    headline: 'Impressive. You can touch big ideas in Thai.',
+    lead: 'Idea words are a quiet superpower for signs, news, and chats.',
+    achievements: [
+      'Recognize สาธารณะ (public) on signs and notices',
+      'Describe a problem as ซับซ้อน (complex)',
+      'Talk about ก้าวหน้า (progress)',
+      'Call a place ศักดิ์สิทธิ์ (sacred)',
+      'Offer the compliment คนไทยใจดีมาก (Thai people are very kind)',
+    ],
   },
 });
 

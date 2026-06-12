@@ -739,3 +739,26 @@ Stages 1 to 3, and a "Learn / Practice / Challenge / Win" mission-loop section
 flow, lesson-data, or audio changes. An unverified "6 weeks" timeframe claim on the
 /welcome screen was removed. Owner should review the first impression on a real
 phone (360 to 430px) and in dark mode.
+
+## Guided teaching model complete: intros + recaps through Stage 8 (June 12, 2026)
+
+Every one of the **96 mini-units across all 8 stages** now has a `lessonIntro`
+(lead + "You will learn / Why it matters / Listen for / Notice") and a
+`missionRecap` (headline, lead, 3-5 achievements). Stages 1-3 shipped these
+earlier; this pass added the remaining **69 units (Stages 4-8)**. Content rules:
+105-170 words per intro, simple English, derived only from the unit's real
+cards; all Thai/phonetics copied verbatim from the unit's own content (verified
+mechanically); no fluency or timeframe claims; no em/en dashes; recap money
+symbols disallowed. `MiniUnitFlow` already rendered both fields, so no flow
+logic changed.
+
+**Stage-path completion recap:** completing the LAST guided unit of a stage now
+shows an upgraded reward screen ("Stage N Path Complete") instead of the generic
+mini-unit one. It is derived purely from existing `completedMiniUnits` state
+plus `getMiniUnitsForStage` (no schema, no new XP, fires inside the existing
+once-per-unit completion guard, safe fallback to the normal screen if data is
+missing). The global Course Complete overlay still supersedes it on the final
+unit of the course.
+
+Native review: per-stage matrices each gained a "Mission intros and recaps"
+section (glosses + teaching claims only; no new Thai).
