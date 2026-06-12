@@ -10,27 +10,38 @@
 // Also spot-check a handful of representative cards verbatim.
 
 import { CARDS } from '../src/data/cards.js';
-import { displayCard, transformThai, transformPh, transformEn } from '../src/lib/voice.js';
+import { displayCard, isSpeakerStyleProtected, transformThai, transformPh, transformEn } from '../src/lib/voice.js';
 
 let total = 0;
 let okFlips = 0;
 let badFlips = 0;
+let protectedCount = 0;
 
 const samples = [];
+const protectedCards = [];
 
 for (const c of CARDS) {
   const thai = c.thai || '';
   const en = c.en || '';
   const hasMaleThai = /ผม|ครับ/.test(thai);
-  const hasMaleEn = /\(male\)/.test(en);
+  // Include "(male)" and "(male/female)" / "(male," annotations so dual-form
+  // cards are exercised too (they must come back as protected).
+  const hasMaleEn = /\(male[\)\/,]/.test(en);
   if (!hasMaleThai || !hasMaleEn) continue;
+  // Protected cards stay male-form by design (homographs, dual-form cards
+  // that show both particles, กระผม). Report them separately, not as failures.
+  if (isSpeakerStyleProtected(c)) {
+    protectedCount++;
+    protectedCards.push(c);
+    continue;
+  }
   total++;
 
   const female = displayCard(c, 'female');
   const thaiOk =
     !/ผม/.test(female.thai) && // ผม should be gone
     !/ครับ/.test(female.thai); // ครับ should be gone
-  const enOk = !/\(male\)/.test(female.en) && /\(female\)/.test(female.en);
+  const enOk = !/\(male[\)\/,]/.test(female.en) && /\(female[\)\/,]/.test(female.en);
 
   if (thaiOk && enOk) {
     okFlips++;
@@ -44,6 +55,10 @@ for (const c of CARDS) {
 console.log(`Total (male)-annotated cards checked: ${total}`);
 console.log(`  OK flips:   ${okFlips}`);
 console.log(`  Bad flips:  ${badFlips}`);
+console.log(`  Protected (intentionally not flipped): ${protectedCount}`);
+for (const c of protectedCards) {
+  console.log(`    id ${c.id}: ${c.thai}  |  ${c.en}`);
+}
 
 console.log('\nSample flips:');
 for (const s of samples) {

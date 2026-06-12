@@ -46,24 +46,48 @@ function clampRate(rate) {
 const MALE_VOICE_HINT = /\bmale\b|\bman\b|niwat/i;
 const FEMALE_VOICE_HINT = /\bfemale\b|\bwoman\b|premwadee|achara|kanya|narisa/i;
 
+// The speaking style the voice picker should try to match. Driven by the
+// user's Thai speaking style setting (stats.voice) via setPreferredVoiceGender.
+// Matching is best-effort only: if the device has no Thai voice of the wanted
+// gender, the best available Thai voice is used and audio keeps working.
+let _preferredVoiceGender = 'male';
+
+function _voiceHints() {
+  return _preferredVoiceGender === 'female'
+    ? { want: FEMALE_VOICE_HINT, avoid: MALE_VOICE_HINT }
+    : { want: MALE_VOICE_HINT, avoid: FEMALE_VOICE_HINT };
+}
+
+// Update the preferred TTS voice gender and invalidate both resolver caches so
+// the next playback re-picks. Safe to call repeatedly with the same value.
+export function setPreferredVoiceGender(gender) {
+  const next = gender === 'female' ? 'female' : 'male';
+  if (next === _preferredVoiceGender) return;
+  _preferredVoiceGender = next;
+  _cachedThaiVoice = _resolveThaiVoice();
+  _nativeVoiceIndex = undefined; // re-resolve on the next native speak()
+}
+
 function _isThaiVoice(v) {
   return !!((v.lang && v.lang.toLowerCase().startsWith('th')) || /thai/i.test(v.name || ''));
 }
 
-// Pick a Thai voice, PREFERRING a likely-male one because the course teaches
-// male-form Thai (ผม / ครับ). Order: explicit male Thai voice -> a Thai voice
-// not explicitly tagged female -> th-TH exact -> first Thai voice. Returns null
-// only when the device has no Thai voice at all. Pronunciation must never break
-// for the sake of gender, so every branch degrades gracefully.
+// Pick a Thai voice, PREFERRING one that matches the user's speaking style
+// (male by default). Order: explicit gender-matching Thai voice -> a Thai
+// voice not explicitly tagged as the other gender -> th-TH exact -> first
+// Thai voice. Returns null only when the device has no Thai voice at all.
+// Pronunciation must never break for the sake of gender, so every branch
+// degrades gracefully.
 function _resolveThaiVoice() {
   if (typeof window === 'undefined' || !window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices();
   if (!voices || voices.length === 0) return null;
   const thai = voices.filter(_isThaiVoice);
   if (thai.length === 0) return null;
-  const male = thai.find(v => MALE_VOICE_HINT.test(v.name || '') && !FEMALE_VOICE_HINT.test(v.name || ''));
-  if (male) return male;
-  return thai.find(v => !FEMALE_VOICE_HINT.test(v.name || ''))
+  const { want, avoid } = _voiceHints();
+  const match = thai.find(v => want.test(v.name || '') && !avoid.test(v.name || ''));
+  if (match) return match;
+  return thai.find(v => !avoid.test(v.name || ''))
       || thai.find(v => v.lang === 'th-TH')
       || thai[0];
 }
@@ -87,11 +111,12 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
   }
 }
 
-// Native (Capacitor) best-effort male Thai voice index. getSupportedVoices()
-// returns the device voices with name + lang but usually NO gender, so we apply
-// the same name heuristic. Resolved once and cached: a number = a confident Thai
-// voice index to pass to speak(); null = no confident male match, let the engine
-// use its default th-TH voice (the previous behavior). Never throws.
+// Native (Capacitor) best-effort gender-matching Thai voice index.
+// getSupportedVoices() returns the device voices with name + lang but usually
+// NO gender, so we apply the same name heuristic. Cached until the preferred
+// gender changes (setPreferredVoiceGender resets it): a number = a confident
+// Thai voice index to pass to speak(); null = no confident match, let the
+// engine use its default th-TH voice (the previous behavior). Never throws.
 let _nativeVoiceIndex; // undefined = unresolved, null = resolved-none, number = index
 
 async function _resolveNativeThaiVoiceIndex() {
@@ -101,10 +126,11 @@ async function _resolveNativeThaiVoiceIndex() {
     const res = await TextToSpeech.getSupportedVoices();
     const voices = (res && res.voices) || [];
     const thai = voices.map((v, i) => ({ v, i })).filter(({ v }) => _isThaiVoice(v));
-    // Only override the engine default when we have a CONFIDENT male match;
+    // Only override the engine default when we have a CONFIDENT gender match;
     // otherwise leave it to lang:'th-TH' so we never pick a worse voice.
-    const male = thai.find(({ v }) => MALE_VOICE_HINT.test(v.name || '') && !FEMALE_VOICE_HINT.test(v.name || ''));
-    if (male) _nativeVoiceIndex = male.i;
+    const { want, avoid } = _voiceHints();
+    const match = thai.find(({ v }) => want.test(v.name || '') && !avoid.test(v.name || ''));
+    if (match) _nativeVoiceIndex = match.i;
   } catch (_) {
     // getSupportedVoices unsupported or no voices — keep null (engine default).
   }
@@ -129,8 +155,9 @@ function _speakNative(text, rate) {
         volume: 1.0,
         category: 'playback',
       };
-      // Prefer a male Thai voice when the device exposes one; fall back silently
-      // to the default th-TH voice (TTS voice gender depends on installed voices).
+      // Prefer a Thai voice matching the user's speaking style when the device
+      // exposes one; fall back silently to the default th-TH voice (TTS voice
+      // gender depends on the voices installed on the device).
       try {
         const idx = await _resolveNativeThaiVoiceIndex();
         if (typeof idx === 'number') opts.voice = idx;

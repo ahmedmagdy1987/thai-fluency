@@ -3,12 +3,13 @@ import { Check, CheckCircle2, ChevronRight, Sparkles, Volume2, X } from 'lucide-
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
-import { displayCard } from '../lib/voice.js';
+import { displayCard, transformText } from '../lib/voice.js';
 import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import ConfettiBurst from './ConfettiBurst.jsx';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
+import SpeakerStyleToggle from './SpeakerStyleToggle.jsx';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined' &&
@@ -57,6 +58,7 @@ function safeIndex(value, max) {
 export default function FirstLessonFlow({
   unit = STAGE_1_MINI_UNIT_PILOT,
   voice,
+  onChangeVoice,
   cardDirection = 'en-first',
   onChangeCardDirection,
   audioRate = 0.8,
@@ -81,7 +83,21 @@ export default function FirstLessonFlow({
   // other unit, so this whole layer is a no-op when the data is not present.
   const primer = unit.lessonPrimer || null;
   const quizQuestions = useMemo(() => (unit.pedagogyQuiz?.questions || []), [unit]);
-  const recap = unit.missionRecap || null;
+  // Recap prose flips to the selected speaking style (transformText leaves
+  // any line that explicitly teaches the male/female contrast unchanged).
+  const recap = useMemo(() => {
+    const raw = unit.missionRecap || null;
+    if (!raw || voice !== 'female') return raw;
+    return {
+      ...raw,
+      headline: transformText(raw.headline, voice),
+      lead: transformText(raw.lead, voice),
+      footnote: transformText(raw.footnote, voice),
+      achievements: Array.isArray(raw.achievements)
+        ? raw.achievements.map(item => transformText(item, voice))
+        : raw.achievements,
+    };
+  }, [unit, voice]);
   const hasPrimer = !!(primer && Array.isArray(primer.sections) && primer.sections.length > 0);
   const hasQuiz = quizQuestions.length > 0;
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
@@ -316,8 +332,11 @@ export default function FirstLessonFlow({
               <div><strong>Quests</strong><span>Reach Level 2 to unlock daily quests.</span></div>
             </div>
             <p className="firstlesson-perspective-note">
-              This first path uses a male speaker: phǒm (ผม) and khráp (ครับ). A female mode can come later.
+              {voice === 'female'
+                ? 'You are learning with a female speaking style: chăn (ฉัน) and khâ (ค่ะ). You can change this anytime.'
+                : 'You are learning with a male speaking style: phǒm (ผม) and khráp (ครับ). You can change this anytime.'}
             </p>
+            <SpeakerStyleToggle value={voice} onChange={onChangeVoice} className="firstlesson-style-toggle" />
             <button type="button" className="btn-primary firstlesson-primary" onClick={startLesson}>
               Start lesson <ChevronRight size={16} />
             </button>

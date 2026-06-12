@@ -68,17 +68,20 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
           </div>
 
           <div className="setting-group">
-            <div className="setting-label">Voice / Perspective</div>
-            <div className="setting-sub">All sentences use this speaker's pronouns and polite particles.</div>
+            <div className="setting-label">Thai speaking style</div>
+            <div className="setting-sub">Choose your Thai speaking style. Lessons switch the words where the style changes them. You can change this anytime.</div>
             <div className="setting-toggle">
               <button type="button" className={`setting-toggle-btn ${voice === 'male' ? 'setting-toggle-active' : ''}`} onClick={() => updateSettings({ voice: 'male' })} aria-pressed={voice === 'male'}>
-                <span>Male</span>
-                <span className="setting-toggle-sub">phom / khrap</span>
+                <span>Male speaker</span>
+                <span className="setting-toggle-sub">uses phǒm (ผม) and khráp (ครับ)</span>
               </button>
               <button type="button" className={`setting-toggle-btn ${voice === 'female' ? 'setting-toggle-active' : ''}`} onClick={() => updateSettings({ voice: 'female' })} aria-pressed={voice === 'female'}>
-                <span>Female</span>
-                <span className="setting-toggle-sub">chan / kha</span>
+                <span>Female speaker</span>
+                <span className="setting-toggle-sub">uses chăn (ฉัน) and khâ (ค่ะ)</span>
               </button>
+            </div>
+            <div className="setting-footnote">
+              Audio tries to match your style. Voice matching depends on the voices installed on your device.
             </div>
           </div>
 

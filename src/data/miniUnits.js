@@ -18,7 +18,7 @@ export const STAGE_1_MINI_UNIT_PILOT = {
   sentenceBuilder: {
     sourceCardId: 330,
     prompt: 'Build this Thai sentence',
-    english: 'My name is ___ (polite, male)',
+    english: 'My name is ___ (male)',
     thai: 'ผมชื่อ ___ ครับ',
     // tokens are listed in the CORRECT order; `answer` is their ids in order.
     tokens: [
@@ -67,16 +67,16 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     // reading yet); Thai script stays in parentheses as a secondary reference.
     sections: [
       {
-        heading: 'This path uses a male speaker',
-        body: 'You will learn from a male speaker point of view. Male speakers often end polite sentences with khráp (ครับ). Female speakers often use khâ (ค่ะ). A female mode can be added later.',
+        heading: 'Thai has two speaking styles',
+        body: 'Thai changes a little depending on who is speaking. Male speakers often end polite sentences with khráp (ครับ). Female speakers often use khâ (ค่ะ). You can pick your speaking style on the lesson screen or in Settings, and change it anytime.',
       },
       {
         heading: 'Saying "I"',
-        body: 'A male speaker commonly says phǒm (ผม) for "I". You will see phǒm in your first introduction sentence. Women often use chăn (ฉัน) for "I", but you do not need that yet.',
+        body: 'A male speaker commonly says phǒm (ผม) for "I". A female speaker commonly says chăn (ฉัน). Your speaking style picks the form you practice, and you will see it in your first introduction sentence.',
       },
       {
-        heading: 'The polite word khráp',
-        body: 'khráp (ครับ) is not a word with its own meaning. It makes a sentence sound polite, and a male speaker adds it to the end of many sentences.',
+        heading: 'The polite ending',
+        body: 'khráp (ครับ) and khâ (ค่ะ) are not words with their own meaning. They make a sentence sound polite. A male speaker ends many sentences with khráp (ครับ), and a female speaker with khâ (ค่ะ).',
       },
       {
         heading: 'Word order can feel different',
@@ -160,7 +160,7 @@ export const STAGE_1_MINI_UNIT_PILOT = {
     achievements: [
       'Greet politely: sà-wàt-dee khráp (สวัสดีครับ)',
       'Introduce yourself: phǒm chûe ___ khráp (my name is ___)',
-      'Recognize khráp (ครับ) as a male polite ending',
+      'Recognize the polite ending khráp (ครับ)',
       'Notice how Thai builds short sentences',
       'Listen and repeat Thai sounds',
     ],
@@ -173,9 +173,9 @@ export const STAGE_1_MINI_UNIT_PILOT = {
   lessonIntro: {
     lead: 'This is your first real Thai conversation: a polite hello and your own name. Short, friendly, and useful from day one.',
     points: [
-      { label: 'You will learn', text: 'How to greet someone and introduce yourself, using sà-wàt-dee (สวัสดี, hello), phǒm (ผม, I for a male speaker), chûe (ชื่อ, name), and the polite word khráp (ครับ).' },
+      { label: 'You will learn', text: 'How to greet someone and introduce yourself, using sà-wàt-dee (สวัสดี, hello), phǒm (ผม, the word for I), chûe (ชื่อ, name), and the polite word khráp (ครับ).' },
       { label: 'Why it matters', text: 'A warm, polite hello and your name open almost any conversation in Thailand, from a shop to a new friend.' },
-      { label: 'Listen for', text: 'The polite ending khráp (ครับ) that a male speaker adds to the end of a sentence.' },
+      { label: 'Listen for', text: 'The polite ending khráp (ครับ) at the end of almost every sentence.' },
       { label: 'Notice', text: 'Thai builds the sentence phǒm chûe ___ khráp (ผมชื่อ ___ ครับ) one clear piece at a time. You are arranging real words, not memorizing a block.' },
     ],
   },

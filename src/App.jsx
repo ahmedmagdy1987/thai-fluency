@@ -6,7 +6,7 @@ import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamificatio
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
 import { loadState, saveState, clearState, loadRushGuard, saveRushGuard } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
-import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE } from './lib/audio.js';
+import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { evaluateDailyQuests } from './lib/dailyQuests.js';
@@ -1534,6 +1534,15 @@ export default function TukTalkThaiApp() {
     (direction) => updateSettings({ cardDirection: direction === 'th-first' ? 'th-first' : 'en-first' }),
     [updateSettings]
   );
+  const setVoice = useCallback(
+    (style) => updateSettings({ voice: style === 'female' ? 'female' : 'male' }),
+    [updateSettings]
+  );
+  // Best-effort TTS voice matching: try a Thai voice that matches the user's
+  // speaking style; lib/audio.js falls back to the best available Thai voice.
+  useEffect(() => {
+    setPreferredVoiceGender(voice);
+  }, [voice]);
   const audioRate = stats.audioRate || DEFAULT_AUDIO_RATE;
   // First lesson and demo always play at a beginner-clear pace, even if the
   // user's saved speed is faster. A slower saved speed is respected.
@@ -1639,6 +1648,8 @@ export default function TukTalkThaiApp() {
           onSignIn={handleDemoSignIn}
           onBackToHome={handleExitDemo}
           viewMode={viewMode}
+          voice={voice}
+          onChangeVoice={setVoice}
           audioRate={beginnerAudioRate}
           audioAutoPlay={!!stats.audioAutoPlay}
           showCharacters={stats.showCharacters !== false}
@@ -1674,6 +1685,7 @@ export default function TukTalkThaiApp() {
         <FirstLessonFlow
           unit={STAGE_1_MINI_UNIT_PILOT}
           voice={voice}
+          onChangeVoice={setVoice}
           cardDirection={cardDirection}
           onChangeCardDirection={setCardDirection}
           audioRate={beginnerAudioRate}

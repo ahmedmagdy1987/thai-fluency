@@ -219,10 +219,10 @@ const RAW_CARDS = [
   {id:298,thai:'กว่า',ph:'kwàa',en:'more than (comparative)',type:'g',stage:1,cat:'grammar',note:'"X kwàa Y" = X is more than Y.'},
   {id:299,thai:'ที่สุด',ph:'thîi sùt',en:'most / -est (superlative)',type:'g',stage:1,cat:'grammar',note:'"aròi thîi sùt" = most delicious.'},
 
-  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye (male)',type:'p',stage:1,cat:'greetings',note:'Polite greeting used by male speakers — works for hello AND goodbye, any time of day. ครับ is the male polite particle. Female speakers say สวัสดีค่ะ.'},
+  {id:310,thai:'สวัสดีครับ',ph:'sàwàtdee khráp',en:'Hello / Goodbye (male)',type:'p',stage:1,cat:'greetings',note:'Works for hello AND goodbye, any time of day. Male speakers end it with khráp (ครับ). Female speakers end it with khâ (ค่ะ).'},
   {id:311,thai:'ขอบคุณครับ',ph:'khàwp khun khráp',en:'Thank you (male)',type:'p',stage:1,cat:'greetings'},
   {id:312,thai:'ขอบคุณมากครับ',ph:'khàwp khun mâak khráp',en:'Thank you very much (male)',type:'p',stage:1,cat:'greetings'},
-  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome (male)',type:'p',stage:1,cat:'greetings',note:'Polite male-speaker form of ไม่เป็นไร — the unofficial Thai national motto. Means "no worries", "you\'re welcome", "it\'s fine", or "never mind" depending on context. Female speakers say ไม่เป็นไรค่ะ.'},
+  {id:313,thai:'ไม่เป็นไรครับ',ph:'mâi pen rai khráp',en:'No worries / You are welcome (male)',type:'p',stage:1,cat:'greetings',note:'The unofficial Thai national motto. Means "no worries", "you\'re welcome", "it\'s fine", or "never mind" depending on context. Male speakers end it with khráp (ครับ). Female speakers end it with khâ (ค่ะ).'},
   {id:314,thai:'ขอโทษครับ',ph:'khǎw thôht khráp',en:'Excuse me / Sorry (male)',type:'p',stage:1,cat:'greetings'},
   {id:315,thai:'สบายดีไหมครับ',ph:'sàbaai dee mǎi khráp?',en:'How are you? (male)',type:'p',stage:1,cat:'greetings'},
   {id:316,thai:'สบายดีครับ',ph:'sàbaai dee khráp',en:'I am fine (male)',type:'p',stage:1,cat:'greetings'},

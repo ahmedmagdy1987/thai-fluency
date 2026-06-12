@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, CheckCircle2, ChevronRight, Clock, RotateCcw, Sparkles, Volume2, X } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
-import { displayCard } from '../lib/voice.js';
+import { displayCard, displayBuilder, transformText } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCelebration, playCharacterCorrect, playCharacterSelect, playCharacterWrong, playFlip } from '../lib/sounds.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
@@ -157,6 +157,42 @@ export default function MiniUnitFlow({
   const sentenceCard = useMemo(() => cardsByIds([unit.sentenceCardId], voice)[0] || null, [unit, voice]);
   const challengeCards = useMemo(() => cardsByIds(unit.challengeCardIds, voice), [unit, voice]);
   const challengeQuestions = useMemo(() => buildMiniChallenge(challengeCards), [challengeCards]);
+  // Speaking style applied at the display layer: builder tiles flip together
+  // with the sentence (answer checking is token-ID based, so it stays valid),
+  // and intro/recap prose flips its embedded Thai/romanization. transformText
+  // leaves prose that explicitly teaches the male/female contrast unchanged.
+  const builderData = useMemo(() => displayBuilder(unit.sentenceBuilder, voice), [unit, voice]);
+  const lessonIntro = useMemo(() => {
+    const raw = unit.lessonIntro || null;
+    if (!raw || voice !== 'female') return raw;
+    return {
+      ...raw,
+      lead: transformText(raw.lead, voice),
+      points: Array.isArray(raw.points)
+        ? raw.points.map(p => ({ ...p, text: transformText(p.text, voice) }))
+        : raw.points,
+    };
+  }, [unit, voice]);
+  const recapLines = useMemo(
+    () => (unit.recapText || []).map(line => transformText(line, voice)),
+    [unit, voice]
+  );
+  const previewLines = useMemo(
+    () => (unit.previewText || []).map(line => transformText(line, voice)),
+    [unit, voice]
+  );
+  const missionRecap = useMemo(() => {
+    const raw = unit.missionRecap || null;
+    if (!raw || voice !== 'female') return raw;
+    return {
+      ...raw,
+      headline: transformText(raw.headline, voice),
+      lead: transformText(raw.lead, voice),
+      achievements: Array.isArray(raw.achievements)
+        ? raw.achievements.map(item => transformText(item, voice))
+        : raw.achievements,
+    };
+  }, [unit, voice]);
   const coach = useCharacterReaction({ characterId: unit.characterId, initialState: 'greeting', mode: 'quiz' });
 
   const currentVocab = vocabCards[vocabIndex] || null;
@@ -303,12 +339,12 @@ export default function MiniUnitFlow({
           <div className="miniunit-eyebrow">Stage {unit.stageId} guided lesson</div>
           <h1 className="miniunit-title">{unit.title}</h1>
           <p className="miniunit-sub">{unit.subtitle || unit.introText}</p>
-          {unit.lessonIntro && (
+          {lessonIntro && (
             <div className="miniunit-intro-card">
-              {unit.lessonIntro.lead && <p className="miniunit-intro-lead">{unit.lessonIntro.lead}</p>}
-              {Array.isArray(unit.lessonIntro.points) && unit.lessonIntro.points.length > 0 && (
+              {lessonIntro.lead && <p className="miniunit-intro-lead">{lessonIntro.lead}</p>}
+              {Array.isArray(lessonIntro.points) && lessonIntro.points.length > 0 && (
                 <ul className="miniunit-intro-points">
-                  {unit.lessonIntro.points.map((p, i) => (
+                  {lessonIntro.points.map((p, i) => (
                     <li key={i}><strong>{p.label}:</strong> {p.text}</li>
                   ))}
                 </ul>
@@ -358,7 +394,7 @@ export default function MiniUnitFlow({
 
       {step === 'builder' && hasBuilder && (
         <SentenceBuilder
-          data={unit.sentenceBuilder}
+          data={builderData}
           audioRate={audioRate}
           showCharacters={showCharacters}
           characterId={unit.characterId}
@@ -441,11 +477,11 @@ export default function MiniUnitFlow({
           <div className="miniunit-lesson-grid">
             <div>
               <h3>Recap</h3>
-              {unit.recapText.map(line => <p key={line}>{line}</p>)}
+              {recapLines.map(line => <p key={line}>{line}</p>)}
             </div>
             <div>
               <h3>Preview</h3>
-              {unit.previewText.map(line => <p key={line}>{line}</p>)}
+              {previewLines.map(line => <p key={line}>{line}</p>)}
             </div>
           </div>
           <button type="button" className="btn-primary miniunit-primary" onClick={() => setStep('complete')}>
@@ -458,11 +494,11 @@ export default function MiniUnitFlow({
         <section className="miniunit-complete">
           <div className="miniunit-complete-icon"><Sparkles size={48} /></div>
           <div className="miniunit-eyebrow">Mini-unit complete</div>
-          <h2 className="miniunit-title">{unit.missionRecap?.headline || 'Nice! You learned a focused set of Thai words and a sentence.'}</h2>
-          {unit.missionRecap?.lead && <p className="miniunit-sub miniunit-recap-lead">{unit.missionRecap.lead}</p>}
-          {Array.isArray(unit.missionRecap?.achievements) && unit.missionRecap.achievements.length > 0 && (
+          <h2 className="miniunit-title">{missionRecap?.headline || 'Nice! You learned a focused set of Thai words and a sentence.'}</h2>
+          {missionRecap?.lead && <p className="miniunit-sub miniunit-recap-lead">{missionRecap.lead}</p>}
+          {Array.isArray(missionRecap?.achievements) && missionRecap.achievements.length > 0 && (
             <ul className="miniunit-recap-list">
-              {unit.missionRecap.achievements.map((item, i) => (
+              {missionRecap.achievements.map((item, i) => (
                 <li key={i} className="miniunit-recap-item">
                   <CheckCircle2 size={15} aria-hidden="true" />
                   <span>{item}</span>

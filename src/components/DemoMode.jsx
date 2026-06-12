@@ -3,7 +3,7 @@ import { Volume2, ChevronRight, UserPlus, Sparkles, Check, X, BookOpen, CheckCir
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { STAGES } from '../data/taxonomy.js';
-import { DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from '../lib/voice.js';
+import { DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION, DEFAULT_VOICE, displayCard, transformText } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { intervalLabel } from '../lib/srs.js';
 import { playFlip, playCharacterSelect, playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
@@ -11,6 +11,7 @@ import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
+import SpeakerStyleToggle from './SpeakerStyleToggle.jsx';
 import RateBtn from './RateBtn.jsx';
 
 // Guided demo for first-time visitors: three smart flashcards WITH the real
@@ -50,15 +51,46 @@ export default function DemoMode({
   onSignIn,
   onBackToHome,
   viewMode = DEFAULT_VIEW_MODE,
+  voice = DEFAULT_VOICE,
+  onChangeVoice,
   audioRate = 0.72,
   audioAutoPlay = false,
   showCharacters = true,
 }) {
-  const cards = useMemo(() => DEMO_FLASHCARD_IDS.map(cardById).filter(Boolean), []);
-  const quizCorrect = useMemo(() => cardById(DEMO_QUIZ_CORRECT_ID), []);
-  const quizOptions = useMemo(() => DEMO_QUIZ_OPTION_IDS.map(cardById).filter(Boolean), []);
-  const lessonIntro = STAGE_1_MINI_UNIT_PILOT.lessonIntro || null;
-  const lessonRecap = STAGE_1_MINI_UNIT_PILOT.missionRecap || null;
+  // The speaking style flips the demo cards at display time (displayCard), so
+  // the visitor sees the toggle really change the words, not just a label.
+  const cards = useMemo(
+    () => DEMO_FLASHCARD_IDS.map(cardById).filter(Boolean).map(c => displayCard(c, voice) || c),
+    [voice]
+  );
+  const quizCorrect = useMemo(() => displayCard(cardById(DEMO_QUIZ_CORRECT_ID), voice), [voice]);
+  const quizOptions = useMemo(
+    () => DEMO_QUIZ_OPTION_IDS.map(cardById).filter(Boolean).map(c => displayCard(c, voice) || c),
+    [voice]
+  );
+  // The mini-lesson preview prose follows the speaking style too, so the
+  // visitor who just picked Female does not see male forms one screen later.
+  const lessonIntro = useMemo(() => {
+    const raw = STAGE_1_MINI_UNIT_PILOT.lessonIntro || null;
+    if (!raw || voice !== 'female') return raw;
+    return {
+      ...raw,
+      lead: transformText(raw.lead, voice),
+      points: Array.isArray(raw.points)
+        ? raw.points.map(p => ({ ...p, text: transformText(p.text, voice) }))
+        : raw.points,
+    };
+  }, [voice]);
+  const lessonRecap = useMemo(() => {
+    const raw = STAGE_1_MINI_UNIT_PILOT.missionRecap || null;
+    if (!raw || voice !== 'female') return raw;
+    return {
+      ...raw,
+      achievements: Array.isArray(raw.achievements)
+        ? raw.achievements.map(item => transformText(item, voice))
+        : raw.achievements,
+    };
+  }, [voice]);
 
   const [pos, setPos] = useState(() => {
     try {
@@ -372,7 +404,10 @@ export default function DemoMode({
           </div>
         </div>
 
-        <CardDirectionToggle value={direction} onChange={setDirection} className="demo-direction-toggle" />
+        <div className="demo-toggle-row">
+          <SpeakerStyleToggle value={voice} onChange={onChangeVoice} className="demo-style-toggle" />
+          <CardDirectionToggle value={direction} onChange={setDirection} className="demo-direction-toggle" />
+        </div>
 
         {/* Same flip mechanic as the real lesson card so the demo feels
             continuous with the signed-in experience. */}

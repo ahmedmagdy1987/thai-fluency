@@ -3017,3 +3017,12 @@ button.character-coach-portrait { cursor: pointer; }
   .landing-mock-card-en { font-size: 21px; }
   .landing-mock-rate-btn { font-size: 10.5px; }
 }
+
+/* ============ Speaking style toggle + settings footnote =================== */
+/* SpeakerStyleToggle reuses the card-direction pill styles for visual
+   consistency; these rules cover its placements. */
+.demo-toggle-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 10px; margin-bottom: 12px; }
+.demo-toggle-row .card-direction-toggle { margin: 0; }
+.firstlesson-style-toggle { margin: 2px auto 16px; }
+.setting-footnote { margin-top: 10px; font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); }
+
