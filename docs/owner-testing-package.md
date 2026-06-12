@@ -21,7 +21,8 @@ app / PWA at https://www.tuktalkthai.com and as an Android debug APK.
 
 1. **Homepage first impression.** Stronger hero with the mascot front and
    center, a gamified "Mission 1: Say hello" badge, floating phrase bubbles with
-   real audio, a real-numbers stats band (stages / missions / words), a "try the
+   tap-to-hear audio (played through the device's text-to-speech voice), a
+   real-numbers stats band (stages / missions / words), a "try the
    demo" shortcut, a more colorful journey roadmap and Learn-Practice-Challenge-
    Win loop, and polish across mobile sizes and dark mode.
 2. **Guided teaching through Stage 8.** Every one of the 96 missions now opens

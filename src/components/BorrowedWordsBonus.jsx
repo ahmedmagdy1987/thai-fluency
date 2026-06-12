@@ -16,9 +16,9 @@ export default function BorrowedWordsBonus({ audioRate = 0.95 }) {
     <div className="borrowed-words">
       <p className="borrowed-words-lead">
         Thai borrows many everyday words from English and other languages. They are
-        not said exactly the way you know them, Thai gives each one its own sounds
-        and tones, but your ear already has a head start. Tap the speaker to hear
-        the Thai version.
+        not said exactly the way you know them, because Thai gives each one its own
+        sounds and tones, but your ear already has a head start. Tap the speaker to
+        hear the Thai version.
       </p>
       <ul className="borrowed-words-list">
         {BORROWED_WORDS.map(word => (

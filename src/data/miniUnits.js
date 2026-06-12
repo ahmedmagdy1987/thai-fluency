@@ -1189,7 +1189,7 @@ export const STAGE_4_UNIT_SMALLTALK = unit({
   lessonIntro: {
     lead: 'Words for the people in your life, plus one of the most useful and most common small talk questions you can ask anyone new: what do you do for work?',
     points: [
-      { label: 'You will learn', text: 'Family and people words: สามี (husband), มิตร (friend), บุตร (child), หลาน (grandchild), ก๋ง (grandfather), วงศ์ (family), plus ยังไง (how, informal) and เอ็ง (you).' },
+      { label: 'You will learn', text: 'Family and people words: สามี (husband), มิตร (friend), บุตร (child), หลาน (grandchild), ก๋ง (grandfather), วงศ์ (family), plus ยังไง (how, informal) and เอ็ง (you, very casual, for close friends only).' },
       { label: 'Why it matters', text: 'Small talk often turns to family and work. These words help you follow the friendly questions new acquaintances like to ask, and answer a few of them too.' },
       { label: 'Listen for', text: 'อะไร (àrai) at the end of คุณทำงานอะไร. That final word is what turns the sentence into a "what" question.' },
       { label: 'Notice', text: 'The question word comes last in this pattern. The sentence opens with คุณ (you), names the action, and saves "what" for the very end.' },
@@ -1640,7 +1640,7 @@ export const STAGE_5_UNIT_PEOPLE = unit({
   lessonIntro: {
     lead: 'Words for the people in your world: relatives, a wife, a father, an aunt, plus the everyday people, like students and police, you may need to find.',
     points: [
-      { label: 'You will learn', text: 'People words: ญาติ (relative), ภรรยา (wife), บิดา (father), ป้า (aunt), ธิดา (daughter), บุคคล (person), ศิษย์ (student), and ตำรวจ (police).' },
+      { label: 'You will learn', text: 'People words: ญาติ (relative), ภรรยา (wife), บิดา (father, formal), ป้า (aunt), ธิดา (daughter, formal), บุคคล (person), ศิษย์ (student), and ตำรวจ (police).' },
       { label: 'Why it matters', text: 'Friendly conversations quickly turn to family and where you come from. These words help you follow along, name the people who matter, and answer with a little more confidence.' },
       { label: 'Listen for', text: 'The rising tone at the end of จากไหน (jàak nǎi, from where). That lift is your cue that someone is asking about a place.' },
       { label: 'Notice', text: 'The question คุณมาจากไหน keeps a plain order: คุณ (you), มา (to come), then จากไหน (from where). The question part comes last, not first.' },
@@ -1834,7 +1834,7 @@ export const STAGE_5_UNIT_MONEY = unit({
   lessonIntro: {
     lead: 'Shopping and paying made simpler: menu and money words, plus an all purpose little sentence for taking the thing you are pointing at.',
     points: [
-      { label: 'You will learn', text: 'Ordering words: เมนู (menu), แบงค์ (banknote), ตังค์ (money), เงินสด (cash), เหรียญ (coin), ป้าย (sign), รางวัล (prize), and แวะ (to stop by).' },
+      { label: 'You will learn', text: 'Ordering words: เมนู (menu), แบงค์ (banknote), ตังค์ (money, informal), เงินสด (cash), เหรียญ (coin), ป้าย (sign), รางวัล (prize), and แวะ (to stop by).' },
       { label: 'Why it matters', text: 'Markets and street stalls move quickly. Knowing the words for cash, coins, and the menu helps you pay smoothly and follow what the seller says back to you.' },
       { label: 'Listen for', text: 'The tiny word เอา (ao) right after ผม in the practice sentence. That single syllable carries the whole meaning of taking or wanting a thing.' },
       { label: 'Notice', text: 'อันนี้ (this one) stands in for any item, so ผมเอาอันนี้ครับ works at a stall, a shop, or a cafe while you simply point.' },
@@ -2508,7 +2508,7 @@ export const STAGE_7_UNIT_FOOD = unit({
     points: [
       { label: 'You will learn', text: 'Popular dishes and staples: ก๋วยเตี๋ยว (noodle soup), ผัดไทย (pad thai), ข้าวผัด (fried rice), ขนมปัง (bread), น้ำส้ม (orange juice), น้ำตาล (sugar), กระเทียม (garlic), and น้ำปลา (fish sauce).' },
       { label: 'Why it matters', text: 'You will order food every single day, and knowing dish names and a few common ingredients helps you ask for exactly what you like and steer around what you do not.' },
-      { label: 'Listen for', text: 'The little word náam at the start of น้ำส้ม (orange juice), น้ำตาล (sugar), and น้ำปลา (fish sauce). Hearing it tells you a drink or liquid is nearby.' },
+      { label: 'Listen for', text: 'The little word náam at the start of น้ำส้ม (orange juice), น้ำตาล (sugar), and น้ำปลา (fish sauce). It often signals a drink or liquid, though น้ำตาล (sugar) shows it is not always literal.' },
       { label: 'Notice', text: 'In อาหารไทยอร่อยที่สุด, describing words follow the noun: อาหาร (food) comes first, then ไทย (Thai), then อร่อย (delicious), with ที่สุด (most) closing the sentence.' },
     ],
   },

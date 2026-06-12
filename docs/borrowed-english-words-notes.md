@@ -38,7 +38,7 @@ learner hears that they already have a head start. Working name in the UI:
 | English | Thai | Romanization | Note focus |
 | --- | --- | --- | --- |
 | taxi | แท็กซี่ | tháek-sîi | travel |
-| bus | รถบัส | rót bát | travel (รถ = vehicle) |
+| bus | รถบัส | rót bàt | travel (รถ = vehicle) |
 | coffee | กาแฟ | gaa-fae | food/drink |
 | menu | เมนู | mee-nuu | restaurants |
 | pizza | พิซซ่า | phít-sâa | food |
@@ -47,8 +47,8 @@ learner hears that they already have a head start. Working name in the UI:
 | computer | คอมพิวเตอร์ | khawm-phiu-dtôe | tech (often shortened to คอม) |
 | internet | อินเทอร์เน็ต | in-thoe-nét | tech |
 | wifi | ไวไฟ | wai-fai | tech/travel |
-| clinic | คลินิก | khlii-ník | health/signs |
-| passport | พาสปอร์ต | pháat-sà-bpàwt | travel (formal term is หนังสือเดินทาง) |
+| clinic | คลินิก | khlii-ník (romanization UNCONFIRMED: colloquial khlii vs. strict-reading khlí; confirm first) | health/signs |
+| passport | พาสปอร์ต | phâat-sà-bpàwt | travel (formal term is หนังสือเดินทาง) |
 | air conditioning | แอร์ | ae | daily life |
 
 Candidates that were considered and **excluded on accuracy grounds**: "hotel"
@@ -63,3 +63,12 @@ For each word: (a) Thai spelling is the standard one, (b) romanization and tone
 marks are right, (c) the note is accurate and not overclaiming, (d) the word is
 actually used this way in everyday Thai. Log decisions in
 `docs/native-review-issues.md` like the mini-unit content.
+
+
+## Post-audit corrections (June 12, 2026)
+
+A safety audit found two tone errors, now corrected in src/data/borrowedWords.js
+and the table above: bus is rot bat with a LOW tone mark (mid-class dead
+syllable), and passport begins phaat with a FALLING tone mark (low-class dead
+long syllable). clinic was kept (the Thai script is standard and useful) but its
+romanization is explicitly UNCONFIRMED and is a high-priority native review item.

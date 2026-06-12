@@ -259,3 +259,26 @@ DOES need full review: spelling, romanization, tone marks, and the notes. It is
 docs/borrowed-english-words-notes.md for the exact list, the candidates excluded
 on accuracy grounds, and the per-word checklist. Until reviewed, the UI labels
 it as bonus content pending native review.
+
+
+## Priority items from the June 12, 2026 safety audit
+
+Review these FIRST; they are specific items the audit flagged (two were already
+corrected in copy and need confirming, the rest need a native decision):
+
+1. Borrowed words romanization (HIGH): bus was corrected to rot bat (low tone)
+   and passport to phaat (falling tone) after the audit; confirm both. clinic
+   (Thai script confirmed standard) has an UNCONFIRMED romanization: colloquial
+   khlii vs. strict-reading khli; confirm or correct it before calling the
+   bonus list final. Full list: docs/borrowed-english-words-notes.md.
+2. stage-4-small-talk-people (HIGH): the unit teaches the very casual pronoun
+   (card 3539). The intro gloss now warns it is for close friends only;
+   confirm the warning is strong enough or recommend dropping the card from
+   the unit.
+3. stage-5-family-people (MEDIUM): formal/literary kin terms (father, daughter,
+   person, student) are framed for friendly conversation; the two formal kin
+   glosses are now marked (formal). Confirm framing reads acceptably.
+4. stage-5-ordering-and-money (LOW): money-slang gloss now marked (informal);
+   confirm.
+5. stage-7-food-and-flavors (LOW): the Listen-for note about naam was reworded
+   to note sugar as a non-literal case; confirm it reads correctly.

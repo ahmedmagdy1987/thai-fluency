@@ -24,8 +24,8 @@ export const BORROWED_WORDS = [
     id: 'bus',
     english: 'bus',
     thai: 'รถบัส',
-    romanization: 'rót bát',
-    note: 'rót means vehicle; the bát part will sound familiar right away.',
+    romanization: 'rót bàt',
+    note: 'rót means vehicle; the bàt part will sound familiar right away.',
   },
   {
     id: 'coffee',
@@ -87,6 +87,10 @@ export const BORROWED_WORDS = [
     id: 'clinic',
     english: 'clinic',
     thai: 'คลินิก',
+    // Romanization of the first syllable is uncertain (colloquial khlii vs.
+    // strict-reading khlí). Kept because the Thai script itself is standard;
+    // the romanization is a HIGH-PRIORITY native review item. Do not treat
+    // this entry as confirmed until that review.
     romanization: 'khlii-ník',
     note: 'A useful word to recognize on signs around any neighborhood.',
   },
@@ -94,7 +98,7 @@ export const BORROWED_WORDS = [
     id: 'passport',
     english: 'passport',
     thai: 'พาสปอร์ต',
-    romanization: 'pháat-sà-bpàwt',
+    romanization: 'phâat-sà-bpàwt',
     note: 'The everyday borrowed word; Thai also has its own formal term.',
   },
   {
