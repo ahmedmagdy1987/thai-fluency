@@ -19,39 +19,36 @@ app / PWA at https://www.tuktalkthai.com and as an Android debug APK.
 
 ## What changed recently (this sprint)
 
-This sprint implements the feedback from your review video:
+This sprint implements the next round of feedback from your review video:
 
-1. **Flashcards are English first by default.** A new card sees the English
-   meaning on the front ("How do I say hello in Thai?") and reveals the Thai
-   answer, romanization first. A compact toggle on the card screens (and in
-   Settings) switches between "English first" and "Thai first" anytime. Your
-   choice is saved and syncs to your account.
-2. **The demo now shows the real product.** The quick demo at /demo walks
-   through three smart flashcards with the real rating buttons (Again / Hard /
-   Good / Easy) and explains that your answer decides when a card returns,
-   then a multiple-choice quick check, then a mini-lesson preview. It still
-   needs no account and writes no progress.
-3. **Homepage explains how the app works.** A new "How it works" section shows
-   product-style examples of a smart flashcard (with the rating buttons and the
-   English first / Thai first toggle), a quick check, and a mini lesson, with
-   real course numbers. The journey section is now labeled "Your first stages"
-   and explains that each stage is a set of short, guided missions.
-4. **Beginner guidance is romanization first.** The first-lesson primer, primer
-   quiz, Stage 1 mission intros and recaps, and onboarding labels now lead with
-   romanized Thai (khrap, kha, phom) and keep Thai script secondary in
-   parentheses. Source flashcard content is unchanged.
-5. **Audio tuned slower and more reliable.** Audio still uses the device
-   text-to-speech voice, and is now tuned slower for beginner review (the demo
-   and first lesson are slightly slower again). Playback start was hardened to
-   reduce the clipped first syllable.
-6. **Stage vs mission wording cleaned up.** Everywhere user-facing: 8 stages,
-   96 guided missions, each stage contains several missions. The Learn page
-   rail is now titled "Stage N missions".
+1. **Choose your Thai speaking style.** A male / female speaker toggle now
+   appears in Settings, in the quick demo, and on the first lesson screen.
+   Male is the default and uses phǒm (ผม) and khráp (ครับ). Female uses
+   chăn (ฉัน) and khâ (ค่ะ). The words really switch where the style changes
+   them: flashcards, quiz options, sentence builder tiles, and most recap
+   lines show the selected form, and the audio speaks exactly what is
+   displayed. Any explanation line that mentions male or female speakers
+   stays as written, so the explanation stays true. Your choice is saved and
+   syncs to your account.
+2. **Audio tries to match your style.** When the device offers a Thai voice
+   that matches your speaking style, the app prefers it; otherwise it uses the
+   best available Thai voice. Voice matching depends on the voices installed
+   on your device. Audio is still device text-to-speech.
+3. **The mini lesson preview now proves the "why".** The homepage Mini lessons
+   example gained a second box, "Thai language basics", that explains polite
+   endings (khráp / khâ) and the word for "I" (phǒm / chăn), so "Learn the
+   why, not just the words" is backed by visible language reasoning.
+4. **Homepage feels more premium and alive.** Sections rise in as you scroll,
+   the Muay Thai mascot breathes and parallaxes gently with gold sparkles, the
+   "Start here" journey node pulses, and a coach mascot greets you above the
+   mission loop. All motion is disabled for reduced-motion users and the page
+   stays fully readable without it.
 
-Previous sprint highlights (still in this build): guided teaching intros and
-recaps for all 96 missions, the "Stage N Path Complete" celebration, and the
-optional "Words You Already Know" bonus (13 borrowed words, pending native
-review).
+Previous sprint highlights (still in this build): English-first flashcards
+with the direction toggle, the real-product quick demo with rating buttons,
+the "How it works" homepage section, romanization-first beginner guidance,
+slower hardened audio, guided intros and recaps for all 96 missions, and the
+"Words You Already Know" bonus (13 borrowed words, pending native review).
 
 ## How to test on the web
 
@@ -84,15 +81,18 @@ the APK uses the phone's own Thai text-to-speech voice.
 The detailed list is in `docs/owner-beta-test-checklist.md`, but in order of
 importance:
 
-1. Open the homepage on your phone. Does the new "How it works" section make
-   the product obvious within 10 seconds?
-2. Run the quick demo (no account): flip a card English-first, use the rating
-   buttons, try the quick check and the mini-lesson preview.
-3. Tap "Start your first mission" and go through the welcome flow. Check that
-   cards show English first and the toggle flips them.
-4. Do the first lesson: is the romanization-first explanation clear? Is the
-   audio pace comfortable, with no clipped first syllable?
-5. Continue into Stage 1 missions; read an intro and recap.
+1. Open the homepage on your phone. Does it feel premium as you scroll? Check
+   the Mini lessons card for the new "Thai language basics" box.
+2. Run the quick demo (no account): switch the speaker toggle to Female and
+   confirm the card really changes (khráp becomes khâ) and the audio speaks
+   the displayed words.
+3. Tap "Start your first mission" and go through the welcome flow. On the
+   first lesson screen, try both speaking styles and confirm the lesson words
+   follow your choice.
+4. In Settings, find "Thai speaking style", switch it, refresh the page, and
+   confirm the choice stuck.
+5. Continue into Stage 1 missions; read an intro and recap in each style, and
+   build the sentence in the sentence builder (tiles should match your style).
 6. Try a Challenge round, the Cards review (rating buttons), dark mode, and a
    small phone if available.
 
@@ -101,6 +101,14 @@ importance:
 - All new mission intros/recaps (Stages 4-8) and the 13 borrowed bonus words
   are **pending native-speaker review**; the per-stage review matrices in
   `docs/` list exactly what to check.
+- The female speaking style is generated from the male-form source content at
+  display time. The generated female forms are mechanical (phǒm to chăn,
+  khráp to khâ or khá) and are **flagged for native review** in
+  `docs/native-review-master-checklist.md` before public launch.
+- The speaking style changes the words you learn. The audio voice tries to
+  match when the device offers a matching Thai voice, otherwise it uses the
+  available Thai voice. Many phones ship only one Thai voice, so a male or
+  female voice can never be guaranteed.
 - Audio uses the device text-to-speech voice and is tuned slower for beginner
   review. It is not recorded human audio yet.
 - Stage 2-8 mission intros and recaps still show Thai script with English
@@ -113,18 +121,18 @@ importance:
 
 ## Ready-to-send owner update (copy-paste)
 
-> Quick update on Tuk Talk Thai, based on your review video. Flashcards are now
-> English first by default (see the meaning, recall the Thai), with a toggle to
-> switch back to Thai first anytime. The quick demo now shows the real learning
-> loop: smart flashcards with the actual rating buttons, a multiple-choice
-> quick check, and a mini-lesson preview, so a new visitor understands the
-> product before signing up. The homepage has a new "How it works" section with
-> real product examples, and the journey section now clearly says 8 stages,
-> each made of short guided missions (96 in total). Beginner explanations now
-> lead with romanized Thai like khrap and kha, with Thai script secondary. The
-> audio is still the device text-to-speech voice but is tuned slower for
-> beginner review, and the start of playback was hardened against the clipped
-> first syllable. The web beta at https://www.tuktalkthai.com is updated and a
-> fresh Android APK is built. Could you run the demo and the first lesson as a
-> brand-new user and tell me if the product now explains itself? The feedback
-> template is in the testing package.
+> Quick update on Tuk Talk Thai, based on your latest review video. There is
+> now a male / female speaking style toggle in Settings, the demo, and the
+> first lesson. Male is the default with phom and khrap; female switches the
+> actual lesson words to chan and kha, including the sentence builder tiles,
+> and the audio speaks whatever is displayed. The audio voice tries to match
+> your style when the phone has a matching Thai voice, otherwise it uses the
+> best Thai voice available, so the voice gender depends on the device. The
+> homepage mini lesson preview now has a "Thai language basics" box that
+> explains the polite endings and the word for I, so "learn the why" is shown,
+> not just claimed. The homepage also got a premium motion pass: scroll
+> reveals, a livelier mascot, sparkles, and a friendlier journey path, all
+> safe for reduced motion settings. The web beta at
+> https://www.tuktalkthai.com is updated and a fresh Android APK is built.
+> Could you try the demo and first lesson in both speaking styles and tell me
+> if the switch feels right? The feedback template is in the testing package.

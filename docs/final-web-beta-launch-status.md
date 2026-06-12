@@ -1105,3 +1105,56 @@ changes, no audio assets.
   naming alongside the guided missions; consolidating the two systems is a
   future pass.
 - Verified: web build passes; all 8 validation scripts pass.
+
+## Speaker style and homepage premium motion sprint (June 12, 2026)
+
+Owner video feedback round 2. Everything is display-layer or copy: no schema
+changes, no migrations, no payment/ads/subscription changes.
+
+- **Thai speaking style toggle shipped.** The Settings group formerly called
+  "Voice / Perspective" is now "Thai speaking style" with the wording "Choose
+  your Thai speaking style" and a footnote that voice matching depends on the
+  device voices. A new SpeakerStyleToggle component (reusing the
+  card-direction pill styles) appears in the demo next to the direction
+  toggle and on the first lesson intro. Persisted as stats.voice with male as
+  the default, synced through profiles.settings exactly like cardDirection
+  (no schema change). The demo now routes its cards through displayCard, so
+  the toggle really changes the words; previously the demo always showed raw
+  male forms regardless of the setting.
+- **Transform engine hardened (lib/voice.js).** New no-flip protection for
+  cards 573 (ผม as hair), 3396, 4380 (กระผม), 5269; กระผม is never partially
+  replaced; question detection is shared between the Thai and phonetic fields
+  so the particles always agree (previously a wh-question could show ค่ะ next
+  to khá); the female "I" is standardized to chăn; and the batch2
+  romanization scheme (pŏm, poem, krúp, kráp) now flips together with the
+  Thai. scripts/verify-voice-flip.mjs reports 259 OK flips, 0 bad, 1
+  intentionally protected.
+- **Sentence builder and prose follow the style.** displayBuilder flips
+  builder tiles with sentence-level question detection while answers stay
+  token-ID based; transformText flips mission intro/recap prose. Any prose
+  line that mentions male or female speakers, or that already shows a female
+  form, is left verbatim so explanations stay true; those lines remain
+  male-form in female mode and are listed for native review.
+- **Best-effort TTS voice matching.** lib/audio.js setPreferredVoiceGender
+  (driven from App.jsx by stats.voice) invalidates both the web and native
+  voice caches and prefers a name-matching Thai voice for the selected style,
+  keeping the existing graceful fallback chain and all speed/cutoff
+  hardening. The speaking style changes the words you learn; the audio voice
+  tries to match when the device offers a matching Thai voice, otherwise it
+  uses the available Thai voice. No guaranteed voice gender anywhere in the
+  UI or docs.
+- **Homepage: "Thai language basics" box.** The Mini lessons how-card shows a
+  second gold box explaining the polite endings khráp (ครับ) / khâ (ค่ะ) and
+  the word for "I" phǒm (ผม) / chăn (ฉัน), romanization first, so the "Learn
+  the why, not just the words" line is demonstrated on the page itself.
+- **Homepage premium motion.** IntersectionObserver scroll reveal with
+  staggered delays, a rAF-throttled hero parallax driven by a CSS variable,
+  mascot entrance and breathing animations, gold sparkle dust near the
+  mascot, a pulsing "Start here" journey node, and a floating coach mascot
+  with a sàwàtdee khráp bubble above the mission loop. Motion is
+  transform/opacity based (the start-node pulse animates a soft box-shadow),
+  fully gated behind prefers-reduced-motion, and the page renders complete
+  without JS (the hidden reveal state only exists after JS opts in).
+- Copy rules honored: no em or en dashes in new user-facing copy, no fluency
+  or timeframe claims, no human-audio claims, romanization first with Thai
+  script secondary for all new beginner copy.

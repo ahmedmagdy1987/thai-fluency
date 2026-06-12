@@ -786,3 +786,18 @@ flagged pending native review. Details: docs/borrowed-english-words-notes.md.
   from card ph / WORD_LOOKUP.
 - New cardDirection preference (English first default) affects flashcard
   presentation only; unit data, quizzes, and sentence builders are unchanged.
+
+## Speaking style support (June 12, 2026)
+
+- The earlier next-step item "apply male/female voice transforms to tiles" is
+  done: sentence builder tiles, the assembled sentence, and the success line
+  follow the user's speaking style. Answer checking stays token-ID based, so
+  builder correctness is unaffected.
+- Mission intro/recap prose flips its embedded Thai and romanization in
+  female mode via a guarded text transform; any line that mentions male or
+  female speakers, or that already shows a female form, stays as written so
+  explanations remain true. All generated female forms are flagged in
+  docs/native-review-master-checklist.md.
+- The female speaker mode deferral noted in earlier sections is resolved: the
+  toggle ships in Settings, the demo, and the first lesson, with male as the
+  default.

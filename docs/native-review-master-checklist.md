@@ -295,3 +295,48 @@ corrected in copy and need confirming, the rest need a native decision):
   251, 250 and the pilot unit lessonIntro; these are existing reviewed cards.
 - Audio note for reviewers: device TTS is now tuned slower (default 0.8,
   beginner surfaces 0.72). Audio remains device TTS, not recorded human audio.
+
+## New since June 12: speaking style sprint (generated female display forms)
+
+Display layer only: no Thai card content was changed and no new cards were
+added. The app now has a user-facing Thai speaking style toggle (male is the
+default). The female view is generated at render time by `src/lib/voice.js`
+from the male-form source: ผม to ฉัน (skipping กระผม), ครับ to ค่ะ in
+statements or คะ in questions, phǒm to chăn, khráp to khâ or khá, and for the
+batch2 romanization scheme pŏm / poem to chăn and krúp / kráp to kâ or ká.
+No fluency claims, no em or en dashes, no money symbols. The items below are
+recommended and non-blocking for owner testing, but the generated female
+forms need a native pass before public launch:
+
+1. Generated female particles (HIGH): statements get ค่ะ (khâ) and questions
+   get คะ (khá). Question detection looks for a trailing question mark in the
+   Thai or phonetic field, or ไหม / มั้ย / หรือ / รึ before ครับ. Spot-check
+   female mode on question cards such as 315 (สบายดีไหมคะ), 853
+   (ห้องน้ำอยู่ที่ไหนคะ), and 410 (เท่าไหร่คะ).
+2. Female "I" romanization (HIGH): the app renders ฉัน as chăn, matching card
+   1712 and the first-lesson primer. Batch2 cards mix chǎn and chăn; confirm
+   chăn and queue the batch2 spelling for a cleanup pass.
+3. Protected cards (MEDIUM): cards 573 (ผม meaning hair), 3396 (สวัสดี note
+   that teaches both particles), 4380 (กระผม), and the dual-form cards 5269,
+   5276, 5291, 5453, 5559 never flip; in addition, any card whose Thai shows
+   both ครับ and ค่ะ/คะ is auto-protected. Confirm the protection is
+   complete and report any other card that reads wrong in female mode.
+3b. Reworded notes and copy (MEDIUM): the notes on cards 310 and 313 were
+   reworded to describe both polite endings ("Male speakers end it with
+   khráp (ครับ). Female speakers end it with khâ (ค่ะ).") so they stay true
+   in both styles. Three pilot lesson lines were also reworded to flip
+   cleanly ("Recognize the polite ending khráp (ครับ)", "phǒm (ผม, the word
+   for I)", "The polite ending khráp (ครับ) at the end of almost every
+   sentence."). Please confirm the new wording.
+4. Sentence builder tiles (MEDIUM): in female mode the tiles show ฉัน / ค่ะ /
+   คะ forms decided once from the whole sentence. Confirm the tile forms match
+   the assembled sentence in a few Stage 1 builders.
+5. Recap and intro prose (MEDIUM): lines like "Greet politely: sà-wàt-dee khâ
+   (สวัสดีค่ะ)" are generated mechanically in female mode. Prose that mentions
+   male or female speakers explicitly stays male-form as written. Confirm the
+   generated lines read naturally.
+6. New primer and homepage copy (MEDIUM): the first lesson primer now teaches
+   both styles ("Thai has two speaking styles", "Saying I", "The polite
+   ending") and the homepage Mini lessons card shows a "Thai language basics"
+   box with khráp (ครับ), khâ (ค่ะ), phǒm (ผม), chăn (ฉัน). Confirm the
+   explanations are accurate and friendly for beginners.

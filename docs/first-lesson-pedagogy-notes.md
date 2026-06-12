@@ -271,3 +271,31 @@ purely additive.
   word/sentence for") is unchanged.
 - First lesson, demo, and landing audio are capped at rate 0.72 (device TTS,
   tuned for beginner clarity); the app-wide default is 0.8.
+
+## Speaking style sprint addendum (June 12, 2026)
+
+- The female speaker mode that earlier sections call "future work" is now
+  built. The user-facing setting is "Thai speaking style" (Settings, the
+  demo, and the first lesson intro), persisted as stats.voice with male as
+  the default and synced through profiles.settings like other preferences
+  (no schema change).
+- The first lesson primer no longer says the path is male-only: it teaches
+  both styles and points at the toggle. The hardcoded male-speaker intro
+  note in FirstLessonFlow is now dynamic and shows the selected style with
+  the toggle next to it.
+- lib/voice.js gained safety fixes: a no-flip list for cards the transform
+  would corrupt (573 hair, 3396, 4380 กระผม, 5269), กระผม is never partially
+  replaced, question detection is shared between the Thai and phonetic
+  fields so คะ always pairs with khá, the female "I" is now chăn (was chán,
+  the inconsistency flagged earlier in this file), and the batch2
+  romanization scheme (pŏm / poem / krúp / kráp) now flips too.
+- Sentence builder tiles and mission intro/recap prose follow the style via
+  displayBuilder and transformText. Any prose line that mentions male or
+  female speakers, or that already shows a female form, is left verbatim by
+  design (a mechanical flip would falsify it). A few descriptive lines
+  therefore stay male-form in female mode; they are listed in the native
+  review checklist.
+- TTS voice matching is best-effort: lib/audio.js prefers a Thai voice whose
+  name matches the chosen style and otherwise uses the best available Thai
+  voice. Voice gender still depends entirely on the device voices; nothing
+  in the UI promises a male or female voice.

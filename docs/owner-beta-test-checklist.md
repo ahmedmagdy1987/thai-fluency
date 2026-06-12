@@ -17,6 +17,14 @@ Work through these in order; jot anything odd straight into
 - [ ] NEW: the "How it works" section shows a flashcard example (English first,
       rating buttons), a quick check example, and a mini lesson example, and
       they read like the real product.
+- [ ] NEW: the Mini lessons example shows a "Thai language basics" box that
+      explains khrap / kha polite endings and phom / chan, so "Learn the why"
+      is backed by a real explanation.
+- [ ] NEW: scrolling feels premium: sections rise in softly, the mascot moves
+      gently, gold sparkles appear near the mascot, the "Start here" journey
+      node pulses, and a small coach mascot greets you above the mission loop.
+- [ ] NEW: nothing moves if your phone has Reduce Motion enabled, and the page
+      is still complete and readable.
 - [ ] NEW: the journey section is titled "Your first stages" and explains that
       each stage is a set of short, guided missions.
 - [ ] The "try a quick demo" link works and the browser Back button returns to
@@ -33,6 +41,9 @@ Work through these in order; jot anything odd straight into
 
 - [ ] The demo opens with a flashcard showing English first; the toggle
       switches to Thai first and back.
+- [ ] NEW: a Male speaker / Female speaker toggle sits next to the direction
+      toggle; switching to Female really changes the card words (khrap becomes
+      kha) and the audio speaks the displayed female form.
 - [ ] Tap to reveal: the Thai answer appears romanization first, with script
       smaller, and the speaker button plays it.
 - [ ] After reveal, the four rating buttons (Again / Hard / Good / Easy)
@@ -49,6 +60,11 @@ Work through these in order; jot anything odd straight into
 - [ ] Create or use a test account; confirm you land in the guided first lesson.
 - [ ] The first lesson explanation (primer) is clear, beginner-friendly, and
       leads with romanization (khrap, kha, phom) rather than Thai script.
+- [ ] NEW: the first lesson intro shows your speaking style (male by default)
+      with a toggle; switching to Female flips the lesson cards and recap to
+      chan / kha forms, and switching back restores phom / khrap. Lines that
+      explicitly mention male or female speakers stay as written; that is
+      intended.
 - [ ] The primer quick-check questions are fair and the wording makes sense.
 - [ ] NEW: lesson flashcards show English first by default; the toggle flips
       direction and the choice sticks after a refresh.
@@ -95,6 +111,15 @@ Work through these in order; jot anything odd straight into
       the English first / Thai first toggle works and persists.
 - [ ] Settings: the Flashcard direction setting and the new pronunciation
       speed options (Slow / Clear / Fast) work; "Play sample" sounds right.
+- [ ] NEW: Settings shows "Thai speaking style" (Male speaker / Female
+      speaker). Switch it, refresh the page, and confirm the choice stuck and
+      the lesson cards follow it. "Play sample" speaks the matching form.
+- [ ] NEW: in a Stage 1 mission with the female style, the sentence builder
+      tiles show the female forms and the built sentence matches them. Words
+      that teach the male forms themselves (like the khrap vocabulary card)
+      still read correctly.
+- [ ] NEW: the audio voice may or may not sound female after switching; that
+      depends on the Thai voices installed on the device and is expected.
 - [ ] Dark mode across Learn, Cards, Challenge, and modals.
 - [ ] Small phone layout across the same screens.
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import {
   ArrowRight,
   BookOpen,
   Check,
   CheckCircle2,
   Compass,
+  Lightbulb,
   MessageCircle,
   Play,
   Repeat2,
@@ -151,6 +152,56 @@ const FOOTER_LINKS = [
 ];
 
 export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.8 }) {
+  const rootRef = useRef(null);
+
+  // Scroll-reveal: sections fade and rise in as they enter the viewport.
+  // Content is visible by default; the hidden start state only applies once
+  // JS adds .landing-motion-on, so no-JS visitors and reduced-motion users
+  // always get the static page. Layout effect: the class must land before
+  // first paint or in-viewport sections would flash visible then hide.
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof window === 'undefined') return undefined;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const targets = Array.from(root.querySelectorAll('[data-reveal]'));
+    if (reduced || typeof IntersectionObserver === 'undefined') return undefined;
+    root.classList.add('landing-motion-on');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('landing-reveal-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    targets.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // Gentle hero parallax: decorative layers drift at different speeds while
+  // scrolling. Transform-only (cheap), rAF-throttled, off under reduced motion.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof window === 'undefined') return undefined;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return undefined;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        const y = Math.min(window.scrollY || 0, 720);
+        root.style.setProperty('--landing-scroll', String(y));
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const phrases = PHRASE_SOURCES.map(getPhrase);
   // Real product content for the "How it works" mockups.
   const howFlashcard = getPhrase({ cardId: HOW_FLASHCARD_ID, meaning: 'Hello' });
@@ -173,7 +224,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   };
 
   return (
-    <main className="landing-page">
+    <main className="landing-page" ref={rootRef}>
       <header className="landing-topbar">
         <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
           <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
@@ -188,6 +239,9 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         <div className="landing-hero-scene">
           <span className="landing-scene-glow" aria-hidden="true" />
           <span className="landing-scene-ground" aria-hidden="true" />
+          <span className="landing-sparkle landing-sparkle-1" aria-hidden="true" />
+          <span className="landing-sparkle landing-sparkle-2" aria-hidden="true" />
+          <span className="landing-sparkle landing-sparkle-3" aria-hidden="true" />
           <img
             className="landing-character"
             src="/characters/muay-thai/happy.webp"
@@ -215,6 +269,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
           <div className="landing-hero-stage">
             <span className="landing-hero-stage-glow" aria-hidden="true" />
+            <span className="landing-sparkle landing-sparkle-4" aria-hidden="true" />
+            <span className="landing-sparkle landing-sparkle-5" aria-hidden="true" />
             <img
               className="landing-hero-stage-mascot"
               src="/characters/muay-thai/happy.webp"
@@ -269,7 +325,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       <section className="landing-stats" aria-label="Course size">
-        <div className="landing-stats-inner">
+        <div className="landing-stats-inner" data-reveal>
           {COURSE_STATS.map(stat => (
             <div className="landing-stat" key={stat.label}>
               <span className="landing-stat-value">{stat.value}</span>
@@ -280,7 +336,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       <section className="landing-how" aria-labelledby="landing-how-title">
-        <div className="landing-section-head">
+        <div className="landing-section-head" data-reveal>
           <span className="landing-eyebrow">How it works</span>
           <h2 id="landing-how-title" className="landing-section-title">
             What you&apos;ll actually do
@@ -293,11 +349,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
         <div className="landing-how-grid">
           {/* 1: Smart flashcards, English first, with the real rating buttons */}
-          <article className="landing-how-card">
+          <article className="landing-how-card" data-reveal>
             <h3 className="landing-how-card-title">Smart flashcards</h3>
             <p className="landing-how-card-copy">
-              Think &quot;how do I say hello in Thai?&quot;, flip the card, then rate
-              yourself. The app uses your answer to decide what to review sooner.
+              Learn the idea, reveal the Thai, then rate how well you knew it.
+              The app uses your answer to decide what to review sooner. English
+              first by default; Thai first is one tap away.
             </p>
             <div className="landing-mock landing-mock-flashcard">
               <div className="landing-mock-toggle" aria-hidden="true">
@@ -332,7 +389,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </article>
 
           {/* 2: Multiple choice quick checks */}
-          <article className="landing-how-card">
+          <article className="landing-how-card" data-reveal style={{ '--reveal-delay': '90ms' }}>
             <h3 className="landing-how-card-title">Quick checks</h3>
             <p className="landing-how-card-copy">
               Short multiple-choice questions right after you learn, so new words
@@ -363,11 +420,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </article>
 
           {/* 3: Mini lessons around every mission */}
-          <article className="landing-how-card">
+          <article className="landing-how-card" data-reveal style={{ '--reveal-delay': '180ms' }}>
             <h3 className="landing-how-card-title">Mini lessons</h3>
             <p className="landing-how-card-copy">
               Every mission opens with a short, friendly explanation and ends
-              with a recap. No grammar walls.
+              with a recap. Short explanations show the why before you practice.
             </p>
             {howLessonIntro && (
               <div className="landing-mock landing-mock-lesson" aria-hidden="true">
@@ -382,6 +439,23 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 )}
               </div>
             )}
+            {/* The "why" box: real language reasoning, not just a word list.
+                Romanization first; Thai script secondary. */}
+            <div className="landing-mock landing-mock-lesson landing-mock-basics">
+              <span className="landing-mock-lesson-eyebrow">
+                <Lightbulb size={13} aria-hidden="true" /> Thai language basics
+              </span>
+              <span className="landing-mock-lesson-point">
+                Thai adds a small polite word at the end of a sentence to sound
+                respectful. Male speakers often end with <strong>khráp</strong> (ครับ).
+                Female speakers often end with <strong>khâ</strong> (ค่ะ).
+              </span>
+              <span className="landing-mock-lesson-point">
+                The word for &quot;I&quot; can change with speaking style too: male
+                speakers often say <strong>phǒm</strong> (ผม), female speakers often
+                say <strong>chăn</strong> (ฉัน).
+              </span>
+            </div>
             <p className="landing-how-card-foot">Learn the why, not just the words.</p>
           </article>
         </div>
@@ -401,7 +475,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       <section className="landing-journey" aria-labelledby="landing-journey-title">
-        <div className="landing-section-head">
+        <div className="landing-section-head" data-reveal>
           <span className="landing-eyebrow">Your journey</span>
           <h2 id="landing-journey-title" className="landing-section-title">
             Your first stages
@@ -413,7 +487,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
         <ol className="landing-path">
           {JOURNEY.map(({ n, Icon, stage, title, text, missions, start }) => (
-            <li className={`landing-step${start ? ' landing-step-start' : ''}`} key={n}>
+            <li
+              className={`landing-step${start ? ' landing-step-start' : ''}`}
+              key={n}
+              data-reveal
+              style={{ '--reveal-delay': `${(n - 1) * 110}ms` }}
+            >
               <div className="landing-step-node" aria-hidden="true">
                 <Icon size={20} />
                 <span className="landing-step-n">{n}</span>
@@ -429,7 +508,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               </div>
             </li>
           ))}
-          <li className="landing-step landing-step-goal">
+          <li className="landing-step landing-step-goal" data-reveal style={{ '--reveal-delay': '330ms' }}>
             <div className="landing-step-node landing-step-node-goal" aria-hidden="true">
               <img
                 className="landing-step-goal-img"
@@ -447,7 +526,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       <section className="landing-loop" aria-labelledby="landing-loop-title">
-        <div className="landing-section-head">
+        <div className="landing-section-head" data-reveal>
+          <div className="landing-loop-mascot" aria-hidden="true">
+            <span className="landing-loop-mascot-bubble">sàwàtdee khráp!</span>
+            <img src="/characters/muay-thai/speaking.webp" alt="" />
+          </div>
           <span className="landing-eyebrow">The mission loop</span>
           <h2 id="landing-loop-title" className="landing-section-title">
             Every mission is a small, friendly loop
@@ -455,7 +538,13 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
         <div className="landing-benefits">
           {LOOP.map(({ Icon, step, text }, index) => (
-            <article className="landing-benefit landing-loop-card" data-step={step.toLowerCase()} key={step}>
+            <article
+              className="landing-benefit landing-loop-card"
+              data-step={step.toLowerCase()}
+              key={step}
+              data-reveal
+              style={{ '--reveal-delay': `${index * 90}ms` }}
+            >
               <div className="landing-loop-head">
                 <div className="landing-benefit-icon">
                   <Icon size={20} aria-hidden="true" />

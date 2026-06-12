@@ -3026,3 +3026,109 @@ button.character-coach-portrait { cursor: pointer; }
 .firstlesson-style-toggle { margin: 2px auto 16px; }
 .setting-footnote { margin-top: 10px; font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); }
 
+/* ============ LANDING: premium motion upgrade ============================= */
+/* Scroll-reveal. Content is visible by default; the hidden start state only
+   exists under .landing-motion-on, which PublicLanding adds via JS after
+   checking prefers-reduced-motion. No-JS and reduced-motion visitors always
+   get the fully visible static page. */
+.landing-motion-on [data-reveal] { opacity: 0; translate: 0 18px; transition: opacity 0.65s ease, translate 0.65s ease; transition-delay: var(--reveal-delay, 0ms); }
+.landing-motion-on [data-reveal].landing-reveal-visible { opacity: 1; translate: 0 0; }
+@media (prefers-reduced-motion: reduce) {
+  .landing-motion-on [data-reveal] { opacity: 1; translate: 0 0; transition: none; }
+}
+/* Once a loop card has revealed, hand the transition back to the hover lift
+   (the persistent reveal transition above would otherwise make the desktop
+   hover translateY snap instead of easing). */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .landing-motion-on .landing-loop-card[data-reveal].landing-reveal-visible { transition: transform 0.15s, border-color 0.15s; transition-delay: 0ms; }
+}
+
+/* Hero content rises in once on load (motion-safe only). */
+@media (prefers-reduced-motion: no-preference) {
+  .landing-kicker, .landing-title, .landing-subtitle, .landing-actions,
+  .landing-demo-link, .landing-comfort, .landing-proof-row { animation: landing-rise-in 0.6s ease-out both; }
+  .landing-title { animation-delay: 0.06s; }
+  .landing-subtitle { animation-delay: 0.12s; }
+  .landing-actions { animation-delay: 0.18s; }
+  .landing-demo-link { animation-delay: 0.24s; }
+  .landing-comfort { animation-delay: 0.3s; }
+  .landing-proof-row { animation-delay: 0.36s; }
+  .landing-hero-stage { animation: landing-rise-in 0.7s ease-out 0.08s both; }
+}
+@keyframes landing-rise-in {
+  from { opacity: 0; translate: 0 14px; }
+}
+
+/* Mascot entrance + slow breathing (scale only, so it composes with the
+   scroll parallax transform below). */
+@media (prefers-reduced-motion: no-preference) {
+  .landing-character,
+  .landing-hero-stage-mascot { transform-origin: 50% 100%; animation: landing-mascot-in 0.7s ease-out both, landing-mascot-breathe 6s ease-in-out 0.9s infinite alternate; }
+}
+/* Entrance animates opacity + scale only: the mobile stage mascot keeps a
+   base translate (-9% 0) for optical centering, and animating translate here
+   would override that offset during the entrance and cause a sideways drift. */
+@keyframes landing-mascot-in {
+  from { opacity: 0; scale: 0.92; }
+}
+@keyframes landing-mascot-breathe {
+  from { scale: 1; }
+  to { scale: 1.02; }
+}
+
+/* Gentle scroll parallax driven by --landing-scroll (set in PublicLanding via
+   a rAF-throttled scroll listener; never set under reduced motion, so the
+   calc() below resolves to 0 and everything stays put). Background layers
+   sink slightly (deeper), floating chips and the mission badge lift (closer),
+   creating depth as the visitor scrolls. Transform-only: cheap to composite. */
+@media (prefers-reduced-motion: no-preference) {
+  .landing-character { transform: translate3d(0, calc(var(--landing-scroll, 0) * 0.02px), 0); }
+  .landing-scene-glow,
+  .landing-scene-ground { transform: translate3d(0, calc(var(--landing-scroll, 0) * 0.05px), 0); }
+  .landing-hero-scene .landing-phrase { transform: translate3d(0, calc(var(--landing-scroll, 0) * -0.05px), 0); }
+  .landing-scene-badge { transform: translate3d(0, calc(var(--landing-scroll, 0) * -0.07px), 0); }
+  .landing-hero-stage-mascot { transform: translate3d(0, calc(var(--landing-scroll, 0) * 0.015px), 0); }
+  .landing-stage-phrase { transform: translate3d(0, calc(var(--landing-scroll, 0) * -0.04px), 0); }
+}
+
+/* Gold sparkle dust around the mascot. Invisible (opacity 0) unless the
+   motion-safe animation runs, so reduced-motion users see no stray dots. */
+.landing-sparkle { position: absolute; z-index: 1; width: 8px; height: 8px; border-radius: 999px; pointer-events: none; opacity: 0; background: radial-gradient(circle, color-mix(in srgb, var(--gold) 92%, #fff), color-mix(in srgb, var(--gold) 30%, transparent) 72%); }
+@media (prefers-reduced-motion: no-preference) {
+  .landing-sparkle { animation: landing-sparkle-drift 4.8s ease-in-out infinite; }
+}
+.landing-sparkle-1 { right: calc((100vw - 1120px) / 2 + 130px); bottom: 330px; }
+.landing-sparkle-2 { right: calc((100vw - 1120px) / 2 + 380px); bottom: 150px; width: 6px; height: 6px; animation-delay: 1.5s; animation-duration: 5.6s; }
+.landing-sparkle-3 { right: calc((100vw - 1120px) / 2 + 70px); bottom: 200px; width: 5px; height: 5px; animation-delay: 2.6s; animation-duration: 6.2s; }
+.landing-sparkle-4 { top: 26px; left: 16%; width: 6px; height: 6px; animation-delay: 0.8s; }
+.landing-sparkle-5 { bottom: 44px; right: 13%; width: 5px; height: 5px; animation-delay: 2.1s; animation-duration: 5.8s; }
+@keyframes landing-sparkle-drift {
+  0% { opacity: 0; translate: 0 8px; scale: 0.7; }
+  35% { opacity: 0.85; }
+  70% { opacity: 0; translate: 0 -26px; scale: 1.05; }
+  100% { opacity: 0; translate: 0 -26px; scale: 1.05; }
+}
+
+/* "Start here" node pulses softly on the journey path (motion-safe only). */
+@media (prefers-reduced-motion: no-preference) {
+  .landing-step-start .landing-step-node { animation: landing-node-glow 3.4s ease-in-out infinite; }
+}
+@keyframes landing-node-glow {
+  0%, 100% { box-shadow: 0 8px 22px rgba(201, 169, 97, 0.28); }
+  50% { box-shadow: 0 8px 30px rgba(201, 169, 97, 0.55); }
+}
+
+/* Coach mascot above the mission-loop section, with a phrase bubble pulled
+   from real card content (card 310). */
+.landing-loop-mascot { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 12px; }
+.landing-loop-mascot img { width: 86px; height: 86px; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(15, 61, 46, 0.2)); }
+.landing-loop-mascot-bubble { display: inline-flex; padding: 6px 12px; border-radius: 999px; background: var(--card-bg); border: 1px solid var(--line-strong); color: var(--jade); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; line-height: 1.2; box-shadow: 0 8px 18px rgba(15, 61, 46, 0.1); }
+@media (prefers-reduced-motion: no-preference) {
+  .landing-loop-mascot { animation: landing-float 6s ease-in-out infinite alternate; }
+}
+
+/* "Thai language basics" why-box inside the Mini lessons how-card. */
+.landing-mock-basics { background: color-mix(in srgb, var(--gold) 7%, var(--card-bg)); border-color: color-mix(in srgb, var(--gold) 38%, var(--line)); margin-top: 10px; }
+.landing-mock-basics .landing-mock-lesson-eyebrow { color: color-mix(in srgb, var(--gold) 60%, var(--ink)); }
+.app-root[data-theme="dark"] .landing-mock-basics { background: color-mix(in srgb, var(--gold) 10%, transparent); border-color: color-mix(in srgb, var(--gold) 32%, transparent); }
+.app-root[data-theme="dark"] .landing-mock-basics .landing-mock-lesson-eyebrow { color: var(--gold); }
