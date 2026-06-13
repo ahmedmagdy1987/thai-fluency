@@ -202,6 +202,93 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     };
   }, []);
 
+  // Scroll-scrubbed cinematic bands: each [data-cine-band]'s <video> currentTime
+  // is driven by how far the band has travelled through the viewport, so
+  // scrolling down advances the clip and scrolling up reverses it. Guarded for
+  // quality + performance: only runs on large screens with motion allowed,
+  // lazy-loads each video the first time its band nears the viewport, skips
+  // offscreen bands, throttles with rAF, and pauses while the tab is hidden.
+  // Everywhere else (mobile, tablet, reduced motion, no JS) the <video> keeps
+  // preload="none" and simply shows its poster, so all content stays visible.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof window === 'undefined') return undefined;
+    const mq = window.matchMedia;
+    const reduced = mq && mq('(prefers-reduced-motion: reduce)').matches;
+    const canScrub = mq && mq('(min-width: 1024px)').matches && mq('(hover: hover)').matches;
+    const bands = Array.from(root.querySelectorAll('[data-cine-band]'));
+    if (!bands.length || reduced || !canScrub || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
+
+    const active = new Set();
+    const loaded = new WeakSet();
+    const videoOf = (band) => band.querySelector('[data-cine-video]');
+
+    const ensureLoaded = (video) => {
+      if (!video || loaded.has(video)) return;
+      const src = video.getAttribute('data-src');
+      if (src) {
+        video.src = src;
+        video.load();
+        loaded.add(video);
+      }
+    };
+
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      if (document.hidden) return;
+      const vh = window.innerHeight || 1;
+      active.forEach((band) => {
+        const video = videoOf(band);
+        if (!video) return;
+        const dur = video.duration;
+        if (!dur || Number.isNaN(dur)) return;
+        const rect = band.getBoundingClientRect();
+        // 0 as the band enters from the bottom, 1 as it leaves past the top.
+        const p = Math.min(Math.max((vh - rect.top) / (vh + rect.height), 0), 1);
+        const t = p * (dur - 0.05);
+        if (Math.abs((video.currentTime || 0) - t) > 0.03) {
+          try { video.currentTime = t; } catch (_) { /* seek not ready */ }
+        }
+      });
+    };
+    const schedule = () => { if (!raf) raf = window.requestAnimationFrame(apply); };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const band = entry.target;
+        if (entry.isIntersecting) {
+          active.add(band);
+          const video = videoOf(band);
+          ensureLoaded(video);
+          if (video) video.addEventListener('loadedmetadata', schedule, { once: true });
+        } else {
+          active.delete(band);
+        }
+      });
+      schedule();
+    }, { rootMargin: '300px 0px 300px 0px', threshold: 0 });
+    bands.forEach(b => io.observe(b));
+
+    const onScroll = () => schedule();
+    const onResize = () => schedule();
+    const onVisibility = () => { if (!document.hidden) schedule(); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
+    schedule();
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const phrases = PHRASE_SOURCES.map(getPhrase);
   // Real product content for the "How it works" mockups.
   const howFlashcard = getPhrase({ cardId: HOW_FLASHCARD_ID, meaning: 'Hello' });
@@ -356,117 +443,192 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </p>
         </div>
 
-        <div className="landing-how-grid">
-          {/* 1: Smart flashcards, English first, with the real rating buttons */}
-          <article className="landing-how-card" data-reveal>
-            <h3 className="landing-how-card-title">Smart flashcards</h3>
-            <p className="landing-how-card-copy">
-              Learn the idea, reveal the Thai, then rate how well you knew it.
-              The app uses your answer to decide what to review sooner. English
-              first by default; Thai first is one tap away.
-            </p>
-            <div className="landing-mock landing-mock-flashcard">
-              <div className="landing-mock-toggle" aria-hidden="true">
-                <span className="landing-mock-toggle-opt landing-mock-toggle-active">English first</span>
-                <span className="landing-mock-toggle-opt">Thai first</span>
+        <div className="cine-seq">
+          {/* 1: Smart flashcards — Muay Thai training atmosphere */}
+          <section className="cine-band" data-cine-band data-cine-side="left">
+            <div className="cine-stage">
+              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/muaythai.webp')" }}>
+                <video
+                  className="cine-video"
+                  data-cine-video
+                  data-src="/cinematic/muaythai.mp4"
+                  poster="/cinematic/muaythai.webp"
+                  muted
+                  playsInline
+                  preload="none"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                />
+                <span className="cine-scrim" aria-hidden="true" />
               </div>
-              <div className="landing-mock-card">
-                <span className="landing-mock-card-kicker">How do you say</span>
-                <span className="landing-mock-card-en">{howFlashcard.en}</span>
-                <span className="landing-mock-card-answer">
-                  <span className="landing-mock-card-ph">{howFlashcard.ph}</span>
-                  <span className="landing-mock-card-thai">{howFlashcard.thai}</span>
-                  <button
-                    type="button"
-                    className="landing-phrase-audio landing-mock-card-audio"
-                    onClick={() => playPhrase(howFlashcard.thai)}
-                    aria-label={`Play ${howFlashcard.en} pronunciation`}
-                  >
-                    <Volume2 size={14} />
-                  </button>
-                </span>
-              </div>
-              <div className="landing-mock-rate-row" aria-hidden="true">
-                {HOW_RATINGS.map(({ label, color }) => (
-                  <span className="landing-mock-rate-btn" style={{ '--rate-color': color }} key={label}>
-                    {label}
+              <div className="cine-panel">
+                <div className="cine-content" data-reveal>
+                  <span className="cine-eyebrow">
+                    <Repeat2 size={15} aria-hidden="true" /> Practice that sticks
                   </span>
-                ))}
-              </div>
-            </div>
-            <p className="landing-how-card-foot">Practice the words that need more attention.</p>
-          </article>
-
-          {/* 2: Multiple choice quick checks */}
-          <article className="landing-how-card" data-reveal style={{ '--reveal-delay': '90ms' }}>
-            <h3 className="landing-how-card-title">Quick checks</h3>
-            <p className="landing-how-card-copy">
-              Short multiple-choice questions right after you learn, so new words
-              stick before you move on.
-            </p>
-            {howQuizCorrect && (
-              <div className="landing-mock landing-mock-quiz" aria-hidden="true">
-                <span className="landing-mock-quiz-label">Choose the Thai</span>
-                <span className="landing-mock-quiz-prompt">{howQuizCorrect.en}</span>
-                <div className="landing-mock-quiz-options">
-                  {howQuizOptions.map((option, index) => {
-                    const isCorrect = option.id === HOW_QUIZ_CORRECT_ID;
-                    return (
-                      <span
-                        className={`landing-mock-quiz-opt ${isCorrect ? 'landing-mock-quiz-opt-correct' : ''}`}
-                        key={option.id}
-                      >
-                        <span className="landing-mock-quiz-letter">{String.fromCharCode(65 + index)}</span>
-                        <span className="landing-mock-quiz-ph">{option.ph}</span>
-                        {isCorrect && <Check size={14} className="landing-mock-quiz-check" />}
-                      </span>
-                    );
-                  })}
+                  <h3 className="cine-title">Smart flashcards</h3>
+                  <p className="cine-lead">
+                    Learn the idea, reveal the Thai, then rate how well you knew it.
+                    The app uses your answer to decide what to review sooner. English
+                    first by default; Thai first is one tap away.
+                  </p>
+                  <div className="cine-mock">
+                    <div className="landing-mock landing-mock-flashcard">
+                      <div className="landing-mock-toggle" aria-hidden="true">
+                        <span className="landing-mock-toggle-opt landing-mock-toggle-active">English first</span>
+                        <span className="landing-mock-toggle-opt">Thai first</span>
+                      </div>
+                      <div className="landing-mock-card">
+                        <span className="landing-mock-card-kicker">How do you say</span>
+                        <span className="landing-mock-card-en">{howFlashcard.en}</span>
+                        <span className="landing-mock-card-answer">
+                          <span className="landing-mock-card-ph">{howFlashcard.ph}</span>
+                          <span className="landing-mock-card-thai">{howFlashcard.thai}</span>
+                          <button
+                            type="button"
+                            className="landing-phrase-audio landing-mock-card-audio"
+                            onClick={() => playPhrase(howFlashcard.thai)}
+                            aria-label={`Play ${howFlashcard.en} pronunciation`}
+                          >
+                            <Volume2 size={14} />
+                          </button>
+                        </span>
+                      </div>
+                      <div className="landing-mock-rate-row" aria-hidden="true">
+                        {HOW_RATINGS.map(({ label, color }) => (
+                          <span className="landing-mock-rate-btn" style={{ '--rate-color': color }} key={label}>
+                            {label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="cine-foot">Practice the words that need more attention.</p>
                 </div>
               </div>
-            )}
-            <p className="landing-how-card-foot">A quick win after every few cards.</p>
-          </article>
-
-          {/* 3: Mini lessons around every mission */}
-          <article className="landing-how-card" data-reveal style={{ '--reveal-delay': '180ms' }}>
-            <h3 className="landing-how-card-title">Mini lessons</h3>
-            <p className="landing-how-card-copy">
-              Every mission opens with a short, friendly explanation and ends
-              with a recap. Short explanations show the why before you practice.
-            </p>
-            {howLessonIntro && (
-              <div className="landing-mock landing-mock-lesson" aria-hidden="true">
-                <span className="landing-mock-lesson-eyebrow">
-                  <BookOpen size={13} /> Mission intro
-                </span>
-                <span className="landing-mock-lesson-lead">{howLessonIntro.lead}</span>
-                {Array.isArray(howLessonIntro.points) && howLessonIntro.points[0] && (
-                  <span className="landing-mock-lesson-point">
-                    <strong>{howLessonIntro.points[0].label}:</strong> {howLessonIntro.points[0].text}
-                  </span>
-                )}
-              </div>
-            )}
-            {/* The "why" box: real language reasoning, not just a word list.
-                Romanization first; Thai script secondary. */}
-            <div className="landing-mock landing-mock-lesson landing-mock-basics">
-              <span className="landing-mock-lesson-eyebrow">
-                <Lightbulb size={13} aria-hidden="true" /> Thai language basics
-              </span>
-              <span className="landing-mock-lesson-point">
-                Thai adds a small polite word at the end of a sentence to sound
-                respectful. Male speakers often end with <strong>khráp</strong> (ครับ).
-                Female speakers often end with <strong>khâ</strong> (ค่ะ).
-              </span>
-              <span className="landing-mock-lesson-point">
-                The word for &quot;I&quot; can change with speaking style too: male
-                speakers often say <strong>phǒm</strong> (ผม), female speakers often
-                say <strong>chăn</strong> (ฉัน).
-              </span>
             </div>
-            <p className="landing-how-card-foot">Learn the why, not just the words.</p>
-          </article>
+          </section>
+
+          {/* 2: Quick checks — tropical Thailand, real travel moments */}
+          <section className="cine-band" data-cine-band data-cine-side="right">
+            <div className="cine-stage">
+              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/tropical.webp')" }}>
+                <video
+                  className="cine-video"
+                  data-cine-video
+                  data-src="/cinematic/tropical.mp4"
+                  poster="/cinematic/tropical.webp"
+                  muted
+                  playsInline
+                  preload="none"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                />
+                <span className="cine-scrim" aria-hidden="true" />
+              </div>
+              <div className="cine-panel">
+                <div className="cine-content" data-reveal>
+                  <span className="cine-eyebrow">
+                    <Target size={15} aria-hidden="true" /> Real Thai moments
+                  </span>
+                  <h3 className="cine-title">Quick checks</h3>
+                  <p className="cine-lead">
+                    Short multiple-choice questions right after you learn, so new words
+                    stick before you move on.
+                  </p>
+                  {howQuizCorrect && (
+                    <div className="cine-mock">
+                      <div className="landing-mock landing-mock-quiz" aria-hidden="true">
+                        <span className="landing-mock-quiz-label">Choose the Thai</span>
+                        <span className="landing-mock-quiz-prompt">{howQuizCorrect.en}</span>
+                        <div className="landing-mock-quiz-options">
+                          {howQuizOptions.map((option, index) => {
+                            const isCorrect = option.id === HOW_QUIZ_CORRECT_ID;
+                            return (
+                              <span
+                                className={`landing-mock-quiz-opt ${isCorrect ? 'landing-mock-quiz-opt-correct' : ''}`}
+                                key={option.id}
+                              >
+                                <span className="landing-mock-quiz-letter">{String.fromCharCode(65 + index)}</span>
+                                <span className="landing-mock-quiz-ph">{option.ph}</span>
+                                {isCorrect && <Check size={14} className="landing-mock-quiz-check" />}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <p className="cine-foot">A quick win after every few cards.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 3: Mini lessons — Thai temple, the why behind the words */}
+          <section className="cine-band" data-cine-band data-cine-side="left">
+            <div className="cine-stage">
+              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/temple.webp')" }}>
+                <video
+                  className="cine-video"
+                  data-cine-video
+                  data-src="/cinematic/temple.mp4"
+                  poster="/cinematic/temple.webp"
+                  muted
+                  playsInline
+                  preload="none"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                />
+                <span className="cine-scrim" aria-hidden="true" />
+              </div>
+              <div className="cine-panel">
+                <div className="cine-content" data-reveal>
+                  <span className="cine-eyebrow">
+                    <BookOpen size={15} aria-hidden="true" /> Understand the why
+                  </span>
+                  <h3 className="cine-title">Mini lessons</h3>
+                  <p className="cine-lead">
+                    Every mission opens with a short, friendly explanation and ends
+                    with a recap. Short explanations show the why before you practice.
+                  </p>
+                  <div className="cine-mock cine-mock-lessons">
+                    {howLessonIntro && (
+                      <div className="landing-mock landing-mock-lesson" aria-hidden="true">
+                        <span className="landing-mock-lesson-eyebrow">
+                          <BookOpen size={13} /> Mission intro
+                        </span>
+                        <span className="landing-mock-lesson-lead">{howLessonIntro.lead}</span>
+                        {Array.isArray(howLessonIntro.points) && howLessonIntro.points[0] && (
+                          <span className="landing-mock-lesson-point">
+                            <strong>{howLessonIntro.points[0].label}:</strong> {howLessonIntro.points[0].text}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {/* The "why" box: real language reasoning, not just a word list.
+                        Romanization first; Thai script secondary. */}
+                    <div className="landing-mock landing-mock-lesson landing-mock-basics">
+                      <span className="landing-mock-lesson-eyebrow">
+                        <Lightbulb size={13} aria-hidden="true" /> Thai language basics
+                      </span>
+                      <span className="landing-mock-lesson-point">
+                        Thai adds a small polite word at the end of a sentence to sound
+                        respectful. Male speakers often end with <strong>khráp</strong> (ครับ).
+                        Female speakers often end with <strong>khâ</strong> (ค่ะ).
+                      </span>
+                      <span className="landing-mock-lesson-point">
+                        The word for &quot;I&quot; can change with speaking style too: male
+                        speakers often say <strong>phǒm</strong> (ผม), female speakers often
+                        say <strong>chăn</strong> (ฉัน).
+                      </span>
+                    </div>
+                  </div>
+                  <p className="cine-foot">Learn the why, not just the words.</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
 
         {onOpenPublicPage && (

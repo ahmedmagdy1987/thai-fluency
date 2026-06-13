@@ -3005,6 +3005,43 @@ button.character-coach-portrait { cursor: pointer; }
 .landing-mock-lesson-point strong { color: var(--ink); }
 .landing-how-cta-row { display: flex; justify-content: center; margin-top: 18px; padding: 0 20px; }
 .landing-how-demo-cta { display: inline-flex; align-items: center; gap: 8px; }
+
+/* ===== Cinematic scroll-scrubbed feature bands =====
+   Each band is a full-bleed cinematic scene (scroll-scrubbed video on large
+   screens, static poster everywhere else) with a readable, side-offset panel
+   that carries the real product mockup. Overlay text is intentionally light in
+   both themes because it always sits over a dark scene scrim. */
+.cine-seq { position: relative; z-index: 3; margin-top: 22px; display: flex; flex-direction: column; }
+.cine-band { position: relative; width: 100%; }
+.cine-stage { position: relative; overflow: hidden; min-height: 78vh; display: flex; align-items: center; isolation: isolate; }
+.cine-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-color: #0c2b20; background-image: var(--cine-poster); background-size: cover; background-position: center; }
+.cine-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cine-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(8, 28, 21, 0.42) 0%, rgba(8, 28, 21, 0.64) 58%, rgba(8, 28, 21, 0.82) 100%); }
+.cine-panel { position: relative; z-index: 2; width: 100%; max-width: 1180px; margin: 0 auto; padding: 60px 22px; display: flex; }
+.cine-content { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 14px; }
+.cine-eyebrow { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 999px; }
+.cine-title { margin: 0; font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(30px, 7vw, 46px); line-height: 1.04; color: #fff; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
+.cine-lead { margin: 0; font-size: clamp(14.5px, 3.6vw, 17px); line-height: 1.55; color: rgba(255, 255, 255, 0.9); max-width: 46ch; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45); }
+.cine-foot { margin: 2px 0 0; font-size: 13px; font-weight: 700; color: var(--gold); text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
+.cine-mock { width: 100%; max-width: 340px; }
+.cine-mock .landing-mock { margin-top: 0; box-shadow: 0 22px 55px rgba(0, 0, 0, 0.42); }
+.cine-mock-lessons { display: flex; flex-direction: column; gap: 10px; }
+.cine-mock-lessons .landing-mock-basics { margin-top: 0; }
+
+@media (min-width: 1024px) {
+  .cine-stage { min-height: 100vh; }
+  .cine-panel { padding: 0 48px; }
+  .cine-content { max-width: 500px; }
+  .cine-band[data-cine-side="left"] .cine-content { margin-right: auto; }
+  .cine-band[data-cine-side="right"] .cine-content { margin-left: auto; }
+  .cine-band[data-cine-side="left"] .cine-scrim { background: linear-gradient(90deg, rgba(8, 28, 21, 0.88) 0%, rgba(8, 28, 21, 0.6) 34%, rgba(8, 28, 21, 0.16) 62%, rgba(8, 28, 21, 0) 100%); }
+  .cine-band[data-cine-side="right"] .cine-scrim { background: linear-gradient(270deg, rgba(8, 28, 21, 0.88) 0%, rgba(8, 28, 21, 0.6) 34%, rgba(8, 28, 21, 0.16) 62%, rgba(8, 28, 21, 0) 100%); }
+  .cine-mock { max-width: 320px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-stage { min-height: 76vh; }
+}
 .app-root[data-theme="dark"] .landing-mock { background: rgba(232, 228, 217, 0.04); border-color: rgba(232, 228, 217, 0.12); }
 .app-root[data-theme="dark"] .landing-mock-card,
 .app-root[data-theme="dark"] .landing-mock-quiz-opt,
