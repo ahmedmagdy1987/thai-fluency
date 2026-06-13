@@ -592,12 +592,9 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                     />
                     <span className="cine-scrim" aria-hidden="true" />
                   </div>
-                  <img
-                    className="cine-character cine-character-guide"
-                    src="/characters/elephant/happy.webp"
-                    alt=""
-                    aria-hidden="true"
-                  />
+                  {/* The elephant guide is baked into this scene's cinematic
+                      clip (generated from the real character as an image
+                      reference), so no separate composited character here. */}
                   <span className="cine-scene-chip" aria-hidden="true">
                     <Target size={13} /> Make the call
                   </span>
