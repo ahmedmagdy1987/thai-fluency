@@ -3082,6 +3082,23 @@ button.character-coach-portrait { cursor: pointer; }
   .cine-stage { padding-left: 28px; padding-right: 28px; }
   .cine-scene { aspect-ratio: 16 / 11; }
 }
+/* Mobile composition: a dedicated stacked layout, not a squeezed desktop one.
+   Content-height bands (no vh) so the layout never jumps when mobile browser
+   chrome shows/hides; full-width readable product UI; stronger character. */
+@media (max-width: 560px) {
+  .cine-stage { padding: clamp(32px, 9vw, 54px) 18px; }
+  .cine-scene { aspect-ratio: 4 / 3; border-radius: 20px; }
+  .cine-media { border-radius: 20px; }
+  .cine-info { gap: 15px; }
+  .cine-device { max-width: 100%; }
+  .cine-character { height: 92%; max-width: 82%; right: 2%; }
+  .cine-character-guide { height: 80%; max-width: 88%; }
+}
+@media (max-width: 380px) {
+  .cine-stage { padding-left: 16px; padding-right: 16px; }
+  .cine-scene-chip { font-size: 10px; padding: 6px 10px; }
+  .cine-device .landing-mock { padding: 15px; }
+}
 .app-root[data-theme="dark"] .landing-mock { background: rgba(232, 228, 217, 0.04); border-color: rgba(232, 228, 217, 0.12); }
 .app-root[data-theme="dark"] .landing-mock-card,
 .app-root[data-theme="dark"] .landing-mock-quiz-opt,
