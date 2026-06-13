@@ -227,12 +227,21 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     <main className="landing-page" ref={rootRef}>
       <header className="landing-topbar">
         <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
-          <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
-          <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
+          <span className="landing-brand-logo">
+            <img src="/apple-touch-icon.png" alt="" aria-hidden="true" />
+          </span>
+          <span className="landing-brand-text">
+            <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
+            <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
+          </span>
         </div>
-        <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
-          Sign in
-        </button>
+        {/* Right-side actions. Future top nav (e.g. Blog) can slot in before
+            the Sign in button without changing this layout. */}
+        <div className="landing-topbar-actions">
+          <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
+            Sign in
+          </button>
+        </div>
       </header>
 
       <section className="landing-hero" aria-labelledby="landing-title">
