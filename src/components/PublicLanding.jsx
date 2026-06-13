@@ -313,10 +313,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   return (
     <main className="landing-page" ref={rootRef}>
       <header className="landing-topbar">
+        {/* Brand lockup: the tuk-tuk emblem is framed from the real app icon
+            (the wordmark baked into the icon is cropped out via CSS) so the mark
+            reads as a deliberate emblem beside a single, clean wordmark — never a
+            duplicate name crammed in a circle. */}
         <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
-          <span className="landing-brand-logo">
-            <img src="/apple-touch-icon.png" alt="" aria-hidden="true" />
-          </span>
+          <span className="landing-brand-mark" role="img" aria-hidden="true" />
           <span className="landing-brand-text">
             <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
             <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
@@ -444,35 +446,54 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
 
         <div className="cine-seq">
-          {/* 1: Smart flashcards — Muay Thai training atmosphere */}
-          <section className="cine-band" data-cine-band data-cine-side="left">
+          {/* Each band is a contained, art-directed showcase: a framed cinematic
+              scene with a brand character composited into it, paired with a large,
+              central product mockup carrying real app content. A shared spine,
+              palette and recurring cast connect the three into one journey. */}
+
+          {/* 1: Smart flashcards — Muay Thai training, the coach explains a word */}
+          <section className="cine-band" data-cine-band data-cine-side="left" data-cine-key="practice">
             <div className="cine-stage">
-              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/muaythai.webp')" }}>
-                <video
-                  className="cine-video"
-                  data-cine-video
-                  data-src="/cinematic/muaythai.mp4"
-                  poster="/cinematic/muaythai.webp"
-                  muted
-                  playsInline
-                  preload="none"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                />
-                <span className="cine-scrim" aria-hidden="true" />
-              </div>
-              <div className="cine-panel">
-                <div className="cine-content" data-reveal>
-                  <span className="cine-eyebrow">
-                    <Repeat2 size={15} aria-hidden="true" /> Practice that sticks
+              <div className="cine-grid">
+                <figure className="cine-scene" data-reveal>
+                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/muaythai.webp')" }}>
+                    <video
+                      className="cine-video"
+                      data-cine-video
+                      data-src="/cinematic/muaythai.mp4"
+                      poster="/cinematic/muaythai.webp"
+                      muted
+                      playsInline
+                      preload="none"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    />
+                    <span className="cine-scrim" aria-hidden="true" />
+                  </div>
+                  <img
+                    className="cine-character cine-character-coach"
+                    src="/characters/muay-thai/speaking.webp"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <span className="cine-scene-chip" aria-hidden="true">
+                    <Repeat2 size={13} /> Train the words
                   </span>
-                  <h3 className="cine-title">Smart flashcards</h3>
-                  <p className="cine-lead">
-                    Learn the idea, reveal the Thai, then rate how well you knew it.
-                    The app uses your answer to decide what to review sooner. English
-                    first by default; Thai first is one tap away.
-                  </p>
-                  <div className="cine-mock">
+                </figure>
+
+                <div className="cine-info">
+                  <div className="cine-copy" data-reveal>
+                    <span className="cine-eyebrow">
+                      <Repeat2 size={15} aria-hidden="true" /> Practice that sticks
+                    </span>
+                    <h3 className="cine-title">Smart flashcards</h3>
+                    <p className="cine-lead">
+                      Learn the idea, reveal the Thai, then rate how well you knew it.
+                      The app uses your answer to decide what to review sooner. English
+                      first by default; Thai first is one tap away.
+                    </p>
+                  </div>
+                  <div className="cine-device" data-reveal>
                     <div className="landing-mock landing-mock-flashcard">
                       <div className="landing-mock-toggle" aria-hidden="true">
                         <span className="landing-mock-toggle-opt landing-mock-toggle-active">English first</span>
@@ -503,41 +524,55 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       </div>
                     </div>
                   </div>
-                  <p className="cine-foot">Practice the words that need more attention.</p>
+                  <p className="cine-foot" data-reveal>Practice the words that need more attention.</p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* 2: Quick checks — tropical Thailand, real travel moments */}
-          <section className="cine-band" data-cine-band data-cine-side="right">
+          {/* 2: Quick checks — tropical Thailand, the elephant guides a real choice */}
+          <section className="cine-band" data-cine-band data-cine-side="right" data-cine-key="checks">
             <div className="cine-stage">
-              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/tropical.webp')" }}>
-                <video
-                  className="cine-video"
-                  data-cine-video
-                  data-src="/cinematic/tropical.mp4"
-                  poster="/cinematic/tropical.webp"
-                  muted
-                  playsInline
-                  preload="none"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                />
-                <span className="cine-scrim" aria-hidden="true" />
-              </div>
-              <div className="cine-panel">
-                <div className="cine-content" data-reveal>
-                  <span className="cine-eyebrow">
-                    <Target size={15} aria-hidden="true" /> Real Thai moments
+              <div className="cine-grid">
+                <figure className="cine-scene" data-reveal>
+                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/tropical.webp')" }}>
+                    <video
+                      className="cine-video"
+                      data-cine-video
+                      data-src="/cinematic/tropical.mp4"
+                      poster="/cinematic/tropical.webp"
+                      muted
+                      playsInline
+                      preload="none"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    />
+                    <span className="cine-scrim" aria-hidden="true" />
+                  </div>
+                  <img
+                    className="cine-character cine-character-guide"
+                    src="/characters/elephant/happy.webp"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <span className="cine-scene-chip" aria-hidden="true">
+                    <Target size={13} /> Make the call
                   </span>
-                  <h3 className="cine-title">Quick checks</h3>
-                  <p className="cine-lead">
-                    Short multiple-choice questions right after you learn, so new words
-                    stick before you move on.
-                  </p>
+                </figure>
+
+                <div className="cine-info">
+                  <div className="cine-copy" data-reveal>
+                    <span className="cine-eyebrow">
+                      <Target size={15} aria-hidden="true" /> Real Thai moments
+                    </span>
+                    <h3 className="cine-title">Quick checks</h3>
+                    <p className="cine-lead">
+                      Short multiple-choice questions right after you learn, so new words
+                      stick before you move on.
+                    </p>
+                  </div>
                   {howQuizCorrect && (
-                    <div className="cine-mock">
+                    <div className="cine-device" data-reveal>
                       <div className="landing-mock landing-mock-quiz" aria-hidden="true">
                         <span className="landing-mock-quiz-label">Choose the Thai</span>
                         <span className="landing-mock-quiz-prompt">{howQuizCorrect.en}</span>
@@ -559,40 +594,54 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       </div>
                     </div>
                   )}
-                  <p className="cine-foot">A quick win after every few cards.</p>
+                  <p className="cine-foot" data-reveal>A quick win after every few cards.</p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* 3: Mini lessons — Thai temple, the why behind the words */}
-          <section className="cine-band" data-cine-band data-cine-side="left">
+          <section className="cine-band" data-cine-band data-cine-side="left" data-cine-key="lessons">
             <div className="cine-stage">
-              <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/temple.webp')" }}>
-                <video
-                  className="cine-video"
-                  data-cine-video
-                  data-src="/cinematic/temple.mp4"
-                  poster="/cinematic/temple.webp"
-                  muted
-                  playsInline
-                  preload="none"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                />
-                <span className="cine-scrim" aria-hidden="true" />
-              </div>
-              <div className="cine-panel">
-                <div className="cine-content" data-reveal>
-                  <span className="cine-eyebrow">
-                    <BookOpen size={15} aria-hidden="true" /> Understand the why
+              <div className="cine-grid">
+                <figure className="cine-scene" data-reveal>
+                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/temple.webp')" }}>
+                    <video
+                      className="cine-video"
+                      data-cine-video
+                      data-src="/cinematic/temple.mp4"
+                      poster="/cinematic/temple.webp"
+                      muted
+                      playsInline
+                      preload="none"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    />
+                    <span className="cine-scrim" aria-hidden="true" />
+                  </div>
+                  <img
+                    className="cine-character cine-character-think"
+                    src="/characters/muay-thai/thinking.webp"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <span className="cine-scene-chip" aria-hidden="true">
+                    <BookOpen size={13} /> Know the why
                   </span>
-                  <h3 className="cine-title">Mini lessons</h3>
-                  <p className="cine-lead">
-                    Every mission opens with a short, friendly explanation and ends
-                    with a recap. Short explanations show the why before you practice.
-                  </p>
-                  <div className="cine-mock cine-mock-lessons">
+                </figure>
+
+                <div className="cine-info">
+                  <div className="cine-copy" data-reveal>
+                    <span className="cine-eyebrow">
+                      <BookOpen size={15} aria-hidden="true" /> Understand the why
+                    </span>
+                    <h3 className="cine-title">Mini lessons</h3>
+                    <p className="cine-lead">
+                      Every mission opens with a short, friendly explanation and ends
+                      with a recap. Short explanations show the why before you practice.
+                    </p>
+                  </div>
+                  <div className="cine-device cine-device-lessons" data-reveal>
                     {howLessonIntro && (
                       <div className="landing-mock landing-mock-lesson" aria-hidden="true">
                         <span className="landing-mock-lesson-eyebrow">
@@ -624,7 +673,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       </span>
                     </div>
                   </div>
-                  <p className="cine-foot">Learn the why, not just the words.</p>
+                  <p className="cine-foot" data-reveal>Learn the why, not just the words.</p>
                 </div>
               </div>
             </div>
