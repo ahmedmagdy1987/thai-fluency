@@ -3031,8 +3031,8 @@ button.character-coach-portrait { cursor: pointer; }
 /* --- Cinematic scene panel + composited brand character --- */
 .cine-scene { position: relative; margin: 0; aspect-ratio: 5 / 4; border-radius: 26px; isolation: isolate; }
 .cine-scene::before { content: ''; position: absolute; inset: -12% -7% -18%; z-index: 0; pointer-events: none; background: radial-gradient(58% 54% at 50% 72%, color-mix(in srgb, var(--gold) 26%, transparent), transparent 72%); }
+/* Static scene image — the poster is set per band via the --cine-poster var. */
 .cine-media { position: absolute; inset: 0; z-index: 1; overflow: hidden; border-radius: 26px; pointer-events: none; background-color: #0c2b20; background-image: var(--cine-poster); background-size: cover; background-position: center; box-shadow: 0 30px 60px -28px rgba(15, 61, 46, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.14); }
-.cine-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 /* Light, brand-tinted scrim: just enough to seat the character and add depth at
    the base, not the heavy darkening the old full-bleed bands relied on. */
 .cine-scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(8, 28, 21, 0.04) 0%, rgba(8, 28, 21, 0.08) 50%, rgba(8, 28, 21, 0.4) 100%); }

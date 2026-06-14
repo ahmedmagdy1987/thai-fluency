@@ -202,142 +202,10 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     };
   }, []);
 
-  // Cinematic band motion. Two delivery paths, both lazy: each [data-cine-band]'s
-  // <video> ships with no src (poster only) and is given its source + loaded on
-  // demand the moment its band nears the viewport.
-  //   • Desktop + real pointer  -> scroll-scrub: currentTime is driven by how far
-  //     the band has travelled through the viewport, so scrolling down advances the
-  //     clip and scrolling up reverses it (rAF-throttled, tab-hidden safe).
-  //   • Touch / small screens   -> lightweight in-view autoplay loop: only the band
-  //     in view plays (muted, inline, looped); offscreen bands and hidden tabs are
-  //     paused, so mobile gets real motion without battery-heavy constant decoding
-  //     and without ever scrubbing on a touch surface.
-  // Reduced-motion and no-JS visitors keep the poster, so all content stays visible.
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root || typeof window === 'undefined') return undefined;
-    const mq = window.matchMedia;
-    const reduced = mq && mq('(prefers-reduced-motion: reduce)').matches;
-    const bands = Array.from(root.querySelectorAll('[data-cine-band]'));
-    if (!bands.length || reduced || typeof IntersectionObserver === 'undefined') {
-      return undefined;
-    }
-    const canScrub = mq && mq('(min-width: 1024px)').matches && mq('(hover: hover)').matches;
-
-    const active = new Set();
-    const loaded = new WeakSet();
-    const videoOf = (band) => band.querySelector('[data-cine-video]');
-    const ensureLoaded = (video) => {
-      if (!video || loaded.has(video)) return;
-      const src = video.getAttribute('data-src');
-      if (src) {
-        // Bump preload to "auto" before assigning the source so load() actually
-        // fetches. With the old preload="none", load() was a no-op: the desktop
-        // scrub then waited forever on a duration that never arrived and the MP4
-        // was never requested (production showed posters only). "auto" also
-        // buffers the small clip enough to seek/scrub smoothly.
-        video.preload = 'auto';
-        video.src = src;
-        video.load();
-        loaded.add(video);
-      }
-    };
-
-    if (canScrub) {
-      let raf = 0;
-      const apply = () => {
-        raf = 0;
-        if (document.hidden) return;
-        const vh = window.innerHeight || 1;
-        active.forEach((band) => {
-          const video = videoOf(band);
-          if (!video) return;
-          const dur = video.duration;
-          if (!dur || Number.isNaN(dur)) return;
-          const rect = band.getBoundingClientRect();
-          // 0 as the band enters from the bottom, 1 as it leaves past the top.
-          const p = Math.min(Math.max((vh - rect.top) / (vh + rect.height), 0), 1);
-          const t = p * (dur - 0.05);
-          if (Math.abs((video.currentTime || 0) - t) > 0.03) {
-            try { video.currentTime = t; } catch (_) { /* seek not ready */ }
-          }
-        });
-      };
-      const schedule = () => { if (!raf) raf = window.requestAnimationFrame(apply); };
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const band = entry.target;
-          if (entry.isIntersecting) {
-            active.add(band);
-            const video = videoOf(band);
-            ensureLoaded(video);
-            if (video) video.addEventListener('loadedmetadata', schedule, { once: true });
-          } else {
-            active.delete(band);
-          }
-        });
-        schedule();
-      }, { rootMargin: '300px 0px 300px 0px', threshold: 0 });
-      bands.forEach(b => io.observe(b));
-
-      const onScroll = () => schedule();
-      const onResize = () => schedule();
-      const onVisibility = () => { if (!document.hidden) schedule(); };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onResize, { passive: true });
-      document.addEventListener('visibilitychange', onVisibility);
-      schedule();
-
-      return () => {
-        io.disconnect();
-        window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', onResize);
-        document.removeEventListener('visibilitychange', onVisibility);
-        if (raf) window.cancelAnimationFrame(raf);
-      };
-    }
-
-    // Touch / small-screen path: in-view autoplay loop.
-    const playSafe = (video) => {
-      if (!video) return;
-      const p = video.play && video.play();
-      if (p && typeof p.catch === 'function') p.catch(() => { /* autoplay blocked; poster stays */ });
-    };
-    const pause = (video) => { if (video) { try { video.pause(); } catch (_) { /* noop */ } } };
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const band = entry.target;
-        const video = videoOf(band);
-        if (!video) return;
-        if (entry.isIntersecting) {
-          active.add(band);
-          ensureLoaded(video);
-          video.loop = true;
-          if (!document.hidden) playSafe(video);
-        } else {
-          active.delete(band);
-          pause(video);
-        }
-      });
-    }, { rootMargin: '200px 0px 200px 0px', threshold: 0.25 });
-    bands.forEach(b => io.observe(b));
-
-    const onVisibility = () => {
-      active.forEach((band) => {
-        const video = videoOf(band);
-        if (document.hidden) pause(video); else playSafe(video);
-      });
-    };
-    document.addEventListener('visibilitychange', onVisibility);
-
-    return () => {
-      io.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
-      active.forEach((band) => pause(videoOf(band)));
-    };
-  }, []);
+  // The feature "scene" panels are static images: each .cine-media carries its
+  // image via the --cine-poster background. There is intentionally no <video>,
+  // no scroll-scrub and no autoplay logic here — the section visuals stay premium
+  // but simple, render instantly, and are inert under reduced motion by design.
 
   const phrases = PHRASE_SOURCES.map(getPhrase);
   // Real product content for the "How it works" mockups.
@@ -502,22 +370,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               palette and recurring cast connect the three into one journey. */}
 
           {/* 1: Smart flashcards — Muay Thai training, the coach explains a word */}
-          <section className="cine-band" data-cine-band data-cine-side="left" data-cine-key="practice">
+          <section className="cine-band" data-cine-side="left" data-cine-key="practice">
             <div className="cine-stage">
               <div className="cine-grid">
                 <figure className="cine-scene" data-reveal>
                   <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/muaythai.webp')" }}>
-                    <video
-                      className="cine-video"
-                      data-cine-video
-                      data-src="/cinematic/muaythai.mp4"
-                      poster="/cinematic/muaythai.webp"
-                      muted
-                      playsInline
-                      preload="metadata"
-                      tabIndex={-1}
-                      aria-hidden="true"
-                    />
                     <span className="cine-scrim" aria-hidden="true" />
                   </div>
                   <img
@@ -581,22 +438,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </section>
 
           {/* 2: Quick checks — tropical Thailand, the elephant guides a real choice */}
-          <section className="cine-band" data-cine-band data-cine-side="right" data-cine-key="checks">
+          <section className="cine-band" data-cine-side="right" data-cine-key="checks">
             <div className="cine-stage">
               <div className="cine-grid">
                 <figure className="cine-scene" data-reveal>
                   <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/tropical.webp')" }}>
-                    <video
-                      className="cine-video"
-                      data-cine-video
-                      data-src="/cinematic/tropical.mp4"
-                      poster="/cinematic/tropical.webp"
-                      muted
-                      playsInline
-                      preload="metadata"
-                      tabIndex={-1}
-                      aria-hidden="true"
-                    />
                     <span className="cine-scrim" aria-hidden="true" />
                   </div>
                   {/* The elephant guide is baked into this scene's cinematic
@@ -648,22 +494,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </section>
 
           {/* 3: Mini lessons — Thai temple, the why behind the words */}
-          <section className="cine-band" data-cine-band data-cine-side="left" data-cine-key="lessons">
+          <section className="cine-band" data-cine-side="left" data-cine-key="lessons">
             <div className="cine-stage">
               <div className="cine-grid">
                 <figure className="cine-scene" data-reveal>
                   <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/temple.webp')" }}>
-                    <video
-                      className="cine-video"
-                      data-cine-video
-                      data-src="/cinematic/temple.mp4"
-                      poster="/cinematic/temple.webp"
-                      muted
-                      playsInline
-                      preload="metadata"
-                      tabIndex={-1}
-                      aria-hidden="true"
-                    />
                     <span className="cine-scrim" aria-hidden="true" />
                   </div>
                   <img
