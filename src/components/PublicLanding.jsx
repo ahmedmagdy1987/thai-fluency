@@ -203,7 +203,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   }, []);
 
   // Cinematic band motion. Two delivery paths, both lazy: each [data-cine-band]'s
-  // <video> stays preload="none" (poster only) until its band nears the viewport.
+  // <video> ships with no src (poster only) and is given its source + loaded on
+  // demand the moment its band nears the viewport.
   //   • Desktop + real pointer  -> scroll-scrub: currentTime is driven by how far
   //     the band has travelled through the viewport, so scrolling down advances the
   //     clip and scrolling up reverses it (rAF-throttled, tab-hidden safe).
@@ -230,6 +231,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       if (!video || loaded.has(video)) return;
       const src = video.getAttribute('data-src');
       if (src) {
+        // Bump preload to "auto" before assigning the source so load() actually
+        // fetches. With the old preload="none", load() was a no-op: the desktop
+        // scrub then waited forever on a duration that never arrived and the MP4
+        // was never requested (production showed posters only). "auto" also
+        // buffers the small clip enough to seek/scrub smoothly.
+        video.preload = 'auto';
         video.src = src;
         video.load();
         loaded.add(video);
@@ -507,7 +514,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       poster="/cinematic/muaythai.webp"
                       muted
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       tabIndex={-1}
                       aria-hidden="true"
                     />
@@ -586,7 +593,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       poster="/cinematic/tropical.webp"
                       muted
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       tabIndex={-1}
                       aria-hidden="true"
                     />
@@ -653,7 +660,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       poster="/cinematic/temple.webp"
                       muted
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       tabIndex={-1}
                       aria-hidden="true"
                     />
