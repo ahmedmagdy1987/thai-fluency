@@ -1,13 +1,17 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   BookOpen,
   Check,
   CheckCircle2,
+  Coffee,
   Compass,
+  Copy,
   Lightbulb,
+  Map as MapIcon,
   MessageCircle,
   Play,
+  QrCode,
   Repeat2,
   Sparkles,
   Star,
@@ -91,6 +95,15 @@ const LOOP = [
   { Icon: Trophy, step: 'Win', text: 'A proud recap and small wins celebrate what you just learned.' },
 ];
 
+// The three cinematic feature bands. Each pairs a Thailand-themed cinematic clip
+// (scroll-scrubbed on desktop, poster + gentle drift elsewhere) with a real
+// product mockup. Order, themes and characters mirror the learning flow.
+const CINE_BANDS = [
+  { key: 'practice', side: 'left', video: '/cinematic/muaythai.mp4', poster: '/cinematic/muaythai.webp' },
+  { key: 'checks', side: 'right', video: '/cinematic/tropical.mp4', poster: '/cinematic/tropical.webp' },
+  { key: 'lessons', side: 'left', video: '/cinematic/temple.mp4', poster: '/cinematic/temple.webp' },
+];
+
 const PHRASE_SOURCES = [
   { className: 'landing-phrase-one', cardId: 310, meaning: 'hello' },
   { className: 'landing-phrase-two', cardId: 410, meaning: 'how much?' },
@@ -153,6 +166,12 @@ const FOOTER_LINKS = [
 
 export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.8 }) {
   const rootRef = useRef(null);
+  const heroVideoRef = useRef(null);
+  const [showCrypto, setShowCrypto] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const support = SITE_CONFIG.support || {};
+  const crypto = support.crypto || {};
 
   // Scroll-reveal: sections fade and rise in as they enter the viewport.
   // Content is visible by default; the hidden start state only applies once
@@ -178,20 +197,21 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     return () => io.disconnect();
   }, []);
 
-  // Gentle hero parallax: decorative layers drift at different speeds while
-  // scrolling. Transform-only (cheap), rAF-throttled, off under reduced motion.
+  // Translucent header solidifies once the hero is scrolled past, and a gentle
+  // hero parallax drifts decorative layers. Transform/opacity only (cheap),
+  // rAF-throttled, off under reduced motion.
   useEffect(() => {
     const root = rootRef.current;
     if (!root || typeof window === 'undefined') return undefined;
     const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return undefined;
     let raf = 0;
     const onScroll = () => {
       if (raf) return;
       raf = window.requestAnimationFrame(() => {
         raf = 0;
-        const y = Math.min(window.scrollY || 0, 720);
-        root.style.setProperty('--landing-scroll', String(y));
+        const y = window.scrollY || 0;
+        root.classList.toggle('landing-scrolled', y > 24);
+        if (!reduced) root.style.setProperty('--landing-scroll', String(Math.min(y, 720)));
       });
     };
     onScroll();
@@ -202,10 +222,141 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     };
   }, []);
 
-  // The feature "scene" panels are static images: each .cine-media carries its
-  // image via the --cine-poster background. There is intentionally no <video>,
-  // no scroll-scrub and no autoplay logic here — the section visuals stay premium
-  // but simple, render instantly, and are inert under reduced motion by design.
+  // Hero ambient clip: a slow, seamless ping-pong loop of the Thailand
+  // establishing shot. Lazy + desktop-only: the <video> ships with no source
+  // and is only loaded/played on a wide screen with a real pointer and motion
+  // allowed, so phones and reduced-motion users keep the (still) poster with a
+  // gentle CSS Ken Burns. It fades in over the poster once it can play.
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video || typeof window === 'undefined') return undefined;
+    const mq = window.matchMedia;
+    const reduced = mq && mq('(prefers-reduced-motion: reduce)').matches;
+    const wide = mq && mq('(min-width: 1024px)').matches && mq('(hover: hover)').matches;
+    if (reduced || !wide) return undefined;
+    let cancelled = false;
+    const onReady = () => {
+      if (!cancelled) video.classList.add('is-ready');
+    };
+    video.addEventListener('canplay', onReady, { once: true });
+    video.preload = 'auto';
+    video.src = video.getAttribute('data-src');
+    video.load();
+    const p = video.play && video.play();
+    if (p && typeof p.catch === 'function') p.catch(() => { /* autoplay blocked; poster stays */ });
+    const onVisibility = () => {
+      if (document.hidden) { try { video.pause(); } catch (_) { /* noop */ } }
+      else { const r = video.play && video.play(); if (r && r.catch) r.catch(() => {}); }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      cancelled = true;
+      video.removeEventListener('canplay', onReady);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+
+  // CINEMATIC SCROLL-SCRUB. Each [data-cine-scrub] band drives its background
+  // <video>'s currentTime from how far the band has travelled through the
+  // viewport: scroll down advances the clip, scroll up reverses it. The seek
+  // target is approached with damped interpolation (a per-frame lerp), so the
+  // motion glides and settles instead of snapping frame-to-frame — the clips
+  // are encoded all-intra (every frame a keyframe) so each seek is instant and
+  // the result reads like a true film scrub, not a jumpy seek.
+  //   • Desktop + fine pointer + wide screen + motion allowed -> scroll-scrub.
+  //   • Touch / small / reduced-motion -> no scrub; the poster (with a gentle
+  //     CSS drift) stays, so the section is always premium and never broken.
+  // Videos are lazy: each ships with no src and is loaded only as its band
+  // nears the viewport.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof window === 'undefined') return undefined;
+    const mq = window.matchMedia;
+    const reduced = mq && mq('(prefers-reduced-motion: reduce)').matches;
+    const canScrub = !reduced
+      && mq && mq('(min-width: 1024px)').matches && mq('(hover: hover)').matches
+      && typeof IntersectionObserver !== 'undefined';
+    const bands = Array.from(root.querySelectorAll('[data-cine-scrub]'));
+    if (!bands.length || !canScrub) return undefined;
+    root.classList.add('cine-scrub-on');
+
+    const active = new Set();
+    const loaded = new WeakSet();
+    const ease = new WeakMap();              // video -> last applied (eased) time
+    const videoOf = (band) => band.querySelector('.cine-video');
+
+    const ensureLoaded = (video) => {
+      if (!video || loaded.has(video)) return;
+      const src = video.getAttribute('data-src');
+      if (!src) return;
+      video.preload = 'auto';
+      video.src = src;
+      video.load();
+      loaded.add(video);
+      video.addEventListener('loadeddata', () => {
+        video.classList.add('is-ready');
+        schedule();
+      }, { once: true });
+    };
+
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      if (document.hidden) return;
+      const vh = window.innerHeight || 1;
+      let again = false;
+      active.forEach((band) => {
+        const video = videoOf(band);
+        if (!video) return;
+        const dur = video.duration;
+        if (!dur || Number.isNaN(dur)) { again = true; return; }
+        const rect = band.getBoundingClientRect();
+        // 0 as the band enters from the bottom, 1 as it leaves past the top.
+        const p = Math.min(Math.max((vh - rect.top) / (vh + rect.height), 0), 1);
+        const target = p * (dur - 0.05);
+        const prev = ease.has(video) ? ease.get(video) : target;
+        // Damped lerp toward the scroll target: smooth glide + settle.
+        let next = prev + (target - prev) * 0.16;
+        if (Math.abs(target - next) < 0.004) next = target; else again = true;
+        ease.set(video, next);
+        if (Math.abs((video.currentTime || 0) - next) > 0.012) {
+          try { video.currentTime = next; } catch (_) { /* seek not ready */ }
+        }
+      });
+      if (again) schedule();
+    };
+    const schedule = () => { if (!raf) raf = window.requestAnimationFrame(apply); };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          active.add(entry.target);
+          ensureLoaded(videoOf(entry.target));
+        } else {
+          active.delete(entry.target);
+        }
+      });
+      schedule();
+    }, { rootMargin: '400px 0px 400px 0px', threshold: 0 });
+    bands.forEach(b => io.observe(b));
+
+    const onScroll = () => schedule();
+    const onResize = () => schedule();
+    const onVisibility = () => { if (!document.hidden) schedule(); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
+    schedule();
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (raf) window.cancelAnimationFrame(raf);
+      root.classList.remove('cine-scrub-on');
+    };
+  }, []);
 
   const phrases = PHRASE_SOURCES.map(getPhrase);
   // Real product content for the "How it works" mockups.
@@ -228,116 +379,137 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     onOpenPublicPage(path);
   };
 
+  const copyCrypto = () => {
+    if (!crypto.address || typeof navigator === 'undefined' || !navigator.clipboard) return;
+    navigator.clipboard.writeText(crypto.address).then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    }).catch(() => { /* clipboard blocked */ });
+  };
+
   return (
     <main className="landing-page" ref={rootRef}>
       <header className="landing-topbar">
-        {/* Brand lockup: the tuk-tuk emblem is framed from the real app icon
-            (the wordmark baked into the icon is cropped out via CSS) so the mark
-            reads as a deliberate emblem beside a single, clean wordmark — never a
-            duplicate name crammed in a circle. */}
-        <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
-          <span className="landing-brand-mark" role="img" aria-hidden="true" />
-          <span className="landing-brand-text">
-            <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
-            <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
-          </span>
-        </div>
-        {/* Right-side actions. Future top nav (e.g. Blog) can slot in before
-            the Sign in button without changing this layout. */}
-        <div className="landing-topbar-actions">
-          <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
-            Sign in
-          </button>
+        <div className="landing-topbar-inner">
+          {/* Brand lockup: the tuk-tuk emblem is framed from the real app icon
+              (the wordmark baked into the icon is cropped out via CSS) so the mark
+              reads as a deliberate emblem beside a single, clean wordmark — never a
+              duplicate name crammed in a circle. */}
+          <div className="landing-topbar-brand" aria-label={SITE_CONFIG.siteName}>
+            <span className="landing-brand-mark" role="img" aria-hidden="true" />
+            <span className="landing-brand-text">
+              <span className="landing-brand-name">{SITE_CONFIG.siteName}</span>
+              <span className="landing-brand-slogan">{SITE_CONFIG.slogan}</span>
+            </span>
+          </div>
+          {/* Right-side actions. Future top nav (e.g. Blog) can slot into
+              .landing-topbar-nav before the Sign in button without changing
+              this layout. */}
+          <div className="landing-topbar-actions">
+            <nav className="landing-topbar-nav" aria-label="Primary" />
+            <button type="button" className="landing-topbar-signin" onClick={onSignIn}>
+              Sign in
+            </button>
+          </div>
         </div>
       </header>
 
       <section className="landing-hero" aria-labelledby="landing-title">
-        <div className="landing-hero-scene">
-          <span className="landing-scene-glow" aria-hidden="true" />
-          <span className="landing-scene-ground" aria-hidden="true" />
-          <span className="landing-sparkle landing-sparkle-1" aria-hidden="true" />
-          <span className="landing-sparkle landing-sparkle-2" aria-hidden="true" />
-          <span className="landing-sparkle landing-sparkle-3" aria-hidden="true" />
-          <img
-            className="landing-character"
-            src="/characters/muay-thai/happy.webp"
-            alt=""
+        {/* Full-bleed cinematic backdrop: a still poster (with a gentle Ken Burns
+            drift) paints instantly; on desktop a slow, seamless ambient clip
+            fades in over it. A layered scrim keeps the headline crisp. */}
+        <div className="landing-hero-media" aria-hidden="true">
+          <span className="landing-hero-poster" />
+          <video
+            className="landing-hero-video"
+            ref={heroVideoRef}
+            data-src="/cinematic/hero-ambient.mp4"
+            poster="/cinematic/hero-islands.webp"
+            muted
+            loop
+            playsInline
+            preload="none"
+            tabIndex={-1}
             aria-hidden="true"
           />
-          <MissionBadge className="landing-scene-badge" />
-          {phrases.map(phrase => (
-            <LandingPhraseCard phrase={phrase} onPlay={playPhrase} key={phrase.cardId} />
-          ))}
+          <span className="landing-hero-scrim" />
         </div>
 
         <div className="landing-hero-inner">
-          <div className="landing-kicker">
-            <Sparkles size={16} aria-hidden="true" />
-            Your Thai adventure starts here
-          </div>
-          <h1 id="landing-title" className="landing-title">
-            Speak useful Thai from your very first mission.
-          </h1>
-          <p className="landing-subtitle">
-            Short, game-like missions teach you the words and phrases that matter in real
-            Thai moments, from street food to taxi rides.
-          </p>
+          <div className="landing-hero-copy">
+            <div className="landing-kicker">
+              <Sparkles size={16} aria-hidden="true" />
+              Your Thai adventure starts here
+            </div>
+            <h1 id="landing-title" className="landing-title">
+              Speak useful Thai from your very first mission.
+            </h1>
+            <p className="landing-subtitle">
+              Short, game-like missions teach you the words and phrases that matter in real
+              Thai moments, from street food to taxi rides.
+            </p>
 
-          <div className="landing-hero-stage">
-            <span className="landing-hero-stage-glow" aria-hidden="true" />
-            <span className="landing-sparkle landing-sparkle-4" aria-hidden="true" />
-            <span className="landing-sparkle landing-sparkle-5" aria-hidden="true" />
+            <div className="landing-actions" aria-label="Start learning">
+              <button type="button" className="btn-primary landing-primary-cta" onClick={onGetStarted}>
+                Start your first mission
+                <ArrowRight size={17} aria-hidden="true" />
+              </button>
+              <button type="button" className="btn-secondary landing-secondary-cta" onClick={onSignIn}>
+                I already have an account
+              </button>
+            </div>
+
+            {onOpenPublicPage && (
+              <button
+                type="button"
+                className="landing-demo-link"
+                onClick={() => onOpenPublicPage('/demo')}
+              >
+                <Play size={14} aria-hidden="true" />
+                Or try a quick demo first, no account needed
+              </button>
+            )}
+
+            <p className="landing-comfort">
+              <Sparkles size={15} aria-hidden="true" />
+              New to Thai? Perfect. Every mission opens with a simple, friendly explanation.
+            </p>
+
+            <div className="landing-proof-row" aria-label="Highlights">
+              {HERO_CHIPS.map(chip => (
+                <span key={chip}><CheckCircle2 size={15} aria-hidden="true" /> {chip}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Floating brand scene: the mascot and a couple of real phrase cards
+              composited over the cinematic backdrop. */}
+          <div className="landing-hero-scene" aria-hidden="true">
+            <span className="landing-sparkle landing-sparkle-1" />
+            <span className="landing-sparkle landing-sparkle-2" />
+            <span className="landing-sparkle landing-sparkle-3" />
             <img
-              className="landing-hero-stage-mascot"
+              className="landing-character"
               src="/characters/muay-thai/happy.webp"
               alt=""
-              aria-hidden="true"
             />
-            <MissionBadge className="landing-stage-badge" />
+            <MissionBadge className="landing-scene-badge" />
             <LandingPhraseCard
               phrase={phrases[0]}
               onPlay={playPhrase}
-              className="landing-stage-phrase landing-stage-phrase-a"
+              className="landing-scene-phrase landing-scene-phrase-a"
             />
             <LandingPhraseCard
               phrase={phrases[1]}
               onPlay={playPhrase}
-              className="landing-stage-phrase landing-stage-phrase-b"
+              className="landing-scene-phrase landing-scene-phrase-b"
             />
           </div>
-
-          <div className="landing-actions" aria-label="Start learning">
-            <button type="button" className="btn-primary landing-primary-cta" onClick={onGetStarted}>
-              Start your first mission
-              <ArrowRight size={17} aria-hidden="true" />
-            </button>
-            <button type="button" className="btn-secondary landing-secondary-cta" onClick={onSignIn}>
-              I already have an account
-            </button>
-          </div>
-
-          {onOpenPublicPage && (
-            <button
-              type="button"
-              className="landing-demo-link"
-              onClick={() => onOpenPublicPage('/demo')}
-            >
-              <Play size={14} aria-hidden="true" />
-              Or try a quick demo first, no account needed
-            </button>
-          )}
-
-          <p className="landing-comfort">
-            <Sparkles size={15} aria-hidden="true" />
-            New to Thai? Perfect. Every mission opens with a simple, friendly explanation.
-          </p>
-
-          <div className="landing-proof-row" aria-label="Highlights">
-            {HERO_CHIPS.map(chip => (
-              <span key={chip}><CheckCircle2 size={15} aria-hidden="true" /> {chip}</span>
-            ))}
-          </div>
         </div>
+
+        <span className="landing-hero-cue" aria-hidden="true">
+          <span className="landing-hero-cue-dot" />
+        </span>
       </section>
 
       <section className="landing-stats" aria-label="Course size">
@@ -364,43 +536,50 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
 
         <div className="cine-seq">
-          {/* Each band is a contained, art-directed showcase: a framed cinematic
-              scene with a brand character composited into it, paired with a large,
-              central product mockup carrying real app content. A shared spine,
-              palette and recurring cast connect the three into one journey. */}
+          {/* Each band is a full-bleed cinematic scene — a Thailand-themed clip
+              that scroll-scrubs on desktop — paired with a real product mockup.
+              A shared palette and recurring cast connect the three into one
+              journey through the learning loop. */}
 
           {/* 1: Smart flashcards — Muay Thai training, the coach explains a word */}
-          <section className="cine-band" data-cine-side="left" data-cine-key="practice">
+          <section className="cine-band" data-cine-side={CINE_BANDS[0].side} data-cine-key="practice">
+            <div className="cine-media" data-cine-scrub style={{ '--cine-poster': `url('${CINE_BANDS[0].poster}')` }}>
+              <video
+                className="cine-video"
+                data-src={CINE_BANDS[0].video}
+                poster={CINE_BANDS[0].poster}
+                muted
+                playsInline
+                preload="none"
+                tabIndex={-1}
+                aria-hidden="true"
+              />
+              <span className="cine-scrim" aria-hidden="true" />
+            </div>
             <div className="cine-stage">
               <div className="cine-grid">
-                <figure className="cine-scene" data-reveal>
-                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/muaythai.webp')" }}>
-                    <span className="cine-scrim" aria-hidden="true" />
-                  </div>
+                <div className="cine-copy" data-reveal>
+                  <span className="cine-eyebrow">
+                    <Repeat2 size={15} aria-hidden="true" /> Practice that sticks
+                  </span>
+                  <h3 className="cine-title">Smart flashcards</h3>
+                  <p className="cine-lead">
+                    Learn the idea, reveal the Thai, then rate how well you knew it.
+                    The app uses your answer to decide what to review sooner. English
+                    first by default; Thai first is one tap away.
+                  </p>
+                  <span className="cine-scene-chip">
+                    <Repeat2 size={13} aria-hidden="true" /> Train the words
+                  </span>
+                </div>
+                <div className="cine-panel" data-reveal>
                   <img
                     className="cine-character cine-character-coach"
                     src="/characters/muay-thai/speaking.webp"
                     alt=""
                     aria-hidden="true"
                   />
-                  <span className="cine-scene-chip" aria-hidden="true">
-                    <Repeat2 size={13} /> Train the words
-                  </span>
-                </figure>
-
-                <div className="cine-info">
-                  <div className="cine-copy" data-reveal>
-                    <span className="cine-eyebrow">
-                      <Repeat2 size={15} aria-hidden="true" /> Practice that sticks
-                    </span>
-                    <h3 className="cine-title">Smart flashcards</h3>
-                    <p className="cine-lead">
-                      Learn the idea, reveal the Thai, then rate how well you knew it.
-                      The app uses your answer to decide what to review sooner. English
-                      first by default; Thai first is one tap away.
-                    </p>
-                  </div>
-                  <div className="cine-device" data-reveal>
+                  <div className="cine-device">
                     <div className="landing-mock landing-mock-flashcard">
                       <div className="landing-mock-toggle" aria-hidden="true">
                         <span className="landing-mock-toggle-opt landing-mock-toggle-active">English first</span>
@@ -431,41 +610,44 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       </div>
                     </div>
                   </div>
-                  <p className="cine-foot" data-reveal>Practice the words that need more attention.</p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* 2: Quick checks — tropical Thailand, the elephant guides a real choice */}
-          <section className="cine-band" data-cine-side="right" data-cine-key="checks">
+          {/* 2: Quick checks — tropical Thailand, a real multiple-choice moment */}
+          <section className="cine-band" data-cine-side={CINE_BANDS[1].side} data-cine-key="checks">
+            <div className="cine-media" data-cine-scrub style={{ '--cine-poster': `url('${CINE_BANDS[1].poster}')` }}>
+              <video
+                className="cine-video"
+                data-src={CINE_BANDS[1].video}
+                poster={CINE_BANDS[1].poster}
+                muted
+                playsInline
+                preload="none"
+                tabIndex={-1}
+                aria-hidden="true"
+              />
+              <span className="cine-scrim" aria-hidden="true" />
+            </div>
             <div className="cine-stage">
               <div className="cine-grid">
-                <figure className="cine-scene" data-reveal>
-                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/tropical.webp')" }}>
-                    <span className="cine-scrim" aria-hidden="true" />
-                  </div>
-                  {/* The elephant guide is baked into this scene's cinematic
-                      clip (generated from the real character as an image
-                      reference), so no separate composited character here. */}
-                  <span className="cine-scene-chip" aria-hidden="true">
-                    <Target size={13} /> Make the call
+                <div className="cine-copy" data-reveal>
+                  <span className="cine-eyebrow">
+                    <Target size={15} aria-hidden="true" /> Real Thai moments
                   </span>
-                </figure>
-
-                <div className="cine-info">
-                  <div className="cine-copy" data-reveal>
-                    <span className="cine-eyebrow">
-                      <Target size={15} aria-hidden="true" /> Real Thai moments
-                    </span>
-                    <h3 className="cine-title">Quick checks</h3>
-                    <p className="cine-lead">
-                      Short multiple-choice questions right after you learn, so new words
-                      stick before you move on.
-                    </p>
-                  </div>
+                  <h3 className="cine-title">Quick checks</h3>
+                  <p className="cine-lead">
+                    Short multiple-choice questions right after you learn, so new words
+                    stick before you move on.
+                  </p>
+                  <span className="cine-scene-chip">
+                    <Target size={13} aria-hidden="true" /> Review what you learned
+                  </span>
+                </div>
+                <div className="cine-panel" data-reveal>
                   {howQuizCorrect && (
-                    <div className="cine-device" data-reveal>
+                    <div className="cine-device">
                       <div className="landing-mock landing-mock-quiz" aria-hidden="true">
                         <span className="landing-mock-quiz-label">Choose the Thai</span>
                         <span className="landing-mock-quiz-prompt">{howQuizCorrect.en}</span>
@@ -487,43 +669,50 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                       </div>
                     </div>
                   )}
-                  <p className="cine-foot" data-reveal>A quick win after every few cards.</p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* 3: Mini lessons — Thai temple, the why behind the words */}
-          <section className="cine-band" data-cine-side="left" data-cine-key="lessons">
+          <section className="cine-band" data-cine-side={CINE_BANDS[2].side} data-cine-key="lessons">
+            <div className="cine-media" data-cine-scrub style={{ '--cine-poster': `url('${CINE_BANDS[2].poster}')` }}>
+              <video
+                className="cine-video"
+                data-src={CINE_BANDS[2].video}
+                poster={CINE_BANDS[2].poster}
+                muted
+                playsInline
+                preload="none"
+                tabIndex={-1}
+                aria-hidden="true"
+              />
+              <span className="cine-scrim" aria-hidden="true" />
+            </div>
             <div className="cine-stage">
               <div className="cine-grid">
-                <figure className="cine-scene" data-reveal>
-                  <div className="cine-media" style={{ '--cine-poster': "url('/cinematic/temple.webp')" }}>
-                    <span className="cine-scrim" aria-hidden="true" />
-                  </div>
+                <div className="cine-copy" data-reveal>
+                  <span className="cine-eyebrow">
+                    <BookOpen size={15} aria-hidden="true" /> Understand the why
+                  </span>
+                  <h3 className="cine-title">Mini lessons</h3>
+                  <p className="cine-lead">
+                    Every mission opens with a short, friendly explanation and ends
+                    with a recap. You learn the why before you practice — not just
+                    word lists.
+                  </p>
+                  <span className="cine-scene-chip">
+                    <BookOpen size={13} aria-hidden="true" /> Know the why
+                  </span>
+                </div>
+                <div className="cine-panel" data-reveal>
                   <img
                     className="cine-character cine-character-think"
                     src="/characters/muay-thai/thinking.webp"
                     alt=""
                     aria-hidden="true"
                   />
-                  <span className="cine-scene-chip" aria-hidden="true">
-                    <BookOpen size={13} /> Know the why
-                  </span>
-                </figure>
-
-                <div className="cine-info">
-                  <div className="cine-copy" data-reveal>
-                    <span className="cine-eyebrow">
-                      <BookOpen size={15} aria-hidden="true" /> Understand the why
-                    </span>
-                    <h3 className="cine-title">Mini lessons</h3>
-                    <p className="cine-lead">
-                      Every mission opens with a short, friendly explanation and ends
-                      with a recap. Short explanations show the why before you practice.
-                    </p>
-                  </div>
-                  <div className="cine-device cine-device-lessons" data-reveal>
+                  <div className="cine-device cine-device-lessons">
                     {howLessonIntro && (
                       <div className="landing-mock landing-mock-lesson" aria-hidden="true">
                         <span className="landing-mock-lesson-eyebrow">
@@ -549,13 +738,13 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                         Female speakers often end with <strong>khâ</strong> (ค่ะ).
                       </span>
                       <span className="landing-mock-lesson-point">
-                        The word for &quot;I&quot; can change with speaking style too: male
+                        The word for &quot;I&quot; changes with who is speaking too: male
                         speakers often say <strong>phǒm</strong> (ผม), female speakers often
-                        say <strong>chăn</strong> (ฉัน).
+                        say <strong>chăn</strong> (ฉัน). The app flips this for you
+                        automatically.
                       </span>
                     </div>
                   </div>
-                  <p className="cine-foot" data-reveal>Learn the why, not just the words.</p>
                 </div>
               </div>
             </div>
@@ -580,11 +769,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         <div className="landing-section-head" data-reveal>
           <span className="landing-eyebrow">Your journey</span>
           <h2 id="landing-journey-title" className="landing-section-title">
-            Your first stages
+            Stages, broken into missions
           </h2>
           <p className="landing-how-sub">
-            Each stage is a set of short, guided missions. Finish a mission and
-            the next one unlocks.
+            The course is {STAGES.length} stages. Each stage is a set of short, guided
+            missions. Finish a mission and the next one unlocks — clear, one step at a time.
           </p>
         </div>
         <ol className="landing-path">
@@ -619,9 +808,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               />
             </div>
             <div className="landing-step-copy">
-              <span className="landing-step-stage">Keep going</span>
+              <span className="landing-step-stage">
+                <MapIcon size={13} aria-hidden="true" /> Keep going
+              </span>
               <span className="landing-step-title">More stages ahead</span>
-              <span className="landing-step-text">Stages 4 to 8 take you from real conversations to Thai Mastery.</span>
+              <span className="landing-step-text">Stages 4 to {STAGES.length} take you from real conversations to Thai Mastery.</span>
             </div>
           </li>
         </ol>
@@ -662,15 +853,76 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
       </section>
 
+      <section className="landing-cta-band" aria-label="Get started">
+        <div className="landing-cta-inner" data-reveal>
+          <h2 className="landing-cta-title">Your first Thai words are one tap away.</h2>
+          <p className="landing-cta-sub">Free to start. No card needed. Learn something you can say today.</p>
+          <button type="button" className="btn-primary landing-cta-button" onClick={onGetStarted}>
+            Start your first mission
+            <ArrowRight size={18} aria-hidden="true" />
+          </button>
+        </div>
+      </section>
+
       <footer className="landing-footer" aria-label="Public links">
-        <div className="landing-footer-brand">{SITE_CONFIG.siteName}</div>
-        <nav className="landing-footer-links">
-          {FOOTER_LINKS.map(link => (
-            <a key={link.path} href={link.path} onClick={openPublicPage(link.path)}>
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        <div className="landing-footer-top">
+          <div className="landing-footer-brand">{SITE_CONFIG.siteName}</div>
+          <nav className="landing-footer-links">
+            {FOOTER_LINKS.map(link => (
+              <a key={link.path} href={link.path} onClick={openPublicPage(link.path)}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        {(support.buyMeACoffeeUrl || crypto.address) && (
+          <div className="landing-footer-support">
+            <span className="landing-footer-support-label">Enjoying Tuk Talk Thai? Help keep it growing.</span>
+            <div className="landing-footer-support-actions">
+              {support.buyMeACoffeeUrl && (
+                <a
+                  className="landing-footer-coffee"
+                  href={support.buyMeACoffeeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Coffee size={15} aria-hidden="true" /> Buy me a coffee
+                </a>
+              )}
+              {crypto.address && (
+                <button
+                  type="button"
+                  className="landing-footer-crypto"
+                  onClick={() => setShowCrypto(v => !v)}
+                  aria-expanded={showCrypto}
+                >
+                  <QrCode size={15} aria-hidden="true" /> Donate crypto
+                </button>
+              )}
+            </div>
+            {showCrypto && crypto.address && (
+              <div className="landing-footer-qr" role="dialog" aria-label="Crypto donation">
+                {crypto.qrSrc && (
+                  <img
+                    className="landing-footer-qr-img"
+                    src={crypto.qrSrc}
+                    width={128}
+                    height={128}
+                    alt={`${crypto.label || 'Crypto'} donation QR code`}
+                  />
+                )}
+                <div className="landing-footer-qr-body">
+                  {crypto.label && <span className="landing-footer-qr-label">{crypto.label}</span>}
+                  <code className="landing-footer-qr-addr">{crypto.address}</code>
+                  <button type="button" className="landing-footer-qr-copy" onClick={copyCrypto}>
+                    <Copy size={13} aria-hidden="true" /> {copied ? 'Copied' : 'Copy address'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </footer>
     </main>
   );
