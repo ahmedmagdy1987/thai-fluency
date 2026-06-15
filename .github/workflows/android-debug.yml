@@ -29,9 +29,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Node.js
+        # Capacitor 8's CLI requires Node >= 22 (sync fails on 20 with
+        # "The Capacitor CLI requires NodeJS >=22.0.0").
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Set up JDK 21
