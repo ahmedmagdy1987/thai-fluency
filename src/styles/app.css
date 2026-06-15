@@ -95,7 +95,9 @@ img, svg, video { max-width: 100%; }
 .app-root[data-theme="dark"] .onboard-placement-card { background: var(--card-bg); }
 .app-root[data-theme="dark"] input.search-input { background: transparent; color: var(--ink); }
 .app-root[data-theme="dark"] .search-input::placeholder { color: var(--ink-soft); }
-.app-root[data-view-mode="speak"] .vocab-item-thai,
+/* The Words & Phrases vocabulary list is a reference view, so it always shows
+   all three fields (phonetic + Thai + English) regardless of the speak-first
+   view mode. Speak-first hiding still applies to the learning surfaces below. */
 .app-root[data-view-mode="speak"] .dialogue-line-thai,
 .app-root[data-view-mode="speak"] .quiz-feedback-thai,
 .app-root[data-view-mode="speak"] .dash-greeting-thai,
@@ -3044,3 +3046,78 @@ button.character-coach-portrait { cursor: pointer; }
 }
 .landing-motion-on [data-reveal].landing-reveal-visible { opacity: 1; transform: none; }
 @keyframes landing-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.015); } }
+
+/* ===== CutscenePlayer: ~6s between-mission / between-stage video clips =====
+   Dormant infrastructure (see src/components/CutscenePlayer.jsx). Full-screen
+   letterboxed overlay with an always-visible Skip/Continue button. Colors use
+   the existing --jade / --gold / --ink custom properties so it follows the
+   light/dark theme automatically. Append-only block — does not touch any rule
+   above. */
+.cutscene-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink, #1a2820);
+  overflow: hidden;
+}
+.cutscene-video {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  background: var(--ink, #1a2820);
+}
+.cutscene-skip-btn {
+  position: absolute;
+  bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 1px solid var(--gold, #C9A961);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--cream, #F5F0E5);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cutscene-skip-btn:hover {
+    background: var(--gold, #C9A961);
+    border-color: var(--gold, #C9A961);
+    color: var(--jade, #0F3D2E);
+  }
+}
+.cutscene-skip-btn:focus-visible {
+  outline: 2px solid var(--gold, #C9A961);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   Locked content reads as grayed-out (owner feedback E).
+   Progression-locked surfaces previously only dimmed via opacity; adding a
+   grayscale filter makes "locked" unmistakable while leaving colours, dark
+   mode and custom properties (--char-accent, --stage-color) untouched. The
+   deliberate Super upsell stays the existing throttled SuperUpgradePrompt on
+   explicit tap — no new popups, nothing spammy.
+   ========================================================================== */
+.learn-path-node-locked .learn-path-character { filter: grayscale(1); }
+.learn-path-node-locked .learn-path-character-emoji { opacity: 0.75; }
+.learn-mission-node-locked { filter: grayscale(0.95); }
+.level-pill-locked { filter: grayscale(1); }
+/* Shop character cards are preview/locked today: gray the portrait so they
+   read as not-yet-available rather than fully-coloured-but-labelled. */
+.shop-character-card .shop-character-portrait { filter: grayscale(0.9); opacity: 0.9; }
+/* Leaderboard preview rows are inert placeholders (Coming soon). */
+.leaderboard-preview-row-placeholder { filter: grayscale(1); }

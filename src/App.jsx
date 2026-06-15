@@ -1102,13 +1102,28 @@ export default function TukTalkThaiApp() {
 
   const completeOnboarding = useCallback((startedStage, knownIds, voiceChoice) => {
     if (knownIds && knownIds.length) markCardsKnown(knownIds);
+    // Placement respects the chosen level: a learner who already knows Thai and
+    // starts above Stage 1 should NOT be forced through the Stage-1 "say hello"
+    // starter lesson (the "stuck at the absolute beginning" complaint). For them
+    // we mark the guided pilot done and drop them straight onto their chosen
+    // stage, where that stage's own first mission still guides them. The curated
+    // path is untouched: getStageState keeps maxUnlockedStage at startedStage, so
+    // every later stage stays locked and unlocks only by finishing the one before
+    // it. Beginners (Stage 1) keep the full polished first-lesson experience.
+    const skipStarterLesson = startedStage > 1;
     setStats(s => ({
       ...s,
       hasOnboarded: true,
       startedStage,
       currentStage: startedStage,
       voice: voiceChoice || s.voice || DEFAULT_VOICE,
+      ...(skipStarterLesson ? { firstLessonCompleted: true } : {}),
     }));
+    if (skipStarterLesson) {
+      // Land them in the learning path at their placed stage instead of the gate.
+      setTab('learn');
+      writeRoute('/learn', { replace: true });
+    }
     // Cloud write (fire-and-forget). Persists onboarding_completed + voice
     // on profiles so the user doesn't re-see placement onboarding on another
     // device or after sign-out.
@@ -1764,7 +1779,7 @@ export default function TukTalkThaiApp() {
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
-          {tab === 'leaderboard' && <LeaderboardScreen stats={stats} onOpenSuper={handleOpenPremium} />}
+          {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
       )}
 

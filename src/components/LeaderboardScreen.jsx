@@ -1,62 +1,46 @@
 import React from 'react';
-import { Crown, Trophy, Lock, Users, Flame } from 'lucide-react';
+import { Trophy, Lock, Users } from 'lucide-react';
 
-// Placeholder leaderboard. No real ranking infrastructure exists. The page
-// exists because the sidebar surfaces a Leaderboard entry — dead buttons
-// are forbidden by the spec, so this renders a polished "Coming soon" view
-// that explains the intent.
-export default function LeaderboardScreen({ stats, onOpenSuper }) {
-  const streak = stats?.streak || 0;
-  const totalXp = stats?.totalXp || 0;
+// The leaderboard is not live yet — there is no ranking backend. This renders a
+// clean, honest "Coming soon" state: no real user data and no upsell. The
+// preview rows are obviously inert placeholders. When it does launch it will
+// show each player's chosen username / nickname only — never a real name,
+// email, or streak data without explicit opt-in.
+const PREVIEW_ROWS = [
+  { rank: 1, avatar: '🐘', name: 'Player one' },
+  { rank: 2, avatar: '🦎', name: 'Player two' },
+  { rank: 3, avatar: '🐒', name: 'Player three' },
+];
 
+export default function LeaderboardScreen() {
   return (
     <div className="tab-content leaderboard-screen">
       <header className="leaderboard-hero">
         <div className="leaderboard-hero-icon"><Trophy size={28} /></div>
         <div className="leaderboard-hero-body">
-          <div className="leaderboard-hero-eyebrow">Leaderboard preview</div>
-          <h1 className="leaderboard-hero-title">Friendly competition is on the way</h1>
+          <div className="leaderboard-hero-eyebrow">Coming soon</div>
+          <h1 className="leaderboard-hero-title">Leaderboards are coming soon</h1>
           <p className="leaderboard-hero-sub">
-            Compete weekly with other Thai learners by total XP earned. Climb
-            divisions, earn gems, and keep your streak alive.
+            Soon you&apos;ll compete with other Thai learners by weekly XP. We&apos;re
+            still building it — check back after an update.
           </p>
         </div>
       </header>
 
-      <div className="leaderboard-preview-card">
-        <div className="leaderboard-preview-row leaderboard-preview-row-self">
-          <div className="leaderboard-preview-rank">You</div>
-          <div className="leaderboard-preview-avatar" aria-hidden="true">🐘</div>
-          <div className="leaderboard-preview-name">You</div>
-          <div className="leaderboard-preview-stat">
-            <Flame size={12} /> <span>{streak}</span>
+      <div className="leaderboard-preview-card" aria-hidden="true">
+        {PREVIEW_ROWS.map(row => (
+          <div className="leaderboard-preview-row leaderboard-preview-row-placeholder" key={row.rank}>
+            <div className="leaderboard-preview-rank">{row.rank}</div>
+            <div className="leaderboard-preview-avatar">{row.avatar}</div>
+            <div className="leaderboard-preview-name">{row.name}</div>
+            <div className="leaderboard-preview-xp">— XP</div>
           </div>
-          <div className="leaderboard-preview-xp">{totalXp} XP</div>
-        </div>
-        <div className="leaderboard-preview-row leaderboard-preview-row-placeholder">
-          <div className="leaderboard-preview-rank">2</div>
-          <div className="leaderboard-preview-avatar" aria-hidden="true">🦎</div>
-          <div className="leaderboard-preview-name">Learner preview</div>
-          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>0</span></div>
-          <div className="leaderboard-preview-xp">0 XP</div>
-        </div>
-        <div className="leaderboard-preview-row leaderboard-preview-row-placeholder">
-          <div className="leaderboard-preview-rank">3</div>
-          <div className="leaderboard-preview-avatar" aria-hidden="true">🐒</div>
-          <div className="leaderboard-preview-name">Learner preview</div>
-          <div className="leaderboard-preview-stat"><Flame size={12} /> <span>0</span></div>
-          <div className="leaderboard-preview-xp">0 XP</div>
-        </div>
+        ))}
       </div>
 
       <div className="leaderboard-lock">
         <Lock size={14} />
-        <span>Leaderboards require Level 2 progress, opt-in profile sharing, and weekly totals. Super unlocks some competitive features early when it opens.</span>
-        {onOpenSuper && (
-          <button type="button" className="leaderboard-super-link" onClick={onOpenSuper}>
-            <Crown size={13} /> See Super
-          </button>
-        )}
+        <span>When leaderboards launch, joining will be opt-in and weekly.</span>
       </div>
 
       <div className="leaderboard-future">
@@ -64,7 +48,8 @@ export default function LeaderboardScreen({ stats, onOpenSuper }) {
         <div>
           <div className="leaderboard-future-title">Private by default</div>
           <div className="leaderboard-future-sub">
-            You will choose whether to appear. Display name only. No email or streak data without consent.
+            Leaderboards will show your chosen username only — never your real name,
+            email, or streak data. You&apos;ll opt in before you appear.
           </div>
         </div>
       </div>

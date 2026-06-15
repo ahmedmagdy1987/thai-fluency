@@ -1730,7 +1730,7 @@ export const IMPORTED_CARDS = [
   {id:3315,thai:"เข่า",ph:"khào",en:"knee",type:"w",stage:6,cat:"body"}, // phReview: true
   {id:3316,thai:"อวด",ph:"ùaat",en:"show off; flaunt",type:"w",stage:1,cat:"verbs"}, // phReview: true
   {id:3317,thai:"ประณีต",ph:"bprà nêet",en:"finely; neatly; elaborately",type:"w",stage:2,cat:"adjectives"}, // phReview: true
-  {id:3318,thai:"ควาย",ph:"khwaai",en:"buffalo",type:"w",stage:4,cat:"things"}, // phReview: true
+  {id:3318,thai:"ควาย",ph:"khwaai",en:"water buffalo",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3319,thai:"นาค",ph:"nâak",en:"Naga",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3320,thai:"ข้าวโพด",ph:"khâao phôht",en:"corn",type:"w",stage:4,cat:"things"}, // phReview: true
   {id:3321,thai:"เครื่องประดับ",ph:"khrêuuang bprà dàp",en:"decorations; ornaments",type:"w",stage:4,cat:"things"}, // phReview: true
