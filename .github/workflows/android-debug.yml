@@ -64,7 +64,11 @@ jobs:
 
       - name: Assemble debug APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon --console=plain
+        # chmod is a safety net in case the gradlew exec bit is ever lost on a
+        # Windows checkout (the file is committed mode 100755).
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon --console=plain
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
