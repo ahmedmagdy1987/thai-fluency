@@ -1111,14 +1111,27 @@ export default function TukTalkThaiApp() {
     // every later stage stays locked and unlocks only by finishing the one before
     // it. Beginners (Stage 1) keep the full polished first-lesson experience.
     const skipStarterLesson = startedStage > 1;
-    setStats(s => ({
-      ...s,
-      hasOnboarded: true,
-      startedStage,
-      currentStage: startedStage,
-      voice: voiceChoice || s.voice || DEFAULT_VOICE,
-      ...(skipStarterLesson ? { firstLessonCompleted: true } : {}),
-    }));
+    setStats(s => {
+      const next = {
+        ...s,
+        hasOnboarded: true,
+        startedStage,
+        currentStage: startedStage,
+        voice: voiceChoice || s.voice || DEFAULT_VOICE,
+        ...(skipStarterLesson ? { firstLessonCompleted: true } : {}),
+      };
+      // Placement can satisfy stage-milestone achievements (e.g. "reach Stage 3")
+      // just by starting there — those are not earned through play. Record them
+      // as already-unlocked and arm the toast lock so a placed learner doesn't
+      // get a burst of spurious achievement pop-ups on their very first screen
+      // (mirrors how the celebration ledger is baselined at first arming).
+      const seededAchievements = checkAchievements(next, progress)
+        .filter(a => a.unlocked)
+        .map(a => a.id);
+      seededAchievements.forEach(id => achievementLocksRef.current.add(id));
+      next.unlockedAchievements = [...new Set([...(s.unlockedAchievements || []), ...seededAchievements])];
+      return next;
+    });
     if (skipStarterLesson) {
       // Land them in the learning path at their placed stage instead of the gate.
       setTab('learn');
@@ -1135,7 +1148,7 @@ export default function TukTalkThaiApp() {
         if (error) console.warn('[App] failed to write onboarding state to cloud', error);
       });
     }
-  }, [markCardsKnown, session]);
+  }, [markCardsKnown, session, progress]);
 
   const updateSettings = useCallback((updates) => {
     if (Object.prototype.hasOwnProperty.call(updates, 'soundEffects')) {
