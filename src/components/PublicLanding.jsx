@@ -354,6 +354,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           <span className="lp-hero-scrim" />
         </div>
 
+        <div className="lp-hero-body">
         <div className="lp-shell lp-hero-inner">
           <div className="lp-hero-copy">
             <span className="lp-kicker">
@@ -417,17 +418,19 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             <img className="lp-hero-mascot" src="/characters/muay-thai/happy.webp" alt="" />
           </div>
         </div>
-      </section>
+        </div>
 
-      {/* ===================== STATS ===================== */}
-      <section className="lp-stats" aria-label="Course size">
-        <div className="lp-shell lp-stats-inner" data-reveal>
-          {COURSE_STATS.map(stat => (
-            <div className="lp-stat" key={stat.label}>
-              <span className="lp-stat-value">{stat.value}</span>
-              <span className="lp-stat-label">{stat.label}</span>
-            </div>
-          ))}
+        {/* Stats docked inside the hero so the first viewport is one complete
+            composition — no light strip leaking in from the next section. */}
+        <div className="lp-shell lp-hero-stats-wrap">
+          <div className="lp-hero-stats" aria-label="Course size">
+            {COURSE_STATS.map(stat => (
+              <div className="lp-hero-stat" key={stat.label}>
+                <span className="lp-hero-stat-value">{stat.value}</span>
+                <span className="lp-hero-stat-label">{stat.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -560,8 +563,10 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           <ol className="lp-loop-track">
             {LOOP.map(({ Icon, step, text }, index) => (
               <li className="lp-loop-step" key={step} data-reveal style={{ '--reveal-delay': `${index * 80}ms` }}>
-                <span className="lp-loop-num">{index + 1}</span>
-                <span className="lp-loop-icon"><Icon size={20} aria-hidden="true" /></span>
+                <span className="lp-loop-icon">
+                  <Icon size={20} aria-hidden="true" />
+                  <span className="lp-loop-num">{index + 1}</span>
+                </span>
                 <h3 className="lp-loop-step-title">{step}</h3>
                 <p className="lp-loop-step-text">{text}</p>
               </li>
