@@ -190,11 +190,13 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-hero-inner {
   position: relative; z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  /* Give the visual column a touch more room so the larger mascot reads as the
+     hero figure without crowding the card. */
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
   align-items: center;
-  gap: clamp(28px, 5vw, 64px);
+  gap: clamp(24px, 4vw, 52px);
 }
-.lp-hero-copy { max-width: 600px; }
+.lp-hero-copy { max-width: 580px; }
 
 .lp-kicker {
   display: inline-flex; align-items: center; gap: 8px;
@@ -243,23 +245,32 @@ button.lp-audio:active { transform: scale(0.92); }
 }
 .lp-hero-chips svg { color: var(--gold-soft); flex-shrink: 0; }
 
-/* --- Hero showcase: one composed unit (card left, mascot standing right,
-   one docked phrase accent at the bottom-left). Every piece is anchored to
-   this single frame — no scattered floats. --- */
-.lp-hero-visual { position: relative; display: flex; align-items: flex-end; justify-content: flex-start; min-height: clamp(360px, 42vh, 470px); }
+/* --- Hero showcase: the mascot is the hero figure — large, grounded, and
+   FULLY in front (never tucked behind the card). The app-preview card sits
+   lower-left as a supporting prop; the mascot (z 3) overlaps its right edge,
+   so the character is always 100% visible and the card peeks out beside it.
+   A soft radial pedestal + ground shadow keep the mascot standing, not
+   floating. --- */
+.lp-hero-visual { position: relative; min-height: clamp(440px, 52vh, 560px); }
+/* warm pedestal glow behind the mascot's feet */
+.lp-hero-visual::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  right: clamp(-10px, 2vw, 40px); bottom: clamp(-6px, 1vh, 14px);
+  width: clamp(240px, 30vw, 380px); height: clamp(240px, 30vw, 380px);
+  background: radial-gradient(circle at 50% 62%, rgba(201, 169, 97, 0.22), rgba(201, 169, 97, 0.07) 45%, transparent 66%);
+}
 .lp-showcase {
-  position: relative; z-index: 2;
-  width: min(326px, 82%);
-  margin-bottom: clamp(8px, 2vh, 22px);
-  padding: 18px;
-  border-radius: 24px;
+  position: absolute; left: 0; bottom: clamp(22px, 6vh, 56px); z-index: 1;
+  width: min(284px, 74%);
+  padding: 16px;
+  border-radius: 22px;
   background: color-mix(in srgb, var(--card-bg) 92%, transparent);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: var(--lp-shadow-float);
   backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
 .lp-showcase-badge {
-  position: absolute; top: -14px; left: 18px; z-index: 3;
+  position: absolute; top: -14px; left: 16px; z-index: 2;
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 13px; border-radius: 999px;
   background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 70%, #fff));
@@ -269,9 +280,9 @@ button.lp-audio:active { transform: scale(0.92); }
 }
 .lp-showcase-badge svg { fill: currentColor; }
 .lp-showcase-phrase {
-  position: absolute; left: -22px; bottom: -26px; z-index: 4;
+  position: absolute; left: -20px; bottom: -24px; z-index: 2;
   display: flex; align-items: center; gap: 10px;
-  max-width: 208px; padding: 10px 12px; border-radius: 14px;
+  max-width: 204px; padding: 10px 12px; border-radius: 14px;
   background: var(--card-bg); border: 1px solid var(--line-strong);
   box-shadow: 0 18px 38px -16px rgba(15, 61, 46, 0.6);
 }
@@ -280,19 +291,19 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-showcase-phrase-ph { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--brick); line-height: 1.15; }
 .lp-showcase-phrase-en { font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); line-height: 1; }
 .lp-hero-mascot {
-  position: absolute; z-index: 1;
-  right: clamp(-44px, -2.6vw, -6px); bottom: -12px;
-  width: clamp(248px, 30vw, 366px);
-  filter: drop-shadow(0 28px 30px rgba(0, 0, 0, 0.52));
+  position: absolute; z-index: 3;            /* in FRONT of the card — always fully visible */
+  right: clamp(-30px, -1vw, 14px); bottom: 0;
+  width: clamp(310px, 35vw, 440px);
+  filter: drop-shadow(0 30px 32px rgba(0, 0, 0, 0.5));
   pointer-events: none;
 }
-/* soft ground so the bigger mascot reads as standing, not floating */
+/* soft ground ellipse under the mascot's feet */
 .lp-hero-visual::after {
-  content: ''; position: absolute; z-index: 0;
-  right: clamp(2px, 2vw, 40px); bottom: -8px;
-  width: clamp(180px, 22vw, 270px); height: 30px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4), transparent 70%);
-  filter: blur(3px); pointer-events: none;
+  content: ''; position: absolute; z-index: 2;
+  right: clamp(8px, 4vw, 60px); bottom: 2px;
+  width: clamp(210px, 24vw, 300px); height: 32px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.42), transparent 70%);
+  filter: blur(4px); pointer-events: none;
 }
 
 /* ===================== STATS (docked inside the hero) =====================
@@ -388,48 +399,71 @@ button.lp-audio:active { transform: scale(0.92); }
 
 /* ============================ MISSION LOOP ============================  */
 .lp-loop { padding-block: var(--lp-section-y); }
-.lp-head-loop { position: relative; padding-top: 132px; }
+.lp-head-loop { position: relative; padding-top: 168px; }
+/* Mascot stage: a larger, grounded coach above the heading with a soft glow
+   pedestal and a speech bubble that points down at him. */
 .lp-loop-mascot { position: absolute; top: 0; left: 50%; translate: -50% 0; display: inline-flex; flex-direction: column; align-items: center; }
-.lp-loop-mascot img { width: 78px; height: 78px; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(15, 61, 46, 0.22)); }
-.lp-loop-bubble { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--jade); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 999px; padding: 5px 12px; box-shadow: 0 8px 18px rgba(15, 61, 46, 0.12); margin-bottom: 8px; }
+.lp-loop-mascot::after {
+  content: ''; position: absolute; bottom: 4px; left: 50%; translate: -50% 0; z-index: 0;
+  width: 132px; height: 132px; border-radius: 999px;
+  background: radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 68%);
+}
+.lp-loop-mascot img { position: relative; z-index: 1; width: 112px; height: 112px; object-fit: contain; filter: drop-shadow(0 14px 20px rgba(15, 61, 46, 0.26)); }
+.lp-loop-bubble {
+  position: relative; z-index: 2;
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: var(--jade);
+  background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 7px 14px; box-shadow: 0 10px 22px rgba(15, 61, 46, 0.14); margin-bottom: 12px;
+}
+.lp-loop-bubble::after {
+  content: ''; position: absolute; left: 50%; bottom: -5px; translate: -50% 0; rotate: 45deg;
+  width: 9px; height: 9px; background: var(--card-bg);
+  border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);
+}
 
 .lp-loop-track {
-  list-style: none; margin: clamp(36px, 5vw, 52px) 0 0; padding: 0;
+  list-style: none; margin: clamp(40px, 5.5vw, 60px) 0 0; padding: 0;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--lp-gap);
-  counter-reset: loop;
 }
 .lp-loop-step {
   position: relative;
+  display: flex; flex-direction: column;
   background: var(--card-bg); border: 1px solid var(--line);
-  border-radius: var(--lp-radius); padding: 24px 20px 22px;
+  border-radius: var(--lp-radius); padding: 26px 22px 24px;
   box-shadow: var(--lp-shadow-card);
 }
-/* connector line between steps (desktop) — sits at the icon's vertical centre */
+/* connector between steps (desktop) — a soft gradient line ending in a dot,
+   aligned to the icon's vertical centre. */
 .lp-loop-step:not(:last-child)::after {
-  content: ''; position: absolute; top: 47px; right: calc(var(--lp-gap) / -2 - 1px);
-  width: var(--lp-gap); height: 2px;
-  background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 11px);
+  content: ''; position: absolute; top: 51px; right: calc(var(--lp-gap) / -2 - 4px);
+  width: calc(var(--lp-gap) + 6px); height: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold) 60%, var(--line)) 30%, color-mix(in srgb, var(--gold) 60%, var(--line)));
+}
+.lp-loop-step:not(:last-child)::before {
+  content: ''; position: absolute; top: 48px; right: calc(var(--lp-gap) / -2 - 4px);
+  width: 7px; height: 7px; border-radius: 999px; z-index: 1;
+  background: color-mix(in srgb, var(--gold) 70%, var(--line));
 }
 .lp-loop-icon {
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: 14px; margin-bottom: 14px;
+  width: 50px; height: 50px; border-radius: 15px; margin-bottom: 16px;
   color: var(--jade); background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
 }
 /* Step number: a small badge anchored to its own icon (stable containing
    block), so it always belongs to one card and never sits between cards. */
 .lp-loop-num {
-  position: absolute; top: -8px; right: -8px;
-  width: 22px; height: 22px; border-radius: 999px;
+  position: absolute; top: -9px; right: -9px;
+  width: 24px; height: 24px; border-radius: 999px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--gold); color: #2a2412;
-  font-size: 11px; font-weight: 800; line-height: 1;
+  font-size: 12px; font-weight: 800; line-height: 1;
   border: 2px solid var(--card-bg);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
-.lp-loop-step-title { margin: 0 0 6px; font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--ink); }
-.lp-loop-step-text { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-soft); }
+.lp-loop-step-title { margin: 0 0 8px; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
+.lp-loop-step-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
 
 /* ============================== JOURNEY ==============================  */
 .lp-journey { padding-block: var(--lp-section-y); background: var(--cream-warm); }
@@ -551,12 +585,15 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-subtitle { margin-inline: auto; }
   .lp-hero-actions, .lp-hero-chips { justify-content: center; }
   .lp-hero-demo-link { justify-content: center; }
-  .lp-hero-visual { justify-content: center; min-height: clamp(330px, 40vh, 420px); width: 100%; max-width: 470px; }
-  .lp-hero-mascot { width: clamp(190px, 34vw, 256px); right: clamp(-28px, -3vw, -8px); bottom: -10px; }
-  .lp-hero-visual::after { width: clamp(150px, 26vw, 200px); right: clamp(0px, 3vw, 28px); bottom: -8px; }
+  .lp-hero-visual { min-height: clamp(380px, 46vh, 470px); width: min(470px, 100%); margin-inline: auto; }
+  .lp-showcase { width: min(262px, 60%); bottom: clamp(18px, 4vh, 38px); }
+  .lp-hero-mascot { width: clamp(248px, 44vw, 330px); right: clamp(-22px, -2vw, 8px); bottom: 0; }
+  .lp-hero-visual::before { width: clamp(220px, 40vw, 300px); height: clamp(220px, 40vw, 300px); }
+  .lp-hero-visual::after { width: clamp(170px, 32vw, 240px); right: clamp(8px, 5vw, 44px); bottom: 2px; }
   .lp-feature-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
   .lp-loop-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lp-loop-step:not(:last-child)::after { display: none; }
+  .lp-loop-step:not(:last-child)::after,
+  .lp-loop-step:not(:last-child)::before { display: none; }
 }
 
 /* Phones */
@@ -568,12 +605,12 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-body { padding-block: clamp(12px, 3vh, 28px); }
   .lp-hero-actions { flex-direction: column; align-items: stretch; }
   .lp-cta-primary, .lp-cta-secondary { width: 100%; }
-  /* Dedicated mobile scene: card left, mascot standing to its right (not a
-     shrunk desktop overlap where the mascot hides behind a centred card). */
-  .lp-hero-visual { justify-content: flex-start; min-height: clamp(270px, 36vh, 330px); max-width: 420px; }
-  .lp-showcase { width: min(248px, 64%); margin-bottom: 4px; }
-  .lp-hero-mascot { width: clamp(150px, 44vw, 188px); right: -6px; bottom: -6px; }
-  .lp-hero-visual::after { width: clamp(120px, 36vw, 156px); right: 0; bottom: -4px; }
+  /* Mobile scene: big mascot in front (right), app card peeking lower-left. */
+  .lp-hero-visual { min-height: clamp(320px, 42vh, 380px); width: min(380px, 100%); margin-inline: auto; }
+  .lp-showcase { width: min(224px, 58%); bottom: clamp(14px, 3vh, 28px); padding: 13px; }
+  .lp-hero-mascot { width: clamp(210px, 54vw, 270px); right: -8px; bottom: 0; }
+  .lp-hero-visual::before { width: clamp(190px, 50vw, 250px); height: clamp(190px, 50vw, 250px); }
+  .lp-hero-visual::after { width: clamp(150px, 42vw, 200px); right: 4px; bottom: 2px; }
   .lp-showcase-phrase { display: none; }
   .lp-hero-stats { max-width: 100%; }
   .lp-hero-stat-value { font-size: clamp(22px, 6vw, 28px); }
@@ -591,8 +628,8 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-nav-signin { padding: 9px 14px; }
 }
 
-/* Very small phones: tighten the card so the mascot keeps its space. */
+/* Very small phones: tighten the card so the big mascot keeps its space. */
 @media (max-width: 380px) {
-  .lp-showcase { width: min(206px, 58%); }
-  .lp-hero-mascot { width: clamp(128px, 46vw, 150px); }
+  .lp-showcase { width: min(190px, 54%); }
+  .lp-hero-mascot { width: clamp(180px, 56vw, 212px); }
 }

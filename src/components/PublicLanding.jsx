@@ -27,8 +27,8 @@ import { SITE_CONFIG } from '../config/site.js';
 
 // Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
 // real part of the app (guided mini-units, the challenge step, XP/streak
-// quests, account sync) so nothing here is an unverified claim.
-const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'XP and streaks', 'Device sync'];
+// quests) so nothing here is an unverified claim.
+const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'XP and streaks'];
 
 // Real course size, derived from the data files so the numbers can never drift
 // from the product. Card count is floored to a clean "N+" figure.
@@ -95,11 +95,11 @@ const HOW_RATINGS = [
 ];
 
 const FOOTER_LINKS = [
+  { path: '/plans', label: 'Plans' },
   { path: '/privacy', label: 'Privacy' },
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
   { path: '/feedback', label: 'Feedback' },
-  { path: '/premium', label: 'Super' },
   { path: '/delete-account', label: 'Account deletion' },
 ];
 
