@@ -198,3 +198,58 @@ right pattern: **celebrate, then softly mention Super, never block.**
 - No payments until a provider is deliberately chosen and owner-approved.
 - One prompt per day, on positive moments, single CTA, honest copy.
 - The learning flow stays ad-free.
+
+## 6. Rewarded attempts & the hearts economy (proposals)
+
+Today there is **no fail-gate**: `ShopScreen.jsx` already previews a hearts/gems
+economy (`refill-hearts` = 350 gems, `unlimited-hearts (1h)` = 500 gems) but it
+is a **visual scaffold only** (header comment: "None of these buttons spend
+gems, modify the database, or change gameplay"). So "rewarded attempts" is a
+*future* mechanic, not a live one — decide deliberately before building it.
+
+Recommended stance for Tuk Talk Thai (speak-first, low-pressure, expat audience):
+
+- **Do not ship a punishing hearts gate.** A hearts-lost-on-wrong-answer model
+  fights the "low-stress, speak from day one" identity. If hearts ship at all,
+  scope them to the *Challenge* step only, never to flashcard review.
+- **If** a soft attempt limit is introduced on Challenge, the ethical
+  "rewarded attempt" options (in priority order) are:
+  1. **Free refill over time** (e.g. 1 heart / 30 min) — always the default.
+  2. **Spend earned gems** to refill (`refill-hearts`) — gems are earned by
+     finishing missions/streaks, so this rewards play, not payment.
+  3. **Super tier = unlimited hearts** — the cleanest monetization tie-in
+     (`unlimited-hearts` becomes a permanent Super perk, not a per-hour buy).
+  4. **Rewarded video ad → 1 retry** — *optional, last*, and only if ads are
+     ever introduced (see §3). Keep it opt-in and never interrupt mid-lesson.
+- **Never** block the curated learning path behind hearts. A user must always
+  be able to keep learning for free; hearts may only gate *speed/convenience*.
+
+Owner decision needed: (a) will hearts be a real mechanic at all? (b) if yes,
+Challenge-only soft limit vs. no limit; (c) whether rewarded-video ads are
+acceptable for the brand. Until decided, the scaffold stays inert.
+
+## 7. Analytics events to instrument (proposals)
+
+The app currently has **no analytics event layer** (privacy-first; only
+localStorage + Supabase persistence). Before tuning any of the above, add a
+thin, privacy-respecting event sink (self-hosted or a consent-gated provider —
+owner to choose). Suggested minimal event set, named for funnel analysis:
+
+| Event | When | Key props |
+|---|---|---|
+| `onboarding_started` / `onboarding_completed` | placement flow open / finish | `selectedLevel`, `placementUsed`, `startStage` |
+| `mission_started` / `mission_completed` | mini-unit open / finish | `stageId`, `unitId`, `durationMs` |
+| `challenge_result` | quick-check answered | `correct`, `stageId`, `unitId` |
+| `streak_incremented` / `streak_broken` | daily streak change | `streakLen` |
+| `prompt_shown` / `prompt_clicked` / `prompt_dismissed` | Super prompt lifecycle | `surface` (modal/inline), `trigger`, `dayKey` |
+| `demo_started` / `demo_to_signup` | `/demo` entry → account create | `cardsSeen` |
+| `signin` / `signup` | auth success | `method` |
+| `locked_content_tapped` | tap on a locked stage/unit | `stageId`, `reason` |
+| `audio_played` | TTS playback | `cardId`, `voice` |
+
+Guardrails: no PII in props (no email/name), respect Do-Not-Track, and keep the
+funnel local-first where possible. Tie `prompt_*` events back to §5's one-per-day
+cap so prompt fatigue is measurable, not guessed.
+
+Owner decision needed: which analytics approach is acceptable given the
+privacy-first stance (self-hosted vs. a consent-gated SDK), and a budget if any.
