@@ -50,11 +50,11 @@ const PUBLIC_PAGES = {
 };
 
 const PAGE_LINKS = [
+  { path: '/plans', label: 'Plans' },
   { path: '/privacy', label: 'Privacy' },
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
   { path: '/feedback', label: 'Feedback' },
-  { path: '/premium', label: 'Super' },
   { path: '/delete-account', label: 'Delete account' },
 ];
 

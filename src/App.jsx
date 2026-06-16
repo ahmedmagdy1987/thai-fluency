@@ -71,6 +71,7 @@ import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
+import PlansPage from './components/PlansPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
@@ -156,6 +157,7 @@ const PUBLIC_PAGE_ROUTES = {
   '/terms': 'terms',
   '/support': 'support',
   '/feedback': 'feedback',
+  '/plans': 'plans',
   '/premium': 'premium',
   '/delete-account': 'delete-account',
 };
@@ -1190,7 +1192,8 @@ export default function TukTalkThaiApp() {
   const handleOpenPremium = useCallback(() => {
     setUpgradePrompt(null);
     setRewardScreen(null);
-    handleNavigatePath('/premium');
+    // Route Super/upgrade entry points to the full plans/pricing page.
+    handleNavigatePath('/plans');
   }, [handleNavigatePath]);
 
   const handleRewardContinue = useCallback(() => {
@@ -1580,11 +1583,20 @@ export default function TukTalkThaiApp() {
   if (publicPage) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
-        <PublicInfoPage
-          page={publicPage}
-          isAuthed={!!session}
-          onNavigate={handleNavigatePath}
-        />
+        {publicPage === 'plans' ? (
+          <PlansPage
+            isAuthed={!!session}
+            onNavigate={handleNavigatePath}
+            onGetStarted={() => openAuthGate('welcome')}
+            onSignIn={() => openAuthGate('signin')}
+          />
+        ) : (
+          <PublicInfoPage
+            page={publicPage}
+            isAuthed={!!session}
+            onNavigate={handleNavigatePath}
+          />
+        )}
       </div>
     );
   }
