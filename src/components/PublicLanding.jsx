@@ -216,7 +216,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   const rootRef = useRef(null);
   const heroVideoRef = useRef(null);
   const cineVideoRef = useRef(null);
-  const deckRef = useRef(null);
   const [showCrypto, setShowCrypto] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -272,32 +271,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      if (raf) window.cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  // Hero sample deck: on mobile the deck is a horizontal scroll-snap carousel,
-  // so keep the dot indicators in sync with the scroll position. On desktop the
-  // deck is a static fan (not scrollable) and this is a cheap no-op.
-  useEffect(() => {
-    const deck = deckRef.current;
-    if (!deck || typeof window === 'undefined') return undefined;
-    const dotsWrap = deck.parentElement && deck.parentElement.querySelector('.lp-deck-dots');
-    if (!dotsWrap) return undefined;
-    const dots = Array.from(dotsWrap.querySelectorAll('.lp-deck-dot'));
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const max = deck.scrollWidth - deck.clientWidth;
-      if (max <= 4) return; // not a carousel (desktop fan)
-      const ratio = deck.scrollLeft / max;
-      const active = Math.round(ratio * (dots.length - 1));
-      dots.forEach((d, i) => d.classList.toggle('lp-deck-dot-on', i === active));
-    };
-    const onScroll = () => { if (!raf) raf = window.requestAnimationFrame(update); };
-    deck.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      deck.removeEventListener('scroll', onScroll);
       if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);
@@ -440,8 +413,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               Speak useful Thai from your <span>very first mission</span>.
             </h1>
             <p className="lp-subtitle">
-              Short missions designed like a game teach you the words and phrases that matter
-              in real Thai moments, from street food to taxi rides.
+              Short missions designed like a game teach you the words and phrases that
+              actually matter, from street food to taxi rides.
             </p>
 
             <div className="lp-hero-actions">
@@ -472,28 +445,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </ul>
           </div>
 
-          {/* Hero visual group: the three real product samples (flashcard,
-              quick check, mini lesson) plus the mascot. On desktop the samples
-              are a controlled fanned deck (all three identifiable); on mobile
-              they become a swipeable scroll-snap carousel with dot controls.
-              isolation:isolate gives this group its own stacking context, so the
-              z-order (mascot above the deck) is local, not global. */}
+          {/* Hero visual group: ONE large product sample card plus the mascot.
+              isolation:isolate gives this group its own local stacking context so
+              the mascot sits above the card without relying on global z-index. */}
           <div className="lp-hero-visual" aria-hidden="true">
-            <div className="lp-deck" ref={deckRef}>
-              <div className="lp-deck-card lp-deck-card-flash">
-                <FlashcardMock phrase={heroFlashcard} onPlay={playPhrase} decorative />
-              </div>
-              <div className="lp-deck-card lp-deck-card-quiz">
-                <QuickCheckMock correct={howQuizCorrect} options={howQuizOptions} correctId={HOW_QUIZ_CORRECT_ID} />
-              </div>
-              <div className="lp-deck-card lp-deck-card-lesson">
-                <MiniLessonMock intro={howLessonIntro} />
-              </div>
-            </div>
-            <div className="lp-deck-dots" aria-hidden="true">
-              <span className="lp-deck-dot lp-deck-dot-on" />
-              <span className="lp-deck-dot" />
-              <span className="lp-deck-dot" />
+            <div className="lp-hero-card">
+              <FlashcardMock phrase={heroFlashcard} onPlay={playPhrase} decorative />
             </div>
             <img className="lp-hero-mascot" src="/characters/muay-thai/happy.webp" alt="" />
           </div>

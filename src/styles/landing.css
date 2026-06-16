@@ -266,59 +266,28 @@ button.lp-audio:active { transform: scale(0.92); }
   background: radial-gradient(circle at 50% 62%, rgba(201, 169, 97, 0.22), rgba(201, 169, 97, 0.07) 45%, transparent 66%);
 }
 
-/* --- Sample deck: three real product cards. Desktop = a controlled fan with
-   the flashcard primary (front, left) and the quick-check + mini-lesson fanned
-   to its right so all three are identifiable; the mascot sits to the far right
-   so it never covers the primary card's content. --- */
-.lp-deck { position: relative; z-index: 1; width: min(248px, 58%); margin: 0 auto 0 clamp(10px, 2vw, 34px); padding-top: 58px; }
-.lp-deck-card { min-width: 0; }
-.lp-deck-card .lp-mock {
+/* --- ONE large premium sample card on the left; the mascot stands in front on
+   the right. No stacked, peeking or carousel cards — just a single clean card
+   and a single mascot. --- */
+.lp-hero-card { position: relative; z-index: 1; width: min(316px, 56%); margin: 0 auto 0 0; }
+.lp-hero-card .lp-mock {
+  padding: 20px; border-radius: 22px;
   box-shadow: var(--lp-shadow-float);
   border-color: rgba(255, 255, 255, 0.55);
-  background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+  background: color-mix(in srgb, var(--card-bg) 96%, transparent);
   backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
-/* Controlled vertical stack: the primary flashcard sits in front (in flow,
-   pushed down by the deck's padding-top); the quick-check and mini-lesson are
-   staggered UP behind it so each card's header peeks above and stays
-   identifiable. Centred (not fanned sideways) so the right-side mascot has room
-   and never covers them. */
-.lp-deck-card-flash { position: relative; z-index: 3; }
-.lp-deck-card-quiz { position: absolute; z-index: 2; top: 30px; left: 50%; width: 97%; transform: translateX(-50%) rotate(1.4deg); }
-.lp-deck-card-lesson { position: absolute; z-index: 1; top: 1px; left: 50%; width: 94%; transform: translateX(-50%) rotate(-2deg); }
-.lp-showcase-badge {
-  position: absolute; top: -13px; left: 14px; z-index: 4;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 13px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 70%, #fff));
-  border: 1px solid color-mix(in srgb, var(--gold) 55%, #fff);
-  color: #2a2412; font-size: 11px; font-weight: 800; letter-spacing: 0.01em; white-space: nowrap; line-height: 1;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
-}
-.lp-showcase-badge svg { fill: currentColor; }
-
-/* Compact the hero deck cards (these are decorative previews) and bound the
-   tallest one (mini lesson) with line clamps, so the deck stays short enough to
-   keep the whole hero inside one viewport. The "How it works" grid mocks are
-   untouched (scoped to .lp-deck-card). */
-.lp-deck-card .lp-mock { padding: 13px; gap: 9px; }
-.lp-deck-card .lp-mock-card { padding: 14px 12px; gap: 3px; }
-.lp-deck-card .lp-mock-card-en { font-size: 22px; }
-.lp-deck-card .lp-mock-quiz-prompt { font-size: 18px; }
-.lp-deck-card .lp-mock-quiz-opt { padding: 9px 11px; }
-.lp-deck-card .lp-mock-lesson-lead {
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.lp-deck-card .lp-mock-lesson-point {
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-}
-
-/* dot controls — only shown when the deck becomes a mobile carousel */
-.lp-deck-dots { display: none; }
+/* the single card reads larger + more premium than the inline grid mock */
+.lp-hero-card .lp-mock-card { padding: 22px 16px; }
+.lp-hero-card .lp-mock-card-en { font-size: 30px; }
+.lp-hero-card .lp-mock-card-ph { font-size: 18px; }
+.lp-hero-card .lp-mock-card-thai { font-size: 18px; }
+.lp-hero-card .lp-mock-card-audio { width: 32px; height: 32px; }
+.lp-hero-card .lp-mock-rate-btn { padding: 10px 2px; font-size: 12px; }
 
 .lp-hero-mascot {
-  position: absolute; z-index: 5;            /* above the whole deck — always fully visible */
-  right: clamp(-40px, -2vw, 6px); bottom: 0;
+  position: absolute; z-index: 5;            /* above the card — always fully visible */
+  right: clamp(-64px, -3.6vw, -12px); bottom: 0;
   width: clamp(320px, 35vw, 450px);
   filter: drop-shadow(0 30px 32px rgba(0, 0, 0, 0.5));
   pointer-events: none;
@@ -613,34 +582,16 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-actions, .lp-hero-chips { justify-content: center; }
   .lp-hero-demo-link { justify-content: center; }
 
-  /* Visual group: mascot (left) + carousel & dots (right) — compact row. */
-  .lp-hero-visual { display: grid; grid-template-columns: clamp(118px, 33%, 168px) minmax(0, 1fr); grid-template-areas: "mascot deck" "mascot dots"; align-items: center; column-gap: clamp(6px, 2vw, 16px); width: 100%; max-width: 520px; min-height: 0; margin-inline: auto; }
+  /* Visual group: mascot (left) + ONE single card (right) — clean and compact. */
+  .lp-hero-visual { display: grid; grid-template-columns: clamp(126px, 40%, 174px) minmax(0, 1fr); grid-template-areas: "mascot card"; align-items: center; column-gap: clamp(10px, 3vw, 22px); width: 100%; max-width: 470px; min-height: 0; margin-inline: auto; }
   .lp-hero-visual::before, .lp-hero-visual::after { display: none; }
-  .lp-hero-mascot { grid-area: mascot; position: static; width: 100%; max-width: 168px; justify-self: center; }
-  .lp-deck { grid-area: deck; position: static; width: 100%; margin: 0; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 8px 2px 4px; scrollbar-width: none; }
-  .lp-deck::-webkit-scrollbar { display: none; }
-  .lp-deck-card { position: static; transform: none; width: auto; flex: 0 0 88%; scroll-snap-align: center; }
-  .lp-deck-card-quiz, .lp-deck-card-lesson { left: auto; right: auto; top: auto; bottom: auto; }
-  /* compact the carousel cards so the visual group stays short */
-  .lp-deck-card .lp-mock { padding: 11px; gap: 7px; }
-  .lp-deck-card .lp-mock-card { padding: 11px 10px; }
-  .lp-deck-card .lp-mock-card-en { font-size: 19px; }
-  .lp-deck-card .lp-mock-toggle-opt { padding: 3px 9px; font-size: 10px; }
-  .lp-deck-card .lp-mock-rate-btn { padding: 6px 2px; font-size: 10.5px; }
-  .lp-deck-card .lp-mock-quiz { gap: 6px; }
-  .lp-deck-card .lp-mock-quiz-opt { padding: 7px 10px; }
-  .lp-deck-card .lp-mock-quiz-prompt { font-size: 16px; }
-  .lp-deck-card .lp-mock-lesson-point { -webkit-line-clamp: 2; }
-  /* bound the carousel height predictably; a soft fade keeps the cut graceful */
-  .lp-deck-card .lp-mock {
-    max-height: clamp(160px, 23vh, 200px); overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent);
-    mask-image: linear-gradient(to bottom, #000 86%, transparent);
-  }
-  .lp-showcase-badge { left: 12px; top: -11px; }
-  .lp-deck-dots { grid-area: dots; display: flex; justify-content: center; gap: 7px; margin-top: 10px; }
-  .lp-deck-dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.4); transition: background 0.2s ease, transform 0.2s ease; }
-  .lp-deck-dot-on { background: var(--gold-soft); transform: scale(1.3); }
+  .lp-hero-mascot { grid-area: mascot; position: static; width: 100%; max-width: 174px; justify-self: center; }
+  .lp-hero-card { grid-area: card; position: static; width: 100%; margin: 0; }
+  /* compact the single card a little on mobile */
+  .lp-hero-card .lp-mock { padding: 14px; gap: 9px; }
+  .lp-hero-card .lp-mock-card { padding: 15px 12px; }
+  .lp-hero-card .lp-mock-card-en { font-size: 24px; }
+  .lp-hero-card .lp-mock-card-ph, .lp-hero-card .lp-mock-card-thai { font-size: 15px; }
 
   .lp-feature-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
   .lp-loop-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -660,7 +611,6 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-subtitle { line-height: 1.45; }
   .lp-hero-visual { max-width: 400px; grid-template-columns: clamp(108px, 32%, 150px) minmax(0, 1fr); }
   .lp-hero-mascot { max-width: 150px; }
-  .lp-deck-card { flex: 0 0 90%; }
   /* Three feature chips: one balanced row, no wrap, no overflow at 320+. */
   .lp-hero-chips { flex-wrap: nowrap; gap: 6px; margin-top: clamp(14px, 2.4vh, 20px); width: 100%; }
   .lp-hero-chips li { flex: 1 1 0; min-width: 0; justify-content: center; gap: 4px; padding: 7px 6px; font-size: clamp(10px, 2.7vw, 12px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -680,7 +630,6 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-brand-name { font-size: 18px; }
   .lp-nav-signin { padding: 9px 14px; }
   .lp-hero-visual { grid-template-columns: clamp(96px, 30%, 132px) minmax(0, 1fr); }
-  .lp-deck-card { flex: 0 0 92%; }
   /* Drop the chip tick so three full labels fit on one row at 320px. */
   .lp-hero-chips svg { display: none; }
   .lp-hero-chips li { padding: 6px 5px; font-size: clamp(9.5px, 3vw, 11px); gap: 0; }
@@ -704,7 +653,7 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-title { font-size: clamp(30px, 4.2vw, 50px); margin: 13px 0 11px; }
   .lp-hero-actions { margin-top: 18px; }
   .lp-hero-chips { margin-top: 15px; }
-  .lp-deck-card .lp-mock { padding: 12px; gap: 8px; }
+  .lp-hero-card .lp-mock { padding: 12px; gap: 8px; }
 }
 @media (max-height: 760px) {
   .lp-hero-body { padding-block: clamp(5px, 1vh, 12px); }
@@ -715,8 +664,8 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-chips { margin-top: 11px; }
   .lp-hero-stats { padding-block: 9px; }
   .lp-hero-stat-value { font-size: clamp(21px, 3vw, 30px); }
-  .lp-deck-card .lp-mock-rate-row { display: none; }
-  .lp-deck-card .lp-mock-lesson-point { -webkit-line-clamp: 2; }
+  .lp-hero-card .lp-mock-rate-row { display: none; }
+  .lp-hero-card .lp-mock-lesson-point { -webkit-line-clamp: 2; }
 }
 @media (max-height: 670px) {
   .lp-kicker { display: none; }
@@ -727,7 +676,7 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-demo-link { margin-top: 7px; }
   .lp-hero-chips { margin-top: 9px; }
   .lp-hero-body { padding-block: 4px; }
-  .lp-deck-card .lp-mock-toggle { display: none; }
+  .lp-hero-card .lp-mock-toggle { display: none; }
 }
 
 /* (B) desktop-only: shrink the right-column visual + mascot on short desktops */
@@ -743,19 +692,30 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-mascot { width: clamp(150px, 20vw, 240px); }
 }
 
-/* (C) mobile-only short height: shrink the mascot + carousel cards */
-@media (max-width: 960px) and (max-height: 940px) {
-  .lp-hero-mascot { max-width: 140px; }
-  .lp-deck-card .lp-mock { max-height: clamp(158px, 20vh, 190px); }
+/* (C) mobile-only short height: gently shrink the mascot + single card so the
+   whole hero fits, by reducing scale and (on shorter screens) dropping the
+   card's secondary rows — never by clipping content. */
+@media (max-width: 960px) and (max-height: 900px) {
+  .lp-hero-mascot { max-width: 150px; }
+  .lp-hero-card .lp-mock { padding: 12px; gap: 7px; }
+  .lp-hero-card .lp-mock-card { padding: 12px 10px; }
+  .lp-hero-card .lp-mock-card-en { font-size: 22px; }
 }
-@media (max-width: 960px) and (max-height: 800px) {
-  .lp-hero-mascot { max-width: 124px; }
-  .lp-deck-card .lp-mock { max-height: clamp(140px, 18vh, 172px); }
+@media (max-width: 960px) and (max-height: 850px) {
+  .lp-hero-mascot { max-width: 136px; }
+  .lp-hero-card .lp-mock-rate-row { display: none; }
 }
-@media (max-width: 960px) and (max-height: 700px) {
-  .lp-hero-mascot { max-width: 102px; }
-  .lp-deck-card .lp-mock { max-height: clamp(120px, 16vh, 146px); }
-  .lp-hero-inner { gap: 12px; }
+@media (max-width: 960px) and (max-height: 740px) {
+  .lp-hero-mascot { max-width: 120px; }
+  .lp-hero-card .lp-mock-toggle { display: none; }
+  .lp-hero-card .lp-mock-card-en { font-size: 20px; }
+  .lp-hero-inner { gap: 10px; }
+  .lp-hero-body { padding-block: 5px; }
+  .lp-hero-stats { padding-block: 8px; }
+}
+@media (max-width: 960px) and (max-height: 640px) {
+  .lp-hero-mascot { max-width: 100px; }
+  .lp-hero-inner { gap: 10px; }
 }
 
 /* (D) very narrow widths: the 320-360px column wraps copy onto more lines, so
@@ -791,6 +751,5 @@ button.lp-audio:active { transform: scale(0.92); }
 }
 @media (max-width: 960px) and (max-height: 620px) {
   .lp-hero-mascot { max-width: 88px; }
-  .lp-deck-card .lp-mock { max-height: 104px; }
   .lp-hero-inner { gap: 8px; }
 }
