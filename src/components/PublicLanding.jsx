@@ -14,7 +14,6 @@ import {
   QrCode,
   Repeat2,
   Sparkles,
-  Star,
   Target,
   Trophy,
   Volume2,
@@ -74,7 +73,7 @@ const JOURNEY = [
 // The teacher-and-game loop every mission follows. Each step is something the
 // app actually does today (intro, flashcards, challenge, recap).
 const LOOP = [
-  { Icon: BookOpen, step: 'Learn', text: 'A short, friendly intro tells you what you are about to learn — no grammar walls.' },
+  { Icon: BookOpen, step: 'Learn', text: 'A short, friendly intro tells you what you are about to learn, with no grammar walls.' },
   { Icon: Repeat2, step: 'Practice', text: 'Smart flashcards keep the right words and phrases in rotation.' },
   { Icon: Target, step: 'Challenge', text: 'A quick check confirms what stuck, with gentle hints.' },
   { Icon: Trophy, step: 'Win', text: 'A proud recap and small wins celebrate what you just learned.' },
@@ -118,7 +117,7 @@ function getPhrase(source) {
 // just the app's voice-perspective label.
 const cleanLabel = (s) => (s || '').replace(/\s*\((?:male|female)\)\s*/gi, ' ').trim();
 
-// The flashcard mockup — the core "learn the idea, reveal the Thai, rate it"
+// The flashcard mockup - the core "learn the idea, reveal the Thai, rate it"
 // loop, shown clean inside a bounded card. Reused in the hero showcase and the
 // "How it works" grid. When `decorative`, the audio control renders as an inert
 // <span> (the hero showcase is aria-hidden, so a focusable button there would be
@@ -163,10 +162,61 @@ function FlashcardMock({ phrase, onPlay, decorative = false }) {
   );
 }
 
+// Quick-check (multiple-choice) mockup. Reused in the hero sample deck and the
+// "How it works" grid so the two never drift.
+function QuickCheckMock({ correct, options, correctId }) {
+  if (!correct) return null;
+  return (
+    <div className="lp-mock lp-mock-quiz" aria-hidden="true">
+      <span className="lp-mock-quiz-label">Choose the Thai</span>
+      <span className="lp-mock-quiz-prompt">{cleanLabel(correct.en)}</span>
+      <div className="lp-mock-quiz-options">
+        {options.map((option, index) => {
+          const isCorrect = option.id === correctId;
+          return (
+            <span
+              className={`lp-mock-quiz-opt ${isCorrect ? 'lp-mock-quiz-opt-ok' : ''}`}
+              key={option.id}
+            >
+              <span className="lp-mock-quiz-letter">{String.fromCharCode(65 + index)}</span>
+              <span className="lp-mock-quiz-ph">{option.ph}</span>
+              {isCorrect && <Check size={14} className="lp-mock-quiz-check" />}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Mini-lesson mockup. Reused in the hero sample deck and the "How it works"
+// grid.
+function MiniLessonMock({ intro }) {
+  return (
+    <div className="lp-mock lp-mock-lesson" aria-hidden="true">
+      {intro && (
+        <>
+          <span className="lp-mock-lesson-eyebrow">
+            <BookOpen size={13} aria-hidden="true" /> Mission intro
+          </span>
+          <span className="lp-mock-lesson-lead">{intro.lead}</span>
+        </>
+      )}
+      <span className="lp-mock-lesson-point">
+        <Lightbulb size={13} aria-hidden="true" />
+        Thai adds a small polite word at the end of a sentence. Male speakers say{' '}
+        <strong>khráp</strong> (ครับ); female speakers say <strong>khâ</strong> (ค่ะ).
+        The app flips this for you automatically.
+      </span>
+    </div>
+  );
+}
+
 export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage, audioRate = 0.8 }) {
   const rootRef = useRef(null);
   const heroVideoRef = useRef(null);
   const cineVideoRef = useRef(null);
+  const deckRef = useRef(null);
   const [showCrypto, setShowCrypto] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -175,7 +225,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
   // Real product content for the hero showcase + "How it works" mockups.
   const heroFlashcard = getPhrase({ cardId: HOW_FLASHCARD_ID, meaning: 'Hello' });
-  const heroPhrase = getPhrase({ cardId: 410, meaning: 'how much?' });
   const howQuizCorrect = CARDS.find(c => c.id === HOW_QUIZ_CORRECT_ID);
   const howQuizOptions = HOW_QUIZ_OPTION_IDS
     .map(id => CARDS.find(c => c.id === id))
@@ -227,11 +276,37 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
     };
   }, []);
 
+  // Hero sample deck: on mobile the deck is a horizontal scroll-snap carousel,
+  // so keep the dot indicators in sync with the scroll position. On desktop the
+  // deck is a static fan (not scrollable) and this is a cheap no-op.
+  useEffect(() => {
+    const deck = deckRef.current;
+    if (!deck || typeof window === 'undefined') return undefined;
+    const dotsWrap = deck.parentElement && deck.parentElement.querySelector('.lp-deck-dots');
+    if (!dotsWrap) return undefined;
+    const dots = Array.from(dotsWrap.querySelectorAll('.lp-deck-dot'));
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = deck.scrollWidth - deck.clientWidth;
+      if (max <= 4) return; // not a carousel (desktop fan)
+      const ratio = deck.scrollLeft / max;
+      const active = Math.round(ratio * (dots.length - 1));
+      dots.forEach((d, i) => d.classList.toggle('lp-deck-dot-on', i === active));
+    };
+    const onScroll = () => { if (!raf) raf = window.requestAnimationFrame(update); };
+    deck.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      deck.removeEventListener('scroll', onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
   // Lazy, desktop-only ambient background clips (hero + the single cinematic CTA
   // band). Each <video> ships with no source and is only loaded/played on a wide
   // screen with a real pointer and motion allowed, so phones and reduced-motion
   // users keep the still poster (with a gentle CSS drift). It fades in once it
-  // can play. A simple muted loop — no scroll-scrubbing, so motion stays smooth.
+  // can play. A simple muted loop - no scroll-scrubbing, so motion stays smooth.
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const mq = window.matchMedia;
@@ -365,8 +440,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               Speak useful Thai from your <span>very first mission</span>.
             </h1>
             <p className="lp-subtitle">
-              Short, game-like missions teach you the words and phrases that matter in real
-              Thai moments — from street food to taxi rides.
+              Short missions designed like a game teach you the words and phrases that matter
+              in real Thai moments, from street food to taxi rides.
             </p>
 
             <div className="lp-hero-actions">
@@ -386,7 +461,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 onClick={() => onOpenPublicPage('/demo')}
               >
                 <Play size={13} aria-hidden="true" />
-                Or try a quick demo first — no account needed
+                Try a quick demo first. No account needed.
               </button>
             )}
 
@@ -397,23 +472,28 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </ul>
           </div>
 
-          {/* One composed showcase: a clean app-preview card with the mascot
-              anchored beside it and a single docked phrase chip. No free-floating
-              clutter — every element is positioned relative to this one frame. */}
+          {/* Hero visual group: the three real product samples (flashcard,
+              quick check, mini lesson) plus the mascot. On desktop the samples
+              are a controlled fanned deck (all three identifiable); on mobile
+              they become a swipeable scroll-snap carousel with dot controls.
+              isolation:isolate gives this group its own stacking context, so the
+              z-order (mascot above the deck) is local, not global. */}
           <div className="lp-hero-visual" aria-hidden="true">
-            <div className="lp-showcase">
-              <span className="lp-showcase-badge">
-                <Star size={12} aria-hidden="true" /> Mission 1 · Say hello
-              </span>
-              <FlashcardMock phrase={heroFlashcard} onPlay={playPhrase} decorative />
-              <div className="lp-showcase-phrase">
-                <div className="lp-showcase-phrase-copy">
-                  <span className="lp-showcase-phrase-thai">{heroPhrase.thai}</span>
-                  <span className="lp-showcase-phrase-ph">{heroPhrase.ph}</span>
-                  <span className="lp-showcase-phrase-en">{heroPhrase.en}</span>
-                </div>
-                <span className="lp-audio" aria-hidden="true"><Volume2 size={14} /></span>
+            <div className="lp-deck" ref={deckRef}>
+              <div className="lp-deck-card lp-deck-card-flash">
+                <FlashcardMock phrase={heroFlashcard} onPlay={playPhrase} decorative />
               </div>
+              <div className="lp-deck-card lp-deck-card-quiz">
+                <QuickCheckMock correct={howQuizCorrect} options={howQuizOptions} correctId={HOW_QUIZ_CORRECT_ID} />
+              </div>
+              <div className="lp-deck-card lp-deck-card-lesson">
+                <MiniLessonMock intro={howLessonIntro} />
+              </div>
+            </div>
+            <div className="lp-deck-dots" aria-hidden="true">
+              <span className="lp-deck-dot lp-deck-dot-on" />
+              <span className="lp-deck-dot" />
+              <span className="lp-deck-dot" />
             </div>
             <img className="lp-hero-mascot" src="/characters/muay-thai/happy.webp" alt="" />
           </div>
@@ -421,7 +501,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
 
         {/* Stats docked inside the hero so the first viewport is one complete
-            composition — no light strip leaking in from the next section. */}
+            composition - no light strip leaking in from the next section. */}
         <div className="lp-shell lp-hero-stats-wrap">
           <div className="lp-hero-stats" aria-label="Course size">
             {COURSE_STATS.map(stat => (
@@ -441,8 +521,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             <span className="lp-eyebrow">How it works</span>
             <h2 id="lp-features-title" className="lp-h2">What you&apos;ll actually do</h2>
             <p className="lp-head-sub">
-              Real examples from the app. {STAGES.length} stages, {MINI_UNITS.length} guided
-              missions — each stage is a set of short missions.
+              Real examples from the app. {STAGES.length} stages and {MINI_UNITS.length} guided
+              missions, each a set of short steps.
             </p>
           </div>
 
@@ -477,27 +557,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 before you move on.
               </p>
               <div className="lp-feature-media">
-                {howQuizCorrect && (
-                  <div className="lp-mock lp-mock-quiz" aria-hidden="true">
-                    <span className="lp-mock-quiz-label">Choose the Thai</span>
-                    <span className="lp-mock-quiz-prompt">{cleanLabel(howQuizCorrect.en)}</span>
-                    <div className="lp-mock-quiz-options">
-                      {howQuizOptions.map((option, index) => {
-                        const isCorrect = option.id === HOW_QUIZ_CORRECT_ID;
-                        return (
-                          <span
-                            className={`lp-mock-quiz-opt ${isCorrect ? 'lp-mock-quiz-opt-ok' : ''}`}
-                            key={option.id}
-                          >
-                            <span className="lp-mock-quiz-letter">{String.fromCharCode(65 + index)}</span>
-                            <span className="lp-mock-quiz-ph">{option.ph}</span>
-                            {isCorrect && <Check size={14} className="lp-mock-quiz-check" />}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                <QuickCheckMock correct={howQuizCorrect} options={howQuizOptions} correctId={HOW_QUIZ_CORRECT_ID} />
               </div>
             </article>
 
@@ -510,26 +570,11 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 </div>
               </div>
               <p className="lp-feature-text">
-                Every mission opens with a short, friendly explanation and ends with a recap —
-                you learn the why, not just word lists.
+                Every mission opens with a short, friendly explanation and ends with a recap,
+                so you learn the why, not just word lists.
               </p>
               <div className="lp-feature-media">
-                <div className="lp-mock lp-mock-lesson" aria-hidden="true">
-                  {howLessonIntro && (
-                    <>
-                      <span className="lp-mock-lesson-eyebrow">
-                        <BookOpen size={13} aria-hidden="true" /> Mission intro
-                      </span>
-                      <span className="lp-mock-lesson-lead">{howLessonIntro.lead}</span>
-                    </>
-                  )}
-                  <span className="lp-mock-lesson-point">
-                    <Lightbulb size={13} aria-hidden="true" />
-                    Thai adds a small polite word at the end of a sentence. Male speakers say{' '}
-                    <strong>khráp</strong> (ครับ); female speakers say <strong>khâ</strong> (ค่ะ).
-                    The app flips this for you automatically.
-                  </span>
-                </div>
+                <MiniLessonMock intro={howLessonIntro} />
               </div>
             </article>
           </div>
@@ -582,8 +627,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             <span className="lp-eyebrow">Your journey</span>
             <h2 id="lp-journey-title" className="lp-h2">Stages, broken into missions</h2>
             <p className="lp-head-sub">
-              The course is {STAGES.length} stages. Finish a mission and the next one unlocks —
-              clear, one step at a time.
+              The course is {STAGES.length} stages. Finish a mission and the next one unlocks.
+              Clear, one step at a time.
             </p>
           </div>
           <ol className="lp-journey-track">

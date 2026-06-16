@@ -2,6 +2,9 @@
 
 const ROUTES = [
   { path: '/', type: 'html' },
+  { path: '/get-started', type: 'html' },
+  { path: '/welcome', type: 'html' },
+  { path: '/demo', type: 'html' },
   { path: '/learn', type: 'html' },
   { path: '/cards', type: 'html' },
   { path: '/challenge', type: 'html' },

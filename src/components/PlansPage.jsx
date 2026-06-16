@@ -18,16 +18,16 @@ import { SITE_CONFIG } from '../config/site.js';
 
 // Plans / freemium page. IMPORTANT honesty constraint: no billing provider is
 // wired yet, so Premium ("Super") is presented as a real product plan that is
-// "coming soon" — there is no checkout and no payment is collected. Free is the
+// "coming soon" - there is no checkout and no payment is collected. Free is the
 // live, complete experience. The paid value is framed around consistency,
-// convenience, fewer interruptions, recovery and bonus content — NOT around
+// convenience, fewer interruptions, recovery and bonus content - NOT around
 // "pay to skip the journey" (the curated path stays free and intact).
 
 const FREEMIUM_POINTS = [
   {
     Icon: Compass,
     title: 'The path is always yours',
-    text: `All ${STAGES.length} stages and ${MINI_UNITS.length} guided missions are free. You progress by learning — never by paying to skip ahead.`,
+    text: `All ${STAGES.length} stages and ${MINI_UNITS.length} guided missions are free. You progress by learning, never by paying to skip ahead.`,
   },
   {
     Icon: Sparkles,
@@ -37,7 +37,7 @@ const FREEMIUM_POINTS = [
   {
     Icon: ShieldCheck,
     title: 'Premium is for momentum',
-    text: 'When it launches, Super adds consistency, convenience and bonus practice — for learners who want fewer interruptions and a little more flexibility.',
+    text: 'When it launches, Super adds consistency, convenience and bonus practice for learners who want fewer interruptions and a little more flexibility.',
   },
 ];
 
@@ -76,7 +76,7 @@ const PREMIUM_INCLUDES = [
 const FAQ = [
   {
     q: 'Is Tuk Talk Thai really free?',
-    a: 'Yes. The complete guided journey — every stage and mission, flashcards, quick checks and mini-lessons — is free to use today. You can learn and reach real Thai fluency without paying.',
+    a: 'Yes. The complete guided journey, including every stage and mission, flashcards, quick checks and mini lessons, is free to use today. You can learn and reach real Thai fluency without paying.',
   },
   {
     q: 'Do I have to pay to finish the course?',
@@ -92,7 +92,7 @@ const FAQ = [
   },
   {
     q: 'Will the free version get worse to push Premium?',
-    a: 'No. The free experience stays a genuinely good way to learn Thai. Premium adds extras for people who want them — it does not take things away from free learners.',
+    a: 'No. The free experience stays a genuinely good way to learn Thai. Premium adds extras for people who want them. It does not take things away from free learners.',
   },
 ];
 
@@ -143,7 +143,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
           <span className="pl-eyebrow">Plans &amp; pricing</span>
           <h1 className="pl-hero-title">Free to learn. Premium for momentum.</h1>
           <p className="pl-hero-sub">
-            Tuk Talk Thai keeps the whole guided journey free — you pay only if you want a smoother,
+            Tuk Talk Thai keeps the whole guided journey free. You pay only if you want a smoother,
             more consistent ride. No paywalls on the path to speaking Thai.
           </p>
           <div className="pl-hero-actions">
@@ -206,7 +206,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
               <span className="pl-plan-name">Super</span>
               <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
             </div>
-            <div className="pl-plan-price"><span className="pl-plan-amount">—</span><span className="pl-plan-period">pricing TBA</span></div>
+            <div className="pl-plan-price"><span className="pl-plan-amount pl-plan-amount-soon">Soon</span><span className="pl-plan-period">pricing TBA</span></div>
             <p className="pl-plan-blurb">Premium momentum for committed learners. Everything in Free, plus:</p>
             <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={navClick('/feedback')}>
               Get notified
@@ -216,7 +216,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
                 <li key={text}><Icon size={16} aria-hidden="true" /> {text}</li>
               ))}
             </ul>
-            <p className="pl-plan-foot">No checkout yet — Super launches after beta, with owner-approved pricing.</p>
+            <p className="pl-plan-foot">No checkout yet. Super launches after beta, with owner-approved pricing.</p>
           </article>
         </div>
       </section>
@@ -270,7 +270,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
       {/* Closing CTA */}
       <section className="pl-cta-band">
         <div className="pl-shell pl-cta-inner">
-          <h2 className="pl-cta-title">Start free — see how far the path takes you.</h2>
+          <h2 className="pl-cta-title">Start free and see how far the path takes you.</h2>
           <p className="pl-cta-sub">Learn something you can actually say in Thailand today.</p>
           <button type="button" className="pl-cta-primary pl-cta-band-btn" onClick={startFree}>
             Start your first mission

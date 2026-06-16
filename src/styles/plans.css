@@ -151,3 +151,5 @@
 @media (prefers-reduced-motion: reduce) {
   .pl-cta-primary, .pl-cta-ghost, .pl-faq-q::after { transition: none; }
 }
+
+.pl-plan-amount-soon { font-size: 26px; color: var(--ink-soft); }

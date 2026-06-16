@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
   // `crypto.address` is filled in. Leave a field empty to hide that option.
   support: {
     // ACTION REQUIRED (owner): paste your REAL Buy Me a Coffee URL here to show
-    // the footer support button. Kept empty on purpose — the previously
+    // the footer support button. Kept empty on purpose - the previously
     // placeholdered handle (buymeacoffee.com/tuktalkthai) was verified to return
     // HTTP 404 (2026-06-16), so shipping it would render a dead donation link.
     // The footer architecture is ready: set this to a confirmed URL and the
