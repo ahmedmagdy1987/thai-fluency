@@ -1,7 +1,8 @@
 # Owner Feedback — Implementation Status
 
-Evidence-based audit of every owner-feedback item. Last updated **2026-06-16**
-(after the hero-viewport / mascot / stats / mission-loop polish milestone).
+Evidence-based audit of every owner-feedback item. Last updated **2026-06-17**
+(final owner-polish pass: the mobile hero mascot was scaled up to a bold,
+dominant figure above a single sample card; see item 1).
 
 **How to read this:** status is one of DONE / PARTIAL / NOT DONE / BLOCKED, set
 only from code/docs actually read (never from a commit title). "Owner input"
@@ -45,6 +46,16 @@ lists what cannot be resolved in code without a decision or real credential.
   experiment was removed (owner reported it as jumpy). The current approach is a
   smooth autoplay + parallax/reveal composition — the deliberate, polished
   choice that keeps normal page scrolling intact.
+- **Mobile mascot pass (2026-06-17):** owner feedback was that the mobile mascot
+  read as too small. The mobile hero was reworked so the mascot is a large,
+  dominant hero figure stacked above ONE sample card (the card floats at its
+  base), instead of a thumbnail squeezed beside the card. Verified via rendered
+  browser (Playwright) at 320 / 360 / 390 / 414 px widths: mascot ~210-300px
+  wide (up from ~120px), exactly one hero card, the three chips stay on one row,
+  and the stats bar is intact (no clipping). Desktop hero is unchanged and still
+  balanced (single card, stats visible before scrolling). Landscape / very short
+  viewports fall back to a clean side-by-side row. Change is CSS-only
+  (`src/styles/landing.css`); no JSX, data, or copy changed.
 - **Remaining:** none.
 
 ## 2. Button wording — DONE (P3)
