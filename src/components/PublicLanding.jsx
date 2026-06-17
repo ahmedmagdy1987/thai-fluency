@@ -5,11 +5,9 @@ import {
   Check,
   CheckCircle2,
   Coffee,
-  Compass,
   Copy,
   Lightbulb,
   Map as MapIcon,
-  MessageCircle,
   Play,
   QrCode,
   Repeat2,
@@ -40,12 +38,15 @@ const COURSE_STATS = [
   },
 ];
 
-// The early-stage "journey" preview. Stage names + themes match the real course
-// and mission counts come straight from the mini-unit data.
+// The early-stage "journey" preview. Stage names + themes match the real
+// course and mission counts come straight from the mini-unit data. Each stage
+// card is led by a distinct Tuk Talk mascot (real art under /public/characters)
+// so the roadmap reads as character-led and intentional, not generic icons.
+// The goal card below keeps the Muay Thai mascot. Four cards, four mascots.
 const JOURNEY = [
   {
     n: 1,
-    Icon: MessageCircle,
+    mascot: '/characters/elephant/happy.webp',
     stage: 'Stage 1',
     title: 'First words & politeness',
     text: 'Say hello, thank you, yes and no.',
@@ -54,7 +55,7 @@ const JOURNEY = [
   },
   {
     n: 2,
-    Icon: Sparkles,
+    mascot: '/characters/monkey/happy.webp',
     stage: 'Stage 2',
     title: 'Daily essentials',
     text: 'Everyday actions, feelings, and counting.',
@@ -62,7 +63,7 @@ const JOURNEY = [
   },
   {
     n: 3,
-    Icon: Compass,
+    mascot: '/characters/hippo/happy.webp',
     stage: 'Stage 3',
     title: 'Getting around',
     text: 'People, places, time, and directions.',
@@ -116,6 +117,10 @@ function getPhrase(source) {
 // mockups read clean. The underlying word is identical; the parenthetical is
 // just the app's voice-perspective label.
 const cleanLabel = (s) => (s || '').replace(/\s*\((?:male|female)\)\s*/gi, ' ').trim();
+
+// Shorten a wallet address for display (first 6 + last 4). Only used when a
+// real address is configured; the full value is what the copy button copies.
+const shortenAddress = (a) => (a && a.length > 12 ? `${a.slice(0, 6)}...${a.slice(-4)}` : (a || ''));
 
 // The flashcard mockup - the core "learn the idea, reveal the Thai, rate it"
 // loop, shown clean inside a bounded card. Reused in the hero showcase and the
@@ -216,7 +221,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
   const rootRef = useRef(null);
   const heroVideoRef = useRef(null);
   const cineVideoRef = useRef(null);
-  const [showCrypto, setShowCrypto] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const support = SITE_CONFIG.support || {};
@@ -589,15 +593,15 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </p>
           </div>
           <ol className="lp-journey-track">
-            {JOURNEY.map(({ n, Icon, stage, title, text, missions, start }) => (
+            {JOURNEY.map(({ n, mascot, stage, title, text, missions, start }) => (
               <li
                 className={`lp-journey-step${start ? ' lp-journey-step-start' : ''}`}
                 key={n}
                 data-reveal
                 style={{ '--reveal-delay': `${(n - 1) * 90}ms` }}
               >
-                <div className="lp-journey-node" aria-hidden="true">
-                  <Icon size={20} />
+                <div className="lp-journey-node lp-journey-node-char" aria-hidden="true">
+                  <img className="lp-journey-mascot" src={mascot} alt="" loading="lazy" width={54} height={54} />
                   <span className="lp-journey-n">{n}</span>
                 </div>
                 <div className="lp-journey-copy">
@@ -660,6 +664,87 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         </div>
       </section>
 
+      {/* ===================== SUPPORT ===================== */}
+      <section className="lp-support" aria-labelledby="lp-support-title">
+        <div className="lp-shell">
+          <div className="lp-support-head" data-reveal>
+            <span className="lp-eyebrow">Support</span>
+            <h2 id="lp-support-title" className="lp-h2">Support Tuk Talk Thai</h2>
+            <p className="lp-head-sub">
+              Help us improve the lessons, characters, audio, and learning experience.
+            </p>
+          </div>
+
+          <div className="lp-support-grid">
+            {/* Buy Me a Coffee */}
+            <article className="lp-support-card" data-reveal>
+              <span className="lp-support-icon"><Coffee size={22} aria-hidden="true" /></span>
+              <h3 className="lp-support-card-title">Buy me a coffee</h3>
+              <p className="lp-support-card-text">
+                A small one time tip helps cover audio, character art, and hosting.
+              </p>
+              {support.buyMeACoffeeUrl ? (
+                <a
+                  className="lp-support-btn"
+                  href={support.buyMeACoffeeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Coffee size={16} aria-hidden="true" /> Buy me a coffee
+                </a>
+              ) : (
+                <span className="lp-support-soon" role="note">
+                  <Sparkles size={13} aria-hidden="true" /> Coming soon
+                </span>
+              )}
+            </article>
+
+            {/* Crypto donations */}
+            <article className="lp-support-card" data-reveal style={{ '--reveal-delay': '90ms' }}>
+              <span className="lp-support-icon"><QrCode size={22} aria-hidden="true" /></span>
+              <h3 className="lp-support-card-title">Crypto donation</h3>
+              {crypto.address ? (
+                <>
+                  <p className="lp-support-card-text">
+                    Send {crypto.network || 'crypto'} to the address below. Thank you for helping
+                    the project grow.
+                  </p>
+                  <div className="lp-support-crypto">
+                    {crypto.qrSrc && (
+                      <img
+                        className="lp-support-qr"
+                        src={crypto.qrSrc}
+                        width={104}
+                        height={104}
+                        alt={`${crypto.network || 'Crypto'} donation QR code`}
+                      />
+                    )}
+                    <div className="lp-support-crypto-body">
+                      {crypto.network && <span className="lp-support-net">{crypto.network}</span>}
+                      <code className="lp-support-addr" title={crypto.address}>
+                        {shortenAddress(crypto.address)}
+                      </code>
+                      <button type="button" className="lp-support-copy" onClick={copyCrypto}>
+                        <Copy size={14} aria-hidden="true" /> {copied ? 'Copied' : 'Copy address'}
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="lp-support-card-text">
+                    Prefer crypto? A donation wallet is on the way.
+                  </p>
+                  <span className="lp-support-soon" role="note">
+                    <Sparkles size={13} aria-hidden="true" /> Coming soon
+                  </span>
+                </>
+              )}
+            </article>
+          </div>
+        </div>
+      </section>
+
       {/* ===================== FOOTER ===================== */}
       <footer className="lp-footer" aria-label="Public links">
         <div className="lp-shell">
@@ -673,54 +758,6 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               ))}
             </nav>
           </div>
-
-          {(support.buyMeACoffeeUrl || crypto.address) && (
-            <div className="lp-footer-support">
-              <span className="lp-footer-support-label">Enjoying Tuk Talk Thai? Help keep it growing.</span>
-              <div className="lp-footer-support-actions">
-                {support.buyMeACoffeeUrl && (
-                  <a
-                    className="lp-footer-coffee"
-                    href={support.buyMeACoffeeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Coffee size={15} aria-hidden="true" /> Buy me a coffee
-                  </a>
-                )}
-                {crypto.address && (
-                  <button
-                    type="button"
-                    className="lp-footer-crypto"
-                    onClick={() => setShowCrypto(v => !v)}
-                    aria-expanded={showCrypto}
-                  >
-                    <QrCode size={15} aria-hidden="true" /> Donate crypto
-                  </button>
-                )}
-              </div>
-              {showCrypto && crypto.address && (
-                <div className="lp-footer-qr" role="dialog" aria-label="Crypto donation">
-                  {crypto.qrSrc && (
-                    <img
-                      className="lp-footer-qr-img"
-                      src={crypto.qrSrc}
-                      width={128}
-                      height={128}
-                      alt={`${crypto.label || 'Crypto'} donation QR code`}
-                    />
-                  )}
-                  <div className="lp-footer-qr-body">
-                    {crypto.label && <span className="lp-footer-qr-label">{crypto.label}</span>}
-                    <code className="lp-footer-qr-addr">{crypto.address}</code>
-                    <button type="button" className="lp-footer-qr-copy" onClick={copyCrypto}>
-                      <Copy size={13} aria-hidden="true" /> {copied ? 'Copied' : 'Copy address'}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
 
           <p className="lp-footer-fine">© {SITE_CONFIG.siteName}. Learn Thai the fast and fun way.</p>
         </div>

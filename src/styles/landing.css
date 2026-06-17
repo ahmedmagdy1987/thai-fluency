@@ -135,7 +135,7 @@
 .lp-cta-primary:focus-visible, .lp-cta-secondary:focus-visible, .lp-cta-ghost:focus-visible,
 .lp-nav-signin:focus-visible, .lp-nav-demo:focus-visible, .lp-audio:focus-visible,
 .lp-hero-demo-link:focus-visible, .lp-footer-links a:focus-visible,
-.lp-footer-coffee:focus-visible, .lp-footer-crypto:focus-visible {
+.lp-support-btn:focus-visible, .lp-support-copy:focus-visible {
   outline: 2px solid var(--gold); outline-offset: 3px;
 }
 
@@ -483,6 +483,12 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-journey-n { position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border-radius: 999px; background: var(--jade); color: #fff; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--card-bg); }
 .lp-journey-node-goal { background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 24%, var(--card-bg)), var(--card-bg)); border-color: color-mix(in srgb, var(--gold) 40%, var(--line)); overflow: hidden; }
 .lp-journey-node-goal img { width: 46px; height: 46px; object-fit: contain; }
+/* Stage cards are mascot-led: each node frames a distinct character (real art
+   under /public/characters) instead of a generic icon. The image is contained
+   and bottom-aligned so every node stays the same size and the row alignment
+   never breaks. Overflow stays visible so the step-number badge is not clipped;
+   the 48px mascot sits inside the 54px node, so it never spills. */
+.lp-journey-mascot { width: 48px; height: 48px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 2px 4px rgba(15, 61, 46, 0.2)); }
 .lp-journey-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-top: 2px; }
 .lp-journey-stage { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
 .lp-journey-stage svg { color: var(--gold); }
@@ -510,6 +516,62 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-cine-sub { margin: 14px 0 0; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.55; color: rgba(247,242,231,0.92); text-shadow: 0 1px 14px rgba(0,0,0,0.4); max-width: 46ch; }
 .lp-cine-cta { margin-top: 30px; }
 
+/* ============================== SUPPORT ==============================
+   A calm, premium support section above the footer. Two equal cards that stay
+   visible whether or not a destination is configured: an unconfigured card
+   shows a "Coming soon" pill instead of an active control or a fake link.
+   Built on the app tokens, so it works in light and dark mode. */
+.lp-support { padding-block: var(--lp-section-y); background: var(--cream-warm); }
+.lp-support-head { max-width: 680px; margin: 0 auto; text-align: center; }
+.lp-support-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--lp-gap);
+  max-width: 760px; margin: clamp(28px, 4vw, 44px) auto 0;
+}
+.lp-support-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  background: var(--card-bg); border: 1px solid var(--line);
+  border-radius: var(--lp-radius); padding: 24px; min-width: 0;
+  box-shadow: var(--lp-shadow-card);
+}
+.lp-support-icon {
+  flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--jade);
+  background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
+}
+.lp-support-card-title { margin: 2px 0 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.lp-support-card-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+.lp-support-btn {
+  margin-top: auto; display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px; border-radius: 999px;
+  background: var(--gold); color: #2a2412; border: 1px solid var(--gold);
+  font-family: inherit; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.lp-support-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(201, 169, 97, 0.9); }
+.lp-support-soon {
+  margin-top: auto; display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 14px; border-radius: 999px;
+  background: color-mix(in srgb, var(--jade) 8%, var(--card-bg));
+  border: 1px dashed color-mix(in srgb, var(--jade) 32%, var(--line));
+  color: var(--ink-soft); font-size: 12.5px; font-weight: 700;
+}
+.lp-support-soon svg { color: var(--gold); flex-shrink: 0; }
+.lp-support-crypto { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 2px; width: 100%; }
+.lp-support-qr { flex-shrink: 0; width: 104px; height: 104px; border-radius: 12px; background: #fff; padding: 6px; border: 1px solid var(--line); }
+.lp-support-crypto-body { display: flex; flex-direction: column; gap: 7px; min-width: 0; flex: 1 1 160px; }
+.lp-support-net { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
+.lp-support-addr { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+.lp-support-copy {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 999px;
+  background: var(--card-bg); color: var(--jade); border: 1px solid var(--line-strong);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.lp-support-copy:hover { border-color: var(--jade); }
+
 /* ============================== FOOTER ==============================  */
 .lp-footer { background: var(--jade); color: #eaf3ee; padding-top: clamp(40px, 6vw, 64px); padding-bottom: max(clamp(40px, 6vw, 64px), env(safe-area-inset-bottom)); }
 .app-root[data-theme="dark"] .lp-footer { background: #10231b; }
@@ -518,21 +580,6 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .lp-footer-links a { color: rgba(234, 243, 238, 0.82); font-size: 13.5px; font-weight: 600; text-decoration: none; transition: color 0.15s; }
 .lp-footer-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.lp-footer-support { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.14); display: flex; flex-direction: column; gap: 14px; }
-.lp-footer-support-label { font-size: 14px; font-weight: 600; color: rgba(234, 243, 238, 0.9); }
-.lp-footer-support-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.lp-footer-coffee, .lp-footer-crypto { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform 0.15s, background 0.15s, border-color 0.15s; }
-.lp-footer-coffee { background: var(--gold); color: #2a2412; border: 1px solid var(--gold); }
-.lp-footer-coffee:hover { transform: translateY(-2px); }
-.lp-footer-crypto { background: transparent; color: #eaf3ee; border: 1px solid rgba(255, 255, 255, 0.32); }
-.lp-footer-crypto:hover { border-color: rgba(255, 255, 255, 0.6); }
-.lp-footer-qr { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 4px; padding: 16px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; }
-.lp-footer-qr-img { border-radius: 10px; background: #fff; padding: 6px; }
-.lp-footer-qr-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.lp-footer-qr-label { font-size: 12px; font-weight: 700; color: rgba(234, 243, 238, 0.85); }
-.lp-footer-qr-addr { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #fff; overflow-wrap: anywhere; }
-.lp-footer-qr-copy { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.28); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
-.lp-footer-qr-copy:hover { background: rgba(255,255,255,0.2); }
 .lp-footer-fine { margin: 26px 0 0; font-size: 12px; color: rgba(234, 243, 238, 0.6); }
 
 /* ============================== MOTION ==============================  */
@@ -557,7 +604,8 @@ button.lp-audio:active { transform: scale(0.92); }
   --lp-shadow-float: 0 30px 70px -34px rgba(0, 0, 0, 0.85);
 }
 .app-root[data-theme="dark"] .lp-features,
-.app-root[data-theme="dark"] .lp-journey { background: var(--cream); }
+.app-root[data-theme="dark"] .lp-journey,
+.app-root[data-theme="dark"] .lp-support { background: var(--cream); }
 .app-root[data-theme="dark"] .lp-feature:hover { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 28px 56px -28px rgba(0, 0, 0, 0.82); }
 .app-root[data-theme="dark"] .lp-journey-step-start { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 20px 44px -26px rgba(224, 189, 122, 0.4); }
 .app-root[data-theme="dark"] .lp-mock-toggle-on { color: #10231b; }
@@ -645,6 +693,7 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-loop-track { grid-template-columns: 1fr; }
   .lp-journey-step { padding: 16px 16px; gap: 14px; }
   .lp-journey-node { width: 48px; height: 48px; }
+  .lp-support-grid { grid-template-columns: 1fr; max-width: 440px; }
   .lp-footer-top { flex-direction: column; align-items: flex-start; }
 }
 

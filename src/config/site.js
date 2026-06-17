@@ -4,26 +4,27 @@ export const SITE_CONFIG = {
   supportEmail: 'support@tuktalkthai.com',
   slogan: 'Learn Thai the fast and fun way.',
 
-  // Optional "support the project" links shown in the public landing footer.
-  // The Buy Me a Coffee link renders whenever `buyMeACoffeeUrl` is set; the
-  // crypto donation block (QR + copyable address) only renders once
-  // `crypto.address` is filled in. Leave a field empty to hide that option.
+  // Public "support the project" configuration, read from build-time env vars
+  // so no real account, wallet, or QR is ever hardcoded in the repo. Every
+  // value defaults to empty: the support section still renders both cards, but
+  // an unconfigured card shows a polished "Coming soon" state instead of an
+  // active link or a fake destination. Set these in .env.local (local) or the
+  // Vercel project env (production) to activate a card. See
+  // docs/owner-feedback-implementation-status.md (item 3).
   support: {
-    // ACTION REQUIRED (owner): paste your REAL Buy Me a Coffee URL here to show
-    // the footer support button. Kept empty on purpose - the previously
-    // placeholdered handle (buymeacoffee.com/tuktalkthai) was verified to return
-    // HTTP 404 (2026-06-16), so shipping it would render a dead donation link.
-    // The footer architecture is ready: set this to a confirmed URL and the
-    // "Buy me a coffee" button appears automatically. See
-    // docs/owner-feedback-implementation-status.md (item 3).
-    buyMeACoffeeUrl: '',
+    // VITE_BUY_ME_A_COFFEE_URL: a real, confirmed Buy Me a Coffee URL. When set,
+    // the card shows an active external link (opened with noopener noreferrer).
+    buyMeACoffeeUrl: import.meta.env.VITE_BUY_ME_A_COFFEE_URL || '',
     crypto: {
-      label: 'USDT (TRC-20)',
-      // TODO(owner): paste your wallet address here to activate crypto
-      // donations, and drop a matching QR image at public/donate/crypto-qr.png
-      // (see public/donate/README.md). Kept empty so nothing ships half-wired.
-      address: '',
-      qrSrc: '/donate/crypto-qr.png',
+      // VITE_CRYPTO_WALLET_ADDRESS: a real wallet address. When set, the card
+      // shows the network, a shortened address, a copy button, and (if provided)
+      // the QR image. Never invent an address here.
+      address: import.meta.env.VITE_CRYPTO_WALLET_ADDRESS || '',
+      // VITE_CRYPTO_NETWORK: the network / token label, e.g. "USDT (TRC-20)".
+      network: import.meta.env.VITE_CRYPTO_NETWORK || '',
+      // VITE_CRYPTO_QR_IMAGE: public path to an approved QR image that encodes
+      // exactly the address above, e.g. "/donate/crypto-qr.png".
+      qrSrc: import.meta.env.VITE_CRYPTO_QR_IMAGE || '',
     },
   },
 };
