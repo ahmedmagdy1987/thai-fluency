@@ -1,10 +1,14 @@
-// Stage → character mapping. Frontend-only config. The owner has shipped
-// real art for `elephant` and `muay-thai` (see /public/characters/). The
-// remaining characters (monkey, gecko, buffalo, hippo) still ship with
-// emoji placeholders for the LearnPath stage list. The lesson Coach
-// only renders real art — when a stage points at a character without
-// real art, the coach falls back to the default (elephant) via
-// resolveCoachIdForStage() below.
+// Stage → character mapping. Frontend-only config. Real art packs live under
+// /public/characters/ for `elephant`, `muay-thai`, `hippo`, and `monkey`
+// (the hippo + monkey packs were generated from owner-supplied references).
+// `gecko` and `buffalo` still ship with emoji placeholders for the LearnPath
+// stage list. These are character / mascot assets, never vocabulary content.
+//
+// Note: the in-lesson Coach only uses characters that ALSO have a full manifest
+// (sound profile + voice lines) in characters.js - currently elephant and
+// muay-thai. resolveCoachIdForStage() below still falls back to the default
+// (elephant) for any stage whose character lacks that manifest, even when its
+// art already exists. The hippo + monkey art is used on the public roadmap.
 //
 // To swap a stage's character later, edit only this file:
 //   - placeholderEmoji  →  emoji shown in the LearnPath badge
@@ -37,7 +41,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🐒',
     accent: '#E0823B',
     vibe: 'Playful practice for daily life.',
-    hasArt: false,
+    hasArt: true,
   },
   muayThai: {
     id: 'muay-thai',
@@ -61,7 +65,7 @@ export const CHARACTERS = {
     placeholderEmoji: '🦛',
     accent: '#2563A8',
     vibe: 'Calm practice for natural Thai flow.',
-    hasArt: false,
+    hasArt: true,
   },
 };
 
