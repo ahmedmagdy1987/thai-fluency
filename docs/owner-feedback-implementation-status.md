@@ -1,8 +1,10 @@
 # Owner Feedback — Implementation Status
 
 Evidence-based audit of every owner-feedback item. Last updated **2026-06-17**
-(final owner-polish pass: the mobile hero mascot was scaled up to a bold,
-dominant figure above a single sample card; see item 1).
+(support-section + mascot pass: added the public "Support Tuk Talk Thai" section
+with configurable Buy Me a Coffee + crypto cards, generated Hippo and Monkey
+mascot asset packs via Higgsfield MCP, and made the 4 roadmap cards character-led
+with 4 distinct mascots; see items 3 and 7).
 
 **How to read this:** status is one of DONE / PARTIAL / NOT DONE / BLOCKED, set
 only from code/docs actually read (never from a commit title). "Owner input"
@@ -14,11 +16,11 @@ lists what cannot be resolved in code without a decision or real credential.
 |---|------|--------|----------|--------------------|
 | 1 | Interactive cinematic "wow factor" | **DONE** | P0 | No |
 | 2 | Button wording ("Make the call" → "Review what you've learned") | **DONE** | P3 | No |
-| 3 | Footer donations (Buy Me a Coffee + crypto QR) | **PARTIAL** | P2 | **Yes** |
+| 3 | Public support section (Buy Me a Coffee + crypto) | **PARTIAL** (UI live; real destinations pending) | P2 | **Yes** |
 | 4 | Retention & monetization research doc | **DONE** (gaps filled) | P2 | Decisions only |
 | 5 | Six-second cutscenes | **PARTIAL** (infra ready, dormant) | P2 | **Yes (assets)** |
 | 6 | Advanced level selection / placement | **DONE** | P3 | No |
-| 7 | Vocabulary page (Gecko / Water Buffalo / Hippo) | **PARTIAL** (needs clarification) | P2 | **Yes** |
+| 7 | Mascot characters (Gecko / Buffalo / Hippo / Monkey) | **CLARIFIED** (mascot assets, not vocabulary) | P2 | No |
 | 8 | Leaderboard = "Coming soon", privacy-safe | **DONE** | P3 | No |
 | 9 | Locked content / paywall presentation | **DONE** | P2 | No |
 | 10 | Subscription prompt frequency | **DONE** | P2 | No |
@@ -65,27 +67,38 @@ lists what cannot be resolved in code without a decision or real credential.
   reads **"Review what you've learned"**.
 - **Remaining:** none. (No literal `<button>` ever carried the old phrase.)
 
-## 3. Footer donations — PARTIAL (P2) — **owner input required**
-- **Files:** `src/config/site.js`, footer in `src/components/PublicLanding.jsx`
-  (`lp-footer-coffee` / `lp-footer-crypto` / `lp-footer-qr`), `public/donate/`.
-- **Behavior:** the footer architecture is complete and correctly **gated** — the
-  Buy-Me-a-Coffee button renders only when `support.buyMeACoffeeUrl` is set, and
-  the crypto block (QR + address + copy) renders only when `support.crypto.address`
-  is set. No fake/dead controls render when fields are empty.
-- **What changed this pass:** the previously placeholdered handle
-  `buymeacoffee.com/tuktalkthai` was **verified to return HTTP 404 (2026-06-16)**,
-  so it was a dead link. Per the "no dead/fake donation controls" rule,
-  `buyMeACoffeeUrl` is now **blanked** (`''`) — the support button is hidden
-  until a real URL is supplied. Crypto was already correctly hidden (empty
-  address).
+## 3. Public support section — PARTIAL (P2) — UI live, real destinations pending
+- **Files:** `src/config/site.js`, `src/components/PublicLanding.jsx`
+  (`.lp-support` section), `src/styles/landing.css`, `.env.example`,
+  `.env.local.example`.
+- **What changed this pass:** added a dedicated, always-visible **"Support Tuk
+  Talk Thai"** section above the footer (replacing the old gated footer block).
+  Heading + copy ("Help us improve the lessons, characters, audio, and learning
+  experience.") + two cards: **Buy me a coffee** and **Crypto donation**.
+- **Config (public build-time env vars), no hardcoded accounts:**
+  `VITE_BUY_ME_A_COFFEE_URL`, `VITE_CRYPTO_WALLET_ADDRESS`,
+  `VITE_CRYPTO_NETWORK`, `VITE_CRYPTO_QR_IMAGE` (read in `site.js`, all default
+  to empty).
+- **Honest states (verified in a real browser, light + dark, desktop + mobile):**
+  - Buy Me a Coffee: shows an active external link (`target=_blank`,
+    `rel="noopener noreferrer"`) **only** when `VITE_BUY_ME_A_COFFEE_URL` is set;
+    otherwise the card stays visible with a polished **"Coming soon"** state.
+  - Crypto: shows network + shortened address + copy button + (optional) QR
+    **only** when `VITE_CRYPTO_WALLET_ADDRESS` is set; otherwise the card stays
+    visible with a **"Coming soon"** state.
+  - **No fake account, no invented wallet/network, no generated QR, no dead
+    controls.** Neither value is configured in the repo, so both cards currently
+    show "Coming soon".
+- **UI status:** **implemented and live.** Do **not** describe donations as
+  operational: no real destination has been supplied or verified.
 - **Owner input needed (exact):**
-  1. **Real, confirmed Buy Me a Coffee URL** → paste into `src/config/site.js`
-     `support.buyMeACoffeeUrl`. Button reappears automatically.
-  2. **(Optional) crypto:** a real wallet **address**, the **network/label**
-     (e.g. "USDT (TRC-20)"), and a **QR PNG** at `public/donate/crypto-qr.png`
-     that encodes exactly that address → fill `support.crypto.address` /
-     `label` / `qrSrc`. See `public/donate/README.md`.
-- **Remaining:** none in code; blocked on the two owner-supplied facts above.
+  1. **Real, confirmed Buy Me a Coffee URL** → set `VITE_BUY_ME_A_COFFEE_URL` in
+     Vercel env (and `.env.local` for local). Card activates automatically.
+  2. **(Optional) crypto:** a real **wallet address** (`VITE_CRYPTO_WALLET_ADDRESS`),
+     **network/label** (`VITE_CRYPTO_NETWORK`, e.g. "USDT (TRC-20)"), and an
+     **approved QR image** at e.g. `/donate/crypto-qr.png` that encodes exactly
+     that address (`VITE_CRYPTO_QR_IMAGE`).
+- **Remaining:** none in code; blocked on the owner-supplied real destinations.
 
 ## 4. Retention & monetization research — DONE (P2) — *gaps filled this pass*
 - **File:** `docs/RETENTION_AND_MONETIZATION.md`.
@@ -148,27 +161,43 @@ lists what cannot be resolved in code without a decision or real credential.
 - **Remaining:** none required. (Optional later: richer placement signal for
   Stages 5–8, which are light on content.)
 
-## 7. Vocabulary page (Gecko / Water Buffalo / Hippo) — PARTIAL (P2) — **clarification required**
-- **Files:** `src/data/cards.js`, `src/data/stageCharacters.js`,
-  `src/components/BrowseTab.jsx`, `src/components/CardsTab.jsx`.
-- **What the vocab page does (works):** `BrowseTab` and `CardsTab` render
-  romanization (`ph`) + Thai (`thai`) + English (`en`) for every card via
-  `displayCard`, with working search/filter; the female speaking-style transform
-  is token-gated and does **not** corrupt cards.
-- **Key finding (verified directly — corrects an earlier mis-read):** **Gecko,
-  Water Buffalo, and Hippo do NOT exist as vocabulary cards.**
-  `grep -i "gecko|hippo|buffalo|ควาย" src/data/cards.js` → **no matches**. They
-  exist only as **stage mascots** in `stageCharacters.js`
-  (`gecko` = "Jingjok" 🦎, `buffalo` = "Kwai" 🐃, `hippo` = "Hippo" 🦛) — each
-  has a name + emoji + accent + vibe, but **no Thai/romanization/English** (these
-  are characters, not vocabulary).
-- **Owner clarification needed:** did the feedback mean
-  (a) the **stage mascot characters** (already present; nothing to "fix" as
-  vocab), or (b) actual **animal vocabulary cards**? If (b), Gecko and Hippo
-  cards must be **authored with native-reviewed Thai** (Water Buffalo = ควาย
-  /khwaai, Gecko = จิ้งจก /jîngjòk, Hippo = ฮิปโป /híppoh are candidates) — **not
-  invented here** without native review, per the "flag, don't guess" rule.
-- **Remaining:** awaiting owner intent; then add cards (with native review) if (b).
+## 7. Mascot characters (Gecko / Buffalo / Hippo / Monkey) — CLARIFIED (P2)
+- **Owner clarification (now settled):** Gecko, Water Buffalo, Hippo, and Monkey
+  are **mascot-style character assets**, the same product role as the existing
+  Muay Thai and elephant mascots. They are **NOT vocabulary cards.** No Thai
+  vocabulary entries are invented for them, they are **not** in the language card
+  dataset (`src/data/cards.js`), and they are **not** in any vocabulary-correction
+  backlog. (Verified: `grep -i "gecko|hippo|buffalo|monkey|ควาย" src/data/cards.js`
+  → no matches.)
+- **Files:** `src/data/stageCharacters.js` (character config), `src/data/characters.js`
+  (in-lesson coach manifest), `public/characters/<id>/` (art packs).
+
+### Future mascot character assets
+| Mascot | Asset status | Source |
+|---|---|---|
+| **Hippo** | **New pack generated this pass** via Higgsfield MCP (`nano_banana_pro`) | owner reference `C:\Users\bdstd\Pictures\hippo.PNG` |
+| **Monkey** (Ling) | **New pack generated this pass** via Higgsfield MCP (`nano_banana_pro`) | owner reference `C:\Users\bdstd\Pictures\monkey.PNG` |
+| **Elephant** (Chang) | **Existing pack** already in project | `public/characters/elephant/` |
+| **Samurai / Muay Thai** (Khun Suk) | **Existing pack** already in project | `public/characters/muay-thai/` |
+
+- **Pack structure (all four now consistent):** each pack is the same 7-variant
+  set — `idle, happy, celebrating, correct, speaking, thinking, wrong` — as
+  1024x1024 WebP with transparent background, matching the elephant/muay-thai
+  convention. Elephant and Samurai already had all 7 variants, so **no gap-filling
+  was needed**. Hippo and Monkey were generated from the supplied references,
+  background-removed, and exported to the same spec.
+- **Where the new art is used:** the public **roadmap / "Your journey"** section
+  now leads all 4 stage cards with a distinct mascot (Stage 1 elephant, Stage 2
+  monkey, Stage 3 hippo, goal card Muay Thai). `hasArt: true` is set for hippo and
+  monkey in `stageCharacters.js`.
+- **In-lesson coach note:** the lesson Coach (`characters.js`) still ships full
+  manifests (sound profile + voice lines) only for elephant and muay-thai, so for
+  now stages mapped to hippo/monkey/gecko/buffalo still fall back to the elephant
+  coach. Wiring hippo/monkey as full in-lesson coaches (adding sound + lines) is a
+  safe future step now that their art exists; it was intentionally left out of this
+  pass to avoid changing lesson/audio behavior.
+- **Remaining:** none required. (Optional: gecko + buffalo packs, and full
+  in-lesson coach manifests for the new mascots.)
 
 ## 8. Leaderboard — DONE (P3)
 - **File:** `src/components/LeaderboardScreen.jsx`.
@@ -237,12 +266,16 @@ lists what cannot be resolved in code without a decision or real credential.
 ---
 
 ## Consolidated owner action list (what's needed from you)
-1. **Buy Me a Coffee:** your real BMAC URL (current placeholder 404s, now hidden).
-2. **Crypto (optional):** wallet address + network/label + matching QR image.
+1. **Buy Me a Coffee:** your real BMAC URL → set `VITE_BUY_ME_A_COFFEE_URL` in
+   Vercel env. The card is live and shows "Coming soon" until then.
+2. **Crypto (optional):** real wallet address + network/label + an approved QR
+   image → set `VITE_CRYPTO_WALLET_ADDRESS` / `VITE_CRYPTO_NETWORK` /
+   `VITE_CRYPTO_QR_IMAGE`. Card shows "Coming soon" until then.
 3. **Cutscenes:** the actual ~6s clip file(s) + which seams should use them
    (recommended: stage completion only to start).
-4. **Vocabulary:** confirm whether Gecko/Water Buffalo/Hippo should be real
-   vocab cards (then native-reviewed Thai) or are just stage mascots.
+4. **Mascots (settled):** Gecko / Buffalo / Hippo / Monkey are mascot assets,
+   not vocabulary. Hippo + Monkey packs are now generated; gecko + buffalo packs
+   are optional future art. No owner action required.
 5. **Audio:** budget + vendor + distribution + native reviewer (to start the
    Stage-1 pilot).
 6. **Launch:** mailbox confirm, legal approval w/ final name, fresh test account,
