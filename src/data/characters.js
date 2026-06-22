@@ -238,7 +238,7 @@ export const CHARACTERS = {
   // are already the variant's own.
   'monkey-social': makeCharacter({
     id: 'monkey-social',
-    artId: 'monkey', // TODO(asset pass): → 'monkey-social' once its pack ships
+    artId: 'monkey-social',
     displayName: 'Ling',
     role: 'Social-confidence coach — outgoing, expressive, great with small talk.',
     accentColor: '#E0823B',
@@ -257,7 +257,7 @@ export const CHARACTERS = {
 
   'elephant-scholar': makeCharacter({
     id: 'elephant-scholar',
-    artId: 'elephant', // TODO(asset pass): → 'elephant-scholar' once its pack ships
+    artId: 'elephant-scholar',
     displayName: 'Chang',
     role: 'Intermediate-power coach — focused, thorough, building real depth.',
     accentColor: '#5BAF7C',
@@ -276,7 +276,7 @@ export const CHARACTERS = {
 
   'hippo-zen': makeCharacter({
     id: 'hippo-zen',
-    artId: 'hippo', // TODO(asset pass): → 'hippo-zen' once its pack ships
+    artId: 'hippo-zen',
     displayName: 'Hippo',
     role: 'Natural-Thai coach — calm, mindful, helps you sound effortless.',
     accentColor: '#2563A8',
@@ -295,7 +295,7 @@ export const CHARACTERS = {
 
   'muay-thai-champion': makeCharacter({
     id: 'muay-thai-champion',
-    artId: 'muay-thai', // TODO(asset pass): → 'muay-thai-champion' once its pack ships
+    artId: 'muay-thai-champion',
     displayName: 'Khun Suk',
     role: 'Thai-mastery coach — a champion in your corner for the final push.',
     accentColor: '#A03B2C',

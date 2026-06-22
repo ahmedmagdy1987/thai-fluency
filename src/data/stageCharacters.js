@@ -63,7 +63,7 @@ export const CHARACTERS = {
   // `artId` borrows the base family's art until the variant pack ships.
   monkeySocial: {
     id: 'monkey-social',
-    artId: 'monkey', // TODO(asset pass): → 'monkey-social'
+    artId: 'monkey-social',
     name: 'Ling',
     placeholderEmoji: '🐒',
     accent: '#E0823B',
@@ -72,7 +72,7 @@ export const CHARACTERS = {
   },
   elephantScholar: {
     id: 'elephant-scholar',
-    artId: 'elephant', // TODO(asset pass): → 'elephant-scholar'
+    artId: 'elephant-scholar',
     name: 'Chang',
     placeholderEmoji: '🐘',
     accent: '#5BAF7C',
@@ -81,7 +81,7 @@ export const CHARACTERS = {
   },
   hippoZen: {
     id: 'hippo-zen',
-    artId: 'hippo', // TODO(asset pass): → 'hippo-zen'
+    artId: 'hippo-zen',
     name: 'Hippo',
     placeholderEmoji: '🦛',
     accent: '#2563A8',
@@ -90,7 +90,7 @@ export const CHARACTERS = {
   },
   muayThaiChampion: {
     id: 'muay-thai-champion',
-    artId: 'muay-thai', // TODO(asset pass): → 'muay-thai-champion'
+    artId: 'muay-thai-champion',
     name: 'Khun Suk',
     placeholderEmoji: '🥊',
     accent: '#A03B2C',
