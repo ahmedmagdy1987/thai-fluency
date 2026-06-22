@@ -24,6 +24,7 @@ import {
   courseCompleteCelebrationId,
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
+import { resolveCoachIdForStage } from './data/stageCharacters.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -1040,6 +1041,7 @@ export default function TukTalkThaiApp() {
           eyebrow: 'Perfect Challenge',
           title: `Perfect Stage ${stageId} Challenge`,
           subtitle: 'You got every answer right.',
+          characterId: resolveCoachIdForStage(stageId),
           xpEarned: score * XP_REWARDS.quizCorrect,
           primaryLabel: 'Continue',
           onPrimary: () => setCelebration(null),
@@ -1329,6 +1331,7 @@ export default function TukTalkThaiApp() {
           xpEarned: MINI_UNIT_REWARD_XP,
           streak: stats.streak || 0,
           nextStep: stagePathNowComplete ? 'Keep going in Learn' : 'Review or Challenge',
+          characterId: resolveCoachIdForStage(completedUnit?.stageId || 1),
           superPromptReason: 'mini-unit',
         });
       }
@@ -1504,6 +1507,7 @@ export default function TukTalkThaiApp() {
           title: 'Course Complete',
           subtitle: `You completed the Tuk Talk Thai path: ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} mini-units, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
           xpEarned: COURSE_COMPLETE_XP,
+          characterId: resolveCoachIdForStage(8),
           primaryLabel: 'Review due cards',
           onPrimary: () => { setCelebration(null); handleSetTab('cards'); },
           secondaryLabel: 'Try a Stage Challenge',
@@ -1525,6 +1529,7 @@ export default function TukTalkThaiApp() {
           eyebrow: 'Stage Complete',
           title: `Stage ${newStage.id} Complete`,
           subtitle: 'Every word in this stage is learned. Keep reviewing to master them.',
+          characterId: resolveCoachIdForStage(newStage.id),
           xpEarned: 0,
           primaryLabel: next ? `Start Stage ${next.id}` : 'Continue learning',
           onPrimary: () => { setCelebration(null); handleSetTab('learn'); },

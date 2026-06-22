@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronRight, Sparkles, Zap } from 'lucide-react';
 import ConfettiBurst from './ConfettiBurst.jsx';
+import CharacterCoach from './CharacterCoach.jsx';
 import { playCelebration, playXpTick } from '../lib/sounds.js';
 
 function prefersReducedMotion() {
@@ -25,6 +26,7 @@ export default function CelebrationOverlay({
   onSecondary,
   superCtaText,
   onSuper,
+  characterId = null,
 }) {
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
   const [displayXp, setDisplayXp] = useState(reducedMotion ? xpEarned : 0);
@@ -65,7 +67,13 @@ export default function CelebrationOverlay({
       {showConfetti && <ConfettiBurst variant="strong" onDone={() => setShowConfetti(false)} />}
       <div className="reward-screen-backdrop" role="dialog" aria-modal="true" aria-labelledby="celebration-title">
         <section className="reward-screen-panel">
-          <div className="reward-screen-icon" aria-hidden="true"><Sparkles size={34} /></div>
+          {characterId ? (
+            <div className="reward-screen-coach">
+              <CharacterCoach characterId={characterId} state="celebrating" compact />
+            </div>
+          ) : (
+            <div className="reward-screen-icon" aria-hidden="true"><Sparkles size={34} /></div>
+          )}
           <div className="reward-screen-eyebrow">{eyebrow}</div>
           <h1 id="celebration-title" className="reward-screen-title">{title}</h1>
           {subtitle && <p className="reward-screen-sub">{subtitle}</p>}

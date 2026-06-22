@@ -8,6 +8,7 @@ import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import SentenceBuilder from './SentenceBuilder.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
+import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 
 function cardsByIds(ids, voice) {
   return ids
@@ -193,7 +194,11 @@ export default function MiniUnitFlow({
         : raw.achievements,
     };
   }, [unit, voice]);
-  const coach = useCharacterReaction({ characterId: unit.characterId, initialState: 'greeting', mode: 'quiz' });
+  // Resolve the coach from the unit's STAGE so every stage shows its own
+  // mascot. (The unit data only carries an 'elephant' default characterId for
+  // stages 2-8, so we must derive the real mascot from the stage here.)
+  const coachId = useMemo(() => resolveCoachIdForStage(unit.stageId), [unit.stageId]);
+  const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'quiz' });
 
   const currentVocab = vocabCards[vocabIndex] || null;
   const currentChallenge = challengeQuestions[challengeIndex] || null;
@@ -232,7 +237,7 @@ export default function MiniUnitFlow({
     if (revealed) return;
     setRevealed(true);
     playFlip();
-    playCharacterSelect(unit.characterId);
+    playCharacterSelect(coachId);
     coach.react('choiceSelected', { duration: 900, message: 'Now connect sound to meaning.' });
   };
 
@@ -295,10 +300,10 @@ export default function MiniUnitFlow({
     setChecked(true);
     if (selectedId === currentChallenge.correct.id) {
       setChallengeScore(score => score + 1);
-      playCharacterCorrect(unit.characterId);
+      playCharacterCorrect(coachId);
       coach.react('correct', { duration: 1400 });
     } else {
-      playCharacterWrong(unit.characterId);
+      playCharacterWrong(coachId);
       coach.react('wrong', { duration: 1600 });
     }
   };
@@ -329,7 +334,7 @@ export default function MiniUnitFlow({
           {showCharacters && (
             <div className="miniunit-coach">
               <CharacterCoach
-                characterId={unit.characterId}
+                characterId={coachId}
                 state={coach.state}
                 message={coach.message || 'Ready for a guided mini-unit?'}
                 compact
@@ -397,7 +402,7 @@ export default function MiniUnitFlow({
           data={builderData}
           audioRate={audioRate}
           showCharacters={showCharacters}
-          characterId={unit.characterId}
+          characterId={coachId}
           onComplete={finishBuilder}
         />
       )}
@@ -408,7 +413,7 @@ export default function MiniUnitFlow({
           {showCharacters && (
             <div className="miniunit-coach miniunit-coach-inline">
               <CharacterCoach
-                characterId={unit.characterId}
+                characterId={coachId}
                 state={coach.state}
                 message={coach.message}
                 compact

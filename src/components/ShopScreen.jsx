@@ -108,9 +108,9 @@ export default function ShopScreen({ stats, onOpenSuper }) {
           skins are planned.
         </p>
         <div className="shop-character-grid">
-          {Object.values(CHARACTERS).map(c => {
+          {Object.entries(CHARACTERS).map(([charKey, c]) => {
             const stages = Object.entries(STAGE_CHARACTER_MAP)
-              .filter(([, charId]) => charId === c.id)
+              .filter(([, mappedKey]) => mappedKey === charKey)
               .map(([stageId]) => STAGES.find(s => s.id === Number(stageId)))
               .filter(Boolean);
             return (

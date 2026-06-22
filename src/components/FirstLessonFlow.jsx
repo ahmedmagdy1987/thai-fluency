@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, CheckCircle2, ChevronRight, Sparkles, Volume2, X } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
+import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { displayCard, transformText } from '../lib/voice.js';
 import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
@@ -309,7 +310,7 @@ export default function FirstLessonFlow({
             {showCharacters && (
               <div className="firstlesson-coach">
                 <CharacterCoach
-                  characterId="elephant"
+                  characterId={resolveCoachIdForStage(unit.stageId)}
                   state="greeting"
                   message="One short path to begin."
                   compact
