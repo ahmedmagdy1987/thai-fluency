@@ -6,6 +6,12 @@ Audited local branch: `master`
 
 This is a planning audit only. No app code, card data, SRS scheduling, auth logic, OneSignal production config, database schema, payments, ads SDKs, or app-store packaging were changed.
 
+> **Update (2026-06-23):** For the current, authoritative launch states (Beta /
+> Public free / Paid) and their blockers — including the server reward-integrity and
+> entitlement gates for paid launch — see **`docs/launch-decision-matrix.md`**,
+> **`docs/server-reward-integrity-design.md`**, and **`docs/entitlement-foundation-design.md`**.
+> Those supersede the integrity/monetization readiness scoring below.
+
 ## 1. Executive summary
 
 Launch readiness score: **72 / 100 for a controlled web/PWA soft launch**.
