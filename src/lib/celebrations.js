@@ -35,6 +35,18 @@ export function courseCompleteCelebrationId() {
 export function challengePerfectCelebrationId(stageId, date = getLocalDateKey()) {
   return `challenge-perfect:stage-${stageId}:${date}`;
 }
+// XP idempotency ledger IDs. A Stage Challenge pays XP at most once per stage per
+// day, and the Tone Challenge at most once per day — so replaying a quiz ("Try
+// again") can no longer farm XP. Date-keyed so legitimate daily practice still
+// earns. Checked with hasCelebrated / recorded with markCelebrated, which already
+// dedups across refresh, back-nav, double-click, and multiple tabs and syncs to
+// profiles.settings.
+export function challengeRewardId(stageId, date = getLocalDateKey()) {
+  return `challenge-xp:stage-${stageId}:${date}`;
+}
+export function toneQuizRewardId(date = getLocalDateKey()) {
+  return `tone-quiz-xp:${date}`;
+}
 export function superCtaId(date = getLocalDateKey()) {
   return `super-cta:${date}`;
 }

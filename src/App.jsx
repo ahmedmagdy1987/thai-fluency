@@ -4,7 +4,7 @@ import { CARDS } from './data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState, clearState, loadRushGuard, saveRushGuard } from './lib/storage.js';
+import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
 import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
@@ -17,6 +17,8 @@ import {
   allQuestsComplete,
   stageCompleteCelebrationId,
   challengePerfectCelebrationId,
+  challengeRewardId,
+  toneQuizRewardId,
   superCtaId,
   hasCelebrated,
   withCelebrated,
@@ -295,6 +297,14 @@ export default function TukTalkThaiApp() {
   // from localStorage so the cap survives refresh / route changes / re-entry.
   const rushGuardRef = useRef(null);
   if (rushGuardRef.current === null) rushGuardRef.current = loadRushGuard();
+  // Persisted per-card daily review-XP guard: a card pays review XP at most once
+  // per local day so re-rating the same card (e.g. "Again") can't farm XP. In
+  // memory we keep ids as a Set for O(1) checks; persisted as a plain array.
+  const reviewXpDayRef = useRef(null);
+  if (reviewXpDayRef.current === null) {
+    const loaded = loadReviewXpDay();
+    reviewXpDayRef.current = { date: loaded.date, ids: new Set(loaded.ids) };
+  }
 
   useEffect(() => {
     profileSettingsRef.current = (profile?.settings && typeof profile.settings === 'object' && !Array.isArray(profile.settings))
@@ -931,12 +941,23 @@ export default function TukTalkThaiApp() {
 
   const [lastReviewSnapshot, setLastReviewSnapshot] = useState(null);
 
-  const reviewOne = useCallback((cardId, rating) => {
+  const reviewOne = useCallback((cardId, rating, { assisted = false } = {}) => {
     const previousProgress = progress?.[cardId] || null;
     const reviewKey = `${cardId}:${previousProgress?.lastReview || 'new'}`;
     if (reviewLocksRef.current.has(reviewKey)) return false;
     reviewLocksRef.current.add(reviewKey);
     window.setTimeout(() => reviewLocksRef.current.delete(reviewKey), 1500);
+
+    // --- Assisted-attempt central rule --------------------------------------
+    // An attempt is "assisted" when the answer side was exposed by switching the
+    // card direction mid-attempt (see CardsTab). The current card's faces are
+    // locked to the direction snapshot so the peek is already neutralized in the
+    // UI; this is the SINGLE central enforcement point regardless of how the flag
+    // was set. An assisted attempt may still update SRS scheduling, but its rating
+    // is clamped to at most Good (3) — never the long "Easy" interval — it never
+    // earns full XP (capped below), and it is excluded from any first-try /
+    // perfect-answer achievement signal.
+    const effectiveRating = assisted ? Math.min(rating, 3) : rating;
 
     // --- Anti-rushing (persisted across sessions) ---------------------------
     // The rush run + last-rating timestamp live in localStorage (rushGuardRef),
@@ -960,18 +981,39 @@ export default function TukTalkThaiApp() {
     }
     const rushed = nextRun > RUSH_RUN_LIMIT;
     const baseXp = rating === 1 ? XP_REWARDS.again : rating === 2 ? XP_REWARDS.hard : rating === 3 ? XP_REWARDS.good : XP_REWARDS.easy;
+    // Per-card daily review-XP guard. A card pays review XP at most ONCE per local
+    // day; re-rating the same card after it re-dues (e.g. "Again" → due again in
+    // minutes) earns 0, so a single card can't be farmed. Device-local (mirrors
+    // the rush guard), resets each local day.
+    const today = getLocalDateKey();
+    let dayGuard = reviewXpDayRef.current || { date: null, ids: new Set() };
+    if (dayGuard.date !== today) dayGuard = { date: today, ids: new Set() };
+    // Re-hydrate from storage so a rating made in ANOTHER tab today is honored
+    // here too (the ref is per-tab in memory; localStorage is shared).
+    const persistedDay = loadReviewXpDay();
+    if (persistedDay.date === today) persistedDay.ids.forEach(id => dayGuard.ids.add(id));
+    reviewXpDayRef.current = dayGuard;
+    const alreadyEarnedToday = dayGuard.ids.has(cardId);
     // XP by source. A new learning card earns once; a genuinely DUE review earns
     // review XP. Re-practicing a card that is NOT due (already learned, scheduled
-    // in the future — e.g. a completed-stage card) earns 0, so XP can't be farmed
-    // by looping old cards. SRS scheduling + review counts below are unaffected;
-    // only the XP currency is gated. The rush cap still applies on top.
+    // in the future — e.g. a completed-stage card), or one that already paid out
+    // today, earns 0, so XP can't be farmed by looping old cards. SRS scheduling +
+    // review counts below are unaffected; only the XP currency is gated. The rush
+    // cap (and, for assisted attempts, the assisted cap) still apply on top.
     const isNewCard = !previousProgress;
     const isDueReview = !!previousProgress && (previousProgress.nextDue || 0) <= now;
-    const earnsXp = isNewCard || isDueReview;
-    const xp = !earnsXp ? 0 : (rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp);
-    // Commit + persist immediately so the cap is durable mid-session.
+    const earnsXp = (isNewCard || isDueReview) && !alreadyEarnedToday;
+    let xp = !earnsXp ? 0 : (rushed ? Math.min(baseXp, RUSH_XP_CAP) : baseXp);
+    if (assisted) xp = Math.min(xp, RUSH_XP_CAP);   // assisted attempts never earn full XP
+    // Commit + persist immediately so the caps are durable mid-session.
     rushGuardRef.current = { rushRun: nextRun, lastRatingAt: now };
     saveRushGuard(rushGuardRef.current);
+    // Record that this card earned review XP today so it can't be re-farmed.
+    const earnedXpThisReview = xp > 0;
+    if (earnedXpThisReview) {
+      dayGuard.ids.add(cardId);
+      saveReviewXpDay({ date: dayGuard.date, ids: [...dayGuard.ids] });
+    }
     // ------------------------------------------------------------------------
 
     // Snapshot previous state for undo. Store the XP actually awarded so undo
@@ -984,16 +1026,17 @@ export default function TukTalkThaiApp() {
       reviewKey,
       xpAwarded: xp,
       prevRushGuard: prevGuard,
+      earnedXpDay: earnedXpThisReview,   // undo removes the card from the daily guard
       timestamp: now,
     });
     setProgress(p => {
       const safeProgress = p && typeof p === 'object' ? p : {};
-      const newState = reviewCard(safeProgress[cardId], rating);
+      const newState = reviewCard(safeProgress[cardId], effectiveRating);
       return { ...safeProgress, [cardId]: newState };
     });
     setStats(s => ({ ...s, totalReviews: (s.totalReviews || 0) + 1 }));
     if (xp > 0) grantXp(xp);
-    return { accepted: true, rushed };
+    return { accepted: true, rushed, assisted };
   }, [grantXp, progress]);
 
   const undoLastReview = useCallback(() => {
@@ -1007,6 +1050,12 @@ export default function TukTalkThaiApp() {
         lastRatingAt: lastReviewSnapshot.prevRushGuard.lastRatingAt || 0,
       };
       saveRushGuard(rushGuardRef.current);
+    }
+    // Roll back the per-card daily review-XP guard so an undone review can earn
+    // again — only when THIS review is what recorded the card for today.
+    if (lastReviewSnapshot.earnedXpDay && reviewXpDayRef.current && reviewXpDayRef.current.ids) {
+      reviewXpDayRef.current.ids.delete(cardId);
+      saveReviewXpDay({ date: reviewXpDayRef.current.date, ids: [...reviewXpDayRef.current.ids] });
     }
     setProgress(p => {
       const next = { ...(p && typeof p === 'object' ? p : {}) };
@@ -1032,7 +1081,13 @@ export default function TukTalkThaiApp() {
 
   const recordTonesQuiz = useCallback((score, total) => {
     const passed = (score / total) >= 0.8;
-    grantXp(score * XP_REWARDS.toneQuizCorrect);
+    // XP idempotency: the Tone Challenge pays XP at most once per day, so the
+    // "Try again" replay can't farm XP. Stat updates below stay live every time.
+    const xpId = toneQuizRewardId(getLocalDateKey());
+    if (!hasCelebrated(stats.celebratedIds, xpId)) {
+      grantXp(score * XP_REWARDS.toneQuizCorrect);
+      markCelebrated(xpId);
+    }
     setStats(s => ({
       ...s,
       tonesQuizBest: Math.max(s.tonesQuizBest || 0, score),
@@ -1040,18 +1095,26 @@ export default function TukTalkThaiApp() {
       quizzesPassed: passed ? (s.quizzesPassed || 0) + 1 : (s.quizzesPassed || 0),
       perfectQuizzes: score === total ? (s.perfectQuizzes || 0) + 1 : (s.perfectQuizzes || 0),
     }));
-  }, [grantXp]);
+  }, [grantXp, markCelebrated, stats.celebratedIds]);
 
   const recordQuizComplete = useCallback((score, total, stage) => {
     const passed = (score / total) >= 0.8;
     const correct = Math.max(0, score || 0);
     const wrong = Math.max(0, (total || 0) - correct);
     const today = getLocalDateKey();
-    grantXp(score * XP_REWARDS.quizCorrect);
+    const stageId = stage || 1;
+    // XP idempotency: a Stage Challenge pays XP at most once per stage per day, so
+    // the "Try again" replay can't farm XP. The stat counters below (attempts,
+    // best score, perfect count) still update on every attempt.
+    const xpId = challengeRewardId(stageId, today);
+    const awardedXp = hasCelebrated(stats.celebratedIds, xpId) ? 0 : score * XP_REWARDS.quizCorrect;
+    if (awardedXp > 0) {
+      grantXp(awardedXp);
+      markCelebrated(xpId);
+    }
     // Level 3 — perfect Stage Challenge celebration (once per stage per day).
     // Challenge never marks cards learned; this is purely cosmetic feedback.
     if (total > 0 && score === total) {
-      const stageId = stage || 1;
       const perfectId = challengePerfectCelebrationId(stageId, today);
       if (!hasCelebrated(stats.celebratedIds, perfectId)) {
         const showSuper = !hasCelebrated(stats.celebratedIds, superCtaId(today));
@@ -1061,7 +1124,7 @@ export default function TukTalkThaiApp() {
           title: `Perfect Stage ${stageId} Challenge`,
           subtitle: 'You got every answer right.',
           characterId: resolveCoachIdForStage(stageId),
-          xpEarned: score * XP_REWARDS.quizCorrect,
+          xpEarned: awardedXp,
           primaryLabel: 'Continue',
           onPrimary: () => setCelebration(null),
           superCtaText: showSuper ? 'Super will unlock extra challenge packs when it opens.' : null,
@@ -1091,12 +1154,16 @@ export default function TukTalkThaiApp() {
   }, [grantXp, markCelebrated, stats.celebratedIds]);
 
   const recordDialogueComplete = useCallback((dialogueId) => {
+    let newlyCompleted = false;
     setStats(s => {
       const done = s.dialoguesCompleted || [];
       if (done.includes(dialogueId)) return s;
+      newlyCompleted = true;
       return { ...s, dialoguesCompleted: [...done, dialogueId] };
     });
-    grantXp(10);
+    // Grant XP only when the dialogue was newly completed, so a repeat call
+    // (refresh / double-fire) can't farm the +10. Mirrors the mini-unit pattern.
+    if (newlyCompleted) grantXp(10);
   }, [grantXp]);
 
   const markCardsKnown = useCallback((cardIds) => {

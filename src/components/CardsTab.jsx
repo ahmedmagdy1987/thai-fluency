@@ -30,6 +30,16 @@ const CARD_BY_ID = new Map(CARDS.map(c => [c.id, c]));
 
 export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewLimit, voice, viewMode, cardDirection = 'en-first', onChangeCardDirection, startedStage, maxUnlockedStage, audioRate, audioAutoPlay, showCharacters = true, undoLastReview, lastReviewSnapshot, sessionScope, setTab, stageState }) {
   const [revealed, setRevealed] = useState(false);
+  // Per-attempt direction LOCK + assisted flag (anti-peek). The current card's
+  // faces always render from `attemptDirection` — a snapshot taken when the card
+  // became active — NOT the live `cardDirection`. So flipping the direction
+  // toggle mid-attempt can never expose the hidden answer side of the CURRENT
+  // card; it only changes the NEXT one. A flip before reveal still marks the
+  // attempt `assisted`, and reviewOne caps its XP / clamps its interval centrally.
+  const [attemptDirection, setAttemptDirection] = useState(cardDirection);
+  const [assisted, setAssisted] = useState(false);
+  const cardDirectionRef = useRef(cardDirection);
+  cardDirectionRef.current = cardDirection;
   const [sessionDone, setSessionDone] = useState(0);
   const [sessionCorrect, setSessionCorrect] = useState(0);
   const [sessionNewCount, setSessionNewCount] = useState(0);
@@ -183,6 +193,8 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setSessionCorrect(0);
     setSessionNewCount(0);
     setRatingLocked(false);
+    setAttemptDirection(cardDirectionRef.current);
+    setAssisted(false);
     handledCardIdsRef.current = new Set();
     sessionReviewedRef.current = new Set();
     actionLockRef.current = null;
@@ -191,6 +203,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   useEffect(() => {
     setRatingLocked(false);
     actionLockRef.current = null;
+    // A new card = a fresh attempt: snapshot the current direction (locking the
+    // faces for this card) and clear the assisted flag.
+    setAttemptDirection(cardDirectionRef.current);
+    setAssisted(false);
     // When we advance off a card, drop it from the per-session dedupe guard.
     // Otherwise a card that legitimately re-dues later this session (e.g. rated
     // "Again", due again in ~1 min) would re-surface as queue[0] but every
@@ -227,7 +243,18 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   // before answering would give the answer away). Two effects on purpose:
   // folding them together puts `revealed` in the Thai-first path's deps, and
   // revealing within the 350ms delay would then cancel the prompt audio.
-  const isEnglishFirst = cardDirection !== 'th-first';
+  // Locked to the per-attempt snapshot, NOT the live preference, so toggling
+  // direction mid-card can never flip the current card's faces (the exploit).
+  const isEnglishFirst = attemptDirection !== 'th-first';
+
+  // Direction toggle handler: a flip BEFORE revealing the current card is a peek
+  // attempt → mark assisted (the faces stay locked, so nothing is exposed, but
+  // reviewOne applies the central assisted cap). The change still updates the
+  // global preference and takes effect on the next card.
+  const handleChangeDirection = (next) => {
+    if (rawCard && !revealed && next !== attemptDirection) setAssisted(true);
+    if (onChangeCardDirection) onChangeCardDirection(next);
+  };
   useEffect(() => {
     if (!audioAutoPlay || isEnglishFirst || !card || !card.thai) return undefined;
     const t = setTimeout(() => triggerSpeak(card.thai), 350);
@@ -277,7 +304,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     setRatingLocked(true);
     if (handledCardIdsRef.current.has(rawCard.id)) return;
     handledCardIdsRef.current.add(rawCard.id);
-    const result = reviewOne(rawCard.id, rating);
+    const result = reviewOne(rawCard.id, rating, { assisted });
     if (result === false) return;
     // Remember it was handled this session so a one-pass Stage Review counts
     // down (non-due replays don't re-schedule out of the queue on their own).
@@ -485,7 +512,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
         </div>
       </div>
 
-      <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="cards-direction-toggle" />
+      <CardDirectionToggle value={cardDirection} onChange={handleChangeDirection} className="cards-direction-toggle" />
+      {cardDirection !== attemptDirection && (
+        <div className="cards-direction-hint" role="status">Direction applies to the next card</div>
+      )}
 
       <div className="srs-card-wrap">
         <div className="srs-card-flip-wrap">

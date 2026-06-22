@@ -39,6 +39,41 @@ export function saveRushGuard(state) {
   } catch (e) { /* silent fail - must never crash the review loop */ }
 }
 
+// Per-card daily review-XP guard. Records which card ids have already paid out
+// review XP on the current local day, so repeatedly rating the SAME card (e.g.
+// rating "Again", which re-dues in ~1-10 min) cannot slowly farm XP. Like the
+// rush guard, it is device-local and NOT synced (an anti-abuse signal, not user
+// content) and survives refresh/route changes but resets each local day.
+// Shape: { date: 'YYYY-MM-DD', ids: number[] }.
+const REVIEW_XP_DAY_KEY = 'thai-fluency-review-xp-day-v1';
+
+export function loadReviewXpDay() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(REVIEW_XP_DAY_KEY);
+      if (raw) {
+        const v = JSON.parse(raw);
+        if (v && typeof v === 'object' && typeof v.date === 'string' && Array.isArray(v.ids)) {
+          return { date: v.date, ids: v.ids.filter(id => Number.isFinite(id)) };
+        }
+      }
+    }
+  } catch (e) { /* private mode or corrupt value - silent fail */ }
+  return { date: null, ids: [] };
+}
+
+export function saveReviewXpDay(state) {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const safe = {
+        date: typeof state?.date === 'string' ? state.date : null,
+        ids: Array.isArray(state?.ids) ? state.ids.filter(id => Number.isFinite(id)) : [],
+      };
+      localStorage.setItem(REVIEW_XP_DAY_KEY, JSON.stringify(safe));
+    }
+  } catch (e) { /* silent fail - must never crash the review loop */ }
+}
+
 export async function loadState() {
   try {
     if (typeof localStorage !== 'undefined') {

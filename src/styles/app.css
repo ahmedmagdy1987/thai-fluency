@@ -2693,6 +2693,7 @@ button.character-coach-portrait { cursor: pointer; }
   .card-direction-btn:not(.card-direction-btn-active):hover { color: var(--ink); }
 }
 .cards-direction-toggle { display: flex; width: max-content; }
+.cards-direction-hint { align-self: center; margin: -6px auto 10px; font-size: 11px; font-weight: 600; color: var(--ink-soft); opacity: 0.85; }
 .miniunit-direction-toggle,
 .firstlesson-direction-toggle,
 .demo-direction-toggle { display: flex; width: max-content; }
