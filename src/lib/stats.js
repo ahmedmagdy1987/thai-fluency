@@ -38,6 +38,13 @@ export const DEFAULT_STATS = {
   // (prevents replay/refresh from farming the builder reward).
   builderRewardedUnits: [],
   superPromptLastShownAt: null,
+  // Premium entitlement tier. See src/config/entitlements.js. Defaults to 'free'
+  // for everyone — there is no checkout yet, so no one is 'super'. This is a
+  // CLIENT-LOCAL placeholder: a real paid tier MUST be set from a server-
+  // authoritative source (Supabase column + payment webhook) before it can grant
+  // any benefit, so it is intentionally NOT in the cloud-sync whitelist yet (no
+  // migration). See docs/payment-readiness.md.
+  tier: 'free',
   // Celebration repeat-prevention ledger (see lib/celebrations.js). Date-keyed
   // quest IDs + durable milestone IDs. baselineDone seeds existing completions
   // once so they aren't retroactively celebrated.

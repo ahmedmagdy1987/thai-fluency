@@ -1,12 +1,6 @@
 import React from 'react';
 import { Crown, X } from 'lucide-react';
-
-const REASON_COPY = {
-  'first-lesson': 'You finished your first guided lesson. Super will make the full path faster to explore when it opens.',
-  mission: 'You completed a mission. Super will unlock more practice flexibility when it opens.',
-  'mini-unit': 'You completed a guided mini-unit. Super will add more early access paths when it opens.',
-  locked: 'This is part of the progressive path. Super will unlock some paths early when it opens.',
-};
+import { getUpsellCopy } from '../config/entitlements.js';
 
 export default function SuperUpgradePrompt({ reason = 'mission', onClose, onSeeSuper }) {
   return (
@@ -19,7 +13,7 @@ export default function SuperUpgradePrompt({ reason = 'mission', onClose, onSeeS
         <div className="super-prompt-eyebrow">Coming soon</div>
         <h2 id="super-prompt-title" className="super-prompt-title">Tuk Talk Thai Super</h2>
         <p className="super-prompt-copy">
-          {REASON_COPY[reason] || REASON_COPY.mission}
+          {getUpsellCopy(reason)}
         </p>
         <div className="super-prompt-actions">
           <button type="button" className="btn-primary super-prompt-primary" onClick={onSeeSuper}>
