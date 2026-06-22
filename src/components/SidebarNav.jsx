@@ -11,6 +11,7 @@ import {
   Settings as SettingsIcon,
   Trophy,
   LogOut,
+  Heart,
 } from 'lucide-react';
 
 // Desktop-only sidebar (visible at ≥1024px via CSS). Groups items by intent
@@ -30,6 +31,8 @@ const EXPLORE = [
   { id: 'browse', Icon: BookOpen, label: 'Browse' },
   { id: 'quiz',   Icon: Zap,      label: 'Challenge' },
   { id: 'guide',  Icon: Compass,  label: 'Guide' },
+  // Optional 18+ premium section (Super, coming soon). Not part of course progress.
+  { id: 'dating', Icon: Heart,    label: 'Dating 18+' },
 ];
 
 export default function SidebarNav({

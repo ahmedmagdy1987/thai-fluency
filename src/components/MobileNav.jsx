@@ -13,6 +13,7 @@ import {
   Settings as SettingsIcon,
   LogOut,
   MessageSquare,
+  Heart,
 } from 'lucide-react';
 
 // Mobile bottom nav keeps the highest-frequency destinations visible while
@@ -29,6 +30,8 @@ const MORE = [
   { id: 'browse',      Icon: BookOpen, label: 'Browse' },
   { id: 'guide',       Icon: Compass,  label: 'Guide' },
   { id: 'leaderboard', Icon: Trophy,   label: 'Leaderboard' },
+  // Optional 18+ premium section (Super, coming soon). Not part of course progress.
+  { id: 'dating',      Icon: Heart,    label: 'Dating 18+' },
 ];
 
 export default function MobileNav({

@@ -82,6 +82,7 @@ import PlansPage from './components/PlansPage.jsx';
 import MiniUnitFlow from './components/MiniUnitFlow.jsx';
 import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
+import DatingSection from './components/DatingSection.jsx';
 import { getMiniUnit, getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 import { initNativeUi } from './lib/native.js';
 
@@ -154,6 +155,7 @@ const TAB_ROUTES = {
   quests: '/quests',
   shop: '/shop',
   leaderboard: '/leaderboard',
+  dating: '/dating',
 };
 const ROUTE_TABS = {
   '/': 'learn',
@@ -167,6 +169,7 @@ const ROUTE_TABS = {
   '/quests': 'quests',
   '/shop': 'shop',
   '/leaderboard': 'leaderboard',
+  '/dating': 'dating',
 };
 const AUTH_ROUTES = {
   '/welcome': 'welcome',
@@ -1929,6 +1932,7 @@ export default function TukTalkThaiApp() {
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
+          {tab === 'dating' && <DatingSection onOpenSuper={handleOpenPremium} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
       )}
