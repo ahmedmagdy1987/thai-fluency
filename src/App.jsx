@@ -25,6 +25,7 @@ import {
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
 import { resolveCoachIdForStage } from './data/stageCharacters.js';
+import { getStageCinematic } from './data/stageCinematics.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
@@ -64,6 +65,7 @@ import QuestCompleteToast from './components/QuestCompleteToast.jsx';
 import CelebrationOverlay from './components/CelebrationOverlay.jsx';
 import MissionCompleteRewardScreen from './components/MissionCompleteRewardScreen.jsx';
 import GuidedTutorial from './components/GuidedTutorial.jsx';
+import StageCinematicOverlay from './components/StageCinematicOverlay.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
@@ -255,6 +257,9 @@ export default function TukTalkThaiApp() {
   const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
   const [rewardScreen, setRewardScreen] = useState(null);
+  // Stage-completion cinematic overlay ({ stageId, courseComplete }). Purely
+  // visual; gated by stats.cinematicsWatched so it never replays or grants XP.
+  const [stageCinematic, setStageCinematic] = useState(null);
   const [upgradePrompt, setUpgradePrompt] = useState(null);
 
   // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
@@ -1529,6 +1534,11 @@ export default function TukTalkThaiApp() {
           superCtaText: showSuper ? 'More practice paths and advanced challenges can unlock with Tuk Talk Thai Super soon.' : null,
           onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
         });
+        // Course-completion cinematic (Stage 8 = the big finale). No-op until a
+        // clip ships; never grants rewards; plays at most once.
+        if (getStageCinematic(8) && !(stats.cinematicsWatched || []).includes(8)) {
+          setStageCinematic({ stageId: 8, courseComplete: true });
+        }
         return;
       }
 
@@ -1550,6 +1560,11 @@ export default function TukTalkThaiApp() {
           secondaryLabel: `Try Stage ${newStage.id} Challenge`,
           onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
         });
+        // Stage-completion cinematic. No-op until a clip ships for this stage;
+        // never grants rewards; plays at most once (gated by cinematicsWatched).
+        if (getStageCinematic(newStage.id) && !(stats.cinematicsWatched || []).includes(newStage.id)) {
+          setStageCinematic({ stageId: newStage.id });
+        }
         return;
       }
 
@@ -1859,6 +1874,24 @@ export default function TukTalkThaiApp() {
           onSeeSuper={handleOpenPremium}
         />
       )}
+
+      {stageCinematic && (() => {
+        const clip = getStageCinematic(stageCinematic.stageId);
+        if (!clip) return null;
+        return (
+          <StageCinematicOverlay
+            src={clip.src}
+            poster={clip.poster}
+            courseComplete={!!stageCinematic.courseComplete}
+            onClose={() => {
+              updateSettings({
+                cinematicsWatched: [...new Set([...(stats.cinematicsWatched || []), stageCinematic.stageId])],
+              });
+              setStageCinematic(null);
+            }}
+          />
+        );
+      })()}
 
       {tab === 'learn' && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
         && !celebration && !rewardScreen && !showSettings && !showProfile
