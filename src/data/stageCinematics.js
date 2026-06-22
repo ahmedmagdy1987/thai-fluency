@@ -10,10 +10,20 @@
 //
 // The clips are added in the asset pass; until then every lookup returns null.
 const STAGE_CINEMATICS = {
-  // Filled in the asset pass, e.g.:
-  // 1: { src: '/cinematic/stages/stage-1.mp4', poster: '/cinematic/stages/stage-1.webp' },
-  // ...
-  // 8: { src: '/cinematic/stages/course-complete.mp4', poster: '/cinematic/stages/course-complete.webp' },
+  // Mascot-led celebrations (Seedance 2.0, 9:16 720p, ~6s, generated from each
+  // stage mascot's reference art). Posters reuse committed art so something
+  // shows instantly while the clip loads.
+  1: { src: '/cinematic/stages/stage-1.mp4', poster: '/characters/elephant/happy.webp' },
+  2: { src: '/cinematic/stages/stage-2.mp4', poster: '/characters/monkey/happy.webp' },
+  // Stages 3 & 8 are the Muay-Thai-themed stages; that mascot is rejected by the
+  // generator's input moderation (false positive on the boxer), so these two are
+  // character-free Thai-gold celebration cinematics with a temple poster.
+  3: { src: '/cinematic/stages/stage-3.mp4', poster: '/cinematic/temple.webp' },
+  4: { src: '/cinematic/stages/stage-4.mp4', poster: '/characters/hippo/happy.webp' },
+  5: { src: '/cinematic/stages/stage-5.mp4', poster: '/characters/monkey/happy.webp' },
+  6: { src: '/cinematic/stages/stage-6.mp4', poster: '/characters/elephant/happy.webp' },
+  7: { src: '/cinematic/stages/stage-7.mp4', poster: '/characters/hippo/happy.webp' },
+  8: { src: '/cinematic/stages/course-complete.mp4', poster: '/cinematic/temple.webp' },
 };
 
 export function getStageCinematic(stageId) {
