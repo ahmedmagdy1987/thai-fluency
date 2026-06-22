@@ -15,15 +15,21 @@ const STAGE_CINEMATICS = {
   // shows instantly while the clip loads.
   1: { src: '/cinematic/stages/stage-1.mp4', poster: '/characters/elephant/happy.webp' },
   2: { src: '/cinematic/stages/stage-2.mp4', poster: '/characters/monkey/happy.webp' },
-  // Stages 3 & 8 are the Muay-Thai stages. Their cinematics feature the Khun Suk
-  // mascot, generated from a neutral moderation-safe coach reference (the original
-  // bare-chest fighting art is rejected by the generator's input filter).
-  3: { src: '/cinematic/stages/stage-3.mp4', poster: '/characters/muay-thai-champion/idle.webp' },
+  // PENDING REGENERATION: Stages 3 & 8 are the Muay-Thai (Khun Suk) stages. Their
+  // cinematics — stage-3.mp4 and course-complete.mp4 — and the Champion poster art
+  // were REJECTED and are temporarily DISABLED. With no entry here,
+  // getStageCinematic(3)/(8) return null, so the completion flow falls back to the
+  // existing static celebration overlay (no cinematic plays; no reward change).
+  // The video files stay in the repo (history preserved) but are referenced
+  // nowhere in the product. A moderation-safe Khun Suk reference is saved in
+  // docs/asset-references/khun-suk/. Re-add the two entries below once the approved
+  // generation workflow ships the new clips + Champion art:
+  //   3: { src: '/cinematic/stages/stage-3.mp4', poster: '<approved Khun Suk art>' },
+  //   8: { src: '/cinematic/stages/course-complete.mp4', poster: '<approved Khun Suk art>' },
   4: { src: '/cinematic/stages/stage-4.mp4', poster: '/characters/hippo/happy.webp' },
   5: { src: '/cinematic/stages/stage-5.mp4', poster: '/characters/monkey/happy.webp' },
   6: { src: '/cinematic/stages/stage-6.mp4', poster: '/characters/elephant/happy.webp' },
   7: { src: '/cinematic/stages/stage-7.mp4', poster: '/characters/hippo/happy.webp' },
-  8: { src: '/cinematic/stages/course-complete.mp4', poster: '/characters/muay-thai-champion/celebrating.webp' },
 };
 
 export function getStageCinematic(stageId) {

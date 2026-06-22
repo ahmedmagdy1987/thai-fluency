@@ -90,7 +90,11 @@ export const CHARACTERS = {
   },
   muayThaiChampion: {
     id: 'muay-thai-champion',
-    artId: 'muay-thai-champion',
+    // PENDING REGENERATION: Champion art pack rejected — borrow the approved base
+    // muay-thai art. Identity, name, voice, and vibe stay champion-specific. (The
+    // Coach art is resolved in characters.js, which also borrows 'muay-thai'.)
+    // Flip back to 'muay-thai-champion' once the approved pack ships.
+    artId: 'muay-thai',
     name: 'Khun Suk',
     placeholderEmoji: '🥊',
     accent: '#A03B2C',

@@ -293,9 +293,16 @@ export const CHARACTERS = {
     },
   }),
 
+  // PENDING REGENERATION: the bespoke Khun Suk Champion art pack
+  // (/public/characters/muay-thai-champion/) was REJECTED and is temporarily
+  // disabled. The champion KEEPS its own identity, name, voice copy, and sound —
+  // only the artwork borrows the approved base muay-thai pack via `artId` until a
+  // moderation-safe Champion pack is regenerated (saved reference lives in
+  // docs/asset-references/khun-suk/). Flip `artId` back to 'muay-thai-champion'
+  // once the approved generation workflow ships the new pack.
   'muay-thai-champion': makeCharacter({
     id: 'muay-thai-champion',
-    artId: 'muay-thai-champion',
+    artId: 'muay-thai', // was 'muay-thai-champion' (rejected pack); borrows approved base art, identity/voice unchanged
     displayName: 'Khun Suk',
     role: 'Thai-mastery coach — a champion in your corner for the final push.',
     accentColor: '#A03B2C',
