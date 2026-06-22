@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,6 +15,8 @@ import {
 import { STAGES } from '../data/taxonomy.js';
 import { MINI_UNITS } from '../data/miniUnits.js';
 import { SITE_CONFIG } from '../config/site.js';
+import { PLANS } from '../config/entitlements.js';
+import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
 // Plans / freemium page. IMPORTANT honesty constraint: no billing provider is
 // wired yet, so Premium ("Super") is presented as a real product plan that is
@@ -84,7 +86,7 @@ const FAQ = [
   },
   {
     q: 'How much is Premium and how do I buy it?',
-    a: 'Premium (Super) is not on sale yet. There is no checkout and no payment is collected during the beta. Pricing and launch details will be announced after testing.',
+    a: 'Super will come in monthly and yearly options. It is not on sale yet — there is no checkout and no payment is collected during the beta. Prices are shown as "Pricing coming soon" until they are finalized and announced after testing.',
   },
   {
     q: 'What will Premium include?',
@@ -107,7 +109,22 @@ function MatrixValue({ value, planned }) {
   );
 }
 
+// Price from the central plans config. NEVER invents a number: a null price (no
+// pricing supplied yet) renders "Pricing coming soon" — see config/entitlements.
+function PlanPriceTag({ plan }) {
+  if (plan.price === 0) {
+    return <div className="pl-plan-price"><span className="pl-plan-amount">$0</span><span className="pl-plan-period">{plan.period}</span></div>;
+  }
+  if (plan.price == null) {
+    return <div className="pl-plan-price"><span className="pl-plan-amount-tba">Pricing coming soon</span><span className="pl-plan-period">per {plan.period}</span></div>;
+  }
+  return <div className="pl-plan-price"><span className="pl-plan-amount">${plan.price}</span><span className="pl-plan-period">per {plan.period}</span></div>;
+}
+
 export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, onSignIn }) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- one plans_viewed per visit
+  useEffect(() => { trackEvent(ANALYTICS_EVENTS.PLANS_VIEWED, { authed: !!isAuthed }); }, []);
+
   const homePath = isAuthed ? '/learn' : '/get-started';
   const homeLabel = isAuthed ? 'Back to app' : 'Back to home';
 
@@ -180,18 +197,18 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
         </div>
       </section>
 
-      {/* Plan cards */}
+      {/* Plan cards — Free / Super Monthly / Super Yearly (from config) */}
       <section className="pl-plans">
         <div className="pl-shell pl-plans-grid">
           <article className="pl-plan pl-plan-free">
             <div className="pl-plan-head">
-              <span className="pl-plan-name">Free</span>
+              <span className="pl-plan-name">{PLANS.free.name}</span>
               <span className="pl-plan-tag pl-plan-tag-live">Available now</span>
             </div>
-            <div className="pl-plan-price"><span className="pl-plan-amount">$0</span><span className="pl-plan-period">forever</span></div>
-            <p className="pl-plan-blurb">Everything you need to start speaking Thai, from your first mission.</p>
+            <PlanPriceTag plan={PLANS.free} />
+            <p className="pl-plan-blurb">{PLANS.free.tagline} Everything you need to start speaking Thai, from your first mission.</p>
             <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startFree}>
-              Start free
+              {PLANS.free.cta}
               <ArrowRight size={17} aria-hidden="true" />
             </button>
             <ul className="pl-plan-list">
@@ -203,20 +220,39 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
 
           <article className="pl-plan pl-plan-premium">
             <div className="pl-plan-head">
-              <span className="pl-plan-name">Super</span>
+              <span className="pl-plan-name">{PLANS.superMonthly.name}</span>
               <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
             </div>
-            <div className="pl-plan-price"><span className="pl-plan-amount pl-plan-amount-soon">Soon</span><span className="pl-plan-period">pricing TBA</span></div>
-            <p className="pl-plan-blurb">Premium momentum for committed learners. Everything in Free, plus:</p>
+            <PlanPriceTag plan={PLANS.superMonthly} />
+            <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
             <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={navClick('/feedback')}>
-              Get notified
+              {PLANS.superMonthly.cta}
             </button>
             <ul className="pl-plan-list">
               {PREMIUM_INCLUDES.map(({ Icon, text }) => (
                 <li key={text}><Icon size={16} aria-hidden="true" /> {text}</li>
               ))}
             </ul>
-            <p className="pl-plan-foot">No checkout yet. Super launches after beta, with owner-approved pricing.</p>
+            <p className="pl-plan-foot">No checkout yet. Pricing is announced before Super launches.</p>
+          </article>
+
+          <article className="pl-plan pl-plan-premium">
+            {PLANS.superYearly.badge && <span className="pl-plan-badge">{PLANS.superYearly.badge}</span>}
+            <div className="pl-plan-head">
+              <span className="pl-plan-name">{PLANS.superYearly.name}</span>
+              <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
+            </div>
+            <PlanPriceTag plan={PLANS.superYearly} />
+            <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
+            <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={navClick('/feedback')}>
+              {PLANS.superYearly.cta}
+            </button>
+            <ul className="pl-plan-list">
+              <li><Check size={16} aria-hidden="true" /> Everything in Super Monthly</li>
+              <li><Check size={16} aria-hidden="true" /> Best price per month</li>
+              <li><Check size={16} aria-hidden="true" /> One simple yearly payment</li>
+            </ul>
+            <p className="pl-plan-foot">No checkout yet. Pricing is announced before Super launches.</p>
           </article>
         </div>
       </section>

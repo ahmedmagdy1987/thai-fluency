@@ -10,6 +10,7 @@ import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
 import { evaluateDailyQuests } from './lib/dailyQuests.js';
+import { trackEvent, ANALYTICS_EVENTS } from './lib/analytics.js';
 import {
   QUEST_CELEBRATIONS,
   questCelebrationId,
@@ -1265,17 +1266,37 @@ export default function TukTalkThaiApp() {
     });
   }, [session]);
 
-  const requestSuperPrompt = useCallback((reason = 'mission') => {
-    const today = getLocalDateKey();
-    const lastShown = stats.superPromptLastShownAt || getLocalSuperPromptDate();
-    if (dateKeyFromValue(lastShown) === today) return false;
-
+  // Central upgrade-prompt rules (no dark patterns). A prompt is either an
+  // automatic value-based reminder (intentional:false) or a response to the user
+  // intentionally tapping a premium feature (intentional:true).
+  //   • Never on first launch / before onboarding, and never during onboarding,
+  //     an active lesson, or another open overlay.
+  //   • Never fired after a wrong answer (no caller does so).
+  //   • Automatic reminders: the FIRST offer requires Stage 1 complete, and at
+  //     most one promotional modal per local day (frequency state persisted +
+  //     cloud-synced via superPromptLastShownAt).
+  //   • Intentional premium taps skip the stage-1 gate and the daily cap.
+  //   • Always dismissible (SuperUpgradePrompt has close + "Maybe later").
+  const requestSuperPrompt = useCallback((reason = 'mission', { intentional = false } = {}) => {
+    if (!loaded || demoMode) return false;
+    if (!stats.hasOnboarded || !stats.tutorialSeen) return false;     // not on first launch / during onboarding
+    if (activeMiniUnitId || celebration || rewardScreen || upgradePrompt || showSettings || showProfile || achievementToast) {
+      return false;                                                    // not during a lesson or another overlay
+    }
+    if (!intentional) {
+      const stageOneDone = !!(stats.stage1CelebrationShown || (missionState && missionState.stage1Complete));
+      if (!stageOneDone) return false;                                 // first auto-offer only after Stage 1
+      const today = getLocalDateKey();
+      const lastShown = stats.superPromptLastShownAt || getLocalSuperPromptDate();
+      if (lastShown && dateKeyFromValue(lastShown) === today) return false;  // max one promo modal / day
+    }
     const shownAt = new Date().toISOString();
     setLocalSuperPromptDate(shownAt);
     updateSettings({ superPromptLastShownAt: shownAt });
     setUpgradePrompt({ reason });
+    trackEvent(ANALYTICS_EVENTS.UPGRADE_MODAL_SHOWN, { reason, intentional });
     return true;
-  }, [stats.superPromptLastShownAt, updateSettings]);
+  }, [loaded, demoMode, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
 
   const handleOpenPremium = useCallback(() => {
     setUpgradePrompt(null);
@@ -1293,7 +1314,10 @@ export default function TukTalkThaiApp() {
   }, [requestSuperPrompt, rewardScreen?.superPromptReason]);
 
   const handleLockedFeature = useCallback(() => {
-    requestSuperPrompt('locked');
+    // The user intentionally tapped a locked/premium surface → always offer (skips
+    // the daily cap), and record the tap for the upgrade funnel.
+    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'locked-stage' });
+    requestSuperPrompt('locked', { intentional: true });
   }, [requestSuperPrompt]);
 
   const firstLessonCompleted = !!stats.firstLessonCompleted;
@@ -1937,7 +1961,10 @@ export default function TukTalkThaiApp() {
       {upgradePrompt && (
         <SuperUpgradePrompt
           reason={upgradePrompt.reason}
-          onClose={() => setUpgradePrompt(null)}
+          onClose={() => {
+            trackEvent(ANALYTICS_EVENTS.UPGRADE_MODAL_DISMISSED, { reason: upgradePrompt.reason });
+            setUpgradePrompt(null);
+          }}
           onSeeSuper={handleOpenPremium}
         />
       )}
