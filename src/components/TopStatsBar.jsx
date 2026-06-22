@@ -27,7 +27,7 @@ export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
   };
 
   return (
-    <div className="topstats-bar">
+    <div className="topstats-bar" data-tutorial="stats">
       {due > 0 && (
         <div
           className="topstats-pill topstats-pill-due"

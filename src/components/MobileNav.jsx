@@ -72,6 +72,7 @@ export default function MobileNav({
               type="button"
               className={`mobile-nav-btn ${isActive ? 'mobile-nav-btn-active' : ''}`}
               onClick={() => { setTab(entry.id); setMoreOpen(false); }}
+              data-tutorial={`nav-${entry.id}`}
             >
               <span className="mobile-nav-icon-wrap">
                 <entry.Icon size={20} strokeWidth={isActive ? 2.4 : 1.8} />

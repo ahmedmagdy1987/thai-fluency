@@ -16,7 +16,7 @@ const AUDIO_RATE_OPTIONS = [
   { value: 1.0, label: 'Fast', helper: 'Closer to street speed' },
 ];
 
-export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage }) {
+export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage, onReplayTutorial }) {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const voice = stats.voice || DEFAULT_VOICE;
@@ -204,6 +204,16 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
               </button>
             </div>
           </div>
+
+          {onReplayTutorial && (
+            <div className="setting-group">
+              <div className="setting-label">App tutorial</div>
+              <div className="setting-sub">Replay the quick walkthrough of the Learn screen and navigation.</div>
+              <button type="button" className="setting-test-audio-btn" onClick={onReplayTutorial}>
+                Show tutorial again
+              </button>
+            </div>
+          )}
 
           <div className="setting-group">
             <div className="setting-label">Sound effects</div>

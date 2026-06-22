@@ -55,6 +55,12 @@ export const DEFAULT_STATS = {
   // Lesson preferences. showCharacters and soundEffects default ON; signed-in
   // users also sync these through profiles.settings when available.
   showCharacters: true,
+  // First-run guided tutorial: shown once automatically on the Learn screen,
+  // replayable from Settings. Persists locally + (signed-in) via profiles.settings.
+  tutorialSeen: false,
+  // Stage ids whose completion cinematic has already played, so a reward video
+  // never replays after refresh. The cinematic itself never grants rewards.
+  cinematicsWatched: [],
 };
 
 export function getLocalDateKey(date = new Date()) {

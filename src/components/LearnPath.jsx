@@ -138,6 +138,7 @@ export default function LearnPath({
       {/* Continue banner — anchored CTA into the actual lesson flow */}
       <section
         className="learn-continue"
+        data-tutorial="path"
         style={{ '--learn-char-accent': stageCharacter.accent }}
         onClick={startCards}
         role="button"

@@ -49,6 +49,7 @@ export default function SidebarNav({
         type="button"
         className={`sidebar-item ${isActive ? 'sidebar-item-active' : ''}`}
         onClick={() => setTab(entry.id)}
+        data-tutorial={`nav-${entry.id}`}
       >
         <entry.Icon size={18} strokeWidth={isActive ? 2.4 : 1.8} />
         <span className="sidebar-item-label">{entry.label}</span>

@@ -63,6 +63,7 @@ import AchievementUnlockedModal from './components/AchievementUnlockedModal.jsx'
 import QuestCompleteToast from './components/QuestCompleteToast.jsx';
 import CelebrationOverlay from './components/CelebrationOverlay.jsx';
 import MissionCompleteRewardScreen from './components/MissionCompleteRewardScreen.jsx';
+import GuidedTutorial from './components/GuidedTutorial.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
@@ -78,6 +79,17 @@ import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
 import { getMiniUnit, getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
 import { initNativeUi } from './lib/native.js';
+
+// First-run coach-mark tutorial steps. Each targets a real [data-tutorial=...]
+// control in the live UI; copy is short and plain. Shown once automatically on
+// the Learn screen; replayable from Settings.
+const TUTORIAL_STEPS = [
+  { target: '[data-tutorial="stats"]', title: 'Your stats', body: 'Up here are your Hearts, Gems, Streak, and XP. They track your daily progress as you learn.' },
+  { target: '[data-tutorial="path"]', title: 'Your learning path', body: 'This shows your current stage and the next lesson in your path. Tap it any time to jump back in.' },
+  { target: '[data-tutorial="nav-learn"]', title: 'Learn', body: 'Learn is home base. Start new guided lessons and follow your stage-by-stage path here.' },
+  { target: '[data-tutorial="nav-cards"]', title: 'Practice', body: 'Practice your due cards here. Reviews come back at the right time so words really stick.' },
+  { target: '[data-tutorial="nav-quiz"]', title: 'Challenge, Quests & more', body: 'Take quick Challenges, complete daily Quests, and find your Profile and Settings in the navigation. You are all set — enjoy learning!' },
+];
 
 const CLOUD_PROFILE_SETTING_KEYS = [
   'viewMode',
@@ -97,6 +109,8 @@ const CLOUD_PROFILE_SETTING_KEYS = [
   'superPromptLastShownAt',
   'celebratedIds',
   'celebrationBaselineDone',
+  'tutorialSeen',
+  'cinematicsWatched',
 ];
 const FIRST_LESSON_REWARD_XP = 60;
 const MISSION_REWARD_XP = 35;
@@ -1830,7 +1844,7 @@ export default function TukTalkThaiApp() {
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
-        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} />
+        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} onReplayTutorial={() => { updateSettings({ tutorialSeen: false }); handleCloseSettings(); handleSetTab('learn'); }} />
       )}
       {rewardScreen && (
         <MissionCompleteRewardScreen
@@ -1843,6 +1857,15 @@ export default function TukTalkThaiApp() {
           reason={upgradePrompt.reason}
           onClose={() => setUpgradePrompt(null)}
           onSeeSuper={handleOpenPremium}
+        />
+      )}
+
+      {tab === 'learn' && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
+        && !celebration && !rewardScreen && !showSettings && !showProfile
+        && !showStage1Celebration && !upgradePrompt && !achievementToast && !showFirstLessonUnlock && (
+        <GuidedTutorial
+          steps={TUTORIAL_STEPS}
+          onFinish={() => updateSettings({ tutorialSeen: true })}
         />
       )}
     </AppShell>
