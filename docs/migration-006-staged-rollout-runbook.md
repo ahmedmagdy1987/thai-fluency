@@ -10,10 +10,17 @@ all SQL is applied **manually by the owner in the Supabase SQL Editor**.
 ## Files created
 | File | Purpose | Applied? |
 |---|---|---|
-| `supabase/migrations/006a_reward_events_and_rpc.sql` | Phase A — additive: `reward_events` + `award_reward` RPC + RLS/grants | NO |
-| `supabase/migrations/006a_rollback.sql` | Phase A rollback | NO |
-| `supabase/migrations/006b_revoke_xp_columns.sql` | Phase B — revoke client XP-column writes | NO |
-| `supabase/migrations/006b_rollback.sql` | Phase B rollback | NO |
+| `supabase/migrations/006_reward_events_and_rpc.sql` | Phase A — additive: `reward_events` + `award_reward` RPC + RLS/grants | **APPLIED** (manually via SQL Editor; repaired into CLI history as version `006`) |
+| `supabase/rollback/006a_rollback.sql` | Phase A rollback (kept OUT of `migrations/` so the CLI never treats it as a migration) | n/a |
+| `supabase/migrations/006b_revoke_xp_columns.sql` | Phase B — revoke client XP-column writes | NO — intentionally CLI-ignored (non-`<timestamp>` name) until renamed to `007_…` and approved |
+| `supabase/rollback/006b_rollback.sql` | Phase B rollback (kept OUT of `migrations/`) | n/a |
+
+> **Reconciliation status (applied):** Phase A was applied manually and is now
+> recorded in the CLI migration history as version `006` (`migration list` shows
+> `006 | 006`; `db push --dry-run` = up to date). The rollback scripts live under
+> `supabase/rollback/`. Phase B (`006b_revoke_xp_columns.sql`) remains intentionally
+> ignored by the CLI until it is renamed to `007_revoke_xp_columns.sql` and approved.
+> The client transition is still dormant (`SERVER_REWARDS_ENABLED = false`).
 | `src/config/featureFlags.js` | `SERVER_REWARDS_ENABLED = false` (gates activation) | committed, dormant |
 | `src/lib/serverRewards.js` | RPC wrapper + event keys + duplicate/fallback handling | committed, dormant |
 | `docs/migration-006-staged-rollout-runbook.md` | this runbook | — |
@@ -46,7 +53,7 @@ revoke (step 6), which is what makes step 6 a no-op = zero downtime.
    where table_name='user_stats' and column_name in ('today_xp','today_xp_date','last_xp_activity_at');
    -- expect 3
    ```
-3. Paste the entire contents of `006a_reward_events_and_rpc.sql` and Run.
+3. Paste the entire contents of `006_reward_events_and_rpc.sql` and Run.
 
 ### Phase A — verification queries
 ```sql
@@ -70,7 +77,7 @@ select count(*) from public.reward_events;
 > (and the stray XP it added, if you used a real account, can be left or corrected).
 
 ### Phase A — failure / rollback
-If anything is wrong, run `006a_rollback.sql` (drops the RPC + table). The old
+If anything is wrong, run `supabase/rollback/006a_rollback.sql` (drops the RPC + table). The old
 client is unaffected because Phase A never changed its privileges. No data lost.
 
 ---
@@ -160,7 +167,7 @@ where table_name='user_stats' and grantee='authenticated' group by privilege_typ
 ```
 
 ### Phase B — failure / rollback
-If a stale client errors on stat sync, run `006b_rollback.sql` (re-grants blanket
+If a stale client errors on stat sync, run `supabase/rollback/006b_rollback.sql` (re-grants blanket
 UPDATE). The RPC keeps working; you simply lose the column lock until re-applied
 after all clients are updated.
 
