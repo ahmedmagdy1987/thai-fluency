@@ -1042,6 +1042,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .reward-screen-backdrop { position: fixed; inset: 0; z-index: 260; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(15, 61, 46, 0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: fadeIn 0.2s ease-out; }
 .reward-screen-panel { width: min(440px, 100%); background: var(--card-bg); border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--line)); border-radius: 18px; padding: 26px 20px 20px; text-align: center; box-shadow: 0 26px 70px rgba(0, 0, 0, 0.32); animation: revealUp 0.28s ease-out; }
 .reward-screen-icon { width: 72px; height: 72px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; border-radius: 22px; background: linear-gradient(135deg, var(--gold), var(--gold-soft)); color: var(--jade); box-shadow: 0 10px 28px color-mix(in srgb, var(--gold) 34%, transparent); }
+.reward-screen-coach { display: flex; justify-content: center; margin: 0 auto 8px; }
 .reward-screen-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); margin-bottom: 8px; }
 .reward-screen-title { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; line-height: 1.05; color: var(--jade); margin: 0 0 10px; letter-spacing: 0; }
 .reward-screen-sub { margin: 0 auto 18px; max-width: 340px; color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
@@ -1512,6 +1513,8 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .app-root[data-theme="dark"] .topstats-pill-streak { color: #E0AD7B; border-color: rgba(224, 173, 123, 0.35); }
 .app-root[data-theme="dark"] .topstats-pill-xp { color: var(--jade); }
 .topstats-hearts-of { opacity: 0.6; font-weight: 600; margin-left: 1px; }
+.topstats-label { font-weight: 600; opacity: 0.72; letter-spacing: 0.01em; }
+.topstats-val { font-weight: 700; }
 @media (max-width: 540px) {
   .app-shell-header-inner { padding: 8px 10px; gap: 8px; }
   .app-shell-header-brand { flex: 0 1 128px; gap: 1px; }
@@ -1522,7 +1525,8 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
   .topstats-pill svg { width: 11px; height: 11px; }
   .topstats-icon-emoji { font-size: 12px; }
   .topstats-hearts-of,
-  .topstats-due-label { display: none; }
+  .topstats-due-label,
+  .topstats-label { display: none; }
 }
 @media (max-width: 360px) {
   .app-shell-header-inner { padding-left: 8px; padding-right: 8px; gap: 6px; }
