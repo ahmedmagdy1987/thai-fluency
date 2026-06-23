@@ -32,6 +32,7 @@ import { getStageCinematic } from './data/stageCinematics.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
+import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
 import {
   hasOneSignalConfig,
   initOneSignal,
@@ -828,6 +829,37 @@ export default function TukTalkThaiApp() {
     });
   }, []);
 
+  // Server-authoritative reward dispatch (Migration 006, staged rollout). For a
+  // signed-in, confirmed user the award_reward RPC is the reward AUTHORITY:
+  //   • 'awarded'   → apply the SERVER-clamped XP locally (streak / today-XP /
+  //                   total-XP bookkeeping; 006B not applied yet, so uploadStats
+  //                   still persists total_xp, and using the server amount keeps
+  //                   client == server). The client never chooses the amount.
+  //   • 'duplicate' → grant NOTHING (idempotent across refresh / double-click /
+  //                   tabs / retries / devices via the stable event key).
+  //   • unavailable → documented TEMPORARY fallback to the existing local grant.
+  //   • rejected    → invalid / unauthorized / unknown event → NO reward, NO
+  //                   fallback (can't farm by inducing an error).
+  // Anonymous / unconfigured users always use the local path. `localXp` is the
+  // already client-gated amount; 0-XP events (achievement / stage) just record the
+  // server event.
+  const awardXp = useCallback((eventType, eventKey, localXp, payload = {}) => {
+    if (!serverRewardsActive(session, isEmailConfirmed, hasSupabaseConfig)) {
+      if (localXp > 0) grantXp(localXp);
+      return;
+    }
+    awardReward(eventType, eventKey, { ...payload, local_date: getLocalDateKey() })
+      .then(res => {
+        if (res.ok) {
+          if (res.status === 'awarded' && res.xpAwarded > 0) grantXp(res.xpAwarded);
+        } else if (res.unavailable) {
+          if (localXp > 0) grantXp(localXp);   // transition-only fallback
+        }
+        // res.rejected → no reward, no fallback.
+      })
+      .catch(() => { if (localXp > 0) grantXp(localXp); });
+  }, [session, isEmailConfirmed, grantXp]);
+
   // Record one or more celebration IDs as seen (localStorage via saveState;
   // cloud via the sync effect below). Pruned + idempotent. No external deps so
   // it stays stable and TDZ-safe for early callers like recordQuizComplete.
@@ -876,7 +908,7 @@ export default function TukTalkThaiApp() {
         const rewardKey = `mission:${justFinished.id}`;
         if (!missionRewardLocksRef.current.has(rewardKey)) {
           missionRewardLocksRef.current.add(rewardKey);
-          grantXp(MISSION_REWARD_XP);
+          awardXp(REWARD_EVENTS.MISSION_COMPLETED, rewardKeys.mission(1, justFinished.id), MISSION_REWARD_XP);
           setRewardScreen({
             id: `mission-${justFinished.id}-${Date.now()}`,
             title: `Mission ${justFinished.id} Complete`,
@@ -904,7 +936,7 @@ export default function TukTalkThaiApp() {
         });
       }
     }
-  }, [missionState, loaded, stats.lastSeenMission, stats.streak, grantXp, session]);
+  }, [missionState, loaded, stats.lastSeenMission, stats.streak, awardXp, session]);
 
   // Stage 1 complete: one-time big celebration. Reveals the full deck.
   useEffect(() => {
@@ -921,6 +953,8 @@ export default function TukTalkThaiApp() {
     const newly = unlocked.filter(id => !(stats.unlockedAchievements || []).includes(id) && !achievementLocksRef.current.has(id));
     if (newly.length > 0) {
       newly.forEach(id => achievementLocksRef.current.add(id));
+      // Record each new achievement unlock server-side (idempotent; 0 XP).
+      newly.forEach(id => awardXp(REWARD_EVENTS.ACHIEVEMENT_UNLOCKED, rewardKeys.achievement(id), 0));
       const newAchievements = newly.map(id => ACHIEVEMENTS.find(a => a.id === id)).filter(Boolean);
       // Show the first one immediately, queue the rest
       setAchievementToast(prev => prev || newAchievements[0]);
@@ -929,7 +963,7 @@ export default function TukTalkThaiApp() {
       }
       setStats(s => ({ ...s, unlockedAchievements: unlocked }));
     }
-  }, [stats.totalReviews, stats.streak, stats.tonesQuizPassed, stats.perfectQuizzes, stats.dialoguesCompleted, stats.totalXp, stats.dailyGoalsHit, stats.currentStage, loaded]);
+  }, [stats.totalReviews, stats.streak, stats.tonesQuizPassed, stats.perfectQuizzes, stats.dialoguesCompleted, stats.totalXp, stats.dailyGoalsHit, stats.currentStage, loaded, awardXp]);
 
   // Drain achievement queue when current toast closes
   const handleAchievementToastClose = useCallback(() => {
@@ -1039,9 +1073,14 @@ export default function TukTalkThaiApp() {
       return { ...safeProgress, [cardId]: newState };
     });
     setStats(s => ({ ...s, totalReviews: (s.totalReviews || 0) + 1 }));
-    if (xp > 0) grantXp(xp);
+    if (xp > 0) {
+      // New-card learn vs genuinely-due review are distinct, stable server events.
+      const evType = isNewCard ? REWARD_EVENTS.NEW_CARD_LEARNED : REWARD_EVENTS.DUE_REVIEW_COMPLETED;
+      const evKey = isNewCard ? rewardKeys.newCard(cardId) : rewardKeys.dueReview(cardId, today);
+      awardXp(evType, evKey, xp);
+    }
     return { accepted: true, rushed, assisted };
-  }, [grantXp, progress]);
+  }, [awardXp, progress]);
 
   const undoLastReview = useCallback(() => {
     if (!lastReviewSnapshot) return;
@@ -1089,7 +1128,7 @@ export default function TukTalkThaiApp() {
     // "Try again" replay can't farm XP. Stat updates below stay live every time.
     const xpId = toneQuizRewardId(getLocalDateKey());
     if (!hasCelebrated(stats.celebratedIds, xpId)) {
-      grantXp(score * XP_REWARDS.toneQuizCorrect);
+      awardXp(REWARD_EVENTS.TONE_CHALLENGE_COMPLETED, rewardKeys.toneChallenge(getLocalDateKey()), score * XP_REWARDS.toneQuizCorrect, { score, total });
       markCelebrated(xpId);
     }
     setStats(s => ({
@@ -1099,7 +1138,7 @@ export default function TukTalkThaiApp() {
       quizzesPassed: passed ? (s.quizzesPassed || 0) + 1 : (s.quizzesPassed || 0),
       perfectQuizzes: score === total ? (s.perfectQuizzes || 0) + 1 : (s.perfectQuizzes || 0),
     }));
-  }, [grantXp, markCelebrated, stats.celebratedIds]);
+  }, [awardXp, markCelebrated, stats.celebratedIds]);
 
   const recordQuizComplete = useCallback((score, total, stage) => {
     const passed = (score / total) >= 0.8;
@@ -1113,7 +1152,7 @@ export default function TukTalkThaiApp() {
     const xpId = challengeRewardId(stageId, today);
     const awardedXp = hasCelebrated(stats.celebratedIds, xpId) ? 0 : score * XP_REWARDS.quizCorrect;
     if (awardedXp > 0) {
-      grantXp(awardedXp);
+      awardXp(REWARD_EVENTS.CHALLENGE_COMPLETED, rewardKeys.challenge(stageId, today), awardedXp, { score, total });
       markCelebrated(xpId);
     }
     // Level 3 — perfect Stage Challenge celebration (once per stage per day).
@@ -1155,7 +1194,7 @@ export default function TukTalkThaiApp() {
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- handleOpenPremium is stable; referenced lazily on Super tap
-  }, [grantXp, markCelebrated, stats.celebratedIds]);
+  }, [awardXp, markCelebrated, stats.celebratedIds]);
 
   const recordDialogueComplete = useCallback((dialogueId) => {
     let newlyCompleted = false;
@@ -1612,7 +1651,7 @@ export default function TukTalkThaiApp() {
       if (courseCompletion.courseComplete && !courseCompleteAtArmingRef.current && !hasCelebrated(ids, courseId)) {
         const showSuper = !hasCelebrated(ids, superCtaId(today));
         markCelebrated(showSuper ? [courseId, superCtaId(today)] : courseId);
-        grantXp(COURSE_COMPLETE_XP);
+        awardXp(REWARD_EVENTS.COURSE_COMPLETED, rewardKeys.course(), COURSE_COMPLETE_XP);
         setRewardScreen(null);   // suppress the per-unit "Mini-Unit Complete" screen
         setQuestToasts([]);      // overlay supersedes any lingering quest toast
         setCelebration({
@@ -1643,6 +1682,7 @@ export default function TukTalkThaiApp() {
       if (newStage) {
         const next = stages.find(s => s.id === newStage.id + 1 && s.total > 0);
         markCelebrated(stageCompleteCelebrationId(newStage.id));
+        awardXp(REWARD_EVENTS.STAGE_COMPLETED, rewardKeys.stage(newStage.id), 0);
         setCelebration({
           eyebrow: 'Stage Complete',
           title: `Stage ${newStage.id} Complete`,
@@ -1684,7 +1724,7 @@ export default function TukTalkThaiApp() {
         });
       }
     }
-  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, courseCompletion, grantXp, markCelebrated, handleSetTab, handleOpenPremium]);
+  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, courseCompletion, awardXp, markCelebrated, handleSetTab, handleOpenPremium]);
 
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;

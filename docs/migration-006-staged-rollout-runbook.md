@@ -11,6 +11,8 @@ all SQL is applied **manually by the owner in the Supabase SQL Editor**.
 | File | Purpose | Applied? |
 |---|---|---|
 | `supabase/migrations/006_reward_events_and_rpc.sql` | Phase A — additive: `reward_events` + `award_reward` RPC + RLS/grants | **APPLIED** (manually via SQL Editor; repaired into CLI history as version `006`) |
+| `supabase/migrations/006c_award_reward_idempotency_only.sql` | **Phase A CORRECTION** — `award_reward` becomes idempotency-only (no `user_stats` write) | **NO — REQUIRED before activation** |
+| `supabase/rollback/006c_rollback.sql` | 006C rollback (re-apply 006's user_stats-writing RPC) | n/a |
 | `supabase/rollback/006a_rollback.sql` | Phase A rollback (kept OUT of `migrations/` so the CLI never treats it as a migration) | n/a |
 | `supabase/migrations/006b_revoke_xp_columns.sql` | Phase B — revoke client XP-column writes | NO — intentionally CLI-ignored (non-`<timestamp>` name) until renamed to `007_…` and approved |
 | `supabase/rollback/006b_rollback.sql` | Phase B rollback (kept OUT of `migrations/`) | n/a |
@@ -21,6 +23,33 @@ all SQL is applied **manually by the owner in the Supabase SQL Editor**.
 > `supabase/rollback/`. Phase B (`006b_revoke_xp_columns.sql`) remains intentionally
 > ignored by the CLI until it is renamed to `007_revoke_xp_columns.sql` and approved.
 > The client transition is still dormant (`SERVER_REWARDS_ENABLED = false`).
+
+> ## ⚠️ Phase A CORRECTION (006c) — REQUIRED before activation
+> An adversarial review of the client activation found a **dual-writer double-count**:
+> the deployed 006 `award_reward` writes `user_stats.total_xp` server-side, but the
+> client (and the local-only dialogue / first-lesson / mini-unit paths) also write
+> `total_xp` (006B unapplied). Two uncoordinated writers can double-count (a cloud
+> download adopting the RPC's write inside an award's async window) or clobber
+> un-synced rewards. There is **no safe client-only fix**.
+>
+> **Correction:** apply `supabase/migrations/006c_award_reward_idempotency_only.sql`
+> (a `create or replace function` — additive, no data change). It makes `award_reward`
+> an **idempotency gate + amount oracle only** (records the event, returns the clamped
+> `xp_awarded`, does **not** write `user_stats`). The client stays the single
+> `total_xp` writer; cross-device/refresh idempotency comes from
+> `reward_events(user_id,event_key)`.
+>
+> **Activation sequence (corrected):**
+> 1. Apply `006c` (SQL Editor). Verify `award_reward` still exists + anon denied.
+> 2. Flip `SERVER_REWARDS_ENABLED = true` and deploy the client.
+> 3. Verify with a signed-in test account (award once · duplicate→once · unknown
+>    type fails · modified amount ignored · existing XP preserved).
+>
+> **Phase B is DEFERRED.** `006b` (revoke client `total_xp` writes) assumed the RPC
+> is the `total_xp` writer — which 006c removes. Do **not** apply 006b until a later
+> phase makes the RPC the *complete* XP authority (owns total/today/streak/bonus for
+> ALL reward paths and returns them for the client to adopt). Until then the client
+> remains the `total_xp` writer and 006b stays unapplied.
 | `src/config/featureFlags.js` | `SERVER_REWARDS_ENABLED = false` (gates activation) | committed, dormant |
 | `src/lib/serverRewards.js` | RPC wrapper + event keys + duplicate/fallback handling | committed, dormant |
 | `docs/migration-006-staged-rollout-runbook.md` | this runbook | — |

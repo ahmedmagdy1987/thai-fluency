@@ -51,13 +51,17 @@ export function serverRewardsActive(session, isEmailConfirmed, hasConfig) {
   return !!(SERVER_REWARDS_ENABLED && session && isEmailConfirmed && hasConfig);
 }
 
-// Call the award_reward RPC. Returns one of:
+// Call the award_reward RPC. Returns exactly one of:
 //   { ok: true,  status: 'awarded'|'duplicate', xpAwarded, totalXp }
-//   { ok: false, unavailable: true, code? }   → caller falls back to local path
-// Never throws.
+//   { ok: false, unavailable: true }   → RPC genuinely unreachable → caller MAY fall
+//                                         back to the local path (transition only)
+//   { ok: false, rejected: true }      → the RPC ran and refused the event (invalid /
+//                                         unauthorized / unknown type / future-dated)
+//                                         → caller MUST NOT fall back (no reward)
+// A 'duplicate' is ok:true (success, no second reward). Never throws.
 export async function awardReward(eventType, eventKey, payload = {}) {
   if (!SERVER_REWARDS_ENABLED) return { ok: false, unavailable: true };
-  if (!eventType || !eventKey) return { ok: false, unavailable: true };
+  if (!eventType || !eventKey) return { ok: false, rejected: true, message: 'missing event type/key' };
   try {
     const { data, error } = await supabase.rpc('award_reward', {
       p_event_type: eventType,
@@ -65,8 +69,20 @@ export async function awardReward(eventType, eventKey, payload = {}) {
       p_payload: payload || {},
     });
     if (error) {
-      // 42883 = undefined_function (Phase A not applied). Any error → fall back.
-      return { ok: false, unavailable: true, code: error.code };
+      const code = error.code;
+      const msg = error.message || '';
+      // RPC not deployed (Phase A not applied) → genuinely unavailable → fall back ok.
+      // NOTE: only "function missing" codes count as unavailable. PGRST301 (JWT
+      // expired / auth) is NOT a missing function — it is an auth failure, so it must
+      // fall through to 'rejected' (no local fallback), or an expired token could be
+      // used to farm via the fallback path.
+      const notDeployed = code === '42883' || code === 'PGRST202'
+        || /could not find the function|does not exist|undefined function/i.test(msg);
+      if (notDeployed) return { ok: false, unavailable: true, code };
+      // The RPC ran and rejected the event (e.g. unauthorized 28000, unknown_event_type
+      // / invalid_event / future_dated_event raised as P0001). DO NOT fall back — that
+      // would let a user farm by inducing an error. No reward.
+      return { ok: false, rejected: true, code, message: msg };
     }
     return {
       ok: true,
@@ -76,6 +92,7 @@ export async function awardReward(eventType, eventKey, payload = {}) {
       streak: data && data.streak,
     };
   } catch (e) {
-    return { ok: false, unavailable: true };
+    // Network / fetch failure → genuinely unavailable → fall back ok.
+    return { ok: false, unavailable: true, networkError: true };
   }
 }

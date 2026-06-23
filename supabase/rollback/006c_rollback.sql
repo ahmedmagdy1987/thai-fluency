@@ -1,0 +1,15 @@
+-- ============================================================================
+-- Migration 006C — ROLLBACK (restore the user_stats-writing award_reward)
+-- ============================================================================
+-- Reverts 006C by re-applying the ORIGINAL 006 award_reward (which DOES write
+-- user_stats.total_xp/today_xp). Only use this if you intentionally want the RPC to
+-- be the total_xp writer again (e.g. you have moved ALL reward paths server-side and
+-- are about to apply Phase B / 006B). Otherwise leaving 006C in place is correct.
+--
+-- To roll back: re-run the function definition from
+-- supabase/migrations/006_reward_events_and_rpc.sql (section 2, the
+-- `create or replace function public.award_reward(...)` block). It is idempotent
+-- (`create or replace`) and changes no data.
+--
+-- (Intentionally not duplicated here to avoid drift — the canonical body lives in
+-- 006_reward_events_and_rpc.sql.)
