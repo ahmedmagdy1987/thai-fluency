@@ -80,12 +80,17 @@
 
 /* ===== Plan cards ===== */
 .pl-plans { padding-bottom: var(--pl-section-y); }
-.pl-plans-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); align-items: start; }
-.pl-plan { position: relative; background: var(--card-bg); border: 1px solid var(--line); border-radius: var(--pl-radius); padding: 28px 26px; box-shadow: var(--pl-shadow); display: flex; flex-direction: column; }
+/* align-items: stretch so all three plan cards share the tallest card's height
+   (equal-height columns). Each card is a flex column; .pl-plan-foot uses
+   margin-top:auto below so footers pin to the bottom and line up across cards. */
+.pl-plans-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); align-items: stretch; }
+.pl-plan { position: relative; background: var(--card-bg); border: 1px solid var(--line); border-radius: var(--pl-radius); padding: 28px 26px; box-shadow: var(--pl-shadow); display: flex; flex-direction: column; height: 100%; }
 .pl-plan-free { border-color: color-mix(in srgb, var(--gold) 50%, var(--line)); box-shadow: 0 1px 2px rgba(15,61,46,0.04), 0 24px 50px -28px rgba(201, 169, 97, 0.7); }
-.pl-plan-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+/* align-items:flex-start so a wrapping plan name stays top-aligned with the tag;
+   the tag itself never wraps (see .pl-plan-tag below). */
+.pl-plan-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .pl-plan-name { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--jade); }
-.pl-plan-tag { font-size: 10.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+.pl-plan-tag { font-size: 10.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
 .pl-plan-tag-live { background: var(--gold); color: #2a2412; }
 .pl-plan-tag-soon { background: color-mix(in srgb, var(--jade) 10%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 24%, var(--line)); }
 .pl-plan-price { display: flex; align-items: baseline; gap: 8px; margin: 16px 0 4px; }
@@ -96,7 +101,9 @@
 .pl-plan-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .pl-plan-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink); }
 .pl-plan-list svg { flex-shrink: 0; margin-top: 1px; color: var(--jade); }
-.pl-plan-foot { margin: 18px 0 0; font-size: 12px; line-height: 1.5; color: var(--ink-soft); padding-top: 14px; border-top: 1px dashed var(--line-strong); }
+/* margin-top:auto pushes the foot to the bottom of the flex-column card so the
+   Monthly/Yearly footers align even when their feature lists differ in length. */
+.pl-plan-foot { margin: 18px 0 0; margin-top: auto; font-size: 12px; line-height: 1.5; color: var(--ink-soft); padding-top: 14px; border-top: 1px dashed var(--line-strong); }
 
 /* ===== Comparison matrix ===== */
 .pl-matrix-section { padding-block: var(--pl-section-y); background: var(--cream-warm); }
@@ -112,7 +119,7 @@
 .pl-matrix-yes { color: var(--jade); }
 .pl-matrix-no { color: var(--stone); }
 .pl-matrix-text { font-size: 12px; font-weight: 700; color: var(--ink-soft); display: inline-flex; flex-direction: column; align-items: center; line-height: 1.15; gap: 2px; }
-.pl-matrix-soon { font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); }
+.pl-matrix-soon { font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
 .pl-matrix-note { display: flex; align-items: center; justify-content: center; gap: 6px; max-width: 760px; margin: 16px auto 0; font-size: 12.5px; color: var(--ink-soft); }
 .pl-matrix-note svg { color: var(--gold); flex-shrink: 0; }
 .pl-matrix-note strong { color: var(--gold); }
@@ -154,4 +161,84 @@
 
 .pl-plan-amount-soon { font-size: 26px; color: var(--ink-soft); }
 .pl-plan-amount-tba { font-size: 17px; font-weight: 700; color: var(--ink-soft); }
-.pl-plan-badge { position: absolute; top: -10px; right: 18px; background: var(--gold); color: #2a2412; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.pl-plan-badge { position: absolute; top: -10px; right: 18px; background: var(--gold); color: #2a2412; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+
+/* ============================================================================
+   SUPER CHECKOUT MODAL (.sco-) — full-screen embedded Stripe Checkout that keeps
+   the Tuk Talk Thai brand header + close (X) visible, so the user never feels
+   they left the site. Reuses --jade/--gold/--cream/--card-bg/--ink tokens and
+   respects dark mode. Sits above every other overlay.
+   ========================================================================== */
+.sco-overlay {
+  position: fixed; inset: 0; z-index: 1400;
+  display: flex; flex-direction: column;
+  background: var(--cream);
+  animation: scoFade 0.2s ease-out;
+  overflow: hidden;
+}
+@keyframes scoFade { from { opacity: 0; } to { opacity: 1; } }
+
+.sco-header {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px clamp(16px, 5vw, 40px);
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  border-bottom: 1px solid var(--line); background: var(--cream-warm);
+}
+.sco-brand { display: inline-flex; flex-direction: column; min-width: 0; }
+.sco-brand-name { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 700; color: var(--jade); line-height: 1.05; }
+.sco-brand-slogan { font-size: 11.5px; font-weight: 600; color: var(--ink-soft); line-height: 1.2; }
+.sco-close {
+  flex-shrink: 0; width: 38px; height: 38px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--card-bg); color: var(--ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.sco-close:hover { border-color: var(--jade); color: var(--jade); }
+.sco-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.sco-body { flex: 1; overflow-y: auto; padding: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 40px); display: flex; justify-content: center; }
+.sco-panel {
+  width: 100%; max-width: 620px; background: var(--card-bg);
+  border: 1px solid var(--line); border-radius: var(--pl-radius, 20px);
+  padding: clamp(20px, 3vw, 30px); box-shadow: var(--pl-shadow);
+  align-self: flex-start;
+}
+.sco-panel-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.sco-panel-icon {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px;
+  background: color-mix(in srgb, var(--gold) 22%, transparent); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+}
+.sco-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
+.sco-title { margin: 2px 0 0; font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--jade); line-height: 1.1; letter-spacing: -0.01em; }
+
+.sco-state { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding: 36px 8px; }
+.sco-state-title { margin: 0; font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--ink); }
+.sco-state-text { margin: 0; max-width: 40ch; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+.sco-state-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 6px; }
+.sco-spinner { color: var(--jade); animation: scoSpin 0.9s linear infinite; }
+@keyframes scoSpin { to { transform: rotate(360deg); } }
+
+.sco-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: inherit; font-weight: 700; font-size: 14.5px; cursor: pointer;
+  border-radius: 999px; min-height: 46px; padding: 0 22px; border: 1px solid transparent;
+  transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.sco-btn:active { transform: scale(0.98); }
+.sco-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.sco-btn-primary { color: #2a2412; background: linear-gradient(135deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 76%, #fff) 100%); box-shadow: 0 12px 30px -14px rgba(201, 169, 97, 0.8); }
+.sco-btn-primary:hover { transform: translateY(-1px); }
+.sco-btn-ghost { color: var(--jade); background: var(--card-bg); border-color: var(--line-strong); }
+.sco-btn-ghost:hover { border-color: var(--jade); }
+
+.sco-mount { min-height: 320px; }
+.sco-secure-note { margin: 18px 0 0; text-align: center; font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
+
+.app-root[data-theme="dark"] .sco-overlay { background: var(--cream); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sco-overlay { animation: none; }
+  .sco-spinner { animation: none; }
+  .sco-btn-primary:hover { transform: none; }
+}

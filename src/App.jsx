@@ -51,6 +51,7 @@ import {
   downloadProgress,
   downloadStats,
   downloadAchievements,
+  downloadEntitlement,
   updateProfile,
 } from './lib/cloudStorage.js';
 
@@ -292,6 +293,7 @@ export default function TukTalkThaiApp() {
   const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
   const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
+  const superSuccessHandled = useRef(false);                // handles the ?super=success return at most once
   const profileSettingsRef = useRef({});
   const celebrationsArmedRef = useRef(false);               // celebrations fire only after the first settled pass (baseline)
   const courseCompleteAtArmingRef = useRef(false);          // true if the course was ALREADY complete at baseline → never retro-celebrate
@@ -645,30 +647,42 @@ export default function TukTalkThaiApp() {
         const safeLocalProgress = progress && typeof progress === 'object' ? progress : {};
         const cloudHasData = Object.keys(safeCloudProgress).length > 0;
         const localHasData = Object.keys(safeLocalProgress).length > 0;
-        const [cloudStatsData, cloudAchs] = await Promise.all([
+        const [cloudStatsData, cloudAchs, entitlement] = await Promise.all([
           downloadStats(session.user.id),
           downloadAchievements(session.user.id),
+          // Server-authoritative Super entitlement (public.subscriptions). Null-safe:
+          // resolves to the free tier on failure so a subscriptions read never blocks
+          // sign-in. Merged into stats.tier / stats.superUntil, which entitlements.js
+          // reads via getTier()/isSuper().
+          downloadEntitlement(session.user.id).catch(() => ({ tier: 'free', superUntil: null })),
         ]);
         if (cancelled) return;
+        const ent = { tier: entitlement?.tier || 'free', superUntil: entitlement?.superUntil || null };
         const cloudHasState = cloudHasData || hasStatsLearningActivity(cloudStatsData || {}) || (cloudAchs && cloudAchs.length > 0);
         if (localHasData && !cloudHasState) {
           await uploadFullState(session.user.id, safeLocalProgress, stats);
-          if (!cancelled) setCloudReady(true);
+          if (!cancelled) {
+            setStats(s => ({ ...s, ...ent }));
+            setCloudReady(true);
+          }
         } else {
           if (cloudHasData) setProgress(safeCloudProgress);
           if (cloudStatsData) {
             setStats(s => migrateStats({
               ...s,
               ...cloudStatsData,
+              ...ent,
               firstLessonCompleted: s.firstLessonCompleted || cloudHasData || cloudStatsData.firstLessonCompleted,
               // Union local + cloud so achievements earned offline (or on this
               // device) are never lost on sign-in, and never duplicated.
               unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...(cloudAchs || [])])],
             }));
           } else if (cloudAchs && cloudAchs.length > 0) {
-            setStats(s => ({ ...s, firstLessonCompleted: true, unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...cloudAchs])] }));
+            setStats(s => ({ ...s, ...ent, firstLessonCompleted: true, unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...cloudAchs])] }));
           } else if (cloudHasData) {
-            setStats(s => ({ ...s, firstLessonCompleted: true }));
+            setStats(s => ({ ...s, ...ent, firstLessonCompleted: true }));
+          } else {
+            setStats(s => ({ ...s, ...ent }));
           }
           setCloudReady(true);
         }
@@ -747,6 +761,62 @@ export default function TukTalkThaiApp() {
   // dep arrays — dep arrays are evaluated immediately and `const` hoists to
   // TDZ, so a later declaration crashes the whole render at module init.
   const isEmailConfirmed = !!(session?.user?.email_confirmed_at);
+
+  // ── Stripe checkout return (?super=success) ──────────────────────────────
+  // After embedded checkout completes, Stripe returns the user to
+  // origin?super=success&session_id=… . The Super entitlement itself is written
+  // server-side by the Stripe webhook into public.subscriptions, so here we just
+  // re-read the entitlement, celebrate if the user is now Super, fire a native
+  // "Welcome to Super" notification when already granted, and strip the query
+  // params so a refresh doesn't re-celebrate. Runs at most once per load; needs a
+  // confirmed session to read the (RLS-guarded) subscriptions row.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (superSuccessHandled.current) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('super') !== 'success') return;
+    if (!session || !isEmailConfirmed || !hasSupabaseConfig) return; // wait until we can read the row
+    superSuccessHandled.current = true;
+
+    const stripParams = () => {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('super');
+        url.searchParams.delete('session_id');
+        window.history.replaceState({ ...(window.history.state || {}) }, '', url.pathname + url.search + url.hash);
+      } catch { /* ignore */ }
+    };
+
+    (async () => {
+      let becameSuper = false;
+      try {
+        const ent = await downloadEntitlement(session.user.id);
+        if (ent) {
+          setStats(s => ({ ...s, tier: ent.tier || 'free', superUntil: ent.superUntil || null }));
+          becameSuper = ent.tier === 'super';
+        }
+      } catch (e) {
+        console.warn('[App] entitlement refresh after checkout failed', e);
+      }
+      if (becameSuper) {
+        setCelebration({
+          eyebrow: 'Welcome to Super',
+          title: 'You’re now Super! 🎉',
+          subtitle: 'Your Super plan is active. Thank you for supporting Tuk Talk Thai!',
+          primaryLabel: 'Let’s go',
+          onPrimary: () => setCelebration(null),
+        });
+        try {
+          if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+            new Notification('Welcome to Super! 🎉', {
+              body: 'Your Super plan is active. Thank you for supporting Tuk Talk Thai!',
+            });
+          }
+        } catch { /* ignore */ }
+      }
+      stripParams();
+    })();
+  }, [session?.user?.id, isEmailConfirmed]);
 
   // OneSignal: link the device subscription to the Supabase user once the
   // user is signed in and confirmed. Persist the player_id + timezone on
