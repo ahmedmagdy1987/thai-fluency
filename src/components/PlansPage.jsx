@@ -233,7 +233,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
           <article className="pl-plan pl-plan-premium">
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superMonthly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
+              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
             </div>
             <PlanPriceTag plan={PLANS.superMonthly} />
             <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
@@ -253,7 +253,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
             {PLANS.superYearly.badge && <span className="pl-plan-badge">{PLANS.superYearly.badge}</span>}
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superYearly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
+              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
             </div>
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>

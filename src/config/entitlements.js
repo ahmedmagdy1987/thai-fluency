@@ -50,7 +50,7 @@ export const FEATURES = {
 // price is NULL until real numbers are decided → surfaces show "Pricing coming
 // soon". Do NOT invent prices. `currency` is also TBD. Fill once a provider is
 // chosen (see docs/payment-readiness.md).
-export const PRICING_TBA = true; // global flag: no pricing supplied yet
+export const PRICING_TBA = false; // real (beta/test) pricing is now supplied
 export const PLANS = {
   free: {
     id: 'free',
@@ -64,7 +64,7 @@ export const PLANS = {
     id: 'super-monthly',
     name: 'Super Monthly',
     tagline: 'Flexible month-to-month.',
-    price: null,            // TBA — show "Pricing coming soon"
+    price: 4.99,            // beta/test price — change for launch
     period: 'month',
     cta: 'Get notified',
   },
@@ -72,7 +72,7 @@ export const PLANS = {
     id: 'super-yearly',
     name: 'Super Yearly',
     tagline: 'Best value — pay once a year.',
-    price: null,            // TBA — show "Pricing coming soon"
+    price: 39.99,           // beta/test price — change for launch
     period: 'year',
     cta: 'Get notified',
     badge: 'Best value',
