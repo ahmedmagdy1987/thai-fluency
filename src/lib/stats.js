@@ -59,6 +59,14 @@ export const DEFAULT_STATS = {
   soundEffects: true,
   streakFreezes: 1,
   lastFreezeGrant: null,
+  // Hearts + gems economy (see src/lib/economy.js + migration 009). Hearts are
+  // gentle "lives" used ONLY in the Challenge (never in flashcard review or the
+  // guided path); they regenerate over time and are unlimited for Super users.
+  // Gems are earned currency spent in the Shop to refill hearts. heartsUpdatedAt
+  // anchors the regeneration clock (mapped from the hearts_updated_at column).
+  hearts: 5,
+  gems: 0,
+  heartsUpdatedAt: null,
   // Lesson preferences. showCharacters and soundEffects default ON; signed-in
   // users also sync these through profiles.settings when available.
   showCharacters: true,

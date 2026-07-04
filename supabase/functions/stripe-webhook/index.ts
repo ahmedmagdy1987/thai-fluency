@@ -42,6 +42,7 @@ async function applySubscription(sub: Stripe.Subscription, fallbackUserId?: stri
     stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null,
     stripe_subscription_id: sub.id,
     current_period_end: periodEnd,
+    cancel_at_period_end: !!sub.cancel_at_period_end,
   }, { onConflict: "user_id" });
 }
 

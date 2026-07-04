@@ -11,6 +11,7 @@ import {
   Crown,
   LogOut,
   Heart,
+  ShoppingBag,
 } from 'lucide-react';
 
 // Desktop-only sidebar (visible at ≥1024px via CSS). Groups items by intent
@@ -18,10 +19,9 @@ import {
 // item is driven by the `tab` prop — same identifier used by App's main
 // router, so adding a new tab here is one entry plus a render case.
 //
-// Shop and Leaderboard are intentionally omitted: they are placeholder-only
-// features (no real economy / no real rankings) and stay unlinked until built.
-// Labels are kept in sync with MobileNav so the same tab reads the same
-// everywhere.
+// Shop is in the nav (functional now — refill hearts with gems). Only
+// Leaderboard stays omitted (no real rankings yet). Labels are kept in sync
+// with MobileNav so the same tab reads the same everywhere.
 const PRIMARY = [
   { id: 'learn',  Icon: MapIcon, label: 'Learn' },
   { id: 'cards',  Icon: Layers,  label: 'Practice' },
@@ -31,10 +31,11 @@ const ENGAGE = [
   { id: 'quiz',   Icon: Zap,     label: 'Challenge' },
 ];
 const EXPLORE = [
-  { id: 'browse', Icon: BookOpen, label: 'Browse' },
-  { id: 'guide',  Icon: Compass,  label: 'Guide' },
+  { id: 'browse', Icon: BookOpen,     label: 'Browse' },
+  { id: 'guide',  Icon: Compass,      label: 'Guide' },
+  { id: 'shop',   Icon: ShoppingBag,  label: 'Shop' },
   // Optional 18+ Super section. Not part of course progress.
-  { id: 'dating', Icon: Heart,    label: 'Dating 18+' },
+  { id: 'dating', Icon: Heart,        label: 'Dating 18+' },
 ];
 
 export default function SidebarNav({

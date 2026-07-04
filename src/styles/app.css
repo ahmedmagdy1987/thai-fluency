@@ -2942,3 +2942,88 @@ button.character-coach-portrait { cursor: pointer; }
 .shop-character-card .shop-character-portrait { filter: grayscale(0.9); opacity: 0.9; }
 /* Leaderboard preview rows are inert placeholders (Coming soon). */
 .leaderboard-preview-row-placeholder { filter: grayscale(1); }
+
+/* ==========================================================================
+   HEARTS ECONOMY — Challenge intro chips + "out of hearts" gate (QuizTab).
+   Hearts are ONLY used in the Challenge; never in review or the guided path.
+   Reuses design tokens; dark-mode aware. The heart colour matches the header
+   hearts pill (#E0445C).
+   ========================================================================== */
+.quiz-hearts-status { display: inline-flex; align-items: center; gap: 4px; margin: 0 auto 18px; padding: 6px 12px; border-radius: 999px; background: var(--cream-warm); border: 1px solid var(--line); }
+.app-root[data-theme="dark"] .quiz-hearts-status { background: rgba(232, 228, 217, 0.05); }
+.quiz-hearts-status .quiz-heart-full { color: #E0445C; }
+.quiz-hearts-status .quiz-heart-empty { color: var(--line-strong); }
+.quiz-hearts-status-text { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-left: 4px; }
+
+.quiz-hearts-gate { max-width: 480px; margin: 4px auto 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 26px 22px; border: 1px solid color-mix(in srgb, #E0445C 32%, var(--line)); border-radius: 18px; background: var(--card-bg); box-shadow: 0 12px 34px rgba(15, 61, 46, 0.08); }
+.app-root[data-theme="dark"] .quiz-hearts-gate { box-shadow: none; }
+.quiz-hearts-gate-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px; background: color-mix(in srgb, #E0445C 16%, transparent); color: #E0445C; }
+.quiz-hearts-gate-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; color: var(--jade); letter-spacing: -0.01em; }
+.quiz-hearts-gate-copy { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; max-width: 400px; }
+.quiz-hearts-gate-regen { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--jade); background: var(--cream-warm); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+.app-root[data-theme="dark"] .quiz-hearts-gate-regen { background: rgba(232, 228, 217, 0.05); }
+.quiz-hearts-gate-regen strong { color: var(--gold); }
+.quiz-hearts-gate-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 4px; }
+.quiz-hearts-gate-actions .btn-primary,
+.quiz-hearts-gate-actions .btn-secondary { min-width: 170px; justify-content: center; white-space: nowrap; }
+.quiz-hearts-gate-hint { font-size: 12px; color: var(--ink-soft); line-height: 1.45; max-width: 380px; }
+.quiz-hearts-gate-practice { margin-top: 2px; background: none; border: none; color: var(--ink-soft); font-family: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 4px 8px; }
+@media (hover: hover) and (pointer: fine) { .quiz-hearts-gate-practice:hover { color: var(--jade); } }
+@media (max-width: 540px) {
+  .quiz-hearts-gate { padding: 22px 16px; }
+  .quiz-hearts-gate-title { font-size: 21px; }
+  .quiz-hearts-gate-actions { width: 100%; }
+  .quiz-hearts-gate-actions .btn-primary,
+  .quiz-hearts-gate-actions .btn-secondary { width: 100%; }
+}
+
+/* ==========================================================================
+   SHOP — real, minimal economy (refill hearts with gems + Super upsell).
+   Reuses the generic .shop-item / .shop-item-icon / .shop-item-body /
+   .shop-item-title / .shop-item-desc rules above; adds the header, gem
+   balance, hearts status, reason line, and the Super upsell card.
+   ========================================================================== */
+.shop-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.shop-header-titles { min-width: 0; flex: 1 1 260px; }
+.shop-header-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); margin-bottom: 6px; }
+.shop-header-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; color: var(--jade); letter-spacing: -0.01em; margin: 0 0 8px; line-height: 1.15; }
+.shop-header-sub { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; max-width: 520px; }
+.shop-balance { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 8px 14px; border-radius: 999px; background: color-mix(in srgb, #3F8AC4 12%, transparent); border: 1px solid rgba(63, 138, 196, 0.35); color: #3F8AC4; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+.shop-balance-val { font-size: 16px; font-weight: 700; }
+.shop-balance-label { font-size: 12px; font-weight: 600; opacity: 0.8; }
+.shop-items { display: flex; flex-direction: column; gap: 12px; }
+.shop-item-icon-hearts { background: color-mix(in srgb, #E0445C 14%, transparent) !important; color: #E0445C !important; }
+.shop-item-status { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; flex-wrap: wrap; }
+.shop-item-status-hearts { display: inline-flex; align-items: center; gap: 3px; }
+.shop-item-status-hearts .shop-heart-full { color: #E0445C; }
+.shop-item-status-hearts .shop-heart-empty { color: var(--line-strong); }
+.shop-item-status-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-left: 4px; }
+.shop-item-status-super { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--gold); }
+.shop-item-reason { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.shop-item-buy { flex: 0 0 auto; align-self: center; min-width: 84px; justify-content: center; white-space: nowrap; }
+.shop-upsell { display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; align-items: center; background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, var(--card-bg)) 0%, var(--card-bg) 70%); border: 1px solid color-mix(in srgb, var(--gold) 40%, var(--line)); border-radius: 14px; padding: 14px 16px; }
+.shop-upsell-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--gold); color: #2a2412; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.shop-upsell-body { min-width: 0; }
+.shop-upsell-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--jade); margin-bottom: 3px; }
+.shop-upsell-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.4; }
+.shop-upsell-cta { flex: 0 0 auto; align-self: center; white-space: nowrap; }
+@media (max-width: 639px) {
+  .shop-header-title { font-size: 22px; }
+  .shop-item-buy { align-self: stretch; }
+  .shop-upsell { grid-template-columns: 44px 1fr; }
+  .shop-upsell-cta { grid-column: 1 / -1; width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   CANCEL PLAN — Super cancellation control in Settings + Profile plan rows.
+   A quiet, non-alarming secondary button; the destructive tone is reserved
+   for account deletion. Errors surface inline in brick/warn colour.
+   ========================================================================== */
+.setting-cancel-plan-btn { margin-top: 10px; background: none; border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 16px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }
+@media (hover: hover) and (pointer: fine) { .setting-cancel-plan-btn:hover:not(:disabled) { border-color: var(--brick); color: var(--brick); } }
+.setting-cancel-plan-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.setting-cancel-plan-error { margin-top: 8px; font-size: 12px; color: var(--brick); line-height: 1.4; }
+.profile-plan-cancel-btn { flex: 0 0 auto; background: none; border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 16px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }
+@media (hover: hover) and (pointer: fine) { .profile-plan-cancel-btn:hover:not(:disabled) { border-color: var(--brick); color: var(--brick); } }
+.profile-plan-cancel-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.profile-plan-cancel-error { font-size: 12px; color: var(--brick); line-height: 1.4; margin-top: 2px; }

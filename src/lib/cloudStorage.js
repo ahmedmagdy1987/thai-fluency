@@ -97,6 +97,13 @@ export async function uploadStats(userId, stats) {
     // First-run guided tutorial: persist durably so it never re-shows after the
     // user has seen it once, even on a fresh re-login on a new device.
     tutorial_seen: !!stats.tutorialSeen,
+    // Hearts + gems economy (migration 009). Hearts are Challenge-only "lives"
+    // that regenerate over time; gems are earned currency spent in the Shop.
+    // hearts_updated_at anchors the regen clock — persist it so regeneration is
+    // consistent across devices/sessions. Null-safe: default full hearts / 0 gems.
+    hearts: Number.isFinite(stats.hearts) ? stats.hearts : 5,
+    gems: Number.isFinite(stats.gems) ? stats.gems : 0,
+    hearts_updated_at: stats.heartsUpdatedAt || null,
   };
   // cards_seen / cards_mastered are denormalized aggregates — let the DB
   // hold them at their defaults; we can compute fresh values from
@@ -145,6 +152,12 @@ export async function downloadStats(userId) {
     dialoguesCompleted: data.dialogues_completed || [],
     knownCardIds: data.known_card_ids || [],
     tutorialSeen: !!data.tutorial_seen,
+    // Hearts + gems economy (migration 009). hearts_updated_at is mapped to the
+    // client-side heartsUpdatedAt (the regen anchor). Null-safe defaults so a
+    // pre-009 row (missing columns) reads as full hearts / 0 gems.
+    hearts: Number.isFinite(data.hearts) ? data.hearts : 5,
+    gems: Number.isFinite(data.gems) ? data.gems : 0,
+    heartsUpdatedAt: data.hearts_updated_at || null,
   };
 }
 
@@ -156,7 +169,7 @@ export async function downloadStats(userId) {
 export async function downloadEntitlement(userId) {
   const { data, error } = await supabase
     .from('subscriptions')
-    .select('super_until,status,plan')
+    .select('super_until,status,plan,cancel_at_period_end')
     .eq('user_id', userId)
     .maybeSingle();
   if (error) throw error;
@@ -167,6 +180,10 @@ export async function downloadEntitlement(userId) {
     superUntil,
     plan: data?.plan || null,
     status: data?.status || null,
+    // Migration 009: true when the user scheduled a cancellation (auto-renew
+    // off). Super stays active until super_until, so the plan UI shows a
+    // "canceled — active until <date>" state rather than "renews on <date>".
+    cancelAtPeriodEnd: !!data?.cancel_at_period_end,
   };
 }
 

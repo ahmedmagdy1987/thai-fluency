@@ -47,6 +47,14 @@ export function challengeRewardId(stageId, date = getLocalDateKey()) {
 export function toneQuizRewardId(date = getLocalDateKey()) {
   return `tone-quiz-xp:${date}`;
 }
+// Gems idempotency for a PASSED Stage Challenge: award gems at most once per
+// stage per day. Kept separate from challengeRewardId (the XP ledger) so a
+// fail-then-pass on the same day still pays the pass gems exactly once — the XP
+// ledger is marked on the first completion regardless of pass/fail, but gems
+// should only fire on the pass.
+export function challengeGemsId(stageId, date = getLocalDateKey()) {
+  return `challenge-gems:stage-${stageId}:${date}`;
+}
 export function superCtaId(date = getLocalDateKey()) {
   return `super-cta:${date}`;
 }

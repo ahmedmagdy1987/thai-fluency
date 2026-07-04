@@ -13,14 +13,15 @@ import {
   LogOut,
   MessageSquare,
   Heart,
+  ShoppingBag,
 } from 'lucide-react';
 
 // Mobile bottom nav keeps the highest-frequency destinations visible while
 // the More sheet holds secondary explore/profile actions.
 //
-// Shop and Leaderboard are intentionally omitted (placeholder-only features,
-// unlinked until built). Labels are kept in sync with SidebarNav so the same
-// tab reads the same everywhere (e.g. `cards` = "Practice").
+// Shop is in the nav (it's functional now — refill hearts with gems). Only
+// Leaderboard stays omitted (still unbuilt). Labels are kept in sync with
+// SidebarNav so the same tab reads the same everywhere (e.g. `cards` = "Practice").
 const PRIMARY = [
   { id: 'learn',  Icon: MapIcon, label: 'Learn' },
   { id: 'cards',  Icon: Layers,  label: 'Practice' },
@@ -29,10 +30,11 @@ const PRIMARY = [
 ];
 
 const MORE = [
-  { id: 'browse',      Icon: BookOpen, label: 'Browse' },
-  { id: 'guide',       Icon: Compass,  label: 'Guide' },
+  { id: 'browse',      Icon: BookOpen,     label: 'Browse' },
+  { id: 'guide',       Icon: Compass,      label: 'Guide' },
+  { id: 'shop',        Icon: ShoppingBag,  label: 'Shop' },
   // Optional 18+ Super section. Not part of course progress.
-  { id: 'dating',      Icon: Heart,    label: 'Dating 18+' },
+  { id: 'dating',      Icon: Heart,        label: 'Dating 18+' },
 ];
 
 export default function MobileNav({

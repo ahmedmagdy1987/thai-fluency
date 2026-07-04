@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Award, Check, CheckCircle2, ChevronRight, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
+import { Award, Check, CheckCircle2, ChevronRight, Crown, Gem, Heart, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
 import {
@@ -10,6 +10,7 @@ import {
   getPromptText,
   getAnswerText,
 } from '../lib/challengeQuestions.js';
+import { HEART_MAX, REFILL_COST_GEMS, regenState, formatCountdown } from '../lib/economy.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
@@ -39,6 +40,19 @@ export default function QuizTab({
   progress,
   audioRate = 0.95,
   showCharacters = true,
+  // Hearts economy (Challenge-only). `hearts` is the EFFECTIVE (regenerated)
+  // count; `isSuper` users are unlimited (never lose a heart, never blocked).
+  // onSpendHeart is called on a WRONG answer for free users; onRefillHearts +
+  // onOpenSuper power the "out of hearts" gate. `stats` feeds the regen
+  // countdown. Hearts NEVER affect flashcard review — only this Challenge.
+  hearts = HEART_MAX,
+  isSuper = false,
+  gems = 0,
+  stats = null,
+  onSpendHeart,
+  onRefillHearts,
+  onOpenSuper,
+  setTab,
 }) {
   // Stages the user may be challenged on: unlocked and with content. Locked
   // stages are intentionally excluded so a Stage N Challenge can never pull
@@ -61,6 +75,25 @@ export default function QuizTab({
   const [done, setDone] = useState(false);
   const [poolError, setPoolError] = useState(null);
   const checkLockedRef = useRef(false);
+
+  // "Out of hearts" gate: only relevant on the intro screen (no active session),
+  // for free users at 0 effective hearts. Super users are never gated. Mid-
+  // session play is never interrupted — a heart hitting 0 during a Challenge
+  // still lets the current round finish.
+  const onIntro = questions.length === 0;
+  const outOfHearts = !isSuper && onIntro && hearts <= 0;
+  // Tick once a second while the gate is up so the regen countdown stays live.
+  const [nowTick, setNowTick] = useState(() => Date.now());
+  useEffect(() => {
+    if (!outOfHearts) return undefined;
+    const t = setInterval(() => setNowTick(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [outOfHearts]);
+  const regen = useMemo(
+    () => (outOfHearts ? regenState(stats, nowTick) : null),
+    [outOfHearts, stats, nowTick]
+  );
+  const canAffordRefill = gems >= REFILL_COST_GEMS;
 
   // Is the selected stage fully complete? Completed stages may be challenged on
   // their whole deck (mastery review); in-progress/unstarted stages only on the
@@ -96,6 +129,13 @@ export default function QuizTab({
   }, [current?.id]);
 
   const startQuiz = (nextType) => {
+    // Block STARTING a new Challenge when out of hearts (free users). This also
+    // catches the results-screen "Try again" (which is a fresh start): reset to
+    // the intro, where the "out of hearts" gate is shown. Super = never blocked.
+    if (!isSuper && hearts <= 0) {
+      resetQuiz();
+      return;
+    }
     const stage = selectedStage || upper;
     const built = buildChallenge({
       type: nextType,
@@ -159,6 +199,10 @@ export default function QuizTab({
       coach.react('correct', { duration: 1700 });
       playCharacterCorrect(coachId);
     } else {
+      // Lose one heart per WRONG answer — free users only. Super = unlimited, so
+      // never spend. This never interrupts the current session (the block only
+      // applies to STARTING a new Challenge, handled on the intro screen).
+      if (!isSuper && onSpendHeart) onSpendHeart();
       coach.react('wrong', { duration: 1900 });
       playCharacterWrong(coachId);
     }
@@ -224,7 +268,64 @@ export default function QuizTab({
             </div>
           )}
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
-          {stageReady ? (
+          {/* Hearts status on the intro (free users only). Super = unlimited. */}
+          {!isSuper && !outOfHearts && (
+            <div className="quiz-hearts-status" aria-label={`Hearts: ${hearts} of ${HEART_MAX}`}>
+              {Array.from({ length: HEART_MAX }).map((_, i) => (
+                <Heart
+                  key={i}
+                  size={16}
+                  className={i < hearts ? 'quiz-heart-full' : 'quiz-heart-empty'}
+                  aria-hidden="true"
+                  fill={i < hearts ? 'currentColor' : 'none'}
+                />
+              ))}
+              <span className="quiz-hearts-status-text">{hearts}/{HEART_MAX}</span>
+            </div>
+          )}
+          {outOfHearts ? (
+            <div className="quiz-hearts-gate" role="group" aria-label="Out of hearts">
+              <div className="quiz-hearts-gate-icon" aria-hidden="true"><Heart size={30} /></div>
+              <div className="quiz-hearts-gate-title">Out of hearts</div>
+              <p className="quiz-hearts-gate-copy">
+                Hearts are only used in the Challenge. Your practice and lessons are always free —
+                keep learning while your hearts refill.
+              </p>
+              <div className="quiz-hearts-gate-regen">
+                {regen && regen.nextRegenMs > 0
+                  ? <>Next heart in <strong>{formatCountdown(regen.nextRegenMs)}</strong></>
+                  : 'A heart is ready — refresh to play.'}
+              </div>
+              <div className="quiz-hearts-gate-actions">
+                {onRefillHearts && (
+                  <button
+                    type="button"
+                    className="btn-primary quiz-hearts-gate-refill"
+                    onClick={() => onRefillHearts()}
+                    disabled={!canAffordRefill}
+                    title={canAffordRefill ? `Refill hearts for ${REFILL_COST_GEMS} gems` : `Need ${REFILL_COST_GEMS} gems to refill`}
+                  >
+                    <Gem size={14} aria-hidden="true" /> Refill ({REFILL_COST_GEMS} gems)
+                  </button>
+                )}
+                {onOpenSuper && (
+                  <button type="button" className="btn-secondary quiz-hearts-gate-super" onClick={() => onOpenSuper()}>
+                    <Crown size={14} aria-hidden="true" /> Go Super for unlimited
+                  </button>
+                )}
+              </div>
+              {!canAffordRefill && (
+                <div className="quiz-hearts-gate-hint">
+                  You have {gems} gem{gems === 1 ? '' : 's'}. Earn more from missions, quests, and passing Challenges.
+                </div>
+              )}
+              {setTab && (
+                <button type="button" className="quiz-hearts-gate-practice" onClick={() => setTab('cards')}>
+                  Practice cards instead
+                </button>
+              )}
+            </div>
+          ) : stageReady ? (
             <div className="quiz-mode-direction-grid">
               {Object.entries(QUESTION_TYPES).map(([id, config]) => (
                 <button key={id} className="quiz-mode-direction-btn" onClick={() => startQuiz(id)}>

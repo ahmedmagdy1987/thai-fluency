@@ -19,6 +19,7 @@ import {
   stageCompleteCelebrationId,
   challengePerfectCelebrationId,
   challengeRewardId,
+  challengeGemsId,
   toneQuizRewardId,
   superCtaId,
   hasCelebrated,
@@ -27,6 +28,16 @@ import {
   courseCompleteCelebrationId,
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
+import { isSuper } from './config/entitlements.js';
+import {
+  effectiveHearts,
+  spendHeart,
+  refillHeartsWithGems,
+  awardGems,
+  GEMS_PER_MISSION,
+  GEMS_PER_CHALLENGE_PASS,
+  GEMS_PER_DAILY_GOAL,
+} from './lib/economy.js';
 import { resolveCoachIdForStage } from './data/stageCharacters.js';
 import { getStageCinematic } from './data/stageCinematics.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
@@ -677,10 +688,17 @@ export default function TukTalkThaiApp() {
           // resolves to the free tier on failure so a subscriptions read never blocks
           // sign-in. Merged into stats.tier / stats.superUntil, which entitlements.js
           // reads via getTier()/isSuper().
-          downloadEntitlement(session.user.id).catch(() => ({ tier: 'free', superUntil: null })),
+          downloadEntitlement(session.user.id).catch(() => ({ tier: 'free', superUntil: null, cancelAtPeriodEnd: false })),
         ]);
         if (cancelled) return;
-        const ent = { tier: entitlement?.tier || 'free', superUntil: entitlement?.superUntil || null };
+        // Merge server-authoritative entitlement into stats: tier + superUntil
+        // drive isSuper(); cancelAtPeriodEnd drives the plan-row "canceled but
+        // active until <date>" vs "renews on <date>" states in Settings/Profile.
+        const ent = {
+          tier: entitlement?.tier || 'free',
+          superUntil: entitlement?.superUntil || null,
+          cancelAtPeriodEnd: !!entitlement?.cancelAtPeriodEnd,
+        };
         const cloudHasState = cloudHasData || hasStatsLearningActivity(cloudStatsData || {}) || (cloudAchs && cloudAchs.length > 0);
         if (localHasData && !cloudHasState) {
           await uploadFullState(session.user.id, safeLocalProgress, stats);
@@ -820,7 +838,7 @@ export default function TukTalkThaiApp() {
       try {
         const ent = await downloadEntitlement(session.user.id);
         if (ent) {
-          setStats(s => ({ ...s, tier: ent.tier || 'free', superUntil: ent.superUntil || null }));
+          setStats(s => ({ ...s, tier: ent.tier || 'free', superUntil: ent.superUntil || null, cancelAtPeriodEnd: !!ent.cancelAtPeriodEnd }));
           becameSuper = ent.tier === 'super';
         }
       } catch (e) {
@@ -913,6 +931,7 @@ export default function TukTalkThaiApp() {
       const isNewDay = s.todayDate !== today;
       const yesterday = previousLocalDateKey();
       let newStreak = s.streak || 0;
+      let usedFreeze = false;
       if (isNewDay) {
         if (s.lastStudy === yesterday) {
           newStreak = newStreak + 1;
@@ -920,12 +939,20 @@ export default function TukTalkThaiApp() {
           const daysSince = s.lastStudy ? Math.floor((Date.now() - new Date(s.lastStudy).getTime()) / DAY_MS) : 999;
           if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
             newStreak = newStreak + 1;
-            return startStudyDay(s, today, newStreak, amount, true);
+            usedFreeze = true;
+          } else {
+            newStreak = 1;
           }
-          newStreak = 1;
         }
       }
-      return startStudyDay(s, today, newStreak, amount, false);
+      const next = startStudyDay(s, today, newStreak, amount, usedFreeze);
+      // Daily-goal gems: startStudyDay increments dailyGoalsHit exactly when the
+      // day's XP first crosses the goal. Award modest gems at that same moment
+      // (self-limiting — it only rises once per day since todayXp stays ≥ goal).
+      if ((next.dailyGoalsHit || 0) > (s.dailyGoalsHit || 0)) {
+        return { ...next, ...awardGems(next, GEMS_PER_DAILY_GOAL) };
+      }
+      return next;
     });
   }, []);
 
@@ -1009,6 +1036,9 @@ export default function TukTalkThaiApp() {
         if (!missionRewardLocksRef.current.has(rewardKey)) {
           missionRewardLocksRef.current.add(rewardKey);
           awardXp(REWARD_EVENTS.MISSION_COMPLETED, rewardKeys.mission(1, justFinished.id), MISSION_REWARD_XP);
+          // Gems reward, at the same moment XP is granted. Guarded by the same
+          // per-mission lock so a refresh / double-fire can't farm gems.
+          setStats(s => ({ ...s, ...awardGems(s, GEMS_PER_MISSION) }));
           setRewardScreen({
             id: `mission-${justFinished.id}-${Date.now()}`,
             title: `Mission ${justFinished.id} Complete`,
@@ -1222,6 +1252,32 @@ export default function TukTalkThaiApp() {
     setLastReviewSnapshot(null);
   }, [lastReviewSnapshot]);
 
+  // ── Hearts economy (Challenge-only) ───────────────────────────────────────
+  // Super users have UNLIMITED hearts: effectiveHearts is Infinity, spend is a
+  // no-op, and the Challenge never blocks them. Free users lose one heart per
+  // WRONG Challenge answer (spendHeart), can refill in the Shop with gems, and
+  // regenerate one heart every 30 minutes. Hearts NEVER touch flashcard review
+  // (CardsTab) or the guided path — only QuizTab calls spendHeart.
+  const superActive = isSuper(stats);
+  const heartsNow = effectiveHearts(stats, superActive);
+
+  const handleSpendHeart = useCallback(() => {
+    // Guard: Super = unlimited, so never decrement (defense in depth; QuizTab
+    // also guards). Returns nothing to change for Super users.
+    if (isSuper(stats)) return;
+    setStats(s => (isSuper(s) ? s : { ...s, ...spendHeart(s) }));
+  }, [stats]);
+
+  const handleRefillHearts = useCallback(() => {
+    // Spend gems to refill hearts to full. refillHeartsWithGems returns null
+    // when already full / can't afford / Super, in which case this no-ops.
+    setStats(s => {
+      if (isSuper(s)) return s;
+      const patch = refillHeartsWithGems(s);
+      return patch ? { ...s, ...patch } : s;
+    });
+  }, []);
+
   const recordTonesQuiz = useCallback((score, total) => {
     const passed = (score / total) >= 0.8;
     // XP idempotency: the Tone Challenge pays XP at most once per day, so the
@@ -1254,6 +1310,16 @@ export default function TukTalkThaiApp() {
     if (awardedXp > 0) {
       awardXp(REWARD_EVENTS.CHALLENGE_COMPLETED, rewardKeys.challenge(stageId, today), awardedXp, { score, total });
       markCelebrated(xpId);
+    }
+    // Gems for PASSING (≥80%) a Stage Challenge, at most once per stage per day.
+    // Uses its own ledger id (challengeGemsId) so a fail-then-pass on the same
+    // day still pays the pass gems exactly once. Modest amount; never gates play.
+    if (passed) {
+      const gemsId = challengeGemsId(stageId, today);
+      if (!hasCelebrated(stats.celebratedIds, gemsId)) {
+        markCelebrated(gemsId);
+        setStats(s => ({ ...s, ...awardGems(s, GEMS_PER_CHALLENGE_PASS) }));
+      }
     }
     // Level 3 — perfect Stage Challenge celebration (once per stage per day).
     // Challenge never marks cards learned; this is purely cosmetic feedback.
@@ -1446,6 +1512,29 @@ export default function TukTalkThaiApp() {
     // Route Super/upgrade entry points to the full plans/pricing page.
     handleNavigatePath('/plans');
   }, [handleNavigatePath]);
+
+  // Re-read the server-authoritative entitlement and merge it into stats. Used
+  // after the cancel-subscription Edge Function returns, so the plan UI flips to
+  // the "canceled — active until <date>" state (cancelAtPeriodEnd) without a
+  // reload. Best-effort; returns the fresh entitlement or null on failure.
+  const handleEntitlementRefresh = useCallback(async () => {
+    if (!session || !isEmailConfirmed || !hasSupabaseConfig) return null;
+    try {
+      const ent = await downloadEntitlement(session.user.id);
+      if (ent) {
+        setStats(s => ({
+          ...s,
+          tier: ent.tier || 'free',
+          superUntil: ent.superUntil || null,
+          cancelAtPeriodEnd: !!ent.cancelAtPeriodEnd,
+        }));
+      }
+      return ent;
+    } catch (e) {
+      console.warn('[App] entitlement refresh failed', e);
+      return null;
+    }
+  }, [session?.user?.id, isEmailConfirmed]);
 
   const handleRewardContinue = useCallback(() => {
     const promptReason = rewardScreen?.superPromptReason;
@@ -2043,6 +2132,7 @@ export default function TukTalkThaiApp() {
           onClose={handleCloseProfile}
           onSignOut={() => { setShowProfile(false); handleSignOut(); }}
           onOpenPublicPage={handleNavigatePath}
+          onEntitlementRefresh={handleEntitlementRefresh}
           onProfileRefresh={async () => {
             const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
             if (data) setProfile(data);
@@ -2092,10 +2182,10 @@ export default function TukTalkThaiApp() {
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} />}
-          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} />}
+          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={handleOpenPremium} setTab={handleSetTab} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
-          {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
+          {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} onRefillHearts={handleRefillHearts} onOpenSuper={handleOpenPremium} />}
           {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={handleOpenPremium} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
@@ -2118,7 +2208,7 @@ export default function TukTalkThaiApp() {
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
-        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} onReplayTutorial={() => { updateSettings({ tutorialSeen: false }); handleCloseSettings(); handleSetTab('learn'); }} />
+        <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} onEntitlementRefresh={handleEntitlementRefresh} onReplayTutorial={() => { updateSettings({ tutorialSeen: false }); handleCloseSettings(); handleSetTab('learn'); }} />
       )}
       {rewardScreen && (
         <MissionCompleteRewardScreen

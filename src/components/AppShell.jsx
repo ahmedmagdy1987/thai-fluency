@@ -4,6 +4,7 @@ import SidebarNav from './SidebarNav.jsx';
 import MobileNav from './MobileNav.jsx';
 import TopStatsBar from './TopStatsBar.jsx';
 import { isSuper } from '../config/entitlements.js';
+import { effectiveHearts } from '../lib/economy.js';
 
 // Wraps the main app surface with: sidebar on desktop, bottom nav on mobile,
 // and a header dedicated to progress stats. Profile + Settings live in the
@@ -25,6 +26,9 @@ export default function AppShell({
 }) {
   const isAuthed = !!session;
   const superActive = isSuper(stats);
+  // Effective (regenerated) hearts for the header chip. Super → Infinity, which
+  // TopStatsBar renders as ∞. Free users see their live regenerated count.
+  const heartsNow = effectiveHearts(stats, superActive);
   // Persistent upgrade entry → the live plans page.
   const onOpenSuper = () => { if (onOpenPublicPage) onOpenPublicPage('/plans'); };
 
@@ -52,6 +56,8 @@ export default function AppShell({
             <TopStatsBar
               stats={stats}
               dashboardStats={dashboardStats}
+              hearts={heartsNow}
+              isSuper={superActive}
             />
           </div>
         </header>

@@ -7,12 +7,14 @@ import NotificationSettings from './profile/NotificationSettings.jsx';
 
 // Profile view — accessible from the header user menu. Edit display name
 // inline, view account info, change password, sign out.
-export default function ProfilePage({ profile, fullStats, session, stageState, onClose, onSignOut, onProfileRefresh, onOpenPublicPage }) {
+export default function ProfilePage({ profile, fullStats, session, stageState, onClose, onSignOut, onProfileRefresh, onOpenPublicPage, onEntitlementRefresh }) {
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState('');
   const [savingName, setSavingName] = useState(false);
   const [nameError, setNameError] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [canceling, setCanceling] = useState(false);
+  const [cancelError, setCancelError] = useState(null);
 
   const displayName = profile?.display_name
     || (session?.user?.email ? session.user.email.split('@')[0] : 'Account');
@@ -34,11 +36,35 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
     : 0;
 
   const superActive = isSuper(fullStats);
-  const superRenewsOn = (() => {
+  const canceled = !!fullStats?.cancelAtPeriodEnd;
+  const superUntilLabel = (() => {
     if (!superActive || !fullStats?.superUntil) return null;
     const d = new Date(fullStats.superUntil);
     return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString();
   })();
+
+  // Cancel auto-renew via the deployed cancel-subscription Edge Function. On
+  // success, re-read the entitlement so the plan row flips to the canceled state
+  // (Super stays active until super_until). Errors surface inline; never throws.
+  const handleCancelPlan = async () => {
+    if (canceling) return;
+    const ok = typeof window === 'undefined'
+      ? true
+      : window.confirm('Cancel your Super plan? It stops auto-renewing, but Super stays active until the end of your current billing period.');
+    if (!ok) return;
+    setCanceling(true);
+    setCancelError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('cancel-subscription');
+      if (error) throw error;
+      if (data && data.ok === false) throw new Error(data.error || 'Cancellation failed');
+      if (onEntitlementRefresh) await onEntitlementRefresh();
+    } catch (e) {
+      setCancelError('Could not cancel right now. Please try again, or contact support.');
+    } finally {
+      setCanceling(false);
+    }
+  };
 
   const startEdit = () => {
     setNameDraft(profile?.display_name || displayName);
@@ -186,9 +212,26 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
                 <div className="profile-plan-info">
                   <span className="profile-plan-badge profile-plan-badge-super"><Crown size={13} aria-hidden="true" /> Super</span>
                   <span className="profile-plan-text">
-                    {superRenewsOn ? `Renews ${superRenewsOn}` : 'Active'}. Thanks for supporting Tuk Talk Thai!
+                    {canceled
+                      ? (superUntilLabel
+                          ? `Canceled — stays active until ${superUntilLabel}. Auto-renew is off.`
+                          : 'Canceled — stays active until the end of your billing period. Auto-renew is off.')
+                      : (superUntilLabel
+                          ? `Renews ${superUntilLabel}. Thanks for supporting Tuk Talk Thai!`
+                          : 'Active. Thanks for supporting Tuk Talk Thai!')}
                   </span>
+                  {cancelError && <span className="profile-plan-cancel-error">{cancelError}</span>}
                 </div>
+                {!canceled && (
+                  <button
+                    type="button"
+                    className="profile-plan-cancel-btn"
+                    onClick={handleCancelPlan}
+                    disabled={canceling}
+                  >
+                    {canceling ? 'Canceling…' : 'Cancel plan'}
+                  </button>
+                )}
               </>
             ) : (
               <>
