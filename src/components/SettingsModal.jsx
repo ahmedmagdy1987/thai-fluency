@@ -6,6 +6,7 @@ import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION, transformThai
 import { speakThai, DEFAULT_AUDIO_RATE } from '../lib/audio.js';
 import PrivacyPolicy from './legal/PrivacyPolicy.jsx';
 import TermsOfService from './legal/TermsOfService.jsx';
+import { isSuper } from '../config/entitlements.js';
 
 const PREVIEW_THAI = '\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35\u0e04\u0e23\u0e31\u0e1a';
 
@@ -31,6 +32,12 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
   const currentStageId = stats.currentStage || stats.startedStage || 1;
   const currentStage = STAGES.find(s => s.id === currentStageId) || {};
   const previewText = transformThai(PREVIEW_THAI, voice);
+  const superActive = isSuper(stats);
+  const superRenewsOn = (() => {
+    if (!superActive || !stats.superUntil) return null;
+    const d = new Date(stats.superUntil);
+    return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString();
+  })();
   const openPublicPage = (path, fallback) => {
     if (onOpenPublicPage) {
       onOpenPublicPage(path);
@@ -273,6 +280,21 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
           <div className="setting-group">
             <div className="setting-label">Streak protection</div>
             <div className="setting-sub">You have <strong>{stats.streakFreezes || 0}</strong> freeze{(stats.streakFreezes || 0) === 1 ? '' : 's'} available. You earn one every 7 study days.</div>
+          </div>
+
+          <div className="setting-group">
+            <div className="setting-label">Plan</div>
+            {superActive ? (
+              <div className="setting-sub">
+                <strong>Super</strong>
+                {superRenewsOn ? <> — renews on {superRenewsOn}</> : <> is active</>}. Thanks for supporting Tuk Talk Thai!
+              </div>
+            ) : (
+              <div className="setting-sub">
+                You’re on the <strong>Free plan</strong>.{' '}
+                <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>See Super</button>
+              </div>
+            )}
           </div>
 
           <div className="setting-group">

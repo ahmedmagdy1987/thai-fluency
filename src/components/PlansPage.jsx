@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,13 +17,14 @@ import { MINI_UNITS } from '../data/miniUnits.js';
 import { SITE_CONFIG } from '../config/site.js';
 import { PLANS } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
+import SuperCheckoutModal from './SuperCheckoutModal.jsx';
 
-// Plans / freemium page. IMPORTANT honesty constraint: no billing provider is
-// wired yet, so Premium ("Super") is presented as a real product plan that is
-// "coming soon" - there is no checkout and no payment is collected. Free is the
-// live, complete experience. The paid value is framed around consistency,
+// Plans / freemium page. Super checkout is now live in beta (Stripe test mode):
+// a signed-in learner can open embedded checkout right here. Free stays the
+// complete, live experience. The paid value is framed around consistency,
 // convenience, fewer interruptions, recovery and bonus content - NOT around
-// "pay to skip the journey" (the curated path stays free and intact).
+// "pay to skip the journey" (the curated path stays free and intact). Some Super
+// benefits are still being built and are labelled "soon" so nothing is oversold.
 
 const FREEMIUM_POINTS = [
   {
@@ -85,8 +86,8 @@ const FAQ = [
     a: 'No. The learning path is free and stays that way. Premium is about convenience and consistency, not about unlocking the content you need to progress.',
   },
   {
-    q: 'How much is Premium and how do I buy it?',
-    a: 'Super will come in monthly and yearly options. It is not on sale yet — there is no checkout and no payment is collected during the beta. Prices are shown as "Pricing coming soon" until they are finalized and announced after testing.',
+    q: 'How much is Super and how do I buy it?',
+    a: 'Super comes in monthly and yearly options. Checkout is live in a secure beta (test mode) via Stripe — sign in, tap Get Super, and complete checkout right on this site. Final launch prices are still being confirmed, so they are shown as "Pricing coming soon" until announced.',
   },
   {
     q: 'What will Premium include?',
@@ -122,6 +123,7 @@ function PlanPriceTag({ plan }) {
 }
 
 export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, onSignIn }) {
+  const [checkoutPlan, setCheckoutPlan] = useState(null); // 'monthly' | 'yearly' | null
   // eslint-disable-next-line react-hooks/exhaustive-deps -- one plans_viewed per visit
   useEffect(() => { trackEvent(ANALYTICS_EVENTS.PLANS_VIEWED, { authed: !!isAuthed }); }, []);
 
@@ -137,6 +139,16 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
 
   const startFree = () => {
     if (onGetStarted) onGetStarted();
+    else if (onNavigate) onNavigate('/get-started');
+  };
+
+  // Super CTA: a signed-in learner opens embedded checkout in-page for the chosen
+  // plan; a signed-out visitor is sent to sign up first (you must have an account
+  // to subscribe), matching the free flow.
+  const startSuper = (plan) => () => {
+    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'plans-page', plan });
+    if (isAuthed) setCheckoutPlan(plan);
+    else if (onGetStarted) onGetStarted();
     else if (onNavigate) onNavigate('/get-started');
   };
 
@@ -221,38 +233,39 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
           <article className="pl-plan pl-plan-premium">
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superMonthly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
+              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
             </div>
             <PlanPriceTag plan={PLANS.superMonthly} />
             <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
-            <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={navClick('/feedback')}>
-              {PLANS.superMonthly.cta}
+            <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('monthly')}>
+              {isAuthed ? 'Get Super' : 'Sign up to go Super'}
+              <ArrowRight size={17} aria-hidden="true" />
             </button>
             <ul className="pl-plan-list">
               {PREMIUM_INCLUDES.map(({ Icon, text }) => (
                 <li key={text}><Icon size={16} aria-hidden="true" /> {text}</li>
               ))}
             </ul>
-            <p className="pl-plan-foot">No checkout yet. Pricing is announced before Super launches.</p>
+            <p className="pl-plan-foot">Checkout runs in secure beta (test mode). Cancel anytime; billing is handled by Stripe.</p>
           </article>
 
           <article className="pl-plan pl-plan-premium">
             {PLANS.superYearly.badge && <span className="pl-plan-badge">{PLANS.superYearly.badge}</span>}
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superYearly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Coming soon</span>
+              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
             </div>
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
-            <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={navClick('/feedback')}>
-              {PLANS.superYearly.cta}
+            <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={startSuper('yearly')}>
+              {isAuthed ? 'Choose yearly' : 'Sign up for yearly'}
             </button>
             <ul className="pl-plan-list">
               <li><Check size={16} aria-hidden="true" /> Everything in Super Monthly</li>
               <li><Check size={16} aria-hidden="true" /> Best price per month</li>
               <li><Check size={16} aria-hidden="true" /> One simple yearly payment</li>
             </ul>
-            <p className="pl-plan-foot">No checkout yet. Pricing is announced before Super launches.</p>
+            <p className="pl-plan-foot">Checkout runs in secure beta (test mode). Cancel anytime; billing is handled by Stripe.</p>
           </article>
         </div>
       </section>
@@ -315,6 +328,10 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
           <a className="pl-cta-back" href={homePath} onClick={navClick(homePath)}>{homeLabel}</a>
         </div>
       </section>
+
+      {checkoutPlan && (
+        <SuperCheckoutModal plan={checkoutPlan} onClose={() => setCheckoutPlan(null)} />
+      )}
     </main>
   );
 }

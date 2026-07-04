@@ -144,6 +144,28 @@ export async function downloadStats(userId) {
   };
 }
 
+// ---- Entitlement (Super subscription state) ----
+
+// Reads the user's row from public.subscriptions (RLS: SELECT own row only) and
+// derives the current tier. A user is Super when super_until is in the future.
+// Null-safe: a missing row (never subscribed) resolves to the free tier.
+export async function downloadEntitlement(userId) {
+  const { data, error } = await supabase
+    .from('subscriptions')
+    .select('super_until,status,plan')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (error) throw error;
+  const superUntil = data?.super_until || null;
+  const isActive = !!(superUntil && new Date(superUntil) > new Date());
+  return {
+    tier: isActive ? 'super' : 'free',
+    superUntil,
+    plan: data?.plan || null,
+    status: data?.status || null,
+  };
+}
+
 // ---- Achievements ----
 
 export async function uploadAchievements(userId, achievementIds) {
