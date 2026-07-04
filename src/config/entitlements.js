@@ -1,29 +1,29 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // CENTRAL PREMIUM ENTITLEMENT MODEL — the single source of truth for tiers, the
-// free / premium / coming-soon feature catalog, plan + pricing config, entitlement
-// checks, and upgrade-surface copy. Anything that GATES or ADVERTISES a premium
-// feature should import from here, so there is exactly ONE place to change when
-// real billing lands.
+// free / Super feature catalog, plan + pricing config, entitlement checks, and
+// upgrade-surface copy. Anything that GATES or ADVERTISES a Super feature should
+// import from here, so there is exactly ONE place to change entitlements.
+//
+// BILLING IS LIVE (Stripe embedded checkout). Super is a real, purchasable
+// subscription and `tier` is derived from a server-authoritative source
+// (public.subscriptions.super_until, synced into stats.tier / stats.superUntil).
 //
 // HONESTY CONSTRAINT (do not violate):
-//   • No real billing exists yet. No user is actually "Super" and NO premium
-//     feature unlocks on payment. `tier` defaults to 'free' for everyone.
-//   • Every premium feature below is status 'coming-soon' until it is actually
-//     implemented. `canUseFeature()` returns false for a coming-soon feature even
-//     for a (hypothetical) Super user, so we can NEVER gate real value behind an
-//     unimplemented benefit or fake a delivered benefit.
-//   • A real, server-authoritative entitlement (Supabase column + payment webhook)
-//     is required before any paid benefit can be granted — see
-//     docs/payment-readiness.md. Flip a feature to 'available' ONLY when shipped.
-//   • Pricing is intentionally unset (null) → surfaces show "Pricing coming soon".
-//     Fill real numbers in PLANS only once a provider + prices are decided.
+//   • Gate ONLY what actually ships. The Dating & Real Talk (18+) section is the
+//     Super-EXCLUSIVE benefit enforced today (status AVAILABLE, access super).
+//   • Other Super benefits (ad-free, enhanced practice, recovery, flexibility,
+//     bonus packs) are ADVERTISED on the plans page but NOT enforced yet — they
+//     stay status 'coming-soon' so `canUseFeature()` never fake-gates real value
+//     behind a benefit that isn't built. Flip a feature to 'available' when it
+//     actually ships.
+//   • Prices are real ($4.99/mo, $39.99/yr). Do not revert them to null.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const TIERS = { FREE: 'free', SUPER: 'super' };
 
 // A feature is either shipped & usable now (AVAILABLE) or advertised-but-not-built
-// (COMING_SOON). Coming-soon features must render as "Coming soon", never as a
-// live benefit.
+// (COMING_SOON). Coming-soon features are advertised on the plans page but must
+// never be presented as a delivered benefit or used to gate real value.
 export const FEATURE_STATUS = { AVAILABLE: 'available', COMING_SOON: 'coming-soon' };
 
 // access: 'free' (never gated) | 'super' (premium). group: 'core' | 'premium'.
@@ -37,20 +37,21 @@ export const FEATURES = {
   streakFreeze:  { id: 'streakFreeze',  name: 'Auto streak freeze (weekly)',  access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
   cloudSync:     { id: 'cloudSync',     name: 'Cloud sync across devices',    access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
 
-  // ---- SUPER: premium focus areas. All COMING SOON (not yet implemented) ----
+  // ---- SUPER: the Dating & Real Talk (18+) section is LIVE and Super-exclusive.
+  //      The rest are advertised on the plans page but not enforced yet
+  //      (COMING_SOON) so we never fake-gate a benefit that isn't built. ----
+  datingRealTalk:  { id: 'datingRealTalk',  name: 'Dating & Real Talk Thai (18+)',      access: TIERS.SUPER, status: FEATURE_STATUS.AVAILABLE,   group: 'premium', upsell: 'Unlock Dating & Real Talk Thai (18+) with Super.' },
   adFree:          { id: 'adFree',          name: 'Ad-free experience',                 access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Go ad-free with Super.' },
   enhancedReview:  { id: 'enhancedReview',  name: 'Enhanced practice & review tools',   access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Unlock deeper practice and review tools with Super.' },
   streakRecovery:  { id: 'streakRecovery',  name: 'Streak recovery',                    access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Recover a lost streak with Super.' },
   extraFlexibility:{ id: 'extraFlexibility',name: 'Extra daily flexibility & attempts', access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'More daily flexibility and attempts with Super.' },
   bonusPacks:      { id: 'bonusPacks',      name: 'Bonus content packs',                access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Unlock bonus content packs with Super.' },
-  datingRealTalk:  { id: 'datingRealTalk',  name: 'Dating & Real Talk Thai (18+)',      access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Dating & Real Talk Thai unlocks with Super.' },
 };
 
 // ─── Plans + pricing config (used by /plans and any upgrade surface) ─────────
-// price is NULL until real numbers are decided → surfaces show "Pricing coming
-// soon". Do NOT invent prices. `currency` is also TBD. Fill once a provider is
-// chosen (see docs/payment-readiness.md).
-export const PRICING_TBA = false; // real (beta/test) pricing is now supplied
+// Prices are LIVE. Stripe embedded checkout is wired to these plans. Keep the
+// amounts in sync with the Stripe products.
+export const PRICING_TBA = false; // pricing is live
 export const PLANS = {
   free: {
     id: 'free',
@@ -64,29 +65,32 @@ export const PLANS = {
     id: 'super-monthly',
     name: 'Super Monthly',
     tagline: 'Flexible month-to-month.',
-    price: 4.99,            // beta/test price — change for launch
+    price: 4.99,
     period: 'month',
-    cta: 'Get notified',
+    cta: 'Go Super',
   },
   superYearly: {
     id: 'super-yearly',
     name: 'Super Yearly',
     tagline: 'Best value — pay once a year.',
-    price: 39.99,           // beta/test price — change for launch
+    price: 39.99,
     period: 'year',
-    cta: 'Get notified',
+    cta: 'Go Super',
     badge: 'Best value',
   },
 };
 
 // ─── Upgrade-prompt copy (reason → message). Single home for upsell wording. ──
+// Present-tense, live copy: Super is purchasable now, so nothing is framed as
+// "coming soon" / "when it opens". The Dating section is the concrete, live
+// Super-exclusive benefit; other benefits are described as part of the plan.
 export const UPSELL_COPY = {
-  'first-lesson': 'You finished your first guided lesson. Super will make the full path faster to explore when it opens.',
-  mission:        'You completed a mission. Super will unlock more practice flexibility when it opens.',
-  'mini-unit':    'You completed a guided mini-unit. Super will add more practice tools when it opens.',
-  locked:         'This is part of the progressive path. Super will unlock some paths early when it opens.',
-  dating:         'Dating & Real Talk Thai is a Super feature. It opens after native review when Super launches.',
-  generic:        'Super adds an ad-free experience, enhanced practice tools, and bonus content when it opens.',
+  'first-lesson': 'Nice — first lesson done. Go Super to unlock the 18+ Dating & Real Talk section and support new Thai content.',
+  mission:        'Mission complete! Super unlocks the 18+ Dating & Real Talk section and helps fund more lessons.',
+  'mini-unit':    'Mini-unit done. Super unlocks the 18+ Dating & Real Talk section and more as it ships.',
+  locked:         'The full learning path is free. Super adds the 18+ Dating & Real Talk section and supports development.',
+  dating:         'Dating & Real Talk Thai (18+) is a Super-exclusive section. Go Super to unlock it.',
+  generic:        'Super unlocks the 18+ Dating & Real Talk section today, and adds an ad-free experience, enhanced practice and bonus content as they ship.',
 };
 
 // ─── Entitlement checks ──────────────────────────────────────────────────────

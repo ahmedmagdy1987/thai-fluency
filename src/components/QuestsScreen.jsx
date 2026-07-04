@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Award, Crown, Lock } from 'lucide-react';
+import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Lock } from 'lucide-react';
 import { evaluateDailyQuests } from '../lib/dailyQuests.js';
 
 // Phase 1 quests read real stats where available, but they do not spend
@@ -51,7 +51,7 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
       progress: `${Math.min(practicedToday, cardsTarget)}/${cardsTarget} cards`,
       pct: cardsPct,
       done: cardsDone,
-      reward: 'Rewards planned',
+      reward: 'Keep Thai fresh',
       cta: cardsDone ? null : 'Open cards',
       onClick: () => setTab && setTab('cards'),
     },
@@ -87,7 +87,7 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
         : 'Study today',
       pct: streakPct,
       done: streakDone,
-      reward: 'Streak rewards planned',
+      reward: 'Protect your streak',
       cta: streakDone ? null : 'Study now',
       onClick: () => setTab && setTab('cards'),
     },
@@ -103,14 +103,11 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
           <div className="feature-lock-eyebrow">Progressive unlock</div>
           <h1 className="feature-lock-title">Reach Level 2 to unlock Quests</h1>
           <p className="feature-lock-copy">
-            Finish your first path and keep practicing Cards to unlock daily quests. Super unlocks this early when it opens.
+            Finish your first path and keep practicing Cards to unlock daily quests. Quests are free — you unlock them by learning.
           </p>
           <div className="feature-lock-actions">
             <button type="button" className="btn-primary" onClick={() => setTab && setTab('cards')}>
               Practice Cards
-            </button>
-            <button type="button" className="btn-secondary" onClick={onOpenSuper}>
-              <Crown size={15} /> See Super
             </button>
           </div>
         </section>
@@ -161,16 +158,6 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
           </article>
         ))}
       </div>
-
-      <section className="quests-future">
-        <div className="quests-future-icon"><Award size={20} /></div>
-        <div className="quests-future-body">
-          <div className="quests-future-title">Weekly challenges and chests</div>
-          <div className="quests-future-sub">
-            Rewards are planned. Daily practice tracking is available now.
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

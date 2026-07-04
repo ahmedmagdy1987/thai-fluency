@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare } from 'lucide-react';
+import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare, Crown } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
+import { isSuper } from '../config/entitlements.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
 import NotificationSettings from './profile/NotificationSettings.jsx';
 
@@ -31,6 +32,13 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   const stagesComplete = stageState
     ? stageState.stages.filter(s => s.complete && s.total > 0).length
     : 0;
+
+  const superActive = isSuper(fullStats);
+  const superRenewsOn = (() => {
+    if (!superActive || !fullStats?.superUntil) return null;
+    const d = new Date(fullStats.superUntil);
+    return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString();
+  })();
 
   const startEdit = () => {
     setNameDraft(profile?.display_name || displayName);
@@ -170,6 +178,32 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
           </div>
         </div>
 
+        <div className="profile-section">
+          <div className="profile-section-title">Plan</div>
+          <div className="profile-plan-row">
+            {superActive ? (
+              <>
+                <div className="profile-plan-info">
+                  <span className="profile-plan-badge profile-plan-badge-super"><Crown size={13} aria-hidden="true" /> Super</span>
+                  <span className="profile-plan-text">
+                    {superRenewsOn ? `Renews ${superRenewsOn}` : 'Active'}. Thanks for supporting Tuk Talk Thai!
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="profile-plan-info">
+                  <span className="profile-plan-badge">Free plan</span>
+                  <span className="profile-plan-text">Upgrade to Super to unlock the 18+ Dating &amp; Real Talk section.</span>
+                </div>
+                <button type="button" className="btn-primary profile-plan-cta" onClick={() => openPublicPage('/plans')}>
+                  <Crown size={14} aria-hidden="true" /> Upgrade to Super
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
         <NotificationSettings
           session={session}
           profile={profile}
@@ -234,7 +268,7 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
             <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/terms')}>Terms of Use</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
-            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/premium')}>Super</button>
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Super</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
           </div>

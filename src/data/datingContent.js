@@ -18,8 +18,10 @@
 //     language, and explicit pornographic material. The "mild swear / insult"
 //     category is for RECOGNITION (understand, mostly don't use), with the actual
 //     wording deferred to the native reviewer.
-//   • `reviewStatus: 'pending'` everywhere. The production UI shows a premium
-//     teaser + "Coming soon" until native review is complete and approved.
+//   • `reviewStatus: 'pending'` everywhere. The production UI is Super-EXCLUSIVE:
+//     non-subscribers see a locked teaser; Super subscribers see the draft phrases
+//     with a prominent "Draft — pending native review" banner (never claimed as
+//     reviewed). Phrases live in datingPhrases.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const DATING_SECTION = {
@@ -159,7 +161,8 @@ export const DATING_CATEGORIES = [
   },
 ];
 
-// True only when every category has been natively reviewed AND approved. Until
-// then the section is a teaser + "Coming soon" and exposes no Thai. Flip per the
-// native-review doc once content is approved.
+// True only when every category has been natively reviewed AND approved. While
+// false, Super subscribers still see the draft phrases behind an honest "Draft —
+// pending native review" banner (the section is Super-gated, not hidden). Flip
+// per the native-review doc once content is approved to drop the draft banner.
 export const DATING_REVIEW_COMPLETE = false;

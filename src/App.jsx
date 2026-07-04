@@ -147,6 +147,10 @@ const RUSH_RUN_CEIL = RUSH_RUN_LIMIT + 3; // 8 — bounded so recovery isn't end
 const RUSH_XP_CAP = 1;
 const RUSH_COOLDOWN_MS = 10 * 60 * 1000;  // 10 min idle resets the rush guard
 const SUPER_PROMPT_STORAGE_KEY = 'tuk-talk-thai-super-prompt-last-shown';
+// Durable one-shot guard for the high-intent push-permission ask fired right
+// after the first lesson. Persisted (not just the per-session ref) so we never
+// nag a returning user twice, even across reloads or new sessions.
+const PUSH_PROMPT_STORAGE_KEY = 'tuk-talk-thai-push-prompt-fired';
 const TAB_ROUTES = {
   learn: '/learn',
   today: '/today',
@@ -183,7 +187,10 @@ const PUBLIC_PAGE_ROUTES = {
   '/support': 'support',
   '/feedback': 'feedback',
   '/plans': 'plans',
-  '/premium': 'premium',
+  // Legacy alias: old links/bookmarks to /premium now show the LIVE plans page
+  // (Super is a real, purchasable subscription — there is no separate coming-soon
+  // premium page anymore).
+  '/premium': 'plans',
   '/delete-account': 'delete-account',
 };
 
@@ -240,6 +247,22 @@ function getLocalSuperPromptDate() {
 function setLocalSuperPromptDate(value) {
   try {
     localStorage.setItem(SUPER_PROMPT_STORAGE_KEY, value);
+  } catch {
+    /* ignore */
+  }
+}
+
+function hasFiredPushPrompt() {
+  try {
+    return localStorage.getItem(PUSH_PROMPT_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function markPushPromptFired() {
+  try {
+    localStorage.setItem(PUSH_PROMPT_STORAGE_KEY, 'true');
   } catch {
     /* ignore */
   }
@@ -673,6 +696,11 @@ export default function TukTalkThaiApp() {
               ...cloudStatsData,
               ...ent,
               firstLessonCompleted: s.firstLessonCompleted || cloudHasData || cloudStatsData.firstLessonCompleted,
+              // Sticky once-true: the guided tutorial is "seen" if EITHER local or
+              // cloud says so, so a stale cloud row can never make it reappear after
+              // the user has already dismissed it. It round-trips via the
+              // tutorial_seen stats column + profiles.settings.
+              tutorialSeen: !!(s.tutorialSeen || cloudStatsData.tutorialSeen),
               // Union local + cloud so achievements earned offline (or on this
               // device) are never lost on sign-in, and never duplicated.
               unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...(cloudAchs || [])])],
@@ -860,12 +888,14 @@ export default function TukTalkThaiApp() {
 
   // Smart permission prompt: ask AFTER the user has completed placement
   // onboarding (so it doesn't fire on first visit while they're still
-  // figuring out the app). Fires at most once per session via a ref guard.
+  // figuring out the app). Fires at most once per session via a ref guard AND a
+  // durable flag, so it never double-nags alongside the post-first-lesson ask.
   useEffect(() => {
     if (!session || !isEmailConfirmed || !hasOneSignalConfig || !stats.hasOnboarded) return;
-    if (notificationPromptFired.current) return;
+    if (notificationPromptFired.current || hasFiredPushPrompt()) return;
     if (profile?.onesignal_player_id) return; // already subscribed
     notificationPromptFired.current = true;
+    markPushPromptFired();
     // Tiny delay so the user lands on the main app first, then sees the prompt.
     const t = setTimeout(async () => {
       try {
@@ -1240,7 +1270,7 @@ export default function TukTalkThaiApp() {
           xpEarned: awardedXp,
           primaryLabel: 'Continue',
           onPrimary: () => setCelebration(null),
-          superCtaText: showSuper ? 'Super will unlock extra challenge packs when it opens.' : null,
+          superCtaText: showSuper ? 'Go Super to unlock the 18+ Dating & Real Talk section.' : null,
           onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
         });
       }
@@ -1434,6 +1464,28 @@ export default function TukTalkThaiApp() {
 
   const firstLessonCompleted = !!stats.firstLessonCompleted;
 
+  // Highest-intent push-permission ask: fire ONCE, right after the learner
+  // finishes their first lesson (they've just felt the value of the app). Guarded
+  // by BOTH the per-session ref AND a durable localStorage flag so it never nags
+  // twice, and only when OneSignal is configured, the user is confirmed, and the
+  // browser permission hasn't already been decided. The Settings toggle still
+  // works independently. Best-effort — never throws.
+  const maybePromptPushAfterFirstLesson = useCallback(() => {
+    if (!hasOneSignalConfig || !isEmailConfirmed) return;
+    if (notificationPromptFired.current || hasFiredPushPrompt()) return;
+    if (profile?.onesignal_player_id) return; // already subscribed
+    notificationPromptFired.current = true;
+    markPushPromptFired();
+    // Let the reward screen settle first, then ask.
+    window.setTimeout(async () => {
+      try {
+        const sub = await getPushSubscription();
+        if (sub.permission === 'granted' || sub.permission === 'denied') return;
+        await promptForPushPermission();
+      } catch { /* push is best-effort */ }
+    }, 1600);
+  }, [isEmailConfirmed, profile?.onesignal_player_id]);
+
   const completeFirstLesson = useCallback(() => {
     const completedMiniUnits = [...new Set([
       ...(stats.completedMiniUnits || []),
@@ -1464,7 +1516,9 @@ export default function TukTalkThaiApp() {
     setPublicPage(null);
     setTab('learn');
     writeRoute('/learn', { replace: true });
-  }, [grantXp, stats.completedMiniUnits, stats.streak, updateSettings]);
+    // One-time, highest-intent push-permission ask (see the callback above).
+    maybePromptPushAfterFirstLesson();
+  }, [grantXp, stats.completedMiniUnits, stats.streak, updateSettings, maybePromptPushAfterFirstLesson]);
 
   const handleFirstLessonProgressChange = useCallback((progressUpdate) => {
     if (!progressUpdate || firstLessonCompleted) return;
@@ -2042,7 +2096,7 @@ export default function TukTalkThaiApp() {
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} onOpenSuper={handleOpenPremium} />}
-          {tab === 'dating' && <DatingSection onOpenSuper={handleOpenPremium} />}
+          {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={handleOpenPremium} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
       )}

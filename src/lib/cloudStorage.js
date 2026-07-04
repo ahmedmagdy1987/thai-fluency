@@ -94,6 +94,9 @@ export async function uploadStats(userId, stats) {
     stage1_celebration_shown: !!stats.stage1CelebrationShown,
     dialogues_completed: stats.dialoguesCompleted || [],
     known_card_ids: stats.knownCardIds || [],
+    // First-run guided tutorial: persist durably so it never re-shows after the
+    // user has seen it once, even on a fresh re-login on a new device.
+    tutorial_seen: !!stats.tutorialSeen,
   };
   // cards_seen / cards_mastered are denormalized aggregates — let the DB
   // hold them at their defaults; we can compute fresh values from
@@ -141,6 +144,7 @@ export async function downloadStats(userId) {
     stage1CelebrationShown: !!data.stage1_celebration_shown,
     dialoguesCompleted: data.dialogues_completed || [],
     knownCardIds: data.known_card_ids || [],
+    tutorialSeen: !!data.tutorial_seen,
   };
 }
 

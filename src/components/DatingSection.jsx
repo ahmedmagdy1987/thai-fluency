@@ -1,15 +1,19 @@
 import React, { useEffect, useMemo } from 'react';
-import { Heart, ShieldCheck, AlertTriangle, Crown, FileClock, Volume2 } from 'lucide-react';
+import { Heart, ShieldCheck, AlertTriangle, Crown, FileClock, Volume2, Lock } from 'lucide-react';
 import { DATING_SECTION, DATING_CATEGORIES } from '../data/datingContent.js';
 import { DATING_PHRASES } from '../data/datingPhrases.js';
+import { isSuper } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
 // "Dating & Real Talk Thai" — OPTIONAL, 18+, mature language, NOT part of course
-// progress. This section now renders the FIRST BATCH of draft phrases (from
-// datingPhrases.js) grouped by category. Every phrase is DRAFT and pending a
-// native-speaker review — the banner says so honestly and does NOT claim the
-// content is reviewed. Content stays within a tasteful adult boundary (see the
-// safety notes in datingContent.js / datingPhrases.js).
+// progress. This section is Super-EXCLUSIVE:
+//   • Non-subscribers see an attractive LOCKED TEASER (what's inside, 18+ badge,
+//     an "Unlock with Super" button → /plans). No unreviewed Thai is shown.
+//   • Super subscribers see the FIRST BATCH of draft phrases (datingPhrases.js)
+//     grouped by category, behind an honest "Draft — pending native review"
+//     banner that does NOT claim the content is reviewed.
+// Content stays within a tasteful adult boundary (see datingContent.js /
+// datingPhrases.js safety notes).
 
 const SEVERITY_LABEL = {
   gentle: 'Gentle',
@@ -26,14 +30,20 @@ const CAT_SEVERITY_LABEL = {
   safety: 'Safety',
 };
 
-export default function DatingSection({ onOpenSuper }) {
-  // Reaching this gated section is an intentional premium tap.
+export default function DatingSection({ stats, onOpenSuper }) {
+  const superUser = isSuper(stats);
+
+  // Reaching this gated section is an intentional premium tap. Record whether the
+  // viewer is locked (upsell impression) or a subscriber (content view).
   useEffect(() => {
-    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'dating-section' });
-  }, []);
+    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, {
+      source: 'dating-section',
+      state: superUser ? 'unlocked' : 'locked',
+    });
+  }, [superUser]);
 
   const seeSuper = () => {
-    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'dating-see-super' });
+    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'dating-unlock-super' });
     if (onOpenSuper) onOpenSuper();
   };
 
@@ -65,22 +75,80 @@ export default function DatingSection({ onOpenSuper }) {
 
   const totalPhrases = DATING_PHRASES.length;
 
+  const hero = (
+    <header className="dating-hero">
+      <div className="dating-badges">
+        <span className="dating-badge dating-badge-18" aria-label="18 plus">18+</span>
+        <span className="dating-badge dating-badge-mature">Mature language</span>
+        <span className="dating-badge dating-badge-super"><Crown size={12} aria-hidden="true" /> Super</span>
+        {superUser && <span className="dating-badge dating-badge-draft"><FileClock size={12} aria-hidden="true" /> Draft</span>}
+      </div>
+      <h1 className="dating-title"><Heart size={22} aria-hidden="true" /> {DATING_SECTION.title}</h1>
+      <p className="dating-tagline">{DATING_SECTION.tagline}</p>
+      <p className="dating-safety"><ShieldCheck size={15} aria-hidden="true" /> {DATING_SECTION.safetyNote}</p>
+    </header>
+  );
+
+  // ── LOCKED TEASER (non-subscribers) ───────────────────────────────────────
+  // Explains what's inside using ENGLISH INTENTS ONLY (no unreviewed Thai), shows
+  // the 18+ badge, and routes to /plans via onOpenSuper. Reuses the locked-premium
+  // visual language for consistency with the rest of the app.
+  if (!superUser) {
+    return (
+      <div className="tab-content dating-section">
+        {hero}
+
+        <section className="locked-premium-card dating-locked" role="group" aria-label="Dating & Real Talk Thai — Super feature">
+          <div className="locked-premium-icon" aria-hidden="true"><Lock size={22} /></div>
+          <div className="locked-premium-badges">
+            <span className="locked-premium-badge locked-premium-badge-super"><Crown size={12} aria-hidden="true" /> Super</span>
+            <span className="locked-premium-badge locked-premium-badge-flag">18+</span>
+          </div>
+          <h2 className="locked-premium-title">Unlock Dating &amp; Real Talk with Super</h2>
+          <p className="locked-premium-desc">
+            An optional, adults-only section with {totalPhrases}+ practical phrases for real dating in
+            Thailand — flirting and compliments, asking someone out, feelings and relationships,
+            boundaries and consent, polite rejection, and getting home safe. Each phrase comes with
+            phonetics, an example, and a tone/severity note.
+          </p>
+
+          <ul className="dating-teaser-list">
+            {DATING_CATEGORIES.map((cat) => (
+              <li className="dating-teaser-item" key={cat.id}>
+                <div className="dating-teaser-item-head">
+                  <span className="dating-teaser-item-name">{cat.name}</span>
+                  <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>
+                    {CAT_SEVERITY_LABEL[cat.severity]}
+                  </span>
+                </div>
+                <span className="dating-teaser-item-blurb">{cat.blurb}</span>
+                {cat.handleWithCare && (
+                  <span className="dating-teaser-care">
+                    <AlertTriangle size={12} aria-hidden="true" /> Recognition only — understand it, mostly don’t use it.
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <button type="button" className="btn-primary locked-premium-cta" onClick={seeSuper}>
+            <Crown size={15} aria-hidden="true" /> Unlock with Super
+          </button>
+          <p className="locked-premium-note">
+            Optional and 18+. Not part of the core course and not required to progress. Draft content,
+            pending native-speaker review.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
+  // ── SUPER SUBSCRIBERS: draft phrases ──────────────────────────────────────
   return (
     <div className="tab-content dating-section">
-      <header className="dating-hero">
-        <div className="dating-badges">
-          <span className="dating-badge dating-badge-18" aria-label="18 plus">18+</span>
-          <span className="dating-badge dating-badge-mature">Mature language</span>
-          <span className="dating-badge dating-badge-super"><Crown size={12} aria-hidden="true" /> Super</span>
-          <span className="dating-badge dating-badge-draft"><FileClock size={12} aria-hidden="true" /> Draft</span>
-        </div>
-        <h1 className="dating-title"><Heart size={22} aria-hidden="true" /> {DATING_SECTION.title}</h1>
-        <p className="dating-tagline">{DATING_SECTION.tagline}</p>
-        <p className="dating-safety"><ShieldCheck size={15} aria-hidden="true" /> {DATING_SECTION.safetyNote}</p>
-      </header>
+      {hero}
 
-      {/* Honest draft banner — replaces the old "Coming soon / opens after review"
-          locked block. Does NOT claim the content is reviewed. */}
+      {/* Honest draft banner — does NOT claim the content is reviewed. */}
       <section className="dating-draft-banner" role="status" aria-label="Draft content notice">
         <div className="dating-draft-icon" aria-hidden="true"><FileClock size={20} /></div>
         <div className="dating-draft-text">
@@ -91,9 +159,6 @@ export default function DatingSection({ onOpenSuper }) {
             context. Learn from them, but expect small changes. This optional adult section isn’t part of
             the core course and isn’t required to progress.
           </p>
-          <button type="button" className="btn-primary dating-draft-cta" onClick={seeSuper}>
-            <Crown size={14} aria-hidden="true" /> See Super
-          </button>
         </div>
       </section>
 

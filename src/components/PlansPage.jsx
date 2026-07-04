@@ -19,12 +19,12 @@ import { PLANS } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 import SuperCheckoutModal from './SuperCheckoutModal.jsx';
 
-// Plans / freemium page. Super checkout is now live in beta (Stripe test mode):
-// a signed-in learner can open embedded checkout right here. Free stays the
-// complete, live experience. The paid value is framed around consistency,
-// convenience, fewer interruptions, recovery and bonus content - NOT around
-// "pay to skip the journey" (the curated path stays free and intact). Some Super
-// benefits are still being built and are labelled "soon" so nothing is oversold.
+// Plans / freemium page. Super checkout is LIVE (Stripe embedded checkout): a
+// signed-in learner can subscribe right here. Free stays the complete, live
+// experience — the entire guided path is free forever. Super's live, exclusive
+// benefit today is the 18+ Dating & Real Talk section; the rest of the Super
+// value (ad-free, extra practice, recovery, bonus packs) is advertised and
+// labelled "soon" so nothing is oversold. We never gate the free path.
 
 const FREEMIUM_POINTS = [
   {
@@ -39,8 +39,8 @@ const FREEMIUM_POINTS = [
   },
   {
     Icon: ShieldCheck,
-    title: 'Premium is for momentum',
-    text: 'When it launches, Super adds consistency, convenience and bonus practice for learners who want fewer interruptions and a little more flexibility.',
+    title: 'Super is for extras',
+    text: 'Super unlocks the optional 18+ Dating & Real Talk section today, and adds consistency, convenience and bonus practice as more benefits ship — for learners who want a little extra.',
   },
 ];
 
@@ -53,11 +53,12 @@ const MATRIX = [
   { label: 'Quick checks & mini-lessons', free: true, premium: true },
   { label: 'Streaks, XP & quests', free: true, premium: true },
   { label: 'Cloud progress & account sync', free: true, premium: true },
+  { label: 'Dating & Real Talk Thai (18+)', free: false, premium: true },
+  { label: 'Support independent development', free: false, premium: true },
   { label: 'Stays ad-free if ads are ever added', free: false, premium: 'Guaranteed', planned: true },
   { label: 'Extra practice & recovery (hearts)', free: 'Standard', premium: 'Extra', planned: true },
   { label: 'Flexible review & topic practice', free: 'Guided', premium: 'More flexible', planned: true },
   { label: 'Bonus & early-access mission packs', free: false, premium: true, planned: true },
-  { label: 'Support independent development', free: false, premium: true },
 ];
 
 const FREE_INCLUDES = [
@@ -69,10 +70,10 @@ const FREE_INCLUDES = [
 ];
 
 const PREMIUM_INCLUDES = [
-  { Icon: ShieldCheck, text: 'A focused, ad-free experience, guaranteed' },
-  { Icon: Heart, text: 'Extra practice & gentle recovery so a bad day never blocks you' },
-  { Icon: Repeat2, text: 'More flexible review and topic practice' },
-  { Icon: Gift, text: 'Bonus and early-access mission packs' },
+  { Icon: Heart, text: 'The 18+ Dating & Real Talk section — real flirting, dating and consent phrases (Super-exclusive)' },
+  { Icon: ShieldCheck, text: 'A focused, ad-free experience, guaranteed (soon)' },
+  { Icon: Repeat2, text: 'More flexible review and topic practice (soon)' },
+  { Icon: Gift, text: 'Bonus and early-access mission packs (soon)' },
   { Icon: CloudUpload, text: 'You directly support native review & better audio' },
 ];
 
@@ -87,11 +88,11 @@ const FAQ = [
   },
   {
     q: 'How much is Super and how do I buy it?',
-    a: 'Super comes in monthly and yearly options. Checkout is live in a secure beta (test mode) via Stripe — sign in, tap Get Super, and complete checkout right on this site. Final launch prices are still being confirmed, so they are shown as "Pricing coming soon" until announced.',
+    a: 'Super is $4.99/month or $39.99/year. Checkout is live: sign in, tap Go Super, and complete secure checkout with Stripe right on this site. You can cancel anytime.',
   },
   {
-    q: 'What will Premium include?',
-    a: 'It is planned around momentum: a guaranteed ad-free experience, extra practice and recovery, more flexible review, and bonus or early-access mission packs. The exact set is finalized before launch.',
+    q: 'What does Super include?',
+    a: 'Today Super unlocks the optional 18+ Dating & Real Talk section — practical dating, flirting and consent phrases — and directly supports development. More Super extras (a guaranteed ad-free experience, more flexible practice, and bonus mission packs) are on the way and are labelled "soon" until they ship.',
   },
   {
     q: 'Will the free version get worse to push Premium?',
@@ -110,8 +111,9 @@ function MatrixValue({ value, planned }) {
   );
 }
 
-// Price from the central plans config. NEVER invents a number: a null price (no
-// pricing supplied yet) renders "Pricing coming soon" — see config/entitlements.
+// Price from the central plans config. Prices are live ($4.99/mo, $39.99/yr), so
+// the real amount always renders. The null branch is a defensive fallback only and
+// should never trigger in normal operation — see config/entitlements.
 function PlanPriceTag({ plan }) {
   if (plan.price === 0) {
     return <div className="pl-plan-price"><span className="pl-plan-amount">$0</span><span className="pl-plan-period">{plan.period}</span></div>;
@@ -186,7 +188,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
               </button>
             )}
           </div>
-          <p className="pl-hero-note">No card needed. No payment is collected during the beta.</p>
+          <p className="pl-hero-note">Start free — no card needed. Upgrade to Super anytime.</p>
         </div>
       </section>
 
@@ -233,12 +235,12 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
           <article className="pl-plan pl-plan-premium">
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superMonthly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
+              <span className="pl-plan-tag pl-plan-tag-live">Available now</span>
             </div>
             <PlanPriceTag plan={PLANS.superMonthly} />
             <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
             <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('monthly')}>
-              {isAuthed ? 'Get Super' : 'Sign up to go Super'}
+              {isAuthed ? 'Go Super' : 'Sign up to go Super'}
               <ArrowRight size={17} aria-hidden="true" />
             </button>
             <ul className="pl-plan-list">
@@ -246,14 +248,14 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
                 <li key={text}><Icon size={16} aria-hidden="true" /> {text}</li>
               ))}
             </ul>
-            <p className="pl-plan-foot">Checkout runs in secure beta (test mode). Cancel anytime; billing is handled by Stripe.</p>
+            <p className="pl-plan-foot">Secure checkout by Stripe. Cancel anytime.</p>
           </article>
 
           <article className="pl-plan pl-plan-premium">
             {PLANS.superYearly.badge && <span className="pl-plan-badge">{PLANS.superYearly.badge}</span>}
             <div className="pl-plan-head">
               <span className="pl-plan-name">{PLANS.superYearly.name}</span>
-              <span className="pl-plan-tag pl-plan-tag-soon">Beta</span>
+              <span className="pl-plan-tag pl-plan-tag-live">Available now</span>
             </div>
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
@@ -265,7 +267,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
               <li><Check size={16} aria-hidden="true" /> Best price per month</li>
               <li><Check size={16} aria-hidden="true" /> One simple yearly payment</li>
             </ul>
-            <p className="pl-plan-foot">Checkout runs in secure beta (test mode). Cancel anytime; billing is handled by Stripe.</p>
+            <p className="pl-plan-foot">Secure checkout by Stripe. Cancel anytime.</p>
           </article>
         </div>
       </section>
@@ -292,8 +294,9 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
             ))}
           </div>
           <p className="pl-matrix-note">
-            <Sparkles size={13} aria-hidden="true" /> Items marked <strong>soon</strong> are planned Super
-            benefits and are not active during the beta.
+            <Sparkles size={13} aria-hidden="true" /> Items marked <strong>soon</strong> are Super
+            benefits we're still building and aren't active yet. The 18+ Dating &amp; Real Talk
+            section is live for Super now.
           </p>
         </div>
       </section>

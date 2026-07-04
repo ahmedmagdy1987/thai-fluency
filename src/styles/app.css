@@ -1125,6 +1125,13 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-cat-intents li { font-size: 12px; color: var(--ink); padding-left: 12px; position: relative; }
 .dating-cat-intents li::before { content: '“'; position: absolute; left: 0; color: var(--ink-soft); }
 .dating-cat-care { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: #b3261e; margin: 8px 0 0; }
+/* ── Dating: locked-teaser "what's inside" list (non-subscribers) ───────── */
+.dating-teaser-list { list-style: none; padding: 0; margin: 14px auto 4px; max-width: 46ch; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.dating-teaser-item { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: color-mix(in srgb, var(--cream) 60%, var(--card-bg)); }
+.dating-teaser-item-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
+.dating-teaser-item-name { font-size: 13.5px; font-weight: 700; color: var(--jade); }
+.dating-teaser-item-blurb { display: block; font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+.dating-teaser-care { display: flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; color: #b3261e; margin: 6px 0 0; }
 .dating-disclaimer { font-size: 11.5px; color: var(--ink-soft); text-align: center; max-width: 64ch; margin: 16px auto 0; line-height: 1.5; }
 
 /* ── Dating: draft banner (honest "pending review" notice) ─────────────── */
@@ -1307,6 +1314,15 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .profile-stat-num { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 600; color: var(--jade); line-height: 1; }
 .profile-stat-of { font-size: 16px; color: var(--ink-soft); margin-left: 2px; }
 .profile-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-top: 6px; font-weight: 500; }
+
+/* Plan row (Free → upgrade CTA; Super → renews date). */
+.profile-plan-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.profile-plan-info { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.profile-plan-badge { display: inline-flex; align-items: center; gap: 5px; align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--ink-soft) 12%, transparent); color: var(--ink); }
+.profile-plan-badge-super { background: var(--gold); color: #2a2412; }
+.profile-plan-badge-super svg { color: #2a2412; }
+.profile-plan-text { font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
+.profile-plan-cta { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; }
 
 .profile-actions { display: flex; flex-direction: column; gap: 8px; }
 .profile-action-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--ink); cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; }
@@ -1575,6 +1591,12 @@ button:focus-visible, [role="button"]:focus-visible, a:focus-visible { outline: 
 .sidebar-item-active .sidebar-item-badge { background: var(--gold); color: var(--jade); }
 .sidebar-item-danger { color: var(--brick); }
 .sidebar-item-danger:hover { background: rgba(160, 59, 44, 0.08); color: var(--brick); border-color: rgba(160, 59, 44, 0.18); }
+/* Persistent "Go Super" upgrade entry + active (subscribed) state. */
+.sidebar-item-super { color: var(--gold-deep, #a07b1f); font-weight: 700; }
+.sidebar-item-super svg { color: var(--gold); }
+.sidebar-item-super:hover { background: color-mix(in srgb, var(--gold) 12%, transparent); color: var(--gold-deep, #a07b1f); border-color: color-mix(in srgb, var(--gold) 30%, var(--line)); }
+.sidebar-item-super-active { color: var(--gold-deep, #a07b1f); font-weight: 700; cursor: default; }
+.sidebar-item-super-active svg { color: var(--gold); }
 .sidebar-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
 
 @media (min-width: 1024px) {
@@ -1713,6 +1735,11 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .mobile-more-item-active svg { color: var(--gold); }
 .mobile-more-item-danger { color: var(--brick); }
 .mobile-more-item-danger svg { color: var(--brick); }
+/* Persistent "Go Super" upgrade entry + active (subscribed) state. */
+.mobile-more-item-super { border-color: color-mix(in srgb, var(--gold) 34%, var(--line)); color: var(--gold-deep, #a07b1f); }
+.mobile-more-item-super svg { color: var(--gold); }
+.mobile-more-item-super-active { border-color: color-mix(in srgb, var(--gold) 40%, var(--line)); background: color-mix(in srgb, var(--gold) 12%, transparent); color: var(--gold-deep, #a07b1f); cursor: default; }
+.mobile-more-item-super-active svg { color: var(--gold); }
 .mobile-more-item-danger:hover { border-color: rgba(160, 59, 44, 0.38); background: rgba(160, 59, 44, 0.08); }
 .mobile-more-close { margin-top: 16px; width: 100%; background: transparent; border: 1px solid var(--line-strong); border-radius: 12px; padding: 11px; color: var(--ink-soft); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
 

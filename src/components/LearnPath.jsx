@@ -434,8 +434,7 @@ export default function LearnPath({
                     {isLocked && (
                       <div className="learn-path-locked-note">
                         <span className="learn-path-locked-main">Locked</span>
-                        <span className="learn-path-locked-sub">Complete earlier stages to unlock.</span>
-                        <span className="learn-path-locked-super">Super early access coming soon.</span>
+                        <span className="learn-path-locked-sub">Complete earlier stages to unlock. Every stage is free.</span>
                       </div>
                     )}
                   </div>

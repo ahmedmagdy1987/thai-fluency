@@ -3,13 +3,12 @@ import {
   Map as MapIcon,
   Layers,
   Target,
-  ShoppingBag,
   MoreHorizontal,
   BookOpen,
   Zap,
   Compass,
   User,
-  Trophy,
+  Crown,
   Settings as SettingsIcon,
   LogOut,
   MessageSquare,
@@ -18,19 +17,21 @@ import {
 
 // Mobile bottom nav keeps the highest-frequency destinations visible while
 // the More sheet holds secondary explore/profile actions.
+//
+// Shop and Leaderboard are intentionally omitted (placeholder-only features,
+// unlinked until built). Labels are kept in sync with SidebarNav so the same
+// tab reads the same everywhere (e.g. `cards` = "Practice").
 const PRIMARY = [
-  { id: 'learn',  Icon: MapIcon,      label: 'Learn' },
-  { id: 'cards',  Icon: Layers,       label: 'Cards' },
-  { id: 'quiz',   Icon: Zap,          label: 'Challenge' },
-  { id: 'quests', Icon: Target,       label: 'Quests' },
-  { id: 'shop',   Icon: ShoppingBag,  label: 'Shop' },
+  { id: 'learn',  Icon: MapIcon, label: 'Learn' },
+  { id: 'cards',  Icon: Layers,  label: 'Practice' },
+  { id: 'quiz',   Icon: Zap,     label: 'Challenge' },
+  { id: 'quests', Icon: Target,  label: 'Quests' },
 ];
 
 const MORE = [
   { id: 'browse',      Icon: BookOpen, label: 'Browse' },
   { id: 'guide',       Icon: Compass,  label: 'Guide' },
-  { id: 'leaderboard', Icon: Trophy,   label: 'Leaderboard' },
-  // Optional 18+ premium section (Super, coming soon). Not part of course progress.
+  // Optional 18+ Super section. Not part of course progress.
   { id: 'dating',      Icon: Heart,    label: 'Dating 18+' },
 ];
 
@@ -39,10 +40,12 @@ export default function MobileNav({
   setTab,
   onOpenProfile,
   onOpenSettings,
+  onOpenSuper,
   onSignOut,
   onOpenPublicPage,
   dashboardStats,
   isAuthed,
+  isSuper = false,
 }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const sheetRef = useRef(null);
@@ -118,6 +121,21 @@ export default function MobileNav({
                   </button>
                 );
               })}
+              {isSuper ? (
+                <div className="mobile-more-item mobile-more-item-super-active" aria-label="You have Super">
+                  <Crown size={22} />
+                  <span>Super ✓</span>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="mobile-more-item mobile-more-item-super"
+                  onClick={() => { setMoreOpen(false); onOpenSuper && onOpenSuper(); }}
+                >
+                  <Crown size={22} />
+                  <span>Go Super</span>
+                </button>
+              )}
               {isAuthed && (
                 <button
                   type="button"

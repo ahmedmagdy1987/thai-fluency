@@ -10,7 +10,7 @@ export default function SuperUpgradePrompt({ reason = 'mission', onClose, onSeeS
           <X size={18} />
         </button>
         <div className="super-prompt-icon" aria-hidden="true"><Crown size={26} /></div>
-        <div className="super-prompt-eyebrow">Coming soon</div>
+        <div className="super-prompt-eyebrow">Go Super</div>
         <h2 id="super-prompt-title" className="super-prompt-title">Tuk Talk Thai Super</h2>
         <p className="super-prompt-copy">
           {getUpsellCopy(reason)}

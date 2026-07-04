@@ -1,30 +1,20 @@
 import React from 'react';
-import { Flame, Zap, Gem, Heart } from 'lucide-react';
+import { Flame, Zap } from 'lucide-react';
 
-// Phase 1 stats bar: streak + XP come from real state. Gems and hearts are
-// visual placeholders for the future economy — they show zero/full but no
-// gameplay code reads or writes them yet. The point is to lock the layout
-// in so later phases plug values in without touching positioning.
+// Header stats bar: streak + XP come from real state and are the only chips
+// shown. Gems and hearts were visual placeholders for a future economy that
+// isn't built yet, so they're hidden (no fake balances). When the wallet /
+// hearts tables exist (see docs/app-shell-rewards-roadmap.md), re-introduce
+// those chips with real values.
 //
 // Each pill shows an icon, a short name, and its value. The name is a visible
 // label on desktop/tablet and is hidden on small phones to avoid horizontal
 // overflow — but it is ALWAYS available to assistive tech via aria-label and
-// to pointer users via title, and the numeric value is never hidden.
-export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
+// the numeric value is never hidden.
+export default function TopStatsBar({ stats, dashboardStats }) {
   const streak = stats?.streak || 0;
   const totalXp = stats?.totalXp || 0;
   const due = dashboardStats?.due || 0;
-
-  // Placeholder reward values. Real values land when the wallet / hearts
-  // tables exist (see docs/app-shell-rewards-roadmap.md).
-  const gems = stats?.gems ?? 0;
-  const hearts = stats?.hearts ?? 5;
-  const heartsMax = 5;
-
-  const onShopClick = (e) => {
-    e.preventDefault();
-    if (onOpenShop) onOpenShop();
-  };
 
   return (
     <div className="topstats-bar" data-tutorial="stats">
@@ -48,28 +38,6 @@ export default function TopStatsBar({ stats, dashboardStats, onOpenShop }) {
         <span className="topstats-label">Streak</span>
         <span className="topstats-val">{streak}</span>
       </div>
-      <button
-        type="button"
-        className="topstats-pill topstats-pill-gems"
-        onClick={onShopClick}
-        title="Gems — open shop"
-        aria-label={`Gems: ${gems}. Open shop`}
-      >
-        <Gem size={13} aria-hidden="true" />
-        <span className="topstats-label">Gems</span>
-        <span className="topstats-val">{gems}</span>
-      </button>
-      <button
-        type="button"
-        className="topstats-pill topstats-pill-hearts"
-        onClick={onShopClick}
-        title="Hearts — open shop"
-        aria-label={`Hearts: ${hearts} of ${heartsMax}. Open shop`}
-      >
-        <Heart size={13} fill="currentColor" aria-hidden="true" />
-        <span className="topstats-label">Hearts</span>
-        <span className="topstats-val">{hearts}<span className="topstats-hearts-of">/{heartsMax}</span></span>
-      </button>
       <div
         className="topstats-pill topstats-pill-xp"
         title="Total XP earned"

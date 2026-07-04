@@ -309,7 +309,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/feedback')}>Feedback</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
-              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/premium')}>Super</button>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Super</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>

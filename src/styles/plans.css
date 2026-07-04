@@ -1,8 +1,9 @@
 /* ============================================================================
    TUK TALK THAI — PLANS / PRICING PAGE (/plans)
-   Premium freemium page. Honest: Premium ("Super") is "coming soon", no
-   checkout. Reuses the app's --jade/--gold/--cream/--ink tokens (defined on
-   .app-root) so it matches the brand and dark mode. Prefix: .pl-
+   Freemium page. Super is LIVE (Stripe embedded checkout). The core course is
+   free forever; Super adds the 18+ Dating section today plus advertised extras.
+   Reuses the app's --jade/--gold/--cream/--ink tokens (defined on .app-root) so
+   it matches the brand and dark mode. Prefix: .pl-
    ========================================================================== */
 
 .pl-page {

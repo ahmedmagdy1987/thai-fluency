@@ -3,13 +3,12 @@ import {
   Map as MapIcon,
   Layers,
   Target,
-  ShoppingBag,
   BookOpen,
   Zap,
   Compass,
   User,
   Settings as SettingsIcon,
-  Trophy,
+  Crown,
   LogOut,
   Heart,
 } from 'lucide-react';
@@ -18,20 +17,23 @@ import {
 // so the user has a single, scannable column on every screen. The active
 // item is driven by the `tab` prop — same identifier used by App's main
 // router, so adding a new tab here is one entry plus a render case.
+//
+// Shop and Leaderboard are intentionally omitted: they are placeholder-only
+// features (no real economy / no real rankings) and stay unlinked until built.
+// Labels are kept in sync with MobileNav so the same tab reads the same
+// everywhere.
 const PRIMARY = [
   { id: 'learn',  Icon: MapIcon, label: 'Learn' },
   { id: 'cards',  Icon: Layers,  label: 'Practice' },
 ];
 const ENGAGE = [
-  { id: 'quests', Icon: Target,      label: 'Quests' },
-  { id: 'shop',   Icon: ShoppingBag, label: 'Shop' },
-  { id: 'leaderboard', Icon: Trophy, label: 'Leaderboard' },
+  { id: 'quests', Icon: Target,  label: 'Quests' },
+  { id: 'quiz',   Icon: Zap,     label: 'Challenge' },
 ];
 const EXPLORE = [
   { id: 'browse', Icon: BookOpen, label: 'Browse' },
-  { id: 'quiz',   Icon: Zap,      label: 'Challenge' },
   { id: 'guide',  Icon: Compass,  label: 'Guide' },
-  // Optional 18+ premium section (Super, coming soon). Not part of course progress.
+  // Optional 18+ Super section. Not part of course progress.
   { id: 'dating', Icon: Heart,    label: 'Dating 18+' },
 ];
 
@@ -40,9 +42,11 @@ export default function SidebarNav({
   setTab,
   onOpenProfile,
   onOpenSettings,
+  onOpenSuper,
   onSignOut,
   dashboardStats,
   isAuthed,
+  isSuper = false,
 }) {
   const Item = ({ entry }) => {
     const isActive = tab === entry.id;
@@ -80,6 +84,17 @@ export default function SidebarNav({
       <div className="sidebar-group-label">Explore</div>
       <nav className="sidebar-group">
         {EXPLORE.map(e => <Item key={e.id} entry={e} />)}
+        {isSuper ? (
+          <div className="sidebar-item sidebar-item-super-active" aria-label="You have Super">
+            <Crown size={18} strokeWidth={2} />
+            <span className="sidebar-item-label">Super ✓</span>
+          </div>
+        ) : (
+          <button type="button" className="sidebar-item sidebar-item-super" onClick={onOpenSuper}>
+            <Crown size={18} strokeWidth={1.8} />
+            <span className="sidebar-item-label">Go Super</span>
+          </button>
+        )}
       </nav>
 
       <div className="sidebar-footer">

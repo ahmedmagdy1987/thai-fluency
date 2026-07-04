@@ -182,7 +182,7 @@ export function SupportContent() {
         <li><strong>Learning progress</strong>: missing progress, sync questions, streaks, XP, or settings persistence.</li>
         <li><strong>Deleting account</strong>: request manual account deletion through support.</li>
         <li><strong>Reporting incorrect Thai content</strong>: send the phrase, card, screen, and what looks wrong.</li>
-        <li><strong>Billing</strong>: coming later. {siteName} is not collecting payments in the current beta.</li>
+        <li><strong>Billing</strong>: questions about Super, your subscription, or a payment. Super is $4.99/month or $39.99/year via secure Stripe checkout; email support for help.</li>
       </ul>
 
       <h3>What to include</h3>
@@ -252,36 +252,28 @@ export function FeedbackContent() {
 export function PremiumContent() {
   return (
     <>
-      <OwnerReviewNotice>
-        Founder offer details, price, launch date, and payment provider are not active yet. This page is a coming-soon foundation only.
-      </OwnerReviewNotice>
-
       <p>
-        Tuk Talk Thai Super is the planned premium layer for learners who want more flexibility, more rewards, and early access to new learning features.
+        Tuk Talk Thai Super is our optional subscription for learners who want a little extra and want to support the app. The entire core course — every stage and mission, reviews, quizzes, streaks, XP, quests, the guide, and cloud sync — is free forever. Super never gates the path to speaking Thai.
       </p>
 
-      <div className="premium-coming-soon">
-        <strong>Coming soon:</strong> Founder offer details will be announced after beta testing. No payments are collected in the current beta.
-      </div>
+      <p>
+        Super is <strong>$4.99/month or $39.99/year</strong>. Checkout is live and handled securely by Stripe. You can cancel anytime. Visit the <a href="/plans">Plans page</a> to subscribe.
+      </p>
 
-      <h3>Planned Super benefits</h3>
+      <h3>What Super unlocks today</h3>
       <ul className="premium-benefit-list">
-        <li><strong>Unlock every lesson path</strong>: move through the full Thai journey without waiting for every staged unlock.</li>
-        <li><strong>Practice any topic anytime</strong>: jump into food, taxis, shopping, social Thai, emergency phrases, and more.</li>
-        <li><strong>Bonus rewards</strong>: extra XP events and reward boosts when the beta economy is ready.</li>
-        <li><strong>Early access to phrase packs</strong>: try new packs before they become part of the standard path.</li>
-        <li><strong>Remove future ads</strong>: if ads are added later, Super is planned to remove them.</li>
-        <li><strong>Support new Thai learning features</strong>: help fund native review, audio improvements, and better guided lessons.</li>
+        <li><strong>Dating &amp; Real Talk Thai (18+)</strong>: an optional, mature section with practical dating, flirting, and consent phrases. Super-exclusive.</li>
+        <li><strong>Support independent development</strong>: you directly help fund native review, better audio, and new Thai learning content.</li>
       </ul>
 
-      <h3>No payment yet</h3>
+      <h3>More Super benefits on the way</h3>
       <p>
-        Super is not a subscription today. There is no checkout, no billing, no paid entitlement, and no payment claim on this page.
+        We're building more Super extras — a guaranteed ad-free experience if ads are ever added, more flexible practice and review, gentle streak recovery, and bonus or early-access mission packs. These are advertised as "soon" until they ship, and Super never removes anything from the free experience.
       </p>
 
-      <h3>Beta status</h3>
+      <h3>Questions</h3>
       <p>
-        During beta, use the free learning path and send feedback to <a href={`mailto:${supportEmail}`}>{supportEmail}</a>. Premium access, pricing, and terms will need owner approval before launch.
+        For anything about Super, billing, or your subscription, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
       </p>
     </>
   );

@@ -93,12 +93,20 @@ export async function initOneSignal() {
 export async function promptForPushPermission() {
   if (!(await ensureLoaded())) return false;
   try {
-    if (typeof OneSignal?.Slidedown?.promptPush !== 'function') {
-      debug('prompt unavailable on this SDK build');
-      return false;
+    // Preferred: the styled slidedown prompt (soft-ask before the native dialog).
+    if (typeof OneSignal?.Slidedown?.promptPush === 'function') {
+      await OneSignal.Slidedown.promptPush();
+      return true;
     }
-    await OneSignal.Slidedown.promptPush();
-    return true;
+    // Fallback for SDK builds where Slidedown.promptPush isn't available: ask the
+    // browser directly via the OneSignal v16 Notifications API. This still triggers
+    // the native permission dialog so the highest-intent moment isn't wasted.
+    if (typeof OneSignal?.Notifications?.requestPermission === 'function') {
+      await OneSignal.Notifications.requestPermission();
+      return true;
+    }
+    debug('prompt unavailable on this SDK build (no Slidedown.promptPush or Notifications.requestPermission)');
+    return false;
   } catch (e) {
     debug('prompt failed', e?.message || e);
     return false;

@@ -3,10 +3,12 @@ import React from 'react';
 import SidebarNav from './SidebarNav.jsx';
 import MobileNav from './MobileNav.jsx';
 import TopStatsBar from './TopStatsBar.jsx';
+import { isSuper } from '../config/entitlements.js';
 
 // Wraps the main app surface with: sidebar on desktop, bottom nav on mobile,
 // and a header dedicated to progress stats. Profile + Settings live in the
-// sidebar/mobile nav — the header stays focused on streak/gems/hearts/XP.
+// sidebar/mobile nav — the header stays focused on streak + XP. A persistent
+// "Go Super" entry lives in both navs and routes to /plans (see onOpenSuper).
 export default function AppShell({
   children,
   tab,
@@ -22,6 +24,9 @@ export default function AppShell({
   viewModeAttr,
 }) {
   const isAuthed = !!session;
+  const superActive = isSuper(stats);
+  // Persistent upgrade entry → the live plans page.
+  const onOpenSuper = () => { if (onOpenPublicPage) onOpenPublicPage('/plans'); };
 
   return (
     <div className="app-root app-shell-root" data-theme={themeAttr} data-view-mode={viewModeAttr}>
@@ -30,9 +35,11 @@ export default function AppShell({
         setTab={setTab}
         onOpenProfile={onOpenProfile}
         onOpenSettings={onOpenSettings}
+        onOpenSuper={onOpenSuper}
         onSignOut={onSignOut}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
+        isSuper={superActive}
       />
 
       <div className="app-shell-main-col">
@@ -45,7 +52,6 @@ export default function AppShell({
             <TopStatsBar
               stats={stats}
               dashboardStats={dashboardStats}
-              onOpenShop={() => setTab('shop')}
             />
           </div>
         </header>
@@ -60,10 +66,12 @@ export default function AppShell({
         setTab={setTab}
         onOpenProfile={onOpenProfile}
         onOpenSettings={onOpenSettings}
+        onOpenSuper={onOpenSuper}
         onSignOut={onSignOut}
         onOpenPublicPage={onOpenPublicPage}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
+        isSuper={superActive}
       />
     </div>
   );

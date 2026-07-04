@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { CheckCircle2, ChevronRight, Flame, Gem, Sparkles, Zap } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Flame, Sparkles, Zap } from 'lucide-react';
 import ConfettiBurst from './ConfettiBurst.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
 import { playCelebration, playXpTick } from '../lib/sounds.js';
@@ -16,7 +16,6 @@ export default function MissionCompleteRewardScreen({
   xpEarned = 0,
   streak = 0,
   nextStep = 'Keep practicing',
-  gemsPreview = true,
   achievements = [],
   characterId = null,
   onContinue,
@@ -110,13 +109,6 @@ export default function MissionCompleteRewardScreen({
               <span>{streak || 0}</span>
               <em>day streak</em>
             </div>
-            {gemsPreview && (
-              <div className="reward-summary-item reward-summary-preview">
-                <Gem size={18} />
-                <span>Preview</span>
-                <em>gems later</em>
-              </div>
-            )}
             <div className="reward-summary-item">
               <Sparkles size={18} />
               <span>Next</span>
