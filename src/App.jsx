@@ -44,7 +44,7 @@ import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
-import { resetUserScopedRefs } from './lib/sessionLocks.js';
+import { resetUserScopedRefs, claimCloudInit, releaseCloudInit, shouldWipeLocalOnIdentityChange } from './lib/sessionLocks.js';
 import {
   hasOneSignalConfig,
   initOneSignal,
@@ -66,6 +66,7 @@ import {
   downloadEntitlement,
   updateProfile,
 } from './lib/cloudStorage.js';
+import { mergeProgress, mergeStats, mergeCloudSettings } from './lib/progressMerge.js';
 
 import AppShell from './components/AppShell.jsx';
 import LearnPath from './components/LearnPath.jsx';
@@ -325,7 +326,9 @@ export default function TukTalkThaiApp() {
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
-  const cloudInitInFlight = useRef(false);                  // guards against duplicate cloud-init effects
+  const cloudInitClaimRef = useRef(null);                   // user-scoped cloud-init claim (see sessionLocks.js)
+  const cloudReadyRef = useRef(false);                      // mirrors cloudReady for the identity-change wipe check
+  const prevUserIdRef = useRef(undefined);                  // previous authenticated user id, for identity-change detection
   const oneSignalLinked = useRef(false);                    // guards setExternalUserId from firing repeatedly
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
   const superSuccessHandled = useRef(false);                // handles the ?super=success return at most once
@@ -395,6 +398,25 @@ export default function TukTalkThaiApp() {
   // left intact. celebrationsArmedRef → false re-seeds the celebration baseline
   // for the new user (the arming effect runs again once their cloud state loads).
   useEffect(() => {
+    const nextUserId = session?.user?.id || null;
+    const prevUserId = prevUserIdRef.current;
+    prevUserIdRef.current = nextUserId;
+    // Identity-change local wipe (M2): if a signed-in user whose CLOUD data was
+    // loaded is replaced by a DIFFERENT identity (or none) without handleSignOut
+    // running — token revocation, refresh failure, remote sign-out — the departed
+    // user's cloud-loaded progress is still in memory/localStorage. Left there, the
+    // next sign-in's empty-cloud auto-upload could SEED it into the new account, or
+    // it would sync under the new id. Wipe it here so the next user starts from
+    // their own cloud only. The cloudReady gate on the cloud-init effect defers that
+    // init until after this wipe (cloudReady is cleared below). Never fires for
+    // anonymous/unconfirmed sessions (cloudReady is false for them), so anonymous
+    // local study is preserved for its own sign-in merge.
+    if (shouldWipeLocalOnIdentityChange(prevUserId, nextUserId, cloudReadyRef.current)) {
+      clearState().catch(() => { /* best effort */ });
+      setProgress({});
+      setStats(DEFAULT_STATS);
+      setCloudReady(false);
+    }
     resetUserScopedRefs({
       reviewLocksRef,
       missionRewardLocksRef,
@@ -405,8 +427,14 @@ export default function TukTalkThaiApp() {
       oneSignalLinkedRef: oneSignalLinked,
       notificationPromptFiredRef: notificationPromptFired,
       profileSettingsRef,
+      cloudInitClaimRef,
     });
   }, [session?.user?.id]);
+
+  // Mirror cloudReady into a ref so the identity-change effect above can read the
+  // DEPARTING session's cloud-loaded state without adding cloudReady to its deps
+  // (which would re-run the reset on every cloud-init completion).
+  useEffect(() => { cloudReadyRef.current = cloudReady; }, [cloudReady]);
 
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
@@ -550,15 +578,12 @@ export default function TukTalkThaiApp() {
               cloudSettings.voice = profileData.selected_voice;
             }
             if (Object.keys(cloudSettings).length > 0) {
-              setStats(s => migrateStats({
-                ...s,
-                ...cloudSettings,
-                // Never let cloud clobber locally-seen celebrations: union the
-                // ledger and OR the baseline flag so a celebration can't re-fire
-                // after a cross-device sign-in (and offline-seen ones survive).
-                celebratedIds: [...new Set([...(s.celebratedIds || []), ...(cloudSettings.celebratedIds || [])])],
-                celebrationBaselineDone: s.celebrationBaselineDone || cloudSettings.celebrationBaselineDone || false,
-              }));
+              // mergeCloudSettings unions the learning ledgers (completedMiniUnits,
+              // builderRewardedUnits, celebratedIds, cinematicsWatched) and ORs the
+              // once-true flags, so a stale cloud settings blob can never un-complete
+              // a lesson or re-fire a celebration after a cross-device sign-in.
+              // UI preferences remain account-synced (cloud wins). See progressMerge.js.
+              setStats(s => migrateStats({ ...s, ...mergeCloudSettings(s, cloudSettings) }));
             }
           };
           // (1) display_name backfill
@@ -694,9 +719,13 @@ export default function TukTalkThaiApp() {
   // uploads local-only progress only when the cloud is empty; otherwise the
   // cloud remains the source of truth. No blocking migration prompt.
   useEffect(() => {
-    if (!session || !loaded || cloudReady || cloudInitInFlight.current || !hasSupabaseConfig) return;
+    if (!session || !loaded || cloudReady || !hasSupabaseConfig) return;
     if (!session.user?.email_confirmed_at) return;
-    cloudInitInFlight.current = true;
+    // User-scoped in-flight guard: a stale init from a previous user can never
+    // block this user's init (the old boolean did). claimCloudInit returns null
+    // only when THIS user's init is already running.
+    const claim = claimCloudInit(cloudInitClaimRef, session.user.id);
+    if (!claim) return;
     let cancelled = false;
     (async () => {
       try {
@@ -731,29 +760,26 @@ export default function TukTalkThaiApp() {
             setCloudReady(true);
           }
         } else {
-          if (cloudHasData) setProgress(safeCloudProgress);
-          if (cloudStatsData) {
-            setStats(s => migrateStats({
+          // M2 merge: never REPLACE local state with cloud — combine both so
+          // anonymous/offline learning is preserved on sign-in. Progress is a
+          // per-card SRS merge (union of cards, monotonic review/lapse counts, no
+          // un-graduation); stats keep cloud XP/streak/currency/date authority
+          // while unioning ledgers and taking max of monotonic display counters.
+          // Neither step grants a reward or replays XP. Entitlement (`ent`) is
+          // applied last and is the ONLY source of tier/Super. See lib/progressMerge.js.
+          setProgress(p => mergeProgress(p, safeCloudProgress));
+          setStats(s => {
+            const merged = mergeStats(s, cloudStatsData || {});
+            return migrateStats({
               ...s,
-              ...cloudStatsData,
+              ...merged,
               ...ent,
-              firstLessonCompleted: s.firstLessonCompleted || cloudHasData || cloudStatsData.firstLessonCompleted,
-              // Sticky once-true: the guided tutorial is "seen" if EITHER local or
-              // cloud says so, so a stale cloud row can never make it reappear after
-              // the user has already dismissed it. It round-trips via the
-              // tutorial_seen stats column + profiles.settings.
-              tutorialSeen: !!(s.tutorialSeen || cloudStatsData.tutorialSeen),
-              // Union local + cloud so achievements earned offline (or on this
-              // device) are never lost on sign-in, and never duplicated.
-              unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...(cloudAchs || [])])],
-            }));
-          } else if (cloudAchs && cloudAchs.length > 0) {
-            setStats(s => ({ ...s, ...ent, firstLessonCompleted: true, unlockedAchievements: [...new Set([...(s.unlockedAchievements || []), ...cloudAchs])] }));
-          } else if (cloudHasData) {
-            setStats(s => ({ ...s, ...ent, firstLessonCompleted: true }));
-          } else {
-            setStats(s => ({ ...s, ...ent }));
-          }
+              // Lessons are "started" if EITHER side shows learning activity.
+              firstLessonCompleted: !!(s.firstLessonCompleted || cloudHasData || (cloudStatsData && cloudStatsData.firstLessonCompleted)),
+              // Union achievements from the separate user_achievements table too.
+              unlockedAchievements: [...new Set([...(merged.unlockedAchievements || []), ...(cloudAchs || [])])],
+            });
+          });
           setCloudReady(true);
         }
       } catch (e) {
@@ -761,7 +787,10 @@ export default function TukTalkThaiApp() {
         // Fall back to local-only mode; user can retry by signing out and back in.
         if (!cancelled) setCloudReady(true);
       } finally {
-        cloudInitInFlight.current = false;
+        // Identity-checked release: a stale init finishing late can never free a
+        // newer user's claim (releaseCloudInit is a no-op unless this is still the
+        // live claim).
+        releaseCloudInit(cloudInitClaimRef, claim);
       }
     })();
     return () => { cancelled = true; };

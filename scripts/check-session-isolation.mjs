@@ -4,7 +4,13 @@
 // or baseline-arming flags, and can earn rewards normally. Drives the REAL
 // resetUserScopedRefs / tryLockedReward from src/lib/sessionLocks.js.
 
-import { resetUserScopedRefs, tryLockedReward } from '../src/lib/sessionLocks.js';
+import {
+  resetUserScopedRefs,
+  tryLockedReward,
+  claimCloudInit,
+  releaseCloudInit,
+  shouldWipeLocalOnIdentityChange,
+} from '../src/lib/sessionLocks.js';
 
 let failures = 0;
 const check = (label, cond, extra = '') => {
@@ -73,6 +79,34 @@ check('B: celebration baseline re-arms (armed=false at sign-in)', refs.celebrati
 let threw = false;
 try { resetUserScopedRefs({}); resetUserScopedRefs(undefined); } catch { threw = true; }
 check('anonymous/partial bag reset is safe (no throw)', threw === false);
+
+// ── Cloud-init claim guard: a stale init must never block the next user ───────
+{
+  const ref = { current: null };
+  const claimA = claimCloudInit(ref, 'user-A');
+  check('claim: user A gets a claim', claimA && claimA.userId === 'user-A');
+  check('claim: same user re-claim blocked while in flight', claimCloudInit(ref, 'user-A') === null);
+  // User B replaces A (identity change also discards A's claim via reset, but even
+  // without that, a claim for a different user overwrites the slot rather than
+  // being blocked by A's stale claim).
+  const claimB = claimCloudInit(ref, 'user-B');
+  check('claim: user B is NOT blocked by user A stale claim', claimB && claimB.userId === 'user-B');
+  // A's late finally must not free B's live claim.
+  releaseCloudInit(ref, claimA);
+  check('release: stale claim A does not clear B live claim', ref.current === claimB);
+  // B's own release clears it.
+  releaseCloudInit(ref, claimB);
+  check('release: live claim B clears the slot', ref.current === null);
+}
+
+// ── Identity-change local wipe decision ──────────────────────────────────────
+{
+  check('wipe: cloud-loaded A → B wipes', shouldWipeLocalOnIdentityChange('user-A', 'user-B', true) === true);
+  check('wipe: cloud-loaded A → signed out wipes', shouldWipeLocalOnIdentityChange('user-A', null, true) === true);
+  check('wipe: same user (token refresh) does NOT wipe', shouldWipeLocalOnIdentityChange('user-A', 'user-A', true) === false);
+  check('wipe: fresh sign-in (no prev user) does NOT wipe', shouldWipeLocalOnIdentityChange(null, 'user-B', true) === false);
+  check('wipe: anonymous (never cloudReady) does NOT wipe', shouldWipeLocalOnIdentityChange('user-A', 'user-B', false) === false);
+}
 
 if (failures > 0) {
   console.error(`\nSession-isolation check FAILED: ${failures} assertion(s) failed.`);

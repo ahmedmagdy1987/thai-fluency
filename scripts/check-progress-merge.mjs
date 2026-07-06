@@ -1,0 +1,154 @@
+// Regression guard for the sign-in local↔cloud merge (M2). Drives the REAL
+// mergeProgress / mergeStats / mergeCloudSettings from src/lib/progressMerge.js
+// through the 12 required scenarios. The core guarantees under test: no learning
+// progress is lost, review/lapse counts never decrease, a graduated card never
+// un-graduates, XP is never additively double-counted, and Super can never come
+// from local state. Exits non-zero on any failure.
+
+import { mergeProgress, mergeStats, mergeCloudSettings, mergeCard } from '../src/lib/progressMerge.js';
+
+let failures = 0;
+const check = (label, cond, extra = '') => {
+  if (cond) console.log(`OK   ${label}`);
+  else { failures += 1; console.error(`FAIL ${label}${extra ? ' — ' + extra : ''}`); }
+};
+
+const card = (o = {}) => ({ ease: 2.5, interval: 0, reviews: 0, lapses: 0, learning: true, nextDue: 0, lastReview: 0, ...o });
+
+// 1. Empty cloud + local progress → local preserved.
+{
+  const local = { 10: card({ reviews: 3, interval: 8, learning: false }) };
+  const m = mergeProgress(local, {});
+  check('1 empty cloud: local card preserved', !!m[10] && m[10].reviews === 3 && m[10].learning === false);
+}
+
+// 2. Cloud progress + empty local → cloud preserved.
+{
+  const cloud = { 20: card({ reviews: 4, interval: 12, learning: false }) };
+  const m = mergeProgress({}, cloud);
+  check('2 empty local: cloud card preserved', !!m[20] && m[20].reviews === 4);
+}
+
+// 3. Local learned card + older cloud card → learned state preserved.
+{
+  const local = { 30: card({ reviews: 6, interval: 20, learning: false, lapses: 1, lastReview: 2000 }) };
+  const cloud = { 30: card({ reviews: 1, interval: 1, learning: true, lastReview: 1000 }) };
+  const m = mergeProgress(local, cloud);
+  check('3 local learned beats older cloud', m[30].reviews === 6 && m[30].learning === false && m[30].lapses === 1);
+}
+
+// 4. Cloud learned card + older local card → cloud learned state preserved.
+{
+  const local = { 40: card({ reviews: 1, interval: 1, learning: true }) };
+  const cloud = { 40: card({ reviews: 5, interval: 15, learning: false }) };
+  const m = mergeProgress(local, cloud);
+  check('4 cloud learned beats older local', m[40].reviews === 5 && m[40].learning === false);
+}
+
+// 5. Same card, different review counts → higher safe progress preserved.
+{
+  const local = { 50: card({ reviews: 2, interval: 4, lapses: 3 }) };
+  const cloud = { 50: card({ reviews: 7, interval: 18, lapses: 1 }) };
+  const m = mergeProgress(local, cloud);
+  check('5 higher review count preserved', m[50].reviews === 7);
+  check('5 lapse history preserved (max)', m[50].lapses === 3);
+  check('5 interval preserved (max)', m[50].interval === 18);
+}
+
+// 5b. Graduation is sticky: either side graduated → merged graduated.
+{
+  const local = { 51: card({ reviews: 3, interval: 10, learning: false }) };   // graduated
+  const cloud = { 51: card({ reviews: 4, interval: 1, learning: true }) };      // re-lapsed, more reps
+  const m = mergeProgress(local, cloud);
+  check('5b graduated stays graduated even if other side has more reps', m[51].learning === false && m[51].reviews === 4);
+}
+
+// 6. Missions completed locally, not in cloud → preserved (union), no reward replay.
+{
+  const local = { completedMiniUnits: ['s1-u1', 's1-u2'], builderRewardedUnits: ['s1-u1'] };
+  const cloud = { completedMiniUnits: ['s1-u2', 's1-u3'] };
+  const merged = mergeCloudSettings(local, cloud);
+  check('6 missions unioned (completed wins)', ['s1-u1', 's1-u2', 's1-u3'].every(u => merged.completedMiniUnits.includes(u)));
+  check('6 builder-rewarded ledger preserved (no reward replay)', merged.builderRewardedUnits.includes('s1-u1'));
+}
+
+// 7. Achievements unlocked locally, not in cloud → preserved (union), no reward replay.
+{
+  const local = { unlockedAchievements: ['first-word', 'streak-7'] };
+  const cloud = { unlockedAchievements: ['streak-7', 'stage-2'] };
+  const merged = mergeStats(local, cloud);
+  check('7 achievements unioned (unlocked wins)', ['first-word', 'streak-7', 'stage-2'].every(a => merged.unlockedAchievements.includes(a)));
+}
+
+// 8. Cloud subscription Super + local free → Super comes from entitlement, not merge.
+//    mergeStats must NOT carry tier; the caller applies entitlement separately.
+{
+  const local = { tier: 'free', totalXp: 10 };
+  const cloud = { tier: 'free', totalXp: 100 };
+  const merged = mergeStats(local, cloud);
+  check('8 mergeStats never emits tier (entitlement is separate/cloud-only)', !('tier' in merged));
+}
+
+// 9. Local forged Super + cloud free → local Super ignored by the merge.
+{
+  const local = { tier: 'super', superUntil: '2099-01-01', totalXp: 5 };
+  const cloud = { tier: 'free', superUntil: null, totalXp: 50 };
+  const merged = mergeStats(local, cloud);
+  check('9 forged local Super stripped', !('tier' in merged) && !('superUntil' in merged));
+}
+
+// 10. Local XP and cloud XP both present → no additive double-count (cloud authority).
+{
+  const local = { totalXp: 400, streak: 9, gems: 999, todayXp: 300, dailyGoalsHit: 20, streakFreezes: 5 };
+  const cloud = { totalXp: 120, streak: 3, gems: 40, todayXp: 25, dailyGoalsHit: 4, streakFreezes: 1 };
+  const merged = mergeStats(local, cloud);
+  check('10 totalXp = cloud (no addition)', merged.totalXp === 120);
+  check('10 streak = cloud (local clock cannot raise)', merged.streak === 3);
+  check('10 gems = cloud (currency authority)', merged.gems === 40);
+  check('10 todayXp = cloud', merged.todayXp === 25);
+  check('10 dailyGoalsHit = cloud (not inflated)', merged.dailyGoalsHit === 4);
+  check('10 streakFreezes = cloud (local cannot inflate)', merged.streakFreezes === 1);
+}
+
+// 10b. Monotonic display counters take the max (never lose progress, non-rewarding).
+{
+  const local = { totalReviews: 500, challengeAttempts: 30, bestChallengeScore: 9, currentStage: 4, tonesQuizPassed: true };
+  const cloud = { totalReviews: 120, challengeAttempts: 10, bestChallengeScore: 5, currentStage: 2, tonesQuizPassed: false };
+  const merged = mergeStats(local, cloud);
+  check('10b totalReviews = max', merged.totalReviews === 500);
+  check('10b bestChallengeScore = max', merged.bestChallengeScore === 9);
+  check('10b currentStage = max', merged.currentStage === 4);
+  check('10b tonesQuizPassed = OR (sticky true)', merged.tonesQuizPassed === true);
+}
+
+// 11. Sign-in after anonymous study does not wipe local learning progress.
+{
+  const localAnon = { 60: card({ reviews: 4, learning: false }), 61: card({ reviews: 2 }) };
+  const cloudAccount = { 62: card({ reviews: 9, learning: false }) };
+  const m = mergeProgress(localAnon, cloudAccount);
+  check('11 anonymous cards survive sign-in', !!m[60] && !!m[61] && m[60].reviews === 4);
+  check('11 existing cloud cards also kept', !!m[62] && m[62].reviews === 9);
+}
+
+// 12. Same-tab user switch does not inherit previous user's merged state.
+//     (Merge is a pure function of its two inputs — it holds no cross-call state.
+//     User B's merge sees only B's local (reset/empty after M3) + B's cloud.)
+{
+  const userA_result = mergeProgress({ 70: card({ reviews: 5 }) }, { 71: card({ reviews: 3 }) });
+  check('12a user A merged has A cards', !!userA_result[70] && !!userA_result[71]);
+  // User B signs in: local was cleared by M3 session reset; B has only their cloud.
+  const userB_result = mergeProgress({}, { 80: card({ reviews: 1 }) });
+  check('12b user B merge has ONLY B cards (no A leakage)', !userB_result[70] && !userB_result[71] && !!userB_result[80]);
+}
+
+// Extra: merge is a no-op grant-wise — mergeCard never invents reviews/xp.
+{
+  const c = mergeCard(card({ reviews: 0, learning: true }), undefined);
+  check('extra: mergeCard with one side returns that side untouched', c.reviews === 0 && c.learning === true);
+}
+
+if (failures > 0) {
+  console.error(`\nProgress-merge check FAILED: ${failures} assertion(s) failed.`);
+  process.exit(1);
+}
+console.log('\nProgress-merge check passed.');
