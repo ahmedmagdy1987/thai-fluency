@@ -44,6 +44,7 @@ import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
+import { resetUserScopedRefs } from './lib/sessionLocks.js';
 import {
   hasOneSignalConfig,
   initOneSignal,
@@ -383,6 +384,29 @@ export default function TukTalkThaiApp() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  // Session isolation: whenever the authenticated user id changes — including
+  // → null on sign-out and → a new id when a different user signs in in the same
+  // tab — clear every user-scoped in-memory ref so the next user can never
+  // inherit the previous user's reward/mission/achievement locks or baseline-
+  // arming state. Single centralized reset (see lib/sessionLocks.js). Fires on
+  // real identity changes only, so anonymous local state is untouched; persisted
+  // device-scoped anti-farm guards (rush / per-day review XP) are deliberately
+  // left intact. celebrationsArmedRef → false re-seeds the celebration baseline
+  // for the new user (the arming effect runs again once their cloud state loads).
+  useEffect(() => {
+    resetUserScopedRefs({
+      reviewLocksRef,
+      missionRewardLocksRef,
+      achievementLocksRef,
+      celebrationsArmedRef,
+      courseCompleteAtArmingRef,
+      superSuccessHandledRef: superSuccessHandled,
+      oneSignalLinkedRef: oneSignalLinked,
+      notificationPromptFiredRef: notificationPromptFired,
+      profileSettingsRef,
+    });
+  }, [session?.user?.id]);
 
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
