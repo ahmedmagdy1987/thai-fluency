@@ -15,6 +15,9 @@ html:has(.app-root[data-theme="dark"]) {
   --scrollbar-thumb-ring: rgba(26, 29, 28, 0.82);
 }
 html, body { margin: 0; padding: 0; width: 100%; max-width: 100%; min-height: 100vh; background: #F5F0E5; overflow-x: hidden; }
+/* Dark-theme page background (App.jsx mirrors data-theme onto <html>) so the
+   outermost surface matches during mobile overscroll and behind safe-area insets. */
+html[data-theme="dark"], html[data-theme="dark"] body { background: #1a1d1c; }
 
 /* Theme switch should feel instant. App.jsx adds .theme-switching to <html>
    for ~140ms during a light/dark flip; killing transitions on everything for

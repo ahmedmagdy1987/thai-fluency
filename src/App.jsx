@@ -641,6 +641,11 @@ export default function TukTalkThaiApp() {
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
     const el = document.documentElement;
+    // Mirror the theme onto <html> so the page (html/body) background matches in
+    // dark mode — otherwise the light-cream body shows through during mobile
+    // overscroll and behind safe-area insets. The app's real theming still lives
+    // on .app-root; this only drives the outermost background.
+    el.setAttribute('data-theme', stats.theme || 'light');
     el.classList.add('theme-switching');
     const t = setTimeout(() => el.classList.remove('theme-switching'), 140);
     return () => clearTimeout(t);

@@ -17,7 +17,7 @@ export default function SuperUpgradePrompt({ reason = 'mission', onClose, onSeeS
         </p>
         <div className="super-prompt-actions">
           <button type="button" className="btn-primary super-prompt-primary" onClick={onSeeSuper}>
-            See Super
+            Go Super
           </button>
           <button type="button" className="btn-secondary super-prompt-secondary" onClick={onClose}>
             Maybe later

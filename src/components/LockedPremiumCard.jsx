@@ -29,7 +29,7 @@ export default function LockedPremiumCard({
       {note && <p className="locked-premium-note">{note}</p>}
       {onUpgrade && (
         <button type="button" className="btn-primary locked-premium-cta" onClick={onUpgrade}>
-          See Super
+          Go Super
         </button>
       )}
     </section>
