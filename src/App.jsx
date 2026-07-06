@@ -2337,7 +2337,7 @@ export default function TukTalkThaiApp() {
         );
       })()}
 
-      {tab === 'learn' && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
+      {tab === 'learn' && !publicPage && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
         && !celebration && !rewardScreen && !showSettings && !showProfile
         && !showStage1Celebration && !upgradePrompt && !achievementToast && !showFirstLessonUnlock && (
         <GuidedTutorial
