@@ -41,6 +41,7 @@ export default function AppShell({
         onOpenSettings={onOpenSettings}
         onOpenSuper={onOpenSuper}
         onSignOut={onSignOut}
+        onOpenPublicPage={onOpenPublicPage}
         dashboardStats={dashboardStats}
         isAuthed={isAuthed}
         isSuper={superActive}

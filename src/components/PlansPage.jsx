@@ -16,6 +16,7 @@ import { STAGES } from '../data/taxonomy.js';
 import { MINI_UNITS } from '../data/miniUnits.js';
 import { SITE_CONFIG } from '../config/site.js';
 import { PLANS } from '../config/entitlements.js';
+import { isStripeTestMode } from '../config/stripe.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 import SuperCheckoutModal from './SuperCheckoutModal.jsx';
 
@@ -124,7 +125,7 @@ function PlanPriceTag({ plan }) {
   return <div className="pl-plan-price"><span className="pl-plan-amount">${plan.price}</span><span className="pl-plan-period">per {plan.period}</span></div>;
 }
 
-export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, onSignIn }) {
+export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, onSignIn, embedded = false, onBack }) {
   const [checkoutPlan, setCheckoutPlan] = useState(null); // 'monthly' | 'yearly' | null
   // eslint-disable-next-line react-hooks/exhaustive-deps -- one plans_viewed per visit
   useEffect(() => { trackEvent(ANALYTICS_EVENTS.PLANS_VIEWED, { authed: !!isAuthed }); }, []);
@@ -155,19 +156,47 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
   };
 
   return (
-    <main className="pl-page">
-      <header className="pl-topbar">
-        <div className="pl-shell pl-topbar-inner">
-          <a className="pl-brand" href={homePath} onClick={navClick(homePath)}>
-            <span className="pl-brand-name">{SITE_CONFIG.siteName}</span>
-            <span className="pl-brand-slogan">{SITE_CONFIG.slogan}</span>
-          </a>
-          <a className="pl-topbar-back" href={homePath} onClick={navClick(homePath)}>
+    <main className={`pl-page${embedded ? ' pl-page-embedded' : ''}`}>
+      {/* Standalone (anonymous / legal) view keeps the marketing topbar. In-shell
+          (signed-in) view drops it — the app header + sidebar/bottom nav already
+          frame the page — and shows a compact "Back to app" row instead. */}
+      {embedded ? (
+        <div className="pl-shell pl-embedded-back-row">
+          <button
+            type="button"
+            className="pl-embedded-back"
+            onClick={() => (onBack ? onBack() : onNavigate && onNavigate('/learn'))}
+          >
             <ArrowLeft size={16} aria-hidden="true" />
-            {homeLabel}
-          </a>
+            Back to app
+          </button>
         </div>
-      </header>
+      ) : (
+        <header className="pl-topbar">
+          <div className="pl-shell pl-topbar-inner">
+            <a className="pl-brand" href={homePath} onClick={navClick(homePath)}>
+              <span className="pl-brand-name">{SITE_CONFIG.siteName}</span>
+              <span className="pl-brand-slogan">{SITE_CONFIG.slogan}</span>
+            </a>
+            <a className="pl-topbar-back" href={homePath} onClick={navClick(homePath)}>
+              <ArrowLeft size={16} aria-hidden="true" />
+              {homeLabel}
+            </a>
+          </div>
+        </header>
+      )}
+
+      {isStripeTestMode && (
+        <div className="pl-shell">
+          <div className="pl-testmode-banner" role="status">
+            <ShieldCheck size={15} aria-hidden="true" />
+            <span>
+              <strong>Test mode.</strong> Checkout is fully working, but payments use Stripe test
+              mode — no real card is charged yet while we finish setup.
+            </span>
+          </div>
+        </div>
+      )}
 
       <section className="pl-hero">
         <div className="pl-shell pl-hero-inner">

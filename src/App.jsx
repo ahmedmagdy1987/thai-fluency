@@ -2031,7 +2031,14 @@ export default function TukTalkThaiApp() {
   const beginnerAudioRate = Math.min(audioRate, BEGINNER_AUDIO_RATE);
   const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
 
-  if (publicPage) {
+  // A signed-in, confirmed user viewing /plans gets it rendered INSIDE the app
+  // shell (sidebar + header + bottom nav) so upgrading feels native — not like
+  // leaving the app for a detached marketing page. Anonymous visitors (and all
+  // other public/legal pages) keep the standalone full-page layout.
+  const embedPlansInShell = publicPage === 'plans'
+    && hasSupabaseConfig && !!session && isEmailConfirmed && authReady && !demoMode;
+
+  if (publicPage && !embedPlansInShell) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
         {publicPage === 'plans' ? (
@@ -2226,7 +2233,14 @@ export default function TukTalkThaiApp() {
       themeAttr={stats.theme || 'light'}
       viewModeAttr={viewMode}
     >
-      {activeMiniUnit ? (
+      {embedPlansInShell ? (
+        <PlansPage
+          embedded
+          isAuthed
+          onNavigate={handleNavigatePath}
+          onBack={() => handleNavigatePath('/learn')}
+        />
+      ) : activeMiniUnit ? (
         <MiniUnitFlow
           unit={activeMiniUnit}
           voice={voice}

@@ -341,10 +341,10 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
                 {cancelError && <div className="setting-cancel-plan-error">{cancelError}</div>}
               </>
             ) : (
-              <div className="setting-sub">
-                You’re on the <strong>Free plan</strong>.{' '}
-                <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>See Super</button>
-              </div>
+              <>
+                <div className="setting-sub">You’re on the <strong>Free plan</strong>. Super unlocks the 18+ Dating &amp; Real Talk section.</div>
+                <button type="button" className="btn-primary" style={{ marginTop: 8 }} onClick={() => openPublicPage('/plans')}>Go Super</button>
+              </>
             )}
           </div>
 

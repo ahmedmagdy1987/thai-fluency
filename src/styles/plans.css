@@ -230,3 +230,38 @@
   .sco-spinner { animation: none; }
   .sco-btn-primary:hover { transform: none; }
 }
+
+/* ===== Test-mode notices (honest "no real charge yet") ===== */
+.pl-testmode-banner {
+  display: flex; align-items: center; gap: 9px;
+  margin: 14px auto 0; padding: 11px 15px; border-radius: 12px;
+  background: color-mix(in srgb, var(--gold) 14%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
+  color: var(--ink); font-size: 13px; line-height: 1.45;
+}
+.pl-testmode-banner svg { color: color-mix(in srgb, var(--gold) 60%, var(--ink)); flex: 0 0 auto; }
+.sco-testmode-note {
+  margin: 12px 0 0; padding: 8px 12px; border-radius: 10px;
+  background: color-mix(in srgb, var(--gold) 12%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--gold) 40%, var(--line));
+  color: var(--ink-soft); font-size: 12.5px; text-align: center;
+}
+
+/* ===== Embedded (in-app-shell) plans variant =====
+   Signed-in users see /plans INSIDE the app shell (sidebar + header + bottom
+   nav). Drop the page's own full-viewport background/height and marketing topbar
+   so it reads as native in-app content; round the hero/CTA bands into cards. */
+.pl-page-embedded { min-height: 0; background: transparent; overflow-x: visible; }
+.app-root[data-theme="dark"] .pl-page-embedded { background: transparent; }
+.pl-page-embedded .pl-hero,
+.pl-page-embedded .pl-cta-band { border-radius: var(--pl-radius); }
+.pl-page-embedded .pl-hero { margin-top: 2px; }
+.pl-embedded-back-row { padding-top: 2px; padding-bottom: 10px; }
+.pl-embedded-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--card-bg); border: 1px solid var(--line-strong);
+  color: var(--ink-soft); font-family: inherit; font-size: 13.5px; font-weight: 700;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer; transition: color .15s, border-color .15s;
+}
+.pl-embedded-back:hover { color: var(--jade); border-color: var(--jade); }
+.pl-embedded-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }

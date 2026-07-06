@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { X, Crown, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
-import { STRIPE_PUBLISHABLE_KEY, hasStripeConfig, loadStripeJs } from '../config/stripe.js';
+import { STRIPE_PUBLISHABLE_KEY, hasStripeConfig, isStripeTestMode, loadStripeJs } from '../config/stripe.js';
 
 // Centered, in-site checkout dialog. A dim/blurred backdrop keeps the plans page
 // visible behind it, so paying feels like part of Tuk Talk Thai — never a separate
@@ -143,9 +143,16 @@ export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
           />
 
           {status === 'ready' && (
-            <p className="sco-secure-note">
-              Payments are securely processed by Stripe. You stay on Tuk Talk Thai the whole time.
-            </p>
+            <>
+              {isStripeTestMode && (
+                <p className="sco-testmode-note" role="status">
+                  Test mode — no real card is charged yet. Use Stripe's test card to try the flow.
+                </p>
+              )}
+              <p className="sco-secure-note">
+                Payments are securely processed by Stripe. You stay on Tuk Talk Thai the whole time.
+              </p>
+            </>
           )}
         </div>
       </div>

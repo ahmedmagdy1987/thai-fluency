@@ -10,6 +10,10 @@
 
 export const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 export const hasStripeConfig = !!STRIPE_PUBLISHABLE_KEY;
+// True while the account is on a Stripe TEST-mode publishable key (pk_test_…).
+// Drives an honest "test mode — no real charge" notice in the plans/checkout UI
+// so the monetization flow never implies a live payment before we go live.
+export const isStripeTestMode = STRIPE_PUBLISHABLE_KEY.startsWith('pk_test_');
 
 // TEST-mode price IDs (NOT secret — safe to ship). These mirror the Edge
 // Function's plan→price mapping so client and server agree; the server is still

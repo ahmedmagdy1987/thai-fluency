@@ -240,7 +240,7 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
                   <span className="profile-plan-text">Upgrade to Super to unlock the 18+ Dating &amp; Real Talk section.</span>
                 </div>
                 <button type="button" className="btn-primary profile-plan-cta" onClick={() => openPublicPage('/plans')}>
-                  <Crown size={14} aria-hidden="true" /> Upgrade to Super
+                  <Crown size={14} aria-hidden="true" /> Go Super
                 </button>
               </>
             )}

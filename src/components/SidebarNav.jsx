@@ -12,6 +12,7 @@ import {
   LogOut,
   Heart,
   ShoppingBag,
+  MessageSquare,
 } from 'lucide-react';
 
 // Desktop-only sidebar (visible at ≥1024px via CSS). Groups items by intent
@@ -45,6 +46,7 @@ export default function SidebarNav({
   onOpenSettings,
   onOpenSuper,
   onSignOut,
+  onOpenPublicPage,
   dashboardStats,
   isAuthed,
   isSuper = false,
@@ -109,6 +111,12 @@ export default function SidebarNav({
           <SettingsIcon size={18} strokeWidth={1.8} />
           <span className="sidebar-item-label">Settings</span>
         </button>
+        {onOpenPublicPage && (
+          <button type="button" className="sidebar-item" onClick={() => onOpenPublicPage('/feedback')}>
+            <MessageSquare size={18} strokeWidth={1.8} />
+            <span className="sidebar-item-label">Feedback</span>
+          </button>
+        )}
         {isAuthed && (
           <button type="button" className="sidebar-item sidebar-item-danger" onClick={onSignOut}>
             <LogOut size={18} strokeWidth={1.8} />
