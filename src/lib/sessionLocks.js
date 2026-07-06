@@ -97,3 +97,19 @@ export function releaseCloudInit(ref, claim) {
 export function shouldWipeLocalOnIdentityChange(prevUserId, nextUserId, cloudReady) {
   return !!(prevUserId && prevUserId !== nextUserId && cloudReady);
 }
+
+// ── profiles.settings write guard ───────────────────────────────────────────
+//
+// updateProfile REPLACES the whole profiles.settings blob, so an automatic
+// writer (the celebration-ledger mirror effect) must only fire when the profile
+// row it is basing the write on belongs to the CURRENT session user. On a
+// same-tab user switch there is one commit where session is already user B but
+// profileChecked is still stale-true (left by user A's fetch resolving, or by
+// the sign-out null-branch) and the profile-settings mirror was just emptied by
+// the identity-change reset — without this guard that commit writes an empty or
+// user-A-derived ledger over ALL of user B's cloud settings (cardDirection,
+// completedMiniUnits, ...). profileChecked alone cannot close this: it is a
+// state value and the racing effect reads the previous render's snapshot.
+export function canWriteProfileSettings(sessionUserId, profileId, profileChecked) {
+  return !!(profileChecked && sessionUserId && profileId === sessionUserId);
+}

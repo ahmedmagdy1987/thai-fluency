@@ -44,7 +44,7 @@ import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
-import { resetUserScopedRefs, claimCloudInit, releaseCloudInit, shouldWipeLocalOnIdentityChange } from './lib/sessionLocks.js';
+import { resetUserScopedRefs, claimCloudInit, releaseCloudInit, shouldWipeLocalOnIdentityChange, canWriteProfileSettings } from './lib/sessionLocks.js';
 import {
   hasOneSignalConfig,
   initOneSignal,
@@ -305,6 +305,10 @@ export default function TukTalkThaiApp() {
   // visual; gated by stats.cinematicsWatched so it never replays or grants XP.
   const [stageCinematic, setStageCinematic] = useState(null);
   const [upgradePrompt, setUpgradePrompt] = useState(null);
+  // Undo snapshot of the most recent review — per-user attempt state, written
+  // and consumed by reviewOne/undo below, cleared on identity change so user B
+  // can never "undo" user A's review into their own progress.
+  const [lastReviewSnapshot, setLastReviewSnapshot] = useState(null);
 
   // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
   // only paths to the full app are sign-in or sign-up.
@@ -429,6 +433,24 @@ export default function TukTalkThaiApp() {
       profileSettingsRef,
       cloudInitClaimRef,
     });
+    // Per-user attempt/undo/overlay state must not cross identities either: a
+    // stale undo snapshot could splice user A's card state (and its XP delta)
+    // into user B's progress, a stale card session could resume A's mission
+    // queue, and a stale reward/celebration overlay would replay A's moment to
+    // B. All of these are already null/empty on the happy paths (overlays
+    // dismissed, handleSignOut clears the card session), so these are no-ops
+    // unless something survived an identity change.
+    setLastReviewSnapshot(null);
+    setCardSession(null);
+    setRewardScreen(null);
+    setCelebration(null);
+    setQuestToasts([]);
+    setAchievementToast(null);
+    setAchievementQueue([]);
+    setStageCinematic(null);
+    setUpgradePrompt(null);
+    setShowFirstLessonUnlock(false);
+    setShowStage1Celebration(false);
   }, [session?.user?.id]);
 
   // Mirror cloudReady into a ref so the identity-change effect above can read the
@@ -1047,11 +1069,16 @@ export default function TukTalkThaiApp() {
   // via the profileSettingsRef reference check.
   useEffect(() => {
     if (!loaded || !session || !isEmailConfirmed || !hasSupabaseConfig) return;
-    // Never write before the profile fetch has resolved: profileSettingsRef is
-    // {} until then, and updateProfile replaces the whole settings blob, so an
-    // early write would wipe every synced setting (cardDirection, viewMode,
-    // completedMiniUnits, ...) for the race window.
-    if (!profileChecked) return;
+    // Never write before the profile fetch has resolved AND belongs to the
+    // CURRENT session user: profileSettingsRef is {} until then, and
+    // updateProfile replaces the whole settings blob, so an early write would
+    // wipe every synced setting (cardDirection, viewMode, completedMiniUnits,
+    // ...). profileChecked alone is not enough — on a same-tab user switch
+    // there is one commit where session is already the new user while
+    // profileChecked is still stale-true from the previous user (or from the
+    // sign-out null-branch), which without the identity check would overwrite
+    // the new user's cloud settings with an empty/previous-user ledger.
+    if (!canWriteProfileSettings(session.user?.id, profile?.id, profileChecked)) return;
     const prev = profileSettingsRef.current || {};
     if (prev.celebratedIds === stats.celebratedIds && prev.celebrationBaselineDone === stats.celebrationBaselineDone) return;
     const nextSettings = {
@@ -1064,7 +1091,7 @@ export default function TukTalkThaiApp() {
     updateProfile(session.user.id, { settings: nextSettings }).catch(e => {
       console.warn('[App] failed to sync celebration ledger to cloud', e);
     });
-  }, [stats.celebratedIds, stats.celebrationBaselineDone, loaded, session, isEmailConfirmed, profileChecked]);
+  }, [stats.celebratedIds, stats.celebrationBaselineDone, loaded, session, isEmailConfirmed, profileChecked, profile?.id]);
 
   // Mission advancement: when currentMission increases past lastSeenMission,
   // celebrate the mission that just finished. The "just finished" mission is
@@ -1151,8 +1178,6 @@ export default function TukTalkThaiApp() {
       return rest;
     });
   }, []);
-
-  const [lastReviewSnapshot, setLastReviewSnapshot] = useState(null);
 
   const reviewOne = useCallback((cardId, rating, { assisted = false } = {}) => {
     const previousProgress = progress?.[cardId] || null;

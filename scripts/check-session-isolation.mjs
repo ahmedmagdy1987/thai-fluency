@@ -10,6 +10,7 @@ import {
   claimCloudInit,
   releaseCloudInit,
   shouldWipeLocalOnIdentityChange,
+  canWriteProfileSettings,
 } from '../src/lib/sessionLocks.js';
 
 let failures = 0;
@@ -106,6 +107,24 @@ check('anonymous/partial bag reset is safe (no throw)', threw === false);
   check('wipe: same user (token refresh) does NOT wipe', shouldWipeLocalOnIdentityChange('user-A', 'user-A', true) === false);
   check('wipe: fresh sign-in (no prev user) does NOT wipe', shouldWipeLocalOnIdentityChange(null, 'user-B', true) === false);
   check('wipe: anonymous (never cloudReady) does NOT wipe', shouldWipeLocalOnIdentityChange('user-A', 'user-B', false) === false);
+}
+
+// ── profiles.settings write guard (same-tab user-switch race) ────────────────
+// updateProfile replaces the WHOLE settings blob, so the automatic ledger-mirror
+// write must be blocked until the loaded profile row belongs to the current
+// session user — profileChecked alone is stale-true for one commit on a user
+// switch, which used to overwrite user B's cloud settings with an empty ledger.
+{
+  check('settings-write: allowed when profile row is the session user and fetch resolved',
+    canWriteProfileSettings('user-B', 'user-B', true) === true);
+  check('settings-write: stale profileChecked with user A profile row → blocked',
+    canWriteProfileSettings('user-B', 'user-A', true) === false);
+  check('settings-write: no profile loaded yet → blocked',
+    canWriteProfileSettings('user-B', undefined, true) === false);
+  check('settings-write: profile fetch not resolved → blocked',
+    canWriteProfileSettings('user-B', 'user-B', false) === false);
+  check('settings-write: signed out → blocked',
+    canWriteProfileSettings(null, 'user-A', true) === false);
 }
 
 if (failures > 0) {
