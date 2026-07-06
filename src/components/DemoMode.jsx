@@ -9,6 +9,8 @@ import { intervalLabel } from '../lib/srs.js';
 import { playFlip, playCharacterSelect, playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
+import { useAttemptDirection } from '../hooks/useAttemptDirection.js';
+import { faceIsEnglishFirst } from '../lib/attemptDirection.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
 import SpeakerStyleToggle from './SpeakerStyleToggle.jsx';
@@ -111,8 +113,14 @@ export default function DemoMode({
   const speakingTimerRef = useRef(null);
   const advanceTimerRef = useRef(null);
 
-  const isEnglishFirst = direction !== 'th-first';
   const card = pos < cards.length ? cards[pos] : null;
+  // Anti-peek direction lock (same model as the real app): the current demo
+  // card's faces are frozen; toggling direction only affects the next card so
+  // the answer can't be revealed by flipping.
+  const { attemptDirection, changeDirection } = useAttemptDirection(direction, card?.id ?? pos);
+  const isEnglishFirst = faceIsEnglishFirst(attemptDirection);
+  const handleChangeDirection = (next) =>
+    changeDirection(next, { active: !revealed, applyLive: setDirection });
   const coachId = useMemo(
     () => resolveCoachIdForStage((card && card.stage) || 1),
     [card && card.stage]
@@ -406,7 +414,7 @@ export default function DemoMode({
 
         <div className="demo-toggle-row">
           <SpeakerStyleToggle value={voice} onChange={onChangeVoice} className="demo-style-toggle" />
-          <CardDirectionToggle value={direction} onChange={setDirection} className="demo-direction-toggle" />
+          <CardDirectionToggle value={direction} onChange={handleChangeDirection} className="demo-direction-toggle" />
         </div>
 
         {/* Same flip mechanic as the real lesson card so the demo feels

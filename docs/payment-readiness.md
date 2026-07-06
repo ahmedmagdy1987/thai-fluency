@@ -1,9 +1,13 @@
 # Payment readiness audit — Tuk Talk Thai "Super"
 
-Status: **NOT payment-ready.** Everything monetization-facing today is a marketing
-shell. No checkout exists, no payment is collected, and no premium feature actually
-unlocks. This document lists exactly what is still required before real payments can
-be turned on, so the work can be scoped and sequenced safely.
+Status: **SUPERSEDED — billing is LIVE in Stripe test mode.** Embedded Stripe
+checkout, the `subscriptions` table (migrations 007/009), the stripe-webhook /
+create-checkout-session / cancel-subscription Edge Functions, server-authoritative
+entitlement sync (subscriptions.super_until → stats.tier), and one enforced
+Super-exclusive feature (Dating & Real Talk 18+) are all shipped and deployed.
+Remaining before real charges: production Stripe keys/prices, and analytics wiring
+(CHECKOUT_STARTED / SUBSCRIPTION_ACTIVATED). The pre-implementation audit below is
+retained for historical context; individual "not built yet" lines are now stale.
 
 Hard rules (do not violate):
 - **No payment secrets in frontend code.** API/secret keys, webhook signing

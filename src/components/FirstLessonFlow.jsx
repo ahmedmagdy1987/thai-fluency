@@ -11,6 +11,8 @@ import ConfettiBurst from './ConfettiBurst.jsx';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
 import SpeakerStyleToggle from './SpeakerStyleToggle.jsx';
+import { useAttemptDirection } from '../hooks/useAttemptDirection.js';
+import { faceIsEnglishFirst } from '../lib/attemptDirection.js';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined' &&
@@ -123,8 +125,14 @@ export default function FirstLessonFlow({
   const completeSoundRef = useRef(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const isEnglishFirst = cardDirection !== 'th-first';
   const currentCard = step === 'sentence' ? sentenceCard : vocabCards[cardIndex];
+  // Anti-peek direction lock: the current lesson card's faces are frozen to the
+  // snapshot taken when it became active; toggling direction only affects the
+  // next card, so the answer can't be revealed by flipping.
+  const { attemptDirection, changeDirection } = useAttemptDirection(cardDirection, `${step}:${currentCard?.id ?? cardIndex}`);
+  const isEnglishFirst = faceIsEnglishFirst(attemptDirection);
+  const handleChangeDirection = (next) =>
+    changeDirection(next, { active: !revealed, applyLive: onChangeCardDirection });
   const currentQuestion = challengeQuestions[challengeIndex] || null;
   const selectedIsCorrect = !!(currentQuestion && selectedId === currentQuestion.correct.id);
 
@@ -431,7 +439,10 @@ export default function FirstLessonFlow({
               </span>
             </div>
 
-            <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="firstlesson-direction-toggle" />
+            <CardDirectionToggle value={cardDirection} onChange={handleChangeDirection} className="firstlesson-direction-toggle" />
+            {cardDirection !== attemptDirection && (
+              <div className="firstlesson-direction-hint" role="status">Direction applies to the next card</div>
+            )}
 
             <button
               type="button"

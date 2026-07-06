@@ -1,8 +1,11 @@
 # Migration 006 — zero-downtime staged rollout runbook
 
-Status: **PREPARED. Nothing applied, nothing activated, nothing deployed.** This is
-the owner runbook to roll out server-authoritative XP with no downtime, in the
-correct order, each step independently reversible.
+Status: **LIVE since 2026-07-06 (commit 4ab9add).** 006c (idempotency-only RPC)
+and 010 (guard trigger) are applied in production; `SERVER_REWARDS_ENABLED = true`
+and deployed. Server rewards were verified live before activation (anon denied,
+award-once, duplicate no-op, unknown-type rejected, forged XP clamped, no
+user_stats write). 006B (Phase B revoke) remains deferred. This file is retained
+as the rollout record; the steps below were the plan that was followed.
 
 Prepared at commit (see PR). No service-role key is used or required by this repo —
 all SQL is applied **manually by the owner in the Supabase SQL Editor**.

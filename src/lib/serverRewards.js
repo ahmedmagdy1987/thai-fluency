@@ -1,10 +1,10 @@
 // Client transition layer for server-authoritative rewards (Migration 006).
 //
-// DORMANT until SERVER_REWARDS_ENABLED is flipped true AND Phase A is applied.
-// This module is imported by nothing active yet, so it is tree-shaken out of the
-// production bundle — committing it changes no production behavior.
+// ACTIVE since 2026-07-06 (SERVER_REWARDS_ENABLED = true; 006c applied). Imported
+// by App.jsx (awardXp); signed-in confirmed users take the server award_reward
+// path, anonymous/unconfirmed users keep the local path.
 //
-// Contract when active (signed-in users):
+// Contract (signed-in users):
 //   • The server (award_reward RPC) is the authority for XP. The client NEVER
 //     chooses the XP amount — it passes only the event type + a stable unique
 //     event key + validated payload (score/total for challenges, local_date).

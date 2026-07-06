@@ -8,7 +8,7 @@ import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadRev
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
 import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
-import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay } from './lib/stats.js';
+import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay, computeStreak } from './lib/stats.js';
 import { evaluateDailyQuests } from './lib/dailyQuests.js';
 import { trackEvent, ANALYTICS_EVENTS } from './lib/analytics.js';
 import {
@@ -928,23 +928,15 @@ export default function TukTalkThaiApp() {
   const grantXp = useCallback((amount) => {
     setStats(s => {
       const today = getLocalDateKey();
-      const isNewDay = s.todayDate !== today;
+      // Streak rollover keys on lastStudy, NOT todayDate. The day-rollover effect
+      // pre-sets todayDate = today on load (to zero todayXp) before the user
+      // studies, so a todayDate check would read false on the normal "reopen the
+      // next day" flow and the streak would never increment or reset. lastStudy
+      // (the last day XP was actually earned) is not touched by that effect, so
+      // it correctly identifies the first study action of a new day. Logic lives
+      // in the pure computeStreak (unit-tested by check-quest-logic.mjs).
       const yesterday = previousLocalDateKey();
-      let newStreak = s.streak || 0;
-      let usedFreeze = false;
-      if (isNewDay) {
-        if (s.lastStudy === yesterday) {
-          newStreak = newStreak + 1;
-        } else if (s.lastStudy !== today) {
-          const daysSince = s.lastStudy ? Math.floor((Date.now() - new Date(s.lastStudy).getTime()) / DAY_MS) : 999;
-          if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
-            newStreak = newStreak + 1;
-            usedFreeze = true;
-          } else {
-            newStreak = 1;
-          }
-        }
-      }
+      const { streak: newStreak, usedFreeze } = computeStreak(s, today, yesterday);
       const next = startStudyDay(s, today, newStreak, amount, usedFreeze);
       // Daily-goal gems: startStudyDay increments dailyGoalsHit exactly when the
       // day's XP first crosses the goal. Award modest gems at that same moment

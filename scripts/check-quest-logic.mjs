@@ -6,7 +6,7 @@
 // "Keep your streak alive" completes on ANY valid learning activity today and
 // never contradicts the XP / practice / review quests. Exits non-zero on fail.
 
-import { getLocalDateKey, previousLocalDateKey, countCardsPracticedToday } from '../src/lib/stats.js';
+import { getLocalDateKey, previousLocalDateKey, countCardsPracticedToday, computeStreak } from '../src/lib/stats.js';
 import { evaluateDailyQuests, CARDS_TARGET } from '../src/lib/dailyQuests.js';
 import { DEFAULT_DAILY_GOAL } from '../src/data/gamification.js';
 
@@ -14,6 +14,12 @@ const todayKey = getLocalDateKey();
 const yKey = previousLocalDateKey();
 const NOW = Date.now();
 const OLD = NOW - 3 * 24 * 60 * 60 * 1000; // safely a previous local day
+
+// Local YYYY-MM-DD key for N days ago (matches getLocalDateKey's local-date basis).
+function getDateKeyDaysAgo(n) {
+  const d = new Date(NOW - n * 24 * 60 * 60 * 1000);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 let failures = 0;
 function check(label, cond, extra = '') {
@@ -114,6 +120,36 @@ console.log(`Quest logic check — today=${todayKey}, yesterday=${yKey}`);
   check('practiced count: distinct today only (3 of 7)', countCardsPracticedToday(p, todayKey) === 3, `got ${countCardsPracticedToday(p, todayKey)}`);
   check('practiced count: empty/invalid progress -> 0', countCardsPracticedToday(undefined, todayKey) === 0 && countCardsPracticedToday(null, todayKey) === 0);
   check('CARDS_TARGET is 10', CARDS_TARGET === 10);
+}
+
+// ── computeStreak: the day-rollover fix (streak keys on lastStudy) ───────────
+{
+  // The regression this locks in: the day-rollover effect pre-sets todayDate =
+  // today on load BEFORE the user studies. So a correct streak decision must key
+  // on lastStudy, never todayDate. Each case below sets todayDate = today (as the
+  // effect would) to prove todayDate is NOT what drives the decision.
+  const base = { streakFreezes: 0 };
+
+  // Reopen next day (studied yesterday) → +1, even though todayDate is already today.
+  const nextDay = computeStreak({ ...base, streak: 5, lastStudy: yKey, todayDate: todayKey }, todayKey, yKey);
+  check('computeStreak: next-day reopen increments (5→6)', nextDay.streak === 6 && nextDay.usedFreeze === false, `got ${nextDay.streak}`);
+
+  // Same day, second study action → unchanged (no double increment).
+  const sameDay = computeStreak({ ...base, streak: 6, lastStudy: todayKey, todayDate: todayKey }, todayKey, yKey);
+  check('computeStreak: same-day repeat keeps streak (6)', sameDay.streak === 6, `got ${sameDay.streak}`);
+
+  // Skipped several days, no freeze → reset to 1.
+  const lapsed = computeStreak({ ...base, streak: 9, lastStudy: getDateKeyDaysAgo(10) }, todayKey, yKey);
+  check('computeStreak: long gap resets to 1', lapsed.streak === 1 && lapsed.usedFreeze === false, `got ${lapsed.streak}`);
+
+  // Gap within 2 days WITH a freeze available → +1 and consume the freeze.
+  const twoDaysAgo = getDateKeyDaysAgo(2);
+  const frozen = computeStreak({ streak: 7, lastStudy: twoDaysAgo, streakFreezes: 1, todayDate: todayKey }, todayKey, yKey);
+  check('computeStreak: 2-day gap + freeze increments and consumes freeze', frozen.streak === 8 && frozen.usedFreeze === true, `got ${frozen.streak}/${frozen.usedFreeze}`);
+
+  // First-ever study (no lastStudy) → streak becomes 1.
+  const firstEver = computeStreak({ streak: 0, lastStudy: null }, todayKey, yKey);
+  check('computeStreak: first-ever study sets streak 1', firstEver.streak === 1, `got ${firstEver.streak}`);
 }
 
 if (failures > 0) {

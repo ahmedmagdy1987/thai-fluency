@@ -38,12 +38,11 @@ export const DEFAULT_STATS = {
   // (prevents replay/refresh from farming the builder reward).
   builderRewardedUnits: [],
   superPromptLastShownAt: null,
-  // Premium entitlement tier. See src/config/entitlements.js. Defaults to 'free'
-  // for everyone — there is no checkout yet, so no one is 'super'. This is a
-  // CLIENT-LOCAL placeholder: a real paid tier MUST be set from a server-
-  // authoritative source (Supabase column + payment webhook) before it can grant
-  // any benefit, so it is intentionally NOT in the cloud-sync whitelist yet (no
-  // migration). See docs/payment-readiness.md.
+  // Premium entitlement tier. See src/config/entitlements.js. Defaults to 'free';
+  // the REAL tier is overwritten at load by the server-authoritative entitlement
+  // (subscriptions.super_until, written only by the Stripe webhook) via
+  // cloudStorage.downloadEntitlement(). Intentionally NOT in the cloud-sync
+  // whitelist — it is fetched separately and never trusted from client state.
   tier: 'free',
   // Celebration repeat-prevention ledger (see lib/celebrations.js). Date-keyed
   // quest IDs + durable milestone IDs. baselineDone seeds existing completions
@@ -153,6 +152,32 @@ export function migrateStats(stats) {
     migrated.firstLessonCompleted = true;
   }
   return migrated;
+}
+
+const STREAK_DAY_MS = 24 * 60 * 60 * 1000;
+
+// Pure streak-rollover decision, shared by grantXp. Keys on `lastStudy` (the last
+// day XP was actually earned) — NOT `todayDate`, which the day-rollover effect
+// pre-sets to today on load before the user studies. Returns the new streak and
+// whether a freeze was consumed.
+//   • same day again        → unchanged.
+//   • studied yesterday      → +1.
+//   • gap ≤ 2 days + freeze  → +1, freeze consumed.
+//   • longer gap / no freeze → reset to 1.
+export function computeStreak(s, today, yesterday, nowMs = Date.now()) {
+  if ((s.lastStudy || null) === today) {
+    return { streak: s.streak || 0, usedFreeze: false };
+  }
+  if (s.lastStudy === yesterday) {
+    return { streak: (s.streak || 0) + 1, usedFreeze: false };
+  }
+  const daysSince = s.lastStudy
+    ? Math.floor((nowMs - new Date(s.lastStudy).getTime()) / STREAK_DAY_MS)
+    : 999;
+  if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
+    return { streak: (s.streak || 0) + 1, usedFreeze: true };
+  }
+  return { streak: 1, usedFreeze: false };
 }
 
 export function startStudyDay(s, today, newStreak, amount, usedFreeze) {

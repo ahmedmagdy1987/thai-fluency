@@ -8,6 +8,8 @@ import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import SentenceBuilder from './SentenceBuilder.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
+import { useAttemptDirection } from '../hooks/useAttemptDirection.js';
+import { faceIsEnglishFirst } from '../lib/attemptDirection.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 
 function cardsByIds(ids, voice) {
@@ -45,11 +47,20 @@ function safeNonNegativeIndex(value) {
 // a new component type every render, remounting the whole card subtree and
 // dropping keyboard focus on each reveal/toggle/coach tick.
 function CardPractice({ card, label, onNext, nextLabel, revealed, onReveal, onHide, onSpeak, cardDirection, onChangeCardDirection }) {
-  const isEnglishFirst = cardDirection !== 'th-first';
+  // Freeze the faces for THIS card. Toggling direction while the answer is still
+  // hidden can't swap the hidden side onto the prompt (the anti-peek lock); the
+  // preference only takes effect on the next card.
+  const { attemptDirection, changeDirection } = useAttemptDirection(cardDirection, card?.id ?? 'none');
+  const isEnglishFirst = faceIsEnglishFirst(attemptDirection);
+  const handleChangeDirection = (next) =>
+    changeDirection(next, { active: !revealed, applyLive: onChangeCardDirection });
   return (
     <section className="miniunit-practice-card">
       <div className="miniunit-step-label">{label}</div>
-      <CardDirectionToggle value={cardDirection} onChange={onChangeCardDirection} className="miniunit-direction-toggle" />
+      <CardDirectionToggle value={cardDirection} onChange={handleChangeDirection} className="miniunit-direction-toggle" />
+      {cardDirection !== attemptDirection && (
+        <div className="miniunit-direction-hint" role="status">Direction applies to the next card</div>
+      )}
       <div
         className={`miniunit-flash-card ${revealed ? 'miniunit-flash-card-revealed' : ''}`}
         onClick={onReveal}

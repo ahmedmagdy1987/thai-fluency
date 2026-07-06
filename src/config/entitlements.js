@@ -94,8 +94,11 @@ export const UPSELL_COPY = {
 };
 
 // ─── Entitlement checks ──────────────────────────────────────────────────────
-// Future: derive tier from a server-authoritative field (e.g. superUntil > now,
-// synced from a payment webhook). Today every user resolves to FREE.
+// Tier is server-authoritative: cloudStorage.downloadEntitlement() reads
+// subscriptions.super_until (written only by the Stripe webhook) and, when it is
+// in the future, sets stats.tier = 'super'. The client cannot forge it — the
+// subscriptions table is read-only to clients (RLS: authenticated SELECT-own,
+// no write policy). A paid user resolves to SUPER; everyone else to FREE.
 export function getTier(stats) {
   return stats && stats.tier === TIERS.SUPER ? TIERS.SUPER : TIERS.FREE;
 }
