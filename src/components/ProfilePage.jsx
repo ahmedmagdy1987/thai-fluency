@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare, Crown } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
-import { isSuper } from '../config/entitlements.js';
+import { useSubscriptionStatus, FREE_PLAN_BLURB } from '../hooks/useSubscriptionStatus.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
 import NotificationSettings from './profile/NotificationSettings.jsx';
 
@@ -13,8 +13,7 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   const [savingName, setSavingName] = useState(false);
   const [nameError, setNameError] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [canceling, setCanceling] = useState(false);
-  const [cancelError, setCancelError] = useState(null);
+  const sub = useSubscriptionStatus(fullStats, { onEntitlementRefresh });
 
   const displayName = profile?.display_name
     || (session?.user?.email ? session.user.email.split('@')[0] : 'Account');
@@ -34,37 +33,6 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   const stagesComplete = stageState
     ? stageState.stages.filter(s => s.complete && s.total > 0).length
     : 0;
-
-  const superActive = isSuper(fullStats);
-  const canceled = !!fullStats?.cancelAtPeriodEnd;
-  const superUntilLabel = (() => {
-    if (!superActive || !fullStats?.superUntil) return null;
-    const d = new Date(fullStats.superUntil);
-    return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString();
-  })();
-
-  // Cancel auto-renew via the deployed cancel-subscription Edge Function. On
-  // success, re-read the entitlement so the plan row flips to the canceled state
-  // (Super stays active until super_until). Errors surface inline; never throws.
-  const handleCancelPlan = async () => {
-    if (canceling) return;
-    const ok = typeof window === 'undefined'
-      ? true
-      : window.confirm('Cancel your Super plan? It stops auto-renewing, but Super stays active until the end of your current billing period.');
-    if (!ok) return;
-    setCanceling(true);
-    setCancelError(null);
-    try {
-      const { data, error } = await supabase.functions.invoke('cancel-subscription');
-      if (error) throw error;
-      if (data && data.ok === false) throw new Error(data.error || 'Cancellation failed');
-      if (onEntitlementRefresh) await onEntitlementRefresh();
-    } catch (e) {
-      setCancelError('Could not cancel right now. Please try again, or contact support.');
-    } finally {
-      setCanceling(false);
-    }
-  };
 
   const startEdit = () => {
     setNameDraft(profile?.display_name || displayName);
@@ -207,29 +175,21 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
         <div className="profile-section">
           <div className="profile-section-title">Plan</div>
           <div className="profile-plan-row">
-            {superActive ? (
+            {sub.isSuper ? (
               <>
                 <div className="profile-plan-info">
                   <span className="profile-plan-badge profile-plan-badge-super"><Crown size={13} aria-hidden="true" /> Super</span>
-                  <span className="profile-plan-text">
-                    {canceled
-                      ? (superUntilLabel
-                          ? `Canceled — stays active until ${superUntilLabel}. Auto-renew is off.`
-                          : 'Canceled — stays active until the end of your billing period. Auto-renew is off.')
-                      : (superUntilLabel
-                          ? `Renews ${superUntilLabel}. Thanks for supporting Tuk Talk Thai!`
-                          : 'Active. Thanks for supporting Tuk Talk Thai!')}
-                  </span>
-                  {cancelError && <span className="profile-plan-cancel-error">{cancelError}</span>}
+                  <span className="profile-plan-text">{sub.statusText}</span>
+                  {sub.cancelError && <span className="profile-plan-cancel-error">{sub.cancelError}</span>}
                 </div>
-                {!canceled && (
+                {sub.showCancel && (
                   <button
                     type="button"
                     className="profile-plan-cancel-btn"
-                    onClick={handleCancelPlan}
-                    disabled={canceling}
+                    onClick={sub.cancel}
+                    disabled={sub.canceling}
                   >
-                    {canceling ? 'Canceling…' : 'Cancel plan'}
+                    {sub.canceling ? 'Canceling…' : 'Cancel plan'}
                   </button>
                 )}
               </>
@@ -237,7 +197,7 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
               <>
                 <div className="profile-plan-info">
                   <span className="profile-plan-badge">Free plan</span>
-                  <span className="profile-plan-text">Upgrade to Super to unlock the 18+ Dating &amp; Real Talk section.</span>
+                  <span className="profile-plan-text">{FREE_PLAN_BLURB}</span>
                 </div>
                 <button type="button" className="btn-primary profile-plan-cta" onClick={() => openPublicPage('/plans')}>
                   <Crown size={14} aria-hidden="true" /> Go Super

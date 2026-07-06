@@ -6,8 +6,7 @@ import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION, transformThai
 import { speakThai, DEFAULT_AUDIO_RATE } from '../lib/audio.js';
 import PrivacyPolicy from './legal/PrivacyPolicy.jsx';
 import TermsOfService from './legal/TermsOfService.jsx';
-import { isSuper } from '../config/entitlements.js';
-import { supabase } from '../lib/supabase.js';
+import { useSubscriptionStatus, FREE_PLAN_BLURB } from '../hooks/useSubscriptionStatus.js';
 
 const PREVIEW_THAI = '\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35\u0e04\u0e23\u0e31\u0e1a';
 
@@ -21,8 +20,7 @@ const AUDIO_RATE_OPTIONS = [
 export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage, onReplayTutorial, onEntitlementRefresh }) {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
-  const [canceling, setCanceling] = useState(false);
-  const [cancelError, setCancelError] = useState(null);
+  const sub = useSubscriptionStatus(stats, { onEntitlementRefresh });
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
   const dailyGoal = stats.dailyGoal || DEFAULT_DAILY_GOAL;
@@ -35,38 +33,6 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
   const currentStageId = stats.currentStage || stats.startedStage || 1;
   const currentStage = STAGES.find(s => s.id === currentStageId) || {};
   const previewText = transformThai(PREVIEW_THAI, voice);
-  const superActive = isSuper(stats);
-  const canceled = !!stats.cancelAtPeriodEnd;
-  // Date Super stays active until — labeled as "renews on" while auto-renew is
-  // on, and "active until" once a cancellation is scheduled (cancelAtPeriodEnd).
-  const superUntilLabel = (() => {
-    if (!superActive || !stats.superUntil) return null;
-    const d = new Date(stats.superUntil);
-    return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString();
-  })();
-
-  // Cancel auto-renew via the deployed cancel-subscription Edge Function. On
-  // success, re-read the entitlement so the plan row flips to the canceled state
-  // (Super stays active until super_until). Errors surface inline; never throws.
-  const handleCancelPlan = async () => {
-    if (canceling) return;
-    const ok = typeof window === 'undefined'
-      ? true
-      : window.confirm('Cancel your Super plan? It stops auto-renewing, but Super stays active until the end of your current billing period.');
-    if (!ok) return;
-    setCanceling(true);
-    setCancelError(null);
-    try {
-      const { data, error } = await supabase.functions.invoke('cancel-subscription');
-      if (error) throw error;
-      if (data && data.ok === false) throw new Error(data.error || 'Cancellation failed');
-      if (onEntitlementRefresh) await onEntitlementRefresh();
-    } catch (e) {
-      setCancelError('Could not cancel right now. Please try again, or contact support.');
-    } finally {
-      setCanceling(false);
-    }
-  };
 
   const openPublicPage = (path, fallback) => {
     if (onOpenPublicPage) {
@@ -314,35 +280,24 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
 
           <div className="setting-group">
             <div className="setting-label">Plan</div>
-            {superActive ? (
+            {sub.isSuper ? (
               <>
-                {canceled ? (
-                  <div className="setting-sub">
-                    <strong>Super</strong> is canceled
-                    {superUntilLabel ? <> — stays active until {superUntilLabel}</> : <> — stays active until the end of your billing period</>}.
-                    Auto-renew is off. Thanks for supporting Tuk Talk Thai!
-                  </div>
-                ) : (
-                  <>
-                    <div className="setting-sub">
-                      <strong>Super</strong>
-                      {superUntilLabel ? <> — renews on {superUntilLabel}</> : <> is active</>}. Thanks for supporting Tuk Talk Thai!
-                    </div>
-                    <button
-                      type="button"
-                      className="setting-cancel-plan-btn"
-                      onClick={handleCancelPlan}
-                      disabled={canceling}
-                    >
-                      {canceling ? 'Canceling…' : 'Cancel plan'}
-                    </button>
-                  </>
+                <div className="setting-sub"><strong>Super plan.</strong> {sub.statusText}</div>
+                {sub.showCancel && (
+                  <button
+                    type="button"
+                    className="setting-cancel-plan-btn"
+                    onClick={sub.cancel}
+                    disabled={sub.canceling}
+                  >
+                    {sub.canceling ? 'Canceling…' : 'Cancel plan'}
+                  </button>
                 )}
-                {cancelError && <div className="setting-cancel-plan-error">{cancelError}</div>}
+                {sub.cancelError && <div className="setting-cancel-plan-error">{sub.cancelError}</div>}
               </>
             ) : (
               <>
-                <div className="setting-sub">You’re on the <strong>Free plan</strong>. Super unlocks the 18+ Dating &amp; Real Talk section.</div>
+                <div className="setting-sub">You’re on the <strong>Free plan</strong>. {FREE_PLAN_BLURB}</div>
                 <button type="button" className="btn-primary" style={{ marginTop: 8 }} onClick={() => openPublicPage('/plans')}>Go Super</button>
               </>
             )}

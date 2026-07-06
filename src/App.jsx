@@ -920,6 +920,9 @@ export default function TukTalkThaiApp() {
         console.warn('[App] entitlement refresh after checkout failed', e);
       }
       if (becameSuper) {
+        // Funnel: server-confirmed Super after the checkout return. Fired once
+        // (the handler is guarded by superSuccessHandled). Safe/non-PII.
+        trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
         setCelebration({
           eyebrow: 'Welcome to Super',
           title: 'You’re now Super! 🎉',

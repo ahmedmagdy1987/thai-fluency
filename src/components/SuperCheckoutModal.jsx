@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { X, Crown, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
 import { STRIPE_PUBLISHABLE_KEY, hasStripeConfig, isStripeTestMode, loadStripeJs } from '../config/stripe.js';
+import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
 // Centered, in-site checkout dialog. A dim/blurred backdrop keeps the plans page
 // visible behind it, so paying feels like part of Tuk Talk Thai — never a separate
@@ -67,6 +68,9 @@ export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
         if (mountRef.current) {
           checkout.mount('#super-checkout');
           setStatus('ready');
+          // Funnel: the embedded checkout is now live in front of the user. Safe,
+          // non-PII (plan name only) — see lib/analytics.js.
+          trackEvent(ANALYTICS_EVENTS.CHECKOUT_STARTED, { plan });
         }
       } catch (e) {
         if (cancelled) return;
