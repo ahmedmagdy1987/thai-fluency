@@ -1176,14 +1176,35 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-phrase-example-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-soft); margin: 0 0 3px; }
 .dating-phrase-example-en { font-size: 12px; color: var(--ink-soft); margin: 0; line-height: 1.4; font-style: italic; }
 .dating-phrase-note { font-size: 11.5px; color: var(--ink-soft); margin: 0; line-height: 1.45; padding-left: 10px; border-left: 2px solid color-mix(in srgb, var(--gold) 50%, var(--line)); }
+.dating-note-label { display: inline-block; font-size: 8.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-right: 5px; }
 .dating-phrase-care { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #b3261e; margin: 0; }
 .dating-phrase-care svg { flex: 0 0 auto; }
+
+/* Badge system: safety/clarity chips on phrase cards, category headers, and the
+   locked teaser. Same pill shape as .dating-sev-chip; color encodes meaning. */
+.dating-phrase-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: -2px; }
+.dating-cat-chiprow { flex: 0 0 auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; margin-top: 3px; max-width: 46%; }
+.dating-teaser-item-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.dating-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.dating-chip-safe { background: color-mix(in srgb, var(--jade) 12%, transparent); color: var(--jade); }
+.dating-chip-careful { background: color-mix(in srgb, var(--gold) 18%, transparent); color: #8a6a16; }
+.dating-chip-avoid { background: #b3261e; color: #fff; }
+.dating-chip-slang { background: color-mix(in srgb, #7c3aed 13%, transparent); color: #7c3aed; }
+.dating-chip-rude { background: color-mix(in srgb, #b3261e 12%, transparent); color: #b3261e; border: 1px solid color-mix(in srgb, #b3261e 26%, var(--line)); }
+.dating-chip-review-pending { background: transparent; color: #8a6a16; border: 1px dashed color-mix(in srgb, var(--gold) 55%, var(--line)); }
+.dating-chip-review-approved { background: var(--jade); color: var(--cream); }
+.dating-chip-review-needs { background: transparent; color: #b3261e; border: 1px dashed color-mix(in srgb, #b3261e 45%, var(--line)); }
+.dating-chip-speaker { background: color-mix(in srgb, var(--ink-soft) 10%, transparent); color: var(--ink-soft); cursor: help; }
+.dating-badge-reviewed { background: var(--jade); color: var(--cream); }
+.app-root[data-theme="dark"] .dating-chip-careful, .app-root[data-theme="dark"] .dating-chip-review-pending { color: color-mix(in srgb, var(--gold) 80%, #fff); }
+.app-root[data-theme="dark"] .dating-chip-slang { color: color-mix(in srgb, #7c3aed 55%, #fff); }
 
 @media (max-width: 560px) {
   .dating-draft-banner { flex-direction: column; gap: 8px; padding: 14px 15px; }
   .dating-phrase-list { grid-template-columns: 1fr; }
   .dating-cat-block-head { flex-direction: column; }
   .dating-cat-block-head .dating-cat-sev { margin-top: 0; }
+  .dating-cat-chiprow { justify-content: flex-start; margin-top: 4px; max-width: 100%; }
 }
 
 .super-prompt-backdrop { position: fixed; inset: 0; z-index: 270; display: flex; align-items: flex-end; justify-content: center; padding: 16px; background: rgba(15, 61, 46, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: fadeIn 0.18s ease-out; }
