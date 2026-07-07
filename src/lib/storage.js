@@ -74,6 +74,33 @@ export function saveReviewXpDay(state) {
   } catch (e) { /* silent fail - must never crash the review loop */ }
 }
 
+// 18+ confirmation for the Dating & Real Talk section. Device-local age
+// attestation (like the guards above, it is NOT user content): kept in its own
+// key so clearState() on sign-out does not re-ask an adult on every login, and
+// it never syncs to the cloud. Stores only { confirmedAt: ms epoch }.
+const DATING_ADULT_KEY = 'thai-fluency-dating-adult-v1';
+
+export function loadAdultConfirmed() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(DATING_ADULT_KEY);
+      if (raw) {
+        const v = JSON.parse(raw);
+        return !!(v && typeof v === 'object' && Number.isFinite(v.confirmedAt));
+      }
+    }
+  } catch (e) { /* private mode or corrupt value - silent fail */ }
+  return false;
+}
+
+export function saveAdultConfirmed() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(DATING_ADULT_KEY, JSON.stringify({ confirmedAt: Date.now() }));
+    }
+  } catch (e) { /* silent fail - confirmation just won't persist */ }
+}
+
 export async function loadState() {
   try {
     if (typeof localStorage !== 'undefined') {

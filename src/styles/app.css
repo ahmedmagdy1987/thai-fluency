@@ -1198,6 +1198,84 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-badge-reviewed { background: var(--jade); color: var(--cream); }
 .app-root[data-theme="dark"] .dating-chip-careful, .app-root[data-theme="dark"] .dating-chip-review-pending { color: color-mix(in srgb, var(--gold) 80%, #fff); }
 .app-root[data-theme="dark"] .dating-chip-slang { color: color-mix(in srgb, #7c3aed 55%, #fff); }
+.dating-chip-qtype { background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 25%, var(--line)); }
+.dating-chip-count { background: color-mix(in srgb, var(--ink-soft) 10%, transparent); color: var(--ink-soft); }
+.dating-chip-done { background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); }
+
+/* 18+ confirmation (Super users, once per device) */
+.dating-confirm-card { max-width: 480px; margin: 8px auto 0; text-align: center; background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 22px 20px; }
+.dating-confirm-card .dating-badges { justify-content: center; }
+.dating-confirm-title { font-family: 'Fraunces', serif; font-size: 20px; color: var(--jade); margin: 10px 0 8px; }
+.dating-confirm-copy { font-size: 13px; color: var(--ink-soft); line-height: 1.55; margin: 0 0 16px; }
+.dating-confirm-actions { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.dating-confirm-actions .btn-primary { display: inline-flex; align-items: center; gap: 6px; }
+.dating-confirm-no { background: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+.dating-confirm-note { font-size: 10.5px; color: var(--ink-soft); margin: 12px 0 0; opacity: 0.8; }
+
+/* Category selector grid */
+.dating-catgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+.dating-catcard { text-align: left; display: flex; flex-direction: column; gap: 7px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px; cursor: pointer; font: inherit; color: inherit; transition: border-color 0.15s, transform 0.15s; }
+@media (hover: hover) and (pointer: fine) { .dating-catcard:hover { border-color: var(--jade); transform: translateY(-1px); } }
+.dating-catcard-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.dating-catcard-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: var(--jade); }
+.dating-catcard-go { color: var(--ink-soft); flex: 0 0 auto; }
+.dating-catcard-blurb { font-size: 12px; color: var(--ink-soft); line-height: 1.45; margin: 0; }
+.dating-catcard-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* Quiz screen */
+.dating-quiz-topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.dating-quiz-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+.dating-quiz-cat { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.dating-quiz-cat-name { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 700; color: var(--jade); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dating-quiz-count { font-size: 12px; font-weight: 800; color: var(--ink-soft); flex: 0 0 auto; }
+.dating-quiz-progress { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--ink-soft) 14%, transparent); overflow: hidden; margin-bottom: 14px; }
+.dating-quiz-progress-fill { height: 100%; border-radius: 999px; background: var(--jade); transition: width 0.25s ease; }
+
+.dating-question-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; max-width: 620px; margin: 0 auto; }
+.dating-question-phrase { position: relative; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 12px; padding: 12px 46px 12px 14px; }
+.app-root[data-theme="dark"] .dating-question-phrase { background: color-mix(in srgb, var(--jade) 8%, transparent); }
+.dating-question-phrase .dating-phrase-speak { position: absolute; top: 10px; right: 10px; }
+.dating-question-prompt { font-size: 14.5px; font-weight: 600; color: var(--ink); line-height: 1.5; margin: 0; }
+
+.dating-options { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.dating-option { position: relative; width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--cream-warm); border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 13px; cursor: pointer; font: inherit; color: var(--ink); transition: border-color 0.12s, background 0.12s; }
+.app-root[data-theme="dark"] .dating-option { background: color-mix(in srgb, var(--ink-soft) 7%, transparent); }
+@media (hover: hover) and (pointer: fine) { .dating-option:not(:disabled):hover { border-color: var(--jade); } }
+.dating-option-selected { border-color: var(--jade); background: color-mix(in srgb, var(--jade) 9%, transparent); }
+.dating-option-correct { border-color: var(--jade); background: color-mix(in srgb, var(--jade) 14%, transparent); }
+.dating-option-wrong { border-color: #b3261e; background: color-mix(in srgb, #b3261e 10%, transparent); }
+.dating-option:disabled { cursor: default; opacity: 1; }
+.dating-option-mark { flex: 0 0 auto; }
+.dating-option-correct .dating-option-mark { color: var(--jade); }
+.dating-option-wrong .dating-option-mark { color: #b3261e; }
+.dating-option-text { font-size: 13px; line-height: 1.45; }
+.dating-option-phrase { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dating-option-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 16.5px; font-weight: 600; color: var(--jade); line-height: 1.35; word-break: break-word; }
+.dating-option-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; color: var(--gold); }
+.dating-option-en { font-size: 11.5px; color: var(--ink-soft); font-style: italic; }
+
+.dating-quiz-submit, .dating-quiz-next { align-self: center; display: inline-flex; align-items: center; gap: 6px; }
+.dating-quiz-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.dating-reveal { border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--line); }
+.dating-reveal-correct { background: color-mix(in srgb, var(--jade) 7%, transparent); border-color: color-mix(in srgb, var(--jade) 30%, var(--line)); }
+.dating-reveal-wrong { background: color-mix(in srgb, #b3261e 6%, transparent); border-color: color-mix(in srgb, #b3261e 26%, var(--line)); }
+.dating-reveal-verdict { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; margin: 0; }
+.dating-reveal-correct .dating-reveal-verdict { color: var(--jade); }
+.dating-reveal-wrong .dating-reveal-verdict { color: #b3261e; }
+.dating-explain { display: flex; flex-direction: column; gap: 9px; }
+.dating-explain-answer { position: relative; background: var(--card-bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 46px 10px 12px; }
+.dating-explain-answer .dating-phrase-speak { position: absolute; top: 9px; right: 9px; }
+.dating-explain-answer .dating-phrase-thai { font-size: 18px; }
+.dating-explain-correct-label { font-size: 12px; font-weight: 700; color: var(--jade); margin: 5px 0 0; }
+.dating-explain-text { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin: 0; }
+
+/* Category completion summary */
+.dating-summary-card { max-width: 440px; margin: 10px auto 0; text-align: center; background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.dating-summary-icon { color: var(--gold); }
+.dating-summary-title { font-family: 'Fraunces', serif; font-size: 19px; color: var(--jade); margin: 0; }
+.dating-summary-score { font-size: 14px; color: var(--ink); margin: 0; }
+.dating-summary-card .dating-catcard-badges { justify-content: center; }
 
 @media (max-width: 560px) {
   .dating-draft-banner { flex-direction: column; gap: 8px; padding: 14px 15px; }

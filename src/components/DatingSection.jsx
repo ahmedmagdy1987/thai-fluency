@@ -1,81 +1,89 @@
-import React, { useEffect, useMemo } from 'react';
-import { Heart, ShieldCheck, AlertTriangle, Crown, FileClock, Volume2, Lock } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Heart, ShieldCheck, AlertTriangle, Crown, FileClock, Volume2, Lock,
+  ArrowLeft, ArrowRight, Check, X, RotateCcw, Sparkles,
+} from 'lucide-react';
 import { DATING_SECTION, DATING_CATEGORIES, DATING_REVIEW_COMPLETE } from '../data/datingContent.js';
 import { DATING_PHRASES } from '../data/datingPhrases.js';
+import { DATING_QUESTIONS } from '../data/datingQuestions.js';
+import {
+  SEVERITY_LABEL, USAGE_GUIDANCE, CATEGORY_REGISTER, reviewBadge, isMaleForm,
+  QUESTION_TYPE_LABEL, promptShowsPhrase, badgesLeakAnswer, optionIsPhrase,
+  resolveQuestion, gradeAnswer,
+} from '../lib/datingQuiz.js';
+import { loadAdultConfirmed, saveAdultConfirmed } from '../lib/storage.js';
 import { isSuper } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
 // "Dating & Real Talk Thai" — OPTIONAL, 18+, mature language, NOT part of course
-// progress. This section is Super-EXCLUSIVE:
-//   • Non-subscribers see an attractive LOCKED TEASER (what's inside, 18+ badge,
-//     an "Unlock with Super" button → /plans). No unreviewed Thai is shown.
-//   • Super subscribers see the FIRST BATCH of draft phrases (datingPhrases.js)
-//     grouped by category, behind an honest "Draft — pending native review"
-//     banner that does NOT claim the content is reviewed.
-// Content stays within a tasteful adult boundary (see datingContent.js /
-// datingPhrases.js safety notes).
+// progress. An INTERACTIVE Super-exclusive learning mode (questions & scenarios,
+// not a static phrase list):
+//   • Non-subscribers see a LOCKED TEASER (what's inside, 18+ badge, category/
+//     status badges, "Unlock with Super" → /plans). No unreviewed Thai is shown.
+//   • Super subscribers must confirm 18+ once (persisted device-locally) before
+//     the learning mode opens.
+//   • The mode itself: pick a category → answer question/scenario cards →
+//     submit → reveal correct/incorrect + explanation panel → next → category
+//     completion. Progress is session-local React state — no DB schema, no XP,
+//     no reward paths (deliberately un-farmable).
 //
 // BADGE POLICY (owner requirement — do not remove badges):
 //   Badges are the safety/clarity backbone of this section and must stay visible
-//   on cards, category headers, teaser rows, and any future interactive screens.
-//   The Super gate hides PHRASES (Thai/phonetics/examples/explanations) from
-//   locked users — never the 18+/Super/severity/review-status badges, which are
-//   English-only metadata and safe to show in the teaser.
+//   on category cards, question cards, answers, and explanation panels. The
+//   Super gate hides PHRASES (Thai/phonetics/answers/explanations) from locked
+//   users — never the 18+/Super/severity/register/review-status badges, which
+//   are English-only metadata and safe to show in the teaser.
+//   Exception inside the quiz: badges that literally state the answer (tone /
+//   usage-guidance chips on a "tone check" or judgement question) stay hidden
+//   until reveal — see badgesLeakAnswer() — then appear on the explanation
+//   panel. That is answer-hygiene, not badge removal.
+//
+// All quiz logic lives in src/lib/datingQuiz.js (pure, node-testable); the
+// question bank in src/data/datingQuestions.js references Thai ONLY by phraseId
+// into datingPhrases.js, so this mode can never introduce new unreviewed Thai.
 
-const SEVERITY_LABEL = {
-  gentle: 'Gentle',
-  moderate: 'Casual',
-  strong: 'Handle with care',
-  safety: 'Safety',
+const shuffleIds = (ids) => {
+  const a = ids.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 };
 
-// Per-category severity carries an overall tone label for the section header.
-const CAT_SEVERITY_LABEL = {
-  gentle: 'Gentle',
-  moderate: 'Casual',
-  strong: 'Handle with care',
-  safety: 'Safety',
-};
-
-// Usage guidance derived from the reviewer-set severity. Safety phrases (consent,
-// boundaries, getting home) are exactly the ones a learner SHOULD use.
-const USAGE_GUIDANCE = {
-  gentle: { label: 'Safe to use', cls: 'safe' },
-  moderate: { label: 'Use carefully', cls: 'careful' },
-  strong: { label: 'Don’t use casually', cls: 'avoid' },
-  safety: { label: 'Safe to use', cls: 'safe' },
-};
-
-// Language-register flag for categories whose register itself needs a warning.
-const CATEGORY_REGISTER = {
-  'casual-slang': { label: 'Slang', cls: 'slang' },
-  'mild-swears-insults': { label: 'Rude', cls: 'rude' },
-};
-
-// Native-review status → badge. Every phrase/category carries reviewStatus; the
-// labels flip automatically when the native reviewer marks items approved.
-const REVIEW_STATUS = {
-  pending: { label: 'Native review pending', cls: 'review-pending' },
-  approved: { label: 'Native approved', cls: 'review-approved' },
-  'needs-review': { label: 'Needs review', cls: 'review-needs' },
-};
-const reviewBadge = (status) => REVIEW_STATUS[status] || REVIEW_STATUS.pending;
-
-// All shipped phrases are male-polite form (ผม / ครับ) per the app-wide
-// male-default voice convention; badge it so female learners know to swap.
-const isMaleForm = (p) => /ครับ|ผม/.test(`${p.thai} ${p.example ? p.example.thai : ''}`);
-
-export default function DatingSection({ stats, onOpenSuper }) {
+export default function DatingSection({ stats, onOpenSuper, setTab }) {
   const superUser = isSuper(stats);
+  const [adultConfirmed, setAdultConfirmed] = useState(() => loadAdultConfirmed());
+
+  // quiz === null → category selector; quiz.finished → summary; else question.
+  const [quiz, setQuiz] = useState(null);
+  // FROZEN once set: the current question + its option order never re-derive
+  // from live filters/category state, so nothing the user toggles can reveal
+  // or swap the active question (same principle as the card direction lock).
+  const [current, setCurrent] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [revealed, setRevealed] = useState(false);
+  const [catProgress, setCatProgress] = useState({});
+
+  const phraseById = useMemo(() => new Map(DATING_PHRASES.map((p) => [p.id, p])), []);
+  const questionsByCat = useMemo(() => {
+    const m = new Map();
+    for (const q of DATING_QUESTIONS) {
+      if (!m.has(q.cat)) m.set(q.cat, []);
+      m.get(q.cat).push(q);
+    }
+    return m;
+  }, []);
+  const totalQuestions = DATING_QUESTIONS.length;
 
   // Reaching this gated section is an intentional premium tap. Record whether the
   // viewer is locked (upsell impression) or a subscriber (content view).
   useEffect(() => {
     trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, {
       source: 'dating-section',
-      state: superUser ? 'unlocked' : 'locked',
+      state: superUser ? (adultConfirmed ? 'unlocked' : 'age-gate') : 'locked',
     });
-  }, [superUser]);
+  }, [superUser, adultConfirmed]);
 
   const seeSuper = () => {
     trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'dating-unlock-super' });
@@ -95,20 +103,54 @@ export default function DatingSection({ stats, onOpenSuper }) {
     }
   };
 
-  // Group the draft phrases by category, preserving DATING_CATEGORIES order and
-  // only showing categories that actually have phrases in this batch.
-  const groups = useMemo(() => {
-    const byCat = new Map();
-    for (const p of DATING_PHRASES) {
-      if (!byCat.has(p.cat)) byCat.set(p.cat, []);
-      byCat.get(p.cat).push(p);
-    }
-    return DATING_CATEGORIES
-      .filter((c) => byCat.has(c.id))
-      .map((c) => ({ cat: c, phrases: byCat.get(c.id) }));
-  }, []);
+  const loadQuestion = (catId, index) => {
+    const qs = questionsByCat.get(catId) || [];
+    const resolved = resolveQuestion(qs[index], phraseById);
+    setCurrent({ q: resolved, order: shuffleIds(resolved.options.map((o) => o.id)) });
+    setSelected(null);
+    setRevealed(false);
+  };
 
-  const totalPhrases = DATING_PHRASES.length;
+  const startCategory = (cat) => {
+    const qs = questionsByCat.get(cat.id) || [];
+    if (!qs.length) return;
+    setQuiz({ catId: cat.id, index: 0, correct: 0, total: qs.length, finished: false });
+    loadQuestion(cat.id, 0);
+  };
+
+  const submitAnswer = () => {
+    if (!current || selected == null || revealed) return;
+    setRevealed(true);
+    if (gradeAnswer(current.q, selected)) {
+      setQuiz((z) => ({ ...z, correct: z.correct + 1 }));
+    }
+  };
+
+  const nextQuestion = () => {
+    if (!quiz || !revealed) return;
+    const nextIndex = quiz.index + 1;
+    if (nextIndex >= quiz.total) {
+      const finalCorrect = quiz.correct;
+      setQuiz((z) => ({ ...z, finished: true }));
+      setCurrent(null);
+      setCatProgress((p) => {
+        const prev = p[quiz.catId];
+        const best = prev ? Math.max(prev.correct, finalCorrect) : finalCorrect;
+        return { ...p, [quiz.catId]: { done: true, correct: best, total: quiz.total } };
+      });
+      return;
+    }
+    setQuiz((z) => ({ ...z, index: nextIndex }));
+    loadQuestion(quiz.catId, nextIndex);
+  };
+
+  const exitToCategories = () => {
+    // Leaving mid-question discards the frozen question UNREVEALED — no leak.
+    setQuiz(null);
+    setCurrent(null);
+    setSelected(null);
+    setRevealed(false);
+  };
 
   const hero = (
     <header className="dating-hero">
@@ -129,9 +171,9 @@ export default function DatingSection({ stats, onOpenSuper }) {
   );
 
   // ── LOCKED TEASER (non-subscribers) ───────────────────────────────────────
-  // Explains what's inside using ENGLISH INTENTS ONLY (no unreviewed Thai), shows
-  // the 18+ badge, and routes to /plans via onOpenSuper. Reuses the locked-premium
-  // visual language for consistency with the rest of the app.
+  // Explains what's inside using ENGLISH INTENTS ONLY (no unreviewed Thai, no
+  // answers), shows the 18+ badge and per-category status badges, and routes to
+  // /plans via onOpenSuper.
   if (!superUser) {
     return (
       <div className="tab-content dating-section">
@@ -145,10 +187,10 @@ export default function DatingSection({ stats, onOpenSuper }) {
           </div>
           <h2 className="locked-premium-title">Unlock Dating &amp; Real Talk with Super</h2>
           <p className="locked-premium-desc">
-            An optional, adults-only section with {totalPhrases}+ practical phrases for real dating in
-            Thailand — flirting and compliments, asking someone out, feelings and relationships,
-            boundaries and consent, polite rejection, and getting home safe. Each phrase comes with
-            phonetics, an example, and a tone/severity note.
+            An optional, adults-only <strong>interactive learning mode</strong> — {totalQuestions} questions
+            and real-life scenarios across {DATING_CATEGORIES.length} categories: flirting and compliments,
+            asking someone out, feelings and relationships, boundaries and consent, polite rejection, and
+            getting home safe. Every question comes with tone, severity, and context guidance.
           </p>
 
           <ul className="dating-teaser-list">
@@ -157,7 +199,7 @@ export default function DatingSection({ stats, onOpenSuper }) {
                 <div className="dating-teaser-item-head">
                   <span className="dating-teaser-item-name">{cat.name}</span>
                   <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>
-                    {CAT_SEVERITY_LABEL[cat.severity]}
+                    {SEVERITY_LABEL[cat.severity]}
                   </span>
                 </div>
                 <span className="dating-teaser-item-blurb">{cat.blurb}</span>
@@ -192,134 +234,307 @@ export default function DatingSection({ stats, onOpenSuper }) {
     );
   }
 
-  // ── SUPER SUBSCRIBERS: draft phrases ──────────────────────────────────────
-  return (
-    <div className="tab-content dating-section">
-      {hero}
+  // ── SUPER, NOT YET 18+ CONFIRMED: one-time age confirmation ───────────────
+  if (!adultConfirmed) {
+    return (
+      <div className="tab-content dating-section">
+        {hero}
 
-      {/* Honest draft banner — does NOT claim the content is reviewed. */}
-      <section className="dating-draft-banner" role="status" aria-label="Draft content notice">
-        <div className="dating-draft-icon" aria-hidden="true"><FileClock size={20} /></div>
-        <div className="dating-draft-text">
-          <h2 className="dating-draft-title">Draft content — pending native-speaker review</h2>
-          <p className="dating-draft-copy">
-            These {totalPhrases} phrases are an early draft written to be accurate and natural, but they
-            have <strong>not</strong> yet been checked by a native Thai speaker for tone and cultural
-            context. Learn from them, but expect small changes. This optional adult section isn’t part of
-            the core course and isn’t required to progress.
+        <section className="dating-confirm-card" role="group" aria-label="Adults only — confirm your age">
+          <div className="dating-badges">
+            <span className="dating-badge dating-badge-18">18+</span>
+            <span className="dating-badge dating-badge-mature">Mature language</span>
+          </div>
+          <h2 className="dating-confirm-title">This section is for adults</h2>
+          <p className="dating-confirm-copy">
+            Dating &amp; Real Talk teaches mature, real-world Thai — flirting, relationships, boundaries
+            and consent, nightlife, casual slang, and recognizing rude language. It is educational and
+            context-focused, optional, and never required for course progress.
           </p>
-        </div>
-      </section>
+          <div className="dating-confirm-actions">
+            <button
+              type="button"
+              className="btn-primary dating-confirm-yes"
+              onClick={() => { saveAdultConfirmed(); setAdultConfirmed(true); }}
+            >
+              I’m 18 or older — continue
+            </button>
+            <button
+              type="button"
+              className="dating-confirm-no"
+              onClick={() => { if (setTab) setTab('learn'); }}
+            >
+              Not now
+            </button>
+          </div>
+          <p className="dating-confirm-note">
+            Your confirmation is saved on this device only.
+          </p>
+        </section>
+      </div>
+    );
+  }
 
-      {/* Draft phrases, grouped by category. */}
-      <section className="dating-phrases" aria-label="Draft phrases">
-        {groups.map(({ cat, phrases }) => (
-          <div className="dating-cat-block" key={cat.id}>
-            <div className="dating-cat-block-head">
-              <div className="dating-cat-block-titles">
-                <h2 className="dating-cat-block-name">{cat.name}</h2>
-                <p className="dating-cat-block-blurb">{cat.blurb}</p>
-              </div>
-              <span className="dating-cat-chiprow">
-                <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>
-                  {CAT_SEVERITY_LABEL[cat.severity]}
-                </span>
-                {CATEGORY_REGISTER[cat.id] && (
-                  <span className={`dating-chip dating-chip-${CATEGORY_REGISTER[cat.id].cls}`}>
-                    {CATEGORY_REGISTER[cat.id].label}
+  // ── INTERACTIVE MODE: category selector ───────────────────────────────────
+  if (!quiz) {
+    return (
+      <div className="tab-content dating-section">
+        {hero}
+
+        {!DATING_REVIEW_COMPLETE && (
+          <section className="dating-draft-banner" role="status" aria-label="Draft content notice">
+            <div className="dating-draft-icon" aria-hidden="true"><FileClock size={20} /></div>
+            <div className="dating-draft-text">
+              <h2 className="dating-draft-title">Draft content — pending native-speaker review</h2>
+              <p className="dating-draft-copy">
+                Written to be accurate and natural, but not yet checked by a native Thai speaker for tone
+                and cultural context. Educational and context-only: understanding a phrase is not an
+                invitation to use it — every answer explains when (and when not) to.
+              </p>
+            </div>
+          </section>
+        )}
+
+        <section className="dating-catgrid" aria-label="Choose a category">
+          {DATING_CATEGORIES.filter((c) => (questionsByCat.get(c.id) || []).length > 0).map((cat) => {
+            const count = questionsByCat.get(cat.id).length;
+            const prog = catProgress[cat.id];
+            return (
+              <button type="button" className="dating-catcard" key={cat.id} onClick={() => startCategory(cat)}>
+                <div className="dating-catcard-head">
+                  <span className="dating-catcard-name">{cat.name}</span>
+                  <ArrowRight size={15} aria-hidden="true" className="dating-catcard-go" />
+                </div>
+                <p className="dating-catcard-blurb">{cat.blurb}</p>
+                <div className="dating-catcard-badges">
+                  <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>
+                  {CATEGORY_REGISTER[cat.id] && (
+                    <span className={`dating-chip dating-chip-${CATEGORY_REGISTER[cat.id].cls}`}>
+                      {CATEGORY_REGISTER[cat.id].label}
+                    </span>
+                  )}
+                  <span className={`dating-chip dating-chip-${reviewBadge(cat.reviewStatus).cls}`}>
+                    {reviewBadge(cat.reviewStatus).label}
+                  </span>
+                  <span className="dating-chip dating-chip-count">{count} questions</span>
+                  {prog && prog.done && (
+                    <span className="dating-chip dating-chip-done"><Check size={11} aria-hidden="true" /> Best {prog.correct}/{prog.total}</span>
+                  )}
+                </div>
+                {cat.handleWithCare && (
+                  <span className="dating-teaser-care">
+                    <AlertTriangle size={12} aria-hidden="true" /> Recognition only — understand it, mostly don’t use it.
                   </span>
                 )}
-                <span className={`dating-chip dating-chip-${reviewBadge(cat.reviewStatus).cls}`}>
-                  {reviewBadge(cat.reviewStatus).label}
-                </span>
+              </button>
+            );
+          })}
+        </section>
+
+        <p className="dating-disclaimer">
+          Draft questions pending native review. This section is a tasteful adult resource and excludes
+          explicit sexual content, hateful slurs, harassment, and coercive language. Understanding
+          casual or blunt language is not an invitation to use it — mind your audience and context.
+        </p>
+      </div>
+    );
+  }
+
+  const cat = DATING_CATEGORIES.find((c) => c.id === quiz.catId);
+
+  // ── INTERACTIVE MODE: category completion summary ─────────────────────────
+  if (quiz.finished) {
+    return (
+      <div className="tab-content dating-section">
+        {hero}
+        <section className="dating-summary-card" role="status" aria-label="Category complete">
+          <div className="dating-summary-icon" aria-hidden="true"><Sparkles size={26} /></div>
+          <h2 className="dating-summary-title">{cat ? cat.name : 'Category'} complete</h2>
+          <p className="dating-summary-score">
+            You got <strong>{quiz.correct} of {quiz.total}</strong> right.
+          </p>
+          <div className="dating-catcard-badges">
+            {cat && <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>}
+            {cat && (
+              <span className={`dating-chip dating-chip-${reviewBadge(cat.reviewStatus).cls}`}>
+                {reviewBadge(cat.reviewStatus).label}
               </span>
+            )}
+          </div>
+          <div className="dating-confirm-actions">
+            <button type="button" className="btn-primary" onClick={() => startCategory(cat)}>
+              <RotateCcw size={14} aria-hidden="true" /> Practice again
+            </button>
+            <button type="button" className="dating-confirm-no" onClick={exitToCategories}>
+              All categories
+            </button>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // ── INTERACTIVE MODE: question card ───────────────────────────────────────
+  const { q, order } = current;
+  const showPhrase = promptShowsPhrase(q.questionType);
+  const showSubjectBadges = !badgesLeakAnswer(q.questionType) || revealed;
+  const correctOption = q.options.find((o) => o.id === q.correctOptionId);
+  const isCorrect = revealed && gradeAnswer(q, selected);
+
+  const subjectBadges = (
+    <>
+      <span className={`dating-sev-chip dating-cat-sev-${q.severity}`}>{q.tone}</span>
+      <span className={`dating-chip dating-chip-${USAGE_GUIDANCE[q.severity].cls}`}>{q.usageGuidance}</span>
+      {q.register && <span className={`dating-chip dating-chip-${q.register.cls}`}>{q.register.label}</span>}
+      {q.speakerNote && (
+        <span
+          className="dating-chip dating-chip-speaker"
+          title="Shown in polite male form (ผม / ครับ). Female speakers: swap ครับ → ค่ะ and ผม → ฉัน."
+        >
+          {q.speakerNote}
+        </span>
+      )}
+    </>
+  );
+
+  return (
+    <div className="tab-content dating-section">
+      <div className="dating-quiz-topbar">
+        <button type="button" className="dating-quiz-back" onClick={exitToCategories}>
+          <ArrowLeft size={15} aria-hidden="true" /> Categories
+        </button>
+        <div className="dating-quiz-cat">
+          <span className="dating-quiz-cat-name">{cat ? cat.name : ''}</span>
+          {cat && <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>}
+        </div>
+        <span className="dating-quiz-count">{quiz.index + 1}/{quiz.total}</span>
+      </div>
+      <div className="dating-quiz-progress" role="progressbar" aria-valuemin={0} aria-valuemax={quiz.total} aria-valuenow={quiz.index + (revealed ? 1 : 0)}>
+        <div className="dating-quiz-progress-fill" style={{ width: `${((quiz.index + (revealed ? 1 : 0)) / quiz.total) * 100}%` }} />
+      </div>
+
+      <section className="dating-question-card" aria-label="Question">
+        <div className="dating-phrase-badges">
+          <span className="dating-chip dating-chip-qtype">{QUESTION_TYPE_LABEL[q.questionType]}</span>
+          <span className={`dating-chip dating-chip-${reviewBadge(q.nativeReviewStatus).cls}`}>
+            {reviewBadge(q.nativeReviewStatus).label}
+          </span>
+          {showSubjectBadges && subjectBadges}
+        </div>
+
+        {showPhrase && (
+          <div className="dating-question-phrase">
+            <p className="dating-phrase-thai" lang="th">{q.phrase.thai}</p>
+            <p className="dating-phrase-ph">{q.phrase.ph}</p>
+            <button
+              type="button"
+              className="dating-phrase-speak"
+              onClick={() => speak(q.phrase.thai)}
+              aria-label="Play pronunciation"
+              title="Play pronunciation"
+            >
+              <Volume2 size={15} aria-hidden="true" />
+            </button>
+          </div>
+        )}
+
+        <p className="dating-question-prompt">{q.prompt}</p>
+
+        <ul className="dating-options" role="listbox" aria-label="Answer options">
+          {order.map((oid) => {
+            const opt = q.options.find((o) => o.id === oid);
+            const isSel = selected === oid;
+            const cls = [
+              'dating-option',
+              isSel ? 'dating-option-selected' : '',
+              revealed && oid === q.correctOptionId ? 'dating-option-correct' : '',
+              revealed && isSel && oid !== q.correctOptionId ? 'dating-option-wrong' : '',
+            ].filter(Boolean).join(' ');
+            return (
+              <li key={oid}>
+                <button
+                  type="button"
+                  className={cls}
+                  disabled={revealed}
+                  aria-pressed={isSel}
+                  onClick={() => { if (!revealed) setSelected(oid); }}
+                >
+                  {optionIsPhrase(opt) ? (
+                    <span className="dating-option-phrase">
+                      <span className="dating-option-thai" lang="th">{opt.phrase.thai}</span>
+                      <span className="dating-option-ph">{opt.phrase.ph}</span>
+                      {revealed && <span className="dating-option-en">{opt.phrase.en}</span>}
+                    </span>
+                  ) : (
+                    <span className="dating-option-text">{opt.text}</span>
+                  )}
+                  {revealed && oid === q.correctOptionId && <Check size={16} aria-hidden="true" className="dating-option-mark" />}
+                  {revealed && isSel && oid !== q.correctOptionId && <X size={16} aria-hidden="true" className="dating-option-mark" />}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        {!revealed ? (
+          <button
+            type="button"
+            className="btn-primary dating-quiz-submit"
+            disabled={selected == null}
+            onClick={submitAnswer}
+          >
+            Check answer
+          </button>
+        ) : (
+          <div className={`dating-reveal ${isCorrect ? 'dating-reveal-correct' : 'dating-reveal-wrong'}`} role="status">
+            <p className="dating-reveal-verdict">
+              {isCorrect ? <><Check size={16} aria-hidden="true" /> Correct!</> : <><X size={16} aria-hidden="true" /> Not quite.</>}
+            </p>
+
+            <div className="dating-explain">
+              <div className="dating-phrase-badges">
+                {subjectBadges}
+                <span className={`dating-chip dating-chip-${reviewBadge(q.nativeReviewStatus).cls}`}>
+                  {reviewBadge(q.nativeReviewStatus).label}
+                </span>
+              </div>
+
+              <div className="dating-explain-answer">
+                <span className="dating-note-label">Answer</span>
+                <p className="dating-phrase-thai" lang="th">{q.phrase.thai}</p>
+                <p className="dating-phrase-ph">{q.phrase.ph}</p>
+                <p className="dating-phrase-en">{q.phrase.en}</p>
+                {!optionIsPhrase(correctOption) && correctOption && (
+                  <p className="dating-explain-correct-label">Correct choice: “{correctOption.text}”</p>
+                )}
+                <button
+                  type="button"
+                  className="dating-phrase-speak"
+                  onClick={() => speak(q.phrase.thai)}
+                  aria-label="Play pronunciation"
+                  title="Play pronunciation"
+                >
+                  <Volume2 size={15} aria-hidden="true" />
+                </button>
+              </div>
+
+              <p className="dating-explain-text">{q.explanation}</p>
+              {q.context && (
+                <p className="dating-phrase-note"><span className="dating-note-label">Context</span> {q.context}</p>
+              )}
+              {(q.warning || q.severity === 'strong') && (
+                <p className="dating-phrase-care">
+                  <AlertTriangle size={12} aria-hidden="true" /> {q.warning || 'Handle with care — understand it, don’t aim it at anyone.'}
+                </p>
+              )}
             </div>
 
-            {cat.handleWithCare && (
-              <p className="dating-cat-care">
-                <AlertTriangle size={13} aria-hidden="true" /> Recognition only — understand these, mostly don’t use them.
-              </p>
-            )}
-
-            <ul className="dating-phrase-list">
-              {phrases.map((p) => (
-                <li className="dating-phrase-card" key={p.id}>
-                  <div className="dating-phrase-top">
-                    <div className="dating-phrase-main">
-                      <p className="dating-phrase-thai" lang="th">{p.thai}</p>
-                      <p className="dating-phrase-ph">{p.ph}</p>
-                      <p className="dating-phrase-en">{p.en}</p>
-                    </div>
-                    <div className="dating-phrase-side">
-                      <button
-                        type="button"
-                        className="dating-phrase-speak"
-                        onClick={() => speak(p.thai)}
-                        aria-label={`Play pronunciation of ${p.en}`}
-                        title="Play pronunciation"
-                      >
-                        <Volume2 size={15} aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="dating-phrase-badges">
-                    <span className={`dating-sev-chip dating-cat-sev-${p.severity}`}>
-                      {SEVERITY_LABEL[p.severity]}
-                    </span>
-                    <span className={`dating-chip dating-chip-${USAGE_GUIDANCE[p.severity].cls}`}>
-                      {USAGE_GUIDANCE[p.severity].label}
-                    </span>
-                    {CATEGORY_REGISTER[p.cat] && (
-                      <span className={`dating-chip dating-chip-${CATEGORY_REGISTER[p.cat].cls}`}>
-                        {CATEGORY_REGISTER[p.cat].label}
-                      </span>
-                    )}
-                    <span className={`dating-chip dating-chip-${reviewBadge(p.reviewStatus).cls}`}>
-                      {reviewBadge(p.reviewStatus).label}
-                    </span>
-                    {isMaleForm(p) && (
-                      <span
-                        className="dating-chip dating-chip-speaker"
-                        title="Shown in polite male form (ผม / ครับ). Female speakers: swap ครับ → ค่ะ and ผม → ฉัน."
-                      >
-                        Male form
-                      </span>
-                    )}
-                  </div>
-
-                  {p.example && (
-                    <div className="dating-phrase-example">
-                      <span className="dating-phrase-example-label">Example</span>
-                      <p className="dating-phrase-example-thai" lang="th">{p.example.thai}</p>
-                      <p className="dating-phrase-example-ph">{p.example.ph}</p>
-                      <p className="dating-phrase-example-en">{p.example.en}</p>
-                    </div>
-                  )}
-
-                  {p.note && (
-                    <p className="dating-phrase-note">
-                      <span className="dating-note-label">Context</span> {p.note}
-                    </p>
-                  )}
-
-                  {p.severity === 'strong' && (
-                    <p className="dating-phrase-care">
-                      <AlertTriangle size={12} aria-hidden="true" /> Handle with care — understand it, don’t aim it at anyone.
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <button type="button" className="btn-primary dating-quiz-next" onClick={nextQuestion}>
+              {quiz.index + 1 >= quiz.total ? 'Finish' : 'Next question'} <ArrowRight size={14} aria-hidden="true" />
+            </button>
           </div>
-        ))}
+        )}
       </section>
-
-      <p className="dating-disclaimer">
-        Draft phrases pending native review. This section is a tasteful adult resource and excludes
-        explicit sexual content, hateful slurs, harassment, and coercive language. Understanding
-        casual or blunt language is not an invitation to use it — mind your audience and context.
-      </p>
     </div>
   );
 }

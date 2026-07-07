@@ -2278,7 +2278,7 @@ export default function TukTalkThaiApp() {
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
           {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} onRefillHearts={handleRefillHearts} onOpenSuper={handleOpenPremium} />}
-          {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={handleOpenPremium} />}
+          {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={handleOpenPremium} setTab={handleSetTab} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
       )}

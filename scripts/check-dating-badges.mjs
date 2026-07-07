@@ -1,17 +1,20 @@
 // Regression guard for the Dating & Real Talk badge + gating policy.
 //
 // OWNER POLICY (2026-07-07): badges must NEVER be removed from this section.
-// The Super gate hides PHRASES (Thai script, phonetics, examples, explanations)
+// The Super gate hides PHRASES (Thai script, phonetics, answers, explanations)
 // from locked users — never the badges. Locked users must still see the
 // teaser/category/status badges (18+, Super, severity, register, native-review
-// status), all English-only; Super users must see the full badge set on every
-// phrase card (severity, usage guidance, register where flagged, review status,
-// speaker form) plus category-header badges.
+// status), all English-only; Super users get the full interactive mode with
+// badges on category cards, question cards, answers, and explanation panels.
+// Inside the quiz, badges that literally state the answer (tone/usage chips on
+// a tone-check or judgement question) stay hidden until reveal — that is
+// answer-hygiene, not badge removal, and the full set must appear on reveal.
 //
-// This script statically asserts (a) the badge surfaces exist in both the locked
-// and unlocked render paths, (b) the locked teaser leaks no Thai and no phrase
-// data, and (c) the data files carry the fields the badges are derived from.
-// It exits non-zero on any regression so the validators catch badge removal.
+// This script statically asserts (a) the badge surfaces exist on every screen
+// of the interactive flow, (b) the locked teaser leaks no Thai and no phrase
+// data, (c) the 18+ gate exists for Super users, (d) the quiz flow has the
+// required category/question/reveal/next/completion states with a frozen
+// current question, and (e) the mode has no reward/XP path to farm.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -27,16 +30,23 @@ const assert = (name, cond, detail = '') => (cond ? ok(name) : fail(name, detail
 
 const src = readFileSync(join(root, 'src/components/DatingSection.jsx'), 'utf8');
 
-// ---- 1. Split the component into the locked and unlocked render paths --------
+// ---- 1. Split the component into its screens ----------------------------------
 const lockedStart = src.indexOf('if (!superUser)');
-const superStart = src.indexOf('SUPER SUBSCRIBERS');
-assert('component has a locked branch', lockedStart !== -1);
-assert('component has a Super branch after the locked branch', superStart > lockedStart);
+const ageGateStart = src.indexOf('if (!adultConfirmed)');
+const categoriesStart = src.indexOf('if (!quiz)');
+const summaryStart = src.indexOf('if (quiz.finished)');
+const questionStart = src.indexOf('INTERACTIVE MODE: question card');
+assert('screens exist in order: locked → age gate → categories → summary → question',
+  lockedStart > 0 && ageGateStart > lockedStart && categoriesStart > ageGateStart
+  && summaryStart > categoriesStart && questionStart > summaryStart);
 const heroAndShared = src.slice(0, lockedStart);
-const locked = src.slice(lockedStart, superStart);
-const unlocked = src.slice(superStart);
+const locked = src.slice(lockedStart, ageGateStart);
+const ageGate = src.slice(ageGateStart, categoriesStart);
+const categories = src.slice(categoriesStart, summaryStart);
+const summary = src.slice(summaryStart, questionStart);
+const question = src.slice(questionStart);
 
-// ---- 2. Hero badges (visible to EVERYONE, locked or not) ---------------------
+// ---- 2. Hero badges (visible to EVERYONE, locked or not) -----------------------
 assert('hero: 18+ badge', heroAndShared.includes('dating-badge-18'));
 assert('hero: mature-language badge', heroAndShared.includes('dating-badge-mature'));
 assert('hero: Super badge', heroAndShared.includes('dating-badge-super'));
@@ -44,7 +54,7 @@ assert('hero: review-status badge is NOT gated on superUser',
   /DATING_REVIEW_COMPLETE\s*\?/.test(heroAndShared) && !/superUser\s*&&[^\n]*dating-badge-draft/.test(heroAndShared),
   'review status is safe metadata and must show for locked users too');
 
-// ---- 3. Locked teaser: status badges WITHOUT content leakage ------------------
+// ---- 3. Locked teaser: status badges WITHOUT content leakage --------------------
 assert('locked: Super + 18+ badges on the locked card',
   locked.includes('locked-premium-badge-super') && locked.includes('18+'));
 assert('locked: per-category severity chips', locked.includes('dating-cat-sev'));
@@ -52,45 +62,66 @@ assert('locked: per-category status badge row', locked.includes('dating-teaser-i
 assert('locked: per-category review-status chip', locked.includes('reviewBadge(cat.reviewStatus)'));
 assert('locked: register chip where flagged', locked.includes('CATEGORY_REGISTER[cat.id]'));
 assert('locked: handle-with-care warning preserved', locked.includes('dating-teaser-care'));
-// Leak guards: the locked branch must never touch phrase data or render Thai.
-assert('locked: does not render DATING_PHRASES entries',
-  !locked.includes('phrases.map') && !/\bp\.thai\b/.test(locked) && !/\bp\.ph\b/.test(locked));
+assert('locked: Go Super CTA', locked.includes('locked-premium-cta'));
+// Leak guards: the locked branch must never touch phrase/question data or render Thai.
+assert('locked: does not render phrases, options, or answers',
+  !/\bq\.|\bp\.thai\b|\.options\b|correctOptionId|explanation/.test(locked));
 assert('locked: no Thai script in the locked JSX', !/[฀-๿]/.test(locked));
 assert('locked: no Thai script in datingContent.js (teaser data source)',
   !/[฀-๿]/.test(readFileSync(join(root, 'src/data/datingContent.js'), 'utf8')));
+assert('locked: no Thai script in datingQuestions.js (question bank)',
+  !/[฀-๿]/.test(readFileSync(join(root, 'src/data/datingQuestions.js'), 'utf8')));
 
-// ---- 4. Super view: full badge set on cards + category headers ----------------
-assert('super: category header chip row', unlocked.includes('dating-cat-chiprow'));
-assert('super: category severity chip', unlocked.includes('CAT_SEVERITY_LABEL[cat.severity]'));
-assert('super: category review-status chip', unlocked.includes('reviewBadge(cat.reviewStatus)'));
-assert('super: phrase-card badge row', unlocked.includes('dating-phrase-badges'));
-assert('super: severity chip per phrase', unlocked.includes('SEVERITY_LABEL[p.severity]'));
-assert('super: usage-guidance chip per phrase', unlocked.includes('USAGE_GUIDANCE[p.severity]'));
-assert('super: register chip per phrase where flagged', unlocked.includes('CATEGORY_REGISTER[p.cat]'));
-assert('super: review-status chip per phrase', unlocked.includes('reviewBadge(p.reviewStatus)'));
-assert('super: speaker-form chip', unlocked.includes('isMaleForm(p)'));
-assert('super: context label on notes', unlocked.includes('dating-note-label'));
-assert('super: strong phrases keep the handle-with-care line', unlocked.includes('dating-phrase-care'));
+// ---- 4. 18+ age gate for Super users --------------------------------------------
+assert('age gate: exists for Super users before content', ageGate.includes('dating-confirm-card'));
+assert('age gate: shows 18+ and mature badges',
+  ageGate.includes('dating-badge-18') && ageGate.includes('dating-badge-mature'));
+assert('age gate: confirmation persists device-locally',
+  ageGate.includes('saveAdultConfirmed()') && heroAndShared.includes('loadAdultConfirmed()'));
+assert('age gate: has a back/exit path', ageGate.includes('Not now'));
+assert('age gate: no Thai phrases shown', !/\bq\.|phrase\.thai|DATING_PHRASES/.test(ageGate));
 
-// ---- 5. Badge derivations cover every value the data actually uses ------------
-const usageMatch = src.match(/const USAGE_GUIDANCE = \{([\s\S]*?)\};/);
-const reviewMatch = src.match(/const REVIEW_STATUS = \{([\s\S]*?)\};/);
-assert('USAGE_GUIDANCE map exists', !!usageMatch);
-assert('REVIEW_STATUS map exists', !!reviewMatch);
-const severities = new Set(DATING_PHRASES.map((p) => p.severity).concat(DATING_CATEGORIES.map((c) => c.severity)));
-for (const s of severities) {
-  assert(`USAGE_GUIDANCE covers severity "${s}"`, !!usageMatch && usageMatch[1].includes(`${s}:`));
-}
-const statuses = new Set(DATING_PHRASES.map((p) => p.reviewStatus).concat(DATING_CATEGORIES.map((c) => c.reviewStatus)));
-for (const st of statuses) {
-  assert(`REVIEW_STATUS covers reviewStatus "${st}"`, !!reviewMatch && new RegExp(`['"]?${st}['"]?:`).test(reviewMatch[1]));
-}
+// ---- 5. Category selector: badges on category cards -----------------------------
+assert('categories: badge row on cards', categories.includes('dating-catcard-badges'));
+assert('categories: severity chip', categories.includes('SEVERITY_LABEL[cat.severity]'));
+assert('categories: register chip where flagged', categories.includes('CATEGORY_REGISTER[cat.id]'));
+assert('categories: review-status chip', categories.includes('reviewBadge(cat.reviewStatus)'));
+assert('categories: question-count chip', categories.includes('dating-chip-count'));
+assert('categories: completion chip', categories.includes('dating-chip-done'));
+assert('categories: draft banner + educational note',
+  categories.includes('dating-draft-banner') && categories.includes('Educational and context-only'));
 
-// ---- 6. Data invariants the badges depend on ----------------------------------
+// ---- 6. Question card: badges + frozen state + reveal flow ----------------------
+assert('question: type badge', question.includes('dating-chip-qtype'));
+assert('question: review-status badge always on the card', question.includes('reviewBadge(q.nativeReviewStatus)'));
+assert('question: subject badges (tone/usage/register/speaker) rendered', question.includes('subjectBadges'));
+assert('question: answer-leaking badges gated until reveal',
+  src.includes('badgesLeakAnswer(q.questionType) || revealed'));
+assert('question: subject phrase display gated by type (response/safest never leak the answer phrase)',
+  src.includes('promptShowsPhrase(q.questionType)'));
+assert('question: options disabled after reveal', question.includes('disabled={revealed}'));
+assert('question: explicit submit state', question.includes('Check answer'));
+assert('question: correct/incorrect feedback', question.includes('dating-reveal-correct') && question.includes('dating-reveal-wrong'));
+assert('question: explanation panel with badges', question.includes('dating-explain') && question.includes('subjectBadges'));
+assert('question: context label preserved', question.includes('dating-note-label'));
+assert('question: warning line for strong severity', question.includes('dating-phrase-care'));
+assert('question: next/finish progression', question.includes('Next question') && question.includes('Finish'));
+assert('question: progress indicator', question.includes('dating-quiz-progress') && question.includes('quiz.index + 1'));
+assert('summary: completion state with badges',
+  summary.includes('dating-summary-card') && summary.includes('reviewBadge(cat.reviewStatus)'));
+assert('flow: frozen current question (options shuffled once, never re-derived)',
+  src.includes('const [current, setCurrent]') && src.includes('shuffleIds(resolved.options.map'));
+assert('flow: leaving mid-question discards unrevealed (no leak)', src.includes('exitToCategories'));
+
+// ---- 7. No reward/XP farming path ------------------------------------------------
+assert('no XP/reward imports in the dating mode',
+  !/serverRewards|awardXp|grantXp|awardReward|rewardKeys/.test(src),
+  'dating quiz must not touch reward paths');
+
+// ---- 8. Data invariants the badges depend on --------------------------------------
 assert('section is marked 18+ / mature', DATING_SECTION.minAge === 18 && DATING_SECTION.matureLanguage === true);
 assert('every phrase has severity + reviewStatus',
-  DATING_PHRASES.every((p) => p.severity && p.reviewStatus),
-  'a phrase without severity/reviewStatus renders unbadged');
+  DATING_PHRASES.every((p) => p.severity && p.reviewStatus));
 assert('every category has severity + reviewStatus',
   DATING_CATEGORIES.every((c) => c.severity && c.reviewStatus));
 assert('recognition-only category is flagged handleWithCare',
