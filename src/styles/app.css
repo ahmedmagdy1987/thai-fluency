@@ -1199,6 +1199,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .app-root[data-theme="dark"] .dating-chip-careful, .app-root[data-theme="dark"] .dating-chip-review-pending { color: color-mix(in srgb, var(--gold) 80%, #fff); }
 .app-root[data-theme="dark"] .dating-chip-slang { color: color-mix(in srgb, #7c3aed 55%, #fff); }
 .dating-chip-qtype { background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 25%, var(--line)); }
+.dating-chip-neutral { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); }
 .dating-chip-count { background: color-mix(in srgb, var(--ink-soft) 10%, transparent); color: var(--ink-soft); }
 .dating-chip-done { background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); }
 

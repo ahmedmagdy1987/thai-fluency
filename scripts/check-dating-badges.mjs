@@ -97,6 +97,20 @@ assert('question: review-status badge always on the card', question.includes('re
 assert('question: subject badges (tone/usage/register/speaker) rendered', question.includes('subjectBadges'));
 assert('question: answer-leaking badges gated until reveal',
   src.includes('badgesLeakAnswer(q.questionType) || revealed'));
+// Answer-hygiene coverage: tone/severity/usage/judgement questions must not
+// show the answer via ANY badge before reveal — including the top-bar category
+// severity chip — and the full badge set must RETURN after reveal. Suppressed
+// chips are replaced with the neutral placeholder, never removed.
+assert('leak fix: top-bar category severity chip gated on leaking questions',
+  src.includes('hideCatSeverity = badgesLeakAnswer(q.questionType) && !revealed'));
+assert('leak fix: gated top-bar chip is REPLACED by the neutral placeholder (not removed)',
+  /hideCatSeverity \? \(\s*<span className="dating-chip dating-chip-neutral">\{ANSWER_AFTER_REVEAL_LABEL\}/.test(src));
+assert('leak fix: suppressed subject badges are REPLACED by the neutral placeholder (not removed)',
+  /showSubjectBadges \? subjectBadges : \(\s*<span className="dating-chip dating-chip-neutral">\{ANSWER_AFTER_REVEAL_LABEL\}/.test(src));
+assert('leak fix: full badges return after reveal (both gates depend on revealed)',
+  src.includes('!badgesLeakAnswer(q.questionType) || revealed') && src.includes('&& !revealed'));
+assert('leak fix: neutral placeholder label comes from the shared engine constant',
+  src.includes('ANSWER_AFTER_REVEAL_LABEL'));
 assert('question: subject phrase shown via the shared direction rule',
   src.includes('promptShowsPhrase(q.questionType)'));
 // Direction rule: Thai→English recognition. Options render English text only;

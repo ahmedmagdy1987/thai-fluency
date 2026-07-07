@@ -103,7 +103,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "b",
-        "text": "At the end of a genuinely fun cafe conversation, when the other person has to leave and you'd like to stay in touch."
+        "text": "At the end of a fun first conversation, when you'd like to stay in touch."
       },
       {
         "id": "c",
@@ -169,7 +169,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "c",
-        "text": "Yes, but only if you say it loudly so everyone hears."
+        "text": "Yes — as long as you end it with the polite particle khráp, a looks compliment suits any workplace situation."
       },
       {
         "id": "d",
@@ -387,7 +387,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "c",
-        "text": "It's safe even with someone you've just met — it praises the conversation and connection rather than their looks, so it can't easily be mistaken for a romantic advance."
+        "text": "It's safe even with someone you've just met — it praises the connection rather than their looks."
       },
       {
         "id": "d",
@@ -1128,7 +1128,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "d",
-        "text": "When they want their partner to order them another drink"
+        "text": "When they are running late and asking their partner to wait a little longer for them"
       }
     ],
     "correctOptionId": "c",

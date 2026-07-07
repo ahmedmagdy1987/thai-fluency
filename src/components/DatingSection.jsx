@@ -9,7 +9,7 @@ import { DATING_QUESTIONS } from '../data/datingQuestions.js';
 import {
   SEVERITY_LABEL, USAGE_GUIDANCE, CATEGORY_REGISTER, reviewBadge,
   QUESTION_TYPE_LABEL, promptShowsPhrase, badgesLeakAnswer,
-  resolveQuestion, gradeAnswer,
+  ANSWER_AFTER_REVEAL_LABEL, resolveQuestion, gradeAnswer,
 } from '../lib/datingQuiz.js';
 import { loadAdultConfirmed, saveAdultConfirmed } from '../lib/storage.js';
 import { isSuper } from '../config/entitlements.js';
@@ -385,6 +385,11 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
   const { q, order } = current;
   const showPhrase = promptShowsPhrase(q.questionType); // always true — Thai→English direction
   const showSubjectBadges = !badgesLeakAnswer(q.questionType) || revealed;
+  // Answer-hygiene for the TOP BAR too: in a single-severity category the
+  // category severity chip states the answer to tone/usage/judgement questions,
+  // so pre-reveal it is swapped for a neutral placeholder — never removed. The
+  // real chip returns the moment the answer is revealed.
+  const hideCatSeverity = badgesLeakAnswer(q.questionType) && !revealed;
   const correctOption = q.options.find((o) => o.id === q.correctOptionId);
   const isCorrect = revealed && gradeAnswer(q, selected);
 
@@ -412,7 +417,11 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
         </button>
         <div className="dating-quiz-cat">
           <span className="dating-quiz-cat-name">{cat ? cat.name : ''}</span>
-          {cat && <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>}
+          {cat && (hideCatSeverity ? (
+            <span className="dating-chip dating-chip-neutral">{ANSWER_AFTER_REVEAL_LABEL}</span>
+          ) : (
+            <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>
+          ))}
         </div>
         <span className="dating-quiz-count">{quiz.index + 1}/{quiz.total}</span>
       </div>
@@ -426,7 +435,9 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           <span className={`dating-chip dating-chip-${reviewBadge(q.nativeReviewStatus).cls}`}>
             {reviewBadge(q.nativeReviewStatus).label}
           </span>
-          {showSubjectBadges && subjectBadges}
+          {showSubjectBadges ? subjectBadges : (
+            <span className="dating-chip dating-chip-neutral">{ANSWER_AFTER_REVEAL_LABEL}</span>
+          )}
         </div>
 
         {showPhrase && (

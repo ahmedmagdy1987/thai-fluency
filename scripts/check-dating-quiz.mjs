@@ -113,6 +113,11 @@ assert('question types registry matches the label map',
   QUESTION_TYPES.every((t) => QUESTION_TYPE_LABEL[t]));
 assert('tone/usage/scenario/caution hide answer-leaking badges pre-reveal',
   badgesLeakAnswer('tone') && badgesLeakAnswer('usage') && badgesLeakAnswer('scenario') && badgesLeakAnswer('caution'));
+assert('every question type that asks about tone/severity/risk/usage is covered by the leak gate',
+  DATING_QUESTIONS.every((q) => {
+    const asksAnswerStatedByBadges = ['tone', 'usage', 'scenario', 'caution'].includes(q.questionType);
+    return !asksAnswerStatedByBadges || badgesLeakAnswer(q.questionType);
+  }));
 assert('meaning/context keep subject badges visible',
   !badgesLeakAnswer('meaning') && !badgesLeakAnswer('context'));
 assert('gradeAnswer: correct id passes, others fail',

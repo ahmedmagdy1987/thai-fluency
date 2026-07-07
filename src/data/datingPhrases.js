@@ -255,7 +255,7 @@ export const DATING_PHRASES = [
     example: {
       thai: 'สุดสัปดาห์นี้ว่างไหมครับ อยากชวนไปกินข้าว',
       ph: 'sùt sàp-daa níi wâang mǎi khráp, yàak chuan bpai gin khâao',
-      en: "Are you free this weekend? I'd like to take you to dinner.",
+      en: "Are you free this weekend? I'd like to invite you out to eat.",
     },
     reviewStatus: 'pending',
   },
@@ -923,7 +923,7 @@ export const DATING_PHRASES = [
     cat: 'mild-swears-insults',
     thai: 'เชี่ย',
     ph: 'chîa',
-    en: '"Damn / whoa" (mild slang exclamation)',
+    en: '"Damn / whoa" (rough slang exclamation)',
     severity: 'strong',
     example: {
       thai: 'เชี่ย ตกใจหมดเลย',
@@ -938,7 +938,7 @@ export const DATING_PHRASES = [
     cat: 'mild-swears-insults',
     thai: 'ปัญญาอ่อน',
     ph: 'pan-yaa àwn',
-    en: '"That\'s so dumb" (light insult about a thing/idea)',
+    en: '"That\'s so dumb" (blunt insult about a thing/idea — recognition only)',
     severity: 'strong',
     example: {
       thai: 'กฎอะไรปัญญาอ่อนแบบนี้',

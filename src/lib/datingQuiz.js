@@ -75,6 +75,11 @@ export const badgesLeakAnswer = (questionType) =>
   questionType === 'tone' || questionType === 'usage'
   || questionType === 'scenario' || questionType === 'caution';
 
+// Neutral placeholder chip shown wherever an answer-revealing badge is
+// suppressed pre-reveal (answer-hygiene, not badge removal — the real badge
+// returns on reveal). Shared so the UI and validators agree on the label.
+export const ANSWER_AFTER_REVEAL_LABEL = 'Answer after reveal';
+
 // Direction guard helper: an option carrying a phraseId is a Thai answer
 // option, which the Thai→English direction forbids.
 export const optionIsPhrase = (opt) => Number.isFinite(opt.phraseId);
