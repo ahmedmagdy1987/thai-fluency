@@ -1,13 +1,39 @@
 # Database Migration Ledger Reconciliation
 
-**Status:** AUDIT COMPLETE — evidence-based mapping established. **NO repair has been executed.**
-**Date:** 2026-07-07 (audited at commit `8e29e8e`)
+**Status:** RESOLVED — audit complete and **Option A executed** on 2026-07-07 (see [Option A executed](#option-a-executed-2026-07-07)). The ledger and local files now match; `db push --dry-run` reports *"Remote database is up to date."*
+**Date:** 2026-07-07 (audited at commit `8e29e8e`; Option A applied immediately after)
 **Supabase project:** `fkebzcywofzloaqeghtn` (tuk-talk-thai)
-**Scope:** investigation and documentation only. Read-only evidence; no SQL applied, no ledger rows changed.
+**Scope:** investigation, documentation, and a git-only filename normalization. No SQL was applied; no ledger rows were changed; the production database was never written to.
 
-> ⚠️ **DO NOT RUN `supabase db push`.**
-> ⚠️ **DO NOT RUN `supabase migration repair` until the owner approves a repair option below.**
+> ⚠️ **DO NOT RUN `supabase db push`.** Nothing is pending — a push has nothing legitimate to do; run it only with explicit owner approval for a *new*, reviewed migration.
+> ⚠️ **`supabase migration repair` is NOT needed** — Option A resolved the drift without touching the remote ledger. Do not run repair.
 > ⚠️ **DO NOT APPLY 006B** — see the [006B section](#006b-confirmed-not-applied--preconditions-not-met); its preconditions are **not met** and applying it now would freeze XP accrual for every user.
+
+---
+
+## Option A executed (2026-07-07)
+
+The owner approved Option A and it was carried out as a **git-only rename** — no database command that writes was run at any point.
+
+**Renames performed (`git mv`, content unchanged byte-for-byte):**
+
+| Old local file | New local file |
+| --- | --- |
+| `007_billing_entitlements.sql` | `20260704003139_billing_entitlements.sql` |
+| `008_tutorial_seen_persistence.sql` | `20260704140529_tutorial_seen_persistence.sql` |
+| `009_hearts_gems_cancel.sql` | `20260704143549_hearts_gems_cancel.sql` |
+| `006c_award_reward_idempotency_only.sql` | `20260704145636_award_reward_idempotency_only.sql` |
+| `010_guard_user_stats.sql` | `20260704145648_guard_user_stats.sql` |
+
+`006b_revoke_xp_columns.sql` was **not renamed** — it stays deliberately CLI-invisible, deferred, and unapplied. The files in `supabase/rollback/` keep their original numbered names (they are not read by the CLI).
+
+**Post-rename verification (read-only):**
+
+- `supabase migration list` — all ten ledger rows now pair 1:1 with local files: `001/003/004/005/006` and `20260704003139/20260704140529/20260704143549/20260704145636/20260704145648`. No unmatched row in either direction. The only skip message remaining is 006b (intentional).
+- `supabase db push --dry-run` — **"Remote database is up to date."** Zero pending migrations; nothing would be applied.
+- Confirmed: **no DB write occurred** — the only remote interactions were `migration list` and `db push --dry-run`, both read-only.
+
+The historical sections below are preserved as the audit record; Option B was never executed and is no longer needed.
 
 ---
 
