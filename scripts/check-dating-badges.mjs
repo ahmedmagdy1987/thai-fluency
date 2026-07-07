@@ -97,8 +97,13 @@ assert('question: review-status badge always on the card', question.includes('re
 assert('question: subject badges (tone/usage/register/speaker) rendered', question.includes('subjectBadges'));
 assert('question: answer-leaking badges gated until reveal',
   src.includes('badgesLeakAnswer(q.questionType) || revealed'));
-assert('question: subject phrase display gated by type (response/safest never leak the answer phrase)',
+assert('question: subject phrase shown via the shared direction rule',
   src.includes('promptShowsPhrase(q.questionType)'));
+// Direction rule: Thai→English recognition. Options render English text only;
+// the Thai-option rendering path must not exist in the component.
+assert('direction: options render English text only (no Thai option path)',
+  question.includes('dating-option-text') && !src.includes('opt.phrase') && !src.includes('dating-option-thai'));
+assert('direction: literal gloss surfaced on the explanation panel', question.includes('dating-explain-literal'));
 assert('question: options disabled after reveal', question.includes('disabled={revealed}'));
 assert('question: explicit submit state', question.includes('Check answer'));
 assert('question: correct/incorrect feedback', question.includes('dating-reveal-correct') && question.includes('dating-reveal-wrong'));

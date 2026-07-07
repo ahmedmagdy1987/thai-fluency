@@ -1249,10 +1249,6 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-option-correct .dating-option-mark { color: var(--jade); }
 .dating-option-wrong .dating-option-mark { color: #b3261e; }
 .dating-option-text { font-size: 13px; line-height: 1.45; }
-.dating-option-phrase { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.dating-option-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 16.5px; font-weight: 600; color: var(--jade); line-height: 1.35; word-break: break-word; }
-.dating-option-ph { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; color: var(--gold); }
-.dating-option-en { font-size: 11.5px; color: var(--ink-soft); font-style: italic; }
 
 .dating-quiz-submit, .dating-quiz-next { align-self: center; display: inline-flex; align-items: center; gap: 6px; }
 .dating-quiz-submit:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -1268,6 +1264,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-explain-answer .dating-phrase-speak { position: absolute; top: 9px; right: 9px; }
 .dating-explain-answer .dating-phrase-thai { font-size: 18px; }
 .dating-explain-correct-label { font-size: 12px; font-weight: 700; color: var(--jade); margin: 5px 0 0; }
+.dating-explain-literal { font-size: 11.5px; color: var(--ink-soft); font-style: italic; margin: 4px 0 0; }
 .dating-explain-text { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin: 0; }
 
 /* Category completion summary */

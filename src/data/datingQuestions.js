@@ -1,19 +1,23 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // "Dating & Real Talk Thai" — interactive question bank (DRAFT, pending review).
 //
-// Questions and scenarios for the Super-exclusive 18+ learning mode. HARD RULE:
-// this file contains NO Thai script — every Thai phrase is referenced by
-// phraseId into DATING_PHRASES (datingPhrases.js, the reviewed-pending draft
-// set), so the interactive mode can never introduce new unreviewed Thai.
-// scripts/check-dating-quiz.mjs enforces this plus full structural validation
-// (unique ids, exactly one correct option, category/type/tone consistency,
-// warnings on strong-severity subjects).
+// DIRECTION RULE (owner requirement): Thai→English RECOGNITION only. Every
+// question shows its Thai subject phrase (via phraseId) and every answer
+// option is English text. English-scenario → choose-the-Thai-phrase questions
+// are forbidden; src/lib/datingQuiz.js and scripts/check-dating-quiz.mjs both
+// reject Thai answer options.
+//
+// HARD RULE: this file contains NO Thai script — every Thai phrase is
+// referenced by phraseId into DATING_PHRASES (datingPhrases.js, the
+// reviewed-pending draft set), so the interactive mode can never introduce
+// new unreviewed Thai.
 //
 // SHAPE (see src/lib/datingQuiz.js for the resolver + validation rules):
-//   { id, cat, questionType: meaning|response|safest|tone|scenario, prompt,
+//   { id, cat, questionType: meaning|context|tone|usage|scenario|caution,
+//     prompt,                      // English, about the SHOWN subject phrase
 //     phraseId,                    // subject phrase (the phrase being taught)
-//     options: [{ id, text }] or [{ id, phraseId }],
-//     correctOptionId, explanation, context?, warning?, tags? }
+//     options: [{ id, text }],     // ENGLISH ONLY — never Thai, never phraseId
+//     correctOptionId, explanation, context?, warning?, literal?, tags? }
 //
 // Tone/severity/risk/usage/speaker/review badges derive from the subject
 // phrase at render time — never duplicated here. reviewStatus stays 'pending'
@@ -89,29 +93,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-intro-3",
     "cat": "introductions-flirting",
-    "questionType": "response",
-    "prompt": "You've had a genuinely fun conversation at a cafe and the other person needs to leave. You'd like to stay in touch. What's a natural thing to say?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90006,
     "options": [
       {
         "id": "a",
-        "phraseId": 90006
+        "text": "When apologizing to a date because traffic is making them about ten minutes late."
       },
       {
         "id": "b",
-        "phraseId": 90019
+        "text": "At the end of a genuinely fun cafe conversation, when the other person has to leave and you'd like to stay in touch."
       },
       {
         "id": "c",
-        "phraseId": 90043
+        "text": "When telling a long-term partner that the relationship should end."
       },
       {
         "id": "d",
-        "phraseId": 90053
+        "text": "When reacting with playful disbelief to a friend's surprising story."
       }
     ],
-    "correctOptionId": "a",
-    "explanation": "Asking for a number with khǎw ... nàwy dâai mǎi khráp is a soft, polite request — nàwy ('a little') and dâai mǎi ('may I?') both soften it and leave the other person free to say no. The other options are an apology for running late, a breakup line, and playful disbelief — none fit a warm goodbye.",
+    "correctOptionId": "b",
+    "explanation": "This is a soft, polite request for a phone number: nàwy ('a little') and dâai mǎi ('may I?') both cushion it and leave the other person completely free to say no. That makes it the natural close to a warm first conversation — not an apology, a breakup line, or banter.",
+    "context": "Wrapping up a good first conversation when you want a way to keep talking later.",
     "tags": [
       "contact",
       "request"
@@ -214,30 +219,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-apps-2",
     "cat": "apps-meeting-plans",
-    "questionType": "safest",
-    "prompt": "You matched with someone on a dating app and you are arranging your first in-person meetup. Which phrase is the safest way to settle on a location?",
+    "questionType": "usage",
+    "prompt": "How should you use this phrase?",
     "phraseId": 90017,
     "options": [
       {
         "id": "a",
-        "phraseId": 90005
+        "text": "Freely — it's a polite, safety-minded way to propose a specific public venue, and the question ending genuinely asks whether that works for them."
       },
       {
         "id": "b",
-        "phraseId": 90026
+        "text": "Only after several dates — suggesting the venue yourself is seen as controlling early on."
       },
       {
         "id": "c",
-        "phraseId": 90017
+        "text": "Recognition only — a learner who proposes meeting places comes across as pushy."
       },
       {
         "id": "d",
-        "phraseId": 90008
+        "text": "Only face to face — sending it over chat before you have met is considered rude."
       }
     ],
-    "correctOptionId": "c",
-    "explanation": "jer gan thîi ráan níi dii mǎi proposes a specific venue, and the dii mǎi ending genuinely asks whether that works for them. For a first meetup with someone from an app, suggesting a busy public place is the safety-minded default — a compliment or 'I miss you' does nothing to set a safe plan.",
-    "context": "First meetup logistics with someone you have only talked to online.",
+    "correctOptionId": "a",
+    "explanation": "jer gan thîi ráan níi dii mǎi khráp suggests meeting at a specific place, and the dii mǎi ending genuinely asks whether that suits the other person. For a first in-person meetup with someone you have only talked to on an app, naming a busy public spot is the polite, safety-minded default — exactly where this phrase shines.",
+    "context": "Settling on a location with an app match before a first in-person meetup — typically over chat.",
     "tags": [
       "safety",
       "first-date"
@@ -273,29 +278,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-apps-4",
     "cat": "apps-meeting-plans",
-    "questionType": "response",
-    "prompt": "You are stuck in Bangkok traffic and will arrive about ten minutes after the time you agreed with your date. What should you message them?",
+    "questionType": "context",
+    "prompt": "In what situation would someone send this message?",
     "phraseId": 90019,
     "options": [
       {
         "id": "a",
-        "phraseId": 90015
+        "text": "They want to move the date to a completely different day."
       },
       {
         "id": "b",
-        "phraseId": 90020
+        "text": "They arrived early and are letting their date know they are already inside."
       },
       {
         "id": "c",
-        "phraseId": 90043
+        "text": "Their joke landed badly and they are trying to repair the mood."
       },
       {
         "id": "d",
-        "phraseId": 90019
+        "text": "They are stuck in traffic and will arrive a few minutes after the time they agreed with their date."
       }
     ],
     "correctOptionId": "d",
-    "explanation": "khǎw thôht khráp is the polite apology and nít nàwy ('a little bit') softens the news; mentioning rót tìt (traffic jam) is an honest, very common reason in Bangkok. A quick heads-up shows respect for the other person's time — asking about the weekend or announcing a breakup makes no sense here.",
+    "explanation": "khǎw thôht khráp is the polite apology, and maa sǎai nít nàwy admits to running 'a little bit' late — the classic heads-up text when Bangkok traffic (rót tìt) slows you down. A quick message like this shows respect for the other person's time; it doesn't reschedule the date, announce an early arrival, or fix a bad joke.",
+    "context": "Any small delay on the way to a meetup — send it as soon as you know you'll be late, and add the reason honestly.",
     "tags": [
       "apology",
       "punctuality"
@@ -367,30 +373,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-compl-2",
     "cat": "compliments",
-    "questionType": "safest",
-    "prompt": "You've just met someone at a language exchange and want to end the chat with a compliment that can't be mistaken for a romantic advance. Which is the safest choice?",
+    "questionType": "usage",
+    "prompt": "How should you use this compliment?",
     "phraseId": 90011,
     "options": [
       {
         "id": "a",
-        "phraseId": 90005
+        "text": "Save it for someone you are officially dating — it declares romantic feelings."
       },
       {
         "id": "b",
-        "phraseId": 90009
+        "text": "Avoid it entirely — commenting on how a conversation feels is considered intrusive."
       },
       {
         "id": "c",
-        "phraseId": 90024
+        "text": "It's safe even with someone you've just met — it praises the conversation and connection rather than their looks, so it can't easily be mistaken for a romantic advance."
       },
       {
         "id": "d",
-        "phraseId": 90011
+        "text": "Use it only in writing — saying it face to face is far too intense."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "Complimenting the conversation itself (sà-baai jai — at ease) is about the interaction, not the person's appearance, so it stays friendly with someone new. Cute and beautiful compliments can read as flirting, and asking someone to be your partner is far beyond a first meeting.",
-    "context": "With new acquaintances, compliments about character or the conversation are the safest register.",
+    "correctOptionId": "c",
+    "explanation": "Because sà-baai jai describes how at ease the chat feels rather than the person's appearance, this compliment stays friendly with new acquaintances — for example, ending a first chat at a language exchange on a warm note. Appearance compliments are the ones that can read as flirting with someone you barely know.",
+    "context": "New acquaintances, language exchanges, early chats — anywhere you want warmth without romantic overtones.",
+    "literal": "sà-baai jai = comfortable 'in the heart'",
     "tags": [
       "safety",
       "first-meeting"
@@ -461,29 +468,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-compl-5",
     "cat": "compliments",
-    "questionType": "response",
-    "prompt": "Your date arrives with a new haircut and a sharp outfit. You want to open with a warm, natural compliment. What do you say?",
+    "questionType": "context",
+    "prompt": "When would someone naturally say this?",
     "phraseId": 90014,
     "options": [
       {
         "id": "a",
-        "phraseId": 90019
+        "text": "While thanking a friend who spent the afternoon helping them move apartments."
       },
       {
         "id": "b",
-        "phraseId": 90014
+        "text": "Greeting a date who has just arrived with a new haircut and a sharp outfit."
       },
       {
         "id": "c",
-        "phraseId": 90037
+        "text": "Comforting a partner who is upset after an argument."
       },
       {
         "id": "d",
-        "phraseId": 90042
+        "text": "Saying goodbye to a date as their taxi pulls away at the end of the night."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "khun duu dii mâak loei wan níi ('you look really great today') is gender-neutral, upbeat, and exactly the phrase for noticing a fresh look. The other options apologize for lateness, downgrade the relationship to friendship, or ask for space — all wrong for a happy greeting.",
+    "explanation": "khun duu dii mâak loei wan níi tells someone they look really great today — the perfect upbeat opener when your date shows up with a fresh look you want to acknowledge. Because duu dii ('looks good') is gender-neutral, it works for anyone; it isn't a thank-you, a consolation, or a farewell.",
+    "context": "The moment you notice someone made an effort with their appearance — say it early in the date so it lands naturally.",
     "tags": [
       "compliment",
       "date"
@@ -555,32 +563,33 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-rel-3",
     "cat": "relationship-language",
-    "questionType": "response",
-    "prompt": "You have been seeing someone for two months, it is going really well, and you want to ask about making the relationship official. What do you say?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90022,
     "options": [
       {
         "id": "a",
-        "phraseId": 90037
+        "text": "To a brand-new app match, minutes after saying hello."
       },
       {
         "id": "b",
-        "phraseId": 90003
+        "text": "When they want to break up but are trying to soften the blow."
       },
       {
         "id": "c",
-        "phraseId": 90019
+        "text": "After a couple of months of good dates, to ask about making the relationship official."
       },
       {
         "id": "d",
-        "phraseId": 90022
+        "text": "When introducing their partner to their friend group for the first time."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "khóp gan means to date or go steady, so rao khóp gan mǎi is the standard 'shall we make it official?' question. Framing it as a question gives the other person a real choice — while 'can we just be friends?' says the opposite and asking their name at month two would be absurd.",
+    "correctOptionId": "c",
+    "explanation": "khóp gan means to date or go steady, so rao khóp gan mǎi is the classic 'shall we make it official?' question. It belongs after you have genuinely gotten to know each other — say, two months of dates that are going really well — and the mǎi ending frames it as a real question, leaving the other person a free choice. Dropped on a brand-new match, it would feel rushed and pushy.",
+    "context": "The make-it-official conversation, once things have been going well for a while — not a first-contact line.",
     "tags": [
       "commitment",
-      "conversation"
+      "timing"
     ]
   },
   {
@@ -618,30 +627,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-rel-5",
     "cat": "relationship-language",
-    "questionType": "response",
-    "prompt": "You have been dating someone for a while and want to find out, calmly and without drama, whether you are both exclusive. What is the natural thing to ask?",
+    "questionType": "usage",
+    "prompt": "How should you use this phrase?",
     "phraseId": 90025,
     "options": [
       {
         "id": "a",
-        "phraseId": 90005
+        "text": "Treat it as a casual icebreaker you can use with anyone, even someone you just met."
       },
       {
         "id": "b",
-        "phraseId": 90025
+        "text": "Use it thoughtfully: after you have been dating a while, pick a calm private moment, ask it plainly, and be ready to hear an honest answer either way."
       },
       {
         "id": "c",
-        "phraseId": 90043
+        "text": "Recognition only — it is far too blunt for a learner ever to say out loud."
       },
       {
         "id": "d",
-        "phraseId": 90019
+        "text": "Save it for mid-argument, when you want to force a decision on the spot."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "jing-jang means 'serious,' so this phrase asks directly but calmly whether you are both committed and exclusive. It clarifies without escalating — a compliment dodges the topic entirely, and a breakup line blows straight past it.",
-    "context": "The exclusivity talk after dating for a while.",
+    "explanation": "jing-jang means 'serious', so this asks directly but calmly whether you are both committed and exclusive. It is a real relationship question, not small talk — it is perfectly fine to say, but timing and a calm tone matter, and asking it means accepting whatever answer comes back. Springing it mid-argument turns a clarifying question into an ultimatum.",
+    "context": "The exclusivity talk after dating someone for a while, raised without drama — not first-date material and not a weapon in a fight.",
     "tags": [
       "exclusivity",
       "communication"
@@ -683,30 +692,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-bound-2",
     "cat": "boundaries-consent",
-    "questionType": "safest",
-    "prompt": "You'd like to hug your date goodbye, but you're not sure they're comfortable with physical contact yet. What is the safest thing to say first?",
+    "questionType": "usage",
+    "prompt": "How should you use this phrase?",
     "phraseId": 90029,
     "options": [
       {
         "id": "a",
-        "phraseId": 90005
+        "text": "Ask it once early in the relationship; after that, permission carries over and you don't need to check again."
       },
       {
         "id": "b",
-        "phraseId": 90022
+        "text": "Don't say it out loud — asking ruins the moment, so just act and apologize afterward if needed."
       },
       {
         "id": "c",
-        "phraseId": 90029
+        "text": "It is only for shops and restaurants, not for anything between two people on a date."
       },
       {
         "id": "d",
-        "phraseId": 90026
+        "text": "Use it freely before any new physical contact — name the action, like a goodbye hug or holding hands, then wait for a clear, comfortable yes before you move."
       }
     ],
-    "correctOptionId": "c",
-    "explanation": "Asking out loud — phǒm khǎw ... dâai mǎi khráp (may I ...?) — before any physical contact keeps consent explicit and shows respect, and you wait for a clear yes. A compliment, a relationship question, or 'I miss you' skips the one thing this moment needs: checking that they are comfortable first.",
-    "context": "Any moment of new physical contact: holding hands, a hug, a goodbye kiss.",
+    "correctOptionId": "d",
+    "explanation": "phǒm khǎw ... dâai mǎi khráp is a consent template: you fill in the action and genuinely ask permission — for example before a goodbye hug when you are not sure your date is comfortable with physical contact yet. Anything short of a clear, relaxed yes — hesitation, silence, a nervous laugh — means you don't proceed. And consent is not a one-time unlock: check in again whenever the contact is new.",
+    "context": "Every moment of new physical contact — holding hands, a hug, a goodbye kiss — no matter how well the date is going.",
     "tags": [
       "consent",
       "safety",
@@ -779,30 +788,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-bound-5",
     "cat": "boundaries-consent",
-    "questionType": "safest",
-    "prompt": "The date is going well, but things are moving faster than you're comfortable with. You want to set your own pace without ending the evening. What should you say?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90031,
     "options": [
       {
         "id": "a",
-        "phraseId": 90006
+        "text": "Mid-date, when the evening is going well but moving faster than they're comfortable with, and they want to set a gentler pace without ending it."
       },
       {
         "id": "b",
-        "phraseId": 90021
+        "text": "When they want to end the date immediately and never see the person again."
       },
       {
         "id": "c",
-        "phraseId": 90052
+        "text": "The next day over text, to complain that everything moved too fast."
       },
       {
         "id": "d",
-        "phraseId": 90031
+        "text": "As a standard greeting at the very start of a first date."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "cháa cháa dâai mǎi khráp asks to slow down while staying warm — the doubled cháa (slow) plus dâai mǎi (can we?) frames it as a request, not a rejection. Saying 'I like you' or asking for a number does nothing to set a pace, and slang like jěng mâak dodges the moment entirely.",
-    "context": "Setting your own boundaries mid-date without shutting the other person down.",
+    "correctOptionId": "a",
+    "explanation": "The doubled cháa (slow) plus dâai mǎi (can we?) makes this a warm, in-the-moment request to slow things down — it sets a boundary without rejecting the person, so the evening can continue at a pace you actually want. It is said right when things start moving too fast, not saved up for a complaint afterward, and the other person should respect it immediately.",
+    "context": "Any moment a date escalates past your comfort level. Say it as early and as often as you need — you never owe anyone an explanation for a boundary, and you can also simply pause or leave.",
     "tags": [
       "boundaries",
       "pacing",
@@ -845,30 +854,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-awk-2",
     "cat": "awkward-situations",
-    "questionType": "response",
-    "prompt": "Halfway through a conversation, you realize you and your date each understood the plan completely differently, and tension is creeping in. What's the most natural thing to say?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90036,
     "options": [
       {
         "id": "a",
-        "phraseId": 90043
+        "text": "When they want to cut the date short and head home early"
       },
       {
         "id": "b",
-        "phraseId": 90053
+        "text": "When a small mix-up — like each of you understanding the plan differently — is creating tension and they want to name it calmly before it grows"
       },
       {
         "id": "c",
-        "phraseId": 90036
+        "text": "When they are confessing romantic feelings for the first time"
       },
       {
         "id": "d",
-        "phraseId": 90038
+        "text": "When they are asking a waiter to fix a wrong order"
       }
     ],
-    "correctOptionId": "c",
-    "explanation": "khâo jai phìt means to misunderstand, and nít nàwy (a little bit) shrinks the problem so nobody loses face — naming the mix-up calmly defuses it. Jumping to a breakup line or 'I already have a partner' escalates a small crossed wire into a crisis.",
-    "context": "Small mix-ups over plans, texts, or intentions before they turn into arguments.",
+    "correctOptionId": "b",
+    "explanation": "This phrase names a small crossed wire out loud: khâo jai phìt means to misunderstand, and nít nàwy ('a little bit') shrinks the problem so nobody loses face. Saying it calmly defuses a mix-up over plans or texts before it hardens into an argument.",
+    "context": "Small misunderstandings over plans, messages, or intentions — say it early, while the tension is still minor, and follow with an invitation to talk it out calmly.",
+    "literal": "khâo jai phìt = to misunderstand",
     "tags": [
       "misunderstanding",
       "de-escalation"
@@ -941,30 +951,30 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-awk-5",
     "cat": "awkward-situations",
-    "questionType": "response",
-    "prompt": "You made a joke that clearly landed wrong, and your date has gone quiet. What should you say?",
+    "questionType": "usage",
+    "prompt": "How should you use this phrase?",
     "phraseId": 90039,
     "options": [
       {
         "id": "a",
-        "phraseId": 90039
+        "text": "Drop it in casually as filler after every joke, whether or not anyone reacted"
       },
       {
         "id": "b",
-        "phraseId": 90014
+        "text": "Avoid saying it yourself — it is considered rude and is for recognition only"
       },
       {
         "id": "c",
-        "phraseId": 90054
+        "text": "Save it for formal apologies to bosses or officials; it is too stiff for dating"
       },
       {
         "id": "d",
-        "phraseId": 90005
+        "text": "Say it sincerely when you have genuinely misread the mood — like a joke that landed wrong and your date went quiet — rather than as a reflex"
       }
     ],
-    "correctOptionId": "a",
-    "explanation": "Owning the misstep with khǎw thôht thâa phǒm tham hâi rúu-sùek mâi dii (sorry if I made you feel bad) repairs the moment directly, and you can add mâi dâai tâng-jai (I didn't mean to). A compliment or a slangy 'for real?' talks past their discomfort instead of addressing it.",
-    "context": "Recovering gracefully after misreading the mood or a joke that fell flat.",
+    "correctOptionId": "d",
+    "explanation": "khǎw thôht thâa... ('sorry if I...') is a graceful repair line for when you misread a signal, so it works best delivered sincerely and sparingly — you can add mâi dâai tâng-jai ('I didn't mean to') to complete the apology. It is neither rude nor too formal for a date; reflexively apologizing for everything just dilutes it.",
+    "context": "Recovering after a joke falls flat or you misjudge the mood. Address the discomfort directly instead of talking past it with a compliment or a change of subject.",
     "tags": [
       "apology",
       "repair"
@@ -1004,30 +1014,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-argue-2",
     "cat": "arguments-breakups",
-    "questionType": "response",
-    "prompt": "A small misunderstanding with your partner is heating up and voices are rising. You want to de-escalate before it becomes a real fight. What should you say?",
+    "questionType": "caution",
+    "prompt": "Why be careful with how you deliver this one?",
     "phraseId": 90044,
     "options": [
       {
         "id": "a",
-        "phraseId": 90043
+        "text": "It opens with 'yàa' ('don't'), so snapped sharply it can sound like an order to stop talking — a calm voice and the softening particle 'ná' are what make it a gentle appeal"
       },
       {
         "id": "b",
-        "phraseId": 90044
+        "text": "It is a strong insult that should never be said aloud"
       },
       {
         "id": "c",
-        "phraseId": 90005
+        "text": "It formally ends the relationship, so only say it during a breakup"
       },
       {
         "id": "d",
-        "phraseId": 90058
+        "text": "It is rough slang used only between close male friends"
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "\"yàa thá-láw gan loei ná\" (\"let's not fight\") said in a calm voice defuses the moment, and the particle \"ná\" softens it into an appeal rather than a command. Proposing a breakup escalates things, a compliment dodges the issue, and a frustrated exclamation pours fuel on the fire.",
-    "context": "Early in a disagreement, before anyone says something they regret.",
+    "correctOptionId": "a",
+    "explanation": "yàa thá-láw gan loei ná literally begins with 'don't', so tone carries everything: said calmly when a small disagreement is heating up and voices are rising, the particle 'ná' turns it into a warm plea to de-escalate, but delivered in frustration it can read as dismissing your partner's point. It is not rude and does not end anything — it just needs a soft delivery.",
+    "context": "Early in a disagreement, before anyone says something they regret. Pair it with a genuinely calm voice, or it defeats its own purpose.",
+    "literal": "thá-láw = to argue/quarrel",
     "tags": [
       "de-escalation",
       "arguments"
@@ -1099,30 +1110,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-argue-5",
     "cat": "arguments-breakups",
-    "questionType": "response",
-    "prompt": "After a heated disagreement, you're overwhelmed and need to cool off alone before you can talk things through. What should you say?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90042,
     "options": [
       {
         "id": "a",
-        "phraseId": 90026
+        "text": "When they are formally ending the relationship"
       },
       {
         "id": "b",
-        "phraseId": 90047
+        "text": "When they are inviting their partner to move in together"
       },
       {
         "id": "c",
-        "phraseId": 90042
+        "text": "When they feel overwhelmed after a heated disagreement and want to cool off alone before talking things through — pausing the argument, not the relationship"
       },
       {
         "id": "d",
-        "phraseId": 90043
+        "text": "When they want their partner to order them another drink"
       }
     ],
     "correctOptionId": "c",
-    "explanation": "\"phǒm khǎw weh-laa yùu khon diao nàwy\" politely asks for time alone without ending anything — it pauses the conflict instead of deciding it. Saying \"I miss you\" sends the opposite signal, offering to buy a round is a non sequitur, and proposing a breakup turns a cooling-off moment into a crisis.",
-    "context": "Taking a breather mid-conflict so the next conversation is calmer.",
+    "explanation": "phǒm khǎw weh-laa yùu khon diao nàwy politely asks for a breather mid-conflict — it pauses the conversation so the next one can be calmer. It requests space respectfully; it does not end anything or decide the argument.",
+    "context": "Cooling off during a conflict. If a partner says this to you, treat it as a request for time rather than a breakup — give the space and revisit the conversation later.",
+    "literal": "yùu khon diao = to be alone",
     "tags": [
       "space",
       "arguments"
@@ -1163,30 +1175,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-night-2",
     "cat": "nightlife",
-    "questionType": "safest",
-    "prompt": "It's 1 a.m., the bar is closing, and you've had a few drinks. You shouldn't drive and don't want to walk alone. What's the safest thing to say to the staff?",
+    "questionType": "context",
+    "prompt": "When would someone say this?",
     "phraseId": 90050,
     "options": [
       {
         "id": "a",
-        "phraseId": 90046
+        "text": "Telling a taxi driver the address they want to be taken to."
       },
       {
         "id": "b",
-        "phraseId": 90047
+        "text": "Offering to drive a friend home after the bar closes."
       },
       {
         "id": "c",
-        "phraseId": 90048
+        "text": "Asking bar or hotel staff to call them a taxi at the end of a night out — say it's 1 a.m., they've had a few drinks, and driving or walking alone isn't safe."
       },
       {
         "id": "d",
-        "phraseId": 90050
+        "text": "Ordering one last round of drinks before closing time."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "\"rîak tháek-sîi hâi nàwy dâai mǎi khráp\" asks the staff to call you a taxi — the one option that actually solves getting home safely. Ordering more beer, treating a round, or merely declining another drink all leave the transport problem unsolved.",
-    "context": "End of a night out; bar and hotel staff in Thailand are used to this request.",
+    "correctOptionId": "c",
+    "explanation": "rîak tháek-sîi hâi nàwy dâai mǎi khráp asks someone — typically bar or hotel staff — to call a taxi for you. It's the go-to line when you've been drinking and need a safe ride home instead of driving or walking alone.",
+    "context": "End of a night out. Staff at bars and hotels in Thailand are used to this request — getting home safely comes first.",
+    "literal": "rîak tháek-sîi = to call a taxi.",
     "tags": [
       "get-home-safe",
       "taxi"
@@ -1258,30 +1271,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-night-5",
     "cat": "nightlife",
-    "questionType": "response",
-    "prompt": "Your date is getting into a taxi home after a great night out, and you want to close with a caring word. What should you say?",
+    "questionType": "usage",
+    "prompt": "How should you use this phrase?",
     "phraseId": 90051,
     "options": [
       {
         "id": "a",
-        "phraseId": 90046
+        "text": "Make it a habit: say it whenever a date or friend heads home at the end of a night — like when your date gets into a taxi — and actually watch for their message."
       },
       {
         "id": "b",
-        "phraseId": 90051
+        "text": "Save it for emergencies only; asking someone to check in is otherwise seen as controlling."
       },
       {
         "id": "c",
-        "phraseId": 90042
+        "text": "Only use it with a long-term partner — with a newer date it comes across as far too forward."
       },
       {
         "id": "d",
-        "phraseId": 90043
+        "text": "Use it to ask someone to send you their home address before they leave."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "\"thǔeng bâan láew thák maa ná\" (\"text me when you get home\") ends the night on a warm, safety-minded note and invites a follow-up message. Ordering more beers ignores that they're leaving, and asking for space or proposing a breakup would be jarring after a good evening.",
-    "context": "The last thing you say as someone heads home for the night.",
+    "correctOptionId": "a",
+    "explanation": "thǔeng bâan láew thák maa ná ('text me when you get home') is a warm, safety-minded sign-off that's safe to use with anyone — a date, a friend, someone you just met tonight. The habit has two halves: say it as they leave, then actually notice whether the message arrives and follow up if it doesn't.",
+    "context": "The last thing you say as someone heads home for the night — and a check-in you can ask for yourself, too.",
+    "literal": "thák = to message/ping someone.",
     "tags": [
       "get-home-safe",
       "goodnight"
@@ -1322,30 +1336,31 @@ export const DATING_QUESTIONS = [
   {
     "id": "dq-slang-2",
     "cat": "casual-slang",
-    "questionType": "response",
-    "prompt": "You're texting on LINE with your Thai date and they send a genuinely funny joke. What do you type back to show you're laughing?",
+    "questionType": "context",
+    "prompt": "You're texting on LINE and your Thai date replies with just this. What are they doing?",
     "phraseId": 90057,
     "options": [
       {
         "id": "a",
-        "phraseId": 90033
+        "text": "Typing random digits by accident — it doesn't mean anything."
       },
       {
         "id": "b",
-        "phraseId": 90057
+        "text": "Sharing part of their phone number with you."
       },
       {
         "id": "c",
-        "phraseId": 90018
+        "text": "Hinting they're annoyed and your joke fell flat."
       },
       {
         "id": "d",
-        "phraseId": 90048
+        "text": "Laughing — this is the standard way to type 'hahaha' in Thai texting."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "The Thai digit five is pronounced 'hâa', so a run of fives reads as 'hahaha' — the standard way to laugh in Thai texting. The other options are a boundary phrase, meetup logistics, and a drinking-limit line, all of which would derail a joke.",
-    "context": "Text or LINE chat with friends or a date.",
+    "correctOptionId": "d",
+    "explanation": "The Thai digit five is pronounced 'hâa', so a run of fives reads as 'hahaha' — the everyday laugh in Thai texting. If your date sends a genuinely funny joke, typing this back is exactly how you show you're laughing.",
+    "context": "Text and LINE chats with friends or a date. It's casual, friendly, and completely safe to use yourself.",
+    "literal": "The digit 5 is pronounced 'hâa', so a string of fives reads as 'hahaha'.",
     "tags": [
       "texting",
       "slang"

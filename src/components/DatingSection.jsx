@@ -7,8 +7,8 @@ import { DATING_SECTION, DATING_CATEGORIES, DATING_REVIEW_COMPLETE } from '../da
 import { DATING_PHRASES } from '../data/datingPhrases.js';
 import { DATING_QUESTIONS } from '../data/datingQuestions.js';
 import {
-  SEVERITY_LABEL, USAGE_GUIDANCE, CATEGORY_REGISTER, reviewBadge, isMaleForm,
-  QUESTION_TYPE_LABEL, promptShowsPhrase, badgesLeakAnswer, optionIsPhrase,
+  SEVERITY_LABEL, USAGE_GUIDANCE, CATEGORY_REGISTER, reviewBadge,
+  QUESTION_TYPE_LABEL, promptShowsPhrase, badgesLeakAnswer,
   resolveQuestion, gradeAnswer,
 } from '../lib/datingQuiz.js';
 import { loadAdultConfirmed, saveAdultConfirmed } from '../lib/storage.js';
@@ -26,6 +26,13 @@ import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 //     submit → reveal correct/incorrect + explanation panel → next → category
 //     completion. Progress is session-local React state — no DB schema, no XP,
 //     no reward paths (deliberately un-farmable).
+//
+// DIRECTION RULE (owner requirement): this pack teaches RECOGNITION —
+//   Thai phrase shown first → English meaning/context/tone/usage options.
+// Never English-scenario → choose-the-Thai-phrase. Every question card shows
+// its Thai subject phrase; every answer option is English text. The engine
+// (resolveQuestion) and scripts/check-dating-quiz.mjs both reject Thai answer
+// options, so the direction cannot silently regress.
 //
 // BADGE POLICY (owner requirement — do not remove badges):
 //   Badges are the safety/clarity backbone of this section and must stay visible
@@ -374,9 +381,9 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
     );
   }
 
-  // ── INTERACTIVE MODE: question card ───────────────────────────────────────
+  // ── INTERACTIVE MODE: question card (Thai phrase → English options) ────────
   const { q, order } = current;
-  const showPhrase = promptShowsPhrase(q.questionType);
+  const showPhrase = promptShowsPhrase(q.questionType); // always true — Thai→English direction
   const showSubjectBadges = !badgesLeakAnswer(q.questionType) || revealed;
   const correctOption = q.options.find((o) => o.id === q.correctOptionId);
   const isCorrect = revealed && gradeAnswer(q, selected);
@@ -459,15 +466,8 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
                   aria-pressed={isSel}
                   onClick={() => { if (!revealed) setSelected(oid); }}
                 >
-                  {optionIsPhrase(opt) ? (
-                    <span className="dating-option-phrase">
-                      <span className="dating-option-thai" lang="th">{opt.phrase.thai}</span>
-                      <span className="dating-option-ph">{opt.phrase.ph}</span>
-                      {revealed && <span className="dating-option-en">{opt.phrase.en}</span>}
-                    </span>
-                  ) : (
-                    <span className="dating-option-text">{opt.text}</span>
-                  )}
+                  {/* English text only — Thai never appears in answer options. */}
+                  <span className="dating-option-text">{opt.text}</span>
                   {revealed && oid === q.correctOptionId && <Check size={16} aria-hidden="true" className="dating-option-mark" />}
                   {revealed && isSel && oid !== q.correctOptionId && <X size={16} aria-hidden="true" className="dating-option-mark" />}
                 </button>
@@ -504,7 +504,10 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
                 <p className="dating-phrase-thai" lang="th">{q.phrase.thai}</p>
                 <p className="dating-phrase-ph">{q.phrase.ph}</p>
                 <p className="dating-phrase-en">{q.phrase.en}</p>
-                {!optionIsPhrase(correctOption) && correctOption && (
+                {q.literal && (
+                  <p className="dating-explain-literal"><span className="dating-note-label">Literally</span> {q.literal}</p>
+                )}
+                {correctOption && (
                   <p className="dating-explain-correct-label">Correct choice: “{correctOption.text}”</p>
                 )}
                 <button

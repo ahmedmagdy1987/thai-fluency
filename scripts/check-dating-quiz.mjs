@@ -78,23 +78,49 @@ for (const q of DATING_QUESTIONS) {
 }
 assert('every question resolves with derived tone/usage/review fields', resolveErrors === 0, `${resolveErrors} failed`);
 
-// ---- 5. Engine unit checks ------------------------------------------------------
+// ---- 5. Direction rule: Thai→English recognition ONLY ---------------------------
+// Every playable question shows one main Thai phrase and offers English-only
+// options. English-scenario → choose-the-Thai-phrase is forbidden.
+assert('no English-to-Thai question types exist in the registry',
+  !QUESTION_TYPES.includes('response') && !QUESTION_TYPES.includes('safest'));
+assert('no question in the bank uses a forbidden English-to-Thai type',
+  DATING_QUESTIONS.every((q) => q.questionType !== 'response' && q.questionType !== 'safest'));
+assert('every question references one main Thai subject phrase',
+  DATING_QUESTIONS.every((q) => phraseById.has(q.phraseId)));
+assert('every question type shows the subject phrase (Thai→English direction)',
+  QUESTION_TYPES.every((t) => promptShowsPhrase(t)));
+assert('no answer option is a Thai phrase reference',
+  DATING_QUESTIONS.every((q) => q.options.every((o) => !Number.isFinite(o.phraseId))));
+assert('no answer option contains Thai script (English before reveal)',
+  DATING_QUESTIONS.every((q) => q.options.every((o) => typeof o.text === 'string' && !/[฀-๿]/.test(o.text))));
+assert('no prompt contains Thai script (Thai renders only from the subject phrase card)',
+  DATING_QUESTIONS.every((q) => !/[฀-๿]/.test(q.prompt)));
+assert('validateQuestion REJECTS an English-to-Thai question (regression trap)',
+  validateQuestion(
+    { id: 'trap', cat: 'nightlife', questionType: 'response', prompt: 'What would you say in Thai?', phraseId: 90046, options: [{ id: 'a', phraseId: 90046 }, { id: 'b', phraseId: 90047 }], correctOptionId: 'a', explanation: 'trap' },
+    phraseById, categoryIds,
+  ).length > 0);
+assert('resolveQuestion THROWS on a Thai answer option (render-level guard)',
+  (() => {
+    try {
+      resolveQuestion({ id: 'trap2', cat: 'nightlife', questionType: 'meaning', prompt: 'x', phraseId: 90046, options: [{ id: 'a', phraseId: 90047 }], correctOptionId: 'a', explanation: 'x' }, phraseById);
+      return false;
+    } catch { return true; }
+  })());
+
+// ---- 6. Engine unit checks ------------------------------------------------------
 assert('question types registry matches the label map',
   QUESTION_TYPES.every((t) => QUESTION_TYPE_LABEL[t]));
-assert('meaning/tone/scenario show the subject phrase',
-  promptShowsPhrase('meaning') && promptShowsPhrase('tone') && promptShowsPhrase('scenario'));
-assert('response/safest hide the subject phrase (options ARE the answer)',
-  !promptShowsPhrase('response') && !promptShowsPhrase('safest'));
-assert('tone/scenario/safest hide answer-leaking badges pre-reveal',
-  badgesLeakAnswer('tone') && badgesLeakAnswer('scenario') && badgesLeakAnswer('safest'));
-assert('meaning/response keep subject badges visible',
-  !badgesLeakAnswer('meaning') && !badgesLeakAnswer('response'));
+assert('tone/usage/scenario/caution hide answer-leaking badges pre-reveal',
+  badgesLeakAnswer('tone') && badgesLeakAnswer('usage') && badgesLeakAnswer('scenario') && badgesLeakAnswer('caution'));
+assert('meaning/context keep subject badges visible',
+  !badgesLeakAnswer('meaning') && !badgesLeakAnswer('context'));
 assert('gradeAnswer: correct id passes, others fail',
   gradeAnswer({ correctOptionId: 'b' }, 'b') === true && gradeAnswer({ correctOptionId: 'b' }, 'a') === false);
 assert('severity labels cover the usage-guidance map',
   Object.keys(USAGE_GUIDANCE).every((s) => SEVERITY_LABEL[s]));
 
-// ---- 6. Honest review status ----------------------------------------------------
+// ---- 7. Honest review status ----------------------------------------------------
 assert('no phrase claims native approval while DATING_REVIEW_COMPLETE is false',
   DATING_REVIEW_COMPLETE || DATING_PHRASES.every((p) => p.reviewStatus !== 'approved'));
 assert('every phrase carries a nativeReviewStatus', DATING_PHRASES.every((p) => !!p.reviewStatus));

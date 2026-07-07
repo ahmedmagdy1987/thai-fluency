@@ -45,44 +45,49 @@ export const isMaleForm = (p) =>
   /ครับ|ผม/.test(`${p.thai} ${p.example ? p.example.thai : ''}`);
 
 // ── Question model ───────────────────────────────────────────────────────────
-export const QUESTION_TYPES = ['meaning', 'response', 'safest', 'tone', 'scenario'];
+// DIRECTION RULE (owner requirement): this pack teaches RECOGNITION —
+// Thai phrase → English meaning/context/tone/usage judgement. Every question
+// shows its Thai subject phrase, and every answer option is English text.
+// English-scenario → choose-the-Thai-phrase questions are forbidden; the
+// validator and resolver both reject Thai (phraseId) answer options.
+export const QUESTION_TYPES = ['meaning', 'context', 'tone', 'usage', 'scenario', 'caution'];
 
 export const QUESTION_TYPE_LABEL = {
   meaning: 'Best meaning',
-  response: 'Natural response',
-  safest: 'Safest choice',
+  context: 'Context check',
   tone: 'Tone check',
+  usage: 'Usage judgement',
   scenario: 'Judgement call',
+  caution: 'Careful with this',
 };
 
-// Whether the question card shows the subject phrase (Thai + phonetic) above
-// the prompt. response/safest questions hide it — the options ARE phrases and
-// showing the subject (= the correct option) would leak the answer.
-export const promptShowsPhrase = (questionType) =>
-  questionType === 'meaning' || questionType === 'tone' || questionType === 'scenario';
+// Thai→English direction: every question type shows the subject phrase
+// (Thai + phonetic) above the prompt. Kept as a function so the UI and the
+// validators share one source of truth for the direction rule.
+export const promptShowsPhrase = () => true;
 
 // Whether severity/tone/usage badges on the QUESTION card would leak the
 // answer before reveal. Tone questions ask for exactly what those badges say;
-// scenario questions ask for the judgement the usage badge encodes. The full
-// badge set always appears on the explanation panel after reveal.
+// usage/scenario/caution questions ask for the judgement the usage badge
+// encodes. The full badge set always appears on the explanation panel after
+// reveal — this is answer-hygiene, not badge removal.
 export const badgesLeakAnswer = (questionType) =>
-  questionType === 'tone' || questionType === 'scenario' || questionType === 'safest';
+  questionType === 'tone' || questionType === 'usage'
+  || questionType === 'scenario' || questionType === 'caution';
 
-// Options: { id, text } renders an English option; { id, phraseId } renders a
-// phrase option (Thai + phonetic pre-reveal; English meaning shown post-reveal).
+// Direction guard helper: an option carrying a phraseId is a Thai answer
+// option, which the Thai→English direction forbids.
 export const optionIsPhrase = (opt) => Number.isFinite(opt.phraseId);
 
 // Resolve a question against the phrase bank into a render-ready view model.
-// Throws on a broken reference — the validator runs this over the whole bank so
-// a bad question can never reach production.
+// Throws on a broken reference or a Thai answer option — the validator runs
+// this over the whole bank so a bad question can never reach production.
 export function resolveQuestion(q, phraseById) {
   const phrase = phraseById.get(q.phraseId);
   if (!phrase) throw new Error(`question ${q.id}: unknown phraseId ${q.phraseId}`);
   const options = q.options.map((opt) => {
     if (optionIsPhrase(opt)) {
-      const p = phraseById.get(opt.phraseId);
-      if (!p) throw new Error(`question ${q.id}: option ${opt.id} unknown phraseId ${opt.phraseId}`);
-      return { ...opt, phrase: p };
+      throw new Error(`question ${q.id}: option ${opt.id} is a Thai phrase option — direction must be Thai→English`);
     }
     return { ...opt };
   });
@@ -93,6 +98,7 @@ export function resolveQuestion(q, phraseById) {
     ...q,
     phrase,
     options,
+    literal: q.literal || null,
     severity: phrase.severity,
     tone: SEVERITY_LABEL[phrase.severity],
     riskLevel: USAGE_GUIDANCE[phrase.severity].cls,
@@ -106,17 +112,23 @@ export function resolveQuestion(q, phraseById) {
 export const gradeAnswer = (q, optionId) => optionId === q.correctOptionId;
 
 // Structural validation for one raw question. Returns an array of error
-// strings (empty = valid). Used by scripts/check-dating-quiz.mjs.
+// strings (empty = valid). Used by scripts/check-dating-quiz.mjs. Enforces the
+// Thai→English direction: the subject phrase carries the Thai; every option
+// (and the prompt/explanation) must be Thai-free English text.
+const THAI_RE = /[฀-๿]/;
+
 export function validateQuestion(q, phraseById, categoryIds) {
   const errors = [];
   const err = (m) => errors.push(`${q.id || '(no id)'}: ${m}`);
   if (!q.id || typeof q.id !== 'string') err('missing string id');
   if (!categoryIds.has(q.cat)) err(`unknown category "${q.cat}"`);
-  if (!QUESTION_TYPES.includes(q.questionType)) err(`unknown questionType "${q.questionType}"`);
+  if (!QUESTION_TYPES.includes(q.questionType)) err(`unknown questionType "${q.questionType}" (English-to-Thai types like response/safest are forbidden)`);
   if (!q.prompt || typeof q.prompt !== 'string') err('missing prompt');
+  else if (THAI_RE.test(q.prompt)) err('prompt contains Thai script (Thai renders only from the subject phrase)');
   if (!q.explanation || typeof q.explanation !== 'string') err('missing explanation');
+  else if (THAI_RE.test(q.explanation)) err('explanation contains Thai script');
   const subject = phraseById.get(q.phraseId);
-  if (!subject) err(`unknown phraseId ${q.phraseId}`);
+  if (!subject) err(`unknown phraseId ${q.phraseId} (every question must reference one main Thai phrase)`);
   else if (subject.cat !== q.cat) err(`subject phrase ${q.phraseId} belongs to "${subject.cat}", not "${q.cat}"`);
   if (!Array.isArray(q.options) || q.options.length < 2) err('needs at least 2 options');
   else {
@@ -126,17 +138,14 @@ export function validateQuestion(q, phraseById, categoryIds) {
       if (ids.has(opt.id)) err(`duplicate option id "${opt.id}"`);
       ids.add(opt.id);
       if (optionIsPhrase(opt)) {
-        if (!phraseById.get(opt.phraseId)) err(`option ${opt.id} unknown phraseId ${opt.phraseId}`);
+        err(`option ${opt.id} is a Thai phrase option — answer options must be English text (Thai→English direction)`);
       } else if (!opt.text || typeof opt.text !== 'string') {
-        err(`option ${opt.id} needs text or phraseId`);
+        err(`option ${opt.id} needs English text`);
+      } else if (THAI_RE.test(opt.text)) {
+        err(`option ${opt.id} contains Thai script — options must be English before reveal`);
       }
     }
     if (!ids.has(q.correctOptionId)) err(`correctOptionId "${q.correctOptionId}" not an option`);
-    const phraseOpts = q.options.filter(optionIsPhrase).length;
-    if (phraseOpts > 0 && phraseOpts !== q.options.length) err('options must be all-phrase or all-text, not mixed');
-    if ((q.questionType === 'response' || q.questionType === 'safest') && phraseOpts === 0) {
-      err(`${q.questionType} question needs phrase options`);
-    }
     if (q.questionType === 'tone') {
       const labels = new Set(Object.values(SEVERITY_LABEL));
       for (const opt of q.options) {
@@ -147,13 +156,8 @@ export function validateQuestion(q, phraseById, categoryIds) {
         err(`tone answer "${correct && correct.text}" does not match subject severity "${subject && subject.severity}"`);
       }
     }
-    if ((q.questionType === 'response' || q.questionType === 'safest') && subject) {
-      const correct = q.options.find((o) => o.id === q.correctOptionId);
-      if (correct && correct.phraseId !== q.phraseId) {
-        err('response/safest subject phraseId must equal the correct option phraseId');
-      }
-    }
   }
+  if (q.literal && THAI_RE.test(q.literal)) err('literal gloss contains Thai script');
   if (subject && subject.severity === 'strong' && !q.warning) {
     err('strong-severity subject requires a warning field');
   }
