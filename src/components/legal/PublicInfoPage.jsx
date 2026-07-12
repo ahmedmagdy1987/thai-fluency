@@ -55,7 +55,7 @@ const PAGE_LINKS = [
   { path: '/terms', label: 'Terms' },
   { path: '/support', label: 'Support' },
   { path: '/feedback', label: 'Feedback' },
-  { path: '/delete-account', label: 'Delete account' },
+  { path: '/delete-account', label: 'Account deletion' },
 ];
 
 export default function PublicInfoPage({ page = 'privacy', isAuthed = false, onNavigate }) {

@@ -21,6 +21,7 @@ import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../da
 import { STAGES } from '../data/taxonomy.js';
 import { speakThai } from '../lib/audio.js';
 import { SITE_CONFIG } from '../config/site.js';
+import SocialLinks from './SocialLinks.jsx';
 
 // Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
 // real part of the app (guided mini-units, the challenge step, XP/streak
@@ -759,7 +760,12 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             </nav>
           </div>
 
-          <p className="lp-footer-fine">© {SITE_CONFIG.siteName}. Learn Thai the fast and fun way.</p>
+          {/* Social icons render here ONLY when a URL is set in
+              src/config/socialLinks.js. All null by default → renders nothing
+              (no empty row, no gap). */}
+          <SocialLinks className="lp-footer-social" />
+
+          <p className="lp-footer-fine">© {new Date().getFullYear()} {SITE_CONFIG.siteName}. All rights reserved.</p>
         </div>
       </footer>
     </main>
