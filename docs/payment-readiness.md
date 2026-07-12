@@ -5,8 +5,11 @@ checkout, the `subscriptions` table (migrations 007/009), the stripe-webhook /
 create-checkout-session / cancel-subscription Edge Functions, server-authoritative
 entitlement sync (subscriptions.super_until → stats.tier), and one enforced
 Super-exclusive feature (Dating & Real Talk 18+) are all shipped and deployed.
-Remaining before real charges: production Stripe keys/prices, and analytics wiring
-(CHECKOUT_STARTED / SUBSCRIPTION_ACTIVATED). The pre-implementation audit below is
+Remaining before real charges: production Stripe keys/prices. (The analytics
+events CHECKOUT_STARTED / SUBSCRIPTION_ACTIVATED are now wired client-side —
+SuperCheckoutModal.jsx and the App.jsx checkout-return effect — but events land
+in a local ring buffer only; a first-party cloud sink is future work, see
+docs/analytics-wiring-findings.md.) The pre-implementation audit below is
 retained for historical context; individual "not built yet" lines are now stale.
 
 Hard rules (do not violate):

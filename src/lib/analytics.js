@@ -12,10 +12,11 @@ export const ANALYTICS_EVENTS = {
   PREMIUM_FEATURE_TAPPED: 'premium_feature_tapped',
   UPGRADE_MODAL_SHOWN: 'upgrade_modal_shown',
   UPGRADE_MODAL_DISMISSED: 'upgrade_modal_dismissed',
-  // Billing is live (Stripe embedded checkout, test mode) but these two are still
-  // UNWIRED — an instrumentation gap, not a missing feature. Emit CHECKOUT_STARTED
-  // at the /plans checkout entry (SuperCheckoutModal) and SUBSCRIPTION_ACTIVATED
-  // on the ?super=success return / entitlement sync. Do not fire on placeholder CTAs.
+  // Both funnel events are WIRED: CHECKOUT_STARTED fires when the embedded
+  // checkout mounts (SuperCheckoutModal), SUBSCRIPTION_ACTIVATED fires on the
+  // server-confirmed ?super=success return (App.jsx checkout-return effect).
+  // Events currently land in the local ring buffer below only — there is no
+  // cloud sink yet (see docs/analytics-wiring-findings.md).
   CHECKOUT_STARTED: 'checkout_started',
   SUBSCRIPTION_ACTIVATED: 'subscription_activated',
 };
