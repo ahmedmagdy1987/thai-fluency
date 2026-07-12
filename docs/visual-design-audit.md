@@ -127,3 +127,18 @@ Full color-token migration of the remaining ~47 duplicate hexes; radius/shadow t
 
 ## 8. What's verified good (keep)
 Clean 12-token color system with a full dark override; genuinely premium landing (both themes); unified reward/celebration overlays with XP count-up; footer on-jade contrast passes AA; anonymous-shell footer correctly absent; the new social system's hidden-by-default contract (renders nothing until a real URL is set).
+
+---
+
+## 9. Quick-wins pass (follow-up, mechanical only — no design decisions)
+
+A follow-up pass executed the zero-judgment quick wins from §7. **Done:**
+- **Inter 800 loaded** — added `;800` to the Inter axis in `index.html` (same Google Fonts method, no new dependency). The ~62 elements *authored* at weight 800 (prices, plan names, badges, hero) now render heavy as designed instead of clamping to 700. Payload: one additional latin woff2 (~20–30 KB, lazy, non-blocking). **The two `font-weight: 900` uses** (`.firstlesson-option-letter`, `.firstlesson-primer-num`, both JetBrains Mono) were left untouched — JetBrains 900 isn't loaded either, so they clamp to 700; whether to change them to 800 (and load JetBrains 800) is an owner call.
+- **"soon" micro-chip contrast fixed** — `.pl-matrix-soon` used `var(--gold)` as text on the cream-warm matrix = **2.25:1 (AA fail)**; switched to the existing `--gold-deep` token → **5.06:1 light / 8.33:1 dark** (both pass). No new token.
+- **Slim footer on Plans + legal/info pages** — extracted the landing footer into a shared `SiteFooter` component (single source of `FOOTER_LINKS` + copyright + the hidden social system) and added a `slim` variant to `/plans` (standalone only) and all legal/info pages, which previously ended in a void. The signed-in app shell and the embedded in-shell `/plans` deliberately still render **no** footer. Verified present + slim + no-social + correct copyright in both themes; no 375px overflow.
+- **Hardcoded-color reduction (safe subset only, zero visual change):** tokenized **8 occurrences** across 2 values — the 7 dead `var(--gold-deep, #a07b1f)` fallbacks (the token is now defined, so the fallback never rendered) → `var(--gold-deep)`, and the one dark-block `#ebcc8e` (== dark `--gold-soft`) → `var(--gold-soft)`. **~48 distinct hexes remain** and are NOT safely tokenizable this way: a light-only literal that matches a *light* token would change its **dark** rendering if tokenized (the token flips value by theme), so migrating them is part of the owner color-system project, not a pure refactor.
+
+**Reported, not changed (require a design/product decision — owner's list):**
+- **Donation "Coming soon" cards** are **not dead** — `SITE_CONFIG.support.buyMeACoffeeUrl` / `crypto.address` are env-driven; setting them turns the cards into live links. They represent a planned feature with a clear owner path to activate, so they were **kept** (removing them would delete a real feature). Owner choice: set the URLs, or hide the Support section until then.
+- **Funnel CTA seam** (gold-gradient marketing CTAs → flat jade primary buttons at the auth/app boundary) is a **brand-identity decision** (which primary-button style wins), not a mechanical fix — left for the owner.
+- Everything in §7b (type scale, spacing tokens, card-language merge, Dating premium skin, primary-button/modal unification, Stage-1-Complete rebuild) remains owner-design.
