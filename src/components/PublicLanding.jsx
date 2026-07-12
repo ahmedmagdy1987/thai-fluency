@@ -21,7 +21,7 @@ import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../da
 import { STAGES } from '../data/taxonomy.js';
 import { speakThai } from '../lib/audio.js';
 import { SITE_CONFIG } from '../config/site.js';
-import SocialLinks from './SocialLinks.jsx';
+import SiteFooter from './SiteFooter.jsx';
 
 // Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
 // real part of the app (guided mini-units, the challenge step, XP/streak
@@ -95,14 +95,7 @@ const HOW_RATINGS = [
   { label: 'Easy', color: '#2563A8' },
 ];
 
-const FOOTER_LINKS = [
-  { path: '/plans', label: 'Plans' },
-  { path: '/privacy', label: 'Privacy' },
-  { path: '/terms', label: 'Terms' },
-  { path: '/support', label: 'Support' },
-  { path: '/feedback', label: 'Feedback' },
-  { path: '/delete-account', label: 'Account deletion' },
-];
+// Footer links now live with the shared <SiteFooter> (components/SiteFooter.jsx).
 
 function getPhrase(source) {
   const card = CARDS.find(item => item.id === source.cardId);
@@ -747,27 +740,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       </section>
 
       {/* ===================== FOOTER ===================== */}
-      <footer className="lp-footer" aria-label="Public links">
-        <div className="lp-shell">
-          <div className="lp-footer-top">
-            <div className="lp-footer-brand">{SITE_CONFIG.siteName}</div>
-            <nav className="lp-footer-links">
-              {FOOTER_LINKS.map(link => (
-                <a key={link.path} href={link.path} onClick={openPublicPage(link.path)}>
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-
-          {/* Social icons render here ONLY when a URL is set in
-              src/config/socialLinks.js. All null by default → renders nothing
-              (no empty row, no gap). */}
-          <SocialLinks className="lp-footer-social" />
-
-          <p className="lp-footer-fine">© {new Date().getFullYear()} {SITE_CONFIG.siteName}. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter onNavigate={onOpenPublicPage} />
     </main>
   );
 }

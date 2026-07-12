@@ -577,6 +577,10 @@ button.lp-audio:active { transform: scale(0.92); }
 
 /* ============================== FOOTER ==============================  */
 .lp-footer { background: var(--jade); color: #eaf3ee; padding-top: clamp(40px, 6vw, 64px); padding-bottom: max(clamp(40px, 6vw, 64px), env(safe-area-inset-bottom)); }
+/* Slim variant for the legal/info and standalone Plans pages so they don't end
+   in a void — same footer, tighter band; also caps the empty bottom gap. */
+.lp-footer-slim { margin-top: clamp(32px, 6vw, 56px); padding-top: clamp(28px, 4vw, 40px); padding-bottom: max(clamp(24px, 4vw, 36px), env(safe-area-inset-bottom)); }
+.lp-footer-slim .lp-footer-fine { margin-top: 18px; }
 .app-root[data-theme="dark"] .lp-footer { background: #10231b; }
 .lp-footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
 .lp-footer-brand { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: #fff; }

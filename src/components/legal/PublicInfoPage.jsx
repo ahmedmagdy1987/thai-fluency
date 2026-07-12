@@ -9,6 +9,7 @@ import {
   TermsOfUseContent,
 } from './legalCopy.jsx';
 import { SITE_CONFIG } from '../../config/site.js';
+import SiteFooter from '../SiteFooter.jsx';
 
 const PUBLIC_PAGES = {
   privacy: {
@@ -106,6 +107,8 @@ export default function PublicInfoPage({ page = 'privacy', isAuthed = false, onN
           </div>
         </article>
       </section>
+
+      <SiteFooter onNavigate={onNavigate} variant="slim" />
     </main>
   );
 }

@@ -20,6 +20,7 @@ import { PLANS } from '../config/entitlements.js';
 import { isStripeTestMode } from '../config/stripe.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 import SuperCheckoutModal from './SuperCheckoutModal.jsx';
+import SiteFooter from './SiteFooter.jsx';
 
 // Plans / freemium page. Super checkout is LIVE (Stripe embedded checkout): a
 // signed-in learner can subscribe right here. Free stays the complete, live
@@ -425,6 +426,11 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
           onClose={() => setCheckoutPlan(null)}
         />
       )}
+
+      {/* Standalone (anonymous / marketing) plans page gets the shared footer so
+          it doesn't end in a void. The embedded (in-shell) variant does NOT —
+          the app shell frames it and shouldn't carry a marketing footer. */}
+      {!embedded && <SiteFooter onNavigate={onNavigate} variant="slim" />}
     </main>
   );
 }
