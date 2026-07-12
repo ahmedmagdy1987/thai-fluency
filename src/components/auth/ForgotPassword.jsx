@@ -13,8 +13,11 @@ export default function ForgotPassword({ onBack }) {
     setError(null);
     setLoading(true);
     try {
+      // Lands on the dedicated set-new-password screen (see ResetPassword.jsx).
+      // window.location.origin makes this correct on production and local dev
+      // alike; both URLs must be in the Supabase Auth redirect allowlist.
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: window.location.origin + '/',
+        redirectTo: window.location.origin + '/reset-password',
       });
       if (resetError) {
         setError(resetError.message);
