@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Crown,
   Minus,
   Sparkles,
   Compass,
@@ -125,7 +126,7 @@ function PlanPriceTag({ plan }) {
   return <div className="pl-plan-price"><span className="pl-plan-amount">${plan.price}</span><span className="pl-plan-period">per {plan.period}</span></div>;
 }
 
-export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, onSignIn, embedded = false, onBack }) {
+export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = false, onGetStarted, onSignIn, embedded = false, onBack }) {
   const [checkoutPlan, setCheckoutPlan] = useState(null); // 'monthly' | 'yearly' | null
   // eslint-disable-next-line react-hooks/exhaustive-deps -- one plans_viewed per visit
   useEffect(() => { trackEvent(ANALYTICS_EVENTS.PLANS_VIEWED, { authed: !!isAuthed }); }, []);
@@ -147,13 +148,33 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
 
   // Super CTA: a signed-in learner opens embedded checkout in-page for the chosen
   // plan; a signed-out visitor is sent to sign up first (you must have an account
-  // to subscribe), matching the free flow.
+  // to subscribe), matching the free flow. An ALREADY-Super user doesn't reach a
+  // payable checkout from here (double-billing guard): the Super plan cards
+  // render a "You're already Super" state instead of these CTAs, and this guard
+  // is defense in depth behind that. Client-side only — the server-side
+  // already-subscribed rejection in create-checkout-session is tracked for the
+  // go-live pass.
   const startSuper = (plan) => () => {
+    if (isSuperUser) {
+      if (onNavigate) onNavigate('/settings');
+      return;
+    }
     trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'plans-page', plan });
     if (isAuthed) setCheckoutPlan(plan);
     else if (onGetStarted) onGetStarted();
     else if (onNavigate) onNavigate('/get-started');
   };
+
+  // Rendered in place of the Go Super CTA on both Super plan cards when the
+  // viewer already has an active Super subscription.
+  const alreadySuperCta = (
+    <div className="pl-plan-active" role="status">
+      <span className="pl-plan-active-chip"><Crown size={15} aria-hidden="true" /> You're already Super</span>
+      <button type="button" className="pl-plan-manage-link" onClick={() => onNavigate && onNavigate('/settings')}>
+        Manage or cancel in Settings
+      </button>
+    </div>
+  );
 
   return (
     <main className={`pl-page${embedded ? ' pl-page-embedded' : ''}`}>
@@ -193,6 +214,21 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
             <span>
               <strong>Test mode.</strong> Checkout is fully working, but payments use Stripe test
               mode — no real card is charged yet while we finish setup.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {isSuperUser && (
+        <div className="pl-shell">
+          <div className="pl-already-super-banner" role="status">
+            <Crown size={15} aria-hidden="true" />
+            <span>
+              <strong>You're already Super.</strong> Thanks for supporting Tuk Talk Thai! You can
+              manage or cancel your plan anytime in{' '}
+              <button type="button" className="pl-inline-link" onClick={() => onNavigate && onNavigate('/settings')}>
+                Settings
+              </button>.
             </span>
           </div>
         </div>
@@ -268,10 +304,12 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
             </div>
             <PlanPriceTag plan={PLANS.superMonthly} />
             <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
-            <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('monthly')}>
-              {isAuthed ? 'Go Super' : 'Sign up to go Super'}
-              <ArrowRight size={17} aria-hidden="true" />
-            </button>
+            {isSuperUser ? alreadySuperCta : (
+              <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('monthly')}>
+                {isAuthed ? 'Go Super' : 'Sign up to go Super'}
+                <ArrowRight size={17} aria-hidden="true" />
+              </button>
+            )}
             <ul className="pl-plan-list">
               {PREMIUM_INCLUDES.map(({ Icon, text }) => (
                 <li key={text}><Icon size={16} aria-hidden="true" /> {text}</li>
@@ -288,9 +326,11 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
             </div>
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
-            <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={startSuper('yearly')}>
-              {isAuthed ? 'Choose yearly' : 'Sign up for yearly'}
-            </button>
+            {isSuperUser ? alreadySuperCta : (
+              <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={startSuper('yearly')}>
+                {isAuthed ? 'Choose yearly' : 'Sign up for yearly'}
+              </button>
+            )}
             <ul className="pl-plan-list">
               <li><Check size={16} aria-hidden="true" /> Everything in Super Monthly</li>
               <li><Check size={16} aria-hidden="true" /> Best price per month</li>
@@ -362,7 +402,11 @@ export default function PlansPage({ onNavigate, isAuthed = false, onGetStarted, 
       </section>
 
       {checkoutPlan && (
-        <SuperCheckoutModal plan={checkoutPlan} onClose={() => setCheckoutPlan(null)} />
+        <SuperCheckoutModal
+          plan={checkoutPlan}
+          alreadySuper={isSuperUser}
+          onClose={() => setCheckoutPlan(null)}
+        />
       )}
     </main>
   );

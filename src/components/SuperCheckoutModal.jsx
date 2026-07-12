@@ -12,8 +12,16 @@ import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 //
 // Honest failure modes: no Stripe config → friendly note; script/session/network
 // failure → an error state with Try again. A real Stripe session always backs it.
-export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
-  const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error' | 'unconfigured'
+// alreadySuper short-circuits to a "no need to pay again" state so an active
+// subscriber doesn't reach a payable checkout from the UI (double-billing
+// guard; the PlansPage CTAs are also swapped out, this is defense in depth).
+// NOTE: this guard is client-side only — it protects the mainline flow but a
+// stale tab / stale local tier can bypass it. The authoritative check (reject
+// checkout-session creation when subscriptions shows an active Super) belongs
+// in the create-checkout-session Edge Function and is tracked for the
+// go-live pass (Edge Function changes are out of scope here).
+export default function SuperCheckoutModal({ plan = 'monthly', alreadySuper = false, onClose }) {
+  const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error' | 'unconfigured' | 'already-super'
   const [errorMsg, setErrorMsg] = useState('');
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
@@ -33,6 +41,11 @@ export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
 
   useEffect(() => {
     let cancelled = false;
+
+    if (alreadySuper) {
+      setStatus('already-super');
+      return undefined;
+    }
 
     if (!hasStripeConfig) {
       setStatus('unconfigured');
@@ -86,7 +99,7 @@ export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
         checkoutRef.current = null;
       }
     };
-  }, [plan, reloadKey]);
+  }, [plan, reloadKey, alreadySuper]);
 
   const planLabel = plan === 'yearly' ? 'Super Yearly' : 'Super Monthly';
 
@@ -119,6 +132,17 @@ export default function SuperCheckoutModal({ plan = 'monthly', onClose }) {
               <p className="sco-state-title">Checkout isn’t available yet</p>
               <p className="sco-state-text">
                 Secure checkout isn’t configured on this environment yet. No payment has been collected.
+              </p>
+              <button type="button" className="sco-btn sco-btn-ghost" onClick={onClose}>Close</button>
+            </div>
+          )}
+
+          {status === 'already-super' && (
+            <div className="sco-state" aria-live="polite">
+              <p className="sco-state-title">You’re already Super</p>
+              <p className="sco-state-text">
+                Your Super plan is active — there’s no need to pay again. You can manage or cancel
+                your subscription anytime in Settings.
               </p>
               <button type="button" className="sco-btn sco-btn-ghost" onClick={onClose}>Close</button>
             </div>
