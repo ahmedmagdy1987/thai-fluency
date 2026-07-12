@@ -229,7 +229,10 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .lp-hero-demo-link {
   display: inline-flex; align-items: center; gap: 7px;
-  margin-top: 16px; padding: 4px 2px;
+  /* min-height + padding give this a real touch target — on mobile it is the
+     ONLY demo entry point (header demo button is hidden <960px) and measured
+     just 25px tall (UX audit). Visual size is unchanged. */
+  margin-top: 8px; padding: 12px 8px; min-height: 44px;
   background: none; border: none; cursor: pointer;
   font-family: inherit; font-size: 13px; font-weight: 700; line-height: 1.3;
   color: var(--lp-ink-on-dark); text-align: left;

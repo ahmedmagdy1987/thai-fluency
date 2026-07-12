@@ -123,8 +123,10 @@
 .pl-matrix-no { color: var(--stone); }
 .pl-matrix-text { font-size: 12px; font-weight: 700; color: var(--ink-soft); display: inline-flex; flex-direction: column; align-items: center; line-height: 1.15; gap: 2px; }
 .pl-matrix-soon { font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
-.pl-matrix-note { display: flex; align-items: center; justify-content: center; gap: 6px; max-width: 760px; margin: 16px auto 0; font-size: 12.5px; color: var(--ink-soft); }
-.pl-matrix-note svg { color: var(--gold); flex-shrink: 0; }
+/* Block flow (not flex): as a flex container the paragraph's text runs became
+   separate flex items and wrapped into stacked fragments (UX audit). */
+.pl-matrix-note { display: block; text-align: center; max-width: 760px; margin: 16px auto 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); }
+.pl-matrix-note svg { color: var(--gold); display: inline-block; vertical-align: -2px; margin-right: 5px; }
 .pl-matrix-note strong { color: var(--gold); }
 
 /* ===== FAQ ===== */

@@ -34,9 +34,12 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
   if (questions.length === 0) {
     return (
       <div>
-        <div className="guide-eyebrow">Required for Level 1</div>
+        {/* Honest framing: nothing is gated on this quiz — tonesQuizPassed only
+            feeds the Tone Master achievement (UX audit killed the phantom
+            "Required for Level 1" gate; no Level system exists). */}
+        <div className="guide-eyebrow">Ear training</div>
         <h2 className="guide-h2">Tone Challenge</h2>
-        <p className="guide-p">10 questions. Look at the romanized syllable and pick the correct tone (mid / low / falling / high / rising). Pass with 80% or higher to unlock Level 1.</p>
+        <p className="guide-p">10 questions. Look at the romanized syllable and pick the correct tone (mid / low / falling / high / rising). Pass with 80% or higher to earn the Tone Master achievement.</p>
         <div className="tones-quiz-intro-stats">
           <div className="tqi-stat">
             <div className="tqi-num">{bestScore || 0}<span className="tqi-of">/10</span></div>

@@ -316,7 +316,7 @@ export default function QuizTab({
               </div>
               {!canAffordRefill && (
                 <div className="quiz-hearts-gate-hint">
-                  You have {gems} gem{gems === 1 ? '' : 's'}. Earn more from missions, quests, and passing Challenges.
+                  You have {gems} gem{gems === 1 ? '' : 's'}. Earn more by hitting your daily goal and passing Challenges.
                 </div>
               )}
               {setTab && (

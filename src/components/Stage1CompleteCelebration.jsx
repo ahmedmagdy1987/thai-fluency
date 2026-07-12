@@ -21,9 +21,11 @@ export default function Stage1CompleteCelebration({ onClose }) {
         <div className="s1-complete-eyebrow">Survival Thai Complete</div>
         <h1 className="s1-complete-title">👑 You can handle real Thailand.</h1>
         <p className="s1-complete-thai">gèng mâak (เก่งมาก)</p>
+        {/* "learned" not "mastered" — stage completion is seen/learned; the
+            app's own model says mastery comes later through review. */}
         <p className="s1-complete-body">
-          You've mastered the 150 essentials. You can greet, order food, ask directions,
-          handle prices, and call for help in Thai.
+          You've learned all 150 essentials — keep reviewing to master them. You can greet,
+          order food, ask directions, handle prices, and call for help in Thai.
         </p>
         <div className="s1-complete-divider" />
         <div className="s1-complete-unlock-eyebrow">Now unlocked</div>

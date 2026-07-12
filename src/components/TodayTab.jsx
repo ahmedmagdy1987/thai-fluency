@@ -222,11 +222,13 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
               <div className="quick-sub">+{XP_REWARDS.quizCorrect} XP per correct</div>
             </div>
           </button>
+          {/* Label matches the destination: setTab('guide') opens the Guide on
+              its Tones section — the Tone Challenge is a sub-tab inside it. */}
           <button className="quick-card" onClick={() => setTab('guide')}>
             <Compass size={20} />
             <div>
-              <div className="quick-title">Tone challenge</div>
-              <div className="quick-sub">{fullStats.tonesQuizPassed ? 'Passed. Try again' : 'Train your ear'}</div>
+              <div className="quick-title">Tones guide</div>
+              <div className="quick-sub">{fullStats.tonesQuizPassed ? 'Tone Challenge passed' : 'Train your ear'}</div>
             </div>
           </button>
         </div>

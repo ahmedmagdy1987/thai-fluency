@@ -16,6 +16,7 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
   const dailyDone = q.daily.done;
 
   const due = q.due.due;
+  const dueSeen = q.due.seen;
   const dueDone = q.due.done;
   const duePct = q.due.pct;
 
@@ -38,7 +39,9 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
       progress: `${todayXp}/${goal} XP`,
       pct: dailyPct,
       done: dailyDone,
-      reward: '+25 XP bonus',
+      // Both rewards are real: the +25 XP bonus and the 5-gem daily-goal grant
+      // (GEMS_PER_DAILY_GOAL, awarded in App.jsx when the goal is first hit).
+      reward: '+25 XP bonus · +5 gems',
       cta: dailyDone ? null : 'Start practice',
       onClick: () => setTab && setTab('cards'),
     },
@@ -52,7 +55,7 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
       pct: cardsPct,
       done: cardsDone,
       reward: 'Keep Thai fresh',
-      cta: cardsDone ? null : 'Open cards',
+      cta: cardsDone ? null : 'Open Practice',
       onClick: () => setTab && setTab('cards'),
     },
     {
@@ -60,10 +63,15 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
       Icon: CheckCircle2,
       iconBg: '#2E7D5B',
       title: 'Review your due cards',
+      // Display-only zero-state branch: with no cards learned yet (seen === 0)
+      // the quest is not "cleared" — it hasn't started. Saying "Excellent" over
+      // an unchecked 0% bar read as a contradiction (UX audit).
       desc: due > 0
         ? `${due} card${due === 1 ? '' : 's'} waiting. Clear them to lock in mastery.`
-        : 'No reviews due right now. Excellent.',
-      progress: due > 0 ? `${due} due` : 'Cleared',
+        : (dueSeen > 0
+            ? 'No reviews due right now. Excellent.'
+            : 'Learn a few cards first — reviews appear here when they’re due.'),
+      progress: due > 0 ? `${due} due` : (dueSeen > 0 ? 'Cleared' : 'No cards yet'),
       pct: duePct,
       done: dueDone,
       reward: 'Build mastery',
@@ -101,13 +109,16 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
         <section className="feature-lock-panel">
           <div className="feature-lock-icon"><Lock size={28} /></div>
           <div className="feature-lock-eyebrow">Progressive unlock</div>
-          <h1 className="feature-lock-title">Reach Level 2 to unlock Quests</h1>
+          <h1 className="feature-lock-title">Complete Stage 1 to unlock Quests</h1>
           <p className="feature-lock-copy">
-            Finish your first path and keep practicing Cards to unlock daily quests. Quests are free — you unlock them by learning.
+            Finish Stage 1 on your Learn path to unlock daily quests. Quests are free — you unlock them by learning.
           </p>
           <div className="feature-lock-actions">
-            <button type="button" className="btn-primary" onClick={() => setTab && setTab('cards')}>
-              Practice Cards
+            {/* Learn is the only surface that introduces new cards and can
+                actually complete Stage 1 — the bare Practice tab is review-only
+                and could never satisfy this gate (UX audit). */}
+            <button type="button" className="btn-primary" onClick={() => setTab && setTab('learn')}>
+              Go to Learn
             </button>
           </div>
         </section>

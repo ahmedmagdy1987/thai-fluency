@@ -77,7 +77,10 @@ export default function LearnPath({
       ? `Start Stage ${currentStage.id}`
       : (due > 0
         ? `Continue: ${due} due`
-        : (seen === 0 ? 'Start your first lesson' : `Learn ${Math.max(1, newAvail)} new`));
+        // No count: newAvail is the TOTAL unseen in the unlocked range (a tap
+        // teaches only the daily chunk), and Math.max(1, 0) promised "Learn 1
+        // new" when nothing was learnable (UX audit).
+        : (seen === 0 ? 'Start your first lesson' : 'Learn new words'));
 
   const continueSubtitle = inMissionView && currentMission
     ? `Mission ${currentMission.id}: ${currentMission.name}`

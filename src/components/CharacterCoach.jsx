@@ -87,7 +87,7 @@ export default function CharacterCoach({
         <span className="character-coach-halo" aria-hidden="true" />
         <img
           src={currentSrc}
-          alt={`${character.displayName} (${effectiveState})`}
+          alt={character.displayName}
           className="character-coach-img"
           onError={onImgError}
           draggable={false}

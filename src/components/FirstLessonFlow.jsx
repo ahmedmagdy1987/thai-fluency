@@ -336,9 +336,11 @@ export default function FirstLessonFlow({
               <span>{challengeQuestions.length} questions</span>
             </div>
             <div className="firstlesson-unlock-preview" aria-label="Unlocked after first lesson">
-              <div><strong>Cards</strong><span>Complete your first lesson to unlock Cards.</span></div>
+              {/* "Practice" matches the nav label for the cards tab; "Stage 1"
+                  matches the real quest gate (no Level system exists). */}
+              <div><strong>Practice</strong><span>Complete your first lesson to unlock Practice.</span></div>
               <div><strong>Challenge</strong><span>Complete your first lesson to unlock Challenge.</span></div>
-              <div><strong>Quests</strong><span>Reach Level 2 to unlock daily quests.</span></div>
+              <div><strong>Quests</strong><span>Complete Stage 1 to unlock daily quests.</span></div>
             </div>
             <p className="firstlesson-perspective-note">
               {voice === 'female'

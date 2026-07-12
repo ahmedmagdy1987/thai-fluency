@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { STAGES } from '../data/taxonomy.js';
@@ -20,6 +20,15 @@ const AUDIO_RATE_OPTIONS = [
 export default function SettingsModal({ stats, updateSettings, onClose, onOpenPublicPage, onReplayTutorial, onEntitlementRefresh }) {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
+
+  // Escape closes the modal — matches the dismissal pattern used by the mobile
+  // More sheet, checkout modal, Learn modals, and tutorial (UX audit found this
+  // was the only heavyweight modal without it).
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
   const sub = useSubscriptionStatus(stats, { onEntitlementRefresh });
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
@@ -304,7 +313,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
           </div>
 
           <div className="setting-group">
-            <div className="setting-label">Legal</div>
+            <div className="setting-label">Legal &amp; support</div>
             <div className="setting-sub">Public launch pages and support information</div>
             <div className="settings-legal-links">
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/privacy', setShowPrivacy)}>Privacy Policy</button>
@@ -315,7 +324,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/feedback')}>Feedback</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
-              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Super</button>
+              <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Plans &amp; pricing</button>
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>

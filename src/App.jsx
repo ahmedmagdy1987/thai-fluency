@@ -1034,14 +1034,16 @@ export default function TukTalkThaiApp() {
         setCelebration({
           eyebrow: 'Welcome to Super',
           title: 'You’re now Super! 🎉',
-          subtitle: 'Your Super plan is active. Thank you for supporting Tuk Talk Thai!',
+          // Name the LIVE benefits so the payer knows what they just unlocked
+          // (both are enforced today: Dating gate + effectiveHearts → ∞).
+          subtitle: 'Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
           primaryLabel: 'Let’s go',
           onPrimary: () => setCelebration(null),
         });
         try {
           if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
             new Notification('Welcome to Super! 🎉', {
-              body: 'Your Super plan is active. Thank you for supporting Tuk Talk Thai!',
+              body: 'Your Super plan is active — Dating & Real Talk and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
             });
           }
         } catch { /* ignore */ }
@@ -1773,7 +1775,10 @@ export default function TukTalkThaiApp() {
       subtitle: 'You finished the guided starter lesson and unlocked the main practice path.',
       xpEarned: FIRST_LESSON_REWARD_XP,
       streak: Math.max(1, stats.streak || 0),
-      nextStep: 'Cards and Challenge',
+      // "Cards and Challenge" were both empty right after the first lesson
+      // (guided lessons record no card progress) — point at the step that
+      // actually works immediately (UX audit).
+      nextStep: 'Mission 1 in Learn',
       superPromptReason: 'first-lesson',
     });
     updateSettings({
@@ -2063,7 +2068,7 @@ export default function TukTalkThaiApp() {
           onPrimary: () => { setCelebration(null); handleSetTab('cards'); },
           secondaryLabel: 'Try a Stage Challenge',
           onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
-          superCtaText: showSuper ? 'More practice paths and advanced challenges can unlock with Tuk Talk Thai Super soon.' : null,
+          superCtaText: showSuper ? 'Go Super to unlock the 18+ Dating & Real Talk section — more extras are on the way.' : null,
           onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
         });
         // Course-completion cinematic (Stage 8 = the big finale). No-op until a
@@ -2118,7 +2123,7 @@ export default function TukTalkThaiApp() {
           onPrimary: () => setCelebration(null),
           secondaryLabel: 'Try a Challenge',
           onSecondary: () => { setCelebration(null); handleSetTab('quiz'); },
-          superCtaText: showSuper ? 'Want extra practice goals soon? Tuk Talk Thai Super will unlock more ways to keep going.' : null,
+          superCtaText: showSuper ? 'Go Super to unlock the 18+ Dating & Real Talk section and support new content.' : null,
           onSuper: showSuper ? () => { setCelebration(null); handleOpenPremium(); } : null,
         });
       }
@@ -2238,6 +2243,7 @@ export default function TukTalkThaiApp() {
           hasSession={!!session}
           linkError={authCallbackError}
           onComplete={handleResetPasswordComplete}
+          onSignIn={() => openAuthGate('signin')}
         />
       </div>
     );

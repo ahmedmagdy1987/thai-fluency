@@ -60,7 +60,9 @@ const MATRIX = [
   { label: 'Stays ad-free if ads are ever added', free: false, premium: 'Guaranteed', planned: true },
   { label: 'Extra practice & recovery (hearts)', free: 'Standard', premium: 'Extra', planned: true },
   { label: 'Flexible review & topic practice', free: 'Guided', premium: 'More flexible', planned: true },
-  { label: 'Bonus & early-access mission packs', free: false, premium: true, planned: true },
+  // String value (not boolean) so MatrixValue's planned/'soon' path renders —
+  // a bare checkmark here contradicted the plan card's "(soon)" label.
+  { label: 'Bonus & early-access mission packs', free: false, premium: 'Included', planned: true },
 ];
 
 const FREE_INCLUDES = [
@@ -86,7 +88,7 @@ const FAQ = [
   },
   {
     q: 'Do I have to pay to finish the course?',
-    a: 'No. The learning path is free and stays that way. Premium is about convenience and consistency, not about unlocking the content you need to progress.',
+    a: 'No. The learning path is free and stays that way. Super is about convenience and consistency, not about unlocking the content you need to progress.',
   },
   {
     q: 'How much is Super and how do I buy it?',
@@ -97,8 +99,8 @@ const FAQ = [
     a: 'Today Super unlocks the optional 18+ Dating & Real Talk section — practical dating, flirting and consent phrases — and directly supports development. More Super extras (a guaranteed ad-free experience, more flexible practice, and bonus mission packs) are on the way and are labelled "soon" until they ship.',
   },
   {
-    q: 'Will the free version get worse to push Premium?',
-    a: 'No. The free experience stays a genuinely good way to learn Thai. Premium adds extras for people who want them. It does not take things away from free learners.',
+    q: 'Will the free version get worse to push Super?',
+    a: 'No. The free experience stays a genuinely good way to learn Thai. Super adds extras for people who want them. It does not take things away from free learners.',
   },
 ];
 
@@ -142,6 +144,15 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
   };
 
   const startFree = () => {
+    // A signed-in viewer already HAS the free plan — "start" would navigate to
+    // /get-started, which silently bounces a session-holder back into the app
+    // with a stale URL (UX audit). Send them back to learning instead; the
+    // labels below also swap to match.
+    if (isAuthed) {
+      if (onBack) onBack();
+      else if (onNavigate) onNavigate('/learn');
+      return;
+    }
     if (onGetStarted) onGetStarted();
     else if (onNavigate) onNavigate('/get-started');
   };
@@ -237,23 +248,27 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
       <section className="pl-hero">
         <div className="pl-shell pl-hero-inner">
           <span className="pl-eyebrow">Plans &amp; pricing</span>
-          <h1 className="pl-hero-title">Free to learn. Premium for momentum.</h1>
+          <h1 className="pl-hero-title">Free to learn. Super for momentum.</h1>
           <p className="pl-hero-sub">
             Tuk Talk Thai keeps the whole guided journey free. You pay only if you want a smoother,
             more consistent ride. No paywalls on the path to speaking Thai.
           </p>
           <div className="pl-hero-actions">
             <button type="button" className="pl-cta-primary" onClick={startFree}>
-              Start free
+              {isAuthed ? 'Back to learning' : 'Start free'}
               <ArrowRight size={18} aria-hidden="true" />
             </button>
-            {onSignIn && (
+            {!isAuthed && onSignIn && (
               <button type="button" className="pl-cta-ghost" onClick={onSignIn}>
                 I already have an account
               </button>
             )}
           </div>
-          <p className="pl-hero-note">Start free — no card needed. Upgrade to Super anytime.</p>
+          <p className="pl-hero-note">
+            {isAuthed
+              ? 'The whole guided path is already yours, free. Upgrade to Super anytime.'
+              : 'Start free — no card needed. Upgrade to Super anytime.'}
+          </p>
         </div>
       </section>
 
@@ -287,7 +302,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
             <PlanPriceTag plan={PLANS.free} />
             <p className="pl-plan-blurb">{PLANS.free.tagline} Everything you need to start speaking Thai, from your first mission.</p>
             <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startFree}>
-              {PLANS.free.cta}
+              {isAuthed ? 'Your plan — keep learning' : PLANS.free.cta}
               <ArrowRight size={17} aria-hidden="true" />
             </button>
             <ul className="pl-plan-list">
@@ -391,10 +406,12 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
       {/* Closing CTA */}
       <section className="pl-cta-band">
         <div className="pl-shell pl-cta-inner">
-          <h2 className="pl-cta-title">Start free and see how far the path takes you.</h2>
+          <h2 className="pl-cta-title">
+            {isAuthed ? 'Your next mission is waiting.' : 'Start free and see how far the path takes you.'}
+          </h2>
           <p className="pl-cta-sub">Learn something you can actually say in Thailand today.</p>
           <button type="button" className="pl-cta-primary pl-cta-band-btn" onClick={startFree}>
-            Start your first mission
+            {isAuthed ? 'Back to learning' : 'Start your first mission'}
             <ArrowRight size={18} aria-hidden="true" />
           </button>
           <a className="pl-cta-back" href={homePath} onClick={navClick(homePath)}>{homeLabel}</a>

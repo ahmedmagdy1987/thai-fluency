@@ -90,14 +90,23 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
             I already have an account
           </button>
         </div>
+        {/* "(5 cards)" miscounted the demo (3 flashcards + quick check +
+            mini-lesson) — match the landing's accurate phrasing instead. */}
         <button className="auth-guest-link" onClick={onTryDemo}>
-          Try a quick demo (5 cards)
+          Try a quick demo — no account needed
+        </button>
+        <button type="button" className="auth-guest-link auth-back-home-link" onClick={() => openPublicPage('/get-started')}>
+          Back to home
         </button>
         <div className="auth-welcome-footer">
           By continuing you agree to our{' '}
           <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/terms')}>Terms</button>
           {' '}and{' '}
-          <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/privacy')}>Privacy Policy</button>.
+          {/* nowrap keeps the sentence period glued to the link so it can never
+              wrap onto its own line at narrow widths. */}
+          <span style={{ whiteSpace: 'nowrap' }}>
+            <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/privacy')}>Privacy Policy</button>.
+          </span>
           <span className="auth-footer-secondary-links">
             <button type="button" className="auth-footer-link" onClick={() => openPublicPage('/support')}>Support</button>
             <span aria-hidden="true">/</span>

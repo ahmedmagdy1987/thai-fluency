@@ -49,7 +49,9 @@ export default function PlacementOnboarding({ onComplete }) {
 
           <div className="onboard-section">
             <div className="onboard-section-title">Where are you with Thai?</div>
-            <div className="onboard-section-sub">Pick the closest match. You can change levels anytime.</div>
+            {/* No stage selector exists after onboarding (stages are earned),
+                so don't promise "change anytime" here. */}
+            <div className="onboard-section-sub">Pick the closest match — if unsure, start lower.</div>
             <div className="skill-level-list">
               {SKILL_LEVELS.map(L => (
                 <button key={L.id} className="skill-level-btn" onClick={() => onComplete(L.stage, [], voice)}>
@@ -66,7 +68,7 @@ export default function PlacementOnboarding({ onComplete }) {
 
           <div className="onboard-or-divider"><span>or</span></div>
           <button className="onboard-secondary-btn" onClick={() => setStep('placement')}>
-            <Target size={14} /> Take the placement test (12 cards, ~1 min)
+            <Target size={14} /> Take the placement test (~1 min)
           </button>
         </div>
       </div>

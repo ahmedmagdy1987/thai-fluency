@@ -265,13 +265,13 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
         </div>
 
         <div className="profile-section">
-          <div className="profile-section-title">Legal</div>
+          <div className="profile-section-title">Legal &amp; more</div>
           <div className="settings-legal-links profile-legal-links">
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/privacy')}>Privacy Policy</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/terms')}>Terms of Use</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
-            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Super</button>
+            <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/plans')}>Plans &amp; pricing</button>
             <span className="settings-legal-divider" aria-hidden="true">/</span>
             <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
           </div>

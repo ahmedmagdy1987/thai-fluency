@@ -78,7 +78,9 @@ export const badgesLeakAnswer = (questionType) =>
 // Neutral placeholder chip shown wherever an answer-revealing badge is
 // suppressed pre-reveal (answer-hygiene, not badge removal — the real badge
 // returns on reveal). Shared so the UI and validators agree on the label.
-export const ANSWER_AFTER_REVEAL_LABEL = 'Answer after reveal';
+// Wording: "Hidden until you answer" — the earlier "Answer after reveal" read
+// as an instruction rather than a placeholder (UX audit).
+export const ANSWER_AFTER_REVEAL_LABEL = 'Hidden until you answer';
 
 // Direction guard helper: an option carrying a phraseId is a Thai answer
 // option, which the Thai→English direction forbids.

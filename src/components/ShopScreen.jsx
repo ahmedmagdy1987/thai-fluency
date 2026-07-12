@@ -29,7 +29,7 @@ export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = fal
           <div className="shop-header-eyebrow">Shop</div>
           <h1 className="shop-header-title">Spend your gems</h1>
           <p className="shop-header-sub">
-            Earn gems from missions, quests, and passing Challenges. Spend them here.
+            Earn gems by hitting your daily goal, finishing Stage 1 missions, and passing Challenges. Spend them here.
             Hearts are only used in the Challenge — practice and lessons are always free.
           </p>
         </div>

@@ -24,7 +24,7 @@ const PWD_CHECKS = [
 
 const LINK_CHECK_GRACE_MS = 6000;
 
-export default function ResetPassword({ hasSession, linkError, onComplete }) {
+export default function ResetPassword({ hasSession, linkError, onComplete, onSignIn }) {
   const [newPw, setNewPw] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -176,7 +176,9 @@ export default function ResetPassword({ hasSession, linkError, onComplete }) {
     return (
       <div className="onboard-root">
         <div className="onboard-card auth-card">
-          <h1 className="onboard-title">Checking your link…</h1>
+          {/* reset-checking-pulse keeps the card visibly alive during the
+              grace window — a fully static "Checking…" read as frozen. */}
+          <h1 className="onboard-title reset-checking-pulse">Checking your link…</h1>
           <p className="onboard-sub">One moment while we verify your password-reset link.</p>
         </div>
       </div>
@@ -196,6 +198,12 @@ export default function ResetPassword({ hasSession, linkError, onComplete }) {
             We sent a fresh password-reset link to <strong>{resendEmail}</strong>. Open it on this
             device to set your new password.
           </p>
+          {/* On-screen way out — this state was a dead end (browser Back only). */}
+          {onSignIn && (
+            <button type="button" className="btn-secondary auth-submit" onClick={onSignIn}>
+              Back to sign in
+            </button>
+          )}
         </div>
       </div>
     );

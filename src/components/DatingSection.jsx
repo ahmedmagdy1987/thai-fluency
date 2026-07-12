@@ -343,6 +343,13 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           explicit sexual content, hateful slurs, harassment, and coercive language. Understanding
           casual or blunt language is not an invitation to use it — mind your audience and context.
         </p>
+        {/* Session-only expectation setting: catProgress is deliberately
+            session-local React state with no XP/reward path — say so, or the
+            vanishing "Best" chips read as lost progress (UX audit). */}
+        <p className="dating-disclaimer">
+          Practice scores here are just for this visit — this section never affects your XP, hearts,
+          streak, or course progress.
+        </p>
       </div>
     );
   }

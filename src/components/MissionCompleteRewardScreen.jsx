@@ -13,6 +13,10 @@ function prefersReducedMotion() {
 export default function MissionCompleteRewardScreen({
   title = 'Mission Complete',
   subtitle = 'You moved your Thai forward.',
+  // Neutral default: this screen also celebrates mini-units and the first
+  // lesson, where a hardcoded "Mission Complete" eyebrow contradicted the
+  // title directly beneath it ("Mini-Unit Complete") — UX audit.
+  eyebrow = 'Nice work',
   xpEarned = 0,
   streak = 0,
   nextStep = 'Keep practicing',
@@ -78,7 +82,7 @@ export default function MissionCompleteRewardScreen({
               <CheckCircle2 size={36} />
             </div>
           )}
-          <div className="reward-screen-eyebrow">Mission Complete</div>
+          <div className="reward-screen-eyebrow">{eyebrow}</div>
           <h1 id="reward-screen-title" className="reward-screen-title">{title}</h1>
           <p className="reward-screen-sub">{subtitle}</p>
 
