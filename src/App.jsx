@@ -43,6 +43,7 @@ import { getStageCinematic } from './data/stageCinematics.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
 import { MISSIONS } from './data/taxonomy.js';
 import { supabase, hasSupabaseConfig } from './lib/supabase.js';
+import { getCapturedAuthError, hadRecoveryTokens, friendlyAuthErrorMessage, stripAuthErrorParams } from './lib/authCallback.js';
 import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
 import { resetUserScopedRefs, claimCloudInit, releaseCloudInit, shouldWipeLocalOnIdentityChange, canWriteProfileSettings } from './lib/sessionLocks.js';
 import {
@@ -89,7 +90,10 @@ import PlacementOnboarding from './components/PlacementOnboarding.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
+import AuthLinkNotice from './components/auth/AuthLinkNotice.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
+import ResetPassword from './components/auth/ResetPassword.jsx';
+import SuperActivationNotice from './components/SuperActivationNotice.jsx';
 import DemoMode from './components/DemoMode.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import PublicInfoPage from './components/legal/PublicInfoPage.jsx';
@@ -219,6 +223,9 @@ function getRouteForPath(pathname) {
   if (path === '/settings') return { type: 'settings', path };
   if (path === '/get-started') return { type: 'landing', path };
   if (path === '/demo') return { type: 'demo', path };
+  // Password-recovery landing: the redirectTo of the reset email (see
+  // ForgotPassword.jsx / ResetPassword.jsx).
+  if (path === '/reset-password') return { type: 'reset-password', path };
   if (PUBLIC_PAGE_ROUTES[path]) return { type: 'public', page: PUBLIC_PAGE_ROUTES[path], path };
   if (AUTH_ROUTES[path]) return { type: 'auth', authScreen: AUTH_ROUTES[path], path };
   return { type: 'tab', tab: 'learn', path: '/learn', unknown: true };
@@ -327,6 +334,21 @@ export default function TukTalkThaiApp() {
     catch { return true; }
   });
   const [authInitialScreen, setAuthInitialScreen] = useState(() => initialRoute.authScreen || 'welcome');
+  // Password-recovery flow: true while the /reset-password screen should render.
+  // Set by landing on /reset-password or by Supabase's PASSWORD_RECOVERY event.
+  const [passwordRecovery, setPasswordRecovery] = useState(() => initialRoute.type === 'reset-password');
+  // True only when THIS page load arrived via a real recovery link (captured at
+  // module-import time, or via the PASSWORD_RECOVERY event). Gates the
+  // set-new-password form so a plain signed-in visit to /reset-password can't
+  // change the password without a real emailed link.
+  const recoveryEvidenceRef = useRef(hadRecoveryTokens());
+  // Expired/invalid email-link error captured from the callback URL before
+  // supabase-js could strip it. Surfaced via AuthLinkNotice / ResetPassword.
+  const [authCallbackError, setAuthCallbackError] = useState(() => getCapturedAuthError());
+  // Post-checkout activation state: null | { status: 'pending' | 'slow' }.
+  // Drives the "Activating your Super…" toast while the checkout-return effect
+  // polls the webhook-written entitlement (see SuperActivationNotice.jsx).
+  const [superActivation, setSuperActivation] = useState(null);
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
@@ -386,8 +408,16 @@ export default function TukTalkThaiApp() {
       setSession(data.session || null);
       setAuthReady(true);
     }).catch(() => setAuthReady(true));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
+      // A recovery link signs the user in and fires PASSWORD_RECOVERY. Route
+      // them to the set-new-password screen — this event is the authoritative
+      // recovery evidence (covers links whose redirectTo landed elsewhere).
+      if (event === 'PASSWORD_RECOVERY') {
+        recoveryEvidenceRef.current = true;
+        setPasswordRecovery(true);
+        writeRoute('/reset-password', { replace: true });
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -451,6 +481,15 @@ export default function TukTalkThaiApp() {
     setUpgradePrompt(null);
     setShowFirstLessonUnlock(false);
     setShowStage1Celebration(false);
+    setSuperActivation(null);
+    // A captured email-link error describes the page load it arrived on; it
+    // must not resurface for a different identity (or after sign-out) later in
+    // a long-lived tab. Only on a REAL identity change — this effect also runs
+    // once on mount (prevUserId === undefined), where clearing would wipe the
+    // just-captured error before the anonymous user ever sees the notice.
+    if (prevUserId !== undefined && prevUserId !== nextUserId) {
+      setAuthCallbackError(null);
+    }
   }, [session?.user?.id]);
 
   // Mirror cloudReady into a ref so the identity-change effect above can read the
@@ -461,6 +500,10 @@ export default function TukTalkThaiApp() {
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
     setCardSession(null);
+
+    // Only /reset-password shows the password-recovery screen; navigating
+    // anywhere else always leaves it.
+    setPasswordRecovery(route.type === 'reset-password');
 
     // The demo is the only route that turns demo mode ON; every other route
     // turns it OFF, so a browser/mobile Back out of /demo cleanly exits the demo.
@@ -485,6 +528,15 @@ export default function TukTalkThaiApp() {
       setShowSettings(false);
       setForceAuthGate(false);
       setShowPublicLanding(false);
+      return;
+    }
+
+    if (route.type === 'reset-password') {
+      setPublicPage(null);
+      setForceAuthGate(false);
+      setShowPublicLanding(false);
+      setShowProfile(false);
+      setShowSettings(false);
       return;
     }
 
@@ -707,9 +759,33 @@ export default function TukTalkThaiApp() {
     setShowProfile(false);
     setShowSettings(false);
     setPublicPage(null);
+    setPasswordRecovery(false);
     setForceAuthGate(true);
-    writeRoute(screen === 'signin' ? '/sign-in' : '/welcome');
+    // 'forgot' lives inside the sign-in flow, so it shares the /sign-in URL.
+    writeRoute(screen === 'signin' || screen === 'forgot' ? '/sign-in' : '/welcome');
   }, []);
+
+  // AuthLinkNotice actions (expired/invalid email-link errors — see
+  // lib/authCallback.js). Dismissing consumes the error and cleans the URL.
+  const dismissAuthCallbackError = useCallback(() => {
+    setAuthCallbackError(null);
+    stripAuthErrorParams();
+  }, []);
+  const handleAuthErrorSignIn = useCallback(() => {
+    dismissAuthCallbackError();
+    openAuthGate('signin');
+  }, [dismissAuthCallbackError, openAuthGate]);
+  const handleAuthErrorRequestReset = useCallback(() => {
+    dismissAuthCallbackError();
+    openAuthGate('forgot');
+  }, [dismissAuthCallbackError, openAuthGate]);
+
+  // Password reset finished (or the reset screen was reached without recovery
+  // evidence): leave the recovery UI and land in the app / on the landing page.
+  const handleResetPasswordComplete = useCallback(() => {
+    setPasswordRecovery(false);
+    handleNavigatePath('/learn', { replace: true });
+  }, [handleNavigatePath]);
 
   const handleSignOut = useCallback(async () => {
     if (!hasSupabaseConfig) return;
@@ -891,18 +967,31 @@ export default function TukTalkThaiApp() {
   // ── Stripe checkout return (?super=success) ──────────────────────────────
   // After embedded checkout completes, Stripe returns the user to
   // origin?super=success&session_id=… . The Super entitlement itself is written
-  // server-side by the Stripe webhook into public.subscriptions, so here we just
-  // re-read the entitlement, celebrate if the user is now Super, fire a native
-  // "Welcome to Super" notification when already granted, and strip the query
-  // params so a refresh doesn't re-celebrate. Runs at most once per load; needs a
-  // confirmed session to read the (RLS-guarded) subscriptions row.
+  // server-side by the Stripe webhook into public.subscriptions. Because the
+  // webhook can land a few seconds AFTER the redirect, a single read here used
+  // to race it — a paying user would silently stay on the free tier until the
+  // next reload. Now we show an "Activating your Super…" toast and poll the
+  // entitlement with bounded retries (~30s); on success we celebrate, on
+  // timeout we show a calm "taking longer than usual" note (the payment has
+  // already succeeded — the next full load re-reads the entitlement anyway).
+  // Client-side polling only; the webhook remains the sole entitlement writer.
+  // Runs at most once per load; needs a confirmed session to read the
+  // (RLS-guarded) subscriptions row.
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (superSuccessHandled.current) return;
+    if (typeof window === 'undefined') return undefined;
+    if (superSuccessHandled.current) return undefined;
     const params = new URLSearchParams(window.location.search);
-    if (params.get('super') !== 'success') return;
-    if (!session || !isEmailConfirmed || !hasSupabaseConfig) return; // wait until we can read the row
+    if (params.get('super') !== 'success') return undefined;
+    if (!session || !isEmailConfirmed || !hasSupabaseConfig) return undefined; // wait until we can read the row
+    // Wait for cloud init to finish first: it reads the entitlement ONCE at its
+    // start and applies it last into setStats — if that (possibly pre-webhook,
+    // stale-'free') read were applied AFTER this poll found 'super', it would
+    // clobber the fresh tier. Deferring the poll until cloudReady makes the
+    // poll's write unconditionally the later one. Cloud-init failure still
+    // sets cloudReady, so the poll can never deadlock behind it.
+    if (!cloudReady) return undefined;
     superSuccessHandled.current = true;
+    let cancelled = false;
 
     const stripParams = () => {
       try {
@@ -913,17 +1002,31 @@ export default function TukTalkThaiApp() {
       } catch { /* ignore */ }
     };
 
+    const SUPER_POLL_INTERVAL_MS = 2000;
+    const SUPER_POLL_MAX_ATTEMPTS = 15; // ≈30s including request time
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     (async () => {
       let becameSuper = false;
-      try {
-        const ent = await downloadEntitlement(session.user.id);
-        if (ent) {
-          setStats(s => ({ ...s, tier: ent.tier || 'free', superUntil: ent.superUntil || null, cancelAtPeriodEnd: !!ent.cancelAtPeriodEnd }));
-          becameSuper = ent.tier === 'super';
+      setSuperActivation({ status: 'pending' });
+      for (let attempt = 0; attempt < SUPER_POLL_MAX_ATTEMPTS && !cancelled; attempt++) {
+        try {
+          const ent = await downloadEntitlement(session.user.id);
+          if (ent && ent.tier === 'super') {
+            if (!cancelled) {
+              setStats(s => ({ ...s, tier: 'super', superUntil: ent.superUntil || null, cancelAtPeriodEnd: !!ent.cancelAtPeriodEnd }));
+            }
+            becameSuper = true;
+            break;
+          }
+        } catch (e) {
+          // Transient read failure — keep polling; the webhook may still land.
+          console.warn('[App] entitlement poll after checkout failed', e);
         }
-      } catch (e) {
-        console.warn('[App] entitlement refresh after checkout failed', e);
+        if (attempt < SUPER_POLL_MAX_ATTEMPTS - 1) await sleep(SUPER_POLL_INTERVAL_MS);
       }
+      if (cancelled) return;
+      setSuperActivation(becameSuper ? null : { status: 'slow' });
       if (becameSuper) {
         // Funnel: server-confirmed Super after the checkout return. Fired once
         // (the handler is guarded by superSuccessHandled). Safe/non-PII.
@@ -945,7 +1048,9 @@ export default function TukTalkThaiApp() {
       }
       stripParams();
     })();
-  }, [session?.user?.id, isEmailConfirmed]);
+
+    return () => { cancelled = true; };
+  }, [session?.user?.id, isEmailConfirmed, cloudReady]);
 
   // OneSignal: link the device subscription to the Supabase user once the
   // user is signed in and confirmed. Persist the player_id + timezone on
@@ -1404,7 +1509,9 @@ export default function TukTalkThaiApp() {
     if (total > 0 && score === total) {
       const perfectId = challengePerfectCelebrationId(stageId, today);
       if (!hasCelebrated(stats.celebratedIds, perfectId)) {
-        const showSuper = !hasCelebrated(stats.celebratedIds, superCtaId(today));
+        // Super users never see a "Go Super" line (and the daily CTA ledger id
+        // isn't burned for them).
+        const showSuper = !isSuper(stats) && !hasCelebrated(stats.celebratedIds, superCtaId(today));
         markCelebrated(showSuper ? [perfectId, superCtaId(today)] : perfectId);
         setCelebration({
           eyebrow: 'Perfect Challenge',
@@ -1438,7 +1545,7 @@ export default function TukTalkThaiApp() {
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- handleOpenPremium is stable; referenced lazily on Super tap
-  }, [awardXp, markCelebrated, stats.celebratedIds]);
+  }, [awardXp, markCelebrated, stats.celebratedIds, stats.tier]);
 
   const recordDialogueComplete = useCallback((dialogueId) => {
     let newlyCompleted = false;
@@ -1565,6 +1672,7 @@ export default function TukTalkThaiApp() {
   //   • Always dismissible (SuperUpgradePrompt has close + "Maybe later").
   const requestSuperPrompt = useCallback((reason = 'mission', { intentional = false } = {}) => {
     if (!loaded || demoMode) return false;
+    if (superActive) return false;                                    // never upsell a paying Super user
     if (!stats.hasOnboarded || !stats.tutorialSeen) return false;     // not on first launch / during onboarding
     if (activeMiniUnitId || celebration || rewardScreen || upgradePrompt || showSettings || showProfile || achievementToast) {
       return false;                                                    // not during a lesson or another overlay
@@ -1582,7 +1690,7 @@ export default function TukTalkThaiApp() {
     setUpgradePrompt({ reason });
     trackEvent(ANALYTICS_EVENTS.UPGRADE_MODAL_SHOWN, { reason, intentional });
     return true;
-  }, [loaded, demoMode, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
+  }, [loaded, demoMode, superActive, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
 
   const handleOpenPremium = useCallback(() => {
     setUpgradePrompt(null);
@@ -1940,7 +2048,7 @@ export default function TukTalkThaiApp() {
       // at baseline, so this never retro-fires for them.
       const courseId = courseCompleteCelebrationId();
       if (courseCompletion.courseComplete && !courseCompleteAtArmingRef.current && !hasCelebrated(ids, courseId)) {
-        const showSuper = !hasCelebrated(ids, superCtaId(today));
+        const showSuper = !isSuper(stats) && !hasCelebrated(ids, superCtaId(today));
         markCelebrated(showSuper ? [courseId, superCtaId(today)] : courseId);
         awardXp(REWARD_EVENTS.COURSE_COMPLETED, rewardKeys.course(), COURSE_COMPLETE_XP);
         setRewardScreen(null);   // suppress the per-unit "Mini-Unit Complete" screen
@@ -1994,7 +2102,7 @@ export default function TukTalkThaiApp() {
       }
 
       if (allDone && !hasCelebrated(ids, allQuestsCelebrationId(today))) {
-        const showSuper = !hasCelebrated(ids, superCtaId(today));
+        const showSuper = !isSuper(stats) && !hasCelebrated(ids, superCtaId(today));
         markCelebrated([
           allQuestsCelebrationId(today),
           ...QUEST_CELEBRATIONS.map(q => questCelebrationId(q.key, today)),
@@ -2052,6 +2160,7 @@ export default function TukTalkThaiApp() {
         {publicPage === 'plans' ? (
           <PlansPage
             isAuthed={!!session}
+            isSuperUser={superActive}
             onNavigate={handleNavigatePath}
             onGetStarted={() => openAuthGate('welcome')}
             onSignIn={() => openAuthGate('signin')}
@@ -2098,6 +2207,42 @@ export default function TukTalkThaiApp() {
     return <div className="app-root" data-theme={stats.theme || 'light'} />;
   }
 
+  // Password recovery (/reset-password). Rendered above the email-confirmation
+  // gate: clicking the emailed recovery link is itself proof of inbox access.
+  // The set-new-password form additionally requires recovery EVIDENCE (real
+  // recovery tokens or the PASSWORD_RECOVERY event) so a signed-in user typing
+  // the URL can't change their password without the emailed link — they're
+  // pointed back to the app (Profile owns the change-password flow).
+  if (passwordRecovery) {
+    if (session && !recoveryEvidenceRef.current) {
+      return (
+        <div className="app-root" data-theme={stats.theme || 'light'}>
+          <div className="onboard-root">
+            <div className="onboard-card auth-card">
+              <h1 className="onboard-title">You're already signed in</h1>
+              <p className="onboard-sub">
+                To change your password, open your Profile and choose "Change password". Password-reset
+                links from email land here automatically.
+              </p>
+              <button className="btn-primary auth-submit" onClick={handleResetPasswordComplete}>
+                Back to the app
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="app-root" data-theme={stats.theme || 'light'}>
+        <ResetPassword
+          hasSession={!!session}
+          linkError={authCallbackError}
+          onComplete={handleResetPasswordComplete}
+        />
+      </div>
+    );
+  }
+
   // Pending confirmation: session exists but email isn't confirmed. Sits
   // between AuthGate and the main app — the user has signed up but can't
   // proceed until they click the email link.
@@ -2116,6 +2261,14 @@ export default function TukTalkThaiApp() {
   if (showLanding) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
+        {authCallbackError && (
+          <AuthLinkNotice
+            message={friendlyAuthErrorMessage(authCallbackError)}
+            onSignIn={handleAuthErrorSignIn}
+            onRequestReset={handleAuthErrorRequestReset}
+            onDismiss={dismissAuthCallbackError}
+          />
+        )}
         <PublicLanding
           onGetStarted={() => openAuthGate('welcome')}
           onSignIn={() => openAuthGate('signin')}
@@ -2133,12 +2286,20 @@ export default function TukTalkThaiApp() {
   if (showAuthGate) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
+        {authCallbackError && (
+          <AuthLinkNotice
+            message={friendlyAuthErrorMessage(authCallbackError)}
+            onSignIn={handleAuthErrorSignIn}
+            onRequestReset={handleAuthErrorRequestReset}
+            onDismiss={dismissAuthCallbackError}
+          />
+        )}
         <AuthGate
           initialScreen={authInitialScreen}
           onTryDemo={startDemo}
           onAuthSuccess={handleAuthSuccess}
           onOpenPublicPage={handleNavigatePath}
-          onScreenChange={(screen) => writeRoute(screen === 'signin' ? '/sign-in' : '/welcome')}
+          onScreenChange={(screen) => writeRoute(screen === 'signin' || screen === 'forgot' ? '/sign-in' : '/welcome')}
         />
       </div>
     );
@@ -2245,6 +2406,7 @@ export default function TukTalkThaiApp() {
         <PlansPage
           embedded
           isAuthed
+          isSuperUser={superActive}
           onNavigate={handleNavigatePath}
           onBack={() => handleNavigatePath('/learn')}
         />
@@ -2292,6 +2454,12 @@ export default function TukTalkThaiApp() {
       )}
       {celebration && (
         <CelebrationOverlay {...celebration} />
+      )}
+      {superActivation && (
+        <SuperActivationNotice
+          status={superActivation.status}
+          onDismiss={() => setSuperActivation(null)}
+        />
       )}
       {!celebration && achievementToast && (
         <AchievementUnlockedModal achievement={achievementToast} onContinue={handleAchievementToastClose} />
