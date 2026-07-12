@@ -342,7 +342,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
             {isSuperUser ? alreadySuperCta : (
-              <button type="button" className="pl-cta-ghost pl-plan-cta" onClick={startSuper('yearly')}>
+              <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('yearly')}>
                 {isAuthed ? 'Choose yearly' : 'Sign up for yearly'}
               </button>
             )}

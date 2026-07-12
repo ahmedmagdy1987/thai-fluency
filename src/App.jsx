@@ -91,6 +91,7 @@ import SettingsModal from './components/SettingsModal.jsx';
 import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
 import AuthLinkNotice from './components/auth/AuthLinkNotice.jsx';
+import AppBootScreen from './components/AppBootScreen.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import ResetPassword from './components/auth/ResetPassword.jsx';
 import SuperActivationNotice from './components/SuperActivationNotice.jsx';
@@ -2209,7 +2210,7 @@ export default function TukTalkThaiApp() {
   // us whether a session already exists. This prevents a first-paint flash of
   // the wrong gate on cold loads.
   if (!authReady) {
-    return <div className="app-root" data-theme={stats.theme || 'light'} />;
+    return <AppBootScreen theme={stats.theme || 'light'} />;
   }
 
   // Password recovery (/reset-password). Rendered above the email-confirmation
@@ -2336,7 +2337,7 @@ export default function TukTalkThaiApp() {
   // would briefly see the onboarding flow before the cloud sync corrects
   // stats.hasOnboarded — a confusing flash.
   if (loaded && session && isEmailConfirmed && !profileChecked) {
-    return <div className="app-root" data-theme={stats.theme || 'light'} />;
+    return <AppBootScreen theme={stats.theme || 'light'} />;
   }
 
   if (loaded && !stats.hasOnboarded) {
@@ -2349,7 +2350,7 @@ export default function TukTalkThaiApp() {
   }
 
   if (loaded && stats.hasOnboarded && session && isEmailConfirmed && !cloudReady && !firstLessonCompleted) {
-    return <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode} />;
+    return <AppBootScreen theme={stats.theme || 'light'} viewMode={viewMode} />;
   }
 
   if (loaded && stats.hasOnboarded && !firstLessonCompleted) {

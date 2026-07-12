@@ -32,7 +32,7 @@
   border: 1px solid transparent; transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 .pl-cta-primary {
-  min-height: 52px; padding: 0 26px; font-size: 15.5px; color: #2a2412;
+  min-height: 52px; padding: 0 26px; font-size: 15.5px; color: var(--gold-ink);
   background: linear-gradient(135deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 76%, #fff) 100%);
   box-shadow: 0 16px 38px -14px rgba(201, 169, 97, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
@@ -62,6 +62,13 @@
   radial-gradient(120% 120% at 80% 0%, rgba(201, 169, 97, 0.18), transparent 55%),
   linear-gradient(160deg, var(--jade) 0%, #0a2a1f 100%);
   color: var(--pl-ink-on-dark); padding-block: clamp(48px, 7vw, 88px); text-align: center; }
+/* Dark: pin the gradient to deep jade (dark --jade is a bright green that made
+   the hero read off-brand), matching the .pl-cta-band dark override. */
+.app-root[data-theme="dark"] .pl-hero {
+  background:
+    radial-gradient(120% 120% at 80% 0%, rgba(224, 189, 122, 0.14), transparent 55%),
+    linear-gradient(160deg, #10231b 0%, #071a13 100%);
+}
 .pl-hero-inner { max-width: 720px; margin: 0 auto; }
 .pl-hero .pl-eyebrow { color: var(--gold-soft); }
 .pl-hero-title { margin: 0 0 16px; font-family: 'Fraunces', serif; font-size: clamp(32px, 5vw, 56px); font-weight: 600; line-height: 1.04; letter-spacing: -0.02em; color: var(--pl-ink-on-dark); }
@@ -86,13 +93,18 @@
    margin-top:auto below so footers pin to the bottom and line up across cards. */
 .pl-plans-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); align-items: stretch; }
 .pl-plan { position: relative; background: var(--card-bg); border: 1px solid var(--line); border-radius: var(--pl-radius); padding: 28px 26px; box-shadow: var(--pl-shadow); display: flex; flex-direction: column; height: 100%; }
-.pl-plan-free { border-color: color-mix(in srgb, var(--gold) 50%, var(--line)); box-shadow: 0 1px 2px rgba(15,61,46,0.04), 0 24px 50px -28px rgba(201, 169, 97, 0.7); }
+/* Selling-page hierarchy: the paid Super cards must out-emphasize Free. Free
+   drops to a neutral border + base elevation; the premium cards get the gold
+   accent border + a stronger lift so the eye lands on what's being sold. */
+.pl-plan-free { border-color: var(--line); box-shadow: var(--pl-shadow); }
+.pl-plan-premium { border-color: color-mix(in srgb, var(--gold) 60%, var(--line)); box-shadow: 0 2px 4px rgba(15,61,46,0.05), 0 30px 62px -30px rgba(201, 169, 97, 0.85); }
+.app-root[data-theme="dark"] .pl-plan-premium { box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 30px 62px -30px rgba(224, 189, 122, 0.4); }
 /* align-items:flex-start so a wrapping plan name stays top-aligned with the tag;
    the tag itself never wraps (see .pl-plan-tag below). */
 .pl-plan-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .pl-plan-name { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--jade); }
 .pl-plan-tag { font-size: 10.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
-.pl-plan-tag-live { background: var(--gold); color: #2a2412; }
+.pl-plan-tag-live { background: var(--gold); color: var(--gold-ink); }
 .pl-plan-tag-soon { background: color-mix(in srgb, var(--jade) 10%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 24%, var(--line)); }
 .pl-plan-price { display: flex; align-items: baseline; gap: 8px; margin: 16px 0 4px; }
 .pl-plan-amount { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 700; color: var(--ink); line-height: 1; }
@@ -166,7 +178,7 @@
 
 .pl-plan-amount-soon { font-size: 26px; color: var(--ink-soft); }
 .pl-plan-amount-tba { font-size: 17px; font-weight: 700; color: var(--ink-soft); }
-.pl-plan-badge { position: absolute; top: -10px; right: 18px; background: var(--gold); color: #2a2412; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pl-plan-badge { position: absolute; top: -10px; right: 18px; background: var(--gold); color: var(--gold-ink); font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
 
 /* ============================================================================
    SUPER CHECKOUT MODAL (.sco-) — centered in-site dialog. A dim, blurred backdrop
@@ -218,7 +230,7 @@
 }
 .sco-btn:active { transform: scale(0.98); }
 .sco-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-.sco-btn-primary { color: #2a2412; background: linear-gradient(135deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 76%, #fff) 100%); box-shadow: 0 12px 30px -14px rgba(201, 169, 97, 0.8); }
+.sco-btn-primary { color: var(--gold-ink); background: linear-gradient(135deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 76%, #fff) 100%); box-shadow: 0 12px 30px -14px rgba(201, 169, 97, 0.8); }
 .sco-btn-primary:hover { transform: translateY(-1px); }
 .sco-btn-ghost { color: var(--jade); background: var(--card-bg); border-color: var(--line-strong); }
 .sco-btn-ghost:hover { border-color: var(--jade); }
