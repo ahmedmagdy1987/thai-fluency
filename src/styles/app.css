@@ -176,6 +176,9 @@ img, svg, video { max-width: 100%; }
 .card-skip-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); border-style: solid; }}
 .settings-btn { background: none; border: 1px solid var(--line-strong); border-radius: 999px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
 .settings-btn:hover { color: var(--jade); border-color: var(--jade); }}
+.settings-section { margin-bottom: var(--sp-6); }
+.settings-section + .settings-section { border-top: 1px solid var(--line); padding-top: var(--sp-5); }
+.settings-section-title { font-family: 'Fraunces', serif; font-size: var(--fs-16); font-weight: 700; color: var(--jade); margin: 0 0 var(--sp-3); letter-spacing: -0.01em; }
 .setting-group { margin-bottom: var(--sp-5); }
 .setting-label { font-family: 'Fraunces', serif; font-size: var(--fs-16); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin-bottom: var(--sp-1); }
 .setting-sub { font-size: var(--fs-12); color: var(--ink-soft); margin-bottom: var(--sp-3); }
@@ -1307,6 +1310,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Ungraded LESSON walkthrough (English meaning first, then reveal the Thai) */
 .dating-lesson-tag { display: inline-flex; align-items: center; gap: var(--sp-1); flex: 0 0 auto; font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; color: var(--jade); background: color-mix(in srgb, var(--jade) 13%, transparent); border-radius: 999px; padding: 3px var(--sp-2); }
+.dating-lesson-coach { display: flex; justify-content: center; max-width: 620px; margin: 0 auto var(--sp-1); }
 .dating-lesson-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: var(--sp-4) var(--sp-4); display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-3); max-width: 620px; margin: 0 auto; }
 .dating-lesson-studylabel { font-size: var(--fs-11); font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); margin: 0; }
 .dating-lesson-en { font-family: 'Fraunces', serif; font-size: var(--fs-22); font-weight: 600; color: var(--ink); line-height: 1.35; margin: 0; }
@@ -3165,6 +3169,7 @@ button.character-coach-portrait { cursor: pointer; }
 .shop-balance-label { font-size: var(--fs-12); font-weight: 600; opacity: 0.8; }
 .shop-items { display: flex; flex-direction: column; gap: var(--sp-3); }
 .shop-item-icon-hearts { background: color-mix(in srgb, #E0445C 14%, transparent) !important; color: #E0445C !important; }
+.shop-item-icon-freeze { background: color-mix(in srgb, var(--stat-gems) 16%, transparent) !important; color: var(--stat-gems) !important; }
 .shop-item-status { display: flex; align-items: center; gap: var(--sp-1); margin-bottom: var(--sp-1); flex-wrap: wrap; }
 .shop-item-status-hearts { display: inline-flex; align-items: center; gap: 3px; }
 .shop-item-status-hearts .shop-heart-full { color: #E0445C; }

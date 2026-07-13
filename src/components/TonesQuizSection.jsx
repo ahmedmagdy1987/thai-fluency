@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ChevronRight, Award, Check, X, RotateCcw, Volume2 } from 'lucide-react';
 import { TONE_QUIZ_ITEMS } from '../data/gamification.js';
 import { TONES } from '../data/reference.js';
@@ -73,7 +73,15 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
   }
 
   const q = questions[idx];
-  const tones = ['mid', 'low', 'falling', 'high', 'rising'];
+  // Shuffle the five tone options PER QUESTION (B6) so the correct tone isn't
+  // always in the same slot across questions/attempts. Correctness is by tone
+  // value (`tone === q.tone`), never by index, so display order is free to vary.
+  // Stable within a question (keyed on idx) so it doesn't reshuffle on select.
+  const tones = useMemo(() => {
+    const t = ['mid', 'low', 'falling', 'high', 'rising'];
+    for (let i = t.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [t[i], t[j]] = [t[j], t[i]]; }
+    return t;
+  }, [idx]);
 
   return (
     <div>

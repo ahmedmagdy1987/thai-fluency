@@ -129,10 +129,13 @@ export default function QuizTab({
   );
   const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'quiz' });
 
-  useEffect(() => {
-    if (!current) return;
-    coach.react('greeting', { duration: 1400, message: 'Pick the best answer.' });
-  }, [current?.id]);
+  // The coach is reset SYNCHRONOUSLY when a question starts (startQuiz) and when
+  // advancing (handleContinue) — not in a post-paint effect. A post-paint reset
+  // let the NEXT question briefly paint with the PREVIOUS question's reaction
+  // image (correct/wrong) before it cleared, leaking the reaction across
+  // questions (B3). Resetting in the same batch as setIdx means the new question
+  // never renders with a stale face.
+  const resetCoachForQuestion = () => coach.react('greeting', { duration: 1400, message: 'Pick the best answer.' });
 
   const startQuiz = (nextType) => {
     // Block STARTING a new Challenge when out of hearts (free users). This also
@@ -170,6 +173,7 @@ export default function QuizTab({
     setDone(false);
     setPoolError(null);
     checkLockedRef.current = false;
+    resetCoachForQuestion();
   };
 
   const resetQuiz = () => {
@@ -228,6 +232,7 @@ export default function QuizTab({
     setSelectedId(null);
     setChecked(false);
     checkLockedRef.current = false;
+    resetCoachForQuestion();
   };
 
   const canPlayPromptAudio = type === 'thai-to-en' && ttsAvailable() && !!correctDisplay?.thai;

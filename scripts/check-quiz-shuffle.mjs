@@ -1,0 +1,53 @@
+// Regression guard for quiz randomization (B6). A retake must NOT serve the
+// same questions in the same order with the same option order — otherwise the
+// learner memorizes "the answer was #4" by position instead of understanding.
+//
+// This statically asserts that every REPEATABLE quiz shuffles BOTH the question
+// order and the option order per attempt:
+//   • Stage Challenge  — src/lib/challengeQuestions.js
+//   • Dating quiz      — src/components/DatingSection.jsx
+//   • Tone Challenge   — src/components/TonesQuizSection.jsx
+// Correctness is always tracked by a flag/id, never by index (also asserted
+// where checkable), so shuffling display order is safe.
+
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (p) => readFileSync(join(root, p), 'utf8');
+let failures = 0;
+const ok = (n) => console.log(`OK   ${n}`);
+const fail = (n, d = '') => { console.log(`FAIL ${n}  ${d}`); failures++; };
+const assert = (n, c, d) => (c ? ok(n) : fail(n, d));
+
+// ── Stage Challenge (buildChallenge) ────────────────────────────────────────
+const chal = read('src/lib/challengeQuestions.js');
+assert('Stage Challenge shuffles QUESTION order (shuffle(pool))', /const candidates = shuffle\(pool\)/.test(chal));
+assert('Stage Challenge shuffles OPTION order (shuffle([correct, ...distractors]))',
+  /options:\s*shuffle\(\[correct, \.\.\.distractors\]\)/.test(chal));
+
+// ── Dating quiz (DatingSection) ─────────────────────────────────────────────
+const dating = read('src/components/DatingSection.jsx');
+assert('Dating quiz shuffles QUESTION order per attempt (shuffleIds over question indices)',
+  /shuffleIds\(\[\.\.\.qs\.keys\(\)\]\)/.test(dating));
+assert('Dating quiz shuffles OPTION order per question (shuffleIds over option ids)',
+  /shuffleIds\(resolved\.options\.map/.test(dating));
+assert('Dating grades by correctOptionId, not by index',
+  dating.includes('gradeAnswer') && !/selected === q\.options\[0\]/.test(dating));
+
+// ── Tone Challenge (TonesQuizSection) ───────────────────────────────────────
+const tones = read('src/components/TonesQuizSection.jsx');
+assert('Tone Challenge shuffles QUESTION order per attempt',
+  /\[\.\.\.TONE_QUIZ_ITEMS\]\.sort\(\(\) => Math\.random\(\)/.test(tones));
+assert('Tone Challenge shuffles the tone OPTIONS per question (useMemo keyed on idx)',
+  /const tones = useMemo\(\(\) => \{[\s\S]{0,300}Math\.random\(\)[\s\S]{0,200}\}, \[idx\]\)/.test(tones));
+assert('Tone Challenge grades by tone value, not by index (tone === q.tone)',
+  /tone === q\.tone/.test(tones));
+
+console.log('');
+if (failures > 0) {
+  console.log(`Quiz-shuffle check FAILED (${failures} failure(s)).`);
+  process.exit(1);
+}
+console.log('Quiz-shuffle check passed (question + option order shuffled per attempt in every repeatable quiz).');

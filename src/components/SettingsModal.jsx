@@ -66,6 +66,10 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
           <button className="modal-close" onClick={onClose} aria-label="Close settings"><X size={20} /></button>
         </div>
         <div className="modal-body">
+          {/* Grouped into labelled sections (B7) — hierarchy only, no setting
+              behaviour changed. */}
+          <div className="settings-section">
+          <h3 className="settings-section-title">Learning</h3>
           <div className="setting-group">
             <div className="setting-label">Theme</div>
             <div className="setting-sub">Light or dark mode</div>
@@ -141,6 +145,9 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
             </div>
           </div>
 
+          </div>
+          <div className="settings-section">
+          <h3 className="settings-section-title">Sound &amp; Effects</h3>
           <div className="setting-group">
             <div className="setting-label">Pronunciation speed</div>
             <div className="setting-sub">Controls Thai text-to-speech everywhere the speaker button is used.</div>
@@ -193,6 +200,33 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
           </div>
 
           <div className="setting-group">
+            <div className="setting-label">Sound effects</div>
+            <div className="setting-sub">Turn off lesson sounds, feedback sounds, and celebration sounds.</div>
+            <div className="setting-toggle">
+              <button
+                type="button"
+                className={`setting-toggle-btn ${soundEffects ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ soundEffects: true })}
+                aria-pressed={soundEffects}
+              >
+                <span>On</span>
+                <span className="setting-toggle-sub">Feedback sounds</span>
+              </button>
+              <button
+                type="button"
+                className={`setting-toggle-btn ${!soundEffects ? 'setting-toggle-active' : ''}`}
+                onClick={() => updateSettings({ soundEffects: false })}
+                aria-pressed={!soundEffects}
+              >
+                <span>Off</span>
+                <span className="setting-toggle-sub">Silent effects</span>
+              </button>
+            </div>
+          </div>
+          </div>
+          <div className="settings-section">
+          <h3 className="settings-section-title">Lesson helpers</h3>
+          <div className="setting-group">
             <div className="setting-label">Show lesson characters</div>
             <div className="setting-sub">Turn off animated lesson characters if they feel distracting.</div>
             <div className="setting-toggle">
@@ -227,31 +261,9 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
             </div>
           )}
 
-          <div className="setting-group">
-            <div className="setting-label">Sound effects</div>
-            <div className="setting-sub">Turn off lesson sounds, feedback sounds, and celebration sounds.</div>
-            <div className="setting-toggle">
-              <button
-                type="button"
-                className={`setting-toggle-btn ${soundEffects ? 'setting-toggle-active' : ''}`}
-                onClick={() => updateSettings({ soundEffects: true })}
-                aria-pressed={soundEffects}
-              >
-                <span>On</span>
-                <span className="setting-toggle-sub">Feedback sounds</span>
-              </button>
-              <button
-                type="button"
-                className={`setting-toggle-btn ${!soundEffects ? 'setting-toggle-active' : ''}`}
-                onClick={() => updateSettings({ soundEffects: false })}
-                aria-pressed={!soundEffects}
-              >
-                <span>Off</span>
-                <span className="setting-toggle-sub">Silent effects</span>
-              </button>
-            </div>
           </div>
-
+          <div className="settings-section">
+          <h3 className="settings-section-title">Goals &amp; Streak</h3>
           <div className="setting-group">
             <div className="setting-label">Daily XP goal</div>
             <div className="setting-sub">Earn a {XP_REWARDS.dailyGoalBonus} XP bonus when you hit it.</div>
@@ -287,6 +299,9 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
             <div className="setting-sub">You have <strong>{stats.streakFreezes || 0}</strong> freeze{(stats.streakFreezes || 0) === 1 ? '' : 's'} available. You earn one every 7 study days.</div>
           </div>
 
+          </div>
+          <div className="settings-section">
+          <h3 className="settings-section-title">Plan &amp; Billing</h3>
           <div className="setting-group">
             <div className="setting-label">Plan</div>
             {sub.isSuper ? (
@@ -312,8 +327,10 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
             )}
           </div>
 
+          </div>
+          <div className="settings-section">
+          <h3 className="settings-section-title">Legal &amp; Support</h3>
           <div className="setting-group">
-            <div className="setting-label">Legal &amp; support</div>
             <div className="setting-sub">Public launch pages and support information</div>
             <div className="settings-legal-links">
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/privacy', setShowPrivacy)}>Privacy Policy</button>
@@ -328,6 +345,7 @@ export default function SettingsModal({ stats, updateSettings, onClose, onOpenPu
               <span className="settings-legal-divider" aria-hidden="true">/</span>
               <button type="button" className="settings-legal-link" onClick={() => openPublicPage('/delete-account')}>Account Deletion</button>
             </div>
+          </div>
           </div>
         </div>
       </div>

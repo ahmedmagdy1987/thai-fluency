@@ -197,11 +197,10 @@ export function SupportContent() {
 }
 
 export function FeedbackContent() {
+  // The "Help us improve …" lede is already the page subtitle (PublicInfoPage
+  // `intro`), so it is NOT repeated here — it used to appear verbatim twice (B4).
   return (
     <>
-      <p>
-        Help us improve {siteName}. Tell us what happened, what device you used, and what you expected.
-      </p>
       <p>
         This page opens your email app. It does not collect or store feedback in the database.
       </p>

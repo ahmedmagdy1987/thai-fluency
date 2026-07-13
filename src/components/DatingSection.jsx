@@ -15,6 +15,8 @@ import {
   loadAdultConfirmed, saveAdultConfirmed,
   loadDatingLessonsDone, saveDatingLessonDone,
 } from '../lib/storage.js';
+import CharacterCoach from './CharacterCoach.jsx';
+import { DEFAULT_CHARACTER_ID } from '../data/characters.js';
 import { isSuper } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
@@ -152,9 +154,12 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
     }
   };
 
-  const loadQuestion = (catId, index) => {
+  const loadQuestion = (catId, index, order) => {
     const qs = questionsByCat.get(catId) || [];
-    const resolved = resolveQuestion(qs[index], phraseById);
+    // `order` (per-attempt shuffled question indices) makes a retake serve the
+    // questions in a NEW order; option order is shuffled per question below.
+    const qi = order && order[index] != null ? order[index] : index;
+    const resolved = resolveQuestion(qs[qi], phraseById);
     setCurrent({ q: resolved, order: shuffleIds(resolved.options.map((o) => o.id)) });
     setSelected(null);
     setRevealed(false);
@@ -178,8 +183,12 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
     const qs = questionsByCat.get(cat.id) || [];
     if (!qs.length) return;
     if (!lessonDone(cat.id)) { startCategoryLesson(cat); return; }
-    setQuiz({ catId: cat.id, phase: 'quiz', index: 0, correct: 0, total: qs.length, finished: false });
-    loadQuestion(cat.id, 0);
+    // Shuffle QUESTION order per attempt (B6): with only ~8 questions, a retake
+    // in the same order lets the learner memorize "the answer was #4" by
+    // position. Option order is already shuffled per question (loadQuestion).
+    const qOrder = shuffleIds([...qs.keys()]);
+    setQuiz({ catId: cat.id, phase: 'quiz', index: 0, correct: 0, total: qs.length, finished: false, qOrder });
+    loadQuestion(cat.id, 0, qOrder);
   };
 
   // LESSON navigation. Next reveals the Thai first (English is shown up front),
@@ -223,7 +232,7 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
       return;
     }
     setQuiz((z) => ({ ...z, index: nextIndex }));
-    loadQuestion(quiz.catId, nextIndex);
+    loadQuestion(quiz.catId, nextIndex, quiz.qOrder);
   };
 
   const exitToCategories = () => {
@@ -504,6 +513,19 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           <div className="dating-quiz-progress-fill" style={{ width: `${((quiz.li + (lrev ? 1 : 0)) / phrases.length) * 100}%` }} />
         </div>
 
+        {/* Same coach/mascot system as the rest of the app so the lesson feels
+            like one product (B2). Reuses CharacterCoach — no new art. */}
+        {stats?.showCharacters !== false && (
+          <div className="dating-lesson-coach">
+            <CharacterCoach
+              characterId={DEFAULT_CHARACTER_ID}
+              state={lrev ? 'speaking' : 'greeting'}
+              message={lrev ? 'Say it out loud a few times.' : 'Picture the meaning, then reveal the Thai.'}
+              compact
+            />
+          </div>
+        )}
+
         <section className="dating-lesson-card" aria-label="Lesson phrase">
           <p className="dating-lesson-studylabel">Study this phrase — no score, just learning</p>
           {/* English meaning FIRST (the learner already understands it), THEN the Thai on reveal. */}
@@ -558,9 +580,13 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           <button type="button" className="dating-lesson-prev" onClick={lessonPrev} disabled={quiz.li === 0 && !lrev}>
             <ArrowLeft size={15} aria-hidden="true" /> Previous
           </button>
-          <button type="button" className="btn-primary dating-lesson-next" onClick={lessonNext}>
-            {!lrev ? 'Show the Thai' : (quiz.li + 1 >= phrases.length ? 'Finish lesson' : 'Next phrase')} <ArrowRight size={15} aria-hidden="true" />
-          </button>
+          {/* Reveal lives IN the card (the single "Show the Thai" — B1). The nav
+              advances only after the Thai is shown, so there's no duplicate. */}
+          {lrev && (
+            <button type="button" className="btn-primary dating-lesson-next" onClick={lessonNext}>
+              {quiz.li + 1 >= phrases.length ? 'Finish lesson' : 'Next phrase'} <ArrowRight size={15} aria-hidden="true" />
+            </button>
+          )}
         </div>
         <p className="dating-lesson-hint">Studying only — this lesson never affects your XP, hearts, streak, or course progress.</p>
       </div>
