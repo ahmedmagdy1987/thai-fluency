@@ -10,7 +10,7 @@
 .lp {
   --lp-maxw: 1180px;
   --lp-pad: clamp(20px, 5vw, 40px);
-  --lp-gap: clamp(18px, 3vw, 28px);
+  --lp-gap: clamp(var(--sp-4), 3vw, var(--sp-5));
   --lp-radius: 20px;
   --lp-section-y: clamp(60px, 8.5vw, 112px);
   --lp-ink-on-dark: #fffaf0;
@@ -45,9 +45,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: max(14px, env(safe-area-inset-top));
-  padding-bottom: 14px;
+  gap: var(--sp-4);
+  padding-top: max(var(--sp-3), env(safe-area-inset-top));
+  padding-bottom: var(--sp-3);
   padding-inline: max(var(--lp-pad), env(safe-area-inset-left)) max(var(--lp-pad), env(safe-area-inset-right));
 }
 .lp-scrolled .lp-nav {
@@ -57,7 +57,7 @@
   -webkit-backdrop-filter: saturate(1.3) blur(12px);
 }
 
-.lp-brand { display: inline-flex; align-items: center; gap: 13px; min-width: 0; }
+.lp-brand { display: inline-flex; align-items: center; gap: var(--sp-3); min-width: 0; }
 .lp-brand-mark {
   flex-shrink: 0;
   width: 52px; height: 44px;
@@ -68,17 +68,17 @@
   box-shadow: 0 6px 16px rgba(15, 61, 46, 0.18), inset 0 0 0 1px rgba(15, 61, 46, 0.08), inset 0 0 0 3px rgba(255, 255, 255, 0.9);
 }
 .lp-brand-text { display: inline-flex; flex-direction: column; min-width: 0; overflow: hidden; }
-.lp-brand-name { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 700; line-height: 1.05; white-space: nowrap; letter-spacing: -0.01em; color: var(--jade); transition: color 0.28s ease; }
-.lp-brand-slogan { font-size: 11.5px; font-weight: 600; line-height: 1.25; white-space: nowrap; color: var(--ink-soft); transition: color 0.28s ease; }
+.lp-brand-name { font-family: 'Fraunces', serif; font-size: var(--fs-22); font-weight: 700; line-height: 1.05; white-space: nowrap; letter-spacing: -0.01em; color: var(--jade); transition: color 0.28s ease; }
+.lp-brand-slogan { font-size: var(--fs-11); font-weight: 600; line-height: 1.25; white-space: nowrap; color: var(--ink-soft); transition: color 0.28s ease; }
 /* Over the dark hero the bar is transparent → brand reads light; once scrolled the bar solidifies → themed jade. */
 .lp:not(.lp-scrolled) .lp-brand-name { color: var(--lp-ink-on-dark); }
 .lp:not(.lp-scrolled) .lp-brand-slogan { color: rgba(255, 255, 255, 0.82); }
 
-.lp-nav-actions { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.lp-nav-actions { display: inline-flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; }
 .lp-nav-demo {
   background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: 13.5px; font-weight: 700;
-  color: var(--lp-ink-on-dark); padding: 8px 10px; border-radius: 999px;
+  font-family: inherit; font-size: var(--fs-14); font-weight: 700;
+  color: var(--lp-ink-on-dark); padding: var(--sp-2) var(--sp-2); border-radius: 999px;
   transition: color 0.18s, opacity 0.18s; opacity: 0.92;
 }
 .lp-nav-demo:hover { opacity: 1; }
@@ -90,8 +90,8 @@
   color: var(--lp-ink-on-dark);
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
-  padding: 10px 18px;
-  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: var(--sp-2) var(--sp-4);
+  font-family: inherit; font-size: var(--fs-12); font-weight: 700; cursor: pointer;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   transition: background 0.18s, border-color 0.18s, color 0.18s, box-shadow 0.18s;
 }
@@ -104,13 +104,13 @@
 
 /* ============================ SHARED CTAs ============================  */
 .lp-cta-primary, .lp-cta-secondary, .lp-cta-ghost {
-  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
   font-family: inherit; font-weight: 700; cursor: pointer;
   border-radius: 999px; border: 1px solid transparent;
   transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 .lp-cta-primary {
-  min-height: 54px; padding: 0 28px; font-size: 16px;
+  min-height: 54px; padding: 0 var(--sp-5); font-size: var(--fs-16);
   color: var(--gold-ink);
   background: linear-gradient(135deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 76%, #fff) 100%);
   box-shadow: 0 16px 38px -14px rgba(201, 169, 97, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.45);
@@ -119,7 +119,7 @@
 .lp-cta-primary svg { transition: transform 0.18s ease; }
 .lp-cta-primary:hover svg { transform: translateX(3px); }
 .lp-cta-secondary {
-  min-height: 54px; padding: 0 24px; font-size: 15px;
+  min-height: 54px; padding: 0 var(--sp-5); font-size: var(--fs-14);
   color: var(--lp-ink-on-dark);
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.42);
@@ -127,7 +127,7 @@
 }
 .lp-cta-secondary:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.62); transform: translateY(-2px); }
 .lp-cta-ghost {
-  min-height: 48px; padding: 0 22px; font-size: 14px;
+  min-height: 48px; padding: 0 var(--sp-5); font-size: var(--fs-14);
   color: var(--jade); background: var(--card-bg); border-color: var(--line-strong);
 }
 .lp-cta-ghost:hover { border-color: var(--jade); transform: translateY(-2px); box-shadow: 0 12px 26px -16px rgba(15, 61, 46, 0.5); }
@@ -164,7 +164,7 @@ button.lp-audio:active { transform: scale(0.92); }
   min-height: 100vh;   /* fallback for browsers without svh */
   min-height: 100svh;  /* stable viewport: content fits with browser chrome shown */
   padding-top: calc(clamp(74px, 9vh, 100px) + env(safe-area-inset-top));
-  padding-bottom: max(clamp(18px, 2.4vh, 32px), env(safe-area-inset-bottom));
+  padding-bottom: max(clamp(var(--sp-4), 2.4vh, var(--sp-6)), env(safe-area-inset-bottom));
 }
 /* Content row grows to fill the space above the stats and centers within it. */
 .lp-hero-body {
@@ -173,7 +173,7 @@ button.lp-audio:active { transform: scale(0.92); }
   align-items: center;
   width: 100%;
   min-height: 0;
-  padding-block: clamp(10px, 2vh, 28px);
+  padding-block: clamp(var(--sp-2), 2vh, var(--sp-5));
 }
 .lp-hero-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: #0c2a20; }
 .lp-hero-poster { position: absolute; inset: 0; background: #0c2a20 url('/cinematic/hero-islands.webp') center / cover no-repeat; transform: scale(1.06); will-change: transform; }
@@ -195,22 +195,22 @@ button.lp-audio:active { transform: scale(0.92); }
   grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
   grid-template-areas: "copy visual";
   align-items: center;
-  gap: clamp(24px, 4vw, 52px);
+  gap: clamp(var(--sp-5), 4vw, 52px);
 }
 .lp-hero-copy { grid-area: copy; max-width: 580px; min-width: 0; }
 .lp-hero-visual { grid-area: visual; }
 
 .lp-kicker {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 15px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4); border-radius: 999px;
   background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
-  color: var(--lp-ink-on-dark); font-size: 12.5px; font-weight: 700; line-height: 1;
+  color: var(--lp-ink-on-dark); font-size: var(--fs-12); font-weight: 700; line-height: 1;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .lp-kicker svg { color: var(--gold-soft); flex-shrink: 0; }
 
 .lp-title {
-  margin: 18px 0 14px;
+  margin: var(--sp-4) 0 var(--sp-3);
   font-family: 'Fraunces', serif;
   font-size: clamp(34px, 4.6vw, 58px);
   font-weight: 600; line-height: 1.04; letter-spacing: -0.015em;
@@ -226,15 +226,15 @@ button.lp-audio:active { transform: scale(0.92); }
   text-shadow: 0 1px 16px rgba(0, 0, 0, 0.38);
 }
 
-.lp-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.lp-hero-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
 .lp-hero-demo-link {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: var(--sp-2);
   /* min-height + padding give this a real touch target — on mobile it is the
      ONLY demo entry point (header demo button is hidden <960px) and measured
      just 25px tall (UX audit). Visual size is unchanged. */
-  margin-top: 8px; padding: 12px 8px; min-height: 44px;
+  margin-top: var(--sp-2); padding: var(--sp-3) var(--sp-2); min-height: 44px;
   background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 700; line-height: 1.3;
+  font-family: inherit; font-size: var(--fs-12); font-weight: 700; line-height: 1.3;
   color: var(--lp-ink-on-dark); text-align: left;
   text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.45); text-underline-offset: 3px;
 }
@@ -242,12 +242,12 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-hero-demo-link svg { color: var(--gold-soft); flex-shrink: 0; fill: currentColor; }
 
 /* Three highlight chips always stay on one row (320px and wider). */
-.lp-hero-chips { display: flex; flex-wrap: nowrap; gap: 9px 11px; margin: 20px 0 0; padding: 0; list-style: none; }
+.lp-hero-chips { display: flex; flex-wrap: nowrap; gap: var(--sp-2) var(--sp-3); margin: var(--sp-4) 0 0; padding: 0; list-style: none; }
 .lp-hero-chips li {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 13px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3); border-radius: 999px;
   background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.24);
-  color: #faf6ec; font-size: 12px; font-weight: 600;
+  color: #faf6ec; font-size: var(--fs-12); font-weight: 600;
 }
 .lp-hero-chips svg { color: var(--gold-soft); flex-shrink: 0; }
 
@@ -274,19 +274,19 @@ button.lp-audio:active { transform: scale(0.92); }
    and a single mascot. --- */
 .lp-hero-card { position: relative; z-index: 1; width: min(316px, 56%); margin: 0 auto 0 0; }
 .lp-hero-card .lp-mock {
-  padding: 20px; border-radius: 22px;
+  padding: var(--sp-4); border-radius: 22px;
   box-shadow: var(--lp-shadow-float);
   border-color: rgba(255, 255, 255, 0.55);
   background: color-mix(in srgb, var(--card-bg) 96%, transparent);
   backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
 /* the single card reads larger + more premium than the inline grid mock */
-.lp-hero-card .lp-mock-card { padding: 22px 16px; }
-.lp-hero-card .lp-mock-card-en { font-size: 30px; }
-.lp-hero-card .lp-mock-card-ph { font-size: 18px; }
-.lp-hero-card .lp-mock-card-thai { font-size: 18px; }
+.lp-hero-card .lp-mock-card { padding: var(--sp-5) var(--sp-4); }
+.lp-hero-card .lp-mock-card-en { font-size: var(--fs-28); }
+.lp-hero-card .lp-mock-card-ph { font-size: var(--fs-18); }
+.lp-hero-card .lp-mock-card-thai { font-size: var(--fs-18); }
 .lp-hero-card .lp-mock-card-audio { width: 32px; height: 32px; }
-.lp-hero-card .lp-mock-rate-btn { padding: 10px 2px; font-size: 12px; }
+.lp-hero-card .lp-mock-rate-btn { padding: var(--sp-2) 2px; font-size: var(--fs-12); }
 
 .lp-hero-mascot {
   position: absolute; z-index: 5;            /* above the card — always fully visible */
@@ -312,39 +312,39 @@ button.lp-audio:active { transform: scale(0.92); }
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   max-width: 640px; margin: 0 auto;
-  padding: clamp(14px, 2vh, 20px) 8px;
+  padding: clamp(var(--sp-3), 2vh, var(--sp-4)) var(--sp-2);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.09);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 50px -28px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   backdrop-filter: saturate(1.2) blur(10px); -webkit-backdrop-filter: saturate(1.2) blur(10px);
 }
-.lp-hero-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; text-align: center; padding: 2px 8px; min-width: 0; }
+.lp-hero-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-1); text-align: center; padding: 2px var(--sp-2); min-width: 0; }
 .lp-hero-stat + .lp-hero-stat { border-left: 1px solid rgba(255, 255, 255, 0.18); }
 .lp-hero-stat-value { font-family: 'Fraunces', serif; font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; color: var(--lp-ink-on-dark); line-height: 1; }
 .lp-hero-stat-label { font-size: clamp(9.5px, 1vw, 11px); font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(247, 242, 231, 0.78); line-height: 1.25; }
 
 /* ============================ SECTION HEADS ============================  */
 .lp-head { max-width: 680px; margin: 0 auto; text-align: center; }
-.lp-eyebrow { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); margin-bottom: 10px; }
+.lp-eyebrow { display: block; font-size: var(--fs-11); font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); margin-bottom: var(--sp-2); }
 .lp-h2 { margin: 0 auto; font-family: 'Fraunces', serif; font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; line-height: 1.1; letter-spacing: -0.015em; color: var(--jade); max-width: 18ch; }
-.lp-head-sub { margin: 12px auto 0; max-width: 560px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.lp-head-sub { margin: var(--sp-3) auto 0; max-width: 560px; font-size: var(--fs-14); line-height: 1.6; color: var(--ink-soft); }
 
 /* ============================ HOW IT WORKS ============================  */
 .lp-features { padding-block: var(--lp-section-y); background: var(--cream-warm); }
 .lp-feature-grid {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--lp-gap);
-  margin-top: clamp(36px, 5vw, 56px);
+  margin-top: clamp(var(--sp-6), 5vw, 56px);
 }
 .lp-feature {
-  display: flex; flex-direction: column; gap: 14px;
+  display: flex; flex-direction: column; gap: var(--sp-3);
   background: var(--card-bg); border: 1px solid var(--line);
-  border-radius: var(--lp-radius); padding: 24px;
+  border-radius: var(--lp-radius); padding: var(--sp-5);
   box-shadow: var(--lp-shadow-card);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .lp-feature:hover { transform: translateY(-4px); box-shadow: 0 1px 2px rgba(15, 61, 46, 0.05), 0 28px 56px -28px rgba(15, 61, 46, 0.45); }
-.lp-feature-top { display: flex; align-items: center; gap: 12px; }
+.lp-feature-top { display: flex; align-items: center; gap: var(--sp-3); }
 .lp-feature-icon {
   flex-shrink: 0; width: 44px; height: 44px; border-radius: 13px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -352,48 +352,48 @@ button.lp-audio:active { transform: scale(0.92); }
   background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
 }
-.lp-feature-title { margin: 0; font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; color: var(--ink); line-height: 1.15; }
-.lp-feature-sub { margin: 2px 0 0; font-size: 11.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
-.lp-feature-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+.lp-feature-title { margin: 0; font-family: 'Fraunces', serif; font-size: var(--fs-22); font-weight: 600; color: var(--ink); line-height: 1.15; }
+.lp-feature-sub { margin: 2px 0 0; font-size: var(--fs-11); font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
+.lp-feature-text { margin: 0; font-size: var(--fs-14); line-height: 1.6; color: var(--ink-soft); }
 .lp-feature-media { margin-top: auto; }
 
-.lp-features-cta { display: flex; justify-content: center; margin-top: clamp(34px, 5vw, 48px); }
+.lp-features-cta { display: flex; justify-content: center; margin-top: clamp(var(--sp-6), 5vw, var(--sp-7)); }
 
 /* ---- Shared product mockups (clean, bounded, no video) ---- */
 .lp-mock {
   background: color-mix(in srgb, var(--jade) 4%, var(--card-bg));
   border: 1px solid var(--line); border-radius: 16px;
-  padding: 16px; display: flex; flex-direction: column; gap: 11px; min-width: 0;
+  padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-3); min-width: 0;
 }
 .lp-mock-toggle { display: inline-flex; align-self: center; padding: 3px; background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; }
-.lp-mock-toggle-opt { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; color: var(--ink-soft); white-space: nowrap; }
+.lp-mock-toggle-opt { padding: var(--sp-1) var(--sp-3); border-radius: 999px; font-size: var(--fs-11); font-weight: 700; color: var(--ink-soft); white-space: nowrap; }
 .lp-mock-toggle-on { background: var(--jade); color: #fff; }
-.lp-mock-card { display: flex; flex-direction: column; align-items: center; gap: 4px; background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 13px; padding: 18px 14px; text-align: center; }
-.lp-mock-card-kicker { font-size: 10.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
-.lp-mock-card-en { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1.2; }
-.lp-mock-card-answer { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--line-strong); width: 100%; }
-.lp-mock-card-ph { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; color: var(--jade); }
-.lp-mock-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: 16px; color: var(--ink-soft); }
+.lp-mock-card { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 13px; padding: var(--sp-4) var(--sp-3); text-align: center; }
+.lp-mock-card-kicker { font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
+.lp-mock-card-en { font-family: 'Fraunces', serif; font-size: var(--fs-28); font-weight: 600; color: var(--ink); line-height: 1.2; }
+.lp-mock-card-answer { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--sp-1) var(--sp-2); margin-top: var(--sp-2); padding-top: var(--sp-2); border-top: 1px dashed var(--line-strong); width: 100%; }
+.lp-mock-card-ph { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-16); font-weight: 700; color: var(--jade); }
+.lp-mock-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: var(--fs-16); color: var(--ink-soft); }
 .lp-mock-card-audio { width: 30px; height: 30px; }
-.lp-mock-rate-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-.lp-mock-rate-btn { display: flex; align-items: center; justify-content: center; padding: 8px 2px; border-radius: 9px; border: 1px solid color-mix(in srgb, var(--rate-color) 45%, var(--line)); background: color-mix(in srgb, var(--rate-color) 9%, var(--card-bg)); color: var(--rate-color); font-size: 11.5px; font-weight: 800; min-width: 0; }
+.lp-mock-rate-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-1); }
+.lp-mock-rate-btn { display: flex; align-items: center; justify-content: center; padding: var(--sp-2) 2px; border-radius: 9px; border: 1px solid color-mix(in srgb, var(--rate-color) 45%, var(--line)); background: color-mix(in srgb, var(--rate-color) 9%, var(--card-bg)); color: var(--rate-color); font-size: var(--fs-11); font-weight: 800; min-width: 0; }
 
-.lp-mock-quiz { gap: 9px; }
-.lp-mock-quiz-label { font-size: 10.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
-.lp-mock-quiz-prompt { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; color: var(--ink); line-height: 1.25; }
-.lp-mock-quiz-options { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
-.lp-mock-quiz-opt { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid var(--line-strong); border-radius: 11px; background: var(--card-bg); min-width: 0; }
+.lp-mock-quiz { gap: var(--sp-2); }
+.lp-mock-quiz-label { font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
+.lp-mock-quiz-prompt { font-family: 'Fraunces', serif; font-size: var(--fs-22); font-weight: 600; color: var(--ink); line-height: 1.25; }
+.lp-mock-quiz-options { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: 2px; }
+.lp-mock-quiz-opt { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-3); border: 1px solid var(--line-strong); border-radius: 11px; background: var(--card-bg); min-width: 0; }
 .lp-mock-quiz-opt-ok { border-color: var(--jade); background: color-mix(in srgb, var(--jade) 8%, var(--card-bg)); }
-.lp-mock-quiz-letter { display: inline-flex; align-items: center; justify-content: center; width: 21px; height: 21px; border-radius: 7px; background: var(--cream-warm); font-size: 11px; font-weight: 800; color: var(--ink-soft); flex-shrink: 0; }
-.lp-mock-quiz-ph { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; min-width: 0; }
+.lp-mock-quiz-letter { display: inline-flex; align-items: center; justify-content: center; width: 21px; height: 21px; border-radius: 7px; background: var(--cream-warm); font-size: var(--fs-11); font-weight: 800; color: var(--ink-soft); flex-shrink: 0; }
+.lp-mock-quiz-ph { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 700; color: var(--ink); overflow-wrap: anywhere; min-width: 0; }
 .lp-mock-quiz-check { margin-left: auto; color: var(--jade); flex-shrink: 0; }
 
-.lp-mock-lesson { gap: 9px; }
-.lp-mock-lesson-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
-.lp-mock-lesson-lead { font-size: 13.5px; line-height: 1.55; color: var(--ink); }
-.lp-mock-lesson-point { display: block; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 11px; padding: 11px 12px; overflow-wrap: anywhere; }
+.lp-mock-lesson { gap: var(--sp-2); }
+.lp-mock-lesson-eyebrow { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); }
+.lp-mock-lesson-lead { font-size: var(--fs-14); line-height: 1.55; color: var(--ink); }
+.lp-mock-lesson-point { display: block; font-size: var(--fs-12); line-height: 1.6; color: var(--ink-soft); background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 11px; padding: var(--sp-3) var(--sp-3); overflow-wrap: anywhere; }
 .lp-mock-lesson-point strong { color: var(--ink); }
-.lp-mock-lesson-point svg { color: var(--gold); vertical-align: -2px; margin-right: 4px; }
+.lp-mock-lesson-point svg { color: var(--gold); vertical-align: -2px; margin-right: var(--sp-1); }
 
 /* ============================ MISSION LOOP ============================  */
 .lp-loop { padding-block: var(--lp-section-y); }
@@ -409,9 +409,9 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-loop-mascot img { position: relative; z-index: 1; width: clamp(126px, 13.5vw, 178px); height: auto; object-fit: contain; filter: drop-shadow(0 16px 22px rgba(15, 61, 46, 0.28)); }
 .lp-loop-bubble {
   position: relative; z-index: 2;
-  font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: var(--jade);
+  font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 700; color: var(--jade);
   background: var(--card-bg); border: 1px solid var(--line-strong); border-radius: 999px;
-  padding: 7px 14px; box-shadow: 0 10px 22px rgba(15, 61, 46, 0.14); margin-bottom: 12px;
+  padding: var(--sp-2) var(--sp-3); box-shadow: 0 10px 22px rgba(15, 61, 46, 0.14); margin-bottom: var(--sp-3);
 }
 .lp-loop-bubble::after {
   content: ''; position: absolute; left: 50%; bottom: -5px; translate: -50% 0; rotate: 45deg;
@@ -420,14 +420,14 @@ button.lp-audio:active { transform: scale(0.92); }
 }
 
 .lp-loop-track {
-  list-style: none; margin: clamp(40px, 5.5vw, 60px) 0 0; padding: 0;
+  list-style: none; margin: clamp(var(--sp-6), 5.5vw, 60px) 0 0; padding: 0;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--lp-gap);
 }
 .lp-loop-step {
   position: relative;
   display: flex; flex-direction: column;
   background: var(--card-bg); border: 1px solid var(--line);
-  border-radius: var(--lp-radius); padding: 26px 22px 24px;
+  border-radius: var(--lp-radius); padding: var(--sp-5) var(--sp-5) var(--sp-5);
   box-shadow: var(--lp-shadow-card);
 }
 /* connector between steps (desktop) — a soft gradient line ending in a dot,
@@ -445,7 +445,7 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-loop-icon {
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 50px; height: 50px; border-radius: 15px; margin-bottom: 16px;
+  width: 50px; height: 50px; border-radius: 15px; margin-bottom: var(--sp-4);
   color: var(--jade); background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
 }
@@ -456,23 +456,23 @@ button.lp-audio:active { transform: scale(0.92); }
   width: 24px; height: 24px; border-radius: 999px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--gold); color: var(--gold-ink);
-  font-size: 12px; font-weight: 800; line-height: 1;
+  font-size: var(--fs-12); font-weight: 800; line-height: 1;
   border: 2px solid var(--card-bg);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
-.lp-loop-step-title { margin: 0 0 8px; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
-.lp-loop-step-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+.lp-loop-step-title { margin: 0 0 var(--sp-2); font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
+.lp-loop-step-text { margin: 0; font-size: var(--fs-14); line-height: 1.6; color: var(--ink-soft); }
 
 /* ============================== JOURNEY ==============================  */
 .lp-journey { padding-block: var(--lp-section-y); background: var(--cream-warm); }
 .lp-journey-track {
-  list-style: none; margin: clamp(36px, 5vw, 52px) auto 0; padding: 0; max-width: 760px;
-  display: flex; flex-direction: column; gap: 14px;
+  list-style: none; margin: clamp(var(--sp-6), 5vw, 52px) auto 0; padding: 0; max-width: 760px;
+  display: flex; flex-direction: column; gap: var(--sp-3);
 }
 .lp-journey-step {
-  position: relative; display: flex; gap: 18px; align-items: flex-start;
+  position: relative; display: flex; gap: var(--sp-4); align-items: flex-start;
   background: var(--card-bg); border: 1px solid var(--line);
-  border-radius: var(--lp-radius); padding: 20px 22px;
+  border-radius: var(--lp-radius); padding: var(--sp-4) var(--sp-5);
   box-shadow: var(--lp-shadow-card);
 }
 .lp-journey-step-start { border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); box-shadow: 0 1px 2px rgba(15,61,46,0.04), 0 20px 44px -26px rgba(201, 169, 97, 0.7); }
@@ -483,7 +483,7 @@ button.lp-audio:active { transform: scale(0.92); }
   color: var(--jade); background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
 }
-.lp-journey-n { position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border-radius: 999px; background: var(--jade); color: #fff; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--card-bg); }
+.lp-journey-n { position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border-radius: 999px; background: var(--jade); color: #fff; font-size: var(--fs-11); font-weight: 800; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--card-bg); }
 .lp-journey-node-goal { background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 24%, var(--card-bg)), var(--card-bg)); border-color: color-mix(in srgb, var(--gold) 40%, var(--line)); overflow: hidden; }
 .lp-journey-node-goal img { width: 46px; height: 46px; object-fit: contain; }
 /* Stage cards are mascot-led: each node frames a distinct character (real art
@@ -493,12 +493,12 @@ button.lp-audio:active { transform: scale(0.92); }
    the 48px mascot sits inside the 54px node, so it never spills. */
 .lp-journey-mascot { width: 48px; height: 48px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 2px 4px rgba(15, 61, 46, 0.2)); }
 .lp-journey-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-top: 2px; }
-.lp-journey-stage { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.lp-journey-stage { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font-size: var(--fs-11); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
 .lp-journey-stage svg { color: var(--gold); }
-.lp-journey-badge { padding: 2px 8px; border-radius: 999px; background: var(--gold); color: var(--gold-ink); font-size: 9.5px; font-weight: 800; letter-spacing: 0.04em; }
-.lp-journey-missions { padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--jade) 10%, transparent); color: var(--jade); font-size: 9.5px; font-weight: 800; letter-spacing: 0.02em; }
-.lp-journey-title { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--ink); line-height: 1.2; }
-.lp-journey-text { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+.lp-journey-badge { padding: 2px var(--sp-2); border-radius: 999px; background: var(--gold); color: var(--gold-ink); font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.04em; }
+.lp-journey-missions { padding: 2px var(--sp-2); border-radius: 999px; background: color-mix(in srgb, var(--jade) 10%, transparent); color: var(--jade); font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.02em; }
+.lp-journey-title { font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; color: var(--ink); line-height: 1.2; }
+.lp-journey-text { font-size: var(--fs-14); line-height: 1.5; color: var(--ink-soft); }
 
 /* ================= ONE secondary cinematic CTA band ==================  */
 .lp-cine { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: clamp(420px, 64vh, 600px); padding-block: clamp(72px, 11vw, 132px); }
@@ -513,11 +513,11 @@ button.lp-audio:active { transform: scale(0.92); }
     radial-gradient(120% 90% at 50% 40%, rgba(201, 169, 97, 0.16), transparent 62%);
 }
 .lp-cine-inner { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; }
-.lp-cine-eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.28); color: var(--lp-ink-on-dark); font-size: 12px; font-weight: 700; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.lp-cine-eyebrow { display: inline-flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.28); color: var(--lp-ink-on-dark); font-size: var(--fs-12); font-weight: 700; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .lp-cine-eyebrow svg { color: var(--gold-soft); }
-.lp-cine-title { margin: 20px 0 0; font-family: 'Fraunces', serif; font-size: clamp(30px, 4.6vw, 54px); font-weight: 600; line-height: 1.06; letter-spacing: -0.015em; color: var(--lp-ink-on-dark); text-shadow: 0 2px 30px rgba(0,0,0,0.45); max-width: 16ch; }
-.lp-cine-sub { margin: 14px 0 0; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.55; color: rgba(247,242,231,0.92); text-shadow: 0 1px 14px rgba(0,0,0,0.4); max-width: 46ch; }
-.lp-cine-cta { margin-top: 30px; }
+.lp-cine-title { margin: var(--sp-4) 0 0; font-family: 'Fraunces', serif; font-size: clamp(30px, 4.6vw, 54px); font-weight: 600; line-height: 1.06; letter-spacing: -0.015em; color: var(--lp-ink-on-dark); text-shadow: 0 2px 30px rgba(0,0,0,0.45); max-width: 16ch; }
+.lp-cine-sub { margin: var(--sp-3) 0 0; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.55; color: rgba(247,242,231,0.92); text-shadow: 0 1px 14px rgba(0,0,0,0.4); max-width: 46ch; }
+.lp-cine-cta { margin-top: var(--sp-6); }
 
 /* ============================== SUPPORT ==============================
    A calm, premium support section above the footer. Two equal cards that stay
@@ -528,12 +528,12 @@ button.lp-audio:active { transform: scale(0.92); }
 .lp-support-head { max-width: 680px; margin: 0 auto; text-align: center; }
 .lp-support-grid {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--lp-gap);
-  max-width: 760px; margin: clamp(28px, 4vw, 44px) auto 0;
+  max-width: 760px; margin: clamp(var(--sp-5), 4vw, var(--sp-7)) auto 0;
 }
 .lp-support-card {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-2);
   background: var(--card-bg); border: 1px solid var(--line);
-  border-radius: var(--lp-radius); padding: 24px; min-width: 0;
+  border-radius: var(--lp-radius); padding: var(--sp-5); min-width: 0;
   box-shadow: var(--lp-shadow-card);
 }
 .lp-support-icon {
@@ -543,59 +543,59 @@ button.lp-audio:active { transform: scale(0.92); }
   background: color-mix(in srgb, var(--jade) 9%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--jade) 18%, var(--line));
 }
-.lp-support-card-title { margin: 2px 0 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.2; }
-.lp-support-card-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+.lp-support-card-title { margin: 2px 0 0; font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; color: var(--ink); line-height: 1.2; }
+.lp-support-card-text { margin: 0; font-size: var(--fs-14); line-height: 1.6; color: var(--ink-soft); }
 .lp-support-btn {
-  margin-top: auto; display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 18px; border-radius: 999px;
+  margin-top: auto; display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4); border-radius: 999px;
   background: var(--gold); color: var(--gold-ink); border: 1px solid var(--gold);
-  font-family: inherit; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer;
+  font-family: inherit; font-size: var(--fs-14); font-weight: 700; text-decoration: none; cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 .lp-support-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(201, 169, 97, 0.9); }
 .lp-support-soon {
-  margin-top: auto; display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 14px; border-radius: 999px;
+  margin-top: auto; display: inline-flex; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3); border-radius: 999px;
   background: color-mix(in srgb, var(--jade) 8%, var(--card-bg));
   border: 1px dashed color-mix(in srgb, var(--jade) 32%, var(--line));
-  color: var(--ink-soft); font-size: 12.5px; font-weight: 700;
+  color: var(--ink-soft); font-size: var(--fs-12); font-weight: 700;
 }
 .lp-support-soon svg { color: var(--gold); flex-shrink: 0; }
-.lp-support-crypto { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 2px; width: 100%; }
-.lp-support-qr { flex-shrink: 0; width: 104px; height: 104px; border-radius: 12px; background: #fff; padding: 6px; border: 1px solid var(--line); }
-.lp-support-crypto-body { display: flex; flex-direction: column; gap: 7px; min-width: 0; flex: 1 1 160px; }
-.lp-support-net { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
-.lp-support-addr { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+.lp-support-crypto { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: 2px; width: 100%; }
+.lp-support-qr { flex-shrink: 0; width: 104px; height: 104px; border-radius: 12px; background: #fff; padding: var(--sp-1); border: 1px solid var(--line); }
+.lp-support-crypto-body { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; flex: 1 1 160px; }
+.lp-support-net { font-size: var(--fs-11); font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in srgb, var(--gold) 55%, var(--ink)); }
+.lp-support-addr { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); color: var(--ink); overflow-wrap: anywhere; }
 .lp-support-copy {
-  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px; border-radius: 999px;
+  align-self: flex-start; display: inline-flex; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3); border-radius: 999px;
   background: var(--card-bg); color: var(--jade); border: 1px solid var(--line-strong);
-  font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  font-family: inherit; font-size: var(--fs-12); font-weight: 700; cursor: pointer;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
 .lp-support-copy:hover { border-color: var(--jade); }
 
 /* ============================== FOOTER ==============================  */
-.lp-footer { background: var(--jade); color: #eaf3ee; padding-top: clamp(40px, 6vw, 64px); padding-bottom: max(clamp(40px, 6vw, 64px), env(safe-area-inset-bottom)); }
+.lp-footer { background: var(--jade); color: #eaf3ee; padding-top: clamp(var(--sp-6), 6vw, 64px); padding-bottom: max(clamp(var(--sp-6), 6vw, 64px), env(safe-area-inset-bottom)); }
 /* Slim variant for the legal/info and standalone Plans pages so they don't end
    in a void — same footer, tighter band; also caps the empty bottom gap. */
-.lp-footer-slim { margin-top: clamp(32px, 6vw, 56px); padding-top: clamp(28px, 4vw, 40px); padding-bottom: max(clamp(24px, 4vw, 36px), env(safe-area-inset-bottom)); }
-.lp-footer-slim .lp-footer-fine { margin-top: 18px; }
+.lp-footer-slim { margin-top: clamp(var(--sp-6), 6vw, 56px); padding-top: clamp(var(--sp-5), 4vw, var(--sp-6)); padding-bottom: max(clamp(var(--sp-5), 4vw, var(--sp-6)), env(safe-area-inset-bottom)); }
+.lp-footer-slim .lp-footer-fine { margin-top: var(--sp-4); }
 .app-root[data-theme="dark"] .lp-footer { background: #10231b; }
-.lp-footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
-.lp-footer-brand { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: #fff; }
-.lp-footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.lp-footer-links a { color: rgba(234, 243, 238, 0.82); font-size: 13.5px; font-weight: 600; text-decoration: none; transition: color 0.15s; }
+.lp-footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.lp-footer-brand { font-family: 'Fraunces', serif; font-size: var(--fs-22); font-weight: 700; color: #fff; }
+.lp-footer-links { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); }
+.lp-footer-links a { color: rgba(234, 243, 238, 0.82); font-size: var(--fs-14); font-weight: 600; text-decoration: none; transition: color 0.15s; }
 .lp-footer-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.lp-footer-fine { margin: 26px 0 0; font-size: 12px; color: rgba(234, 243, 238, 0.6); }
+.lp-footer-fine { margin: var(--sp-5) 0 0; font-size: var(--fs-12); color: rgba(234, 243, 238, 0.6); }
 
 /* Social icons — rendered by SocialLinks.jsx ONLY when a URL is set in
    config/socialLinks.js. Hidden-by-default: with no active links the component
    returns null, so this block styles nothing until the owner enables a
    platform. On the jade footer, icons use the same on-jade palette as the
    footer links (82% cream default → solid white/gold on hover). */
-.lp-footer-social { margin-top: 20px; }
-.social-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.lp-footer-social { margin-top: var(--sp-4); }
+.social-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .social-link {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 999px;
@@ -647,8 +647,8 @@ button.lp-audio:active { transform: scale(0.92); }
    mascot beside it, so the visual group stays short enough to fit the viewport. */
 @media (max-width: 960px) {
   .lp-hero { padding-top: calc(clamp(84px, 12vh, 116px) + env(safe-area-inset-top)); text-align: center; }
-  .lp-hero-body { padding-block: clamp(12px, 2.6vh, 30px); }
-  .lp-hero-inner { grid-template-columns: 1fr; grid-template-areas: "visual" "copy"; gap: clamp(16px, 3.5vw, 30px); justify-items: center; }
+  .lp-hero-body { padding-block: clamp(var(--sp-3), 2.6vh, var(--sp-6)); }
+  .lp-hero-inner { grid-template-columns: 1fr; grid-template-areas: "visual" "copy"; gap: clamp(var(--sp-4), 3.5vw, var(--sp-6)); justify-items: center; }
   .lp-hero-copy { max-width: 600px; }
   .lp-title { max-width: 20ch; margin-inline: auto; }
   .lp-subtitle { margin-inline: auto; }
@@ -686,10 +686,10 @@ button.lp-audio:active { transform: scale(0.92); }
     width: min(252px, 72vw); margin: 0 auto;
   }
   /* the single card stays clean and readable beneath the mascot */
-  .lp-hero-card .lp-mock { padding: 15px; gap: 10px; }
-  .lp-hero-card .lp-mock-card { padding: 16px 13px; }
-  .lp-hero-card .lp-mock-card-en { font-size: 25px; }
-  .lp-hero-card .lp-mock-card-ph, .lp-hero-card .lp-mock-card-thai { font-size: 15px; }
+  .lp-hero-card .lp-mock { padding: var(--sp-4); gap: var(--sp-2); }
+  .lp-hero-card .lp-mock-card { padding: var(--sp-4) var(--sp-3); }
+  .lp-hero-card .lp-mock-card-en { font-size: var(--fs-22); }
+  .lp-hero-card .lp-mock-card-ph, .lp-hero-card .lp-mock-card-thai { font-size: var(--fs-14); }
 
   .lp-feature-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
   .lp-loop-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -703,20 +703,20 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-brand-mark { width: 46px; height: 39px; border-radius: 12px; }
   .lp-brand-slogan { display: none; }
   .lp-hero { padding-top: calc(80px + env(safe-area-inset-top)); }
-  .lp-hero-body { padding-block: clamp(8px, 2vh, 22px); }
-  .lp-hero-actions { flex-direction: column; align-items: stretch; gap: 9px; margin-top: clamp(14px, 2.6vh, 22px); }
+  .lp-hero-body { padding-block: clamp(var(--sp-2), 2vh, var(--sp-5)); }
+  .lp-hero-actions { flex-direction: column; align-items: stretch; gap: var(--sp-2); margin-top: clamp(var(--sp-3), 2.6vh, var(--sp-5)); }
   .lp-cta-primary, .lp-cta-secondary { width: 100%; min-height: 47px; }
   .lp-subtitle { line-height: 1.45; }
   .lp-hero-visual { max-width: 332px; }
   /* mascot width is handled by the base <=960 rule (min(300px, 86vw)) */
   /* Three feature chips: one balanced row, no wrap, no overflow at 320+. */
-  .lp-hero-chips { flex-wrap: nowrap; gap: 6px; margin-top: clamp(14px, 2.4vh, 20px); width: 100%; }
-  .lp-hero-chips li { flex: 1 1 0; min-width: 0; justify-content: center; gap: 4px; padding: 7px 6px; font-size: clamp(10px, 2.7vw, 12px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lp-hero-chips { flex-wrap: nowrap; gap: var(--sp-1); margin-top: clamp(var(--sp-3), 2.4vh, var(--sp-4)); width: 100%; }
+  .lp-hero-chips li { flex: 1 1 0; min-width: 0; justify-content: center; gap: var(--sp-1); padding: var(--sp-2) var(--sp-1); font-size: clamp(10px, 2.7vw, 12px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lp-hero-chips svg { width: 12px; height: 12px; }
   .lp-hero-stats { max-width: 100%; }
   .lp-hero-stat-value { font-size: clamp(22px, 6vw, 28px); }
   .lp-loop-track { grid-template-columns: 1fr; }
-  .lp-journey-step { padding: 16px 16px; gap: 14px; }
+  .lp-journey-step { padding: var(--sp-4) var(--sp-4); gap: var(--sp-3); }
   .lp-journey-node { width: 48px; height: 48px; }
   .lp-support-grid { grid-template-columns: 1fr; max-width: 440px; }
   .lp-footer-top { flex-direction: column; align-items: flex-start; }
@@ -724,14 +724,14 @@ button.lp-audio:active { transform: scale(0.92); }
 
 /* Narrow phones */
 @media (max-width: 400px) {
-  .lp-brand { gap: 10px; }
+  .lp-brand { gap: var(--sp-2); }
   .lp-brand-mark { width: 40px; height: 34px; border-radius: 11px; }
-  .lp-brand-name { font-size: 18px; }
-  .lp-nav-signin { padding: 9px 14px; }
+  .lp-brand-name { font-size: var(--fs-18); }
+  .lp-nav-signin { padding: var(--sp-2) var(--sp-3); }
   .lp-hero-visual { max-width: 300px; }
   /* Drop the chip tick so three full labels fit on one row at 320px. */
   .lp-hero-chips svg { display: none; }
-  .lp-hero-chips li { padding: 6px 5px; font-size: clamp(9.5px, 3vw, 11px); gap: 0; }
+  .lp-hero-chips li { padding: var(--sp-1) var(--sp-1); font-size: clamp(9.5px, 3vw, 11px); gap: 0; }
 }
 
 /* ---- Height-aware compaction: keep the WHOLE hero in one short viewport at
@@ -742,39 +742,39 @@ button.lp-audio:active { transform: scale(0.92); }
 
 /* (A) general */
 @media (max-height: 940px) {
-  .lp-hero-body { padding-block: clamp(10px, 1.8vh, 22px); }
-  .lp-title { font-size: clamp(32px, 4.4vw, 54px); margin: 15px 0 12px; }
-  .lp-hero-actions { margin-top: 20px; }
-  .lp-hero-chips { margin-top: 16px; }
+  .lp-hero-body { padding-block: clamp(var(--sp-2), 1.8vh, var(--sp-5)); }
+  .lp-title { font-size: clamp(32px, 4.4vw, 54px); margin: var(--sp-4) 0 var(--sp-3); }
+  .lp-hero-actions { margin-top: var(--sp-4); }
+  .lp-hero-chips { margin-top: var(--sp-4); }
 }
 @media (max-height: 860px) {
-  .lp-hero-body { padding-block: clamp(8px, 1.6vh, 18px); }
-  .lp-title { font-size: clamp(30px, 4.2vw, 50px); margin: 13px 0 11px; }
-  .lp-hero-actions { margin-top: 18px; }
-  .lp-hero-chips { margin-top: 15px; }
-  .lp-hero-card .lp-mock { padding: 12px; gap: 8px; }
+  .lp-hero-body { padding-block: clamp(var(--sp-2), 1.6vh, var(--sp-4)); }
+  .lp-title { font-size: clamp(30px, 4.2vw, 50px); margin: var(--sp-3) 0 var(--sp-3); }
+  .lp-hero-actions { margin-top: var(--sp-4); }
+  .lp-hero-chips { margin-top: var(--sp-4); }
+  .lp-hero-card .lp-mock { padding: var(--sp-3); gap: var(--sp-2); }
 }
 @media (max-height: 760px) {
-  .lp-hero-body { padding-block: clamp(5px, 1vh, 12px); }
-  .lp-title { font-size: clamp(26px, 3.6vw, 42px); margin: 9px 0 8px; }
+  .lp-hero-body { padding-block: clamp(var(--sp-1), 1vh, var(--sp-3)); }
+  .lp-title { font-size: clamp(26px, 3.6vw, 42px); margin: var(--sp-2) 0 var(--sp-2); }
   .lp-subtitle { font-size: clamp(13px, 1.3vw, 16px); line-height: 1.45; }
-  .lp-hero-actions { margin-top: 13px; }
-  .lp-hero-demo-link { margin-top: 9px; }
-  .lp-hero-chips { margin-top: 11px; }
-  .lp-hero-stats { padding-block: 9px; }
+  .lp-hero-actions { margin-top: var(--sp-3); }
+  .lp-hero-demo-link { margin-top: var(--sp-2); }
+  .lp-hero-chips { margin-top: var(--sp-3); }
+  .lp-hero-stats { padding-block: var(--sp-2); }
   .lp-hero-stat-value { font-size: clamp(21px, 3vw, 30px); }
   .lp-hero-card .lp-mock-rate-row { display: none; }
   .lp-hero-card .lp-mock-lesson-point { -webkit-line-clamp: 2; }
 }
 @media (max-height: 670px) {
   .lp-kicker { display: none; }
-  .lp-title { font-size: clamp(23px, 4.6vw, 36px); margin: 3px 0 6px; }
-  .lp-subtitle { font-size: 12.5px; line-height: 1.4; }
-  .lp-hero-actions { margin-top: 10px; gap: 8px; }
+  .lp-title { font-size: clamp(23px, 4.6vw, 36px); margin: 3px 0 var(--sp-1); }
+  .lp-subtitle { font-size: var(--fs-12); line-height: 1.4; }
+  .lp-hero-actions { margin-top: var(--sp-2); gap: var(--sp-2); }
   .lp-cta-primary, .lp-cta-secondary { min-height: 44px; }
-  .lp-hero-demo-link { margin-top: 7px; }
-  .lp-hero-chips { margin-top: 9px; }
-  .lp-hero-body { padding-block: 4px; }
+  .lp-hero-demo-link { margin-top: var(--sp-2); }
+  .lp-hero-chips { margin-top: var(--sp-2); }
+  .lp-hero-body { padding-block: var(--sp-1); }
   .lp-hero-card .lp-mock-toggle { display: none; }
 }
 
@@ -798,9 +798,9 @@ button.lp-audio:active { transform: scale(0.92); }
 @media (max-width: 960px) and (max-height: 820px) {
   .lp-hero-mascot { width: min(264px, 34vh); margin-bottom: -18px; }
   .lp-hero-card { width: min(228px, 66vw); }
-  .lp-hero-card .lp-mock { padding: 13px; gap: 8px; }
-  .lp-hero-card .lp-mock-card { padding: 14px 11px; }
-  .lp-hero-card .lp-mock-card-en { font-size: 22px; }
+  .lp-hero-card .lp-mock { padding: var(--sp-3); gap: var(--sp-2); }
+  .lp-hero-card .lp-mock-card { padding: var(--sp-3) var(--sp-3); }
+  .lp-hero-card .lp-mock-card-en { font-size: var(--fs-22); }
 }
 @media (max-width: 960px) and (max-height: 720px) {
   .lp-hero-mascot { width: min(230px, 32vh); margin-bottom: -14px; }
@@ -810,31 +810,31 @@ button.lp-audio:active { transform: scale(0.92); }
 /* row layout for very short / landscape (<=640): a tall vertical stack can't
    fit, so place the mascot beside the single card. Mascot stays substantial. */
 @media (max-width: 960px) and (max-height: 640px) {
-  .lp-hero-visual { flex-direction: row; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 22px); max-width: 540px; }
+  .lp-hero-visual { flex-direction: row; align-items: center; justify-content: center; gap: clamp(var(--sp-3), 3vw, var(--sp-5)); max-width: 540px; }
   .lp-hero-visual::before { display: none; }
   .lp-hero-mascot { width: clamp(150px, 34vh, 210px); margin: 0; }
   .lp-hero-card { width: min(252px, 52%); }
   .lp-hero-card .lp-mock-toggle { display: none; }
-  .lp-hero-inner { gap: 10px; }
-  .lp-hero-body { padding-block: 5px; }
-  .lp-hero-stats { padding-block: 8px; }
+  .lp-hero-inner { gap: var(--sp-2); }
+  .lp-hero-body { padding-block: var(--sp-1); }
+  .lp-hero-stats { padding-block: var(--sp-2); }
 }
 
 /* (D) very narrow widths: the 320-360px column wraps copy onto more lines, so
    trim the headline/subtitle a touch more here to keep the hero in-viewport.
    Placed last so it wins over the height-aware type scale above. */
 @media (max-width: 360px) {
-  .lp-title { font-size: clamp(21px, 6.2vw, 27px); margin: 8px 0 8px; }
-  .lp-subtitle { font-size: 12.5px; line-height: 1.4; }
-  .lp-hero-chips li { font-size: 9.5px; }
+  .lp-title { font-size: clamp(21px, 6.2vw, 27px); margin: var(--sp-2) 0 var(--sp-2); }
+  .lp-subtitle { font-size: var(--fs-12); line-height: 1.4; }
+  .lp-hero-chips li { font-size: var(--fs-10); }
 }
 
 /* (D2) mid-narrow phones at short heights: trim headline so the hero still fits
    (kept height-gated so tall phones keep the larger headline). */
 @media (max-width: 430px) and (max-height: 820px) {
-  .lp-title { font-size: clamp(22px, 6vw, 30px); margin: 8px 0 8px; }
-  .lp-subtitle { font-size: 12.5px; line-height: 1.42; }
-  .lp-hero-actions { margin-top: 12px; }
+  .lp-title { font-size: clamp(22px, 6vw, 30px); margin: var(--sp-2) 0 var(--sp-2); }
+  .lp-subtitle { font-size: var(--fs-12); line-height: 1.42; }
+  .lp-hero-actions { margin-top: var(--sp-3); }
 }
 
 /* (E) ultra-short viewports (<=620px tall): squeeze to the bone while keeping
@@ -842,14 +842,14 @@ button.lp-audio:active { transform: scale(0.92); }
    chips, stats) on screen. */
 @media (max-height: 620px) {
   .lp-hero-body { padding-block: 3px; }
-  .lp-title { font-size: clamp(21px, 4vw, 30px); margin: 3px 0 5px; }
-  .lp-subtitle { font-size: 11.5px; line-height: 1.35; }
-  .lp-hero-actions { margin-top: 8px; gap: 7px; }
-  .lp-cta-primary, .lp-cta-secondary { min-height: 40px; font-size: 13.5px; }
-  .lp-hero-demo-link { margin-top: 6px; font-size: 12px; }
-  .lp-hero-chips { margin-top: 7px; }
-  .lp-hero-stats { padding-block: 7px; }
-  .lp-hero-stat-value { font-size: 20px; }
+  .lp-title { font-size: clamp(21px, 4vw, 30px); margin: 3px 0 var(--sp-1); }
+  .lp-subtitle { font-size: var(--fs-11); line-height: 1.35; }
+  .lp-hero-actions { margin-top: var(--sp-2); gap: var(--sp-2); }
+  .lp-cta-primary, .lp-cta-secondary { min-height: 40px; font-size: var(--fs-14); }
+  .lp-hero-demo-link { margin-top: var(--sp-1); font-size: var(--fs-12); }
+  .lp-hero-chips { margin-top: var(--sp-2); }
+  .lp-hero-stats { padding-block: var(--sp-2); }
+  .lp-hero-stat-value { font-size: var(--fs-18); }
 }
 /* ultra-short (landscape phones, <=560 tall): within the row layout above,
    shrink the mascot + card a touch more and drop the card's rating row so both
@@ -858,5 +858,5 @@ button.lp-audio:active { transform: scale(0.92); }
   .lp-hero-mascot { width: clamp(118px, 32vh, 168px); }
   .lp-hero-card { width: min(240px, 50%); }
   .lp-hero-card .lp-mock-rate-row { display: none; }
-  .lp-hero-inner { gap: 8px; }
+  .lp-hero-inner { gap: var(--sp-2); }
 }
