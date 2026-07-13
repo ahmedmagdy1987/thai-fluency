@@ -119,4 +119,68 @@ Graded all 50 Dating questions. **The owner's "implausible distractors" complain
 - **Only Option B** (adding an English→Thai production stage to Dating, or otherwise changing the Dating direction) requires owner sign-off, because it **directly conflicts** with the deliberately-enforced Thai→English rule (commit `8cd9ee7`, the header comments in three files, and the `check-dating-quiz.mjs` regression traps). Nothing in Options A, C, or D touches the direction or the validator.
 - **Note for the owner:** the "must NOT be a static phrase list" requirement (§1) is what removed the lesson. A *browse/study step is not a static list* — it's an interactive lesson that precedes the interactive quiz — so Option A honors both requirements. Worth confirming the owner agrees that a guided phrase walk-through satisfies "not a static list."
 
-*(This is a diagnostic report. No source files were modified.)*
+*(§0–§9 above are the original diagnostic. §10 below records the remediation.)*
+
+---
+
+## 10. Remediation (IMPLEMENTED)
+
+Options **A, C, and D** were implemented (none needs owner approval). Option **B** (English→Thai production / changing the direction) was **not** touched — the Thai→English quiz direction, its three header comments, and every direction assertion in `check-dating-quiz.mjs` are unchanged. All content stays `reviewStatus: 'pending'` ("Native review pending"); nothing was marked native-approved. No DB tables, migrations, Server-Rewards, Stripe/Edge-Function, or XP changes; no new dependencies.
+
+### 10.1 The missing lesson — built (Option A)
+
+Dating now **teaches before it tests.** Entering a category lands on an **ungraded LESSON**, not question 1:
+
+- One `datingPhrases.js` phrase at a time; each card **leads with the English meaning**, then reveals **Thai + phonetic + example + note + audio** (reusing the exact content that previously rendered only in the post-answer reveal — no new content authored).
+- A visible progress indicator ("3 of 8"), next/previous, and a completion state that hands off to the quiz ("Lesson complete → Start the quiz").
+- Purely study: **no scoring, hearts, XP, correct/incorrect, or reward path** is reachable from the lesson (statically enforced by `check-dating-sequence.mjs`).
+- Files: `src/components/DatingSection.jsx` (new `quiz.phase === 'lesson' | 'lesson-done'` branches), `src/styles/app.css` (lesson styles).
+
+### 10.2 Quiz gated behind the lesson
+
+- A category's quiz is **LOCKED until its lesson is completed once**. The locked card says **why and how** — "Quiz locked — finish the lesson first" + a **Start lesson** button (never a dead end).
+- Once completed, the learner can **jump straight to the quiz** or **Review lesson** at will (replayable).
+- Completion is **persisted per-category, device-locally**, using the same pattern as the 18+ confirmation: `loadDatingLessonsDone` / `saveDatingLessonDone` in `src/lib/storage.js` (own key `thai-fluency-dating-lessons-v1`, not synced, not wiped by `clearState`). No DB table, no migration.
+- The **Super gate and 18+ gate are unchanged**; locked non-Super users still see zero Thai/meanings (verified by `check-dating-badges.mjs`).
+
+### 10.3 Guessable questions — rewritten (Option C)
+
+The bank grew from **50 → 65 questions** (26 rewrites + 15 new). A mechanical detector plus a **two-round adversarial rewrite→verify pass** (independent agents that try to answer each question with *zero* Thai) drove the fixes:
+
+- **Length/hedging tell (25 questions):** the correct answer is no longer the longest or the only hedged option (now enforced by `check-dating-distractors.mjs`).
+- **Culturally-absurd / all-absolutist distractors (3+ questions):** replaced with plausible near-misses.
+- **Prompt leakage** (incl. the owner's `dq-swear-1`/บ้าจริง example): neutralized.
+- **Residual "only-reasonable-option" odd-one-out tell** surfaced by the adversarial verifier on 12 questions: fixed so the correct answer is no longer the lone sensible/safe/measured choice.
+
+Three before→after examples:
+
+| Q | Before (guessable) | After (fair) |
+|---|---|---|
+| **dq-swear-1** (prompt leak) | Prompt *"…after **locking themselves out of their apartment**…"* → only the frustration option fits; distractors "warm thank-you", "excited/awesome", "polite request" all dismissible. | Prompt *"A Thai friend says this. What does it mean?"* → 4 plausible readings of an exclamation: insult-at-a-person / **mild frustration not aimed at anyone** / heavy curse / weary sadness. |
+| **dq-rel-5** (length tell) | Correct ~150 chars ("Use it thoughtfully: after you have been dating a while…") vs distractors 70–83 chars leaning on "anyone", "ever". | Four 68–73-char options, all plausible usage claims about an exclusivity phrase; **correct is not the longest**. |
+| **dq-night-4** (absolutist distractors) | Distractors "offering to pay is **insulting**", "each person **must always** pay only for their own". | Four believable bar-etiquette takes (let the senior treat / then you cover every round / **treating is normal** / offering can make new acquaintances lose face). |
+
+### 10.4 The 15 untested phrases — all now tested
+
+The audit's 15 no-question phrases each received a question (each with a documented, distinct rationale — none was padding or a near-duplicate of a tested phrase): `90003, 90004, 90008` (introductions), `90020` (apps), `90010, 90013` (compliments), `90024, 90027` (relationship), `90028, 90030, 90035` (boundaries), `90041` (arguments), `90046, 90049` (nightlife), `90053` (slang) → `dq-*-n1..n3`. **None were left untested; none were judged unable to support a fair question.**
+
+### 10.5 Tone-question taxonomy leak — closed without removing badges
+
+The 11 tone questions are **unchanged** (their four options are the fixed severity labels the validator enforces — diversifying them would break `check-dating-quiz.mjs`). The fixable vector was the **selection-screen severity badge**: for the 5 single-severity categories that contain a tone question (introductions, apps, compliments, boundaries, mild-swears), the category-card severity chip *was* the tone answer. It is now **neutralized to a "Tone: hidden until you answer" placeholder until the lesson is complete, then restored** — the same neutralize-pre-reveal / restore-after pattern as the in-quiz badge gate (`badgesLeakAnswer`), and answer-hygiene, **not** badge removal. Because the lesson now teaches each phrase's tone, a tone question tests *taught* knowledge rather than being winnable cold.
+
+### 10.6 Core-app echoes (Option D)
+
+- **Tone Challenge audio — DONE (not blocked).** `TONE_QUIZ_ITEMS` gained a `thai` field for all 24 syllables, each sourced from the reviewed main deck (`cards.js`, matched by phonetic + meaning; "wood" uses the standard ไม้). `TonesQuizSection.jsx` now plays the tone via `lib/audio.js` (`speakThai`, tap-gesture, fails quietly with no Thai voice). The romanized prompt (its diacritic) remains by scope — the ask was to add the hearing channel, not to remove the prompt.
+- **First-lesson Quick Check shuffle — DONE.** Options are now shuffled per question (stable memo); correctness is tracked by the option's `correct` flag, so "always tap A" no longer scores 5/5.
+- **First-lesson sentence-shape item — REPORTED, not faked.** The mini-challenge's phrase item (card 330) still sits among single-word distractors. A real fix needs *sentence-shaped* distractors, but the pilot unit has only one phrase, so it needs **new content** (or dropping the item, which would reduce taught-item coverage and risk the challenge-scope validators). Left as-is per "if it needs new content, report instead."
+
+### 10.7 Validators
+
+`check-dating-sequence.mjs` (lesson exists per category, quiz gated behind lesson, lesson ungraded + English-first), `check-dating-distractors.mjs` (length/hedge/absolutist tells), and `check-pedagogy-regression.mjs` (7 protected copy strings + 5 design markers) were added. **All checks pass: 13 originals + 3 new = 16/16.** The direction assertions in `check-dating-quiz.mjs` were not weakened.
+
+### 10.8 What was NOT done (and why)
+
+- **First-lesson sentence-shape item** (§10.6) — needs new content; reported, not faked.
+- **Tone Challenge diacritic still printed** — the task asked to add audio, not remove the romanized prompt; removing it is a larger exercise redesign, out of scope.
+- **Option B (English→Thai production)** — deliberately untouched; it conflicts with the enforced direction and needs owner sign-off.
+- **`dq-swear`/phrase-90059 severity note** — the phrase carries `severity: 'strong'` while its own note reads "mild"; a pre-existing data inconsistency flagged by review, left alone because changing it would move its tone-question answer and is a content decision for the native reviewer.
