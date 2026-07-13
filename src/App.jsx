@@ -4,7 +4,7 @@ import { CARDS } from './data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay } from './lib/storage.js';
+import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay, saveSuperIntent, loadSuperIntent, clearSuperIntent } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
 import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
@@ -194,6 +194,19 @@ const ROUTE_TABS = {
   '/shop': 'shop',
   '/leaderboard': 'leaderboard',
   '/dating': 'dating',
+};
+
+// Post-checkout return intent: the tab a payer was trying to reach when they
+// started an upgrade. After activation we return them here instead of to Learn.
+// Only surfaces that Super actually UNBLOCKS are listed (Dating access, the
+// hearts-gated Challenge, the Shop) — Quests is deliberately excluded because it
+// is stage-gated, not Super-gated, so "returning" a new Super user there could
+// land them on a still-locked screen. Anything else / no intent → Learn.
+const SUPER_INTENT_TABS = new Set(['dating', 'quiz', 'shop']);
+const SUPER_INTENT_LABEL = {
+  dating: 'Open Dating & Real Talk',
+  quiz: 'Back to the Challenge',
+  shop: 'Open the Shop',
 };
 const AUTH_ROUTES = {
   '/welcome': 'welcome',
@@ -1032,14 +1045,21 @@ export default function TukTalkThaiApp() {
         // Funnel: server-confirmed Super after the checkout return. Fired once
         // (the handler is guarded by superSuccessHandled). Safe/non-PII.
         trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
+        // Intent-aware return: if the payer started checkout from a specific
+        // surface (e.g. the Dating lock), send them THERE on "continue" instead
+        // of dropping everyone on Learn. Dating's own 18+ gate handles the age
+        // confirmation, so this is never a dead end. No intent → stay on Learn.
+        const returnIntent = loadSuperIntent();
+        clearSuperIntent();
+        const returnTab = SUPER_INTENT_TABS.has(returnIntent) ? returnIntent : null;
         setCelebration({
           eyebrow: 'Welcome to Super',
           title: 'You’re now Super! 🎉',
           // Name the LIVE benefits so the payer knows what they just unlocked
           // (both are enforced today: Dating gate + effectiveHearts → ∞).
           subtitle: 'Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
-          primaryLabel: 'Let’s go',
-          onPrimary: () => setCelebration(null),
+          primaryLabel: returnTab ? SUPER_INTENT_LABEL[returnTab] : 'Let’s go',
+          onPrimary: () => { setCelebration(null); if (returnTab) handleSetTab(returnTab); },
         });
         try {
           if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
@@ -1695,9 +1715,14 @@ export default function TukTalkThaiApp() {
     return true;
   }, [loaded, demoMode, superActive, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
 
-  const handleOpenPremium = useCallback(() => {
+  // `intent` is the tab the user was trying to reach (e.g. 'dating' from the
+  // Dating lock). It is persisted so that, after the Stripe round-trip and
+  // activation, we can return the payer THERE instead of to Learn. Called with
+  // no intent (generic "Go Super") clears any stale intent → default (Learn).
+  const handleOpenPremium = useCallback((intent) => {
     setUpgradePrompt(null);
     setRewardScreen(null);
+    saveSuperIntent(SUPER_INTENT_TABS.has(intent) ? intent : null);
     // Route Super/upgrade entry points to the full plans/pricing page.
     handleNavigatePath('/plans');
   }, [handleNavigatePath]);
@@ -2443,11 +2468,11 @@ export default function TukTalkThaiApp() {
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} />}
-          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={handleOpenPremium} setTab={handleSetTab} />}
+          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('quiz')} setTab={handleSetTab} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
-          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={handleOpenPremium} />}
-          {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} onRefillHearts={handleRefillHearts} onOpenSuper={handleOpenPremium} />}
-          {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={handleOpenPremium} setTab={handleSetTab} />}
+          {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={() => handleOpenPremium()} />}
+          {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('shop')} />}
+          {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={() => handleOpenPremium('dating')} setTab={handleSetTab} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>
       )}

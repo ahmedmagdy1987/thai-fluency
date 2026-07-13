@@ -142,6 +142,42 @@ export function saveDatingLessonDone(catId) {
   }
 }
 
+// Post-checkout RETURN INTENT. When a Super trigger fires (Dating lock, Quests
+// lock, hearts gate, Shop upsell), we remember which surface the user was trying
+// to reach, so that after Stripe redirects back and activation completes we can
+// return them THERE instead of dumping every payer on Learn. Device-local,
+// short-lived (expires after 1h so a stale intent never mis-fires), its own key,
+// never synced. Value is a tab id string.
+const SUPER_INTENT_KEY = 'thai-fluency-super-intent-v1';
+const SUPER_INTENT_TTL_MS = 60 * 60 * 1000;
+
+export function saveSuperIntent(intent) {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    if (!intent) { localStorage.removeItem(SUPER_INTENT_KEY); return; }
+    localStorage.setItem(SUPER_INTENT_KEY, JSON.stringify({ intent: String(intent), at: Date.now() }));
+  } catch (e) { /* private mode - silent */ }
+}
+
+export function loadSuperIntent() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(SUPER_INTENT_KEY);
+      if (raw) {
+        const v = JSON.parse(raw);
+        if (v && typeof v.intent === 'string' && Number.isFinite(v.at) && (Date.now() - v.at) < SUPER_INTENT_TTL_MS) {
+          return v.intent;
+        }
+      }
+    }
+  } catch (e) { /* silent fail */ }
+  return null;
+}
+
+export function clearSuperIntent() {
+  try { if (typeof localStorage !== 'undefined') localStorage.removeItem(SUPER_INTENT_KEY); } catch (e) { /* silent */ }
+}
+
 export async function loadState() {
   try {
     if (typeof localStorage !== 'undefined') {
