@@ -28,31 +28,38 @@ export const ACHIEVEMENTS = [
   {id:'stage-5',icon:'🏠',name:'Home Stage',desc:'Reach Stage 5 (Home & Services)',check:(s) => (s.currentStage || 1) >= 5},
 ];
 
+// Each item carries the Thai script for its syllable so the Tone Challenge can
+// PLAY the tone (via lib/audio.js speakThai), not just print the diacritic as a
+// silent answer key. Every `thai` below is sourced from the reviewed main deck
+// (src/data/cards.js, matched by phonetic + meaning) so nothing here is a new
+// unreviewed spelling. Exception: 'mái' = wood is ไม้ (the deck's มั้ย is a
+// same-sound question particle, not "wood") — ไม้ is the standard spelling and
+// carries the same high tone.
 export const TONE_QUIZ_ITEMS = [
-  {syl:'mâi',tone:'falling',mean:'no / not'},
-  {syl:'mǎi',tone:'rising',mean:'question marker'},
-  {syl:'mái',tone:'high',mean:'wood'},
-  {syl:'mài',tone:'low',mean:'new'},
-  {syl:'phǒm',tone:'rising',mean:'I (male)'},
-  {syl:'khráp',tone:'high',mean:'polite particle'},
-  {syl:'mâak',tone:'falling',mean:'very'},
-  {syl:'aròi',tone:'low',mean:'delicious'},
-  {syl:'phèt',tone:'low',mean:'spicy'},
-  {syl:'náam',tone:'high',mean:'water'},
-  {syl:'khâao',tone:'falling',mean:'rice'},
-  {syl:'khǎo',tone:'rising',mean:'he / she'},
-  {syl:'maa',tone:'mid',mean:'to come'},
-  {syl:'máa',tone:'high',mean:'horse'},
-  {syl:'mǎa',tone:'rising',mean:'dog'},
-  {syl:'gài',tone:'low',mean:'chicken'},
-  {syl:'sǎam',tone:'rising',mean:'three'},
-  {syl:'sìi',tone:'low',mean:'four'},
-  {syl:'hâa',tone:'falling',mean:'five'},
-  {syl:'rúu',tone:'high',mean:'to know'},
-  {syl:'dee',tone:'mid',mean:'good'},
-  {syl:'bpai',tone:'mid',mean:'to go'},
-  {syl:'glâi',tone:'falling',mean:'close / near'},
-  {syl:'glai',tone:'mid',mean:'far'},
+  {syl:'mâi',tone:'falling',mean:'no / not',thai:'ไม่'},
+  {syl:'mǎi',tone:'rising',mean:'question marker',thai:'ไหม'},
+  {syl:'mái',tone:'high',mean:'wood',thai:'ไม้'},
+  {syl:'mài',tone:'low',mean:'new',thai:'ใหม่'},
+  {syl:'phǒm',tone:'rising',mean:'I (male)',thai:'ผม'},
+  {syl:'khráp',tone:'high',mean:'polite particle',thai:'ครับ'},
+  {syl:'mâak',tone:'falling',mean:'very',thai:'มาก'},
+  {syl:'aròi',tone:'low',mean:'delicious',thai:'อร่อย'},
+  {syl:'phèt',tone:'low',mean:'spicy',thai:'เผ็ด'},
+  {syl:'náam',tone:'high',mean:'water',thai:'น้ำ'},
+  {syl:'khâao',tone:'falling',mean:'rice',thai:'ข้าว'},
+  {syl:'khǎo',tone:'rising',mean:'he / she',thai:'เขา'},
+  {syl:'maa',tone:'mid',mean:'to come',thai:'มา'},
+  {syl:'máa',tone:'high',mean:'horse',thai:'ม้า'},
+  {syl:'mǎa',tone:'rising',mean:'dog',thai:'หมา'},
+  {syl:'gài',tone:'low',mean:'chicken',thai:'ไก่'},
+  {syl:'sǎam',tone:'rising',mean:'three',thai:'สาม'},
+  {syl:'sìi',tone:'low',mean:'four',thai:'สี่'},
+  {syl:'hâa',tone:'falling',mean:'five',thai:'ห้า'},
+  {syl:'rúu',tone:'high',mean:'to know',thai:'รู้'},
+  {syl:'dee',tone:'mid',mean:'good',thai:'ดี'},
+  {syl:'bpai',tone:'mid',mean:'to go',thai:'ไป'},
+  {syl:'glâi',tone:'falling',mean:'close / near',thai:'ใกล้'},
+  {syl:'glai',tone:'mid',mean:'far',thai:'ไกล'},
 ];
 
 export const XP_REWARDS = {

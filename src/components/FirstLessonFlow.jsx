@@ -139,6 +139,21 @@ export default function FirstLessonFlow({
   const currentQuizQ = quizQuestions[quizIndex] || null;
   const currentQuizCorrectId = currentQuizQ ? (currentQuizQ.options.find(o => o.correct)?.id ?? null) : null;
   const quizSelectedIsCorrect = !!(currentQuizQ && quizSelectedId && quizSelectedId === currentQuizCorrectId);
+  // Shuffle the quick-check options so the answer isn't always the first (A)
+  // option — the authored data lists the correct choice first, which made
+  // "always tap A" a 100%-reliable tell. Correctness is tracked by the option's
+  // `correct` flag (currentQuizCorrectId), never by position, so randomizing the
+  // DISPLAY order is safe. Memoized per question so it stays stable across the
+  // select/check re-renders (it only re-shuffles when the question changes).
+  const quizOptionsOrder = useMemo(() => {
+    if (!currentQuizQ) return [];
+    const opts = currentQuizQ.options.slice();
+    for (let i = opts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [opts[i], opts[j]] = [opts[j], opts[i]];
+    }
+    return opts;
+  }, [quizIndex, currentQuizQ]);
 
   useEffect(() => {
     onProgressChange?.({
@@ -379,7 +394,7 @@ export default function FirstLessonFlow({
               <strong>{currentQuizQ.prompt}</strong>
             </div>
             <div className="firstlesson-options">
-              {currentQuizQ.options.map((option, index) => {
+              {quizOptionsOrder.map((option, index) => {
                 const isSelected = quizSelectedId === option.id;
                 const isCorrectOpt = quizChecked && option.id === currentQuizCorrectId;
                 const isWrongOpt = quizChecked && isSelected && option.id !== currentQuizCorrectId;

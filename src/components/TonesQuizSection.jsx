@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronRight, Award, Check, X, RotateCcw } from 'lucide-react';
+import { ChevronRight, Award, Check, X, RotateCcw, Volume2 } from 'lucide-react';
 import { TONE_QUIZ_ITEMS } from '../data/gamification.js';
 import { TONES } from '../data/reference.js';
+import { speakThai, ttsAvailable } from '../lib/audio.js';
 
 export default function TonesQuizSection({ onComplete, bestScore, passed }) {
   const [questions, setQuestions] = useState([]);
@@ -86,6 +87,14 @@ export default function TonesQuizSection({ onComplete, bestScore, passed }) {
         <div className="quiz-prompt-label">What tone is this syllable?</div>
         <div className="tones-quiz-syl">{q.syl}</div>
         <div className="tones-quiz-mean">"{q.mean}"</div>
+        {/* Ear training needs EARS: play the syllable so the tone is heard, not
+            just read off the diacritic. Tap-to-play (audio.js resolves the Thai
+            voice on a user gesture; it fails quietly if the device has none). */}
+        {ttsAvailable() && q.thai && (
+          <button type="button" className="btn-secondary tones-quiz-hear" onClick={() => speakThai(q.thai)}>
+            <Volume2 size={15} /> Hear the tone
+          </button>
+        )}
       </div>
 
       <div className="tones-quiz-options">
