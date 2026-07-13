@@ -169,21 +169,46 @@ export async function downloadStats(userId) {
 export async function downloadEntitlement(userId) {
   const { data, error } = await supabase
     .from('subscriptions')
-    .select('super_until,status,plan,cancel_at_period_end')
+    .select('super_until,status,plan,cancel_at_period_end,current_period_end')
     .eq('user_id', userId)
     .maybeSingle();
   if (error) throw error;
+  const now = new Date();
   const superUntil = data?.super_until || null;
-  const isActive = !!(superUntil && new Date(superUntil) > new Date());
+  const periodEnd = data?.current_period_end || null;
+  const cancelAtPeriodEnd = !!data?.cancel_at_period_end;
+  const status = data?.status || null;
+
+  // A user is Super while they have PAID TIME REMAINING. Two ways that shows up:
+  //   (1) super_until is in the future — an active auto-renewing subscription;
+  //   (2) the subscription is CANCELED (scheduled cancel, or provider status
+  //       'canceled') but current_period_end is still in the future — they paid
+  //       through this period and are owed access until it ends.
+  // The Stripe webhook writes `super_until = active ? periodEnd : null`, and some
+  // cancel flows leave status='canceled' with a future current_period_end, which
+  // nulls super_until and used to downgrade a PAYING customer to Free (refund /
+  // chargeback risk — B5). This is the task's "active OR (canceled AND
+  // period_end > now())" rule, resolved entirely client-side (read-only; RLS
+  // still owns the truth). It only ever GRANTS access it can prove was paid for,
+  // so it can never over-entitle beyond current_period_end.
+  const activeBySuperUntil = !!(superUntil && new Date(superUntil) > now);
+  const isCanceled = cancelAtPeriodEnd || status === 'canceled';
+  const activeByRemainingPaidTime = isCanceled && !!(periodEnd && new Date(periodEnd) > now);
+  const isActive = activeBySuperUntil || activeByRemainingPaidTime;
+  // Access-until date for the UI ("active until <date>"): prefer a future
+  // super_until, else the still-future current_period_end.
+  const accessUntil = activeBySuperUntil ? superUntil : (isActive ? periodEnd : superUntil);
+
   return {
     tier: isActive ? 'super' : 'free',
-    superUntil,
+    superUntil: accessUntil,
     plan: data?.plan || null,
-    status: data?.status || null,
+    status,
     // Migration 009: true when the user scheduled a cancellation (auto-renew
-    // off). Super stays active until super_until, so the plan UI shows a
-    // "canceled — active until <date>" state rather than "renews on <date>".
-    cancelAtPeriodEnd: !!data?.cancel_at_period_end,
+    // off). Super stays active until the paid period ends, so the plan UI shows
+    // a "canceled — active until <date>" state rather than "renews on <date>".
+    cancelAtPeriodEnd,
+    currentPeriodEnd: periodEnd,
   };
 }
 
