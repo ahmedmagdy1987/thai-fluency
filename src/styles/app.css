@@ -1028,6 +1028,7 @@ img, svg, video { max-width: 100%; }
 .achievement-icon { font-size: 32px; margin-bottom: 6px; }
 .achievement-name { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 600; color: var(--jade); margin-bottom: 4px; }
 .achievement-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.4; }
+.achievement-empty-hint { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 12px; text-align: center; }
 .toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 200; background: var(--jade); color: var(--cream); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; max-width: 90%; width: 360px; box-shadow: 0 12px 40px rgba(0,0,0,0.25); cursor: pointer; animation: toastSlide 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); border: 2px solid var(--gold); }
 @keyframes toastSlide { from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 to { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -1470,6 +1471,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .profile-action-danger { color: var(--brick); }
 .profile-action-danger:hover { border-color: rgba(160, 59, 44, 0.45); background: rgba(160, 59, 44, 0.06); }
 .profile-action-label { flex: 1; }
+.profile-action-count { font-size: 13px; font-weight: 700; color: var(--jade); }
 .profile-action-chevron { transform: rotate(180deg); color: var(--ink-soft); }
 .profile-action-disabled { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 1px dashed var(--line); border-radius: 10px; font-size: 14px; color: var(--ink-soft); }
 .profile-action-coming { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--ink-soft); }

@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 export default function AchievementsModal({ achievements, unlocked, onClose }) {
+  // Close on Escape, matching every other modal (SettingsModal pattern).
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape' && onClose) onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const noneYet = unlocked.length === 0;
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
@@ -14,6 +22,11 @@ export default function AchievementsModal({ achievements, unlocked, onClose }) {
           <button className="modal-close" onClick={onClose}><X size={20} /></button>
         </div>
         <div className="modal-body">
+          {noneYet && (
+            <p className="achievement-empty-hint">
+              None unlocked yet — complete your first lesson and review a few cards to earn your first achievement.
+            </p>
+          )}
           <div className="achievement-grid">
             {achievements.map(a => {
               const isUnlocked = unlocked.includes(a.id);

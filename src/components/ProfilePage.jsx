@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare, Crown } from 'lucide-react';
+import { ChevronLeft, Pencil, LogOut, KeyRound, Trash2, LifeBuoy, MessageSquare, Crown, Trophy } from 'lucide-react';
 import { supabase } from '../lib/supabase.js';
 import { useSubscriptionStatus, FREE_PLAN_BLURB } from '../hooks/useSubscriptionStatus.js';
+import { checkAchievements } from '../lib/state.js';
 import ChangePasswordModal from './profile/ChangePasswordModal.jsx';
+import AchievementsModal from './AchievementsModal.jsx';
 import NotificationSettings from './profile/NotificationSettings.jsx';
 
 // Profile view — accessible from the header user menu. Edit display name
@@ -13,7 +15,13 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
   const [savingName, setSavingName] = useState(false);
   const [nameError, setNameError] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
   const sub = useSubscriptionStatus(fullStats, { onEntitlementRefresh });
+
+  // Achievements collection (was only reachable via the orphaned /today route).
+  // Live-computed from stats, exactly like TodayTab, so the count is accurate.
+  const achievements = useMemo(() => checkAchievements(fullStats || {}, {}), [fullStats]);
+  const unlockedAchievementIds = useMemo(() => achievements.filter(a => a.unlocked).map(a => a.id), [achievements]);
 
   const displayName = profile?.display_name
     || (session?.user?.email ? session.user.email.split('@')[0] : 'Account');
@@ -173,6 +181,22 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
         </div>
 
         <div className="profile-section">
+          <div className="profile-section-title">Achievements</div>
+          <div className="profile-actions">
+            <button
+              type="button"
+              className="profile-action-btn"
+              onClick={() => setShowAchievements(true)}
+            >
+              <Trophy size={16} />
+              <span className="profile-action-label">Your achievements</span>
+              <span className="profile-action-count">{unlockedAchievementIds.length}/{achievements.length}</span>
+              <ChevronLeft size={14} className="profile-action-chevron" />
+            </button>
+          </div>
+        </div>
+
+        <div className="profile-section">
           <div className="profile-section-title">Plan</div>
           <div className="profile-plan-row">
             {sub.isSuper ? (
@@ -281,6 +305,13 @@ export default function ProfilePage({ profile, fullStats, session, stageState, o
           <ChangePasswordModal
             email={session.user.email}
             onClose={() => setShowPasswordModal(false)}
+          />
+        )}
+        {showAchievements && (
+          <AchievementsModal
+            achievements={achievements}
+            unlocked={unlockedAchievementIds}
+            onClose={() => setShowAchievements(false)}
           />
         )}
       </div>
