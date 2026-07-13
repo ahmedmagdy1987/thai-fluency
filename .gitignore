@@ -11,3 +11,4 @@ dist-ssr
 *.log
 .claude/
 supabase/.temp/
+scripts/viz/artifacts/

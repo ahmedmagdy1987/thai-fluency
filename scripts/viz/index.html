@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tuk Talk Thai — visual harness</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: var(--cream, #F5F0E5); }
+      #viz-root { min-height: 100vh; }
+      /* the app scopes tokens to .app-root; the harness mounts the component
+         inside an .app-root wrapper so all CSS variables + dark theme resolve. */
+    </style>
+  </head>
+  <body>
+    <div id="viz-root"></div>
+    <script type="module" src="./main.jsx"></script>
+  </body>
+</html>
