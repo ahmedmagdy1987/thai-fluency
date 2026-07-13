@@ -67,23 +67,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Their date's home address."
+        "text": "The other person's home address."
       },
       {
         "id": "b",
-        "text": "Permission to sit down at the table."
+        "text": "Permission to sit down at their table."
       },
       {
         "id": "c",
-        "text": "The other person's name."
+        "text": "The other person's full name."
       },
       {
         "id": "d",
-        "text": "To connect on LINE, Thailand's main messaging app."
+        "text": "To add each other on the LINE app."
       }
     ],
     "correctOptionId": "d",
-    "explanation": "khǎw laai dâai mǎi khráp asks to exchange LINE contacts. In Thailand, LINE is often swapped before phone numbers, so this is the most natural way to stay in touch after a good first conversation.",
+    "explanation": "khǎw laai dâai mǎi khráp asks to add each other on LINE. In Thailand, LINE is the main messaging app and is often swapped before a phone number, so this is the natural way to stay in touch after a good first conversation. It isn't a request for a seat, a name, or an address.",
     "context": "Wrapping up a good conversation when you want to keep chatting later.",
     "tags": [
       "contact",
@@ -185,6 +185,90 @@ export const DATING_QUESTIONS = [
     ]
   },
   {
+    "id": "dq-intro-n1",
+    "cat": "introductions-flirting",
+    "questionType": "meaning",
+    "prompt": "What is the speaker asking?",
+    "phraseId": 90003,
+    "options": [
+      {
+        "id": "a",
+        "text": "What the other person's name is."
+      },
+      {
+        "id": "b",
+        "text": "How old the other person is."
+      },
+      {
+        "id": "c",
+        "text": "Where the other person is from."
+      },
+      {
+        "id": "d",
+        "text": "What kind of work the other person does."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "khun chûe àrai khráp pairs chûe ('name') with àrai ('what'), and khráp keeps it polite — so it simply asks for the person's name. Common getting-to-know-you questions about age, hometown, or job use different words, so those are believable near-misses rather than the right answer.",
+    "context": "The basic opener once a conversation with someone new gets going."
+  },
+  {
+    "id": "dq-intro-n2",
+    "cat": "introductions-flirting",
+    "questionType": "meaning",
+    "prompt": "What is the speaker asking for?",
+    "phraseId": 90004,
+    "options": [
+      {
+        "id": "a",
+        "text": "Whether the seat happens to be free."
+      },
+      {
+        "id": "b",
+        "text": "Permission to join them and sit down."
+      },
+      {
+        "id": "c",
+        "text": "Directions to an empty table nearby."
+      },
+      {
+        "id": "d",
+        "text": "Whether they can buy the person a drink."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "khǎw nâng dûai dâai mǎi khráp uses the khǎw ... dâai mǎi frame ('may I ...?') with nâng dûai ('sit together'), so it asks permission to join the person. It's easy to confuse with thîi nîi mii khon nâng mǎi, which only asks whether a seat is taken — but that one is about the seat, this one is about joining them.",
+    "context": "Approaching someone you'd like to sit with, rather than just checking if a chair is open."
+  },
+  {
+    "id": "dq-intro-n3",
+    "cat": "introductions-flirting",
+    "questionType": "context",
+    "prompt": "When would someone naturally say this?",
+    "phraseId": 90008,
+    "options": [
+      {
+        "id": "a",
+        "text": "Ending a good first date and hoping to meet again."
+      },
+      {
+        "id": "b",
+        "text": "Apologizing for having to leave a date early."
+      },
+      {
+        "id": "c",
+        "text": "Telling a new match they want to take things slow."
+      },
+      {
+        "id": "d",
+        "text": "Greeting a date who has just walked in to meet you."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "yàak jer khun ìik khráp strings together yàak ('want'), jer ('meet'), and ìik ('again'), so it expresses wanting to see the person another time — the natural line as an enjoyable first date wraps up. It isn't an apology for leaving, a request to slow down, or a hello.",
+    "context": "The end of a date that went well, when you want to signal interest in a second one."
+  },
+  {
     "id": "dq-apps-1",
     "cat": "apps-meeting-plans",
     "questionType": "meaning",
@@ -225,23 +309,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Freely — it's a polite, safety-minded way to propose a specific public venue, and the question ending genuinely asks whether that works for them."
+        "text": "Freely — it politely names a specific public spot and asks if that suits them."
       },
       {
         "id": "b",
-        "text": "Only after several dates — suggesting the venue yourself is seen as controlling early on."
+        "text": "Use it to accept a venue your match suggested, confirming you'll take their pick."
       },
       {
         "id": "c",
-        "text": "Recognition only — a learner who proposes meeting places comes across as pushy."
+        "text": "Use it to ask what type of place your match would generally prefer to go to."
       },
       {
         "id": "d",
-        "text": "Only face to face — sending it over chat before you have met is considered rude."
+        "text": "Save it until after you've met in person — proposing a spot sooner feels forward."
       }
     ],
     "correctOptionId": "a",
-    "explanation": "jer gan thîi ráan níi dii mǎi khráp suggests meeting at a specific place, and the dii mǎi ending genuinely asks whether that suits the other person. For a first in-person meetup with someone you have only talked to on an app, naming a busy public spot is the polite, safety-minded default — exactly where this phrase shines.",
+    "explanation": "jer gan thîi ráan níi dii mǎi khráp proposes meeting at a specific place, and the dii mǎi ending genuinely asks whether that suits the other person. For a first app meetup, naming a busy public spot is the polite, safety-minded default — you are the one suggesting the venue, not merely accepting their pick or vaguely asking their taste, and there is nothing too forward about sending it over chat before you meet.",
     "context": "Settling on a location with an app match before a first in-person meetup — typically over chat.",
     "tags": [
       "safety",
@@ -284,23 +368,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "They want to move the date to a completely different day."
+        "text": "They need to move the meetup to a different day and apologize for the change."
       },
       {
         "id": "b",
-        "text": "They arrived early and are letting their date know they are already inside."
+        "text": "They turned up a bit early and are telling their date they're already there."
       },
       {
         "id": "c",
-        "text": "Their joke landed badly and they are trying to repair the mood."
+        "text": "Their joke fell flat and they're trying to smooth over the awkward mood."
       },
       {
         "id": "d",
-        "text": "They are stuck in traffic and will arrive a few minutes after the time they agreed with their date."
+        "text": "They hit traffic and will arrive a little after the time they agreed on."
       }
     ],
     "correctOptionId": "d",
-    "explanation": "khǎw thôht khráp is the polite apology, and maa sǎai nít nàwy admits to running 'a little bit' late — the classic heads-up text when Bangkok traffic (rót tìt) slows you down. A quick message like this shows respect for the other person's time; it doesn't reschedule the date, announce an early arrival, or fix a bad joke.",
+    "explanation": "khǎw thôht khráp is the polite apology and maa sǎai nít nàwy admits to running 'a little bit' late — the classic heads-up text when Bangkok traffic (rót tìt) slows you down. A quick message like this shows respect for the other person's time; it does not reschedule the date to another day, announce an early arrival, or patch up a bad joke.",
     "context": "Any small delay on the way to a meetup — send it as soon as you know you'll be late, and add the reason honestly.",
     "tags": [
       "apology",
@@ -311,33 +395,61 @@ export const DATING_QUESTIONS = [
     "id": "dq-apps-5",
     "cat": "apps-meeting-plans",
     "questionType": "scenario",
-    "prompt": "You have been chatting with an app match for a week and the conversation flows well. Is this a good phrase for inviting them to dinner?",
+    "prompt": "A Thai match you have been messaging sends you this phrase. What is it actually doing?",
     "phraseId": 90016,
     "options": [
       {
         "id": "a",
-        "text": "No — sharing a meal is only for couples who are already official."
+        "text": "It invites them out to dinner together, framed as a question so it is easy to decline."
       },
       {
         "id": "b",
-        "text": "No — you should wait for them to invite you first; asking is seen as far too forward."
+        "text": "It invites them to cook dinner together at home, which is more intimate than a night out."
       },
       {
         "id": "c",
-        "text": "Yes — it is a polite invitation phrased as a real question, so they are free to accept or decline."
+        "text": "It suggests meeting for lunch rather than dinner, to keep a first date lower-key."
       },
       {
         "id": "d",
-        "text": "No — dinner invitations are supposed to go through a mutual friend."
+        "text": "It tells them you will take them to dinner, stated as a plan rather than a question."
       }
     ],
-    "correctOptionId": "c",
-    "explanation": "The invitation ends in dûai gan mǎi — 'together?' — a genuine question, which keeps it low-pressure and easy to answer either way. Adding a specific day, as in the example with Friday, makes it even easier for them to say yes or suggest another time.",
+    "correctOptionId": "a",
+    "explanation": "The phrase is bpai gin khâao yen dûai gan mǎi — 'go eat dinner together?' The word khâao yen specifically means the evening meal (dinner), not lunch (klaang wan) or breakfast, and it means eating out together, not cooking at home. It ends in mǎi, which turns the whole thing into a genuine yes/no question, so it is an invitation the other person can freely accept or decline, not a statement of a fixed plan. Naming a day, like the Friday in the example, makes it even easier to answer.",
     "context": "Moving an online chat toward a first real-life date.",
     "tags": [
       "invitation",
       "etiquette"
     ]
+  },
+  {
+    "id": "dq-apps-n1",
+    "cat": "apps-meeting-plans",
+    "questionType": "meaning",
+    "prompt": "What is the speaker asking the other person to do?",
+    "phraseId": 90020,
+    "options": [
+      {
+        "id": "a",
+        "text": "Message you once they reach the meeting spot."
+      },
+      {
+        "id": "b",
+        "text": "Wait for you to text the moment you arrive yourself."
+      },
+      {
+        "id": "c",
+        "text": "Send you their home address before they head out."
+      },
+      {
+        "id": "d",
+        "text": "Warn you in advance if they end up running late."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "thǔeng láew bàwk dûai ná khráp means 'let me know once you arrive' — a caring, safety-minded closer when arranging to meet. thǔeng means 'to arrive/reach', and ná khráp keeps it warm and polite. It asks the other person to check in on arrival; it is not a promise about your own arrival, a request for their address, or a heads-up about being late.",
+    "context": "Wrapping up plans for a meetup — a warm way to ask your date to check in when they get there."
   },
   {
     "id": "dq-compl-1",
@@ -352,11 +464,11 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "b",
-        "text": "I miss you a lot when we're apart."
+        "text": "I miss you a lot whenever we're apart."
       },
       {
         "id": "c",
-        "text": "Being around you and chatting feels relaxed and comfortable."
+        "text": "Talking with you feels easy and relaxed."
       },
       {
         "id": "d",
@@ -379,23 +491,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Save it for someone you are officially dating — it declares romantic feelings."
+        "text": "Save it until you are dating — it hints at romantic feelings."
       },
       {
         "id": "b",
-        "text": "Avoid it entirely — commenting on how a conversation feels is considered intrusive."
+        "text": "Fine early on, but it praises their looks, not the chat."
       },
       {
         "id": "c",
-        "text": "It's safe even with someone you've just met — it praises the connection rather than their looks."
+        "text": "Fine with someone new — it praises the easy vibe, not looks."
       },
       {
         "id": "d",
-        "text": "Use it only in writing — saying it face to face is far too intense."
+        "text": "Good with close friends, but too familiar for someone new."
       }
     ],
     "correctOptionId": "c",
-    "explanation": "Because sà-baai jai describes how at ease the chat feels rather than the person's appearance, this compliment stays friendly with new acquaintances — for example, ending a first chat at a language exchange on a warm note. Appearance compliments are the ones that can read as flirting with someone you barely know.",
+    "explanation": "sà-baai jai describes how comfortable and easy the conversation feels — not the person's appearance, and not a declaration of romance. That keeps it gentle and low-stakes, so it lands warmly even with a new acquaintance, like wrapping up a first chat at a language exchange. The tempting wrong answers get a Thai detail backwards: it isn't a comment on their looks (b), and it isn't too familiar for someone you just met (d).",
     "context": "New acquaintances, language exchanges, early chats — anywhere you want warmth without romantic overtones.",
     "literal": "sà-baai jai = comfortable 'in the heart'",
     "tags": [
@@ -442,19 +554,19 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Yes — any compliment doubles as a thank-you in Thai."
+        "text": "Yes — a looks compliment works fine as a friendly thank-you."
       },
       {
         "id": "b",
-        "text": "Yes — it literally means 'thank you for your help.'"
+        "text": "Yes — taa-yím sǔai literally means 'thanks for the help.'"
       },
       {
         "id": "c",
-        "text": "Not really — praising someone's smiling eyes reads romantic; thank them and call them jai dee (kind-hearted) instead."
+        "text": "Not really — praising the eyes reads romantic here."
       },
       {
         "id": "d",
-        "text": "No — mentioning someone's eyes is considered offensive."
+        "text": "Only if you first say khàwp khun, then it's fine."
       }
     ],
     "correctOptionId": "c",
@@ -496,6 +608,62 @@ export const DATING_QUESTIONS = [
       "compliment",
       "date"
     ]
+  },
+  {
+    "id": "dq-compl-n1",
+    "cat": "compliments",
+    "questionType": "meaning",
+    "prompt": "What is this phrase complimenting?",
+    "phraseId": 90010,
+    "options": [
+      {
+        "id": "a",
+        "text": "That you enjoy their sense of humor and jokes."
+      },
+      {
+        "id": "b",
+        "text": "That they have a lovely, warm smile."
+      },
+      {
+        "id": "c",
+        "text": "That they're really easy and relaxed to talk to."
+      },
+      {
+        "id": "d",
+        "text": "That they always know the newest gossip."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "chôp means 'to like/love' and múk tà-lòk means 'jokes' or 'sense of humor,' so the phrase praises how funny someone is. It compliments their personality rather than their looks, which keeps it warm and low-pressure.",
+    "context": "Telling a date or new friend you enjoy their humor after they've made you laugh a few times."
+  },
+  {
+    "id": "dq-compl-n2",
+    "cat": "compliments",
+    "questionType": "usage",
+    "prompt": "A Thai friend says this to you. How does it come across?",
+    "phraseId": 90013,
+    "options": [
+      {
+        "id": "a",
+        "text": "Praise for someone's kindness — warm and safe with anyone."
+      },
+      {
+        "id": "b",
+        "text": "Praise for someone's looks — friendly and fine with anyone."
+      },
+      {
+        "id": "c",
+        "text": "A warm note on someone's mood — easy to say to anyone."
+      },
+      {
+        "id": "d",
+        "text": "Warm words a date is likely to read as quietly romantic."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "jai dee means 'kind-hearted,' so this praises character — not looks, and not just a passing mood. Because it is about who someone is, it lands warmly with a friend, a date, or anyone who just did you a favor, and it stays comfortable even with someone new. It never reads as a come-on.",
+    "context": "Complimenting kindness — thanking a helpful friend, or telling a date you value their warmth."
   },
   {
     "id": "dq-rel-1",
@@ -569,15 +737,15 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "To a brand-new app match, minutes after saying hello."
+        "text": "To a brand-new app match, only minutes after first saying hello."
       },
       {
         "id": "b",
-        "text": "When they want to break up but are trying to soften the blow."
+        "text": "When they want to break up but are trying to soften the blow first."
       },
       {
         "id": "c",
-        "text": "After a couple of months of good dates, to ask about making the relationship official."
+        "text": "After months of good dates, to ask about becoming official."
       },
       {
         "id": "d",
@@ -585,7 +753,7 @@ export const DATING_QUESTIONS = [
       }
     ],
     "correctOptionId": "c",
-    "explanation": "khóp gan means to date or go steady, so rao khóp gan mǎi is the classic 'shall we make it official?' question. It belongs after you have genuinely gotten to know each other — say, two months of dates that are going really well — and the mǎi ending frames it as a real question, leaving the other person a free choice. Dropped on a brand-new match, it would feel rushed and pushy.",
+    "explanation": "khóp gan means to date or go steady, so rao khóp gan mǎi is the classic 'shall we make it official?' question. It belongs after you have genuinely gotten to know each other, and the mǎi ending frames it as a real question that leaves a free choice. Dropped on a brand-new match it feels rushed; it is not a breakup line or a meet-the-friends invite.",
     "context": "The make-it-official conversation, once things have been going well for a while — not a first-contact line.",
     "tags": [
       "commitment",
@@ -596,29 +764,29 @@ export const DATING_QUESTIONS = [
     "id": "dq-rel-4",
     "cat": "relationship-language",
     "questionType": "scenario",
-    "prompt": "You matched with someone on an app an hour ago and have never met in person. Is this the right moment for this phrase?",
+    "prompt": "You matched with someone on a dating app earlier today and haven't met in person yet. Is this a good phrase to send them now?",
     "phraseId": 90021,
     "options": [
       {
         "id": "a",
-        "text": "No — it expresses genuine feelings, so it lands better after you have actually spent time together."
+        "text": "No — it's a sincere 'I like you,' so it means more after you actually know each other."
       },
       {
         "id": "b",
-        "text": "Yes — it is a standard greeting Thais use even with strangers."
+        "text": "Yes — showing that you like someone early on is confident and keeps a good chat going."
       },
       {
         "id": "c",
-        "text": "Yes — declaring feelings immediately is expected on Thai dating apps."
+        "text": "No — it's basically an 'I love you,' so it's better kept for when you're committed."
       },
       {
         "id": "d",
-        "text": "No — the phrase is insulting and should never be used at all."
+        "text": "Yes — it's light small talk you'd say to almost anyone you chat with."
       }
     ],
     "correctOptionId": "a",
-    "explanation": "chôp ('like') signals real romantic interest, not a casual hello — Thais treat it as a meaningful first step below rák ('love'). Said to a stranger you have never met, it comes across as insincere or pushy rather than charming, so save it for someone you genuinely know.",
-    "context": "Judging timing: brand-new app match versus someone you have dated a while.",
+    "explanation": "phǒm chôp khun ná is a genuine 'I like you' — real interest, not a throwaway line and not as heavy as rák ('love'). Because it means something, it lands better once you've actually spent time together than an hour into a brand-new match. It isn't small talk (d) and it isn't a full love confession to save for a committed relationship (c); knowing chôp = 'like' (not 'love') is what separates the two 'No' answers.",
+    "context": "Early dating-app chats, before you've met in person.",
     "tags": [
       "timing",
       "feelings"
@@ -628,33 +796,89 @@ export const DATING_QUESTIONS = [
     "id": "dq-rel-5",
     "cat": "relationship-language",
     "questionType": "usage",
-    "prompt": "How should you use this phrase?",
+    "prompt": "A Thai friend is dating someone and says this. How is it meant to be used?",
     "phraseId": 90025,
     "options": [
       {
         "id": "a",
-        "text": "Treat it as a casual icebreaker you can use with anyone, even someone you just met."
+        "text": "On a first date, to gently ask what the other person is looking for."
       },
       {
         "id": "b",
-        "text": "Use it thoughtfully: after you have been dating a while, pick a calm private moment, ask it plainly, and be ready to hear an honest answer either way."
+        "text": "After dating a while, to calmly ask whether the two of you are exclusive."
       },
       {
         "id": "c",
-        "text": "Recognition only — it is far too blunt for a learner ever to say out loud."
+        "text": "In the moment, to quietly check whether they truly mean what they said."
       },
       {
         "id": "d",
-        "text": "Save it for mid-argument, when you want to force a decision on the spot."
+        "text": "As a soft aside, to tell your partner how serious and devoted you are."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "jing-jang means 'serious', so this asks directly but calmly whether you are both committed and exclusive. It is a real relationship question, not small talk — it is perfectly fine to say, but timing and a calm tone matter, and asking it means accepting whatever answer comes back. Springing it mid-argument turns a clarifying question into an ultimatum.",
-    "context": "The exclusivity talk after dating someone for a while, raised without drama — not first-date material and not a weapon in a fight.",
+    "explanation": "jing-jang means 'serious', and the mǎi at the end makes it a question — so rao khóp gan bàep jing-jang mǎi asks whether the two of you are exclusive/serious. It's the define-the-relationship talk you raise calmly once you've been dating a while (b). It is not a first-date opener about what someone is looking for (a); it does not ask whether they are being sincere or truthful in the moment (c); and it is a question about the relationship, not a statement about your own devotion (d).",
+    "context": "The exclusivity / define-the-relationship talk, raised calmly after you have been dating someone for a while — a genuine question, not first-date small talk and not a compliment.",
     "tags": [
       "exclusivity",
       "communication"
     ]
+  },
+  {
+    "id": "dq-rel-n1",
+    "cat": "relationship-language",
+    "questionType": "meaning",
+    "prompt": "What is this phrase asking?",
+    "phraseId": 90024,
+    "options": [
+      {
+        "id": "a",
+        "text": "Whether the person will be their girlfriend or boyfriend."
+      },
+      {
+        "id": "b",
+        "text": "Whether the other person is already seeing somebody else."
+      },
+      {
+        "id": "c",
+        "text": "Whether the two of them should simply stay good friends."
+      },
+      {
+        "id": "d",
+        "text": "Whether the other person finds them genuinely attractive."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "khun pen faen phǒm dâai mǎi asks the other person to be your faen — the gender-neutral Thai word for boyfriend or girlfriend — and the dâai mǎi ending keeps it a genuine question. Note the contrast with mii faen ('already have a partner'), which is about someone else, and with pen phûean ('be friends'), which points the other way.",
+    "context": "The moment you ask someone to officially be your partner."
+  },
+  {
+    "id": "dq-rel-n2",
+    "cat": "relationship-language",
+    "questionType": "meaning",
+    "prompt": "What is the speaker inviting the other person to do?",
+    "phraseId": 90027,
+    "options": [
+      {
+        "id": "a",
+        "text": "To come along and meet their circle of friends."
+      },
+      {
+        "id": "b",
+        "text": "To come home and meet their parents and family."
+      },
+      {
+        "id": "c",
+        "text": "To spend the evening out, just the two of them."
+      },
+      {
+        "id": "d",
+        "text": "To help throw a party for one of their friends."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "phûean means 'friends', so bpai jer phûean phǒm mǎi invites someone to meet your friend group — a meaningful relationship step in Thailand that signals you want to fold them into your life. It is not the bigger milestone of meeting parents and family, nor a solo date, nor a request for party help.",
+    "context": "Bringing someone you are dating into your wider social circle."
   },
   {
     "id": "dq-bound-1",
@@ -698,24 +922,24 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Ask it once early in the relationship; after that, permission carries over and you don't need to check again."
+        "text": "Slot the action into the blank — 'may I hold your hand?' — then wait for their yes."
       },
       {
         "id": "b",
-        "text": "Don't say it out loud — asking ruins the moment, so just act and apologize afterward if needed."
+        "text": "It's for asking staff or elders for things, too formal to use between two people dating."
       },
       {
         "id": "c",
-        "text": "It is only for shops and restaurants, not for anything between two people on a date."
+        "text": "Put a feeling in the blank — like rák — so it turns into a way to confess your feelings."
       },
       {
         "id": "d",
-        "text": "Use it freely before any new physical contact — name the action, like a goodbye hug or holding hands, then wait for a clear, comfortable yes before you move."
+        "text": "Use it just after you act, as a polite way to check that what you did was okay."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "phǒm khǎw ... dâai mǎi khráp is a consent template: you fill in the action and genuinely ask permission — for example before a goodbye hug when you are not sure your date is comfortable with physical contact yet. Anything short of a clear, relaxed yes — hesitation, silence, a nervous laugh — means you don't proceed. And consent is not a one-time unlock: check in again whenever the contact is new.",
-    "context": "Every moment of new physical contact — holding hands, a hug, a goodbye kiss — no matter how well the date is going.",
+    "correctOptionId": "a",
+    "explanation": "phǒm khǎw ... dâai mǎi khráp is a fill-in-the-action permission template — you name the thing you'd like to do, then ask dâai mǎi ('may I?') and wait for a clear answer. You slot an ACTION into the blank, not a feeling (c), and you ask BEFORE, not after (d). It's perfectly natural between two people on a date, not just for shops and elders (b).",
+    "context": "A mid-date moment when you want to check in before doing something.",
     "tags": [
       "consent",
       "safety",
@@ -757,28 +981,28 @@ export const DATING_QUESTIONS = [
     "id": "dq-bound-4",
     "cat": "boundaries-consent",
     "questionType": "scenario",
-    "prompt": "Your date said no to something earlier this evening. You're tempted to ask one more time in a cuter way. What does this phrase teach about that?",
+    "prompt": "A Thai partner says this phrase to you. What does it mean?",
     "phraseId": 90034,
     "options": [
       {
         "id": "a",
-        "text": "A no is negotiable if you rephrase the question charmingly."
+        "text": "A no counts, but the person should give their reasons for it."
       },
       {
         "id": "b",
-        "text": "It only applies in formal or legal settings."
+        "text": "It's a reminder to state your own limits firmly and early."
       },
       {
         "id": "c",
-        "text": "It's a playful expression used to tease friends."
+        "text": "A firm no holds for now, and it's fine to check in later."
       },
       {
         "id": "d",
-        "text": "A clear no stands the first time — don't ask again hoping to change it."
+        "text": "A clear no is a full answer; don't re-ask hoping it flips."
       }
     ],
     "correctOptionId": "d",
-    "explanation": "mâi bplae wâa mâi states a non-negotiable principle: a no is a complete answer. Repeating a request after a clear no is pressure, not persistence — respect the first answer, whether it's theirs or your own.",
+    "explanation": "mâi bplae wâa mâi states a non-negotiable principle: a no is a complete answer on its own. It needs no justification, so it is not about the other person explaining their reasons; it is not a prompt to assert your own limits; and it does not lapse after tonight so you can revisit it later. It applies to either person's no. Repeating a request after a clear no is pressure, not persistence.",
     "context": "Any time a no has already been given, by either person.",
     "tags": [
       "consent",
@@ -794,19 +1018,19 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Mid-date, when the evening is going well but moving faster than they're comfortable with, and they want to set a gentler pace without ending it."
+        "text": "In the moment, when things are moving faster than you like and you want a slower pace."
       },
       {
         "id": "b",
-        "text": "When they want to end the date immediately and never see the person again."
+        "text": "Afterward by text, to gently tell them the evening moved a little too quickly for you."
       },
       {
         "id": "c",
-        "text": "The next day over text, to complain that everything moved too fast."
+        "text": "Right at hello, as a polite way to say you'd rather keep the first date low-key."
       },
       {
         "id": "d",
-        "text": "As a standard greeting at the very start of a first date."
+        "text": "When you've decided to end things and want to leave without an awkward scene."
       }
     ],
     "correctOptionId": "a",
@@ -817,6 +1041,90 @@ export const DATING_QUESTIONS = [
       "pacing",
       "consent"
     ]
+  },
+  {
+    "id": "dq-bound-n1",
+    "cat": "boundaries-consent",
+    "questionType": "meaning",
+    "prompt": "What is this phrase doing in a dating context?",
+    "phraseId": 90028,
+    "options": [
+      {
+        "id": "a",
+        "text": "Pausing to check the other person is comfortable with what's happening."
+      },
+      {
+        "id": "b",
+        "text": "Asking whether the restaurant or venue is an acceptable choice for tonight."
+      },
+      {
+        "id": "c",
+        "text": "Confirming that a plan you both agreed on earlier is still going ahead."
+      },
+      {
+        "id": "d",
+        "text": "Making sure your own outfit looks alright before your date arrives."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "bàep níi oh-keh mǎi khráp — literally 'is this okay?' — is a consent check-in. On a date you say it before or during new physical contact to confirm the other person is genuinely comfortable, not to vet a venue, a schedule, or your appearance. A clear yes is what you're waiting for.",
+    "context": "Checking in the moment before or as you initiate any new physical contact."
+  },
+  {
+    "id": "dq-bound-n2",
+    "cat": "boundaries-consent",
+    "questionType": "context",
+    "prompt": "When would someone say this on a date?",
+    "phraseId": 90030,
+    "options": [
+      {
+        "id": "a",
+        "text": "To reassure a date there's no pressure and no need to rush."
+      },
+      {
+        "id": "b",
+        "text": "To tell a date you forgive them for showing up fifteen minutes late."
+      },
+      {
+        "id": "c",
+        "text": "To wave off a date's offer to split the bill, saying you'll cover it."
+      },
+      {
+        "id": "d",
+        "text": "To hurry a slow decision along by saying you should get going soon."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "mâi pen rai, mâi tâwng rîip = 'it's fine, there's no rush' — it takes the pressure off so you can both go slowly. Note the traps: mâi pen rai on its own is a general 'no worries' (which fits an apology), and rîip means to hurry, so a half-learner might read it as the opposite. Here the whole phrase is about easing pace, not covering a bill.",
+    "context": "Reassuring a date that there is no pressure and things can move at a comfortable pace."
+  },
+  {
+    "id": "dq-bound-n3",
+    "cat": "boundaries-consent",
+    "questionType": "meaning",
+    "prompt": "What does this phrase express?",
+    "phraseId": 90035,
+    "options": [
+      {
+        "id": "a",
+        "text": "A mutual agreement to honor whatever choice each person makes."
+      },
+      {
+        "id": "b",
+        "text": "A promise to always make big decisions together as a couple."
+      },
+      {
+        "id": "c",
+        "text": "A request for the other person to trust your judgment on plans."
+      },
+      {
+        "id": "d",
+        "text": "An apology for having overruled a decision your partner made."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "khao-róp gaan tàt-sǐn jai khǎwng gan láe gan uses khao-róp (respect) with 'each other's decisions' — a mature, mutual framing that each person's choices are honored, even when they differ. It is not a pledge to always decide jointly, a plea for trust, or an apology.",
+    "context": "A calm, mutual framing of boundaries — each person's decisions are respected."
   },
   {
     "id": "dq-awk-1",
@@ -864,19 +1172,19 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "b",
-        "text": "When a small mix-up — like each of you understanding the plan differently — is creating tension and they want to name it calmly before it grows"
+        "text": "When a small mix-up over the plan is quietly creating tension"
       },
       {
         "id": "c",
-        "text": "When they are confessing romantic feelings for the first time"
+        "text": "When they are confessing their romantic feelings for the first time"
       },
       {
         "id": "d",
-        "text": "When they are asking a waiter to fix a wrong order"
+        "text": "When they are asking a waiter to fix an order that came out wrong"
       }
     ],
     "correctOptionId": "b",
-    "explanation": "This phrase names a small crossed wire out loud: khâo jai phìt means to misunderstand, and nít nàwy ('a little bit') shrinks the problem so nobody loses face. Saying it calmly defuses a mix-up over plans or texts before it hardens into an argument.",
+    "explanation": "This phrase names a small crossed wire out loud: khâo jai phìt means to misunderstand, and nít nàwy ('a little bit') shrinks the problem so nobody loses face. Saying it calmly defuses a mix-up over plans or texts before it hardens into an argument. It isn't for exiting early, confessing feelings, or correcting restaurant staff.",
     "context": "Small misunderstandings over plans, messages, or intentions — say it early, while the tension is still minor, and follow with an invitation to talk it out calmly.",
     "literal": "khâo jai phìt = to misunderstand",
     "tags": [
@@ -952,28 +1260,28 @@ export const DATING_QUESTIONS = [
     "id": "dq-awk-5",
     "cat": "awkward-situations",
     "questionType": "usage",
-    "prompt": "How should you use this phrase?",
+    "prompt": "A Thai friend says this phrase. When does it fit best?",
     "phraseId": 90039,
     "options": [
       {
         "id": "a",
-        "text": "Drop it in casually as filler after every joke, whether or not anyone reacted"
+        "text": "Right before asking a personal question, to soften it in advance."
       },
       {
         "id": "b",
-        "text": "Avoid saying it yourself — it is considered rude and is for recognition only"
+        "text": "Only once someone has explicitly told you that you upset them."
       },
       {
         "id": "c",
-        "text": "Save it for formal apologies to bosses or officials; it is too stiff for dating"
+        "text": "To reassure a shy date up front that they needn't feel awkward at all."
       },
       {
         "id": "d",
-        "text": "Say it sincerely when you have genuinely misread the mood — like a joke that landed wrong and your date went quiet — rather than as a reflex"
+        "text": "When you have genuinely misread the mood, said with sincerity."
       }
     ],
     "correctOptionId": "d",
-    "explanation": "khǎw thôht thâa... ('sorry if I...') is a graceful repair line for when you misread a signal, so it works best delivered sincerely and sparingly — you can add mâi dâai tâng-jai ('I didn't mean to') to complete the apology. It is neither rude nor too formal for a date; reflexively apologizing for everything just dilutes it.",
+    "explanation": "khǎw thôht thâa... ('sorry if I...') is a graceful repair line for after you sense you misjudged the mood — a joke that landed wrong, or a comment that made your date go quiet. The 'if' (thâa) is the key: you use it when you merely suspect you crossed a line, so it does not have to wait for the other person to spell out that you upset them, and it is not a softener you tack on before a question. It also is not a blanket 'no need to feel awkward' reassurance — that is a different line. Deliver it sincerely and sparingly; a reflex apology for everything dilutes it.",
     "context": "Recovering after a joke falls flat or you misjudge the mood. Address the discomfort directly instead of talking past it with a compliment or a change of subject.",
     "tags": [
       "apology",
@@ -1020,19 +1328,19 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "It opens with 'yàa' ('don't'), so snapped sharply it can sound like an order to stop talking — a calm voice and the softening particle 'ná' are what make it a gentle appeal"
+        "text": "It opens with 'yàa' ('don't'), so said sharply it sounds like an order to hush; 'ná' keeps it a gentle plea."
       },
       {
         "id": "b",
-        "text": "It is a strong insult that should never be said aloud"
+        "text": "Naming a fight out loud can actually make things worse if your partner didn't even feel you two were arguing yet."
       },
       {
         "id": "c",
-        "text": "It formally ends the relationship, so only say it during a breakup"
+        "text": "The verb 'thá-láw' is coarse, so even a perfectly calm delivery can still land as passive-aggressive."
       },
       {
         "id": "d",
-        "text": "It is rough slang used only between close male friends"
+        "text": "It formally settles a quarrel, so it only works once both people have genuinely apologized to each other."
       }
     ],
     "correctOptionId": "a",
@@ -1116,19 +1424,19 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "When they are formally ending the relationship"
+        "text": "When they are formally ending the relationship for good, after weeks of thinking."
       },
       {
         "id": "b",
-        "text": "When they are inviting their partner to move in together"
+        "text": "When they want their partner to move in and share an apartment together soon."
       },
       {
         "id": "c",
-        "text": "When they feel overwhelmed after a heated disagreement and want to cool off alone before talking things through — pausing the argument, not the relationship"
+        "text": "When they need to cool off alone after a heated argument, not to end things."
       },
       {
         "id": "d",
-        "text": "When they are running late and asking their partner to wait a little longer for them"
+        "text": "When they are stuck in traffic and asking their partner to wait a little longer."
       }
     ],
     "correctOptionId": "c",
@@ -1139,6 +1447,34 @@ export const DATING_QUESTIONS = [
       "space",
       "arguments"
     ]
+  },
+  {
+    "id": "dq-argue-n1",
+    "cat": "arguments-breakups",
+    "questionType": "meaning",
+    "prompt": "What is this phrase asking for?",
+    "phraseId": 90041,
+    "options": [
+      {
+        "id": "a",
+        "text": "A calm opener asking to talk something over together."
+      },
+      {
+        "id": "b",
+        "text": "A light suggestion to catch up over coffee sometime soon."
+      },
+      {
+        "id": "c",
+        "text": "A request for your partner to give you some quiet time."
+      },
+      {
+        "id": "d",
+        "text": "A way to ask whether you can phone them later tonight."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "rao khui gan nàwy dâai mǎi means 'can we talk?' — the 'dâai mǎi' ('may we?') frames it as a gentle request, so it opens a serious conversation without sounding aggressive. It isn't casual small talk over coffee, a plea for silence, or a plan to call later.",
+    "context": "Opening a serious but calm conversation — used when there's something real you need to discuss, not for light chit-chat."
   },
   {
     "id": "dq-night-1",
@@ -1153,7 +1489,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "b",
-        "text": "I'm done drinking for tonight — that's my limit."
+        "text": "I've had enough to drink tonight."
       },
       {
         "id": "c",
@@ -1161,11 +1497,11 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "d",
-        "text": "I don't drink alcohol at all."
+        "text": "I don't touch alcohol at all, sorry."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "\"phaw láew\" means \"enough already,\" so the speaker is politely capping their drinking for the night rather than swearing off alcohol entirely. Stating your limit this way is respected and lets everyone keep face.",
+    "explanation": "phaw láew means 'enough already,' so the speaker is politely capping their drinking for the night rather than swearing off alcohol entirely. Stating your limit this way is respected and lets everyone keep face — it isn't ordering another round, offering to pay, or saying you never drink.",
     "context": "Turning down another round without turning down the company.",
     "tags": [
       "drinking",
@@ -1181,7 +1517,7 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Telling a taxi driver the address they want to be taken to."
+        "text": "Telling a taxi driver which address to take you to."
       },
       {
         "id": "b",
@@ -1189,7 +1525,7 @@ export const DATING_QUESTIONS = [
       },
       {
         "id": "c",
-        "text": "Asking bar or hotel staff to call them a taxi at the end of a night out — say it's 1 a.m., they've had a few drinks, and driving or walking alone isn't safe."
+        "text": "Asking bar staff to call a taxi so you get home safe."
       },
       {
         "id": "d",
@@ -1197,7 +1533,7 @@ export const DATING_QUESTIONS = [
       }
     ],
     "correctOptionId": "c",
-    "explanation": "rîak tháek-sîi hâi nàwy dâai mǎi khráp asks someone — typically bar or hotel staff — to call a taxi for you. It's the go-to line when you've been drinking and need a safe ride home instead of driving or walking alone.",
+    "explanation": "rîak tháek-sîi hâi nàwy dâai mǎi khráp asks someone — typically bar or hotel staff — to call a taxi for you. It's the go-to line when you've been drinking and need a safe ride home, not a way to give a driver directions, offer someone else a lift, or order more drinks.",
     "context": "End of a night out. Staff at bars and hotels in Thailand are used to this request — getting home safely comes first.",
     "literal": "rîak tháek-sîi = to call a taxi.",
     "tags": [
@@ -1245,23 +1581,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "No — offering to pay for others' drinks is considered insulting in Thailand."
+        "text": "No — let the most senior person treat the group instead."
       },
       {
         "id": "b",
-        "text": "Only acceptable between family members."
+        "text": "Yes, but you're then expected to cover every round all night."
       },
       {
         "id": "c",
-        "text": "Yes — treating the group to a round is a friendly, normal gesture."
+        "text": "Yes — treating the group to a round is a warm, normal gesture."
       },
       {
         "id": "d",
-        "text": "No — each person must always pay only for their own drinks."
+        "text": "Better not — offering to pay can make new acquaintances lose face."
       }
     ],
     "correctOptionId": "c",
-    "explanation": "\"líang\" means to treat someone, and picking up a round is a warm, sociable move among friends in Thailand. Keep it a one-off gesture rather than letting it become an expectation, and pace your own drinking while you're at it.",
+    "explanation": "líang means to treat someone, and picking up a round is a warm, sociable move among friends in Thailand. There is a real custom that the eldest or most senior person often treats, but a newcomer offering one round is still welcome — you are not locked into buying every round all night, and it doesn't cause anyone to lose face. Keep it a one-off gesture and pace your own drinking.",
     "context": "Group nights out where you're the newcomer wanting to show goodwill.",
     "tags": [
       "drinks",
@@ -1277,29 +1613,85 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Make it a habit: say it whenever a date or friend heads home at the end of a night — like when your date gets into a taxi — and actually watch for their message."
+        "text": "Say it as someone heads home, then check their reply arrives."
       },
       {
         "id": "b",
-        "text": "Save it for emergencies only; asking someone to check in is otherwise seen as controlling."
+        "text": "Fine with a partner, but with a newer date it can feel too forward."
       },
       {
         "id": "c",
-        "text": "Only use it with a long-term partner — with a newer date it comes across as far too forward."
+        "text": "Reserve it for nights out that turned risky, not ordinary goodbyes."
       },
       {
         "id": "d",
-        "text": "Use it to ask someone to send you their home address before they leave."
+        "text": "Use it to ask for their home address before they leave."
       }
     ],
     "correctOptionId": "a",
-    "explanation": "thǔeng bâan láew thák maa ná ('text me when you get home') is a warm, safety-minded sign-off that's safe to use with anyone — a date, a friend, someone you just met tonight. The habit has two halves: say it as they leave, then actually notice whether the message arrives and follow up if it doesn't.",
+    "explanation": "thǔeng bâan láew thák maa ná ('text me when you get home') is a warm, safety-minded sign-off that's fine with anyone — a date, a friend, someone you met tonight. The habit has two halves: say it as they leave, then actually notice whether their reply arrives and follow up if it doesn't. It isn't only for long-term partners or emergencies, and it doesn't ask for an address.",
     "context": "The last thing you say as someone heads home for the night — and a check-in you can ask for yourself, too.",
     "literal": "thák = to message/ping someone.",
     "tags": [
       "get-home-safe",
       "goodnight"
     ]
+  },
+  {
+    "id": "dq-night-n1",
+    "cat": "nightlife",
+    "questionType": "meaning",
+    "prompt": "You flag down the server at a bar and say this. What are you ordering?",
+    "phraseId": 90046,
+    "options": [
+      {
+        "id": "a",
+        "text": "Two beers for us, please."
+      },
+      {
+        "id": "b",
+        "text": "One more beer over here, thanks."
+      },
+      {
+        "id": "c",
+        "text": "Two glasses of water, please."
+      },
+      {
+        "id": "d",
+        "text": "Just the bill for our drinks, please."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "khǎw ... khráp is the polite way to order, and bia sǎwng thîi means 'two servings of beer' — thîi is the counter Thai uses for orders and servings. So you're asking for two beers, not a single refill, water, or the check.",
+    "context": "Ordering a round at a bar or restaurant early in the night."
+  },
+  {
+    "id": "dq-night-n2",
+    "cat": "nightlife",
+    "questionType": "meaning",
+    "prompt": "What is the speaker telling the group?",
+    "phraseId": 90049,
+    "options": [
+      {
+        "id": "a",
+        "text": "I'm going to head home now."
+      },
+      {
+        "id": "b",
+        "text": "Shall we share a ride home?"
+      },
+      {
+        "id": "c",
+        "text": "Let's stay out a little longer."
+      },
+      {
+        "id": "d",
+        "text": "You go ahead — I'll leave later."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "glàp gàwn literally means 'go back first' — a polite way to excuse yourself and head home before the others, softened by ná khráp. It announces your own early departure; it isn't proposing to share a taxi, asking to stay longer, or telling others to leave without you.",
+    "context": "Politely excusing yourself from a group when you want to call it a night."
   },
   {
     "id": "dq-slang-1",
@@ -1310,23 +1702,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "You're kidding — that can't be true!"
+        "text": "Playful disbelief — 'no way, you're kidding!'"
       },
       {
         "id": "b",
-        "text": "Just relax, it's no big deal."
+        "text": "A mellow 'relax, it's no big deal at all.'"
       },
       {
         "id": "c",
-        "text": "A casual 'that's awesome!' — genuine admiration for something impressive."
+        "text": "Genuine praise — 'whoa, that's really cool!'"
       },
       {
         "id": "d",
-        "text": "Seriously? Did that really happen?"
+        "text": "A surprised 'for real? that really happened?'"
       }
     ],
     "correctOptionId": "c",
-    "explanation": "jěng mâak combines slangy praise ('cool') with mâak ('very') for emphasis. It's a friendly, positive reaction that's safe with friends or a date.",
+    "explanation": "jěng mâak pairs the slang jěng ('cool') with mâak ('very') for emphasis — an upbeat, sincere 'that's awesome!' It's friendly praise, not disbelief, not a request to chill, and not a question about whether something really happened. Safe with friends or a date.",
     "context": "Reacting to something impressive a friend or date shows or tells you.",
     "tags": [
       "slang",
@@ -1402,29 +1794,29 @@ export const DATING_QUESTIONS = [
     "id": "dq-slang-4",
     "cat": "casual-slang",
     "questionType": "scenario",
-    "prompt": "A senior coworker you barely know shares some surprising office news. Is this a good reply to them?",
+    "prompt": "You picked up 'jing dì' from friends. A senior colleague shares some surprising news — is it a good reaction to use with them?",
     "phraseId": 90054,
     "options": [
       {
         "id": "a",
-        "text": "Yes — it's a neutral phrase that works with anyone."
+        "text": "No — jing dì is buddy-talk; with a senior, politer 'jing rǎe khráp' fits."
       },
       {
         "id": "b",
-        "text": "Yes, as long as you tack a polite particle on the end."
+        "text": "Yes — it's a mild 'is that so?' that fits most situations, work included."
       },
       {
         "id": "c",
-        "text": "It's fine if you smile while saying it."
+        "text": "Yes — a polite particle on the end softens casual slang enough for the office."
       },
       {
         "id": "d",
-        "text": "No — it's friends-only casual talk; with a senior colleague use a politer form."
+        "text": "No — but that's because it reads as doubting their honesty, which offends a senior."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "jing dì is a very casual 'for real?' used between close friends. Thai register shifts sharply with age and status, so with a senior coworker a politer version like 'jing rǒe khráp' fits far better — bolting a particle onto street slang doesn't fix the mismatch.",
-    "context": "Judging register: close friends versus workplace seniors.",
+    "correctOptionId": "a",
+    "explanation": "jing dì is very casual — a buddy's 'for real?! / seriously?!' — so with a senior a politer form like jing rǎe khráp fits better. It isn't register-neutral (b), and a tacked-on particle doesn't fully formalize slang (c). It also isn't an accusation of lying (d) — it's playful disbelief; telling the two 'No' answers apart needs the phrase's real meaning, not just 'slang is informal.'",
+    "context": "Casual reactions among friends versus talking with someone senior at work.",
     "tags": [
       "register",
       "workplace"
@@ -1458,32 +1850,60 @@ export const DATING_QUESTIONS = [
     ]
   },
   {
+    "id": "dq-slang-n1",
+    "cat": "casual-slang",
+    "questionType": "meaning",
+    "prompt": "A friend tells you a piece of news and you fire this back. What are you expressing?",
+    "phraseId": 90053,
+    "options": [
+      {
+        "id": "a",
+        "text": "Playful disbelief — 'no way, you're kidding me!'"
+      },
+      {
+        "id": "b",
+        "text": "Sincere agreement — 'yeah, that's completely true.'"
+      },
+      {
+        "id": "c",
+        "text": "A flat 'for real?' asking them to confirm the facts."
+      },
+      {
+        "id": "d",
+        "text": "A relaxed 'no worries, it's really no big deal.'"
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "mâi jing nâa literally reads as 'not true, really?' but works as a delighted 'no way!' — playful surprise at something a friend just told you, not a literal accusation that they're lying. It isn't agreement, a sincere fact-check, or a way to wave something off.",
+    "context": "Casual chats with friends or a date, reacting to surprising news. The particle nâa keeps it light and friendly."
+  },
+  {
     "id": "dq-swear-1",
     "cat": "mild-swears-insults",
     "questionType": "meaning",
-    "prompt": "You hear a Thai friend mutter this after locking themselves out of their apartment. What does it mean?",
+    "prompt": "A Thai friend says this. What does it mean?",
     "phraseId": 90058,
     "options": [
       {
         "id": "a",
-        "text": "A warm thank-you for everything someone has done."
+        "text": "An insult snapped at a person acting foolish or crazy."
       },
       {
         "id": "b",
-        "text": "A burst of mild frustration at a situation — like muttering 'ugh, not again!'"
+        "text": "A quick grumble of frustration, not aimed at anyone."
       },
       {
         "id": "c",
-        "text": "An excited way to say something is awesome."
+        "text": "A heavy curse you save for genuine, boiling-over anger."
       },
       {
         "id": "d",
-        "text": "A polite request for a little more time."
+        "text": "A weary sigh of sadness over some bit of bad news."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "bâa jing is a mild frustration exclamation, roughly at 'darn it' level. Crucially, it's muttered at a situation — lost keys, a missed bus — not spoken at a person.",
-    "context": "Overhearing everyday frustration: lost keys, missed trains, dead phone batteries.",
+    "explanation": "bâa jing is a mild 'darn it / oh come on'-level exclamation. It's thrown at a bad situation — lost keys, a missed bus — not at a person, so it isn't the insult in (a). It's also far softer than a real curse (c), and it's frustration rather than the sadness in (d).",
+    "context": "Everyday exclamations you'll overhear from Thai speakers but aren't expected to say yourself.",
     "warning": "Recognition only: this is rough-edged frustration talk. Learn to understand it when you hear it, but as a learner it's safer not to use it — and never direct it at a person.",
     "tags": [
       "recognition",
@@ -1526,30 +1946,30 @@ export const DATING_QUESTIONS = [
     "id": "dq-swear-3",
     "cat": "mild-swears-insults",
     "questionType": "scenario",
-    "prompt": "Your Thai friends sometimes blurt this out when startled, and you now understand it. Should you start using it yourself?",
+    "prompt": "You've learned this rough exclamation from Thai friends. Should you start saying it yourself?",
     "phraseId": 90059,
     "options": [
       {
         "id": "a",
-        "text": "No — understanding it is the goal; from a learner it sounds coarse and is easy to misfire."
+        "text": "No — understanding it is plenty; from a learner it lands harsher than you mean."
       },
       {
         "id": "b",
-        "text": "Yes — copying friends' slang is the fastest way to sound native."
+        "text": "No — but honestly it's more of a written-chat expression, odd to say aloud."
       },
       {
         "id": "c",
-        "text": "Yes, but only with service staff rather than friends."
+        "text": "Yes — copying friends' slang is the quickest way to start sounding natural."
       },
       {
         "id": "d",
-        "text": "Only on first dates, to show you know real street Thai."
+        "text": "Yes — it's mild enough that dropping it into casual chat is perfectly safe."
       }
     ],
     "correctOptionId": "a",
-    "explanation": "This word sits in the recognition-only tier: native speakers calibrate exactly when it passes, but a learner using it can easily come across as rude or aggressive. Understanding it protects you; deploying it risks the wrong impression, especially with strangers or on dates.",
-    "context": "Deciding which overheard slang to adopt versus only understand.",
-    "warning": "Rough informal exclamation — do not adopt it into your own speech, and never direct it at a person.",
+    "explanation": "This is rough, blunt slang. Recognizing it is useful, but coming from a learner it reads coarser than intended, so the goal is comprehension, not use. It is spoken, not written-only (b), and it is not tame enough to sprinkle into chat safely (d) — copying friends here backfires (c).",
+    "context": "Rough exclamations you'll hear from friends but aren't expected to say yourself.",
+    "warning": "Recognition only — understand it when you hear it, but as a learner keep it out of your own speech.",
     "tags": [
       "recognition",
       "safety"
@@ -1559,28 +1979,28 @@ export const DATING_QUESTIONS = [
     "id": "dq-swear-4",
     "cat": "mild-swears-insults",
     "questionType": "scenario",
-    "prompt": "You learned this phrase from a friend ranting about a silly rule. Later, someone cuts in line ahead of you. Okay to say it to them?",
+    "prompt": "A Thai friend says this while ranting about a rule they think is stupid. Which best captures how the phrase actually works?",
     "phraseId": 90060,
     "options": [
       {
         "id": "a",
-        "text": "Yes — it's mild, so it's fine aimed at people."
+        "text": "Blunt \"that's so dumb\" about an idea; a real insult aimed at a person."
       },
       {
         "id": "b",
-        "text": "Yes, if you add a polite particle and keep smiling."
+        "text": "A mild \"how silly\"; stays harmless even said straight to someone."
       },
       {
         "id": "c",
-        "text": "Only if they can clearly tell you're joking."
+        "text": "A put-down meaning \"you're slow\"; only ever describes people, not ideas."
       },
       {
         "id": "d",
-        "text": "No — aimed at a person it becomes a genuine insult; keep it as vocabulary you recognize, not use."
+        "text": "A dry \"that makes no sense\"; about confusion, not really an insult."
       }
     ],
-    "correctOptionId": "d",
-    "explanation": "pan-yaa àwn is a blunt 'that's so dumb' about things and ideas. Pointed at a person it turns into a real insult and can escalate a confrontation fast — no particle or smile changes that.",
+    "correctOptionId": "a",
+    "explanation": "pan-yaa àwn is a blunt 'that's so dumb' about a thing or idea. It is not mild, and it does get aimed at things (option b understates it; option d treats it as harmless confusion). But it is not reserved for people either (option c is wrong on that). The catch: pointed at a person it becomes a real insult that can escalate fast — no particle or smile softens it.",
     "context": "The line between grumbling about a thing and insulting a person.",
     "warning": "Insulting when directed at a person. Recognition only — never use it on someone.",
     "tags": [
