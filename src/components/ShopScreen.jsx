@@ -1,16 +1,20 @@
 import React from 'react';
-import { Gem, Heart, Crown, Check } from 'lucide-react';
-import { HEART_MAX, REFILL_COST_GEMS } from '../lib/economy.js';
+import { Gem, Heart, Crown, Check, Snowflake } from 'lucide-react';
+import { HEART_MAX, REFILL_COST_GEMS, FREEZE_COST_GEMS } from '../lib/economy.js';
 
-// The Shop is now REAL and minimal — it only wires what the columns support
-// (migration 009: user_stats.hearts / gems). Today there is exactly one honest
-// purchase: refill hearts to full with gems. Hearts are Challenge-only "lives";
-// the free learning path is never gated by gems. A small upsell card points
-// Super at /plans (Super = unlimited hearts). No fake balances, prices, or
-// "coming soon" placeholders.
-export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = false, onRefillHearts, onOpenSuper }) {
+// The Shop is REAL and minimal — it only wires what the columns support
+// (migration 009: user_stats.hearts / gems / streak_freezes). Gems are the FREE
+// user's earned currency, spent on TWO things: refilling Challenge hearts AND
+// buying streak freezes — so gems are never a circular hearts-only currency
+// (E4). Hearts are Challenge-only "lives"; the free learning path is never gated
+// by gems. A small upsell points Super at /plans. No fake balances or prices.
+export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = false, streakFreezes = 0, onRefillHearts, onBuyFreeze, onOpenSuper }) {
   const heartsFull = isSuper || hearts >= HEART_MAX;
   const canAfford = gems >= REFILL_COST_GEMS;
+  const canAffordFreeze = gems >= FREEZE_COST_GEMS;
+  const freezeReason = canAffordFreeze
+    ? `Spend ${FREEZE_COST_GEMS} gems to bank a streak freeze — it saves your streak on a missed day.`
+    : `You need ${FREEZE_COST_GEMS} gems. You have ${gems}.`;
   // The refill item is disabled when the user is Super (already unlimited),
   // already full, or can't afford it — each with an honest reason line.
   const refillDisabled = isSuper || heartsFull || !canAfford;
@@ -83,6 +87,30 @@ export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = fal
             ) : (
               <><Gem size={14} aria-hidden="true" /> {REFILL_COST_GEMS}</>
             )}
+          </button>
+        </article>
+
+        <article className="shop-item">
+          <div className="shop-item-icon shop-item-icon-freeze" aria-hidden="true">
+            <Snowflake size={24} />
+          </div>
+          <div className="shop-item-body">
+            <div className="shop-item-title">Buy a streak freeze</div>
+            <div className="shop-item-desc">
+              A freeze protects your streak on a day you can’t study. You also earn one free every 7 study days.
+            </div>
+            <div className="shop-item-status">
+              <span className="shop-item-status-count"><Snowflake size={13} aria-hidden="true" /> {streakFreezes} banked</span>
+            </div>
+            <div className="shop-item-reason">{freezeReason}</div>
+          </div>
+          <button
+            type="button"
+            className="btn-primary shop-item-buy"
+            onClick={() => onBuyFreeze && onBuyFreeze()}
+            disabled={!canAffordFreeze}
+          >
+            <Gem size={14} aria-hidden="true" /> {FREEZE_COST_GEMS}
           </button>
         </article>
 

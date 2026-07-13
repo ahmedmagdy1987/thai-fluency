@@ -43,7 +43,7 @@ const FREEMIUM_POINTS = [
   {
     Icon: ShieldCheck,
     title: 'Super is for extras',
-    text: 'Super unlocks the optional 18+ Dating & Real Talk section today, and adds consistency, convenience and bonus practice as more benefits ship — for learners who want a little extra.',
+    text: 'Super unlocks the optional 18+ Dating & Real Talk section and unlimited hearts in the Challenge today, and adds consistency, convenience and bonus practice as more benefits ship — for learners who want a little extra.',
   },
 ];
 
@@ -58,8 +58,10 @@ const MATRIX = [
   { label: 'Cloud progress & account sync', free: true, premium: true },
   { label: 'Dating & Real Talk Thai (18+)', free: false, premium: true },
   { label: 'Support independent development', free: false, premium: true },
+  // LIVE benefit — unlimited hearts is enforced today (effectiveHearts→∞), so it
+  // must NOT be marked "soon" (E4). Free users get 5 that regenerate/refill.
+  { label: 'Hearts in the Challenge', free: '5 · regen or refill', premium: 'Unlimited' },
   { label: 'Stays ad-free if ads are ever added', free: false, premium: 'Guaranteed', planned: true },
-  { label: 'Extra practice & recovery (hearts)', free: 'Standard', premium: 'Extra', planned: true },
   { label: 'Flexible review & topic practice', free: 'Guided', premium: 'More flexible', planned: true },
   // String value (not boolean) so MatrixValue's planned/'soon' path renders —
   // a bare checkmark here contradicted the plan card's "(soon)" label.
@@ -76,6 +78,7 @@ const FREE_INCLUDES = [
 
 const PREMIUM_INCLUDES = [
   { Icon: Heart, text: 'The 18+ Dating & Real Talk section — real flirting, dating and consent phrases (Super-exclusive)' },
+  { Icon: Repeat2, text: 'Unlimited hearts in the Challenge — never wait to keep practicing' },
   { Icon: ShieldCheck, text: 'A focused, ad-free experience, guaranteed (soon)' },
   { Icon: Repeat2, text: 'More flexible review and topic practice (soon)' },
   { Icon: Gift, text: 'Bonus and early-access mission packs (soon)' },
@@ -97,7 +100,7 @@ const FAQ = [
   },
   {
     q: 'What does Super include?',
-    a: 'Today Super unlocks the optional 18+ Dating & Real Talk section — practical dating, flirting and consent phrases — and directly supports development. More Super extras (a guaranteed ad-free experience, more flexible practice, and bonus mission packs) are on the way and are labelled "soon" until they ship.',
+    a: 'Today Super unlocks the optional 18+ Dating & Real Talk section — practical dating, flirting and consent phrases — plus unlimited hearts in the Challenge, and it directly supports development. More Super extras (a guaranteed ad-free experience, more flexible practice, and bonus mission packs) are on the way and are labelled "soon" until they ship.',
   },
   {
     q: 'Will the free version get worse to push Super?',

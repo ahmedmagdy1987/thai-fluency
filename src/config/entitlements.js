@@ -41,6 +41,11 @@ export const FEATURES = {
   //      The rest are advertised on the plans page but not enforced yet
   //      (COMING_SOON) so we never fake-gate a benefit that isn't built. ----
   datingRealTalk:  { id: 'datingRealTalk',  name: 'Dating & Real Talk Thai (18+)',      access: TIERS.SUPER, status: FEATURE_STATUS.AVAILABLE,   group: 'premium', upsell: 'Unlock Dating & Real Talk Thai (18+) with Super.' },
+  // LIVE + enforced: effectiveHearts() returns Infinity for Super, so a Super
+  // user is never blocked from the Challenge. This is the second real Super
+  // benefit — Super gives unlimited hearts DIRECTLY, not gems to buy hearts with
+  // (that circular design is gone — E4).
+  unlimitedHearts: { id: 'unlimitedHearts', name: 'Unlimited hearts in the Challenge',  access: TIERS.SUPER, status: FEATURE_STATUS.AVAILABLE,   group: 'premium', upsell: 'Never run out of hearts in the Challenge — go Super.' },
   adFree:          { id: 'adFree',          name: 'Ad-free experience',                 access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Go ad-free with Super.' },
   enhancedReview:  { id: 'enhancedReview',  name: 'Enhanced practice & review tools',   access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Unlock deeper practice and review tools with Super.' },
   streakRecovery:  { id: 'streakRecovery',  name: 'Streak recovery',                    access: TIERS.SUPER, status: FEATURE_STATUS.COMING_SOON, group: 'premium', upsell: 'Recover a lost streak with Super.' },
@@ -88,9 +93,10 @@ export const UPSELL_COPY = {
   'first-lesson': 'Nice — first lesson done. Go Super to unlock the 18+ Dating & Real Talk section and support new Thai content.',
   mission:        'Mission complete! Super unlocks the 18+ Dating & Real Talk section and helps fund more lessons.',
   'mini-unit':    'Mini-unit done. Super unlocks the 18+ Dating & Real Talk section and more as it ships.',
-  locked:         'The full learning path is free. Super adds the 18+ Dating & Real Talk section and supports development.',
-  dating:         'Dating & Real Talk Thai (18+) is a Super-exclusive section. Go Super to unlock it.',
-  generic:        'Super unlocks the 18+ Dating & Real Talk section today, and adds an ad-free experience, enhanced practice and bonus content as they ship.',
+  locked:         'The full learning path is free. Super adds the 18+ Dating & Real Talk section and unlimited hearts in the Challenge, and supports development.',
+  dating:         'Dating & Real Talk Thai (18+) is a Super-exclusive section. Go Super to unlock it (plus unlimited hearts in the Challenge).',
+  hearts:         'Out of hearts? Super gives you unlimited hearts in the Challenge — plus the 18+ Dating & Real Talk section.',
+  generic:        'Super unlocks the 18+ Dating & Real Talk section and unlimited hearts in the Challenge today, and adds an ad-free experience, enhanced practice and bonus content as they ship.',
 };
 
 // ─── Entitlement checks ──────────────────────────────────────────────────────

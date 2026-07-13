@@ -33,6 +33,7 @@ import {
   effectiveHearts,
   spendHeart,
   refillHeartsWithGems,
+  buyStreakFreezeWithGems,
   awardGems,
   GEMS_PER_MISSION,
   GEMS_PER_CHALLENGE_PASS,
@@ -1490,6 +1491,16 @@ export default function TukTalkThaiApp() {
     });
   }, []);
 
+  const handleBuyFreeze = useCallback(() => {
+    // Spend gems to bank a streak freeze — the second gem sink (besides heart
+    // refills), so earned gems are never a circular hearts-only currency (E4).
+    // Available to everyone (a Super user's earned gems still have a use).
+    setStats(s => {
+      const patch = buyStreakFreezeWithGems(s);
+      return patch ? { ...s, ...patch } : s;
+    });
+  }, []);
+
   const recordTonesQuiz = useCallback((score, total) => {
     const passed = (score / total) >= 0.8;
     // XP idempotency: the Tone Challenge pays XP at most once per day, so the
@@ -2482,7 +2493,7 @@ export default function TukTalkThaiApp() {
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('quiz')} setTab={handleSetTab} />}
           {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={() => handleOpenPremium()} />}
-          {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('shop')} />}
+          {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} streakFreezes={stats.streakFreezes || 0} onRefillHearts={handleRefillHearts} onBuyFreeze={handleBuyFreeze} onOpenSuper={() => handleOpenPremium('shop')} />}
           {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={() => handleOpenPremium('dating')} setTab={handleSetTab} />}
           {tab === 'leaderboard' && <LeaderboardScreen />}
         </>

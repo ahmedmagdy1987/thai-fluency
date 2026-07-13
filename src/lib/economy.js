@@ -18,10 +18,14 @@
 // from heartsUpdatedAt (client) and fall back gracefully when absent.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const HEART_MAX = 5;
-export const HEART_REGEN_MIN = 30;          // minutes to regenerate one heart
+// ── TUNABLE ECONOMY CONFIG (single source of truth) ─────────────────────────
+// Change the free-user heart cap / regen rate HERE and nowhere else (E3).
+export const HEART_MAX = 5;                  // cap (free users). Super = unlimited.
+export const HEART_REGEN_MIN = 30;          // minutes to regenerate ONE heart
 export const HEART_REGEN_MS = HEART_REGEN_MIN * 60 * 1000;
 export const REFILL_COST_GEMS = 50;         // gems for a full heart refill
+export const FREEZE_COST_GEMS = 30;         // gems for one streak freeze
+// ────────────────────────────────────────────────────────────────────────────
 
 // Reward amounts — kept modest. Referenced from App.jsx at the same moments XP
 // is granted so gems and XP stay in lockstep.
@@ -52,6 +56,13 @@ function heartsUpdatedMs(stats) {
 // How many hearts have regenerated since the last stored update, given the
 // stored count and timestamp. Never exceeds HEART_MAX. When already at/above
 // max, or when there is no timestamp to measure from, nothing regenerates.
+//
+// Clock-manipulation note (E3): a NEGATIVE elapsed (device clock moved BACKWARD,
+// or a future/corrupt stamp) yields 0 — the stored count stands, so winding the
+// clock back can never mint hearts. Winding the clock FORWARD to regen faster
+// cannot be fully prevented client-side; that needs a server-trusted timestamp
+// (the known M1 limitation), deliberately NOT added in this pass. Regen is still
+// capped at HEART_MAX per read, so the worst case is "full hearts", never more.
 function regenCount(storedHearts, updatedMs, now) {
   if (storedHearts >= HEART_MAX) return 0;
   if (!updatedMs) return 0;
@@ -126,6 +137,20 @@ export function refillHeartsWithGems(stats, now = Date.now()) {
     hearts: HEART_MAX,
     gems: gems - REFILL_COST_GEMS,
     heartsUpdatedAt: new Date(now).toISOString(),
+  };
+}
+
+// Buy ONE streak freeze with gems. Pure: returns a stats PATCH, or null when the
+// user can't afford it. This is the SECOND gem sink (besides heart refills) — it
+// is what keeps gems from being a circular currency that only ever buys hearts
+// (E4): a Super user with unlimited hearts still has a real use for earned gems.
+export function buyStreakFreezeWithGems(stats) {
+  const gems = rawGems(stats);
+  if (gems < FREEZE_COST_GEMS) return null; // can't afford
+  const freezes = Number.isFinite(stats?.streakFreezes) ? Math.max(0, stats.streakFreezes) : 0;
+  return {
+    gems: gems - FREEZE_COST_GEMS,
+    streakFreezes: freezes + 1,
   };
 }
 

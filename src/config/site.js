@@ -32,6 +32,17 @@ export const SITE_CONFIG = {
   },
 };
 
+// Rewarded-ad slot config (E2). NO ad network is integrated in this pass — this
+// is only the config gate. The "watch an ad for a heart" slot renders ONLY when
+// a unit id is set (VITE_REWARDED_AD_UNIT), exactly like the hidden-by-default
+// social links / donation section. Wiring an ad SDK is an owner decision.
+export const AD_CONFIG = {
+  rewardedUnitId: import.meta.env.VITE_REWARDED_AD_UNIT || '',
+};
+export function hasActiveAdSlot(config = AD_CONFIG) {
+  return typeof config?.rewardedUnitId === 'string' && config.rewardedUnitId.trim() !== '';
+}
+
 // A coffee link must be a real absolute http(s) URL (same guard as social links).
 export function isActiveSupportUrl(url) {
   return typeof url === 'string' && /^https?:\/\/.+/i.test(url.trim());

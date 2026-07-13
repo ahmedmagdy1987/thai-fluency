@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Award, Check, CheckCircle2, ChevronRight, Crown, Gem, Heart, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
+import { Award, Check, CheckCircle2, ChevronRight, Crown, Gem, Heart, Play, RotateCcw, Volume2, X, XCircle } from 'lucide-react';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { hasActiveAdSlot } from '../config/site.js';
 import { playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
 import {
   buildChallenge,
@@ -52,6 +53,7 @@ export default function QuizTab({
   onSpendHeart,
   onRefillHearts,
   onOpenSuper,
+  onWatchAd,
   setTab,
 }) {
   // Stages the user may be challenged on: unlocked and with content. Locked
@@ -308,10 +310,18 @@ export default function QuizTab({
                   : 'A heart is ready — you can play now.'}
               </div>
               <div className="quiz-hearts-gate-actions">
+                {/* This is the app's most important conversion surface, so Super
+                    is the PRIMARY CTA (intent 'quiz' is captured by the caller so
+                    checkout returns here). Gem refill is the secondary path. */}
+                {onOpenSuper && (
+                  <button type="button" className="btn-primary quiz-hearts-gate-super" onClick={() => onOpenSuper()}>
+                    <Crown size={14} aria-hidden="true" /> Go unlimited with Super
+                  </button>
+                )}
                 {onRefillHearts && (
                   <button
                     type="button"
-                    className="btn-primary quiz-hearts-gate-refill"
+                    className="btn-secondary quiz-hearts-gate-refill"
                     onClick={() => onRefillHearts()}
                     disabled={!canAffordRefill}
                     title={canAffordRefill ? `Refill hearts for ${REFILL_COST_GEMS} gems` : `Need ${REFILL_COST_GEMS} gems to refill`}
@@ -319,9 +329,12 @@ export default function QuizTab({
                     <Gem size={14} aria-hidden="true" /> Refill ({REFILL_COST_GEMS} gems)
                   </button>
                 )}
-                {onOpenSuper && (
-                  <button type="button" className="btn-secondary quiz-hearts-gate-super" onClick={() => onOpenSuper()}>
-                    <Crown size={14} aria-hidden="true" /> Go Super for unlimited
+                {/* Rewarded-ad slot — HIDDEN until an ad unit is configured
+                    (VITE_REWARDED_AD_UNIT), like the social/donation gates. No ad
+                    network is integrated here (owner decision). */}
+                {hasActiveAdSlot() && onWatchAd && (
+                  <button type="button" className="btn-secondary quiz-hearts-gate-ad" onClick={() => onWatchAd()}>
+                    <Play size={14} aria-hidden="true" /> Watch an ad for a heart
                   </button>
                 )}
               </div>
@@ -332,7 +345,7 @@ export default function QuizTab({
               )}
               {setTab && (
                 <button type="button" className="quiz-hearts-gate-practice" onClick={() => setTab('cards')}>
-                  Practice cards instead
+                  You can still learn and review for free →
                 </button>
               )}
             </div>
