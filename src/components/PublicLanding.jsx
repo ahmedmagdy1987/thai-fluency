@@ -20,19 +20,19 @@ import { CARDS } from '../data/cards.js';
 import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { STAGES } from '../data/taxonomy.js';
 import { speakThai } from '../lib/audio.js';
-import { SITE_CONFIG } from '../config/site.js';
+import { SITE_CONFIG, hasActiveSupportOption } from '../config/site.js';
 import SiteFooter from './SiteFooter.jsx';
 
 // Small, verifiable highlight chips shown under the hero CTAs. Each maps to a
 // real part of the app (guided mini-units, the challenge step, XP/streak
 // quests) so nothing here is an unverified claim.
-const HERO_CHIPS = ['Guided missions', 'Quick challenges', 'XP and streaks'];
+const HERO_CHIPS = ['Guided lessons', 'Quick challenges', 'XP and streaks'];
 
 // Real course size, derived from the data files so the numbers can never drift
 // from the product. Card count is floored to a clean "N+" figure.
 const COURSE_STATS = [
   { value: String(STAGES.length), label: 'stages' },
-  { value: String(MINI_UNITS.length), label: 'guided missions' },
+  { value: String(MINI_UNITS.length), label: 'guided lessons' },
   {
     value: `${(Math.floor(CARDS.length / 100) * 100).toLocaleString('en-US')}+`,
     label: 'words & phrases',
@@ -219,6 +219,10 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
 
   const support = SITE_CONFIG.support || {};
   const crypto = support.crypto || {};
+  // Hide the whole support section until at least one donation option is set —
+  // a "Coming soon" donation card on a paid product reads as unfinished. Set
+  // VITE_BUY_ME_A_COFFEE_URL or VITE_CRYPTO_WALLET_ADDRESS to bring it back.
+  const showSupport = hasActiveSupportOption();
 
   // Real product content for the hero showcase + "How it works" mockups.
   const heroFlashcard = getPhrase({ cardId: HOW_FLASHCARD_ID, meaning: 'Hello' });
@@ -652,13 +656,14 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           <h2 className="lp-cine-title">Your first Thai words are one tap away.</h2>
           <p className="lp-cine-sub">Learn something you can actually say in Thailand today.</p>
           <button type="button" className="lp-cta-primary lp-cine-cta" onClick={onGetStarted}>
-            Start your first mission
+            Start your first lesson
             <ArrowRight size={18} aria-hidden="true" />
           </button>
         </div>
       </section>
 
-      {/* ===================== SUPPORT ===================== */}
+      {/* ============ SUPPORT (hidden until a donation option is configured) ============ */}
+      {showSupport && (
       <section className="lp-support" aria-labelledby="lp-support-title">
         <div className="lp-shell">
           <div className="lp-support-head" data-reveal>
@@ -738,6 +743,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
           </div>
         </div>
       </section>
+      )}
 
       {/* ===================== FOOTER ===================== */}
       <SiteFooter onNavigate={onOpenPublicPage} />
