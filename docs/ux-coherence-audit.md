@@ -117,3 +117,21 @@ Sync-failure indicator · TTS Thai-voice detection + hint · notification-pref s
 ## 6. Everything verified good (for the record)
 
 Funnel scent unbroken end-to-end · 2-tap onboarding for beginners · all 5 tutorial anchors exist at zero progress · every zero-data screen routes forward · out-of-hearts gate is a model state · upsell frequency rules conservative and honest · zero upsell leakage to Super users · 18+ gate copy clear and honest · teaser↔unlocked Dating views consistent · cancel flow honest with live UI flip · offline shell works on anonymous surfaces · dark theme consistent everywhere incl. mid-transition · identity transitions flash-proof · no dead links · both orphans presentable · CTA standard exact everywhere · back affordances near-universal · `alert()` zero · "SRS" never in UI copy.
+
+---
+
+## 7. RESOLVED — coherence + design pass
+
+Cleared from §5's owner-decision + quick-fix backlog:
+
+- **§5b.1 "Mission" collision — RESOLVED.** Per owner direction the **mini-units are now "Lesson"** and the **6-mission rail keeps "Mission"** (the reverse of §5b.1's tentative recommendation). Swept every user-facing string (Learn, celebrations, reward screens, landing, auth, plans, demo, feature registry); rail strings and all internal `mission` fields/keys/IDs untouched. "Mission 1 in Learn" was kept — it points at the rail's Mission 1, so it stays correct and its regression check stays valid.
+- **§5b.5 Achievements home — RESOLVED.** The 20-item collection now lives in Profile, reachable from both the desktop sidebar and mobile "More"; helpful zero-state; /today and /leaderboard stay out of nav by design.
+- **§5b.7 / §5c checkout return — RESOLVED.** Intent-aware post-checkout: Dating-lock → Dating (its 18+ gate handles confirmation), hearts-gate → Challenge, Shop → Shop; no intent → Learn (unchanged). Client-only; activation polling/toast unchanged.
+- **§5b.7 donation cards — RESOLVED.** The support section is hidden until a payout URL is configured (mirrors the hidden-by-default social links); reappears automatically when `VITE_BUY_ME_A_COFFEE_URL` / `VITE_CRYPTO_WALLET_ADDRESS` is set.
+- **§5a.1 scroll-to-top — RESOLVED** (footer links land at the top of /plans, /privacy).
+- **§5a.2 modal Escape — RESOLVED** (AchievementsModal, ChangePasswordModal, SuperUpgradePrompt now close on Escape).
+- **§5a.5 hearts gate self-clear — RESOLVED** (derives the live regenerated count; no more "refresh to play").
+- **§5b.7 quest toasts while Quests locked — RESOLVED** (suppressed + recorded silently until Stage 2 unlocks Quests).
+- **§2 nav order — RESOLVED** (mobile bottom nav re-ordered to match the desktop sidebar's Quests→Challenge).
+
+**Deliberately NOT done** (unchanged, out of scope / owner-blocked): legal-page banners (§5b.2), /plans hearts-benefit advertising (§5b.3, advertised-value change), locked-stage→Super-modal guidance (§5b.4, funnel trade), guided-lessons-record-no-progress (§5b.6, structural), push-permission timing, canceled-window "manage" (needs an Edge Function), forgot-password enumeration posture, and everything in §5c post-launch.

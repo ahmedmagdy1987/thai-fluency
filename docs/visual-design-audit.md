@@ -142,3 +142,16 @@ A follow-up pass executed the zero-judgment quick wins from §7. **Done:**
 - **Donation "Coming soon" cards** are **not dead** — `SITE_CONFIG.support.buyMeACoffeeUrl` / `crypto.address` are env-driven; setting them turns the cards into live links. They represent a planned feature with a clear owner path to activate, so they were **kept** (removing them would delete a real feature). Owner choice: set the URLs, or hide the Support section until then.
 - **Funnel CTA seam** (gold-gradient marketing CTAs → flat jade primary buttons at the auth/app boundary) is a **brand-identity decision** (which primary-button style wins), not a mechanical fix — left for the owner.
 - Everything in §7b (type scale, spacing tokens, card-language merge, Dating premium skin, primary-button/modal unification, Stage-1-Complete rebuild) remains owner-design.
+
+---
+
+## 10. RESOLVED — type scale + spacing tokens (§7b.1)
+
+The single biggest §7b item is done, isolated in one revertable commit (sizes/spacing only, no color/layout/component change):
+
+- **Type scale (`:root --fs-*`):** 12/14/16/18/22/28/36/48, plus documented exceptions — micro tier 10/11 (chips/badges/fine print) and display tier 56/64/72 (landing hero). **46 distinct font-sizes → 13 tokens; all 97 fractional half-pixel declarations eliminated.** `clamp()` fluid hero sizes (25) and one `0.85em` relative size are kept (the fixed scale can't express fluid/relative type).
+- **Spacing scale (`:root --sp-1..7` = 4/8/12/16/24/32/48):** padding/margin/gap map to these steps, ties → the smaller step. **51 distinct spacing literals → 7 tokens.** Kept literal (documented exceptions): 0, negative offsets, ≤3px micro-adjustments, >48px structural dimensions, one calc()-embedded value.
+- Line-height (`--lh-*`) and weight (`--fw-*`) scales are defined for future adoption.
+- **Verification caveat:** build compiles (CSS valid, every token resolves), 16/16 validators + local smoke pass. Pixel-level browser verification (both themes, desktop + 375px) was NOT possible in this environment (no browser tool). The change is shrink-biased and isolated, so a one-command `git revert` restores the prior look if any surface reads wrong on review.
+
+Still owner-design (§7b): card-language merge, Dating premium skin, primary-button/modal unification, Stage-1-Complete rebuild. The donation "Coming soon" cards (§9) are now **hidden until configured** (see the UX audit's resolution note).
