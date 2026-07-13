@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Heart, ShieldCheck, AlertTriangle, Crown, FileClock, Volume2, Lock,
-  ArrowLeft, ArrowRight, Check, X, RotateCcw, Sparkles,
+  ArrowLeft, ArrowRight, Check, X, RotateCcw, Sparkles, BookOpen, GraduationCap,
 } from 'lucide-react';
 import { DATING_SECTION, DATING_CATEGORIES, DATING_REVIEW_COMPLETE } from '../data/datingContent.js';
 import { DATING_PHRASES } from '../data/datingPhrases.js';
@@ -11,7 +11,10 @@ import {
   QUESTION_TYPE_LABEL, promptShowsPhrase, badgesLeakAnswer,
   ANSWER_AFTER_REVEAL_LABEL, resolveQuestion, gradeAnswer,
 } from '../lib/datingQuiz.js';
-import { loadAdultConfirmed, saveAdultConfirmed } from '../lib/storage.js';
+import {
+  loadAdultConfirmed, saveAdultConfirmed,
+  loadDatingLessonsDone, saveDatingLessonDone,
+} from '../lib/storage.js';
 import { isSuper } from '../config/entitlements.js';
 import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 
@@ -22,10 +25,14 @@ import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 //     status badges, "Unlock with Super" → /plans). No unreviewed Thai is shown.
 //   • Super subscribers must confirm 18+ once (persisted device-locally) before
 //     the learning mode opens.
-//   • The mode itself: pick a category → answer question/scenario cards →
-//     submit → reveal correct/incorrect + explanation panel → next → category
-//     completion. Progress is session-local React state — no DB schema, no XP,
-//     no reward paths (deliberately un-farmable).
+//   • The mode itself TEACHES BEFORE IT TESTS: pick a category → ungraded LESSON
+//     (English meaning first, then reveal Thai + phonetics + example + note, one
+//     phrase at a time, with audio) → the quiz UNLOCKS once the lesson is done →
+//     answer question/scenario cards → reveal + explanation → category summary.
+//     The lesson is pure study: no scoring, hearts, XP, correct/incorrect, or
+//     reward path. Lesson completion is persisted per-category device-locally
+//     (loadDatingLessonsDone/saveDatingLessonDone) — no DB schema, no migration,
+//     no server reward. Quiz progress is session-local React state, un-farmable.
 //
 // DIRECTION RULE (owner requirement): this pack teaches RECOGNITION —
 //   Thai phrase shown first → English meaning/context/tone/usage options.
@@ -62,7 +69,12 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
   const superUser = isSuper(stats);
   const [adultConfirmed, setAdultConfirmed] = useState(() => loadAdultConfirmed());
 
-  // quiz === null → category selector; quiz.finished → summary; else question.
+  // quiz drives the interactive flow:
+  //   quiz === null                 → category selector
+  //   quiz.phase === 'lesson'       → ungraded lesson walkthrough (English→Thai)
+  //   quiz.phase === 'lesson-done'  → lesson completion hand-off to the quiz
+  //   quiz.finished                 → category summary
+  //   else (quiz.phase === 'quiz')  → graded question (Thai→English)
   const [quiz, setQuiz] = useState(null);
   // FROZEN once set: the current question + its option order never re-derive
   // from live filters/category state, so nothing the user toggles can reveal
@@ -71,6 +83,9 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
   const [selected, setSelected] = useState(null);
   const [revealed, setRevealed] = useState(false);
   const [catProgress, setCatProgress] = useState({});
+  // Per-category LESSON completion (device-local; the quiz is gated behind it).
+  const [lessonsDone, setLessonsDone] = useState(() => loadDatingLessonsDone());
+  const lessonDone = (catId) => lessonsDone.includes(catId);
 
   const phraseById = useMemo(() => new Map(DATING_PHRASES.map((p) => [p.id, p])), []);
   const questionsByCat = useMemo(() => {
@@ -80,6 +95,33 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
       m.get(q.cat).push(q);
     }
     return m;
+  }, []);
+  // Phrases per category, in id order — the LESSON walks these one at a time.
+  const phrasesByCat = useMemo(() => {
+    const m = new Map();
+    for (const p of [...DATING_PHRASES].sort((a, b) => a.id - b.id)) {
+      if (!m.has(p.cat)) m.set(p.cat, []);
+      m.get(p.cat).push(p);
+    }
+    return m;
+  }, []);
+  // Categories where the selection-screen severity chip would hand over the
+  // answer to a tone question: single distinct phrase-severity AND at least one
+  // tone question. For these the severity chip is neutralized on the category
+  // card until the lesson (which TEACHES the tone) is completed — the same
+  // answer-hygiene pattern as the in-quiz badge gate, not badge removal.
+  const severityLeakCats = useMemo(() => {
+    const toneCats = new Set(DATING_QUESTIONS.filter((q) => q.questionType === 'tone').map((q) => q.cat));
+    const sevByCat = new Map();
+    for (const p of DATING_PHRASES) {
+      if (!sevByCat.has(p.cat)) sevByCat.set(p.cat, new Set());
+      sevByCat.get(p.cat).add(p.severity);
+    }
+    const s = new Set();
+    for (const catId of toneCats) {
+      if ((sevByCat.get(catId)?.size || 0) === 1) s.add(catId);
+    }
+    return s;
   }, []);
   const totalQuestions = DATING_QUESTIONS.length;
 
@@ -118,11 +160,44 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
     setRevealed(false);
   };
 
-  const startCategory = (cat) => {
+  // Enter a category's LESSON (ungraded study). Landing here — not on a graded
+  // question — is what makes the pack teach-before-test. No scoring, hearts, XP,
+  // or reward path is reachable from the lesson: it is pure study.
+  const startCategoryLesson = (cat) => {
+    const phrases = phrasesByCat.get(cat.id) || [];
+    if (!phrases.length) return;
+    setCurrent(null);
+    setSelected(null);
+    setRevealed(false);
+    setQuiz({ catId: cat.id, phase: 'lesson', li: 0, lrev: false });
+  };
+
+  // Enter a category's graded QUIZ. GATED: if the lesson hasn't been completed
+  // at least once, send the learner to the lesson instead — never a dead end.
+  const startCategoryQuiz = (cat) => {
     const qs = questionsByCat.get(cat.id) || [];
     if (!qs.length) return;
-    setQuiz({ catId: cat.id, index: 0, correct: 0, total: qs.length, finished: false });
+    if (!lessonDone(cat.id)) { startCategoryLesson(cat); return; }
+    setQuiz({ catId: cat.id, phase: 'quiz', index: 0, correct: 0, total: qs.length, finished: false });
     loadQuestion(cat.id, 0);
+  };
+
+  // LESSON navigation. Next reveals the Thai first (English is shown up front),
+  // then advances; finishing the walkthrough persists lesson completion and
+  // hands off to the quiz. Nothing here scores, awards, or gates on being right.
+  const lessonReveal = () => setQuiz((z) => (z && z.phase === 'lesson' ? { ...z, lrev: true } : z));
+  const lessonNext = () => {
+    if (!quiz || quiz.phase !== 'lesson') return;
+    const phrases = phrasesByCat.get(quiz.catId) || [];
+    if (!quiz.lrev) { setQuiz((z) => ({ ...z, lrev: true })); return; }
+    if (quiz.li + 1 < phrases.length) { setQuiz((z) => ({ ...z, li: z.li + 1, lrev: false })); return; }
+    setLessonsDone(saveDatingLessonDone(quiz.catId));
+    setQuiz((z) => ({ ...z, phase: 'lesson-done' }));
+  };
+  const lessonPrev = () => {
+    if (!quiz || quiz.phase !== 'lesson') return;
+    if (quiz.li === 0) { setQuiz((z) => ({ ...z, lrev: false })); return; }
+    setQuiz((z) => ({ ...z, li: z.li - 1, lrev: true }));
   };
 
   const submitAnswer = () => {
@@ -302,19 +377,44 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           </section>
         )}
 
+        <p className="dating-catgrid-intro">
+          Each category starts with a short, ungraded <strong>lesson</strong>: you see the English meaning
+          first, then the Thai, one phrase at a time. Finish the lesson once to unlock its quiz — you can
+          replay the lesson anytime.
+        </p>
+
         <section className="dating-catgrid" aria-label="Choose a category">
           {DATING_CATEGORIES.filter((c) => (questionsByCat.get(c.id) || []).length > 0).map((cat) => {
             const count = questionsByCat.get(cat.id).length;
+            const lessonCount = (phrasesByCat.get(cat.id) || []).length;
             const prog = catProgress[cat.id];
+            const done = lessonDone(cat.id);
+            // Neutralize the severity chip until the lesson is done for categories
+            // where it would hand over a tone answer (answer-hygiene, not removal).
+            const hideSev = severityLeakCats.has(cat.id) && !done;
             return (
-              <button type="button" className="dating-catcard" key={cat.id} onClick={() => startCategory(cat)}>
+              <div className="dating-catcard" key={cat.id}>
                 <div className="dating-catcard-head">
                   <span className="dating-catcard-name">{cat.name}</span>
-                  <ArrowRight size={15} aria-hidden="true" className="dating-catcard-go" />
+                  {done ? (
+                    <span className="dating-catcard-lesson-flag dating-catcard-lesson-flag-done">
+                      <Check size={13} aria-hidden="true" /> Lesson done
+                    </span>
+                  ) : (
+                    <span className="dating-catcard-lesson-flag">
+                      <BookOpen size={12} aria-hidden="true" /> Lesson first
+                    </span>
+                  )}
                 </div>
                 <p className="dating-catcard-blurb">{cat.blurb}</p>
                 <div className="dating-catcard-badges">
-                  <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>
+                  {hideSev ? (
+                    <span className="dating-chip dating-chip-neutral" title="The lesson teaches this phrase’s tone.">
+                      Tone: {ANSWER_AFTER_REVEAL_LABEL}
+                    </span>
+                  ) : (
+                    <span className={`dating-cat-sev dating-cat-sev-${cat.severity}`}>{SEVERITY_LABEL[cat.severity]}</span>
+                  )}
                   {CATEGORY_REGISTER[cat.id] && (
                     <span className={`dating-chip dating-chip-${CATEGORY_REGISTER[cat.id].cls}`}>
                       {CATEGORY_REGISTER[cat.id].label}
@@ -323,7 +423,7 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
                   <span className={`dating-chip dating-chip-${reviewBadge(cat.reviewStatus).cls}`}>
                     {reviewBadge(cat.reviewStatus).label}
                   </span>
-                  <span className="dating-chip dating-chip-count">{count} questions</span>
+                  <span className="dating-chip dating-chip-count">{lessonCount} phrases · {count} questions</span>
                   {prog && prog.done && (
                     <span className="dating-chip dating-chip-done"><Check size={11} aria-hidden="true" /> Best {prog.correct}/{prog.total}</span>
                   )}
@@ -333,7 +433,28 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
                     <AlertTriangle size={12} aria-hidden="true" /> Recognition only — understand it, mostly don’t use it.
                   </span>
                 )}
-              </button>
+                <div className="dating-catcard-actions">
+                  {done ? (
+                    <>
+                      <button type="button" className="btn-primary dating-catcard-start" onClick={() => startCategoryQuiz(cat)}>
+                        Start quiz <ArrowRight size={15} aria-hidden="true" />
+                      </button>
+                      <button type="button" className="dating-catcard-review" onClick={() => startCategoryLesson(cat)}>
+                        <RotateCcw size={13} aria-hidden="true" /> Review lesson
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" className="btn-primary dating-catcard-start" onClick={() => startCategoryLesson(cat)}>
+                        <BookOpen size={15} aria-hidden="true" /> Start lesson
+                      </button>
+                      <p className="dating-catcard-locked">
+                        <Lock size={12} aria-hidden="true" /> Quiz locked — finish the lesson first.
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
             );
           })}
         </section>
@@ -356,6 +477,124 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
 
   const cat = DATING_CATEGORIES.find((c) => c.id === quiz.catId);
 
+  // ── INTERACTIVE MODE: LESSON (ungraded, English→Thai presentation) ────────
+  // Teach BEFORE the test. The learner sees the English meaning FIRST (they
+  // already understand it), then reveals the Thai + phonetics + example + note,
+  // one phrase at a time, with audio. No scoring, hearts, XP, correct/incorrect,
+  // or reward path is reachable here — it is pure study. This is the exact
+  // content the reveal panel used to show one screen too late; now it precedes
+  // the quiz that tests it.
+  if (quiz.phase === 'lesson') {
+    const phrases = phrasesByCat.get(quiz.catId) || [];
+    const p = phrases[quiz.li] || phrases[0];
+    const lrev = !!quiz.lrev;
+    return (
+      <div className="tab-content dating-section">
+        <div className="dating-quiz-topbar">
+          <button type="button" className="dating-quiz-back" onClick={exitToCategories}>
+            <ArrowLeft size={15} aria-hidden="true" /> Categories
+          </button>
+          <div className="dating-quiz-cat">
+            <span className="dating-lesson-tag"><GraduationCap size={13} aria-hidden="true" /> Lesson</span>
+            <span className="dating-quiz-cat-name">{cat ? cat.name : ''}</span>
+          </div>
+          <span className="dating-quiz-count">{quiz.li + 1} of {phrases.length}</span>
+        </div>
+        <div className="dating-quiz-progress" role="progressbar" aria-valuemin={0} aria-valuemax={phrases.length} aria-valuenow={quiz.li + (lrev ? 1 : 0)}>
+          <div className="dating-quiz-progress-fill" style={{ width: `${((quiz.li + (lrev ? 1 : 0)) / phrases.length) * 100}%` }} />
+        </div>
+
+        <section className="dating-lesson-card" aria-label="Lesson phrase">
+          <p className="dating-lesson-studylabel">Study this phrase — no score, just learning</p>
+          {/* English meaning FIRST (the learner already understands it), THEN the Thai on reveal. */}
+          <p className="dating-lesson-en">{p.en}</p>
+
+          {!lrev ? (
+            <button type="button" className="btn-primary dating-lesson-reveal" onClick={lessonReveal}>
+              Show the Thai <ArrowRight size={15} aria-hidden="true" />
+            </button>
+          ) : (
+            <div className="dating-lesson-thai-block">
+              <p className="dating-phrase-thai" lang="th">{p.thai}</p>
+              <p className="dating-phrase-ph">{p.ph}</p>
+              <button
+                type="button"
+                className="dating-phrase-speak"
+                onClick={() => speak(p.thai)}
+                aria-label="Play pronunciation"
+                title="Play pronunciation"
+              >
+                <Volume2 size={15} aria-hidden="true" />
+              </button>
+              {p.example && (
+                <div className="dating-lesson-example">
+                  <span className="dating-note-label">Example</span>
+                  <p className="dating-phrase-thai dating-lesson-example-thai" lang="th">{p.example.thai}</p>
+                  <p className="dating-phrase-ph">{p.example.ph}</p>
+                  <p className="dating-phrase-en">{p.example.en}</p>
+                </div>
+              )}
+              {p.note && (
+                <p className="dating-phrase-note"><span className="dating-note-label">Note</span> {p.note}</p>
+              )}
+              <div className="dating-lesson-badges dating-catcard-badges">
+                <span className={`dating-cat-sev dating-cat-sev-${p.severity}`}>{SEVERITY_LABEL[p.severity]}</span>
+                <span className={`dating-chip dating-chip-${USAGE_GUIDANCE[p.severity].cls}`}>{USAGE_GUIDANCE[p.severity].label}</span>
+                {cat && CATEGORY_REGISTER[cat.id] && (
+                  <span className={`dating-chip dating-chip-${CATEGORY_REGISTER[cat.id].cls}`}>{CATEGORY_REGISTER[cat.id].label}</span>
+                )}
+                <span className={`dating-chip dating-chip-${reviewBadge(p.reviewStatus).cls}`}>{reviewBadge(p.reviewStatus).label}</span>
+              </div>
+              {p.severity === 'strong' && (
+                <p className="dating-phrase-care">
+                  <AlertTriangle size={12} aria-hidden="true" /> Recognition only — understand it, don’t aim it at anyone.
+                </p>
+              )}
+            </div>
+          )}
+        </section>
+
+        <div className="dating-lesson-nav">
+          <button type="button" className="dating-lesson-prev" onClick={lessonPrev} disabled={quiz.li === 0 && !lrev}>
+            <ArrowLeft size={15} aria-hidden="true" /> Previous
+          </button>
+          <button type="button" className="btn-primary dating-lesson-next" onClick={lessonNext}>
+            {!lrev ? 'Show the Thai' : (quiz.li + 1 >= phrases.length ? 'Finish lesson' : 'Next phrase')} <ArrowRight size={15} aria-hidden="true" />
+          </button>
+        </div>
+        <p className="dating-lesson-hint">Studying only — this lesson never affects your XP, hearts, streak, or course progress.</p>
+      </div>
+    );
+  }
+
+  // ── INTERACTIVE MODE: LESSON complete → hand off to the quiz ──────────────
+  if (quiz.phase === 'lesson-done') {
+    const lessonTotal = (phrasesByCat.get(quiz.catId) || []).length;
+    return (
+      <div className="tab-content dating-section">
+        {hero}
+        <section className="dating-summary-card dating-lesson-done-card" role="status" aria-label="Lesson complete">
+          <div className="dating-summary-icon" aria-hidden="true"><GraduationCap size={26} /></div>
+          <h2 className="dating-summary-title">Lesson complete</h2>
+          <p className="dating-summary-score">
+            You studied all <strong>{lessonTotal}</strong> phrases in {cat ? cat.name : 'this category'}. Ready — start the quiz.
+          </p>
+          <div className="dating-confirm-actions">
+            <button type="button" className="btn-primary" onClick={() => startCategoryQuiz(cat)}>
+              Start the quiz <ArrowRight size={14} aria-hidden="true" />
+            </button>
+            <button type="button" className="dating-confirm-no" onClick={() => startCategoryLesson(cat)}>
+              <RotateCcw size={13} aria-hidden="true" /> Review the lesson
+            </button>
+            <button type="button" className="dating-confirm-no" onClick={exitToCategories}>
+              All categories
+            </button>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   // ── INTERACTIVE MODE: category completion summary ─────────────────────────
   if (quiz.finished) {
     return (
@@ -376,8 +615,11 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
             )}
           </div>
           <div className="dating-confirm-actions">
-            <button type="button" className="btn-primary" onClick={() => startCategory(cat)}>
+            <button type="button" className="btn-primary" onClick={() => startCategoryQuiz(cat)}>
               <RotateCcw size={14} aria-hidden="true" /> Practice again
+            </button>
+            <button type="button" className="dating-confirm-no" onClick={() => startCategoryLesson(cat)}>
+              <BookOpen size={13} aria-hidden="true" /> Review lesson
             </button>
             <button type="button" className="dating-confirm-no" onClick={exitToCategories}>
               All categories

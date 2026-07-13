@@ -101,6 +101,47 @@ export function saveAdultConfirmed() {
   } catch (e) { /* silent fail - confirmation just won't persist */ }
 }
 
+// Per-category LESSON completion for the Dating & Real Talk section. The
+// interactive quiz for a category is gated behind finishing that category's
+// ungraded lesson at least once; this records which category lessons are done.
+// Like the 18+ confirmation above it lives in its OWN key (so clearState() on
+// sign-out never re-locks the lessons for a returning learner — the lesson is a
+// "you've seen the teaching" marker, NOT XP/progress and NOT a farmable reward),
+// is device-local, and never syncs to the cloud. Shape: { done: string[] }
+// (category ids). No DB table, no migration, no server reward path.
+const DATING_LESSONS_KEY = 'thai-fluency-dating-lessons-v1';
+
+export function loadDatingLessonsDone() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(DATING_LESSONS_KEY);
+      if (raw) {
+        const v = JSON.parse(raw);
+        if (v && Array.isArray(v.done)) {
+          return v.done.filter((id) => typeof id === 'string');
+        }
+      }
+    }
+  } catch (e) { /* private mode or corrupt value - silent fail */ }
+  return [];
+}
+
+export function saveDatingLessonDone(catId) {
+  if (typeof catId !== 'string' || !catId) return loadDatingLessonsDone();
+  try {
+    const done = new Set(loadDatingLessonsDone());
+    done.add(catId);
+    const next = Array.from(done);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(DATING_LESSONS_KEY, JSON.stringify({ done: next }));
+    }
+    return next;
+  } catch (e) {
+    /* silent fail - completion just won't persist this session */
+    return loadDatingLessonsDone();
+  }
+}
+
 export async function loadState() {
   try {
     if (typeof localStorage !== 'undefined') {

@@ -1218,13 +1218,22 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Category selector grid */
 .dating-catgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
-.dating-catcard { text-align: left; display: flex; flex-direction: column; gap: 7px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px; cursor: pointer; font: inherit; color: inherit; transition: border-color 0.15s, transform 0.15s; }
-@media (hover: hover) and (pointer: fine) { .dating-catcard:hover { border-color: var(--jade); transform: translateY(-1px); } }
+.dating-catgrid-intro { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 12px 0 0; max-width: 640px; }
+.dating-catgrid-intro strong { color: var(--jade); }
+.dating-catcard { text-align: left; display: flex; flex-direction: column; gap: 7px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px; font: inherit; color: inherit; transition: border-color 0.15s; }
 .dating-catcard-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .dating-catcard-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: var(--jade); }
 .dating-catcard-go { color: var(--ink-soft); flex: 0 0 auto; }
 .dating-catcard-blurb { font-size: 12px; color: var(--ink-soft); line-height: 1.45; margin: 0; }
 .dating-catcard-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+/* Lesson-first gating on the category card */
+.dating-catcard-lesson-flag { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; font-size: 10.5px; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink-soft); background: color-mix(in srgb, var(--ink-soft) 12%, transparent); border-radius: 999px; padding: 3px 8px; }
+.dating-catcard-lesson-flag-done { color: var(--jade); background: color-mix(in srgb, var(--jade) 13%, transparent); }
+.dating-catcard-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 3px; }
+.dating-catcard-start { display: inline-flex; align-items: center; gap: 6px; }
+.dating-catcard-review { display: inline-flex; align-items: center; gap: 5px; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; font-size: 12px; font-weight: 700; color: var(--jade); cursor: pointer; }
+@media (hover: hover) and (pointer: fine) { .dating-catcard-review:hover { border-color: var(--jade); } }
+.dating-catcard-locked { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); margin: 0; }
 
 /* Quiz screen */
 .dating-quiz-topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
@@ -1277,6 +1286,27 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .dating-summary-title { font-family: 'Fraunces', serif; font-size: 19px; color: var(--jade); margin: 0; }
 .dating-summary-score { font-size: 14px; color: var(--ink); margin: 0; }
 .dating-summary-card .dating-catcard-badges { justify-content: center; }
+.dating-lesson-done-card .dating-summary-icon { color: var(--jade); }
+
+/* Ungraded LESSON walkthrough (English meaning first, then reveal the Thai) */
+.dating-lesson-tag { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; font-size: 10.5px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; color: var(--jade); background: color-mix(in srgb, var(--jade) 13%, transparent); border-radius: 999px; padding: 3px 9px; }
+.dating-lesson-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 20px 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; max-width: 620px; margin: 0 auto; }
+.dating-lesson-studylabel { font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); margin: 0; }
+.dating-lesson-en { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.35; margin: 0; }
+.dating-lesson-reveal { display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; }
+.dating-lesson-thai-block { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 2px; }
+.dating-lesson-thai-block .dating-phrase-thai { font-size: 26px; }
+.dating-lesson-thai-block > .dating-phrase-speak { position: static; margin: 2px 0; }
+.dating-lesson-example { width: 100%; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; text-align: left; margin-top: 6px; }
+.app-root[data-theme="dark"] .dating-lesson-example { background: color-mix(in srgb, var(--jade) 8%, transparent); }
+.dating-lesson-example-thai { font-size: 17px !important; }
+.dating-lesson-example .dating-phrase-en { font-size: 12.5px; color: var(--ink-soft); }
+.dating-lesson-badges { justify-content: center; margin-top: 4px; }
+.dating-lesson-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; max-width: 620px; margin: 14px auto 0; }
+.dating-lesson-prev { display: inline-flex; align-items: center; gap: 5px; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; font-size: 13px; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+.dating-lesson-prev:disabled { opacity: 0.4; cursor: not-allowed; }
+.dating-lesson-next { display: inline-flex; align-items: center; gap: 6px; }
+.dating-lesson-hint { max-width: 620px; margin: 12px auto 0; text-align: center; font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; }
 
 @media (max-width: 560px) {
   .dating-draft-banner { flex-direction: column; gap: 8px; padding: 14px 15px; }
@@ -1284,6 +1314,8 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
   .dating-cat-block-head { flex-direction: column; }
   .dating-cat-block-head .dating-cat-sev { margin-top: 0; }
   .dating-cat-chiprow { justify-content: flex-start; margin-top: 4px; max-width: 100%; }
+  .dating-lesson-en { font-size: 19px; }
+  .dating-lesson-thai-block .dating-phrase-thai { font-size: 23px; }
 }
 
 .super-prompt-backdrop { position: fixed; inset: 0; z-index: 270; display: flex; align-items: flex-end; justify-content: center; padding: 16px; background: rgba(15, 61, 46, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: fadeIn 0.18s ease-out; }
@@ -1654,6 +1686,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .tqi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 4px; font-weight: 500; }
 .tones-quiz-syl { font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 700; color: var(--brick); text-align: center; margin: 12px 0 8px; letter-spacing: 0.02em; }
 .tones-quiz-mean { font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; color: var(--ink-soft); text-align: center; }
+.tones-quiz-hear { display: inline-flex; align-items: center; gap: 6px; margin: 14px auto 0; }
 .tones-quiz-options { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 16px; }
 @media (max-width: 540px) { .tones-quiz-options { grid-template-columns: repeat(5, 1fr); gap: 4px; } }
 .tones-quiz-option { --tone-color: var(--jade); background: white; border: 2px solid var(--tone-color); border-radius: 10px; padding: 12px 4px; cursor: pointer; font-family: inherit; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.15s; position: relative; }@media (hover: hover) and (pointer: fine) {
