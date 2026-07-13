@@ -443,7 +443,7 @@ export const STAGE_2_UNIT_ACTIONS = unit({
     ], answer: ['phom', 'rak', 'khun'],
   },
   lessonIntro: {
-    lead: 'This mission gives you a handful of everyday action words, the verbs you reach for all day long. By the end you can say one of the warmest sentences in Thai, ผมรักคุณ, which means I love you.',
+    lead: 'This lesson gives you a handful of everyday action words, the verbs you reach for all day long. By the end you can say one of the warmest sentences in Thai, ผมรักคุณ, which means I love you.',
     points: [
       { label: 'You will learn', text: 'Common action verbs like ดื่ม (drink), ซื้อ (buy), ทำงาน (work), and เดิน (walk), along with เปิด and ปิด, which cover open and close as well as turn on and turn off.' },
       { label: 'Why it matters', text: 'Verbs are the engine of every sentence. Once you can name a few everyday actions, you have the building blocks you need for simple sentences about what people do.' },
@@ -511,12 +511,12 @@ export const STAGE_2_UNIT_TALK = unit({
     ], answer: ['phom', 'mai', 'ruu'],
   },
   lessonIntro: {
-    lead: 'This mission is about talking and thinking, the verbs you use when you chat, guess, or hope. You will also learn an honest and very handy phrase, ผมไม่รู้, which means I do not know.',
+    lead: 'This lesson is about talking and thinking, the verbs you use when you chat, guess, or hope. You will also learn an honest and very handy phrase, ผมไม่รู้, which means I do not know.',
     points: [
       { label: 'You will learn', text: 'Verbs for conversation and the mind, like คุย (chat), นึก (think), เดา (guess), and หวัง (hope), plus the sentence ผมไม่รู้ (I do not know).' },
       { label: 'Why it matters', text: 'Real conversations are full of guessing and of not knowing. Being able to say I do not know keeps a chat moving instead of leaving you stuck and silent.' },
       { label: 'Listen for', text: 'Once again the word ไม่ (not), this time inside ผมไม่รู้. Notice how it comes right before รู้, the word for to know.' },
-      { label: 'Notice', text: 'You are reusing the same pattern from the last mission, I plus ไม่ plus a verb. One small structure already covers many honest, everyday replies.' },
+      { label: 'Notice', text: 'You are reusing the same pattern from the last lesson, I plus ไม่ plus a verb. One small structure already covers many honest, everyday replies.' },
     ],
   },
   missionRecap: {
@@ -575,7 +575,7 @@ export const STAGE_2_UNIT_DAILY2 = unit({
     ], answer: ['tham', 'pai', 'loei'],
   },
   lessonIntro: {
-    lead: 'This mission adds another set of everyday verbs, from saving and waiting to eating, plus a short, encouraging phrase, ทำไปเลย, which means go ahead and do it.',
+    lead: 'This lesson adds another set of everyday verbs, from saving and waiting to eating, plus a short, encouraging phrase, ทำไปเลย, which means go ahead and do it.',
     points: [
       { label: 'You will learn', text: 'Useful verbs like เก็บ (save), คอย (wait), and ทาน (eat), plus the friendly phrase ทำไปเลย (go ahead and do it).' },
       { label: 'Why it matters', text: 'Waiting, keeping things, and eating come up every single day. A phrase like go ahead also helps you sound relaxed and natural when you are with friends.' },
@@ -600,7 +600,7 @@ export const STAGE_2_UNIT_SIZES = unit({
   vocabCardIds: [63, 65, 78, 79, 2923, 2737, 1833, 1622], challengeCardIds: [63, 78, 79],
   // No sentenceBuilder: Stage 2 adjective sentences are 2 tokens (too short).
   lessonIntro: {
-    lead: 'This mission moves from action words to describing words. It gives you a small, handy set of adjectives for talking about size and speed in everyday life.',
+    lead: 'This lesson moves from action words to describing words. It gives you a small, handy set of adjectives for talking about size and speed in everyday life.',
     points: [
       { label: 'You will learn', text: 'Describing words like เล็ก (small) and โต (large), เร็ว (fast) and ช้า (slow), plus เย็น (cool) and นิด (a little bit).' },
       { label: 'Why it matters', text: 'Sizes and speeds come up when you order food, shop, or ask a driver to slow down. A few clear adjectives make your meaning land right away.' },
@@ -624,7 +624,7 @@ export const STAGE_2_UNIT_QUALITIES = unit({
   title: 'Skills and qualities', subtitle: 'Skilled, done, sure, rich, used to it, gone, most, all.',
   vocabCardIds: [77, 1973, 2235, 5715, 3012, 2014, 1982, 1762], sentenceCardId: 5228, challengeCardIds: [77, 2235, 5715],
   lessonIntro: {
-    lead: 'This mission gives you words for skills and qualities, and one of the nicest little compliments in Thai, เก่งมาก, which means very good or nice job.',
+    lead: 'This lesson gives you words for skills and qualities, and one of the nicest little compliments in Thai, เก่งมาก, which means very good or nice job.',
     points: [
       { label: 'You will learn', text: 'Describing words like เก่ง (skilled), เสร็จ (done or finished), แน่ (sure), and รวย (rich), plus the warm compliment เก่งมาก (very good).' },
       { label: 'Why it matters', text: 'Telling someone they did well, or saying that you are sure or already finished, makes everyday talk warmer, kinder, and much clearer. A kind word is always remembered.' },
@@ -657,7 +657,7 @@ export const STAGE_2_UNIT_FEELINGS = unit({
     ], answer: ['phom', 'hiu', 'khrap'],
   },
   lessonIntro: {
-    lead: 'This mission is about feelings, the words for how you feel inside, from a little afraid to genuinely happy. You will also build a useful daily sentence, ผมหิวครับ, which means I am hungry.',
+    lead: 'This lesson is about feelings, the words for how you feel inside, from a little afraid to genuinely happy. You will also build a useful daily sentence, ผมหิวครับ, which means I am hungry.',
     points: [
       { label: 'You will learn', text: 'Feeling words like กลัว (afraid), อาย (shy), and สุข (happiness), plus the polite sentence ผมหิวครับ (I am hungry).' },
       { label: 'Why it matters', text: 'Being able to share how you feel, even in a simple way, helps people understand you and look after you. Saying you are hungry is a friendly, easy place to start.' },
@@ -682,7 +682,7 @@ export const STAGE_2_UNIT_NUMBERS = unit({
   vocabCardIds: [232, 233, 235, 236, 239, 241], challengeCardIds: [232, 233, 239],
   // No sentenceCard/builder: Stage 2 has no clean number sentence to tokenize.
   lessonIntro: {
-    lead: 'This mission adds more numbers to the ones you already know. With them you can count further and start to recognize prices, room numbers, and amounts that people say to you.',
+    lead: 'This lesson adds more numbers to the ones you already know. With them you can count further and start to recognize prices, room numbers, and amounts that people say to you.',
     points: [
       { label: 'You will learn', text: 'Numbers including สาม (three), สี่ (four), หก (six), เจ็ด (seven), สิบ (ten), and พัน (one thousand), each one a word you will use often.' },
       { label: 'Why it matters', text: 'Numbers are everywhere, on menus, on signs, and whenever someone tells you an amount. Knowing more of them helps you follow what you hear and reply with confidence.' },
@@ -706,7 +706,7 @@ export const STAGE_2_UNIT_CONNECTORS = unit({
   title: 'Connectors and questions', subtitle: 'Must, with, or, let\'s, "right?", "and you?", is, from.',
   vocabCardIds: [256, 291, 292, 4038, 5704, 1275, 1625, 1598], sentenceCardId: 857, challengeCardIds: [256, 292, 5704],
   lessonIntro: {
-    lead: 'This mission gives you small but powerful words that join your ideas together and turn sentences into questions. You will also meet a short, common question, ใครครับ, which means who.',
+    lead: 'This lesson gives you small but powerful words that join your ideas together and turn sentences into questions. You will also meet a short, common question, ใครครับ, which means who.',
     points: [
       { label: 'You will learn', text: 'Connecting words like กับ (with), หรือ (or), and จาก (from), the casual question word มั้ย, and ล่ะ, which is used for and you.' },
       { label: 'Why it matters', text: 'These little words glue your sentences together and let you ask simple questions. They make short replies feel natural and warm instead of choppy.' },
@@ -741,7 +741,7 @@ export const STAGE_3_UNIT_DAILY = unit({
     ], answer: ['phom', 'yak', 'non'],
   },
   lessonIntro: {
-    lead: 'Stage 3 moves you into more useful daily Thai. This first mission teaches everyday action verbs you will reach for constantly, and shows you how to say what you want with ผมอยากนอน, which means I want to sleep.',
+    lead: 'Stage 3 moves you into more useful daily Thai. This first lesson teaches everyday action verbs you will reach for constantly, and shows you how to say what you want with ผมอยากนอน, which means I want to sleep.',
     points: [
       { label: 'You will learn', text: 'Common daily verbs like จ่าย (pay), นั่ง (sit), ยืน (stand), ใช้ (use), เรียน (study), and ถาม (ask), plus the sentence ผมอยากนอน (I want to sleep).' },
       { label: 'Why it matters', text: 'These are the actions that fill an ordinary day. Paying, sitting, studying, and asking questions come up everywhere you go, from a shop to a classroom.' },
@@ -773,7 +773,7 @@ export const STAGE_3_UNIT_DESCRIBE = unit({
     ], answer: ['phom', 'ron', 'khrap'],
   },
   lessonIntro: {
-    lead: 'This mission gives you a useful set of describing words for the everyday things around you, plus an easy and polite way to say how you feel right now with ผมร้อนครับ, which means I am hot.',
+    lead: 'This lesson gives you a useful set of describing words for the everyday things around you, plus an easy and polite way to say how you feel right now with ผมร้อนครับ, which means I am hot.',
     points: [
       { label: 'You will learn', text: 'Describing words like ใหญ่ (big), ร้อน (hot), ใหม่ (new), ง่าย (easy), and ยาก (difficult), plus the polite sentence ผมร้อนครับ (I am hot).' },
       { label: 'Why it matters', text: 'Describing words let you say how something is: too hot, too big, too new, easy, or difficult. They make your meaning clear in shops, at home, and in everyday conversations, so the people around you understand exactly what you mean.' },
@@ -813,7 +813,7 @@ export const STAGE_3_UNIT_PEOPLE = unit({
     ], answer: ['khun', 'chue', 'arai'],
   },
   lessonIntro: {
-    lead: 'This mission is about the people closest to you, your family and your friends, plus one of the friendliest and warmest questions in Thai, คุณชื่ออะไร, which means what is your name.',
+    lead: 'This lesson is about the people closest to you, your family and your friends, plus one of the friendliest and warmest questions in Thai, คุณชื่ออะไร, which means what is your name.',
     points: [
       { label: 'You will learn', text: 'Family and people words like พ่อ (father), แม่ (mother), เพื่อน (friend), and หมอ (doctor), plus the question คุณชื่ออะไร (what is your name).' },
       { label: 'Why it matters', text: 'Talking about family and asking someone their name are warm, natural ways to start a conversation, break the ice, and get to know new people. Family and names are easy, friendly topics, so these words go a long way.' },
@@ -845,7 +845,7 @@ export const STAGE_3_UNIT_VERBS1 = unit({
     ], answer: ['tham', 'arai', 'yu'],
   },
   lessonIntro: {
-    lead: 'This mission adds more everyday verbs for getting through your day, plus a friendly and very common question you will hear often, ทำอะไรอยู่, which means what are you doing.',
+    lead: 'This lesson adds more everyday verbs for getting through your day, plus a friendly and very common question you will hear often, ทำอะไรอยู่, which means what are you doing.',
     points: [
       { label: 'You will learn', text: 'Action verbs like เข้า (enter), ฝึก (practice), ดึง (pull), กด (press), and ขี่ (ride), plus the question ทำอะไรอยู่ (what are you doing).' },
       { label: 'Why it matters', text: 'Pressing a button, entering a place, riding a bike: these small actions come up all day long. Asking what someone is doing is a friendly, low-pressure way to start talking and to keep a chat moving along.' },
@@ -877,7 +877,7 @@ export const STAGE_3_UNIT_VERBS2 = unit({
     ], answer: ['tham', 'pai', 'thammai'],
   },
   lessonIntro: {
-    lead: 'This mission adds another set of practical action verbs for everyday life, plus a natural, common question, ทำไปทำไม, which means why are you doing that.',
+    lead: 'This lesson adds another set of practical action verbs for everyday life, plus a natural, common question, ทำไปทำไม, which means why are you doing that.',
     points: [
       { label: 'You will learn', text: 'Verbs like เท (pour), ซ่อน (hide), ขุด (dig), ค้น (search), and โยน (throw), plus the question ทำไปทำไม (why are you doing that).' },
       { label: 'Why it matters', text: 'These hands-on verbs show up in real life all the time, from the kitchen to the garden. Being able to ask why keeps a conversation curious and friendly, and helps you understand what is going on around you.' },
@@ -909,7 +909,7 @@ export const STAGE_3_UNIT_VERBS3 = unit({
     ], answer: ['phom', 'luem', 'laew'],
   },
   lessonIntro: {
-    lead: 'This mission rounds out your everyday verbs, and teaches a handy way to say that something has already happened with ผมลืมแล้ว, which means I forgot already.',
+    lead: 'This lesson rounds out your everyday verbs, and teaches a handy way to say that something has already happened with ผมลืมแล้ว, which means I forgot already.',
     points: [
       { label: 'You will learn', text: 'Verbs like จด (write), ผูก (tie), สวม (wear), มอบ (give), and เซ็น (sign), plus the sentence ผมลืมแล้ว (I forgot already).' },
       { label: 'Why it matters', text: 'Writing things down, signing your name, and wearing the right thing are all part of daily life. Being able to say you already did something is just as useful, and it comes up in conversation constantly.' },
@@ -941,7 +941,7 @@ export const STAGE_3_UNIT_DESCRIBE2 = unit({
     ], answer: ['phom', 'nguang', 'khrap'],
   },
   lessonIntro: {
-    lead: 'This mission adds more describing words for states and conditions, the words you reach for when you are tired or unwell, plus a useful sentence for tired days, ผมง่วงครับ, which means I am sleepy.',
+    lead: 'This lesson adds more describing words for states and conditions, the words you reach for when you are tired or unwell, plus a useful sentence for tired days, ผมง่วงครับ, which means I am sleepy.',
     points: [
       { label: 'You will learn', text: 'Describing words like พร้อม (ready), ป่วย (ill), มืด (dark), and ง่วง (sleepy), plus the polite sentence ผมง่วงครับ (I am sleepy).' },
       { label: 'Why it matters', text: 'Saying you are ready, ill, or sleepy helps the people around you understand how you are and look after you. These small, honest words really matter on an ordinary day, especially when you are not at your best.' },
@@ -973,7 +973,7 @@ export const STAGE_3_UNIT_QUALITIES = unit({
     ], answer: ['phom', 'yung', 'khrap'],
   },
   lessonIntro: {
-    lead: 'This mission gives you a set of words for qualities and states, the quick describing words you reach for in the moment, plus an honest everyday line, ผมยุ่งครับ, which means I am busy.',
+    lead: 'This lesson gives you a set of words for qualities and states, the quick describing words you reach for in the moment, plus an honest everyday line, ผมยุ่งครับ, which means I am busy.',
     points: [
       { label: 'You will learn', text: 'Describing words like ไว (fast), ด่วน (urgent), งง (confused), and เด็ด (excellent), plus the polite sentence ผมยุ่งครับ (I am busy).' },
       { label: 'Why it matters', text: 'Telling someone that you are busy, or that something is urgent or excellent, helps you set expectations and react naturally in the moment. These quick words let you respond honestly without searching for a long sentence.' },
@@ -997,7 +997,7 @@ export const STAGE_3_UNIT_TIME = unit({
   title: 'Time and sequence', subtitle: 'Month, currently, before, when, occasion, era, soon, time.',
   vocabCardIds: [220, 254, 296, 1602, 2177, 2529, 2580, 2852], sentenceCardId: 4749, challengeCardIds: [220, 296, 2580],
   lessonIntro: {
-    lead: 'This mission gives you words for time and sequence, so you can talk about when things happen, plus the handy phrase เดี๋ยวมา, which means I will be right back.',
+    lead: 'This lesson gives you words for time and sequence, so you can talk about when things happen, plus the handy phrase เดี๋ยวมา, which means I will be right back.',
     points: [
       { label: 'You will learn', text: 'Time words like เดือน (month), ก่อน (before), เมื่อ (when), and เดี๋ยว (soon), plus the everyday phrase เดี๋ยวมา (I will be right back).' },
       { label: 'Why it matters', text: 'Talking about time keeps plans clear: before or after, this month, in a moment. A quick เดี๋ยวมา lets people know you will return soon.' },
@@ -1031,7 +1031,7 @@ export const STAGE_3_UNIT_CONNECTORS = unit({
     ], answer: ['phom', 'mai', 'khaojai'],
   },
   lessonIntro: {
-    lead: 'This mission gives you small joining words and friendly sentence endings that make your Thai flow better, plus an honest, useful line, ผมไม่เข้าใจ, which means I do not understand.',
+    lead: 'This lesson gives you small joining words and friendly sentence endings that make your Thai flow better, plus an honest, useful line, ผมไม่เข้าใจ, which means I do not understand.',
     points: [
       { label: 'You will learn', text: 'Connecting words like แต่ (but), ถ้า (if), and จึง (therefore), some casual sentence-ending particles, and the sentence ผมไม่เข้าใจ (I do not understand).' },
       { label: 'Why it matters', text: 'Joining words let you build longer, smoother thoughts instead of single words. Being able to say you do not understand is one of the most useful phrases for any learner, and it gently invites people to help you.' },
@@ -1055,11 +1055,11 @@ export const STAGE_3_UNIT_HOME = unit({
   title: 'Home and places', subtitle: 'House, building, garden, stove, air-con, cabinet, broken.',
   vocabCardIds: [160, 1719, 2601, 2080, 3403, 1000, 2631, 1021], sentenceCardId: 1500, challengeCardIds: [160, 2601, 1000],
   lessonIntro: {
-    lead: 'This mission is about your home and the places around it, the everyday spaces you live in, plus a very practical sentence, แอร์เสีย, which means the air conditioning is broken.',
+    lead: 'This lesson is about your home and the places around it, the everyday spaces you live in, plus a very practical sentence, แอร์เสีย, which means the air conditioning is broken.',
     points: [
       { label: 'You will learn', text: 'Home and place words like บ้าน (house), สวน (garden), เตา (stove), แอร์ (air conditioning), and ตู้ (cabinet), plus the sentence แอร์เสีย (the AC is broken).' },
       { label: 'Why it matters', text: 'Talking about your home comes up every day, and being able to report that something is broken, like the air conditioning, is genuinely useful. It is exactly the kind of thing you may need to tell a landlord or a repair person.' },
-      { label: 'Listen for', text: 'The word พัง (broken) in this mission, and the short sentence แอร์เสีย, which you will want when something stops working.' },
+      { label: 'Listen for', text: 'The word พัง (broken) in this lesson, and the short sentence แอร์เสีย, which you will want when something stops working.' },
       { label: 'Notice', text: 'The word แอร์ comes from the English word air. Thai borrows some everyday words from English, which can make them easier to remember.' },
     ],
   },
@@ -1082,7 +1082,7 @@ export const STAGE_3_UNIT_ANIMALS = unit({
   vocabCardIds: [2598, 3066, 2696, 3318, 2789, 3467, 3519, 2583], challengeCardIds: [2598, 3066, 2789],
   // No sentenceCard/builder: Stage 3 has no clean animal sentence to tokenize.
   lessonIntro: {
-    lead: 'This mission is a friendly set of common animals. It is a lighter mission that builds your everyday vocabulary with words you will hear in stories, on signs, and in daily chat.',
+    lead: 'This lesson is a friendly set of common animals. It is a lighter lesson that builds your everyday vocabulary with words you will hear in stories, on signs, and in daily chat.',
     points: [
       { label: 'You will learn', text: 'Common animal words like หมา (dog), งู (snake), ลิง (monkey), ควาย (buffalo), and วัว (cow), plus a few small creatures like มด (ant) and ปู (crab).' },
       { label: 'Why it matters', text: 'Animals come up more often than you might expect, in conversations, on signs, and in everyday chat. Knowing the common ones helps you follow what people say.' },

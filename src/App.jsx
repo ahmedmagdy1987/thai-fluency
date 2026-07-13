@@ -1772,7 +1772,7 @@ export default function TukTalkThaiApp() {
     grantXp(FIRST_LESSON_REWARD_XP);
     setRewardScreen({
       id: `first-lesson-${Date.now()}`,
-      title: 'First Mission Complete',
+      title: 'First Lesson Complete',
       subtitle: 'You finished the guided starter lesson and unlocked the main practice path.',
       xpEarned: FIRST_LESSON_REWARD_XP,
       streak: Math.max(1, stats.streak || 0),
@@ -1883,7 +1883,7 @@ export default function TukTalkThaiApp() {
             ? `Stage ${completedUnit.stageId} Path Complete`
             : 'Mini-Unit Complete',
           subtitle: stagePathNowComplete
-            ? `You finished every guided mission in Stage ${completedUnit.stageId}. That is a real milestone.`
+            ? `You finished every guided lesson in Stage ${completedUnit.stageId}. That is a real milestone.`
             : 'You finished a guided lesson and checked your recall.',
           xpEarned: MINI_UNIT_REWARD_XP,
           streak: stats.streak || 0,

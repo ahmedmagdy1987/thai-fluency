@@ -31,7 +31,7 @@ export const FEATURES = {
   // ---- FREE: the core learning path is free forever, all 8 stages included ----
   coreLearning:  { id: 'coreLearning',  name: 'All 8 learning stages',        access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
   srsReviews:    { id: 'srsReviews',    name: 'Spaced-repetition reviews',    access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
-  guidedUnits:   { id: 'guidedUnits',   name: 'Guided missions & mini-units', access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
+  guidedUnits:   { id: 'guidedUnits',   name: 'Guided lessons & mini-units', access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
   challenges:    { id: 'challenges',    name: 'Stage & tone challenges',      access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
   guide:         { id: 'guide',         name: 'Pronunciation & culture guide', access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },
   streakFreeze:  { id: 'streakFreeze',  name: 'Auto streak freeze (weekly)',  access: TIERS.FREE, status: FEATURE_STATUS.AVAILABLE, group: 'core' },

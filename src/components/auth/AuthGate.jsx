@@ -62,15 +62,15 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
           <div className="auth-welcome-brand-wordmark">{SITE_CONFIG.siteName}</div>
           <div className="auth-welcome-brand-slogan">{SITE_CONFIG.slogan}</div>
         </div>
-        <h1 className="auth-welcome-title">Ready for your first mission?</h1>
+        <h1 className="auth-welcome-title">Ready for your first lesson?</h1>
         <p className="auth-welcome-sub">
-          Save your progress with a free account, or try a quick demo first. Every mission opens with a simple, friendly explanation.
+          Save your progress with a free account, or try a quick demo first. Every lesson opens with a simple, friendly explanation.
         </p>
 
         <div className="auth-welcome-bullets">
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon" aria-hidden="true">🌱</span>
-            <div><strong>Start with guided missions.</strong> Practice greetings, food, taxis, prices, and asking for help.</div>
+            <div><strong>Start with guided lessons.</strong> Practice greetings, food, taxis, prices, and asking for help.</div>
           </div>
           <div className="auth-welcome-bullet">
             <span className="auth-welcome-bullet-icon" aria-hidden="true">🔄</span>

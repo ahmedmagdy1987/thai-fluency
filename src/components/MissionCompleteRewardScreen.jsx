@@ -11,11 +11,12 @@ function prefersReducedMotion() {
 }
 
 export default function MissionCompleteRewardScreen({
-  title = 'Mission Complete',
+  // Neutral default title: this shared screen celebrates BOTH the 6-mission rail
+  // AND lessons/first-lesson, so it must not hardcode "Mission" (every caller
+  // passes an explicit title anyway). The component's file/name stays for import
+  // stability — only the user-facing default is neutralized.
+  title = 'Complete',
   subtitle = 'You moved your Thai forward.',
-  // Neutral default: this screen also celebrates mini-units and the first
-  // lesson, where a hardcoded "Mission Complete" eyebrow contradicted the
-  // title directly beneath it ("Mini-Unit Complete") — UX audit.
   eyebrow = 'Nice work',
   xpEarned = 0,
   streak = 0,

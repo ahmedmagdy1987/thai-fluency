@@ -196,7 +196,7 @@ function MiniLessonMock({ intro }) {
       {intro && (
         <>
           <span className="lp-mock-lesson-eyebrow">
-            <BookOpen size={13} aria-hidden="true" /> Mission intro
+            <BookOpen size={13} aria-hidden="true" /> Lesson intro
           </span>
           <span className="lp-mock-lesson-lead">{intro.lead}</span>
         </>
@@ -408,16 +408,16 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               Your Thai adventure starts here
             </span>
             <h1 id="lp-title" className="lp-title">
-              Speak useful Thai from your <span>very first mission</span>.
+              Speak useful Thai from your <span>very first lesson</span>.
             </h1>
             <p className="lp-subtitle">
-              Short missions designed like a game teach you the words and phrases that
+              Short lessons designed like a game teach you the words and phrases that
               actually matter, from street food to taxi rides.
             </p>
 
             <div className="lp-hero-actions">
               <button type="button" className="lp-cta-primary" onClick={onGetStarted}>
-                Start your first mission
+                Start your first lesson
                 <ArrowRight size={18} aria-hidden="true" />
               </button>
               <button type="button" className="lp-cta-secondary" onClick={onSignIn}>
@@ -477,7 +477,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
             <h2 id="lp-features-title" className="lp-h2">What you&apos;ll actually do</h2>
             <p className="lp-head-sub">
               Real examples from the app. {STAGES.length} stages and {MINI_UNITS.length} guided
-              missions, each a set of short steps.
+              lessons, each a set of short steps.
             </p>
           </div>
 
@@ -525,7 +525,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                 </div>
               </div>
               <p className="lp-feature-text">
-                Every mission opens with a short, friendly explanation and ends with a recap,
+                Every lesson opens with a short, friendly explanation and ends with a recap,
                 so you learn the why, not just word lists.
               </p>
               <div className="lp-feature-media">
@@ -553,8 +553,8 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
       <section className="lp-loop" aria-labelledby="lp-loop-title">
         <div className="lp-shell">
           <div className="lp-head lp-head-loop" data-reveal>
-            <span className="lp-eyebrow">The mission loop</span>
-            <h2 id="lp-loop-title" className="lp-h2">Every mission is a small, friendly loop</h2>
+            <span className="lp-eyebrow">The lesson loop</span>
+            <h2 id="lp-loop-title" className="lp-h2">Every lesson is a small, friendly loop</h2>
             <div className="lp-loop-mascot" aria-hidden="true">
               <span className="lp-loop-bubble">sàwàtdee khráp!</span>
               <img src="/characters/muay-thai/speaking.webp" alt="" />
@@ -580,9 +580,9 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
         <div className="lp-shell">
           <div className="lp-head" data-reveal>
             <span className="lp-eyebrow">Your journey</span>
-            <h2 id="lp-journey-title" className="lp-h2">Stages, broken into missions</h2>
+            <h2 id="lp-journey-title" className="lp-h2">Stages, broken into lessons</h2>
             <p className="lp-head-sub">
-              The course is {STAGES.length} stages. Finish a mission and the next one unlocks.
+              The course is {STAGES.length} stages. Finish a lesson and the next one unlocks.
               Clear, one step at a time.
             </p>
           </div>
@@ -602,7 +602,7 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
                   <span className="lp-journey-stage">
                     {stage}
                     {start && <span className="lp-journey-badge">Start here</span>}
-                    <span className="lp-journey-missions">{missions} missions</span>
+                    <span className="lp-journey-missions">{missions} lessons</span>
                   </span>
                   <span className="lp-journey-title">{title}</span>
                   <span className="lp-journey-text">{text}</span>

@@ -285,8 +285,8 @@ export default function DemoMode({
             <div className="demo-lesson-head">
               <span className="demo-lesson-icon" aria-hidden="true"><BookOpen size={18} /></span>
               <div>
-                <div className="demo-lesson-eyebrow">Missions are guided lessons</div>
-                <h2 className="demo-lesson-title">Every mission opens with a short explanation</h2>
+                <div className="demo-lesson-eyebrow">Guided lessons</div>
+                <h2 className="demo-lesson-title">Every lesson opens with a short explanation</h2>
               </div>
             </div>
             {lessonIntro && (
@@ -314,7 +314,7 @@ export default function DemoMode({
             )}
             <p className="demo-lesson-note demo-lesson-note-structure">
               The full course is {STAGES.length} stages. Each stage is a set of
-              short missions like this one.
+              short lessons like this one.
             </p>
           </div>
 
@@ -382,7 +382,7 @@ export default function DemoMode({
                 <span>{quizIsCorrect ? 'Correct.' : `Answer: ${quizCorrect.ph} (${quizCorrect.thai})`}</span>
               </div>
             )}
-            <p className="demo-smart-note">Quick checks like this follow the flashcards in every mission.</p>
+            <p className="demo-smart-note">Quick checks like this follow the flashcards in every lesson.</p>
           </div>
 
           {!quizChecked ? (

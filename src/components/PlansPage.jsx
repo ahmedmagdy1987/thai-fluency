@@ -33,12 +33,12 @@ const FREEMIUM_POINTS = [
   {
     Icon: Compass,
     title: 'The path is always yours',
-    text: `All ${STAGES.length} stages and ${MINI_UNITS.length} guided missions are free. You progress by learning, never by paying to skip ahead.`,
+    text: `All ${STAGES.length} stages and ${MINI_UNITS.length} guided lessons are free. You progress by learning, never by paying to skip ahead.`,
   },
   {
     Icon: Sparkles,
     title: 'Free gets you speaking',
-    text: 'Smart flashcards, quick checks, mini-lessons, streaks and XP are all included, free, from your very first mission.',
+    text: 'Smart flashcards, quick checks, mini-lessons, streaks and XP are all included, free, from your very first lesson.',
   },
   {
     Icon: ShieldCheck,
@@ -301,7 +301,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
               <span className="pl-plan-tag pl-plan-tag-live">Available now</span>
             </div>
             <PlanPriceTag plan={PLANS.free} />
-            <p className="pl-plan-blurb">{PLANS.free.tagline} Everything you need to start speaking Thai, from your first mission.</p>
+            <p className="pl-plan-blurb">{PLANS.free.tagline} Everything you need to start speaking Thai, from your first lesson.</p>
             <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startFree}>
               {isAuthed ? 'Your plan — keep learning' : PLANS.free.cta}
               <ArrowRight size={17} aria-hidden="true" />
@@ -412,7 +412,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
           </h2>
           <p className="pl-cta-sub">Learn something you can actually say in Thailand today.</p>
           <button type="button" className="pl-cta-primary pl-cta-band-btn" onClick={startFree}>
-            {isAuthed ? 'Back to learning' : 'Start your first mission'}
+            {isAuthed ? 'Back to learning' : 'Start your first lesson'}
             <ArrowRight size={18} aria-hidden="true" />
           </button>
           <a className="pl-cta-back" href={homePath} onClick={navClick(homePath)}>{homeLabel}</a>

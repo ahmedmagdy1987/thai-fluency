@@ -166,11 +166,11 @@ export default function LearnPath({
       {showMiniUnits && (
         <section className="learn-section">
           <div className="learn-section-header">
-            <h2 className="learn-section-title">Stage {currentStageId} missions</h2>
+            <h2 className="learn-section-title">Stage {currentStageId} lessons</h2>
             <span className="learn-section-meta">
               {miniUnitSequence.pathComplete
                 ? `Stage ${currentStageId} path complete`
-                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} missions complete`}
+                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} lessons complete`}
             </span>
           </div>
           {basics && (
@@ -187,7 +187,7 @@ export default function LearnPath({
                 ? 'Completed. Review anytime.'
                 : status === 'current'
                   ? 'Continue your path.'
-                  : 'Complete the previous mission to unlock.';
+                  : 'Complete the previous lesson to unlock.';
               const action = status === 'complete'
                 ? 'Review'
                 : status === 'current'
@@ -205,7 +205,7 @@ export default function LearnPath({
                   <div className="learn-miniunit-body">
                     <div className="learn-miniunit-eyebrow">
                       <span className={`learn-miniunit-badge learn-miniunit-badge-${status}`}>{badge}</span>
-                      <span className="learn-miniunit-num">Mission {idx + 1}</span>
+                      <span className="learn-miniunit-num">Lesson {idx + 1}</span>
                     </div>
                     <h2 className="learn-miniunit-title">{u.title}</h2>
                     <p className="learn-miniunit-copy">{locked ? note : u.subtitle}</p>
@@ -344,7 +344,7 @@ export default function LearnPath({
           <h2 className="learn-section-title">Your Thai journey</h2>
           <span className="learn-section-meta learn-journey-summary">
             <span>{STAGES.length} stages</span>
-            <span>{MINI_UNITS.length} guided missions</span>
+            <span>{MINI_UNITS.length} guided lessons</span>
           </span>
         </div>
 
