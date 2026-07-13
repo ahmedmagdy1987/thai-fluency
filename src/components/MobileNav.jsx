@@ -22,11 +22,14 @@ import {
 // Shop is in the nav (it's functional now — refill hearts with gems). Only
 // Leaderboard stays omitted (still unbuilt). Labels are kept in sync with
 // SidebarNav so the same tab reads the same everywhere (e.g. `cards` = "Practice").
+// Order matches the desktop SidebarNav (Learn → Practice → Quests → Challenge)
+// so the two navs agree — the audit flagged the Quests/Challenge order as
+// swapped between desktop and mobile.
 const PRIMARY = [
   { id: 'learn',  Icon: MapIcon, label: 'Learn' },
   { id: 'cards',  Icon: Layers,  label: 'Practice' },
-  { id: 'quiz',   Icon: Zap,     label: 'Challenge' },
   { id: 'quests', Icon: Target,  label: 'Quests' },
+  { id: 'quiz',   Icon: Zap,     label: 'Challenge' },
 ];
 
 const MORE = [

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Crown, X } from 'lucide-react';
 import { getUpsellCopy } from '../config/entitlements.js';
 
 export default function SuperUpgradePrompt({ reason = 'mission', onClose, onSeeSuper }) {
+  // Close on Escape, matching every other modal (SettingsModal pattern).
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape' && onClose) onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
   return (
     <div className="super-prompt-backdrop" role="dialog" aria-modal="true" aria-labelledby="super-prompt-title">
       <section className="super-prompt-card">

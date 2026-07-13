@@ -602,6 +602,12 @@ export default function TukTalkThaiApp() {
     const route = getRouteForPath(path);
     writeRoute(route.path, { replace: !!options.replace });
     applyRouteState(route);
+    // Reset scroll on a real forward navigation so footer links (→ /plans,
+    // /privacy, etc.) land at the top of the page, not mid-scroll. `replace` is
+    // used for silent route-sync and back/forward restore, so skip those.
+    if (!options.replace && typeof window !== 'undefined') {
+      try { window.scrollTo(0, 0); } catch { /* ignore */ }
+    }
   }, [applyRouteState]);
 
   useEffect(() => {
@@ -2065,7 +2071,12 @@ export default function TukTalkThaiApp() {
       );
       if (newlyDone.length > 0) {
         const items = newlyDone.map(q => ({ id: questCelebrationId(q.key, today), title: q.title }));
-        setQuestToasts(prev => [...prev, ...items]);
+        // Quests is locked until Stage 2. Don't toast quest completions while the
+        // tab is unreachable (confusing) — but still record them so they neither
+        // fire now nor retroactively spam the moment Quests unlocks. Toasts
+        // resume once the feature is actually reachable.
+        const questsUnlocked = (stageState?.maxUnlockedStage || 1) >= 2;
+        if (questsUnlocked) setQuestToasts(prev => [...prev, ...items]);
         markCelebrated(items.map(i => i.id));
       }
     }

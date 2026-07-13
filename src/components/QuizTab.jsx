@@ -81,18 +81,24 @@ export default function QuizTab({
   // session play is never interrupted — a heart hitting 0 during a Challenge
   // still lets the current round finish.
   const onIntro = questions.length === 0;
-  const outOfHearts = !isSuper && onIntro && hearts <= 0;
-  // Tick once a second while the gate is up so the regen countdown stays live.
+  const gateEligible = !isSuper && onIntro;
+  // Tick once a second while a free user sits on the intro out of hearts, so the
+  // regen count stays live and the gate SELF-CLEARS the moment a heart refills —
+  // no page refresh needed (the `hearts` prop can be a stale snapshot).
   const [nowTick, setNowTick] = useState(() => Date.now());
   useEffect(() => {
-    if (!outOfHearts) return undefined;
+    if (!gateEligible || hearts > 0) return undefined;
     const t = setInterval(() => setNowTick(Date.now()), 1000);
     return () => clearInterval(t);
-  }, [outOfHearts]);
+  }, [gateEligible, hearts]);
   const regen = useMemo(
-    () => (outOfHearts ? regenState(stats, nowTick) : null),
-    [outOfHearts, stats, nowTick]
+    () => (gateEligible ? regenState(stats, nowTick) : null),
+    [gateEligible, stats, nowTick]
   );
+  // Live regenerated heart count (falls back to the prop). The gate opens/closes
+  // on this, so a refilled heart clears the gate on its own tick.
+  const heartsLive = regen ? regen.hearts : hearts;
+  const outOfHearts = gateEligible && heartsLive <= 0;
   const canAffordRefill = gems >= REFILL_COST_GEMS;
 
   // Is the selected stage fully complete? Completed stages may be challenged on
@@ -270,17 +276,17 @@ export default function QuizTab({
           {poolError && <p className="quiz-pool-error">{poolError}</p>}
           {/* Hearts status on the intro (free users only). Super = unlimited. */}
           {!isSuper && !outOfHearts && (
-            <div className="quiz-hearts-status" aria-label={`Hearts: ${hearts} of ${HEART_MAX}`}>
+            <div className="quiz-hearts-status" aria-label={`Hearts: ${heartsLive} of ${HEART_MAX}`}>
               {Array.from({ length: HEART_MAX }).map((_, i) => (
                 <Heart
                   key={i}
                   size={16}
-                  className={i < hearts ? 'quiz-heart-full' : 'quiz-heart-empty'}
+                  className={i < heartsLive ? 'quiz-heart-full' : 'quiz-heart-empty'}
                   aria-hidden="true"
-                  fill={i < hearts ? 'currentColor' : 'none'}
+                  fill={i < heartsLive ? 'currentColor' : 'none'}
                 />
               ))}
-              <span className="quiz-hearts-status-text">{hearts}/{HEART_MAX}</span>
+              <span className="quiz-hearts-status-text">{heartsLive}/{HEART_MAX}</span>
             </div>
           )}
           {outOfHearts ? (
@@ -294,7 +300,7 @@ export default function QuizTab({
               <div className="quiz-hearts-gate-regen">
                 {regen && regen.nextRegenMs > 0
                   ? <>Next heart in <strong>{formatCountdown(regen.nextRegenMs)}</strong></>
-                  : 'A heart is ready — refresh to play.'}
+                  : 'A heart is ready — you can play now.'}
               </div>
               <div className="quiz-hearts-gate-actions">
                 {onRefillHearts && (

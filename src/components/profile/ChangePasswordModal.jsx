@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { X, Check, Circle, KeyRound } from 'lucide-react';
 import { supabase } from '../../lib/supabase.js';
 
@@ -21,6 +21,13 @@ export default function ChangePasswordModal({ email, onClose }) {
   const checks = useMemo(() => PWD_CHECKS.map(c => ({ ...c, ok: c.test(newPw) })), [newPw]);
   const newPwValid = checks.every(c => c.ok);
   const passwordsMatch = !!newPw && newPw === confirm;
+
+  // Close on Escape, matching every other modal (SettingsModal pattern).
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape' && onClose) onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
