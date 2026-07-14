@@ -226,6 +226,35 @@ const SCENES = [
         { name: 'honest + non-shaming ("Day 1 again", no "you lost")', pass: honest && noShame, detail: `honest=${honest} noShame=${noShame}` },
       ];
     } },
+
+  // ── Wave 2 (Passes 4 + 5) rendered proof ──────────────────────────────────
+  { name: 'mastery', url: (t) => harness('mastery', t),
+    async assert(page) {
+      const tracks = await page.locator('.mastery-track').count();
+      const reached = await page.locator('.mastery-dot-reached').count();
+      const optional = await page.locator('.mastery-dot-optional').count();
+      const summary = await page.locator('.mastery-summary').count();
+      return [
+        { name: 'mastery tracks render (taught->spoken)', pass: tracks >= 4 && summary >= 1, detail: `tracks=${tracks} summary=${summary}` },
+        { name: 'reached + optional(spoken) dots present', pass: reached >= 1 && optional >= 1, detail: `reached=${reached} optional=${optional}` },
+      ];
+    } },
+  { name: 'speaking', url: (t) => harness('speaking', t),
+    async assert(page) {
+      const root = await page.locator('[data-testid="speaking-exercise"]').count();
+      const mic = await page.locator('button.speaking-mic').count();
+      const honest = /not a tone or pronunciation score|does not score tone/i.test(await page.content());
+      return [
+        { name: 'speaking exercise renders where supported (mic present)', pass: root >= 1 && mic >= 1, detail: `root=${root} mic=${mic}` },
+        { name: 'honest framing (word check, not tone/pronunciation score)', pass: honest, detail: honest ? 'ok' : 'missing' },
+      ];
+    } },
+  { name: 'speaking-unsupported', url: (t) => harness('speaking-unsupported', t),
+    async assert(page) {
+      const root = await page.locator('[data-testid="speaking-exercise"]').count();
+      const mic = await page.locator('button.speaking-mic').count();
+      return [{ name: 'renders NOTHING where unsupported (no exercise, no mic, no stub)', pass: root === 0 && mic === 0, detail: `root=${root} mic=${mic}` }];
+    } },
 ];
 
 const VIEWPORTS = [{ w: 1280, h: 900, tag: 'desktop' }, { w: 375, h: 720, tag: 'mobile' }];

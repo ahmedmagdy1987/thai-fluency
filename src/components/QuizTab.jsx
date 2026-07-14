@@ -57,6 +57,11 @@ export default function QuizTab({
   onOpenSuper,
   onWatchAd,
   setTab,
+  // Mastery overlay (optional; no-op if absent). Called ONLY on a correct graded
+  // answer: thai-to-en → 'recognized', en-to-thai → 'produced'. Never on wrong.
+  // Advances a parallel achievement track only — never gates, never spends a
+  // heart, never touches SRS/grading/shuffle.
+  onMastery,
 }) {
   // Stages the user may be challenged on: unlocked and with content. Locked
   // stages are intentionally excluded so a Stage N Challenge can never pull
@@ -220,6 +225,9 @@ export default function QuizTab({
     combo.register(isCorrect);
     if (isCorrect) {
       setScore(prev => prev + 1);
+      // Mastery signal by direction (grade already by option.id above): reading
+      // Thai→English demonstrates recognition; English→Thai demonstrates production.
+      onMastery?.(current.correct.id, type === 'thai-to-en' ? 'recognized' : 'produced');
       coach.react('correct', { duration: 1700 });
       playCharacterCorrect(coachId);
     } else {

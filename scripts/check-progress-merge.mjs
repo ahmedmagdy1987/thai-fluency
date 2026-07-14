@@ -5,7 +5,7 @@
 // un-graduates, XP is never additively double-counted, and Super can never come
 // from local state. Exits non-zero on any failure.
 
-import { mergeProgress, mergeStats, mergeCloudSettings, mergeCard } from '../src/lib/progressMerge.js';
+import { mergeProgress, mergeStats, mergeCloudSettings, mergeCard, mergeMasteryRank } from '../src/lib/progressMerge.js';
 
 let failures = 0;
 const check = (label, cond, extra = '') => {
@@ -145,6 +145,21 @@ const card = (o = {}) => ({ ease: 2.5, interval: 0, reviews: 0, lapses: 0, learn
 {
   const c = mergeCard(card({ reviews: 0, learning: true }), undefined);
   check('extra: mergeCard with one side returns that side untouched', c.reviews === 0 && c.learning === true);
+}
+
+// 13. masteryRank (Pass 4) merges element-wise MAX (monotonic, non-rewarding) and never touches tier.
+{
+  const local = { masteryRank: { 10: 2, 11: 1, 13: 3 }, tier: 'free' };
+  const cloud = { masteryRank: { 10: 1, 11: 3, 12: 2 }, tier: 'free' };
+  const direct = mergeMasteryRank(local.masteryRank, cloud.masteryRank);
+  check('13 masteryRank element-wise max (existing card, local higher)', direct[10] === 2);
+  check('13 masteryRank element-wise max (existing card, cloud higher)', direct[11] === 3);
+  check('13 masteryRank union keeps cloud-only card', direct[12] === 2);
+  check('13 masteryRank union keeps local-only card', direct[13] === 3);
+  check('13 masteryRank never downgrades', mergeMasteryRank({ 5: 3 }, { 5: 0 })[5] === 3);
+  const merged = mergeStats(local, cloud);
+  check('13 mergeStats carries merged masteryRank', merged.masteryRank[10] === 2 && merged.masteryRank[11] === 3);
+  check('13 mergeStats never emits tier from mastery merge', !('tier' in merged));
 }
 
 if (failures > 0) {

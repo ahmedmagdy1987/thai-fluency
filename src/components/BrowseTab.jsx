@@ -7,9 +7,11 @@ import { DIALOGUES } from '../data/reference.js';
 import { CATEGORIES, STAGES } from '../data/taxonomy.js';
 import { displayCard, displayLine, transformThai, transformPh, transformEn, DEFAULT_VOICE, DEFAULT_VIEW_MODE } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
+import { taughtCardIds, MASTERY_STATES } from '../lib/mastery.js';
+import MasteryTrack, { MasterySummary } from './MasteryTrack.jsx';
 import DialoguesView from './DialoguesView.jsx';
 
-export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueComplete, dialoguesCompleted, voice, viewMode, audioRate }) {
+export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueComplete, dialoguesCompleted, voice, viewMode, audioRate, masteryRank = {}, completedMiniUnits = [] }) {
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState(null);
   const [activeStage, setActiveStage] = useState(null);
@@ -60,6 +62,18 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
     });
     return map;
   }, [visibleDeck]);
+
+  // Mastery overlay: build the derived "taught" set ONCE (progress keys ∪
+  // completed-mini-unit card sets), then derive each row's state cheaply. Purely
+  // read-time — the overlay never gates browsing (README §6 HARD RULE).
+  const taughtSet = useMemo(
+    () => taughtCardIds(progress, completedMiniUnits),
+    [progress, completedMiniUnits]
+  );
+  const masteryStateFor = (id) => {
+    const rank = Number(masteryRank?.[id]) || 0;
+    return (rank > 0 || taughtSet.has(Number(id))) ? MASTERY_STATES[rank] : null;
+  };
 
   return (
     <div className="tab-content">
@@ -166,6 +180,17 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                   : `${filtered.length} ${filtered.length === 1 ? 'item' : 'items'}`)}
           </div>
 
+          {/* Where each item stands: aggregate mastery across the filtered deck. */}
+          {filtered.length > 0 && (
+            <MasterySummary
+              cards={filtered}
+              progress={progress}
+              masteryRank={masteryRank}
+              completedMiniUnits={completedMiniUnits}
+              className="browse-mastery-summary"
+            />
+          )}
+
           {filtered.length > 0 && (
             <div className="vocab-list">
               {filtered.slice(0, visibleCount).map(rawC => {
@@ -193,6 +218,8 @@ export default function BrowseTab({ progress, maxUnlockedStage, recordDialogueCo
                         </div>
                       )}
                     </div>
+                    {/* Per-card mastery depth (taught → recognized → produced → spoken). */}
+                    <MasteryTrack state={masteryStateFor(c.id)} className="vocab-item-mastery" />
                   </div>
                 );
               })}

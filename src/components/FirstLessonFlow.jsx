@@ -78,6 +78,9 @@ export default function FirstLessonFlow({
   initialProgress,
   onProgressChange,
   onComplete,
+  // Mastery overlay (optional; no-op if absent). The EN→Thai mini-challenge is
+  // production → 'produced'. Fired ONLY on a correct answer; never gates/scores.
+  onMastery,
 }) {
   const vocabCards = useMemo(() => cardsByIds(unit.vocabCardIds || [], voice), [unit, voice]);
   const sentenceCard = useMemo(() => cardsByIds(unit.sentenceCardId ? [unit.sentenceCardId] : [], voice)[0] || null, [unit, voice]);
@@ -314,6 +317,8 @@ export default function FirstLessonFlow({
     combo.register(isCorrect);
     if (isCorrect) {
       setScore(current => current + 1);
+      // EN→Thai production of the practiced card → 'produced' mastery depth.
+      onMastery?.(currentQuestion.correct.id, 'produced');
       playCorrect();
     } else {
       playWrong();

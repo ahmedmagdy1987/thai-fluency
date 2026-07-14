@@ -42,6 +42,7 @@ import {
   GEMS_PER_CHALLENGE_PASS,
   GEMS_PER_DAILY_GOAL,
 } from './lib/economy.js';
+import { advanceMastery, RANK } from './lib/mastery.js';
 import { resolveCoachIdForStage } from './data/stageCharacters.js';
 import { getStageCinematic } from './data/stageCinematics.js';
 import { setSoundEffectsEnabled } from './lib/sounds.js';
@@ -1185,6 +1186,15 @@ export default function TukTalkThaiApp() {
       }
       return next;
     });
+  }, []);
+
+  // Mastery overlay handler (Pass 4): records recognized/produced/spoken depth on a
+  // CORRECT graded answer only. MAX-monotonic via advanceMastery; a SIBLING map in
+  // stats; never gates progression, never touches tier, never spends a heart.
+  const handleMastery = useCallback((cardId, level) => {
+    const rank = RANK[level];
+    if (!(rank > 0)) return; // ignore unknown levels; 'taught' is derived, not stored
+    setStats(s => ({ ...s, masteryRank: advanceMastery(s.masteryRank || {}, cardId, rank) }));
   }, []);
 
   // Consume a captured streak break (set inside grantXp's setStats updater) and
@@ -2481,6 +2491,7 @@ export default function TukTalkThaiApp() {
           initialProgress={stats.firstLessonProgress}
           onProgressChange={handleFirstLessonProgressChange}
           onComplete={completeFirstLesson}
+          onMastery={handleMastery}
         />
       </div>
     );
@@ -2540,6 +2551,7 @@ export default function TukTalkThaiApp() {
           audioRate={audioRate}
           showCharacters={stats.showCharacters !== false}
           initialProgress={stats.miniUnitProgress}
+          onMastery={handleMastery}
           onProgressChange={handleMiniUnitProgressChange}
           onExit={handleExitMiniUnit}
           onOpenCards={() => handleFinishMiniUnitAndOpen('cards')}
@@ -2556,9 +2568,9 @@ export default function TukTalkThaiApp() {
           {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
-          {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} />}
-          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('quiz')} onWatchAd={handleWatchAd} setTab={handleSetTab} />}
-          {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} voice={voice} audioRate={audioRate} showCharacters={stats.showCharacters !== false} />}
+          {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} masteryRank={stats.masteryRank || {}} completedMiniUnits={stats.completedMiniUnits || []} />}
+          {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('quiz')} onWatchAd={handleWatchAd} onMastery={handleMastery} setTab={handleSetTab} />}
+          {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} voice={voice} audioRate={audioRate} showCharacters={stats.showCharacters !== false} onMastery={handleMastery} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={() => handleOpenPremium()} />}
           {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} streakFreezes={stats.streakFreezes || 0} onRefillHearts={handleRefillHearts} onBuyFreeze={handleBuyFreeze} onOpenSuper={() => handleOpenPremium('shop')} />}
           {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={() => handleOpenPremium('dating')} setTab={handleSetTab} />}

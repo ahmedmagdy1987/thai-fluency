@@ -98,35 +98,176 @@ export function speechRecognitionAvailable() {
  * }>} score  The paid-only signal (0..1 tone accuracy).
  */
 
-// A shared not-implemented error for the placeholder mic body (Pass 5 removes it).
-const NOT_WIRED = 'speech.js: browser SpeechRecognition capture is not wired yet '
-  + '(lands in Pass 5 / SpeakingExercise.jsx). getRecognizer() resolves the seam; '
-  + 'listen() has no mic implementation in Pass 2.';
+// ── Coarse WORD-match verdict (free tier) ─────────────────────────────────────
+// Maps a browser transcript to 'correct'|'close'|'wrong' by comparing the Thai
+// the engine RETURNED against `target` (= card.thai, NEVER ph). This is a WORD
+// match, never a tone judgement: the engine has already snapped a mistoned
+// attempt to the nearest real Thai word, so tone information is gone by the time
+// we ever see the transcript (see HONEST LIMIT at the top of this file). Pure,
+// dependency-free — safe to import where the SpeechRecognition API is absent.
+
+// Normalise for comparison: NFC, fold whitespace to single spaces (the engine may
+// insert spaces between recognised words; `card.thai` may or may not have them),
+// and strip punctuation + the Thai repetition/ellipsis marks. We deliberately
+// KEEP Thai letters and their spelling marks intact — we are string-matching the
+// word the engine heard against the Thai script, never scoring tone.
+function normalizeThai(s) {
+  return (s == null ? '' : String(s))
+    .normalize('NFC')
+    .replace(/[\s\u200b\u200c\u200d]+/g, ' ')
+    .replace(/[.,!?;:"'`~^*_/\\()[\]{}<>…ฯๆ|]/g, '')
+    .trim()
+    .toLowerCase();
+}
+
+function thaiTokens(s) {
+  const n = normalizeThai(s);
+  return n ? n.split(' ').filter(Boolean) : [];
+}
+
+// Levenshtein ratio — a coarse similarity for single-word (space-less) Thai,
+// where token overlap cannot help. 1 = identical, 0 = nothing in common.
+function similarity(a, b) {
+  const m = a.length, n = b.length;
+  if (!m && !n) return 1;
+  if (!m || !n) return 0;
+  let prev = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    const cur = new Array(n + 1);
+    cur[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = cur;
+  }
+  return 1 - prev[n] / Math.max(m, n);
+}
 
 /**
- * The FREE browser recognizer. In Pass 2 this is a DETECTION + SEAM placeholder:
- * `available()` is fully live (drives the gate), but `listen()` is a stub that
- * throws — there is no mic logic yet. Pass 5 replaces ONLY the marked block.
+ * Coarse verdict for one utterance. `alternatives` is the list of transcript
+ * strings the engine offered (best first). Returns 'correct' on an exact
+ * normalised match of ANY alternative; 'close' on strong containment / token
+ * overlap / character similarity; otherwise 'wrong'. NEVER a tone comparison.
+ * @param {string[]} alternatives
+ * @param {string} target  = card.thai (never ph)
+ * @returns {SpeakVerdict}
+ */
+function coarseVerdict(alternatives, target) {
+  const targetNorm = normalizeThai(target);
+  if (!targetNorm) return 'wrong';
+  const alts = (alternatives || []).map(normalizeThai).filter(Boolean);
+  if (alts.length === 0) return 'wrong';
+  if (alts.some((a) => a === targetNorm)) return 'correct';
+
+  const targetTokenSet = new Set(thaiTokens(target));
+  let best = 'wrong';
+  for (const a of alts) {
+    if (a.includes(targetNorm) || targetNorm.includes(a)) { best = 'close'; continue; }
+    if (targetTokenSet.size > 0) {
+      const heardTokens = a.split(' ').filter(Boolean);
+      const hits = heardTokens.filter((w) => targetTokenSet.has(w)).length;
+      if (hits / targetTokenSet.size >= 0.5) { best = 'close'; continue; }
+    }
+    if (similarity(a, targetNorm) >= 0.7) best = 'close';
+  }
+  return best;
+}
+
+/**
+ * The FREE browser recognizer. `available()` drives the feature gate; `listen()`
+ * captures one utterance via the browser `SpeechRecognition` API (constructed
+ * lazily, th-TH) and returns a COARSE word verdict against `card.thai` — never a
+ * tone judgement (HONEST LIMIT, top of file). The paid `PronunciationScorer` seam
+ * (getRecognizer / loadPronunciationScorer, below) is unchanged and unaffected.
  *
  * @returns {CoarseRecognizer}
  */
 export function browserCoarseRecognizer() {
   return {
     available: () => speechRecognitionAvailable(),
-    // eslint-disable-next-line no-unused-vars
-    listen: async ({ lang = 'th-TH', target } = {}) => {
-      // ┌─ PASS 5 WIRING LANDS HERE ────────────────────────────────────────────┐
-      // │ const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;│
-      // │ const rec = new Rec();                                                 │
-      // │ rec.lang = lang; rec.interimResults = false; rec.maxAlternatives = 3;  │
-      // │ // start on a user gesture, resolve on `result`, guard `error`/`end`   │
-      // │ // with a safety timeout (mirror the audio.js _speakWeb() hardening);  │
-      // │ // then map the transcript → 'correct'|'close'|'wrong' by WORD match   │
-      // │ // to `target` (= card.thai, NEVER ph). No tone judgement — see        │
-      // │ // HONEST LIMIT at the top of this file.                               │
-      // └────────────────────────────────────────────────────────────────────────┘
-      throw new Error(NOT_WIRED);
-    },
+    // Capture ONE utterance and return a coarse WORD verdict against `target`
+    // (= card.thai, NEVER ph). MUST be called from a user gesture — the browser
+    // prompts for mic permission on the first `start()`. The SpeechRecognition
+    // instance is constructed lazily HERE (never at module load) so this module
+    // imports cleanly where the API is absent (validators / native / SSR).
+    //
+    // Resolves { transcript, verdict } on a recognition result. REJECTS with an
+    // Error carrying a `.code` so the caller can branch:
+    //   'not-allowed' | 'service-not-allowed' → permission denied (hide mic path)
+    //   'no-speech' | 'audio-capture' | 'aborted' | 'network' | 'timeout'
+    //     | 'start-failed' | 'unsupported'    → transient / retryable, non-fatal
+    // It never grades tone — see HONEST LIMIT at the top of this file.
+    listen: ({ lang = 'th-TH', target } = {}) => new Promise((resolve, reject) => {
+      const Rec = typeof window !== 'undefined'
+        && (window.SpeechRecognition || window.webkitSpeechRecognition);
+      if (!Rec) {
+        const err = new Error('speech.js: SpeechRecognition unavailable');
+        err.code = 'unsupported';
+        reject(err);
+        return;
+      }
+
+      let rec;
+      let settled = false;
+      let timer = null;
+      const finish = (fn, val) => {
+        if (settled) return;
+        settled = true;
+        if (timer) clearTimeout(timer);
+        try { if (rec && typeof rec.abort === 'function') rec.abort(); } catch (_) { /* ignore */ }
+        fn(val);
+      };
+      const fail = (code) => {
+        const err = new Error(`speech.js: recognition ${code}`);
+        err.code = code;
+        finish(reject, err);
+      };
+
+      try {
+        rec = new Rec();
+      } catch (_) {
+        fail('start-failed');
+        return;
+      }
+      rec.lang = lang;
+      rec.interimResults = false;
+      rec.maxAlternatives = 3;
+      try { rec.continuous = false; } catch (_) { /* some engines lack it */ }
+
+      // Safety timeout: some engines never fire `end`/`error` if the OS dialog is
+      // dismissed or the user never speaks. Mirror the audio.js _speakWeb()
+      // hardening so a stuck recognizer can never hang the UI forever.
+      timer = setTimeout(() => fail('timeout'), 12000);
+
+      rec.onresult = (event) => {
+        const alts = [];
+        try {
+          const res = event && event.results && event.results[0];
+          if (res) {
+            for (let i = 0; i < res.length; i++) {
+              const t = res[i] && res[i].transcript;
+              if (typeof t === 'string') alts.push(t);
+            }
+          }
+        } catch (_) { /* ignore malformed result */ }
+        const transcript = alts[0] || '';
+        finish(resolve, { transcript, verdict: coarseVerdict(alts, target) });
+      };
+
+      rec.onerror = (event) => fail((event && event.error) || 'error');
+
+      // If recognition ends with no result and no error, nothing was heard.
+      rec.onend = () => { if (!settled) fail('no-speech'); };
+
+      try {
+        rec.start();
+      } catch (_) {
+        // start() throws if called twice or outside a user gesture.
+        fail('start-failed');
+      }
+    }),
   };
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Award, Volume2, BookOpen, Sparkles, AlertTriangle, Heart, Ear } from 'lucide-react';
+import { TrendingUp, Award, Volume2, BookOpen, Sparkles, AlertTriangle, Heart, Ear, Mic } from 'lucide-react';
 import TonesQuizSection from './TonesQuizSection.jsx';
 import TonesSection from './TonesSection.jsx';
 import PronunciationSection from './PronunciationSection.jsx';
@@ -8,9 +8,12 @@ import IdiomsSection from './IdiomsSection.jsx';
 import ErrorsSection from './ErrorsSection.jsx';
 import CultureSection from './CultureSection.jsx';
 import ListenMeaning from './ListenMeaning.jsx';
+import SpeakingExercise from './SpeakingExercise.jsx';
+import { speechRecognitionAvailable } from '../lib/speech.js';
 
-export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuizPassed, voice = 'male', audioRate = 0.9, showCharacters = true }) {
+export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuizPassed, voice = 'male', audioRate = 0.9, showCharacters = true, onMastery }) {
   const [section, setSection] = useState('tones');
+  const speakingSupported = speechRecognitionAvailable();
   return (
     <div className="tab-content">
       <div className="guide-section-tabs">
@@ -18,6 +21,7 @@ export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuiz
           { id: 'tones', label: 'Tones', icon: TrendingUp },
           { id: 'tones-quiz',label: 'Tone Challenge', icon: Award },
           { id: 'listen', label: 'Listen & Match', icon: Ear },
+          ...(speakingSupported ? [{ id: 'say', label: 'Say It', icon: Mic }] : []),
           { id: 'pronoun', label: 'Pronunciation', icon: Volume2 },
           { id: 'patterns', label: 'Patterns', icon: BookOpen },
           { id: 'idioms', label: 'Idioms', icon: Sparkles },
@@ -36,7 +40,10 @@ export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuiz
 
       {section === 'tones'      && <TonesSection />}
       {section === 'tones-quiz' && <TonesQuizSection onComplete={onTonesQuizComplete} bestScore={tonesQuizBest} passed={tonesQuizPassed} />}
-      {section === 'listen'     && <ListenMeaning voice={voice} audioRate={audioRate} showCharacters={showCharacters} />}
+      {section === 'listen'     && <ListenMeaning voice={voice} audioRate={audioRate} showCharacters={showCharacters} onMastery={onMastery} />}
+      {section === 'say' && speakingSupported && (
+        <SpeakingExercise voice={voice} audioRate={audioRate} showCharacters={showCharacters} onMastery={onMastery} />
+      )}
       {section === 'pronoun'    && <PronunciationSection />}
       {section === 'patterns'   && <PatternsSection />}
       {section === 'idioms'     && <IdiomsSection />}

@@ -73,7 +73,7 @@ function buildRound(voice) {
   });
 }
 
-export default function ListenMeaning({ voice = 'male', audioRate = 0.9, showCharacters = true, onComplete }) {
+export default function ListenMeaning({ voice = 'male', audioRate = 0.9, showCharacters = true, onComplete, onMastery }) {
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
@@ -125,6 +125,9 @@ export default function ListenMeaning({ voice = 'male', audioRate = 0.9, showCha
     const isCorrect = opt.id === current.correct.id;
     if (isCorrect) {
       setScore((s) => s + 1);
+      // Correct listen-meaning = comprehension from sound → recognition depth.
+      // Optional no-op if the parent doesn't pass onMastery; never gates/scores.
+      onMastery?.(current.correct.id, 'recognized');
       coach.react('correct', { duration: 1600 });
       playCharacterCorrect(coachId);
     } else {

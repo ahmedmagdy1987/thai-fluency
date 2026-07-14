@@ -161,6 +161,10 @@ export default function MiniUnitFlow({
   onExit,
   onOpenCards,
   onOpenChallenge,
+  // Mastery overlay (optional; no-op if absent). The EN→Thai mini-challenge is
+  // production → 'produced'; threaded to the nested SentenceBuilder too. Fired
+  // ONLY on a correct answer; never gates, scores, or spends a heart.
+  onMastery,
 }) {
   const savedProgress = initialProgress?.unitId === unit.unitId ? initialProgress : null;
   const [step, setStep] = useState(savedProgress?.step || 'intro');
@@ -336,6 +340,8 @@ export default function MiniUnitFlow({
     combo.register(isCorrect);
     if (isCorrect) {
       setChallengeScore(score => score + 1);
+      // EN→Thai production of the practiced card → 'produced' mastery depth.
+      onMastery?.(currentChallenge.correct.id, 'produced');
       playCharacterCorrect(coachId);
       coach.react('correct', { duration: 1400 });
     } else {
@@ -440,6 +446,7 @@ export default function MiniUnitFlow({
           showCharacters={showCharacters}
           characterId={coachId}
           onComplete={finishBuilder}
+          onMastery={onMastery}
         />
       )}
 

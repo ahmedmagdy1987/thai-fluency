@@ -17,6 +17,10 @@ export default function SentenceBuilder({
   showCharacters = true,
   characterId = 'elephant',
   onComplete,
+  // Mastery overlay (optional; no-op if absent). Building the Thai sentence from
+  // its tokens is production → 'produced' for the source card. Fired ONCE on a
+  // correct build; never on a wrong attempt. Never gates, scores, or spends.
+  onMastery,
 }) {
   const tokens = useMemo(() => (data && Array.isArray(data.tokens) ? data.tokens : []), [data]);
   const answer = useMemo(() => (data && Array.isArray(data.answer) ? data.answer : []), [data]);
@@ -57,6 +61,7 @@ export default function SentenceBuilder({
     if (!isComplete || locked) return;
     if (isBuilderCorrect(arranged, answer)) {
       setStatus('correct');
+      if (data?.sourceCardId != null) onMastery?.(data.sourceCardId, 'produced');
       playCharacterCorrect(characterId);
       playCelebration();
       coach.react('correct', { duration: 1800, message: 'That is the sentence!' });

@@ -17,12 +17,23 @@ import ListenMeaning from '../../src/components/ListenMeaning.jsx';
 import ComboBadge from '../../src/components/ComboBadge.jsx';
 import MissionCompleteRewardScreen from '../../src/components/MissionCompleteRewardScreen.jsx';
 import StreakRecoveryCard from '../../src/components/StreakRecoveryCard.jsx';
+import MasteryTrack, { MasterySummary } from '../../src/components/MasteryTrack.jsx';
+import SpeakingExercise from '../../src/components/SpeakingExercise.jsx';
 import { CARDS } from '../../src/data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../../src/data/miniUnits.js';
 
 const params = new URLSearchParams(location.search);
 const scene = params.get('scene') || 'dating-teaser';
 const theme = params.get('theme') === 'dark' ? 'dark' : 'light';
+
+// Speaking scenes need deterministic SpeechRecognition availability in headless.
+if (scene === 'speaking' && !window.SpeechRecognition && !window.webkitSpeechRecognition) {
+  window.SpeechRecognition = function SpeechRecognitionStub() { this.start = () => {}; this.stop = () => {}; this.abort = () => {}; };
+}
+if (scene === 'speaking-unsupported') {
+  window.SpeechRecognition = undefined;
+  window.webkitSpeechRecognition = undefined;
+}
 
 const noop = () => {};
 const superStats = { tier: 'super', hearts: 5, gems: 200, streak: 3, totalXp: 500, totalReviews: 40 };
@@ -141,6 +152,29 @@ function sceneEl() {
     case 'streak-recovery':
       // Pass 3: honest, non-shaming streak-break recovery with the gem-freeze bridge.
       return <StreakRecoveryCard bestStreak={12} gems={50} onStudyNow={noop} onBuyFreeze={noop} />;
+    case 'mastery': {
+      // Pass 4: the mastery overlay — per-card 4-dot track + aggregate summary.
+      const cards = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      const progress = { 1: {}, 2: {}, 4: {} };
+      const masteryRank = { 1: 2, 2: 1, 3: 3 };
+      return (
+        <div className="tab-content" style={{ maxWidth: 520, margin: '32px auto', padding: 24 }}>
+          <h2 className="guide-h2">Mastery</h2>
+          <MasterySummary cards={cards} progress={progress} masteryRank={masteryRank} completedMiniUnits={[]} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, marginTop: 16 }}>
+            {['taught', 'recognized', 'produced', 'spoken'].map((st) => (
+              <MasteryTrack key={st} state={st} showLabels />
+            ))}
+          </div>
+        </div>
+      );
+    }
+    case 'speaking':
+      // Pass 5: the gated speaking drill where the browser supports SpeechRecognition.
+      return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" audioRate={0.9} showCharacters /></div>;
+    case 'speaking-unsupported':
+      // Pass 5: SpeechRecognition removed → the exercise renders NOTHING (returns null).
+      return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" /></div>;
     default:
       return <div style={{ padding: 40 }}>Unknown scene: {scene}</div>;
   }

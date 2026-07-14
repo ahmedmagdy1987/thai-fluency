@@ -24,6 +24,23 @@ function unionIds(a, b) {
   return [...new Set([...(Array.isArray(a) ? a : []), ...(Array.isArray(b) ? b : [])])];
 }
 
+// ── Mastery-rank merge (class MAX, per-card) ─────────────────────────────────
+// `masteryRank` is a NEW sibling map in stats ({ [cardId]: 0|1|2|3 }) recording
+// the derived mastery overlay (taught→recognized→produced→spoken). It lives
+// OUTSIDE the SRS card object (mergeCard is untouched). Merge = element-wise
+// Math.max over the union of card ids: monotonic and non-rewarding, so a merge
+// can never grant a reward or a tier and never downgrades a learner's depth —
+// identical policy to interval/reviews/currentStage (the STATS_MAX counters).
+// Never routed through tier (mergeStats deletes tier/superUntil below).
+export function mergeMasteryRank(localMap, cloudMap) {
+  const l = localMap && typeof localMap === 'object' ? localMap : {};
+  const c = cloudMap && typeof cloudMap === 'object' ? cloudMap : {};
+  const out = {};
+  const ids = new Set([...Object.keys(l), ...Object.keys(c)]);
+  for (const id of ids) out[id] = Math.max(num(l[id]), num(c[id]));
+  return out;
+}
+
 // ── Per-card SRS merge ───────────────────────────────────────────────────────
 // "More advanced" is ordered by review count, then interval (mastery / how far
 // out it is scheduled), then most-recent study. The dominant entry supplies the
@@ -106,6 +123,11 @@ export function mergeStats(local, cloud) {
   for (const k of STATS_MAX) out[k] = Math.max(num(l[k]), num(c[k]));
   for (const k of STATS_OR) out[k] = !!l[k] || !!c[k];
   for (const k of STATS_UNION) out[k] = unionIds(l[k], c[k]);
+  // Mastery overlay: per-card MAX merge (monotonic, non-rewarding). Only emit a
+  // merged map when either side actually has one, so untouched stats stay clean.
+  if ((l.masteryRank && typeof l.masteryRank === 'object') || (c.masteryRank && typeof c.masteryRank === 'object')) {
+    out.masteryRank = mergeMasteryRank(l.masteryRank, c.masteryRank);
+  }
   // Guard: entitlement fields must never be carried by a stats merge.
   delete out.tier;
   delete out.superUntil;

@@ -37,6 +37,10 @@ export const DEFAULT_STATS = {
   // Units whose sentence-builder step has already paid out its one-time XP
   // (prevents replay/refresh from farming the builder reward).
   builderRewardedUnits: [],
+  // Mastery overlay (Pass 4): per-card depth counter { [cardId]: 0|1|2|3 }.
+  // SIBLING map — never inside srsState. MAX-monotonic; merged by mergeMasteryRank
+  // (class 'max'); never routed through tier; never gates progression.
+  masteryRank: {},
   superPromptLastShownAt: null,
   // Premium entitlement tier. See src/config/entitlements.js. Defaults to 'free';
   // the REAL tier is overwritten at load by the server-authoritative entitlement
