@@ -19,16 +19,27 @@ function cardsByIds(ids, voice) {
     .map(card => displayCard(card, voice) || card);
 }
 
-function rotateOptions(options, shift) {
-  if (options.length < 2) return options;
-  const offset = shift % options.length;
-  return [...options.slice(offset), ...options.slice(0, offset)];
+// Fisher-Yates shuffle (pure; copies the input). Used to randomize BOTH the
+// question order and each question's option order per attempt.
+function shuffle(items) {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
+// MiniUnitFlow is a REPEATABLE quiz (replayable from LearnPath), so a fixed
+// layout let a learner memorize "question 1 = option 4" by position instead of
+// meaning (B6). Shuffle the QUESTION order AND each question's OPTIONS on every
+// build. Correctness is tracked by option.id (never by index), so shuffling the
+// display order can't desync the answer. This runs inside useMemo([challengeCards])
+// below, so it reshuffles once per mount = once per attempt.
 function buildMiniChallenge(cards) {
-  return cards.map((correct, index) => {
+  return shuffle(cards).map((correct) => {
     const distractors = cards.filter(card => card.id !== correct.id).slice(0, 3);
-    const options = rotateOptions([correct, ...distractors], index);
+    const options = shuffle([correct, ...distractors]);
     return {
       id: `mini-${correct.id}`,
       correct,
@@ -154,11 +165,16 @@ export default function MiniUnitFlow({
   const [vocabIndex, setVocabIndex] = useState(() => safeNonNegativeIndex(savedProgress?.vocabIndex));
   const [revealed, setRevealed] = useState(!!savedProgress?.revealed);
   const [challengeIndex, setChallengeIndex] = useState(() => safeNonNegativeIndex(savedProgress?.challengeIndex));
-  const [selectedId, setSelectedId] = useState(savedProgress?.selectedId || null);
-  const [checked, setChecked] = useState(!!savedProgress?.checked);
+  // Do NOT restore a mid-question selection: the per-attempt reshuffle in
+  // buildMiniChallenge means a saved option id no longer maps to this render's
+  // options, so a resumed challenge question always starts unanswered (B6).
+  // challengeIndex and the running score are still restored, so resume position
+  // is preserved.
+  const [selectedId, setSelectedId] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [challengeScore, setChallengeScore] = useState(savedProgress?.challengeScore || 0);
   const [builderComplete, setBuilderComplete] = useState(!!savedProgress?.builderComplete);
-  const checkLockedRef = useRef(!!savedProgress?.checked);
+  const checkLockedRef = useRef(false);
   const completedSoundRef = useRef(false);
 
   // The unit has a sentence-builder step only when it ships explicit, safe

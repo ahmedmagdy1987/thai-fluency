@@ -23,8 +23,8 @@ const assert = (n, c, d) => (c ? ok(n) : fail(n, d));
 // ── (a) 0 hearts blocks STARTING a graded activity ──────────────────────────
 const quiz = read('src/components/QuizTab.jsx');
 assert('(a) startQuiz refuses to start the Challenge at 0 hearts (free users)',
-  /if \(!isSuper && hearts <= 0\) \{[\s\S]{0,120}return;/.test(quiz),
-  'startQuiz must early-return when a free user has 0 hearts');
+  /if \(!isSuper && hearts(?:Live)? <= 0\) \{[\s\S]{0,120}return;/.test(quiz),
+  'startQuiz must early-return when a free user has 0 (live) hearts');
 assert('(a) the intro renders the out-of-hearts gate instead of a start control',
   quiz.includes('outOfHearts ?') && quiz.includes('quiz-hearts-gate'));
 assert('(a) the gate always offers a free way forward (never a dead end)',

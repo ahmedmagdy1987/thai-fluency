@@ -116,6 +116,30 @@ npm run build
 
 This creates a `dist/` folder with optimized static files. You can host these anywhere — Vercel, Netlify, GitHub Pages, your own server.
 
+## Rendered visual checks (Playwright)
+
+`scripts/visual-check.mjs` drives a real headless Chromium over the app's key
+screens (Dating lesson/quiz, the out-of-hearts gate, Settings, Shop, the
+MiniUnit challenge shuffle, the canceled-plan copy, `/feedback`) at both themes
+and desktop + 375px, captures screenshots to `scripts/viz/artifacts/`, and
+asserts on the live DOM.
+
+One-time on a fresh machine, download the browser binary:
+
+```bash
+npx playwright install chromium
+```
+
+Then, with the dev server running (`npm run dev` in another terminal), run:
+
+```bash
+npm run visual                                                   # all scenes
+node scripts/visual-check.mjs http://localhost:5173 --only mini-unit-shuffle
+```
+
+Screenshots land in `scripts/viz/artifacts/` (gitignored). The script always
+exits 0 — visual asserts are advisory and backed by the screenshots.
+
 ## Deploying to Vercel (free, ~5 minutes)
 
 1. Create a free GitHub account at github.com

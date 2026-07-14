@@ -2,7 +2,7 @@
 -- Tuk Talk Thai — Supabase schema
 -- ============================================================================
 -- Paste this entire file into the Supabase SQL Editor and click Run.
--- Creates 5 tables, row-level security policies, auto-provisioning trigger,
+-- Creates 6 tables, row-level security policies, auto-provisioning trigger,
 -- and updated_at triggers. Safe to re-run: uses `create table if not exists`
 -- where Postgres allows; otherwise wrapped in idempotent checks.
 --
@@ -74,6 +74,12 @@ create table if not exists public.user_stats (
   stage1_celebration_shown boolean default false,
   dialogues_completed jsonb default '[]'::jsonb,
   known_card_ids jsonb default '[]'::jsonb,
+  -- Hearts + gems economy (migration 009_hearts_gems_cancel). hearts: gentle
+  -- lives used ONLY in the Challenge (max 5, regenerate over time, Super =
+  -- unlimited); gems: earned currency spent in the Shop.
+  hearts integer not null default 5,
+  gems integer not null default 0,
+  hearts_updated_at timestamptz,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -253,3 +259,57 @@ as $$
 $$;
 
 grant execute on function public.email_exists(text) to anon, authenticated;
+
+-- ----------------------------------------------------------------------------
+-- 9. subscriptions — server-authoritative Super entitlement (1:1 with auth.users)
+-- ----------------------------------------------------------------------------
+-- Reflects migrations 007_billing_entitlements + 009_hearts_gems_cancel. Written
+-- ONLY by the Stripe billing webhook (service_role); clients may read their own
+-- row. super_until is the single truth for Super access across web/iOS/Android;
+-- cancel_at_period_end flags a scheduled cancel (Super stays active to period end).
+create table if not exists public.subscriptions (
+  user_id                uuid primary key references auth.users(id) on delete cascade,
+  plan                   text not null default 'free',       -- 'free' | 'super_monthly' | 'super_yearly'
+  status                 text not null default 'inactive',   -- 'active' | 'trialing' | 'past_due' | 'canceled' | 'inactive'
+  provider               text,                               -- 'stripe' | 'apple' | 'google'
+  super_until            timestamptz,                        -- entitlement expiry; NULL or past = NOT Super
+  stripe_customer_id     text,
+  stripe_subscription_id text,
+  current_period_end     timestamptz,
+  cancel_at_period_end   boolean not null default false,     -- scheduled cancel; Super stays active until current_period_end
+  created_at             timestamptz not null default now(),
+  updated_at             timestamptz not null default now()
+);
+
+comment on table public.subscriptions is
+  'Server-authoritative Super entitlement. Written ONLY by the billing webhook (service_role). Clients read their own row. super_until is the single truth for Super access across web/iOS/Android.';
+
+alter table public.subscriptions enable row level security;
+
+-- Tight privileges: authenticated users may SELECT (RLS restricts to own row);
+-- no INSERT/UPDATE/DELETE grant, so clients can never forge entitlement.
+-- service_role bypasses RLS and is the sole writer (the webhook).
+revoke all on public.subscriptions from anon, authenticated;
+grant select on public.subscriptions to authenticated;
+
+drop policy if exists subscriptions_select_own on public.subscriptions;
+create policy subscriptions_select_own on public.subscriptions
+  for select to authenticated
+  using (auth.uid() = user_id);
+
+create or replace function public.subscriptions_touch_updated_at()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_subscriptions_touch on public.subscriptions;
+create trigger trg_subscriptions_touch
+  before update on public.subscriptions
+  for each row execute function public.subscriptions_touch_updated_at();

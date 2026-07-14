@@ -11,7 +11,9 @@ import DatingSection from '../../src/components/DatingSection.jsx';
 import QuizTab from '../../src/components/QuizTab.jsx';
 import SettingsModal from '../../src/components/SettingsModal.jsx';
 import ShopScreen from '../../src/components/ShopScreen.jsx';
+import MiniUnitFlow from '../../src/components/MiniUnitFlow.jsx';
 import { CARDS } from '../../src/data/cards.js';
+import { STAGE_1_MINI_UNIT_PILOT } from '../../src/data/miniUnits.js';
 
 const params = new URLSearchParams(location.search);
 const scene = params.get('scene') || 'dating-teaser';
@@ -21,6 +23,11 @@ const noop = () => {};
 const superStats = { tier: 'super', hearts: 5, gems: 200, streak: 3, totalXp: 500, totalReviews: 40 };
 const freeStats = { tier: 'free', hearts: 5, gems: 60, streak: 3, totalXp: 500, totalReviews: 40 };
 const zeroHeartStats = { tier: 'free', hearts: 0, gems: 10, heartsUpdatedAt: new Date(Date.now() - 5 * 60 * 1000).toISOString() };
+// Canceled-but-still-paid Super (auto-renew OFF, period NOT ended): the provider
+// set status='canceled' with cancel_at_period_end=false and a FUTURE super_until —
+// the B5 copy edge. Copy must read "Super — active until <date>. Auto-renew is
+// off." with NO Cancel button.
+const canceledPaidStats = { tier: 'super', status: 'canceled', cancelAtPeriodEnd: false, superUntil: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(), hearts: 5, gems: 200, streak: 3, totalXp: 500, totalReviews: 40 };
 
 // Seed "seen" progress for every Stage-1 card so buildChallenge has a pool.
 const stage1Progress = {};
@@ -71,6 +78,24 @@ function sceneEl() {
     case 'settings':
       return <SettingsModal stats={superStats} updateSettings={noop} onClose={noop} onOpenPublicPage={noop}
         onEntitlementRefresh={noop} onReplayTutorial={noop} />;
+    case 'settings-canceled':
+      // B5: canceled-but-paid Super — expect "Super — active until <date>. Auto-
+      // renew is off." and NO Cancel button in the Plan & Billing section.
+      return <SettingsModal stats={canceledPaidStats} updateSettings={noop} onClose={noop} onOpenPublicPage={noop}
+        onEntitlementRefresh={noop} onReplayTutorial={noop} />;
+    case 'mini-unit': {
+      // B6: MiniUnitFlow challenge (repeatable). Land on the challenge step so the
+      // shuffled question + option order is on screen; reloading reshuffles.
+      const unit = STAGE_1_MINI_UNIT_PILOT;
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto' }}>
+          <MiniUnitFlow unit={unit} voice="male" cardDirection="en-first" onChangeCardDirection={noop}
+            audioRate={0.8} showCharacters
+            initialProgress={{ unitId: unit.unitId, step: 'challenge', challengeIndex: 0, challengeScore: 0 }}
+            onProgressChange={noop} onExit={noop} onOpenCards={noop} onOpenChallenge={noop} />
+        </div>
+      );
+    }
     default:
       return <div style={{ padding: 40 }}>Unknown scene: {scene}</div>;
   }

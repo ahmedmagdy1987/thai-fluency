@@ -4,9 +4,14 @@
 //
 // This statically asserts that every REPEATABLE quiz shuffles BOTH the question
 // order and the option order per attempt:
-//   • Stage Challenge  — src/lib/challengeQuestions.js
-//   • Dating quiz      — src/components/DatingSection.jsx
-//   • Tone Challenge   — src/components/TonesQuizSection.jsx
+//   • Stage Challenge      — src/lib/challengeQuestions.js
+//   • Dating quiz          — src/components/DatingSection.jsx
+//   • Tone Challenge       — src/components/TonesQuizSection.jsx
+//   • Mini-Unit challenge  — src/components/MiniUnitFlow.jsx (replayable from LearnPath)
+//   • First-lesson challenge — src/components/FirstLessonFlow.jsx (onboarding)
+// It FAILS if any of these serves a FIXED question or option order (e.g. a
+// deterministic index-based rotateOptions) — that is exactly how the repeatable
+// MiniUnitFlow gap slipped through before.
 // Correctness is always tracked by a flag/id, never by index (also asserted
 // where checkable), so shuffling display order is safe.
 
@@ -44,6 +49,30 @@ assert('Tone Challenge shuffles the tone OPTIONS per question (useMemo keyed on 
   /const tones = useMemo\(\(\) => \{[\s\S]{0,300}Math\.random\(\)[\s\S]{0,200}\}, \[idx\]\)/.test(tones));
 assert('Tone Challenge grades by tone value, not by index (tone === q.tone)',
   /tone === q\.tone/.test(tones));
+
+// ── Mini-Unit challenge (MiniUnitFlow — REPEATABLE, replayable from LearnPath) ─
+const mini = read('src/components/MiniUnitFlow.jsx');
+assert('MiniUnitFlow shuffles QUESTION order per attempt (shuffle(cards).map)',
+  /shuffle\(cards\)\.map/.test(mini));
+assert('MiniUnitFlow shuffles OPTION order per question (shuffle([correct, ...distractors]))',
+  /const options = shuffle\(\[correct, \.\.\.distractors\]\)/.test(mini));
+assert('MiniUnitFlow serves NO fixed index-rotated order (no rotateOptions)',
+  !/rotateOptions/.test(mini),
+  'found rotateOptions — a repeatable quiz must shuffle, not deterministically rotate by index');
+assert('MiniUnitFlow grades by option id, not by index',
+  /option\.id === currentChallenge\.correct\.id/.test(mini));
+
+// ── First-lesson mini-challenge (FirstLessonFlow — onboarding) ───────────────
+const first = read('src/components/FirstLessonFlow.jsx');
+assert('FirstLessonFlow shuffles the mini-challenge QUESTION order (shuffle(buildQuestions(...)))',
+  /shuffle\(buildQuestions\(/.test(first));
+assert('FirstLessonFlow shuffles the mini-challenge OPTION order (shuffle([correct, ...distractors]))',
+  /options: shuffle\(\[correct, \.\.\.distractors\]\)/.test(first));
+assert('FirstLessonFlow serves NO fixed index-rotated order (no rotateOptions)',
+  !/rotateOptions/.test(first),
+  'found rotateOptions — must shuffle, not deterministically rotate by index');
+assert('FirstLessonFlow grades by option id, not by index',
+  /selectedId === currentQuestion\.correct\.id/.test(first));
 
 console.log('');
 if (failures > 0) {

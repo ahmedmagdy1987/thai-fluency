@@ -28,13 +28,13 @@ check('active without date → "Active."',
   subscriptionStatusText({ isSuper: true, canceled: false, untilLabel: null })
     === 'Active. Thanks for supporting Tuk Talk Thai!');
 
-check('canceled with date → "stays active until <date>. Auto-renew is off."',
+check('canceled with date → "Super — active until <date>. Auto-renew is off."',
   subscriptionStatusText({ isSuper: true, canceled: true, untilLabel: 'Jan 5, 2027' })
-    === 'Canceled — stays active until Jan 5, 2027. Auto-renew is off.');
+    === 'Super — active until Jan 5, 2027. Auto-renew is off.');
 
 check('canceled without date → generic "end of your billing period"',
   subscriptionStatusText({ isSuper: true, canceled: true, untilLabel: null })
-    === 'Canceled — stays active until the end of your billing period. Auto-renew is off.');
+    === 'Super — active until the end of your billing period. Auto-renew is off.');
 
 // ── formatSuperUntil ─────────────────────────────────────────────────────────
 check('formatSuperUntil: null → null', formatSuperUntil(null) === null);
@@ -43,6 +43,15 @@ check('formatSuperUntil: valid ISO → a non-empty string',
   typeof formatSuperUntil('2027-01-05T00:00:00Z') === 'string' && formatSuperUntil('2027-01-05T00:00:00Z').length > 0);
 
 check('FREE_PLAN_BLURB names the live Super benefit (Dating)', /Dating/.test(FREE_PLAN_BLURB));
+
+// ── Canceled edge: a provider-side status='canceled' must be treated as canceled
+//    in the copy layer (not only the app's own cancelAtPeriodEnd), else an
+//    already-canceled-but-still-paid user wrongly sees "Renews on" + a Cancel
+//    button while their entitlement is (correctly) still Super (B5 copy edge).
+const hookSrc = readFileSync(join(root, 'src/hooks/useSubscriptionStatus.js'), 'utf8');
+check("useSubscriptionStatus treats status==='canceled' as canceled",
+  /status === 'canceled'/.test(hookSrc),
+  "the copy layer must OR in status==='canceled', not only cancelAtPeriodEnd");
 
 // ── Both surfaces consume the shared hook (no re-drift) ──────────────────────
 for (const rel of ['src/components/SettingsModal.jsx', 'src/components/ProfilePage.jsx']) {

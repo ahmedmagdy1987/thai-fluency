@@ -143,7 +143,10 @@ export default function QuizTab({
     // Block STARTING a new Challenge when out of hearts (free users). This also
     // catches the results-screen "Try again" (which is a fresh start): reset to
     // the intro, where the "out of hearts" gate is shown. Super = never blocked.
-    if (!isSuper && hearts <= 0) {
+    // Uses heartsLive (the locally-ticked regenerated count the gate opens/closes
+    // on) instead of the `hearts` prop, so a heart that just regenerated lets the
+    // user start immediately rather than being briefly blocked by a stale prop.
+    if (!isSuper && heartsLive <= 0) {
       resetQuiz();
       return;
     }

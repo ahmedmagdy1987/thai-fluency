@@ -28,7 +28,12 @@ export function useSubscriptionStatus(stats, { onEntitlementRefresh } = {}) {
   const [cancelError, setCancelError] = useState(null);
 
   const isSuper = isSuperFn(stats);
-  const canceled = isSuper && !!stats?.cancelAtPeriodEnd;
+  // Treat a provider-side canceled subscription as canceled too, not only the
+  // app's own scheduled cancel (cancelAtPeriodEnd). A row with status='canceled'
+  // and a future current_period_end is still Super (entitlement stays correct in
+  // cloudStorage) but auto-renew is OFF — so the copy must NOT say "Renews on"
+  // and the Cancel button must NOT show for an already-canceled sub (B5 copy).
+  const canceled = isSuper && (!!stats?.cancelAtPeriodEnd || stats?.status === 'canceled');
   const untilLabel = isSuper ? formatSuperUntil(stats?.superUntil) : null;
   const statusText = subscriptionStatusText({ isSuper, canceled, untilLabel });
   // The cancel button only makes sense for an active, not-yet-canceled Super.

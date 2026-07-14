@@ -140,6 +140,21 @@ export function refillHeartsWithGems(stats, now = Date.now()) {
   };
 }
 
+// Grant ONE heart — the reward for a completed rewarded ad. Pure: returns a
+// stats PATCH, or null when already full. Folds in pending regen first, then +1
+// (capped at HEART_MAX), and stamps heartsUpdatedAt so the regen clock restarts.
+// NOTE: no ad SDK is integrated (owner decision); a real rewarded-ad network must
+// call this ONLY on a verified ad completion. Super users are unlimited already,
+// so the caller no-ops this for them.
+export function grantHeart(stats, now = Date.now()) {
+  const current = effectiveHearts(stats, false, now);
+  if (current >= HEART_MAX) return null;      // already full — nothing to grant
+  return {
+    hearts: Math.min(HEART_MAX, current + 1),
+    heartsUpdatedAt: new Date(now).toISOString(),
+  };
+}
+
 // Buy ONE streak freeze with gems. Pure: returns a stats PATCH, or null when the
 // user can't afford it. This is the SECOND gem sink (besides heart refills) — it
 // is what keeps gems from being a circular currency that only ever buys hearts

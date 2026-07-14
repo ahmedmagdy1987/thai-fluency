@@ -35,20 +35,27 @@ function cardsByIds(ids, voice) {
     .map(card => displayCard(card, voice) || card);
 }
 
-function rotateOptions(options, shift) {
-  if (options.length < 2) return options;
-  const offset = shift % options.length;
-  return [...options.slice(offset), ...options.slice(0, offset)];
+// Fisher-Yates shuffle (pure; copies the input). Randomizes the mini-challenge
+// question order and each question's option order per attempt.
+function shuffle(items) {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function buildQuestions(challengeCards, lessonCards) {
-  return challengeCards.map((correct, index) => {
+  return challengeCards.map((correct) => {
     const distractors = lessonCards.filter(card => card.id !== correct.id).slice(0, 3);
     return {
       id: `first-lesson-${correct.id}`,
       correct,
       prompt: correct.en,
-      options: rotateOptions([correct, ...distractors], index),
+      // Shuffle options so the authored "correct is first" ordering can't be
+      // tapped blindly; correctness is by option.id, never position (B6).
+      options: shuffle([correct, ...distractors]),
     };
   });
 }
@@ -77,8 +84,13 @@ export default function FirstLessonFlow({
     [vocabCards, sentenceCard]
   );
   const challengeCards = useMemo(() => cardsByIds(unit.challengeCardIds || [], voice), [unit, voice]);
+  // Shuffle the 3 mini-challenge questions' presentation order per attempt. The
+  // first-3 curated set is preserved by slicing BEFORE the shuffle, so onboarding
+  // still shows the same three cards — only their order (and each question's
+  // options) varies, so a replay never serves a fixed layout (B6). Runs once per
+  // mount via useMemo.
   const challengeQuestions = useMemo(
-    () => buildQuestions(challengeCards, lessonCards).slice(0, 3),
+    () => shuffle(buildQuestions(challengeCards, lessonCards).slice(0, 3)),
     [challengeCards, lessonCards]
   );
 
@@ -110,10 +122,14 @@ export default function FirstLessonFlow({
   const [cardIndex, setCardIndex] = useState(() => safeIndex(savedProgress?.cardIndex, Math.max(1, vocabCards.length)));
   const [revealed, setRevealed] = useState(!!savedProgress?.revealed);
   const [challengeIndex, setChallengeIndex] = useState(() => safeIndex(savedProgress?.challengeIndex, Math.max(1, challengeQuestions.length)));
-  const [selectedId, setSelectedId] = useState(savedProgress?.selectedId || null);
-  const [checked, setChecked] = useState(!!savedProgress?.checked);
+  // Don't restore a mid-question selection: the per-attempt reshuffle means a
+  // saved option id no longer maps to this render's options, so a resumed
+  // mini-challenge question starts unanswered (B6). challengeIndex + score are
+  // still restored, so resume position is preserved.
+  const [selectedId, setSelectedId] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [score, setScore] = useState(savedProgress?.score || 0);
-  const checkLockedRef = useRef(!!savedProgress?.checked);
+  const checkLockedRef = useRef(false);
 
   // Primer-quiz state (mirrors the challenge state shape). Quick and forgiving:
   // wrong answers never block, the user can skip, and it just warms up the learner.

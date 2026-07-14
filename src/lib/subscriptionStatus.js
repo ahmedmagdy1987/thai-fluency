@@ -20,9 +20,11 @@ export function formatSuperUntil(superUntil) {
 export function subscriptionStatusText({ isSuper, canceled, untilLabel }) {
   if (!isSuper) return null;
   if (canceled) {
+    // Lead with "Super" so an already-canceled but still-paid user is reassured
+    // they keep full access until the period ends (B5). Auto-renew off, no CTA.
     return untilLabel
-      ? `Canceled — stays active until ${untilLabel}. Auto-renew is off.`
-      : 'Canceled — stays active until the end of your billing period. Auto-renew is off.';
+      ? `Super — active until ${untilLabel}. Auto-renew is off.`
+      : 'Super — active until the end of your billing period. Auto-renew is off.';
   }
   return untilLabel
     ? `Renews on ${untilLabel}. Thanks for supporting Tuk Talk Thai!`

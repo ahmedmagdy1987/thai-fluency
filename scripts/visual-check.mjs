@@ -119,6 +119,43 @@ const SCENES = [
       const dup = norm.length !== new Set(norm).size;
       return [{ name: 'no duplicated intro paragraph', pass: !dup, detail: dup ? 'DUP FOUND' : 'unique' }];
     } },
+
+  { name: 'mini-unit-shuffle', url: (t) => harness('mini-unit', t),
+    async assert(page) {
+      // B6 rendered proof: reload the harness a few times and collect the first
+      // question's prompt (question order) and its option order (Thai texts). A
+      // fixed layout would be identical every attempt; shuffling makes both vary.
+      const prompts = new Set();
+      const optionOrders = new Set();
+      for (let i = 0; i < 6; i++) {
+        await page.reload({ waitUntil: 'networkidle' });
+        await page.waitForFunction(() => window.__VIZ_READY__ === true, { timeout: 8000 }).catch(() => {});
+        await page.waitForSelector('.miniunit-option', { timeout: 4000 });
+        const prompt = (await page.locator('.miniunit-question-prompt').first().innerText().catch(() => '')).trim();
+        const opts = (await page.locator('.miniunit-option-thai').allInnerTexts()).map(t => t.trim()).join('|');
+        prompts.add(prompt);
+        optionOrders.add(opts);
+      }
+      return [
+        { name: 'mini-unit QUESTION order varies across attempts', pass: prompts.size > 1, detail: `distinct=${prompts.size}/6` },
+        { name: 'mini-unit OPTION order varies across attempts', pass: optionOrders.size > 1, detail: `distinct=${optionOrders.size}/6` },
+      ];
+    } },
+
+  { name: 'settings-canceled', url: (t) => harness('settings-canceled', t),
+    async assert(page) {
+      // B5 copy: a canceled-but-paid Super sees "Super — active until <date>. Auto-
+      // renew is off." and NO Cancel button (and never "Renews on").
+      const html = await page.content();
+      const activeUntil = /active until/i.test(html) && /Auto-renew is off/i.test(html);
+      const noRenews = !/Renews on/i.test(html);
+      const cancelBtns = await page.locator('.setting-cancel-plan-btn').count();
+      return [
+        { name: 'shows "Super — active until <date>. Auto-renew is off."', pass: activeUntil, detail: activeUntil ? 'ok' : 'missing' },
+        { name: 'does NOT say "Renews on"', pass: noRenews, detail: noRenews ? 'ok' : 'RENEWS FOUND' },
+        { name: 'no Cancel button for an already-canceled sub', pass: cancelBtns === 0, detail: `cancelBtns=${cancelBtns}` },
+      ];
+    } },
 ];
 
 const VIEWPORTS = [{ w: 1280, h: 900, tag: 'desktop' }, { w: 375, h: 720, tag: 'mobile' }];
