@@ -12,6 +12,11 @@ import QuizTab from '../../src/components/QuizTab.jsx';
 import SettingsModal from '../../src/components/SettingsModal.jsx';
 import ShopScreen from '../../src/components/ShopScreen.jsx';
 import MiniUnitFlow from '../../src/components/MiniUnitFlow.jsx';
+import TonesQuizSection from '../../src/components/TonesQuizSection.jsx';
+import ListenMeaning from '../../src/components/ListenMeaning.jsx';
+import ComboBadge from '../../src/components/ComboBadge.jsx';
+import MissionCompleteRewardScreen from '../../src/components/MissionCompleteRewardScreen.jsx';
+import StreakRecoveryCard from '../../src/components/StreakRecoveryCard.jsx';
 import { CARDS } from '../../src/data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../../src/data/miniUnits.js';
 
@@ -96,6 +101,46 @@ function sceneEl() {
         </div>
       );
     }
+    case 'tone-question':
+    case 'tone-revealed':
+      // Pass 1: audio-first Tone Challenge (diacritic hidden pre-answer, shown post-answer).
+      return (
+        <div className="tab-content" style={{ maxWidth: 640, margin: '0 auto', padding: 16 }}>
+          <TonesQuizSection onComplete={noop} bestScore={0} passed={false} />
+        </div>
+      );
+    case 'listen-meaning':
+      // Pass 1: new audio→English MCQ.
+      return (
+        <div className="tab-content" style={{ maxWidth: 640, margin: '0 auto', padding: 16 }}>
+          <ListenMeaning voice="male" audioRate={0.9} showCharacters />
+        </div>
+      );
+    case 'combo':
+      // Pass 3: a live in-session combo celebration (10-in-a-row, hot pill + confetti).
+      return (
+        <div className="tab-content" style={{ maxWidth: 640, margin: '40px auto', padding: 16 }}>
+          <div className="quiz-header">
+            <div className="quiz-progress-text">Question 8 of 10</div>
+            <div className="quiz-header-meta">
+              <ComboBadge combo={{ current: 10, best: 10, milestone: 10, answered: 10, correct: 10, accuracy: 100 }} onMilestone={noop} />
+              <div className="quiz-score-text">Score: <span>10</span></div>
+            </div>
+          </div>
+          <div className="quiz-progress-bar"><div className="quiz-progress-fill" style={{ width: '80%' }} /></div>
+        </div>
+      );
+    case 'payoff':
+      // Pass 3: the shared end-of-session payoff with the new accuracy + best-combo cells.
+      return (
+        <MissionCompleteRewardScreen
+          eyebrow="Session complete" title="Nice run!" subtitle="You kept a strong streak going."
+          xpEarned={60} streak={5} accuracy={90} comboBest={7} nextStep="Mission 2 in Learn"
+          characterId={null} onContinue={noop} />
+      );
+    case 'streak-recovery':
+      // Pass 3: honest, non-shaming streak-break recovery with the gem-freeze bridge.
+      return <StreakRecoveryCard bestStreak={12} gems={50} onStudyNow={noop} onBuyFreeze={noop} />;
     default:
       return <div style={{ padding: 40 }}>Unknown scene: {scene}</div>;
   }

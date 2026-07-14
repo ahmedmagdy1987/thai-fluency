@@ -156,6 +156,76 @@ const SCENES = [
         { name: 'no Cancel button for an already-canceled sub', pass: cancelBtns === 0, detail: `cancelBtns=${cancelBtns}` },
       ];
     } },
+
+  // ── Wave 1 (Passes 1 + 3) rendered proof ──────────────────────────────────
+  { name: 'tone-question', url: (t) => harness('tone-question', t),
+    async act(page) {
+      await page.locator('button', { hasText: 'Start tone challenge' }).click();
+      await page.waitForSelector('.tones-quiz-play', { timeout: 4000 });
+    },
+    async assert(page) {
+      const play = await page.locator('.tones-quiz-play').count();
+      const cardText = await page.locator('.tones-quiz-card').innerText().catch(() => '');
+      const thaiLeak = /[฀-๿]/.test(cardText);
+      return [
+        { name: 'audio-first: play button shown', pass: play >= 1, detail: `play=${play}` },
+        { name: 'NO Thai/diacritic/romanization before answering', pass: !thaiLeak, detail: thaiLeak ? 'THAI LEAK' : 'hidden' },
+      ];
+    } },
+  { name: 'tone-revealed', url: (t) => harness('tone-revealed', t),
+    async act(page) {
+      await page.locator('button', { hasText: 'Start tone challenge' }).click();
+      await page.waitForSelector('.tones-quiz-play', { timeout: 4000 });
+      await page.locator('.tones-quiz-option').first().click();
+      await page.waitForSelector('.tones-quiz-reveal-thai', { timeout: 4000 });
+    },
+    async assert(page) {
+      const revealText = await page.locator('.tones-quiz-reveal-thai').innerText().catch(() => '');
+      const thaiShown = /[฀-๿]/.test(revealText);
+      return [{ name: 'Thai + diacritic REVEALED after answering', pass: thaiShown, detail: thaiShown ? 'shown' : 'missing' }];
+    } },
+  { name: 'listen-meaning', url: (t) => harness('listen-meaning', t),
+    async act(page) {
+      await page.locator('button', { hasText: 'Start listening' }).click();
+      await page.waitForSelector('.listen-meaning-play', { timeout: 4000 });
+    },
+    async assert(page) {
+      const play = await page.locator('.listen-meaning-play').count();
+      const opts = await page.locator('.listen-meaning-option').count();
+      const cardText = await page.locator('.listen-meaning-card').innerText().catch(() => '');
+      const thaiLeak = /[฀-๿]/.test(cardText);
+      return [
+        { name: 'audio play button + English options render', pass: play >= 1 && opts >= 2, detail: `play=${play} opts=${opts}` },
+        { name: 'NO Thai shown before answering', pass: !thaiLeak, detail: thaiLeak ? 'THAI LEAK' : 'hidden' },
+      ];
+    } },
+  { name: 'combo', url: (t) => harness('combo', t),
+    async assert(page) {
+      const pill = await page.locator('.combo-pill').count();
+      const txt = (await page.locator('.combo-pill').innerText().catch(() => '')).replace(/\s+/g, ' ');
+      return [{ name: 'combo pill renders at a high streak', pass: pill >= 1 && /10/.test(txt), detail: `pill=${pill} "${txt}"` }];
+    } },
+  { name: 'payoff', url: (t) => harness('payoff', t),
+    async act(page) { await page.waitForTimeout(1600); },
+    async assert(page) {
+      const cells = await page.locator('.reward-summary-item').count();
+      const html = await page.content();
+      return [
+        { name: 'payoff shows >=4 summary cells (accuracy + best combo added)', pass: cells >= 4, detail: `cells=${cells}` },
+        { name: 'accuracy + best combo present', pass: /accuracy/i.test(html) && /best combo/i.test(html), detail: 'labels' },
+      ];
+    } },
+  { name: 'streak-recovery', url: (t) => harness('streak-recovery', t),
+    async assert(page) {
+      const html = await page.content();
+      const card = await page.locator('.streak-recovery-card').count();
+      const honest = /Day 1 again/i.test(html);
+      const noShame = !/you lost/i.test(html) && !/\bfailed\b/i.test(html);
+      return [
+        { name: 'recovery card renders', pass: card >= 1, detail: `card=${card}` },
+        { name: 'honest + non-shaming ("Day 1 again", no "you lost")', pass: honest && noShame, detail: `honest=${honest} noShame=${noShame}` },
+      ];
+    } },
 ];
 
 const VIEWPORTS = [{ w: 1280, h: 900, tag: 'desktop' }, { w: 375, h: 720, tag: 'mobile' }];

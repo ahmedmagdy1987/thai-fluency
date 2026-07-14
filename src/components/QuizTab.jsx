@@ -14,7 +14,9 @@ import {
 import { HEART_MAX, REFILL_COST_GEMS, regenState, formatCountdown } from '../lib/economy.js';
 import { resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
+import { useSessionCombo } from '../hooks/useSessionCombo.js';
 import CharacterCoach from './CharacterCoach.jsx';
+import ComboBadge from './ComboBadge.jsx';
 
 // Direction labels/copy for the two Challenge modes. The question-selection
 // logic lives in lib/challengeQuestions.js (stage + learned-card scoping).
@@ -130,6 +132,10 @@ export default function QuizTab({
     [current?.correct?.stage, selectedStage, maxUnlockedStage]
   );
   const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'quiz' });
+  // Transient in-round combo (spec 04 §3): session-only momentum, no XP/gems/SRS/
+  // hearts. Reset when a fresh Challenge round starts so the pill reflects the
+  // current round. Hearts are unaffected — combo is display-only.
+  const combo = useSessionCombo();
 
   // The coach is reset SYNCHRONOUSLY when a question starts (startQuiz) and when
   // advancing (handleContinue) — not in a post-paint effect. A post-paint reset
@@ -178,6 +184,7 @@ export default function QuizTab({
     setDone(false);
     setPoolError(null);
     checkLockedRef.current = false;
+    combo.reset();
     resetCoachForQuestion();
   };
 
@@ -209,7 +216,9 @@ export default function QuizTab({
     if (!current || !selected || checked || checkLockedRef.current) return;
     checkLockedRef.current = true;
     setChecked(true);
-    if (selected.id === current.correct.id) {
+    const isCorrect = selected.id === current.correct.id;
+    combo.register(isCorrect);
+    if (isCorrect) {
       setScore(prev => prev + 1);
       coach.react('correct', { duration: 1700 });
       playCharacterCorrect(coachId);
@@ -421,7 +430,13 @@ export default function QuizTab({
           <div className="quiz-progress-text">Stage {selectedStage} Challenge · Question {idx + 1} of {questions.length}</div>
           <div className="quiz-mode-type">{typeConfig.label}</div>
         </div>
-        <div className="quiz-score-text">Score: <span>{score}</span></div>
+        <div className="quiz-header-meta">
+          <ComboBadge
+            combo={combo}
+            onMilestone={(tier) => coach.react('celebrating', { duration: 1600, message: tier >= 10 ? 'On fire!' : 'Strong run!' })}
+          />
+          <div className="quiz-score-text">Score: <span>{score}</span></div>
+        </div>
       </div>
       <div className="quiz-progress-bar"><div className="quiz-progress-fill" style={{ width: `${progressPct}%` }} /></div>
 

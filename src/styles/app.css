@@ -3251,3 +3251,65 @@ button.character-coach-portrait { cursor: pointer; }
 /* Low-emphasis "Back to home" under the auth-gate demo link (missing back
    affordance on /welcome deep links). Reuses .auth-guest-link's look. */
 .auth-back-home-link { margin-top: 2px; font-size: var(--fs-12); opacity: 0.85; }
+
+/* ══ Wave 1: audio-first Tone Challenge + Listen & Match + combo + streak recovery ══ */
+
+/* ── Audio-first Tone Challenge + Listen & Match (ListenMeaning) ── */
+.tones-quiz-card, .listen-meaning-card { text-align: center; }
+.tones-quiz-play, .listen-meaning-play {
+  display:inline-flex; align-items:center; justify-content:center; width:84px; height:84px;
+  margin:8px auto 4px; border:none; border-radius:50%; cursor:pointer; color:#fff;
+  background:var(--jade); box-shadow:0 6px 18px rgba(0,0,0,.18); transition:transform .12s ease; }
+.tones-quiz-play:hover, .listen-meaning-play:hover { transform:scale(1.05); }
+.tones-quiz-play:active, .listen-meaning-play:active { transform:scale(.97); }
+.tones-quiz-listen-hint, .listen-meaning-hint {
+  display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px;
+  font-size:.82rem; color:var(--ink); opacity:.7; }
+.tones-quiz-reveal, .listen-meaning-reveal { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.tones-quiz-reveal-thai, .listen-meaning-reveal-thai { font-size:1.8rem; font-weight:700; color:var(--ink); }
+.tones-quiz-reveal-syl, .listen-meaning-reveal-ph { font-size:1rem; color:var(--jade); }
+.tones-quiz-reveal-mean { font-size:.95rem; font-style:italic; color:var(--ink); opacity:.7; }
+.tones-quiz-hear, .listen-meaning-hear { margin-top:8px; }
+.tones-quiz-noaudio {
+  display:flex; align-items:flex-start; gap:10px; margin-top:20px; padding:14px 16px;
+  border-radius:12px; background:var(--cream); color:var(--ink); font-size:.9rem; }
+.listen-meaning-coach { display:flex; justify-content:center; margin:8px 0 4px; }
+.listen-meaning-options { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+.listen-meaning-option {
+  display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; text-align:left;
+  border:1.5px solid var(--track); border-radius:12px; background:transparent; color:var(--ink);
+  font-size:1rem; cursor:pointer; transition:border-color .12s ease, background .12s ease; }
+.listen-meaning-option:hover:not(:disabled) { border-color:var(--jade); }
+.listen-meaning-option-en { flex:1; }
+.listen-meaning-option-correct { border-color:var(--jade); background:rgba(46,125,91,.10); }
+.listen-meaning-option-wrong { border-color:var(--sev-strong); background:rgba(160,59,44,.08); }
+.listen-meaning-option-faded { opacity:.5; }
+
+/* ── Session combo pill (spec 04 §3) ── */
+.combo-pill { display:inline-flex; align-items:center; gap:4px; border:1px solid var(--line); background:var(--cream-warm, var(--cream)); color:var(--jade); border-radius:999px; padding:3px var(--sp-2, 8px); font-size:var(--fs-12, .75rem); font-weight:800; white-space:nowrap; }
+.combo-pill-icon { color:var(--gold, #C9A227); }
+.combo-pill-count { font-family:'JetBrains Mono', monospace; }
+.combo-pill-label { font-size:var(--fs-10, .625rem); text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft, var(--ink)); }
+.combo-pill-hot { border-color:var(--gold, #C9A227); color:var(--rust, #A03B2C); }
+.combo-pill-pop { animation:combo-pop .45s ease; }
+@keyframes combo-pop { 0%{transform:scale(1);} 40%{transform:scale(1.18);} 100%{transform:scale(1);} }
+@media (prefers-reduced-motion: reduce){ .combo-pill-pop{ animation:none; } }
+.firstlesson-progress-meta, .quiz-header-meta { display:flex; align-items:center; gap:var(--sp-2, 8px); }
+.miniunit-challenge-progress { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-2, 8px); }
+
+/* ── Honest streak-recovery card (spec 04 §5.2) ── */
+.streak-recovery-backdrop {
+  position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center;
+  padding:20px; background:rgba(0,0,0,.45); }
+.streak-recovery-card {
+  width:100%; max-width:380px; padding:28px 24px; border-radius:20px; text-align:center;
+  background:var(--surface, var(--cream)); color:var(--ink); box-shadow:0 14px 44px rgba(0,0,0,.30); }
+.streak-recovery-icon {
+  display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px;
+  border-radius:50%; margin-bottom:10px; color:var(--gold, #C9A227); background:var(--cream); }
+.streak-recovery-eyebrow { font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--jade); opacity:.85; }
+.streak-recovery-title { font-size:1.35rem; font-weight:800; margin:6px 0 6px; color:var(--ink); }
+.streak-recovery-copy { font-size:.95rem; color:var(--ink); opacity:.82; margin-bottom:20px; }
+.streak-recovery-actions { display:flex; flex-direction:column; gap:10px; }
+.streak-recovery-primary, .streak-recovery-freeze { width:100%; justify-content:center; }
+.streak-recovery-hint { margin-top:12px; font-size:.8rem; color:var(--ink); opacity:.6; }

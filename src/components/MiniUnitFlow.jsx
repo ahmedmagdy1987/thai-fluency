@@ -5,7 +5,9 @@ import { displayCard, displayBuilder, transformText } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCelebration, playCharacterCorrect, playCharacterSelect, playCharacterWrong, playFlip } from '../lib/sounds.js';
 import { useCharacterReaction } from '../hooks/useCharacterReaction.js';
+import { useSessionCombo } from '../hooks/useSessionCombo.js';
 import CharacterCoach from './CharacterCoach.jsx';
+import ComboBadge from './ComboBadge.jsx';
 import SentenceBuilder from './SentenceBuilder.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
 import { useAttemptDirection } from '../hooks/useAttemptDirection.js';
@@ -226,6 +228,9 @@ export default function MiniUnitFlow({
   // stages 2-8, so we must derive the real mascot from the stage here.)
   const coachId = useMemo(() => resolveCoachIdForStage(unit.stageId), [unit.stageId]);
   const coach = useCharacterReaction({ characterId: coachId, initialState: 'greeting', mode: 'quiz' });
+  // Transient in-session combo for the mini-unit challenge (spec 04 §3).
+  // Session-only momentum: no persistence / XP / gems / SRS / hearts.
+  const combo = useSessionCombo();
 
   const currentVocab = vocabCards[vocabIndex] || null;
   const currentChallenge = challengeQuestions[challengeIndex] || null;
@@ -278,6 +283,7 @@ export default function MiniUnitFlow({
         setSelectedId(null);
         setChecked(false);
         setChallengeScore(0);
+        combo.reset();
         checkLockedRef.current = false;
         coach.react('greeting', { duration: 1200, message: 'Pick the Thai you just practiced.' });
       }
@@ -294,6 +300,7 @@ export default function MiniUnitFlow({
     setSelectedId(null);
     setChecked(false);
     setChallengeScore(0);
+    combo.reset();
     checkLockedRef.current = false;
     coach.react('greeting', { duration: 1200, message: 'Pick the Thai you just practiced.' });
   };
@@ -325,7 +332,9 @@ export default function MiniUnitFlow({
     if (!currentChallenge || !selectedId || checked || checkLockedRef.current) return;
     checkLockedRef.current = true;
     setChecked(true);
-    if (selectedId === currentChallenge.correct.id) {
+    const isCorrect = selectedId === currentChallenge.correct.id;
+    combo.register(isCorrect);
+    if (isCorrect) {
       setChallengeScore(score => score + 1);
       playCharacterCorrect(coachId);
       coach.react('correct', { duration: 1400 });
@@ -436,7 +445,13 @@ export default function MiniUnitFlow({
 
       {step === 'challenge' && currentChallenge && (
         <section className="miniunit-challenge">
-          <div className="miniunit-step-label">Challenge {challengeIndex + 1} of {challengeQuestions.length}</div>
+          <div className="miniunit-challenge-progress">
+            <span className="miniunit-step-label">Challenge {challengeIndex + 1} of {challengeQuestions.length}</span>
+            <ComboBadge
+              combo={combo}
+              onMilestone={(tier) => coach.react('celebrating', { duration: 1600, message: tier >= 10 ? 'On fire!' : 'Strong run!' })}
+            />
+          </div>
           {showCharacters && (
             <div className="miniunit-coach miniunit-coach-inline">
               <CharacterCoach

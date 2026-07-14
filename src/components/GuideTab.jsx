@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Award, Volume2, BookOpen, Sparkles, AlertTriangle, Heart } from 'lucide-react';
+import { TrendingUp, Award, Volume2, BookOpen, Sparkles, AlertTriangle, Heart, Ear } from 'lucide-react';
 import TonesQuizSection from './TonesQuizSection.jsx';
 import TonesSection from './TonesSection.jsx';
 import PronunciationSection from './PronunciationSection.jsx';
@@ -7,8 +7,9 @@ import PatternsSection from './PatternsSection.jsx';
 import IdiomsSection from './IdiomsSection.jsx';
 import ErrorsSection from './ErrorsSection.jsx';
 import CultureSection from './CultureSection.jsx';
+import ListenMeaning from './ListenMeaning.jsx';
 
-export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuizPassed }) {
+export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuizPassed, voice = 'male', audioRate = 0.9, showCharacters = true }) {
   const [section, setSection] = useState('tones');
   return (
     <div className="tab-content">
@@ -16,6 +17,7 @@ export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuiz
         {[
           { id: 'tones', label: 'Tones', icon: TrendingUp },
           { id: 'tones-quiz',label: 'Tone Challenge', icon: Award },
+          { id: 'listen', label: 'Listen & Match', icon: Ear },
           { id: 'pronoun', label: 'Pronunciation', icon: Volume2 },
           { id: 'patterns', label: 'Patterns', icon: BookOpen },
           { id: 'idioms', label: 'Idioms', icon: Sparkles },
@@ -34,6 +36,7 @@ export default function GuideTab({ onTonesQuizComplete, tonesQuizBest, tonesQuiz
 
       {section === 'tones'      && <TonesSection />}
       {section === 'tones-quiz' && <TonesQuizSection onComplete={onTonesQuizComplete} bestScore={tonesQuizBest} passed={tonesQuizPassed} />}
+      {section === 'listen'     && <ListenMeaning voice={voice} audioRate={audioRate} showCharacters={showCharacters} />}
       {section === 'pronoun'    && <PronunciationSection />}
       {section === 'patterns'   && <PatternsSection />}
       {section === 'idioms'     && <IdiomsSection />}

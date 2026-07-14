@@ -26,6 +26,8 @@ import {
   withCelebrated,
   activeCelebrationIds,
   courseCompleteCelebrationId,
+  streakMilestoneCelebrationId,
+  STREAK_MILESTONES,
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
 import { isSuper } from './config/entitlements.js';
@@ -85,6 +87,7 @@ import AchievementUnlockedModal from './components/AchievementUnlockedModal.jsx'
 import QuestCompleteToast from './components/QuestCompleteToast.jsx';
 import CelebrationOverlay from './components/CelebrationOverlay.jsx';
 import MissionCompleteRewardScreen from './components/MissionCompleteRewardScreen.jsx';
+import StreakRecoveryCard from './components/StreakRecoveryCard.jsx';
 import GuidedTutorial from './components/GuidedTutorial.jsx';
 import StageCinematicOverlay from './components/StageCinematicOverlay.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
@@ -324,6 +327,12 @@ export default function TukTalkThaiApp() {
   const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
   const [rewardScreen, setRewardScreen] = useState(null);
+  // Honest streak-recovery surface (spec 04 §5.2): shown once when a real break
+  // resets the streak to 1. streakBreakRef captures the pre-reset streak (the
+  // honest "best") at the moment computeStreak resets, since no longestStreak is
+  // persisted. Ephemeral UI — not a user-scoped persisted lock.
+  const [streakRecovery, setStreakRecovery] = useState(null);
+  const streakBreakRef = useRef(0);
   // Stage-completion cinematic overlay ({ stageId, courseComplete }). Purely
   // visual; gated by stats.cinematicsWatched so it never replays or grants XP.
   const [stageCinematic, setStageCinematic] = useState(null);
@@ -1160,6 +1169,13 @@ export default function TukTalkThaiApp() {
       // in the pure computeStreak (unit-tested by check-quest-logic.mjs).
       const yesterday = previousLocalDateKey();
       const { streak: newStreak, usedFreeze } = computeStreak(s, today, yesterday);
+      // Capture a REAL streak break (returning user, prior streak >=1, no freeze
+      // used, genuine gap — not same-day, not a brand-new account) so the honest
+      // recovery card can show the pre-reset streak as "best".
+      if (newStreak === 1 && !usedFreeze && s.lastStudy && (s.streak || 0) >= 1
+          && s.lastStudy !== today && s.lastStudy !== yesterday) {
+        streakBreakRef.current = s.streak || 0;
+      }
       const next = startStudyDay(s, today, newStreak, amount, usedFreeze);
       // Daily-goal gems: startStudyDay increments dailyGoalsHit exactly when the
       // day's XP first crosses the goal. Award modest gems at that same moment
@@ -1170,6 +1186,15 @@ export default function TukTalkThaiApp() {
       return next;
     });
   }, []);
+
+  // Consume a captured streak break (set inside grantXp's setStats updater) and
+  // surface the honest recovery card once. Runs after the streak reset commits.
+  useEffect(() => {
+    if (streakBreakRef.current > 0) {
+      setStreakRecovery({ bestStreak: streakBreakRef.current });
+      streakBreakRef.current = 0;
+    }
+  }, [stats.streak, stats.lastStudy]);
 
   // Server-authoritative reward dispatch (Migration 006, staged rollout). For a
   // signed-in, confirmed user the award_reward RPC is the reward AUTHORITY:
@@ -1825,7 +1850,7 @@ export default function TukTalkThaiApp() {
     }, 1600);
   }, [isEmailConfirmed, profile?.onesignal_player_id]);
 
-  const completeFirstLesson = useCallback(() => {
+  const completeFirstLesson = useCallback((summary = {}) => {
     const completedMiniUnits = [...new Set([
       ...(stats.completedMiniUnits || []),
       STAGE_1_MINI_UNIT_PILOT.unitId,
@@ -1837,6 +1862,8 @@ export default function TukTalkThaiApp() {
       subtitle: 'You finished the guided starter lesson and unlocked the main practice path.',
       xpEarned: FIRST_LESSON_REWARD_XP,
       streak: Math.max(1, stats.streak || 0),
+      accuracy: summary.accuracy,     // display-only; undefined => cell hidden
+      comboBest: summary.comboBest,   // display-only; undefined => cell hidden
       // "Cards and Challenge" were both empty right after the first lesson
       // (guided lessons record no card progress) — point at the step that
       // actually works immediately (UX audit).
@@ -2080,7 +2107,7 @@ export default function TukTalkThaiApp() {
       // StrictMode double-invoke or un-committed baseline writes.
       courseCompleteAtArmingRef.current = courseCompletion.courseComplete;
       if (!stats.celebrationBaselineDone) {
-        const seed = activeCelebrationIds({ quests, stageState, courseComplete: courseCompletion.courseComplete, today });
+        const seed = activeCelebrationIds({ quests, stageState, courseComplete: courseCompletion.courseComplete, streak: stats.streak || 0, today });
         setStats(s => ({
           ...s,
           celebratedIds: withCelebrated(s.celebratedIds, seed, today, previousLocalDateKey()),
@@ -2170,6 +2197,27 @@ export default function TukTalkThaiApp() {
         if (getStageCinematic(newStage.id) && !(stats.cinematicsWatched || []).includes(newStage.id)) {
           setStageCinematic({ stageId: newStage.id });
         }
+        return;
+      }
+
+      // Durable streak milestones (spec 04 §5.1): fire at most once each. Existing
+      // long streaks are protected by the baseline seed above (activeCelebrationIds
+      // streak param), so a user already past a milestone is never retro-spammed.
+      const streakNow = stats.streak || 0;
+      const dueMilestone = STREAK_MILESTONES.find(
+        m => streakNow >= m && !hasCelebrated(ids, streakMilestoneCelebrationId(m))
+      );
+      if (dueMilestone) {
+        markCelebrated(streakMilestoneCelebrationId(dueMilestone));
+        setCelebration({
+          eyebrow: 'Streak milestone',
+          title: `${dueMilestone}-day streak!`,
+          subtitle: 'You showed up. Keep the flame going.',
+          characterId: resolveCoachIdForStage(stageState?.currentStage || 1),
+          xpEarned: 0,
+          primaryLabel: 'Keep going',
+          onPrimary: () => setCelebration(null),
+        });
         return;
       }
 
@@ -2510,7 +2558,7 @@ export default function TukTalkThaiApp() {
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} />}
           {tab === 'quiz'   && <QuizTab onComplete={recordQuizComplete} maxUnlockedStage={maxUnlockedStage} stageState={stageState} progress={progress} voice={voice} viewMode={viewMode} audioRate={audioRate} showCharacters={stats.showCharacters !== false} hearts={heartsNow} isSuper={superActive} gems={stats.gems || 0} stats={stats} onSpendHeart={handleSpendHeart} onRefillHearts={handleRefillHearts} onOpenSuper={() => handleOpenPremium('quiz')} onWatchAd={handleWatchAd} setTab={handleSetTab} />}
-          {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} />}
+          {tab === 'guide'  && <GuideTab onTonesQuizComplete={recordTonesQuiz} tonesQuizBest={stats.tonesQuizBest || 0} tonesQuizPassed={stats.tonesQuizPassed} voice={voice} audioRate={audioRate} showCharacters={stats.showCharacters !== false} />}
           {tab === 'quests' && <QuestsScreen stats={stats} dashboardStats={dashboardStats} progress={progress} setTab={handleSetTab} locked={maxUnlockedStage < 2} onOpenSuper={() => handleOpenPremium()} />}
           {tab === 'shop'   && <ShopScreen stats={stats} hearts={heartsNow} gems={stats.gems || 0} isSuper={superActive} streakFreezes={stats.streakFreezes || 0} onRefillHearts={handleRefillHearts} onBuyFreeze={handleBuyFreeze} onOpenSuper={() => handleOpenPremium('shop')} />}
           {tab === 'dating' && <DatingSection stats={stats} onOpenSuper={() => handleOpenPremium('dating')} setTab={handleSetTab} />}
@@ -2547,6 +2595,14 @@ export default function TukTalkThaiApp() {
         <MissionCompleteRewardScreen
           {...rewardScreen}
           onContinue={handleRewardContinue}
+        />
+      )}
+      {streakRecovery && !rewardScreen && (
+        <StreakRecoveryCard
+          bestStreak={streakRecovery.bestStreak}
+          gems={stats.gems || 0}
+          onStudyNow={() => { setStreakRecovery(null); handleSetTab('learn'); }}
+          onBuyFreeze={() => { handleBuyFreeze(); setStreakRecovery(null); }}
         />
       )}
       {upgradePrompt && (

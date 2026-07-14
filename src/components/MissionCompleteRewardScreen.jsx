@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { CheckCircle2, ChevronRight, Flame, Sparkles, Zap } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Flame, Sparkles, Target, Zap } from 'lucide-react';
 import ConfettiBurst from './ConfettiBurst.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
 import { playCelebration, playXpTick } from '../lib/sounds.js';
@@ -23,6 +23,12 @@ export default function MissionCompleteRewardScreen({
   nextStep = 'Keep practicing',
   achievements = [],
   characterId = null,
+  // Display-only session stats (spec 04 §4). Both are computed from the
+  // transient session combo object and NEVER persisted, so check-progress-merge
+  // has nothing to classify. Omit them (undefined) and the cells simply don't
+  // render — existing callers (mission/stage complete) are unaffected.
+  accuracy = null,      // 0–100, correct / answered this session
+  comboBest = null,     // best consecutive-correct run this session
   onContinue,
 }) {
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
@@ -109,6 +115,20 @@ export default function MissionCompleteRewardScreen({
           </div>
 
           <div className="reward-summary-grid">
+            {Number.isFinite(accuracy) && (
+              <div className="reward-summary-item">
+                <Target size={18} />
+                <span>{Math.max(0, Math.min(100, Math.round(accuracy)))}%</span>
+                <em>accuracy</em>
+              </div>
+            )}
+            {Number.isFinite(comboBest) && comboBest >= 2 && (
+              <div className="reward-summary-item">
+                <Zap size={18} />
+                <span>{comboBest}</span>
+                <em>best combo</em>
+              </div>
+            )}
             <div className="reward-summary-item">
               <Flame size={18} />
               <span>{streak || 0}</span>

@@ -74,6 +74,18 @@ assert('FirstLessonFlow serves NO fixed index-rotated order (no rotateOptions)',
 assert('FirstLessonFlow grades by option id, not by index',
   /selectedId === currentQuestion\.correct\.id/.test(first));
 
+// ── Listen & Match (ListenMeaning — NEW audio→English MCQ, repeatable) ────────
+const listen = read('src/components/ListenMeaning.jsx');
+assert('ListenMeaning shuffles QUESTION order per attempt (shuffle(pool).slice)',
+  /shuffle\(pool\)\.slice\(0, ROUND_SIZE\)/.test(listen));
+assert('ListenMeaning shuffles OPTION order per question (shuffle([correct, ...distractors]))',
+  /const options = shuffle\(\[correct, \.\.\.distractors\]\)/.test(listen));
+assert('ListenMeaning serves NO fixed index-rotated order (no rotateOptions)',
+  !/rotateOptions/.test(listen),
+  'found rotateOptions — a repeatable quiz must shuffle, not deterministically rotate by index');
+assert('ListenMeaning grades by option id, not by index',
+  /opt\.id === current\.correct\.id/.test(listen));
+
 console.log('');
 if (failures > 0) {
   console.log(`Quiz-shuffle check FAILED (${failures} failure(s)).`);

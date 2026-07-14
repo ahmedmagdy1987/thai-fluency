@@ -28,6 +28,13 @@ export function allQuestsCelebrationId(date = getLocalDateKey()) {
 export function stageCompleteCelebrationId(stageId) {
   return `stage-complete:${stageId}`;
 }
+// Streak milestone celebration IDs (spec 04 §5.1). Durable (no date suffix,
+// mirrors stageCompleteCelebrationId) so pruneCelebrated keeps them forever and
+// a milestone fires at most once, deduped across refresh / tabs / devices.
+export const STREAK_MILESTONES = [3, 7, 30, 100];
+export function streakMilestoneCelebrationId(n) {
+  return `streak-milestone:${n}`;
+}
 // Global "finished every guided mini-unit" milestone (durable, versioned).
 export function courseCompleteCelebrationId() {
   return 'course-complete:v1';
@@ -90,7 +97,7 @@ export function withCelebrated(ids, idOrIds, today = getLocalDateKey(), yesterda
 // the baseline (so existing completions are not retroactively celebrated). Does
 // NOT include event-only celebrations (perfect challenge), which fire from the
 // completion handler, not from steady-state conditions.
-export function activeCelebrationIds({ quests, stageState, courseComplete = false, today = getLocalDateKey() } = {}) {
+export function activeCelebrationIds({ quests, stageState, courseComplete = false, streak = 0, today = getLocalDateKey() } = {}) {
   const ids = [];
   if (quests) {
     QUEST_CELEBRATIONS.forEach((q) => {
@@ -104,6 +111,13 @@ export function activeCelebrationIds({ quests, stageState, courseComplete = fals
   // Seed the global course-complete milestone so a user who already finished
   // every mini-unit before this feature shipped is NOT retroactively celebrated.
   if (courseComplete) ids.push(courseCompleteCelebrationId());
+  // Seed every streak milestone the user has ALREADY passed so a learner who is
+  // (say) on a 40-day streak when this ships is not retro-spammed for 3/7/30.
+  // Durable IDs; only tiers <= the current streak are seeded.
+  const currentStreak = Math.max(0, Number(streak) || 0);
+  STREAK_MILESTONES.forEach((m) => {
+    if (currentStreak >= m) ids.push(streakMilestoneCelebrationId(m));
+  });
   return ids;
 }
 

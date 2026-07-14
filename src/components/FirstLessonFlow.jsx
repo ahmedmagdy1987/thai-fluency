@@ -8,6 +8,8 @@ import { displayCard, transformText } from '../lib/voice.js';
 import { playCorrect, playWrong, playCelebration } from '../lib/sounds.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import ConfettiBurst from './ConfettiBurst.jsx';
+import ComboBadge from './ComboBadge.jsx';
+import { useSessionCombo } from '../hooks/useSessionCombo.js';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
 import SpeakerStyleToggle from './SpeakerStyleToggle.jsx';
@@ -140,6 +142,9 @@ export default function FirstLessonFlow({
   const quizLockedRef = useRef(!!savedProgress?.quizChecked);
   const completeSoundRef = useRef(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  // Transient in-session combo for the mini-challenge (spec 04 §3). Session-only,
+  // no persistence / XP / gems / SRS / hearts — pure momentum feedback.
+  const combo = useSessionCombo();
 
   const currentCard = step === 'sentence' ? sentenceCard : vocabCards[cardIndex];
   // Anti-peek direction lock: the current lesson card's faces are frozen to the
@@ -305,7 +310,9 @@ export default function FirstLessonFlow({
     if (!currentQuestion || !selectedId || checked || checkLockedRef.current) return;
     checkLockedRef.current = true;
     setChecked(true);
-    if (selectedId === currentQuestion.correct.id) {
+    const isCorrect = selectedId === currentQuestion.correct.id;
+    combo.register(isCorrect);
+    if (isCorrect) {
       setScore(current => current + 1);
       playCorrect();
     } else {
@@ -534,9 +541,12 @@ export default function FirstLessonFlow({
           <section className="firstlesson-panel firstlesson-challenge">
             <div className="firstlesson-progress-row">
               <span className="firstlesson-step-label">Mini challenge</span>
-              <span className="firstlesson-progress-pill">
-                {challengeIndex + 1} of {challengeQuestions.length}
-              </span>
+              <div className="firstlesson-progress-meta">
+                <ComboBadge combo={combo} />
+                <span className="firstlesson-progress-pill">
+                  {challengeIndex + 1} of {challengeQuestions.length}
+                </span>
+              </div>
             </div>
             <div className="firstlesson-question">
               <span>{isSentenceLike(currentQuestion.correct) ? 'Pick the Thai sentence for:' : 'Pick the Thai word for:'}</span>
@@ -620,7 +630,11 @@ export default function FirstLessonFlow({
               You got {score} of {challengeQuestions.length} in the mini challenge.
               {recap?.footnote ? ` ${recap.footnote}` : ''}
             </p>
-            <button type="button" className="btn-primary firstlesson-primary" onClick={onComplete}>
+            <button
+              type="button"
+              className="btn-primary firstlesson-primary"
+              onClick={() => onComplete?.({ accuracy: combo.accuracy, comboBest: combo.best })}
+            >
               Unlock the app <ChevronRight size={16} />
             </button>
           </section>
