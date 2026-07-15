@@ -178,12 +178,16 @@ function sceneEl() {
       // Pass 5: SpeechRecognition removed → the exercise renders NOTHING (returns null).
       return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" /></div>;
     case 'situation-rail-free':
-      // Wave 3 B2/B3: the partner path boosts sit-dating up the order, but a FREE
-      // learner must still see it as a locked preview — never their next lesson
-      // (engagement.md:94). All 16 render; the 7 tagged carry real card counts.
+      // Wave 3 B2/B3 + Wave 4 C: the partner path boosts sit-dating up the order,
+      // but a FREE learner must still see it as a locked preview — never their next
+      // lesson (engagement.md:94). Wave 4: the 9 zero-content situations are no
+      // longer dead rows, and the ones with content are startable.
+      // onStartSituation MUST be passed — the rail deliberately renders no Start
+      // without it (an affordance that lies is worse than no affordance).
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
-          <SituationRail stats={{ ...freeStats, identityPath: 'path-partner' }} onOpenSuper={noop} />
+          <SituationRail stats={{ ...freeStats, identityPath: 'path-partner' }} startedStage={1} maxUnlockedStage={8}
+            onOpenSuper={noop} onStartSituation={noop} />
         </div>
       );
     case 'situation-rail-super':
@@ -191,7 +195,18 @@ function sceneEl() {
       // 18+ attestation, and is still never `upNext`.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
-          <SituationRail stats={{ ...superStats, identityPath: 'path-partner' }} onOpenSuper={noop} />
+          <SituationRail stats={{ ...superStats, identityPath: 'path-partner' }} startedStage={1} maxUnlockedStage={8}
+            onOpenSuper={noop} onStartSituation={noop} />
+        </div>
+      );
+    case 'situation-rail-stage1':
+      // A FRESH stage-1 learner: situations are CROSS-STAGE tags, so the rail must
+      // only promise what the unlocked stage window can actually teach. Counts here
+      // are honestly small — that is the point, not a bug.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <SituationRail stats={{ ...freeStats, identityPath: 'path-tourist' }} startedStage={1} maxUnlockedStage={1}
+            onOpenSuper={noop} onStartSituation={noop} />
         </div>
       );
     case 'identity-path':

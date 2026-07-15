@@ -21,13 +21,33 @@
 //
 // ── THE APPROVAL RULE (do not violate) ───────────────────────────────────────
 // 'approved' is NEVER derived, defaulted, or inferred. It exists ONLY when a
-// HUMAN — the named native-speaker reviewer (still an open owner-launch input;
-// that reviewer does not exist yet) — explicitly sets `reviewStatus:'approved'`
+// HUMAN — the named native-speaker reviewer (REVIEWER_OF_RECORD below; that
+// reviewer now EXISTS and is named, but has signed off on NOTHING yet) —
+// explicitly sets `reviewStatus:'approved'`
 // on an item AND flips that item's situation flag in SITUATION_REVIEW_COMPLETE
 // (or DATING_REVIEW_COMPLETE for the Dating pack). Until then, absence of a
 // status means 'pending', never 'approved'. `reviewStatusOf` can therefore only
 // ever RETURN 'approved' if a human already wrote it into the data — this module
 // itself marks nothing approved.
+//
+// ── HOW THE HUMAN RECORDS THAT DECISION: THE MANIFEST ────────────────────────
+// The reviewer's "explicit set" is made ONCE, in ONE machine-readable place:
+// src/data/nativeReviewSignoff.js. Adding an entry there IS the act of approval;
+// src/data/cards.js reads it in the export pipeline and stamps the item. Nothing
+// else grants approval, and no code may add an entry on the reviewer's behalf.
+//
+// The manifest is intersected with an ELIGIBILITY FLOOR (non-empty `ph`, not
+// quarantined, no internal contradiction, not flagged needs-review). Understand
+// the asymmetry or this whole pipeline is theatre: those four gates are
+// STRUCTURAL COMPLETENESS checks — NOT ONE OF THEM READS THE THAI. A card can
+// have a perfectly well-formed `ph` and still be wrong Thai; catching that is
+// exactly what native review is for and exactly what eligibility cannot see.
+// Eligibility is therefore a NECESSARY PRECONDITION, never sufficient evidence:
+// the human sign-off is the evidence, and eligibility may only ever WITHHOLD an
+// approval the human already granted — it can never grant one.
+//     approved  ⟺  (signed off in the manifest)  AND  (eligible)
+// The manifest is EMPTY today, so 0 items are approved. That is the CORRECT
+// outcome, not a bug to fix.
 //
 // ── DERIVATIONS ARE NEVER APPROVALS ──────────────────────────────────────────
 // Auto-derived content is a transform of source content, not a native sign-off,
@@ -40,6 +60,15 @@
 // These are DERIVATIONS: `reviewStatusOf(derived)` must be called on the SOURCE
 // card, and the derived surface inherits that status verbatim.
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ── The reviewer of record ───────────────────────────────────────────────────
+// The ONE named party whose sign-off can move an item to 'approved' (the open
+// owner-launch input, now closed). A name here is an accountability anchor, not
+// a grant: this constant approves nothing by existing. It is the value stamped
+// into `reviewedBy`, and the validators assert every approved item carries
+// EXACTLY this string — an approval attributed to nobody, or to some other name,
+// is an approval nobody can be asked to stand behind.
+export const REVIEWER_OF_RECORD = 'Tuk Talk Thai — Internal Thai Review Team';
 
 // Canonical review-status vocabulary — EXACTLY these three, ordered draft→final.
 // The validators assert this set is closed (no fourth status is ever introduced).
@@ -55,6 +84,23 @@ export const REVIEW_STATUSES = Object.freeze([
   REVIEW_STATE.NEEDS_REVIEW,
   REVIEW_STATE.APPROVED,
 ]);
+
+// ── The approval provenance fields ───────────────────────────────────────────
+// An 'approved' item carries TWO more fields, stamped together with the status
+// and never apart (src/data/cards.js is the only writer):
+//
+//   reviewedBy: REVIEWER_OF_RECORD   // WHO signed off — always the name above
+//   reviewedAt: 'YYYY-MM-DD'         // WHEN, copied VERBATIM from the manifest
+//                                    // entry's `signedOffAt` — never Date.now(),
+//                                    // never "today". A stamp-time clock records
+//                                    // when the BUILD ran, not when the human
+//                                    // reviewed, and would silently re-date every
+//                                    // approval on every rebuild.
+//
+// These are provenance, not permission: writing them does not make an item
+// approved, and reading them proves nothing on an item that is not. They exist so
+// an approval can be audited back to a person and a date.
+export const REVIEW_PROVENANCE_FIELDS = Object.freeze(['reviewedBy', 'reviewedAt']);
 
 // The mandatory draft badge label rendered on ANY 'pending' or 'needs-review'
 // surface (FOUNDATION §9; exercise-types.md §0.3). Shared so UI + validators

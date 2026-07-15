@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PHONETIC PRESENCE — the single test for "does this card have a pronunciation
-// anchor?", plus the derived worklist of the cards that do not.
+// anchor?"
 //
 // Cards store tone ONLY as the diacritic on the romanized `ph` field (CLAUDE.md
 // "Data conventions"). A card with an empty `ph` therefore has NO pronunciation
@@ -38,9 +38,20 @@
 // Note the direction of the one derivation that IS legal: src/lib/toneFromPh.js
 // reads a tone OUT of an existing `ph`. It never writes a `ph`, and it returns
 // null for an empty one. Absence in → absence out; nothing is invented.
+//
+// ── THIS MODULE IS A PURE LEAF: IT IMPORTS NOTHING ───────────────────────────
+// Every export here is a pure function of its argument. That is deliberate and
+// load-bearing: src/data/cards.js imports `hasPhonetic` (a non-empty `ph` is part
+// of the approval eligibility floor), so ANY import of cards.js from this file
+// would be a cycle. The precedent is src/lib/reviewStatus.js, the other leaf
+// primitive, which is importable "from anywhere — data files, lib logic, UI, and
+// the validators" for exactly this reason.
+//
+// The derived worklist of empty-`ph` cards therefore does NOT live here. It is
+// computed from ALL_CARDS inside scripts/check-phonetic-integrity.mjs, its only
+// consumer. It stays DERIVED there — never hardcoded as a list or a count, since
+// either rots the moment a card moves, and rots silently.
 // ─────────────────────────────────────────────────────────────────────────────
-
-import { ALL_CARDS } from '../data/cards.js';
 
 // THE test. `ph` is always a string on the live deck (335 cards hold '', zero
 // hold undefined), but the null-guard keeps this honest for a hand-built card
@@ -49,15 +60,6 @@ import { ALL_CARDS } from '../data/cards.js';
 export function hasPhonetic(card) {
   return !!(card && card.ph && card.ph.trim());
 }
-
-// Cards with NO pronunciation anchor, computed over ALL_CARDS — deliberately the
-// ungated deck, so mature/quarantined cards cannot hide from the native's
-// worklist. DERIVED, never hand-maintained: a hardcoded list (or a count) rots
-// the moment a card is added, and the rot is silent.
-export const EMPTY_PHONETIC_CARDS = ALL_CARDS.filter((c) => !hasPhonetic(c));
-
-// Just the ids, as a Set, for cheap membership tests in pools and validators.
-export const EMPTY_PHONETIC_IDS = new Set(EMPTY_PHONETIC_CARDS.map((c) => c.id));
 
 // Convenience for the exercise pools: keep only cards a phonetic-REQUIRING
 // exercise can honestly teach. Reads as the intent it enforces.

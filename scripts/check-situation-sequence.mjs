@@ -10,7 +10,15 @@
 //       reweights order only), and the recommender never removes a situation from
 //       `order`; it annotates locked previews instead (engagement.md §2.1);
 //   (3) 0 APPROVED — no situation resolves approved, situationReadiness is never
-//       'ready', and even the recommended "up next" is still draft content.
+//       'ready', and even the recommended "up next" is still draft content;
+//   (4) NO AFFORDANCE THAT LIES — the rail now ships a real Start, so `startable`
+//       must mean it: a startable situation's pool is non-empty, holds only cards
+//       that situation actually owns, only cards with a real phonetic (A3 — we
+//       filter, we never synthesize), and only cards inside the learner's
+//       unlocked stage window (a situation is a CROSS-STAGE tag, and the reused
+//       mission scope filters by cardIds and so bypasses the stage window on its
+//       own). Plus the rail partition (startable/previews/deferred) covers all 16
+//       exactly once, and sit-dating is never swept out of the previews.
 //
 // Plus the sequential-unlock invariants of getMiniUnitProgressState mirrored onto
 // getSituationProgressState (progression.md §2.2): first always unlocked, unlock
@@ -22,10 +30,13 @@ import {
 } from '../src/lib/situations.js';
 import {
   getSituationRecommendation, getSituationProgressState, situationTestPool,
-  isSituationTestable, lockReasons, LOCK_REASON,
+  isSituationTestable, lockReasons, LOCK_REASON, situationStartPool,
+  situationTeachableCards, hasTeachableContent, isAlwaysPreview,
+  DEFAULT_STAGE_WINDOW,
 } from '../src/lib/situationProgression.js';
 import { isTaught, taughtCardIds } from '../src/lib/mastery.js';
 import { isApproved } from '../src/lib/reviewStatus.js';
+import { hasPhonetic } from '../src/lib/phonetics.js';
 import { MINI_UNITS } from '../src/data/miniUnits.js';
 
 let failures = 0;
@@ -77,10 +88,17 @@ for (const path of PATHS) {
     assert(`${path}/${tier}: up next is offerable and comes from order`,
       !!rec.upNext && rec.upNext.offerable && rec.order.includes(rec.upNext.sitId));
     // "Resolves past" (engagement.md:94): everything ranked ABOVE up next is
-    // locked — the recommender skips it, it never deletes it.
+    // locked — the recommender skips it, it never deletes it. Stated against
+    // `startable` rather than `lockedPreviews`, because upNext is now the first
+    // LAUNCHABLE situation: an offerable-but-unstartable entry above it would
+    // still be legitimately skipped, and asserting via lockedPreviews would
+    // wrongly fail on it.
     const upIdx = rec.upNext ? rec.order.indexOf(rec.upNext.sitId) : rec.order.length;
     assert(`${path}/${tier}: recommender resolves PAST higher-ranked locks (never deletes them)`,
-      rec.order.slice(0, upIdx).every((id) => rec.lockedPreviews.some((e) => e.sitId === id)));
+      rec.order.slice(0, upIdx).every((id) => {
+        const e = rec.entries.find((x) => x.sitId === id);
+        return e && !e.startable && rec.order.includes(id);
+      }));
   }
 }
 {
@@ -100,6 +118,147 @@ for (const path of PATHS) {
     superRec.comingSoon.map((e) => e.sitId).join(','));
   assert('up next owns real cards (tagged), so the promise is deliverable',
     !!superRec.upNext && superRec.upNext.tagged && superRec.upNext.cardCount > 0);
+}
+
+// ---- 2b. The Start is real: startable ⇒ launchable -----------------------------
+// The rail shipped in Wave 3 with no CTA because no flow existed. Now it has one,
+// so every one of these is the difference between a Start and a lie.
+{
+  const WINDOWS = [
+    DEFAULT_STAGE_WINDOW,
+    { startedStage: 1, maxUnlockedStage: 1 },
+    { startedStage: 1, maxUnlockedStage: 8 },
+    { startedStage: 3, maxUnlockedStage: 5 },
+    { startedStage: 8, maxUnlockedStage: 8 },
+  ];
+
+  // The content signal behind COMING_SOON. `tagged` says "owns cards";
+  // hasTeachableContent says "owns cards we can actually teach". They agree on
+  // today's deck — asserted, not assumed, so a future empty-`ph` situation is
+  // caught rather than advertised.
+  assert('hasTeachableContent agrees with `tagged` on today\'s deck (7 teachable)',
+    SITUATIONS.every((s) => hasTeachableContent(s.id) === s.tagged)
+    && SITUATIONS.filter((s) => hasTeachableContent(s.id)).length === 7,
+    SITUATIONS.filter((s) => hasTeachableContent(s.id)).map((s) => s.id).join(','));
+
+  // A3: the teachable pool NEVER contains an empty-`ph` card, and we never
+  // invented one to fill the gap — the pool only ever shrinks.
+  assert('teachable cards all carry a REAL phonetic (A3: filtered, never synthesized)',
+    SITUATION_IDS.every((id) => situationTeachableCards(id).every(hasPhonetic)));
+  assert('teachable ⊆ owned (filtering only ever removes cards, never adds one)',
+    SITUATION_IDS.every((id) => {
+      const owned = new Set(cardsInSituation(id).map((c) => c.id));
+      return situationTeachableCards(id).every((c) => owned.has(c.id))
+        && situationTeachableCards(id).length <= cardsInSituation(id).length;
+    }));
+
+  for (const w of WINDOWS) {
+    const tag = `[${w.startedStage}-${w.maxUnlockedStage}]`;
+    // THE stage-leak guard. The mission scope filters by explicit cardIds and so
+    // bypasses the stage window; every situation spans stages 1-8, so an
+    // unclamped pool would teach a stage-1 learner stage-8 vocabulary.
+    assert(`${tag}: no start pool ever leaks a card outside the unlocked stage window`,
+      SITUATION_IDS.every((id) => situationStartPool(id, w).every((cid) => {
+        const card = cardsInSituation(id).find((c) => c.id === cid);
+        const s = card.stage || 1;
+        return s >= w.startedStage && s <= w.maxUnlockedStage;
+      })), 'STAGE LEAK');
+    assert(`${tag}: a start pool only ever holds cards that situation owns`,
+      SITUATION_IDS.every((id) => {
+        const own = new Set(cardsInSituation(id).map((c) => c.id));
+        return situationStartPool(id, w).every((cid) => own.has(cid));
+      }));
+    assert(`${tag}: no start pool holds an empty-\`ph\` card`,
+      SITUATION_IDS.every((id) => {
+        const byId = new Map(cardsInSituation(id).map((c) => [c.id, c]));
+        return situationStartPool(id, w).every((cid) => hasPhonetic(byId.get(cid)));
+      }));
+    assert(`${tag}: an untagged situation can never produce a start pool`,
+      SITUATIONS.filter((s) => !s.tagged).every((s) => situationStartPool(s.id, w).length === 0));
+    assert(`${tag}: start pools have no duplicate ids (session size is truthful)`,
+      SITUATION_IDS.every((id) => {
+        const p = situationStartPool(id, w);
+        return new Set(p).size === p.length;
+      }));
+
+    for (const [tier, base] of [['free', {}], ['super', { tier: 'super' }]]) {
+      for (const path of PATHS) {
+        const rec = getSituationRecommendation({ ...base, identityPath: path }, w);
+        // The headline: a Start button renders iff this is true, so it must mean
+        // "we can hand you a real, non-empty session right now".
+        assert(`${tag} ${path}/${tier}: startable ⇒ the pool it launches is non-empty`,
+          rec.startable.every((e) => situationStartPool(e.sitId, w).length > 0
+            && e.startCount === situationStartPool(e.sitId, w).length),
+          rec.startable.map((e) => `${e.sitId}:${e.startCount}`).join(','));
+        assert(`${tag} ${path}/${tier}: startable ⇒ offerable (no lock is ever bypassed)`,
+          rec.startable.every((e) => e.offerable && e.reasons.length === 0));
+        assert(`${tag} ${path}/${tier}: startCount never overstates the situation`,
+          rec.entries.every((e) => e.startCount <= e.teachableCount
+            && e.teachableCount <= e.cardCount));
+        // The rail partition covers all 16 exactly once: the UI filters the VIEW,
+        // it never loses a situation.
+        const parts = [...rec.startable, ...rec.previews, ...rec.deferred].map((e) => e.sitId);
+        assert(`${tag} ${path}/${tier}: startable+previews+deferred partition all 16 exactly once`,
+          parts.length === 16 && new Set(parts).size === 16
+          && JSON.stringify(sorted(parts)) === JSON.stringify(sorted(SITUATION_IDS)),
+          `${parts.length} ids`);
+        assert(`${tag} ${path}/${tier}: `
+          + 'the partition is disjoint (nothing is both startable and deferred)',
+          rec.deferred.every((e) => !e.startable) && rec.previews.every((e) => !e.startable));
+        // sit-dating owns 0 cards, so the content filter WOULD sweep it into the
+        // collapsed backlog. It must stay a surfaced, locked preview instead —
+        // a real entitlement surface is not an empty advert (engagement.md:94).
+        assert(`${tag} ${path}/${tier}: sit-dating stays a surfaced preview, never collapsed`,
+          rec.previews.some((e) => e.sitId === 'sit-dating')
+          && !rec.deferred.some((e) => e.sitId === 'sit-dating')
+          && !rec.startable.some((e) => e.sitId === 'sit-dating'));
+        assert(`${tag} ${path}/${tier}: sit-dating is NEVER startable and never up next`,
+          !rec.upNext || rec.upNext.sitId !== 'sit-dating');
+        // The collapsed rows are exactly the ones with nothing to teach and
+        // nothing to sell — we never collapse a situation that has content.
+        assert(`${tag} ${path}/${tier}: deferred ⇒ zero teachable content (we hide only what is empty)`,
+          rec.deferred.every((e) => !hasTeachableContent(e.sitId) && !e.tagged
+            && e.reasons.includes(LOCK_REASON.COMING_SOON) && !isAlwaysPreview(e.sitId)),
+          rec.deferred.map((e) => e.sitId).join(','));
+        assert(`${tag} ${path}/${tier}: the 8 collapsed + dating account for all 9 empty situations`,
+          rec.deferred.length === 8 && rec.comingSoon.length === 9,
+          `deferred=${rec.deferred.length} comingSoon=${rec.comingSoon.length}`);
+        // Surfaced rows are ordered by the untouched §3 order — the view filters,
+        // it never re-sorts (that would make the identity promise unverifiable).
+        const surfaced = rec.entries.filter((e) => e.startable || rec.previews.includes(e))
+          .map((e) => e.sitId);
+        const expected = rec.order.filter((id) => surfaced.includes(id));
+        assert(`${tag} ${path}/${tier}: surfaced rows keep the untouched §3 order`,
+          JSON.stringify(surfaced) === JSON.stringify(expected));
+      }
+    }
+  }
+
+  // Every tagged situation is startable for EVERY legal window — otherwise the
+  // rail would show a situation whose Start we suppress, which is the Wave 3
+  // failure in a new costume.
+  for (let lower = 1; lower <= 8; lower++) {
+    for (let upper = lower; upper <= 8; upper++) {
+      const w = { startedStage: lower, maxUnlockedStage: upper };
+      assert(`window [${lower}-${upper}]: every tagged situation still has a startable pool`,
+        SITUATIONS.filter((s) => s.tagged).every((s) => situationStartPool(s.id, w).length > 0),
+        SITUATIONS.filter((s) => s.tagged && situationStartPool(s.id, w).length === 0)
+          .map((s) => s.id).join(','));
+    }
+  }
+
+  // Fail closed: a caller that forgets the window must UNDER-offer (stage 1),
+  // never leak. A default of "no filter" would silently hand out stage-8 cards.
+  assert('an omitted stage window defaults to stage 1 only (under-offer, never leak)',
+    SITUATION_IDS.every((id) => JSON.stringify(situationStartPool(id))
+      === JSON.stringify(situationStartPool(id, { startedStage: 1, maxUnlockedStage: 1 })))
+    && DEFAULT_STAGE_WINDOW.maxUnlockedStage === 1);
+  assert('a malformed/null stage window still fails closed to stage 1',
+    JSON.stringify(situationStartPool('sit-greet', null))
+      === JSON.stringify(situationStartPool('sit-greet', { startedStage: 1, maxUnlockedStage: 1 })));
+  assert('an unknown situation id yields an empty start pool (never throws)',
+    situationStartPool('sit-bogus', { startedStage: 1, maxUnlockedStage: 8 }).length === 0
+    && hasTeachableContent('sit-bogus') === false);
 }
 
 // ---- 3. Sequential unlock (mirrors getMiniUnitProgressState) ------------------
@@ -185,6 +344,18 @@ assert('NO card in any situation resolves approved',
   assert('up next is offerable WITHOUT being approved (offerable ≠ approved)',
     rec.upNext.offerable === true && situationReadiness(rec.upNext.sitId) === 'coming-soon',
     rec.upNext.sitId);
+  // The new signal must not become a back door to approval. `startable` says
+  // "we can teach you these cards today"; it says NOTHING about native review,
+  // and every startable situation is still draft (so the rail's mandatory draft
+  // badge renders on every surfaced row).
+  assert('startable ≠ approved: every startable situation is still draft content',
+    rec.startable.length === 7
+    && rec.startable.every((e) => e.readiness === 'coming-soon'
+      && situationReviewComplete(e.sitId) === false
+      && cardsInSituation(e.sitId).every((c) => !isApproved(c))),
+    rec.startable.map((e) => e.sitId).join(','));
+  assert('every SURFACED row (startable + previews) is draft, so the badge always renders',
+    [...rec.startable, ...rec.previews].every((e) => e.readiness === 'coming-soon'));
 }
 
 console.log('');
@@ -192,4 +363,5 @@ if (failures > 0) {
   console.log(`Situation sequence check FAILED (${failures} failure(s)).`);
   process.exit(1);
 }
-console.log(`Situation sequence check passed (${PATHS.length} paths × 16 situations, 0 approved, 0 dropped).`);
+console.log(`Situation sequence check passed (${PATHS.length} paths × 16 situations, `
+  + '0 approved, 0 dropped, 0 stage leaks, 0 empty Starts).');

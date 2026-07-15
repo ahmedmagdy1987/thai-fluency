@@ -20,13 +20,152 @@ mkdirSync(OUT, { recursive: true });
 const args = process.argv.slice(2);
 const base = (args.find(a => a.startsWith('http')) || 'http://localhost:5173').replace(/\/$/, '');
 const onlyIdx = args.indexOf('--only');
-const only = onlyIdx >= 0 ? args[onlyIdx + 1] : null;
+// Comma-separated so a related group can be driven in one pass — the Wave 4
+// anonymous scenes each walk a whole first lesson, so running them apart from
+// the fast component scenes keeps either pass from timing out the other.
+const only = onlyIdx >= 0 ? args[onlyIdx + 1].split(',').map(s => s.trim()).filter(Boolean) : null;
 const harness = (scene, theme) => `${base}/scripts/viz/index.html?scene=${scene}&theme=${theme}`;
 const route = (path, theme) => `${base}${path}?vizTheme=${theme}`;
+
+// ── Wave 4 Part B: drive the REAL app as a first-time ANONYMOUS visitor ──────
+// Part B is a ROUTING change, so mounting a component proves nothing — the only
+// honest proof is the real app, from "/", with a fresh browser context (= empty
+// localStorage = a brand-new visitor, no session). These helpers walk that path.
+async function anonOnboard(page) {
+  await page.locator('.lp-cta-primary').first().click();          // "Start your first lesson"
+  await page.waitForTimeout(700);
+  await page.locator('button').filter({ hasText: 'Male' }).first().click().catch(() => {});
+  await page.waitForTimeout(250);
+  await page.locator('button').filter({ hasText: "I don't speak any Thai" }).first().click().catch(() => {});
+  await page.waitForTimeout(600);
+  await page.locator('.onboard-skip-btn').first().click().catch(() => {});  // identity Q is optional
+  await page.waitForTimeout(600);
+}
+// Walk the whole first lesson: pick an option when one is offered, otherwise
+// advance. Ends on the 'complete' step's "Unlock the app" CTA.
+async function anonRunFirstLesson(page) {
+  await page.locator('.firstlesson-primary').first().click().catch(() => {}); // "Start lesson"
+  await page.waitForTimeout(400);
+  for (let i = 0; i < 120; i++) {
+    if (await page.locator('#save-ask-title').count()) return true;
+    const unlock = page.locator('button', { hasText: 'Unlock the app' }).first();
+    if (await unlock.count() && await unlock.isVisible().catch(() => false)) {
+      await unlock.click().catch(() => {});
+      await page.waitForTimeout(1400);
+      // Finishing the first lesson grants 60 XP, which clears DEFAULT_DAILY_GOAL
+      // (50), so the "Goal Crusher" AchievementUnlockedModal renders at the same
+      // time as the payoff — and it uses the SAME .reward-screen-panel /
+      // .reward-continue-btn classes. It sits UNDER the payoff's backdrop, so a
+      // generic .reward-continue-btn.first() targets an unclickable element and
+      // the ask never fires. Target the payoff BY NAME.
+      const payoff = page.locator('.reward-screen-panel')
+        .filter({ hasText: 'First Lesson Complete' }).locator('.reward-continue-btn').first();
+      if (await payoff.count()) await payoff.click({ timeout: 3000 }).catch(() => {});
+      await page.waitForTimeout(1200);
+      continue;
+    }
+    const opt = page.locator('.firstlesson-option-text:not([disabled]), .firstlesson-option:not([disabled])').first();
+    if (await opt.count() && await opt.isVisible().catch(() => false)) {
+      await opt.click().catch(() => {});
+      await page.waitForTimeout(200);
+    }
+    const primary = page.locator('.firstlesson-primary:not([disabled])').first();
+    if (await primary.count() && await primary.isVisible().catch(() => false)) {
+      await primary.click().catch(() => {});
+    }
+    await page.waitForTimeout(260);
+  }
+  return !!(await page.locator('#save-ask-title').count());
+}
+const readStats = (page) => page.evaluate(() => {
+  for (let i = 0; i < localStorage.length; i++) {
+    const raw = localStorage.getItem(localStorage.key(i)) || '';
+    if (raw.includes('totalXp')) { try { const p = JSON.parse(raw); return p.stats || p; } catch { /* not ours */ } }
+  }
+  return null;
+});
 
 // A scene = a render target + optional interaction + optional DOM assertions.
 // assert(page) returns { name, pass, detail }[] evaluated in Node against the DOM.
 const SCENES = [
+  // ── Wave 4 Part B — anonymous-first, proven against the real app ───────────
+  { name: 'anon-entry', url: (t) => route('/', t), public: true,
+    async assert(page) {
+      const pw = await page.locator('input[type=password]').count();
+      const cta = await page.locator('.lp-cta-primary').count();
+      return [
+        { name: 'anonymous visitor hits NO signup wall', pass: pw === 0, detail: `passwordFields=${pw}` },
+        { name: 'the landing offers the first lesson', pass: cta >= 1, detail: `ctas=${cta}` },
+      ];
+    } },
+  { name: 'anon-first-lesson', url: (t) => route('/', t), public: true,
+    async act(page) { await anonOnboard(page); },
+    async assert(page) {
+      const pw = await page.locator('input[type=password]').count();
+      const body = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
+      return [
+        { name: 'a real lesson is reachable with NO account', pass: /Start lesson/i.test(body), detail: body.slice(0, 60) },
+        { name: 'still no signup wall anywhere on the path', pass: pw === 0, detail: `passwordFields=${pw}` },
+      ];
+    } },
+  { name: 'anon-payoff-ask', url: (t) => route('/', t), public: true,
+    async act(page) { await anonOnboard(page); await anonRunFirstLesson(page); },
+    async assert(page) {
+      const ask = await page.locator('#save-ask-title').count();
+      const body = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
+      const stats = await readStats(page);
+      const xp = stats ? (stats.totalXp || 0) : 0;
+      const streak = stats ? (stats.streak || 0) : 0;
+      // The secondary path is MANDATORY and must not threaten the learner.
+      const secondary = /Keep going without an account/i.test(body);
+      const coercive = /lose your progress|will be lost|progress will vanish/i.test(body);
+      return [
+        { name: 'the account offer appears at the reward peak', pass: ask === 1, detail: `ask=${ask}` },
+        { name: 'anonymous lesson earned real XP', pass: xp >= 60, detail: `totalXp=${xp}` },
+        { name: 'anonymous lesson started a Day-1 streak', pass: streak >= 1, detail: `streak=${streak}` },
+        { name: 'honest secondary path offered (no dead-end)', pass: secondary, detail: secondary ? 'present' : 'MISSING' },
+        { name: 'never threatens the learner with loss', pass: !coercive, detail: coercive ? 'COERCIVE COPY' : 'honest' },
+      ];
+    } },
+  { name: 'anon-keep-going', url: (t) => route('/', t), public: true,
+    async act(page) {
+      await anonOnboard(page); await anonRunFirstLesson(page);
+      await page.locator('button', { hasText: 'Keep going without an account' }).first().click().catch(() => {});
+      await page.waitForTimeout(900);
+    },
+    async assert(page) {
+      const ask = await page.locator('#save-ask-title').count();
+      const stats = await readStats(page);
+      const nav = await page.locator('nav, .app-nav, .sidebar-nav').count();
+      return [
+        { name: 'secondary path lands in the app, not a dead-end', pass: ask === 0 && nav >= 1, detail: `ask=${ask} nav=${nav}` },
+        { name: 'progress SURVIVES declining the account', pass: !!stats && (stats.totalXp || 0) >= 60, detail: `totalXp=${stats ? stats.totalXp : 'null'}` },
+      ];
+    } },
+  // ── Auth flows must all still work (forceAuthGate wins) ───────────────────
+  { name: 'auth-signin', url: (t) => route('/sign-in', t), public: true,
+    async assert(page) {
+      const btns = (await page.locator('button').allInnerTexts()).join(' | ');
+      return [
+        { name: 'sign-in still reachable with email+password', pass: await page.locator('input[type=password]').count() === 1 && await page.locator('input[type=email]').count() === 1, detail: 'fields' },
+        { name: 'password recovery reachable from sign-in', pass: /Forgot password/i.test(btns), detail: 'link' },
+        { name: 'sign-up reachable from sign-in', pass: /Create an account/i.test(btns), detail: 'link' },
+      ];
+    } },
+  { name: 'auth-welcome', url: (t) => route('/welcome', t), public: true,
+    async assert(page) {
+      const btns = (await page.locator('button').allInnerTexts()).join(' | ');
+      return [
+        { name: 'sign-up (returning-user gate) still reachable', pass: /Create free account/i.test(btns), detail: 'signup' },
+        { name: 'returning user can get to sign-in', pass: /I already have an account/i.test(btns), detail: 'signin' },
+      ];
+    } },
+  { name: 'auth-forgot', url: (t) => route('/sign-in', t), public: true,
+    async act(page) { await page.locator('button', { hasText: 'Forgot password' }).first().click().catch(() => {}); await page.waitForTimeout(600); },
+    async assert(page) {
+      const body = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
+      return [{ name: 'password-recovery screen renders', pass: await page.locator('input[type=email]').count() >= 1 && /reset|recover|send/i.test(body), detail: body.slice(0, 60) }];
+    } },
   { name: 'dating-lesson', url: (t) => harness('dating-lesson', t),
     async act(page) {
       // Enter the first category's lesson.
@@ -211,15 +350,77 @@ const SCENES = [
       // The 7 tagged situations must show a real, non-zero card count.
       const counts = await page.locator('.situation-chip-count').allInnerTexts().catch(() => []);
       const nonZero = counts.filter(c => /[1-9]/.test(c)).length;
-      const comingSoon = (html.match(/Coming soon/gi) || []).length;
+      // Wave 4 Part C: zero-content situations must no longer be dead rows.
+      const deadRows = (html.match(/No lessons written yet/gi) || []).length;
+      // Count the CLASS, not the label: the up-next row reads "Start", the other
+      // six read "Practice" (SituationRail.jsx:135) — one primary action, six
+      // secondary. All seven are the same real launch affordance.
+      const starts = await page.locator('.situation-row-start').count();
       return [
-        { name: 'all 16 situations render (nothing dropped = no gating)', pass: rows === 16, detail: `rows=${rows}` },
+        { name: 'no dead "No lessons written yet" rows remain', pass: deadRows === 0, detail: `deadRows=${deadRows}` },
+        { name: 'rail collapsed from 16 to the 7 startable + dating preview', pass: rows === 8, detail: `rows=${rows}` },
+        { name: 'the 7 content-owning situations are STARTABLE', pass: starts === 7, detail: `startButtons=${starts}` },
         { name: 'draft badge present (nothing claims approval)', pass: /Draft content — pending native-speaker review/.test(html), detail: 'badge' },
         { name: 'NOTHING renders as approved', pass: !/Native approved/i.test(html), detail: /Native approved/i.test(html) ? 'APPROVED LEAK' : 'clean' },
-        { name: 'sit-dating is a LOCKED preview for a free partner-path learner', pass: /Super/i.test(datingTxt) && /lock/i.test(await dating.innerHTML().catch(() => '')), detail: `"${datingTxt.slice(0, 70)}"` },
+        { name: 'sit-dating is STILL a locked preview (Super-only)', pass: /Super/i.test(datingTxt) && /lock/i.test(await dating.innerHTML().catch(() => '')), detail: `"${datingTxt.slice(0, 60)}"` },
         { name: 'sit-dating is NOT the up-next lesson', pass: !/Dating & relationships/i.test(upNextTxt), detail: `upNext="${upNextTxt.slice(0, 40)}"` },
-        { name: '7 tagged situations show real card counts', pass: nonZero === 7, detail: `nonZero=${nonZero}` },
-        { name: '9 untagged render "coming soon"', pass: comingSoon >= 9, detail: `comingSoon=${comingSoon}` },
+        { name: 'sit-dating offers NO free Start', pass: !/Start/i.test(datingTxt), detail: 'no start CTA' },
+        { name: 'the 7 show real card counts', pass: nonZero === 7, detail: `nonZero=${nonZero}` },
+        { name: 'the remaining 9 are named honestly in ONE collapsed affordance', pass: /More situations|9 (more|of 16)|coming/i.test(html), detail: 'collapse' },
+      ];
+    } },
+  { name: 'situation-rail-stage1', url: (t) => harness('situation-rail-stage1', t),
+    async assert(page) {
+      const html = await page.content();
+      const counts = await page.locator('.situation-chip-count').allInnerTexts();
+      // A stage-1 learner must never be promised cards outside the unlocked window.
+      const nums = counts.map(c => parseInt(c, 10)).filter(Number.isFinite);
+      const maxCount = nums.length ? Math.max(...nums) : 0;
+      return [
+        { name: 'stage-1 learner sees only stage-window content (no stage-8 leak)', pass: maxCount > 0 && maxCount < 130, detail: `counts=[${nums.join(',')}]` },
+        { name: 'still nothing approved', pass: !/Native approved/i.test(html), detail: 'clean' },
+      ];
+    } },
+  // Part C: prove Start ACTUALLY LAUNCHES, in the real app (the harness stubs it).
+  { name: 'situation-start-launch', url: (t) => route('/', t), public: true,
+    async act(page) {
+      await anonOnboard(page); await anonRunFirstLesson(page);
+      await page.locator('button', { hasText: 'Keep going without an account' }).first().click().catch(() => {});
+      await page.waitForTimeout(1000);
+      // The "Goal Crusher" achievement modal is queued behind the ask (60 XP >
+      // the 50 daily goal) and BLOCKS the page once the ask is gone. Clear every
+      // stacked modal before touching the rail, or the Start click is silently
+      // intercepted and the scene reports a launch that never happened.
+      for (let i = 0; i < 4; i++) {
+        const modal = page.locator('.reward-screen-panel:visible .reward-continue-btn').first();
+        if (!(await modal.count())) break;
+        await modal.click({ timeout: 2500 }).catch(() => {});
+        await page.waitForTimeout(700);
+      }
+      // Capture what the rail PROMISES for this row, so we can hold the launched
+      // session to it. The session UI shows the card's CATEGORY, not the
+      // situation name, so the advertised count is the real scoping evidence.
+      const row = page.locator('.situation-row').filter({ has: page.locator('.situation-row-start') }).first();
+      this._promised = (await row.locator('.situation-chip-count').innerText().catch(() => '')).match(/\d+/)?.[0] || null;
+      const start = page.locator('.situation-row-start').first();
+      await start.scrollIntoViewIfNeeded().catch(() => {});
+      // Do NOT swallow this click: an intercepted Start is the failure we are
+      // testing for, so it must be visible in the scene detail, not hidden.
+      this._clickErr = null;
+      try { await start.click({ timeout: 4000 }); } catch (e) { this._clickErr = String(e.message).split('\n')[0].slice(0, 60); }
+      await page.waitForTimeout(1500);
+    },
+    async assert(page) {
+      const body = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
+      // A real launch = the cards tab showing an actual card, sized to exactly the
+      // deck the rail promised. Assert the SESSION, not just "some text changed".
+      const onCards = page.url().includes('/cards');
+      const cardSurface = await page.locator('.srs-card, [class*="srs-card"]').count();
+      const left = (body.match(/(\d+)\s+LEFT/i) || [])[1] || null;
+      return [
+        { name: 'Start was clickable (no modal intercepted it)', pass: !this._clickErr, detail: this._clickErr || 'clicked' },
+        { name: 'clicking Start launches a REAL card session', pass: onCards && cardSurface >= 1, detail: `url=${page.url().replace(/^https?:\/\/[^/]+/, '')} cardSurface=${cardSurface}` },
+        { name: 'the session holds EXACTLY the deck the rail promised', pass: !!left && !!this._promised && left === this._promised, detail: `rail promised ${this._promised} → session has ${left}` },
       ];
     } },
   { name: 'situation-rail-super', url: (t) => harness('situation-rail-super', t),
@@ -328,7 +529,7 @@ async function forcePublicTheme(page, theme) {
 const results = [];
 const browser = await chromium.launch();
 for (const s of SCENES) {
-  if (only && s.name !== only) continue;
+  if (only && !only.includes(s.name)) continue;
   for (const theme of THEMES) {
     for (const vp of VIEWPORTS) {
       const ctx = await browser.newContext({ viewport: { width: vp.w, height: vp.h }, deviceScaleFactor: 1 });

@@ -31,7 +31,8 @@ import {
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
 import { isSuper } from './config/entitlements.js';
-import { PATHS } from './lib/situations.js';
+import { PATHS, getSituation } from './lib/situations.js';
+import { situationStartPool } from './lib/situationProgression.js';
 import {
   effectiveHearts,
   spendHeart,
@@ -100,6 +101,8 @@ import SettingsModal from './components/SettingsModal.jsx';
 import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
 import AuthLinkNotice from './components/auth/AuthLinkNotice.jsx';
+import SaveProgressAsk from './components/auth/SaveProgressAsk.jsx';
+import AnonymousAccountBar from './components/auth/AnonymousAccountBar.jsx';
 import AppBootScreen from './components/AppBootScreen.jsx';
 import PendingConfirmation from './components/auth/PendingConfirmation.jsx';
 import ResetPassword from './components/auth/ResetPassword.jsx';
@@ -345,6 +348,12 @@ export default function TukTalkThaiApp() {
   const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
   const [rewardScreen, setRewardScreen] = useState(null);
+  // The anonymous "save your progress" ask (engagement.md §1.3): { xpEarned,
+  // streak } captured from the reward screen the learner just dismissed, or null.
+  // Ephemeral UI, never persisted — it recaps state that is already banked, so
+  // losing it to a refresh costs the learner nothing (the account bar still
+  // offers the same door). Cleared on identity change with the other overlays.
+  const [saveProgressAsk, setSaveProgressAsk] = useState(null);
   // Honest streak-recovery surface (spec 04 §5.2): shown once when a real break
   // resets the streak to 1. streakBreakRef captures the pre-reset streak (the
   // honest "best") at the moment computeStreak resets, since no longestStreak is
@@ -402,6 +411,14 @@ export default function TukTalkThaiApp() {
   const notificationPromptFired = useRef(false);            // ensures we ask permission at most once per session
   const superSuccessHandled = useRef(false);                // handles the ?super=success return at most once
   const profileSettingsRef = useRef({});
+  // True once this device holds real local onboarding (engagement.md §1). A REF,
+  // not state, because applyRouteState is a `[]`-dep callback wired into the
+  // mount-time popstate listener — reading stats there would need a dep and
+  // re-subscribe the listener on every stats change. Only ever WIDENS access (it
+  // keeps an anonymous learner in their app instead of bouncing them to the
+  // marketing page); it never gates anything, so a stale `false` just shows the
+  // landing — the pre-existing behaviour.
+  const startedLocallyRef = useRef(false);
   const celebrationsArmedRef = useRef(false);               // celebrations fire only after the first settled pass (baseline)
   const courseCompleteAtArmingRef = useRef(false);          // true if the course was ALREADY complete at baseline → never retro-celebrate
   const reviewLocksRef = useRef(new Set());
@@ -435,10 +452,24 @@ export default function TukTalkThaiApp() {
         if (Object.keys(savedProgress).length > 0) savedStats.firstLessonCompleted = true;
         setProgress(savedProgress);
         setStats(savedStats);
+        // A returning ANONYMOUS learner (engagement.md §1) refreshing on a tab
+        // route must land back in their app, not on the "Ready for your first
+        // lesson?" marketing page — they already took it, and their XP + streak
+        // are right here in localStorage. showPublicLanding initialises to true
+        // before this async load resolves, so it is corrected here rather than in
+        // the initialiser. Scoped to tab routes only: /get-started, /demo, /welcome
+        // and the public pages keep their landing exactly as before. Harmless for
+        // signed-in users — showLanding already requires !session.
+        if (savedStats.hasOnboarded && getCurrentRoute().type === 'tab') {
+          setShowPublicLanding(false);
+        }
       }
       setLoaded(true);
     })();
   }, []);
+
+  // Mirror onboarding into a ref for applyRouteState (see startedLocallyRef).
+  useEffect(() => { startedLocallyRef.current = !!stats.hasOnboarded; }, [stats.hasOnboarded]);
 
   useEffect(() => {
     setSoundEffectsEnabled(stats.soundEffects !== false);
@@ -516,6 +547,11 @@ export default function TukTalkThaiApp() {
     setLastReviewSnapshot(null);
     setCardSession(null);
     setRewardScreen(null);
+    // The save-progress ask belongs to ONE anonymous learner's reward moment. It
+    // is already hidden the instant a session exists (its render is gated on
+    // anonymousLearner), so this is belt-and-braces for the reverse direction —
+    // a sign-OUT must not leave the previous user's ask hanging over the landing.
+    setSaveProgressAsk(null);
     setCelebration(null);
     setQuestToasts([]);
     setAchievementToast(null);
@@ -585,12 +621,22 @@ export default function TukTalkThaiApp() {
 
     setPublicPage(null);
 
+    // In-app routes. These used to force the landing back on unconditionally,
+    // which was harmless while the AuthGate owned every anonymous visitor. Now
+    // that an anonymous learner lives in these routes (engagement.md §1), a Back
+    // gesture or a /learn link must not eject them onto the marketing page —
+    // their lesson, XP and streak are already on this device. A visitor who has
+    // NOT onboarded still gets the landing, exactly as before, and signed-in
+    // users are unaffected (showLanding requires !session). /get-started
+    // (type 'landing') is untouched below, so "Back to home" always works.
+    const landingForRoute = !startedLocallyRef.current;
+
     if (route.type === 'tab') {
       setTab(route.tab);
       setShowProfile(false);
       setShowSettings(false);
       setForceAuthGate(false);
-      setShowPublicLanding(true);
+      setShowPublicLanding(landingForRoute);
       return;
     }
 
@@ -598,7 +644,7 @@ export default function TukTalkThaiApp() {
       setShowProfile(true);
       setShowSettings(false);
       setForceAuthGate(false);
-      setShowPublicLanding(true);
+      setShowPublicLanding(landingForRoute);
       return;
     }
 
@@ -606,7 +652,7 @@ export default function TukTalkThaiApp() {
       setShowSettings(true);
       setShowProfile(false);
       setForceAuthGate(false);
-      setShowPublicLanding(true);
+      setShowPublicLanding(landingForRoute);
       return;
     }
 
@@ -800,6 +846,35 @@ export default function TukTalkThaiApp() {
     } catch { /* ignore */ }
     setDemoMode(false);
     // onAuthStateChange fires and updates session; cloud sync effect runs next.
+  }, []);
+
+  // "Get started" — the landing's primary CTA and the front door of the whole
+  // product (engagement.md §1.2). It used to be openAuthGate('welcome'): the
+  // signup wall, before a single Thai word had been learned. It now opens the
+  // real thing — PlacementOnboarding → FirstLessonFlow → reward → ask.
+  //
+  // Only leaves the marketing page; it does not force any gate, which is exactly
+  // what lets the reversed routing take over. Sign-in stays one tap away on the
+  // landing (openAuthGate('signin')), so the returning user never loses their
+  // path, and the AuthGate welcome screen keeps its /welcome deep link.
+  // Sets the flags directly and calls writeRoute rather than going through
+  // handleNavigatePath: applyRouteState derives showPublicLanding from
+  // startedLocallyRef, which is still false for a first-time visitor (they have
+  // not onboarded YET — that is the whole point of this tap), so routing through
+  // it would flip the landing straight back on and bounce them. Same idiom as
+  // handleDemoSignUp / handleExitDemo. writeRoute PUSHES, so Back still returns
+  // to /get-started.
+  const handleGetStarted = useCallback(() => {
+    setShowPublicLanding(false);
+    setForceAuthGate(false);
+    setPublicPage(null);
+    setShowProfile(false);
+    setShowSettings(false);
+    setTab('learn');
+    writeRoute('/learn');
+    if (typeof window !== 'undefined') {
+      try { window.scrollTo(0, 0); } catch { /* ignore */ }
+    }
   }, []);
 
   const openAuthGate = useCallback((screen = 'welcome') => {
@@ -1016,6 +1091,17 @@ export default function TukTalkThaiApp() {
   // dep arrays — dep arrays are evaluated immediately and `const` hoists to
   // TDZ, so a later declaration crashes the whole render at module init.
   const isEmailConfirmed = !!(session?.user?.email_confirmed_at);
+
+  // ── Anonymous-first learning (engagement.md §1: INVEST BEFORE ASK) ─────────
+  // An anonymous visitor is a real learner, not a locked-out stranger: they
+  // onboard, take the full first lesson, and bank real XP + a Day-1 streak in
+  // localStorage (saveState) exactly like a signed-in user. This flag marks that
+  // mode and is the ONLY thing the save-progress ask and the account bar key off,
+  // so a signed-in user and a demo visitor can never see either.
+  //
+  // Deliberately NOT gated on `loaded`/`stats`: it describes the SESSION, not the
+  // learner's progress, so it stays stable across the whole render.
+  const anonymousLearner = hasSupabaseConfig && !session && !demoMode;
 
   // ── Stripe checkout return (?super=success) ──────────────────────────────
   // After embedded checkout completes, Stripe returns the user to
@@ -1822,7 +1908,13 @@ export default function TukTalkThaiApp() {
     if (!loaded || demoMode) return false;
     if (superActive) return false;                                    // never upsell a paying Super user
     if (!stats.hasOnboarded || !stats.tutorialSeen) return false;     // not on first launch / during onboarding
-    if (activeMiniUnitId || celebration || rewardScreen || upgradePrompt || showSettings || showProfile || achievementToast) {
+    // saveProgressAsk joins this list for the same reason as rewardScreen: it is
+    // a modal overlay, and "not during another overlay" is the rule. It also
+    // closes the worst version of the dark pattern §1.3 forbids — a Super paywall
+    // stacked on top of the account ask, sold to someone with no account to
+    // attach it to. handleRewardContinue already refuses to chain the two; this
+    // makes it structural rather than relying on that one call site.
+    if (activeMiniUnitId || celebration || rewardScreen || saveProgressAsk || upgradePrompt || showSettings || showProfile || achievementToast) {
       return false;                                                    // not during a lesson or another overlay
     }
     if (!intentional) {
@@ -1838,7 +1930,7 @@ export default function TukTalkThaiApp() {
     setUpgradePrompt({ reason });
     trackEvent(ANALYTICS_EVENTS.UPGRADE_MODAL_SHOWN, { reason, intentional });
     return true;
-  }, [loaded, demoMode, superActive, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
+  }, [loaded, demoMode, superActive, stats.hasOnboarded, stats.tutorialSeen, stats.stage1CelebrationShown, stats.superPromptLastShownAt, activeMiniUnitId, celebration, rewardScreen, saveProgressAsk, upgradePrompt, showSettings, showProfile, achievementToast, missionState, updateSettings]);
 
   // `intent` is the tab the user was trying to reach (e.g. 'dating' from the
   // Dating lock). It is persisted so that, after the Stripe round-trip and
@@ -1876,13 +1968,51 @@ export default function TukTalkThaiApp() {
     }
   }, [session?.user?.id, isEmailConfirmed]);
 
+  // The reward-screen boundary (engagement.md §1.3). Continue normally chains the
+  // Super upsell; for an anonymous learner finishing their FIRST lesson it hands
+  // off to the account ask instead.
   const handleRewardContinue = useCallback(() => {
     const promptReason = rewardScreen?.superPromptReason;
+    // offerSaveProgress is stamped by completeFirstLesson only. Keying off that
+    // flag rather than sniffing the reward's id/title means no other reward
+    // screen (mission, stage, course complete) can ever trigger the ask by
+    // accident, and it stays true whatever the copy above it becomes.
+    const askToSave = !!rewardScreen?.offerSaveProgress && anonymousLearner;
+    const xpEarned = rewardScreen?.xpEarned || 0;
+    const streak = rewardScreen?.streak || 0;
     setRewardScreen(null);
+    if (askToSave) {
+      // The account ask OWNS this moment — the Super prompt is deliberately not
+      // chained behind it. Stacking a paywall on top of the signup ask would be
+      // the dark pattern §1.3 rules out, and it cannot even work: an anonymous
+      // learner has no account for a subscription to attach to, and
+      // handleOpenPremium would navigate them to /plans, stranding them mid-ask.
+      // requestSuperPrompt would also refuse anyway (it requires tutorialSeen,
+      // which a brand-new learner does not have) — this makes that explicit
+      // rather than load-bearing on a guard that lives somewhere else.
+      setSaveProgressAsk({ xpEarned, streak });
+      return;
+    }
     if (promptReason) {
       window.setTimeout(() => requestSuperPrompt(promptReason), 120);
     }
-  }, [requestSuperPrompt, rewardScreen?.superPromptReason]);
+  }, [requestSuperPrompt, anonymousLearner, rewardScreen?.superPromptReason, rewardScreen?.offerSaveProgress, rewardScreen?.xpEarned, rewardScreen?.streak]);
+
+  // "Save my progress" → the real signup screen. Nothing is committed or moved
+  // here: the learner's XP/streak/SRS are already in localStorage, and
+  // progressMerge.js carries them into the account on the sign-in that follows
+  // (see the cloud-init effect). This callback only opens a door.
+  const handleSaveProgressSignUp = useCallback(() => {
+    setSaveProgressAsk(null);
+    openAuthGate('signup');
+  }, [openAuthGate]);
+
+  // "Keep going without an account" → straight into the app. No penalty, no
+  // re-ask, no degraded mode: the learner keeps everything they earned and the
+  // account bar keeps the signup door open for whenever they want it.
+  const handleSaveProgressDecline = useCallback(() => {
+    setSaveProgressAsk(null);
+  }, []);
 
   const handleLockedFeature = useCallback(() => {
     // The user intentionally tapped a locked/premium surface → always offer (skips
@@ -1934,6 +2064,13 @@ export default function TukTalkThaiApp() {
       // actually works immediately (UX audit).
       nextStep: 'Mission 1 in Learn',
       superPromptReason: 'first-lesson',
+      // Marks THIS reward screen as the invest-before-ask boundary
+      // (engagement.md §1.3). handleRewardContinue turns it into the account ask
+      // for an anonymous learner and ignores it for everyone else, so a
+      // signed-in user's first lesson ends exactly as it does today.
+      // MissionCompleteRewardScreen destructures its props, so this extra key is
+      // inert there — it never reaches the DOM.
+      offerSaveProgress: true,
     });
     updateSettings({
       firstLessonCompleted: true,
@@ -2140,6 +2277,41 @@ export default function TukTalkThaiApp() {
   // and the Quiz pool all filter to the unlocked window. The mission view
   // (S1 only) is a special case within this.
   const maxUnlockedStage = stageState ? stageState.maxUnlockedStage : 1;
+
+  // Start a situation from the rail. Wave 3 shipped the rail with no CTA because
+  // no situation lesson flow existed; this is that flow, and it invents nothing:
+  // it hands the situation's EXISTING tagged cards to the EXISTING card-session
+  // machinery via handleStartMissionCards — the same launcher LearnPath and
+  // TodayTab use. Consequences worth stating, because they are why this is safe:
+  //   • no new exercise type, no new Thai — the cards already exist;
+  //   • a card session is SRS learning/review, not graded, so it spends NO heart
+  //     (hearts stay graded-only) and grants no gems;
+  //   • the pool comes from situationStartPool, which drops empty-`ph` cards
+  //     (review finding A3 — a card session shows the phonetic, and we never
+  //     synthesize one) and clamps to the learner's unlocked stage window. That
+  //     clamp is load-bearing: the mission scope filters by explicit cardIds and
+  //     so BYPASSES the stage window (CardsTab.jsx:106-114), and every situation
+  //     spans stages 1-8 — unclamped, starting sit-greet would teach a brand-new
+  //     learner stage-8 vocabulary and break sequential stage unlock;
+  //   • an empty pool starts nothing rather than opening an empty session — the
+  //     rail only renders Start when this same lib call says it is non-empty.
+  // Declared here, below maxUnlockedStage, because the dep array reads it.
+  const handleStartSituationCards = useCallback((sitId) => {
+    const sit = getSituation(sitId);
+    if (!sit) return;
+    const cardIds = situationStartPool(sitId, {
+      startedStage: stats.startedStage || 1,
+      maxUnlockedStage,
+    });
+    if (cardIds.length === 0) return;
+    handleStartMissionCards({
+      id: `situation:${sitId}`,   // distinct session key per situation
+      name: sit.name,
+      total: cardIds.length,
+      cardIds,
+    });
+  }, [handleStartMissionCards, stats.startedStage, maxUnlockedStage]);
+
   const eligibleCards = useMemo(
     () => CARDS.filter(c => (c.stage || 1) <= maxUnlockedStage),
     [maxUnlockedStage]
@@ -2347,7 +2519,7 @@ export default function TukTalkThaiApp() {
             isAuthed={!!session}
             isSuperUser={superActive}
             onNavigate={handleNavigatePath}
-            onGetStarted={() => openAuthGate('welcome')}
+            onGetStarted={handleGetStarted}
             onSignIn={() => openAuthGate('signin')}
           />
         ) : (
@@ -2455,8 +2627,11 @@ export default function TukTalkThaiApp() {
             onDismiss={dismissAuthCallbackError}
           />
         )}
+        {/* onGetStarted now opens the LESSON, not the signup wall
+            (engagement.md §1.2). onSignIn is untouched, so the returning user
+            still reaches the gate in one tap. */}
         <PublicLanding
-          onGetStarted={() => openAuthGate('welcome')}
+          onGetStarted={handleGetStarted}
           onSignIn={() => openAuthGate('signin')}
           onOpenPublicPage={handleNavigatePath}
           audioRate={beginnerAudioRate}
@@ -2465,10 +2640,28 @@ export default function TukTalkThaiApp() {
     );
   }
 
-  // Auth gate: after the landing page, every anonymous visitor must either
-  // sign in/up or pick the 5-card demo. forceAuthGate wins over demoMode so a
-  // demo user can convert from the demo's end-CTA buttons.
-  const showAuthGate = hasSupabaseConfig && !session && (forceAuthGate || (!demoMode && !showPublicLanding));
+  // Auth gate: reached only by ASKING for it (engagement.md §1.1 reversal).
+  //
+  // WAS: `forceAuthGate || (!demoMode && !showPublicLanding)` — that trailing
+  // catch-all was the wall. It returned AuthGate above the onboarding and
+  // first-lesson branches below, so an anonymous visitor could never reach a
+  // lesson and the only account-free path was a save-nothing 3-card demo. The
+  // catch-all is gone: an anonymous visitor who has left the landing now falls
+  // through to PlacementOnboarding → FirstLessonFlow → the reward → the ask.
+  //
+  // forceAuthGate STILL WINS, and it is now the only way in. It is set by every
+  // real auth intent, so none of them regressed: /welcome and /sign-in deep links
+  // (applyRouteState route.type 'auth'), "Create free account" / "I already have
+  // an account" on the landing and the plans page (openAuthGate), the demo's
+  // convert CTAs (handleDemoSignUp/handleDemoSignIn), the expired-link recovery
+  // actions (handleAuthErrorSignIn/handleAuthErrorRequestReset → openAuthGate),
+  // and the save-progress ask's "Save my progress". Sign-out clears it and routes
+  // to /get-started, which the landing branch above owns.
+  //
+  // The gate is a DESTINATION now, not a toll booth. Password recovery, the
+  // pending-confirmation gate and the missing-config hard-fail all still return
+  // above this line, so no security branch depends on the catch-all.
+  const showAuthGate = hasSupabaseConfig && !session && forceAuthGate;
   if (showAuthGate) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'}>
@@ -2616,6 +2809,18 @@ export default function TukTalkThaiApp() {
         />
       ) : (
         <>
+          {/* Keeps "you can create one later" true (engagement.md §1.3). An
+              anonymous learner has no Profile or Sign-out entry in SidebarNav
+              (isAuthed === false), so this slim row is their ONLY way back to
+              signup — without it, "Keep going without an account" would be a
+              one-way door. Suppressed during the ask itself (no double-ask) and
+              never rendered for signed-in or demo users. */}
+          {anonymousLearner && !saveProgressAsk && (
+            <AnonymousAccountBar
+              onCreateAccount={() => openAuthGate('signup')}
+              onSignIn={() => openAuthGate('signin')}
+            />
+          )}
           {showFirstLessonUnlock && (
             <div className="firstlesson-unlock-note">
               <span>{STAGE_1_MINI_UNIT_PILOT.unlockMessage}</span>
@@ -2628,7 +2833,7 @@ export default function TukTalkThaiApp() {
               tab (the 5-tab nav is hand-rolled and there is no router). It is a
               preview rail: no situation lesson flow exists yet, so it informs and
               promises nothing it cannot deliver. */}
-          {tab === 'learn'  && <SituationRail stats={stats} onOpenSuper={() => handleOpenPremium('dating')} />}
+          {tab === 'learn'  && <SituationRail stats={stats} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} onOpenSuper={() => handleOpenPremium('dating')} onStartSituation={handleStartSituationCards} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} masteryRank={stats.masteryRank || {}} completedMiniUnits={stats.completedMiniUnits || []} />}
@@ -2672,6 +2877,19 @@ export default function TukTalkThaiApp() {
           onContinue={handleRewardContinue}
         />
       )}
+      {/* The invest-before-ask conversion moment (engagement.md §1.3), rendered
+          as the reward screen's successor at the same boundary. The
+          anonymousLearner re-check is what makes this self-healing: the instant
+          a session exists (they signed up, or signed in in another tab) the ask
+          disappears on its own rather than hanging over the app. */}
+      {saveProgressAsk && anonymousLearner && !rewardScreen && (
+        <SaveProgressAsk
+          xpEarned={saveProgressAsk.xpEarned}
+          streak={saveProgressAsk.streak}
+          onCreateAccount={handleSaveProgressSignUp}
+          onContinueWithout={handleSaveProgressDecline}
+        />
+      )}
       {streakRecovery && !rewardScreen && (
         <StreakRecoveryCard
           bestStreak={streakRecovery.bestStreak}
@@ -2709,8 +2927,14 @@ export default function TukTalkThaiApp() {
         );
       })()}
 
+      {/* !saveProgressAsk joins the overlay exclusions for the same reason as
+          !rewardScreen: the tutorial's dim layer is z-index 1200 with
+          pointer-events:auto, while the ask (like the reward screen) sits on the
+          260 backdrop — so without this the tutorial would paint straight over
+          the conversion ask and swallow BOTH of its buttons, trapping the
+          anonymous learner on a screen they cannot answer. Verified in Chromium. */}
       {tab === 'learn' && !publicPage && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
-        && !celebration && !rewardScreen && !showSettings && !showProfile
+        && !celebration && !rewardScreen && !saveProgressAsk && !showSettings && !showProfile
         && !showStage1Celebration && !upgradePrompt && !achievementToast && !showFirstLessonUnlock && (
         <GuidedTutorial
           steps={TUTORIAL_STEPS}

@@ -3,6 +3,10 @@ import { IMPORTED_CARDS } from './cards-imported.js';
 import { IMPORTED_CARDS_BATCH2 } from './cards-imported-batch2.js';
 import { STEP2_ADDITIONS, STEP2_OVERRIDES } from './cards-step2.js';
 import { MATURE_CARD_IDS, QUARANTINED_CARD_IDS } from './contentFlags.js';
+import { hasPhonetic } from '../lib/phonetics.js';
+import { REVIEW_STATE, REVIEWER_OF_RECORD, isApproved } from '../lib/reviewStatus.js';
+import { SITUATION_CATEGORY_TAGS } from './situationTags.js';
+import { NATIVE_REVIEW_SIGNOFF } from './nativeReviewSignoff.js';
 
 const RAW_CARDS = [
   {id:1,thai:'ผม',ph:'phǒm',en:'I / me (male)',type:'w',stage:1,cat:'pronouns'},
@@ -696,10 +700,95 @@ const RAW_CARDS = [
   ...STEP2_ADDITIONS,
 ];
 
+// ── NATIVE REVIEW APPROVAL — the manifest, intersected with eligibility ───────
+// Approval is stamped HERE, in the one export pipeline every consumer already
+// reads, alongside the mature/quarantined stamping. That is deliberate: it is the
+// single choke point, so `reviewStatusOf(card)` keeps working UI-wide with ZERO
+// consumer edits, and there is exactly one place to audit.
+//
+//     approved  ⟺  (a human signed off its scope in src/data/nativeReviewSignoff.js)
+//                  AND  (the card clears the eligibility floor below)
+//
+// The manifest is the EVIDENCE; the floor can only ever WITHHOLD. Read the header
+// of nativeReviewSignoff.js before touching any of this — the asymmetry is the
+// whole design, and it is easy to "simplify" away.
+
+// Own-property lookup — the manifest is keyed by card id / situation id, and we
+// must never resolve a key like 'constructor' off the prototype chain into a
+// truthy "sign-off".
+const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+// Which situation's sign-off covers this card? Authored inline `situation` field
+// wins, else the category overlay (situationTags.js is a leaf — situations.js
+// imports cards.js, never the reverse, so importing IT here would be a cycle).
+// Mirrors situationOf() in src/lib/situations.js. The own-property lookup matters
+// here too: a plain `TAGS[card.cat]` resolves `cat:'constructor'` to Object off the
+// prototype chain — a truthy non-situation where null belongs.
+export function situationScopeOf(card) {
+  if (!card) return null;
+  if (card.situation) return card.situation;
+  return own(SITUATION_CATEGORY_TAGS, card.cat) ? SITUATION_CATEGORY_TAGS[card.cat] : null;
+}
+
+// THE ELIGIBILITY FLOOR — a NECESSARY PRECONDITION, never sufficient evidence.
+// All four gates are STRUCTURAL COMPLETENESS checks. NOT ONE OF THEM READS THE
+// THAI: a card can pass every one of these and still be wrong Thai. That is
+// precisely what native review is for and precisely what this function cannot
+// see. It exists only to WITHHOLD an approval a human already granted.
+//   1. non-empty `ph`  — no pronunciation anchor means no tone at all, so there
+//      is nothing for a reviewer to have signed off ON (phonetics.js).
+//   2. not quarantined — for main-deck cards the quarantine set IS the "no
+//      internal contradiction" gate: it is exactly the corrupted-Thai /
+//      field-contradicts-its-own-note group (claude-review.md C3, contentFlags.js).
+//      There is no separate contradiction check to run for cards.
+//   3. not flagged needs-review — an open question about the item, in either the
+//      legacy `needsReview:true` or explicit `reviewStatus` convention.
+export function isEligibleForApproval(card) {
+  if (!card) return false;
+  if (!hasPhonetic(card)) return false;
+  if (card.quarantined) return false;
+  if (card.needsReview === true) return false;
+  if (card.reviewStatus === REVIEW_STATE.NEEDS_REVIEW) return false;
+  return true;
+}
+
+// The manifest entry covering this card, or null. Per-card sign-off wins over the
+// card's situation sign-off — a narrower scope is a more specific human decision.
+//
+// `manifest` defaults to the real sign-off file and is a parameter ONLY so the
+// validator can drive this with a synthetic manifest (nothing is approved today,
+// so the real one exercises no branch — see scripts/check-content-approval.mjs).
+// Production has exactly one caller and it passes no manifest.
+export function signoffFor(card, manifest = NATIVE_REVIEW_SIGNOFF) {
+  if (!card) return null;
+  if (own(manifest.cards, card.id)) return manifest.cards[card.id];
+  const sit = situationScopeOf(card);
+  if (sit && own(manifest.situations, sit)) return manifest.situations[sit];
+  return null;
+}
+
+// Stamp approval iff the human signed off AND the card is eligible. Otherwise
+// return the card UNTOUCHED (same reference) — absence of an approval is never a
+// status change. Pure: no mutation, no clock. `reviewedAt` is copied from the
+// manifest's `signedOffAt` (the date the HUMAN reviewed), never Date.now() (the
+// date the BUILD ran, which would re-date every approval on every rebuild).
+export function approveContent(card, manifest = NATIVE_REVIEW_SIGNOFF) {
+  const signoff = signoffFor(card, manifest);
+  if (!signoff || !signoff.signedOffAt) return card;   // not signed off → never approved
+  if (!isEligibleForApproval(card)) return card;       // signed off but ineligible → withheld
+  return {
+    ...card,
+    reviewStatus: REVIEW_STATE.APPROVED,
+    reviewedBy: REVIEWER_OF_RECORD,
+    reviewedAt: signoff.signedOffAt,
+  };
+}
+
 // Apply Step 2 (Phase 2) field overrides — stage redistribution + type/data
 // fixes from scripts/apply-redistribution.js. Originals unchanged. Then stamp the
 // content flags from contentFlags.js (see that file for the ids and the findings
-// behind them: claude-review.md S1 and C3).
+// behind them: claude-review.md S1 and C3), then run the approval routine above
+// (it must run LAST — the eligibility floor reads the `quarantined` flag).
 //
 // ALL_CARDS is the whole deck with flags stamped; CARDS is the FREE deck and
 // excludes both flagged groups. CARDS stays the default export that all 11
@@ -711,12 +800,18 @@ const RAW_CARDS = [
 // Asserted by scripts/check-mature-gating.mjs + scripts/check-card-quarantine.mjs.
 export const ALL_CARDS = RAW_CARDS.map(c => {
   const ov = STEP2_OVERRIDES[c.id];
-  const card = ov ? { ...c, ...ov } : c;
-  if (MATURE_CARD_IDS.has(card.id)) return { ...card, mature: true };
-  if (QUARANTINED_CARD_IDS.has(card.id)) return { ...card, quarantined: true };
-  return card;
+  let card = ov ? { ...c, ...ov } : c;
+  if (MATURE_CARD_IDS.has(card.id)) card = { ...card, mature: true };
+  else if (QUARANTINED_CARD_IDS.has(card.id)) card = { ...card, quarantined: true };
+  return approveContent(card);
 });
 
 export const CARDS = ALL_CARDS.filter(c => !c.mature && !c.quarantined);
 export const MATURE_CARDS = ALL_CARDS.filter(c => c.mature);
 export const QUARANTINED_CARDS = ALL_CARDS.filter(c => c.quarantined);
+
+// Cards a named human has signed off on AND that clear the eligibility floor.
+// EMPTY today — the manifest is empty, so nothing is approved. That is the
+// CORRECT outcome, not a bug: it means no card has had its draft badge removed
+// without a native vouching for the Thai. Exported for validators / reporting.
+export const APPROVED_CARDS = ALL_CARDS.filter(isApproved);

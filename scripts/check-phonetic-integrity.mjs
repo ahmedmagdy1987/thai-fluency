@@ -27,7 +27,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { ALL_CARDS, CARDS } from '../src/data/cards.js';
-import { hasPhonetic, EMPTY_PHONETIC_CARDS, EMPTY_PHONETIC_IDS, withPhonetic } from '../src/lib/phonetics.js';
+import { hasPhonetic, withPhonetic } from '../src/lib/phonetics.js';
 import { toneFromPh } from '../src/lib/toneFromPh.js';
 import { buildPlacementCards } from '../src/lib/state.js';
 import { MINI_UNITS } from '../src/data/miniUnits.js';
@@ -39,18 +39,44 @@ const ok = (name) => console.log(`OK   ${name}`);
 const fail = (name, detail = '') => { console.log(`FAIL ${name}  ${detail}`); failures++; };
 const assert = (name, cond, detail = '') => (cond ? ok(name) : fail(name, detail));
 
+// ── The empty-`ph` worklist — DERIVED here, the only place it is needed ────────
+// This list used to live in src/lib/phonetics.js, but that module had to become a
+// pure leaf (it imports nothing) so src/data/cards.js could import `hasPhonetic`
+// for the approval eligibility floor without an import cycle. This validator was
+// already its ONLY consumer (ListenMeaning.jsx imports just `hasPhonetic`), so the
+// list moved to its consumer rather than the leaf keeping a card import alive.
+//
+// Computed over ALL_CARDS — deliberately the UNGATED deck, so mature/quarantined
+// cards cannot hide from the native's worklist. DERIVED, never hand-maintained: a
+// hardcoded list (or a count) rots the moment a card is added, and the rot is silent.
+const EMPTY_PHONETIC_CARDS = ALL_CARDS.filter((c) => !hasPhonetic(c));
+// Just the ids, as a Set, for cheap membership tests in pools and assertions.
+const EMPTY_PHONETIC_IDS = new Set(EMPTY_PHONETIC_CARDS.map((c) => c.id));
+
 // ---- 1. hasPhonetic is the real test ------------------------------------------
 assert('hasPhonetic accepts a real romanization', hasPhonetic({ ph: 'khráp' }) === true);
 assert('hasPhonetic rejects empty / whitespace-only / missing ph',
   hasPhonetic({ ph: '' }) === false && hasPhonetic({ ph: '   ' }) === false
   && hasPhonetic({}) === false && hasPhonetic(undefined) === false);
-assert('EMPTY_PHONETIC_IDS matches the live ALL_CARDS scan',
+assert('EMPTY_PHONETIC_IDS matches the live ALL_CARDS scan (ids are unique, none dropped)',
   EMPTY_PHONETIC_IDS.size === EMPTY_PHONETIC_CARDS.length
   && ALL_CARDS.filter((c) => !hasPhonetic(c)).every((c) => EMPTY_PHONETIC_IDS.has(c.id)),
   `${EMPTY_PHONETIC_IDS.size} ids vs ${EMPTY_PHONETIC_CARDS.length} cards`);
 assert('the worklist is computed over ALL_CARDS, so gated/quarantined cards cannot hide',
   EMPTY_PHONETIC_CARDS.some((c) => c.mature) && EMPTY_PHONETIC_CARDS.some((c) => c.quarantined),
   'expected mature + quarantined cards to appear in the empty-ph worklist');
+// The scan must stay strictly wider than the FREE deck — the whole point of
+// deriving it from ALL_CARDS. If someone re-points it at CARDS, the gated cards
+// silently vanish from the native's worklist and this fails.
+assert('the worklist is a strict superset of the free-deck scan (ungated deck, not CARDS)',
+  CARDS.filter((c) => !hasPhonetic(c)).every((c) => EMPTY_PHONETIC_IDS.has(c.id))
+  && EMPTY_PHONETIC_CARDS.length > CARDS.filter((c) => !hasPhonetic(c)).length,
+  `${EMPTY_PHONETIC_CARDS.length} over ALL_CARDS vs ${CARDS.filter((c) => !hasPhonetic(c)).length} over CARDS`);
+// phonetics.js must STAY a pure leaf: cards.js imports hasPhonetic for the approval
+// eligibility floor, so any card import here is an import cycle. Asserted, not trusted.
+assert('src/lib/phonetics.js imports nothing (stays a pure leaf — no cycle with cards.js)',
+  !/^\s*import\s/m.test(read('src/lib/phonetics.js')),
+  'phonetics.js gained an import — cards.js imports hasPhonetic, so this is a cycle');
 
 // ---- 2. phNeedsGen / phReview are comments, and must stay dead -----------------
 assert('`phNeedsGen` matches ZERO cards at runtime (it is a line comment)',

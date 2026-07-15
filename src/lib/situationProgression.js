@@ -32,6 +32,7 @@ import {
 } from './situations.js';
 import { canUseFeature } from '../config/entitlements.js';
 import { isTaught } from './mastery.js';
+import { hasPhonetic } from './phonetics.js';
 
 // ── Why a situation is not offerable today ───────────────────────────────────
 // A closed vocabulary so the UI can render an honest reason instead of a silent
@@ -63,13 +64,95 @@ const SITUATION_FEATURE = Object.freeze({ 'sit-dating': 'datingRealTalk' });
 // a free daily lesson, and the UI resolves the actual confirmation at the door.
 const ADULT_ONLY = Object.freeze(['sit-dating']);
 
+// ── WHAT A SITUATION CAN ACTUALLY TEACH (the honest basis for a Start button) ─
+// `tagged` says a situation owns cards. It does NOT say we can teach them, and
+// the gap between those two is exactly where a lying affordance would live. Two
+// filters close it, in this order:
+//
+//   1. PHONETIC (review finding A3, phonetics.js). A card session renders `ph`,
+//      so a card with an empty `ph` has nothing to pronounce and cannot be
+//      taught by this flow. We FILTER those out — we never synthesize one: a
+//      romanization is Thai content and a fabricated tone teaches a wrong word.
+//      335 empty-`ph` cards live in the deck; hasPhonetic is the only real test
+//      (`phNeedsGen`/`phReview` are trailing COMMENTS, not fields, and match
+//      nothing at runtime).
+//   2. STAGE WINDOW. This is the one that bites. Every tagged situation spans
+//      stages 1-8 (sit-greet alone holds 37 stage-8 cards), because a situation
+//      is a CROSS-STAGE tag, not a stage. The card-session scope we reuse filters
+//      by explicit cardIds and therefore BYPASSES the stage window entirely — so
+//      handing it a situation's whole pool would teach a fresh stage-1 learner
+//      stage-8 vocabulary and silently break sequential stage unlock. The window
+//      is the learner's existing [startedStage, maxUnlockedStage], reproduced
+//      from the Cards-tab rule (CardsTab.jsx:109-114); situations reweight ORDER,
+//      they were never a licence to jump the stage ladder.
+//
+// FAIL CLOSED: an omitted window means stage 1 only. A caller that forgets the
+// window under-offers (recoverable); a default of "no filter" would leak locked
+// stages silently, which is not.
+export const DEFAULT_STAGE_WINDOW = Object.freeze({ startedStage: 1, maxUnlockedStage: 1 });
+
+// Cards in a situation this flow could teach ANY learner (phonetic filter only).
+// Learner-independent — the situation's real teachable size.
+export function situationTeachableCards(sitId) {
+  return cardsInSituation(sitId).filter(hasPhonetic);
+}
+
+// Does this situation own anything teachable at all? The approval-INDEPENDENT
+// "is there something real behind a Start" test. Implies `tagged` (an untagged
+// situation owns no cards, so its pool is empty either way).
+export function hasTeachableContent(sitId) {
+  return situationTeachableCards(sitId).length > 0;
+}
+
+// The exact card ids a Start launches for THIS learner: teachable ∩ stage window.
+// This is the ONE function that builds a situation session's payload, so the UI
+// and the launcher can never disagree about what "N cards ready" means.
+export function situationStartPool(sitId, stageWindow = DEFAULT_STAGE_WINDOW) {
+  const w = stageWindow || DEFAULT_STAGE_WINDOW;
+  const lower = w.startedStage || 1;
+  const upper = w.maxUnlockedStage || 1;
+  return situationTeachableCards(sitId)
+    .filter((c) => {
+      const s = c.stage || 1;
+      return s >= lower && s <= upper;
+    })
+    .map((c) => c.id);
+}
+
+// Teachable count per situation (all 16; untagged → 0). Learner-independent.
+export const SITUATION_TEACHABLE_COUNTS = Object.freeze(
+  SITUATIONS.reduce((acc, s) => {
+    acc[s.id] = situationTeachableCards(s.id).length;
+    return acc;
+  }, {}),
+);
+
+// ── Situations that keep a full row even with zero content ───────────────────
+// sit-dating owns 0 main-deck cards, so the content filter below would sweep it
+// into the collapsed "more coming" affordance. It must NOT be swept: its row is
+// a real, shipped entitlement surface (datingRealTalk), not an advert for
+// unwritten lessons. engagement.md:94 requires free users see it as a
+// locked/preview card, and the row carries all three reasons at once (Super +
+// 18+ + coming-soon) so it can never be mistaken for ready content. Hiding it
+// would delete the one honest upsell we have; the recommender still guarantees
+// it is never `upNext` and never startable.
+const ALWAYS_PREVIEW = Object.freeze(['sit-dating']);
+export const isAlwaysPreview = (sitId) => ALWAYS_PREVIEW.includes(sitId);
+
 // Every reason this situation cannot be THIS learner's next free lesson. Empty
 // array = offerable. Note what is NOT in here: review status. The whole deck is
 // draft (reviewStatus.js: nothing is approved, no situation is review-complete),
 // so gating on approval would return "coming soon" for all 16 forever. Draft
 // content ships WITH the mandatory draft badge — that is the UI's contract, not a
-// lock — while `tagged` (situations.js:79) is the approval-INDEPENDENT signal for
-// "does this situation own any real cards to teach at all?".
+// lock — while hasTeachableContent() is the approval-INDEPENDENT signal for
+// "does this situation own any real cards we can actually teach at all?".
+//
+// COMING_SOON keys off hasTeachableContent, not the weaker `tagged`: a situation
+// whose every card lacks a phonetic owns cards we cannot teach, and calling that
+// anything but "no lessons yet" would advertise a Start that dies on arrival.
+// The two agree on today's deck (all 7 tagged situations hold 90+ phonetic
+// cards), so this is a tightening, not a behaviour change — check-situation-
+// sequence asserts the equivalence rather than trusting it.
 export function lockReasons(sitId, stats) {
   const s = getSituation(sitId);
   if (!s) return [LOCK_REASON.COMING_SOON]; // unknown id → fail closed
@@ -77,7 +160,7 @@ export function lockReasons(sitId, stats) {
   const feature = SITUATION_FEATURE[sitId];
   if (feature && !canUseFeature(feature, stats)) reasons.push(LOCK_REASON.SUPER);
   if (ADULT_ONLY.includes(sitId)) reasons.push(LOCK_REASON.ADULT);
-  if (!s.tagged) reasons.push(LOCK_REASON.COMING_SOON);
+  if (!hasTeachableContent(sitId)) reasons.push(LOCK_REASON.COMING_SOON);
   return reasons;
 }
 
@@ -85,9 +168,23 @@ export function lockReasons(sitId, stats) {
 // + why it is (not) offerable. `readiness` is carried through verbatim so a
 // surface can never claim a situation is approved — it reads 'coming-soon' for
 // all 16 today and only a human native reviewer can change that.
-function describeSituation(sitId, path, stats) {
+//
+// THREE COUNTS, DELIBERATELY DIFFERENT — do not collapse them:
+//   cardCount      — every tagged card (includes empty-`ph`, includes locked
+//                    stages). The catalog fact. NOT what a Start launches.
+//   teachableCount — cardCount minus empty-`ph`. The situation's real size.
+//   startCount     — teachableCount ∩ this learner's stage window. The ONLY
+//                    number a Start button may claim, because it is the session.
+// `startable` is the enable-condition for that button: content exists AND this
+// learner has some of it open. It is NOT approval — nothing here is approved.
+function describeSituation(sitId, path, stats, stageWindow) {
   const s = getSituation(sitId);
   const reasons = lockReasons(sitId, stats);
+  const offerable = reasons.length === 0;
+  // Only price a start pool for a situation we would actually offer: a locked
+  // situation's pool is never launched, so computing one would be dead work and
+  // an invitation to render a count next to a lock.
+  const startCount = offerable ? situationStartPool(sitId, stageWindow).length : 0;
   return {
     sitId,
     name: s ? s.name : sitId,
@@ -96,9 +193,12 @@ function describeSituation(sitId, path, stats) {
     content: s ? s.content : null,      // curriculum.md §4.2 tier
     tagged: !!(s && s.tagged),
     cardCount: SITUATION_CARD_COUNTS[sitId] || 0,
+    teachableCount: SITUATION_TEACHABLE_COUNTS[sitId] || 0,
+    startCount,
+    startable: offerable && startCount > 0,
     priority: priority(sitId, path),    // base × §3 weight for this path
     readiness: situationReadiness(sitId),
-    offerable: reasons.length === 0,
+    offerable,
     reasons,
     reason: reasons[0] || null,
     lockLabel: reasons.length ? LOCK_LABEL[reasons[0]] : null,
@@ -106,30 +206,55 @@ function describeSituation(sitId, path, stats) {
 }
 
 // ── The free daily recommender (engagement.md §2.1) ──────────────────────────
-// getSituationRecommendation(stats) → { order, upNext, lockedPreviews, comingSoon }
+// getSituationRecommendation(stats, stageWindow) → { order, upNext, … }
 //   order          — ALL 16 ids, the pure §3 reweighting for this learner's path.
 //                    Never filtered, never truncated, never forked.
-//   upNext         — the highest-priority situation actually offerable to THIS
-//                    learner as a free lesson, or null if none is. The recommender
-//                    "resolves past" everything locked instead of dropping it.
+//   entries        — all 16 annotated, sequenced by `order`.
+//   upNext         — the highest-priority situation this learner can actually
+//                    START today, or null if none. The recommender "resolves
+//                    past" everything locked instead of dropping it.
 //   lockedPreviews — every situation in `order` that is not offerable, in order,
 //                    each annotated with WHY, so the UI renders a locked/preview
 //                    card rather than a hole in the list.
 //   comingSoon     — the subset of lockedPreviews with no content yet. These are
 //                    the SAME entry objects (a convenience view, not a copy).
+//
+// ── THE RAIL PARTITION (this is the UI-layer content filter) ─────────────────
+// startable / previews / deferred partition ALL 16 — every id lands in exactly
+// one, nothing is invented, nothing is lost. This is where "don't advertise
+// empty situations" is decided, and note WHERE it is not: `order` above is still
+// the untouched, reweight-only permutation of all 16 (FOUNDATION §3). Filtering
+// by mutating the order function would turn a reweighting into a fork and make
+// the identity-path promise unverifiable; filtering the VIEW leaves the order
+// intact and honest.
+//   startable — offerable AND this learner has cards open. Gets a real Start.
+//   previews  — not startable but deliberately surfaced anyway (sit-dating: a
+//               shipped entitlement surface, see ALWAYS_PREVIEW).
+//   deferred  — zero teachable content and nothing to sell. These are the rows
+//               that used to read "No lessons written yet"; the UI collapses
+//               them into ONE honest "more coming" affordance.
+//
 // An unknown/absent identityPath falls back to 'path-none' (all-N weights, §3),
-// which yields exactly the §2 catalog order.
-export function getSituationRecommendation(stats) {
+// which yields exactly the §2 catalog order. An omitted stageWindow falls back to
+// stage 1 only (DEFAULT_STAGE_WINDOW) — under-offer, never leak.
+export function getSituationRecommendation(stats, stageWindow = DEFAULT_STAGE_WINDOW) {
   const path = (stats && stats.identityPath) || 'path-none';
   const order = getSituationOrder(path);
-  const entries = order.map((sitId) => describeSituation(sitId, path, stats));
+  const entries = order.map((sitId) => describeSituation(sitId, path, stats, stageWindow));
   const lockedPreviews = entries.filter((e) => !e.offerable);
   return {
     path,
     order,
-    upNext: entries.find((e) => e.offerable) || null,
+    entries,
+    // upNext must be LAUNCHABLE, not merely unlocked: it is offered as "your
+    // next lesson", so a situation we could not actually start would make the
+    // recommender itself the thing that lies.
+    upNext: entries.find((e) => e.startable) || null,
     lockedPreviews,
     comingSoon: lockedPreviews.filter((e) => e.reasons.includes(LOCK_REASON.COMING_SOON)),
+    startable: entries.filter((e) => e.startable),
+    previews: entries.filter((e) => !e.startable && isAlwaysPreview(e.sitId)),
+    deferred: entries.filter((e) => !e.startable && !isAlwaysPreview(e.sitId)),
   };
 }
 
@@ -221,7 +346,7 @@ export function isSituationTestable(sitId, learner) {
 
 // Convenience for list surfaces: the same annotated entry for every situation in
 // §2 catalog order (not the learner's order) — e.g. a "all situations" browser.
-export function describeAllSituations(stats) {
+export function describeAllSituations(stats, stageWindow = DEFAULT_STAGE_WINDOW) {
   const path = (stats && stats.identityPath) || 'path-none';
-  return SITUATIONS.map((s) => describeSituation(s.id, path, stats));
+  return SITUATIONS.map((s) => describeSituation(s.id, path, stats, stageWindow));
 }

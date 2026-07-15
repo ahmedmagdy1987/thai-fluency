@@ -4,8 +4,12 @@
 //   • the review-status vocabulary is EXACTLY {pending, needs-review, approved};
 //   • reviewStatusOf maps legacy needsReview:true → 'needs-review', explicit
 //     reviewStatus wins, and everything else defaults to 'pending';
+//   • NOTHING INELIGIBLE IS APPROVED — no approved item has an empty `ph`, is
+//     quarantined, has an internal contradiction, or is flagged needs-review;
+//   • every approved item is traceable to a manifest entry (no orphan approvals)
+//     and carries reviewedBy === REVIEWER_OF_RECORD plus a reviewedAt date;
 //   • NOTHING resolves to 'approved' anywhere (no main-deck card, no dating
-//     phrase, no situation) — the named native reviewer does not exist yet;
+//     phrase, no situation) — the named reviewer exists but has signed off nothing;
 //   • SITUATION_REVIEW_COMPLETE holds all 16 canonical situations (§2 order) and
 //     every flag is false; DATING_REVIEW_COMPLETE mirrors it (false);
 //   • the mandatory draft badge string is exact;
@@ -14,11 +18,14 @@
 import {
   REVIEW_STATE, REVIEW_STATUSES, reviewStatusOf, isApproved, isDraft,
   DRAFT_BADGE_LABEL, SITUATION_REVIEW_COMPLETE, situationReviewComplete,
+  REVIEWER_OF_RECORD,
 } from '../src/lib/reviewStatus.js';
 import {
   SITUATIONS, SITUATION_IDS, situationOf, cardsInSituation, situationReadiness,
 } from '../src/lib/situations.js';
-import { CARDS } from '../src/data/cards.js';
+import {
+  CARDS, ALL_CARDS, APPROVED_CARDS, isEligibleForApproval, signoffFor,
+} from '../src/data/cards.js';
 import { DATING_PHRASES } from '../src/data/datingPhrases.js';
 import { DATING_REVIEW_COMPLETE } from '../src/data/datingContent.js';
 
@@ -50,7 +57,48 @@ assert('every legacy needsReview card resolves to needs-review',
 assert('cards with no review field default to pending',
   CARDS.filter((c) => !c.reviewStatus && !c.needsReview).every((c) => reviewStatusOf(c) === 'pending'));
 
-// ---- 3. Nothing is approved anywhere ------------------------------------------
+// ---- 3. NOTHING INELIGIBLE IS APPROVED -----------------------------------------
+// The durable invariant. It survives the first real sign-off, when the 0-approved
+// assertion below retires: whatever IS approved must have cleared the eligibility
+// floor. Vacuously true today (0 approvals) — that is exactly why the 0-approved
+// assertion is still the thing doing the work, and why both must coexist for now.
+const approvedAll = ALL_CARDS.filter(isApproved);
+const ineligibleApproved = approvedAll.filter((c) => !isEligibleForApproval(c));
+assert('NOTHING INELIGIBLE IS APPROVED (empty ph / quarantined / contradiction / needs-review)',
+  ineligibleApproved.length === 0,
+  `${ineligibleApproved.length} ineligible card(s) approved: ${ineligibleApproved.slice(0, 8).map((c) => c.id).join(',')}`);
+assert('APPROVED_CARDS is exactly the approved set (the export cannot drift from the stamp)',
+  APPROVED_CARDS.length === approvedAll.length
+  && APPROVED_CARDS.every((c) => isApproved(c)));
+
+// Provenance: an approval nobody is named on is an approval nobody can be asked
+// to stand behind.
+const badBy = approvedAll.filter((c) => c.reviewedBy !== REVIEWER_OF_RECORD);
+assert('every approved card carries reviewedBy === REVIEWER_OF_RECORD',
+  badBy.length === 0, `${badBy.length} approved card(s) not attributed to the reviewer of record`);
+const badAt = approvedAll.filter((c) => !/^\d{4}-\d{2}-\d{2}$/.test(String(c.reviewedAt)));
+assert('every approved card carries a reviewedAt date',
+  badAt.length === 0, `${badAt.length} approved card(s) with no/!ISO reviewedAt`);
+
+// Traceability: no orphan approvals. Every approved card must point back at a real
+// human entry in src/data/nativeReviewSignoff.js, with a matching date. An approval
+// that cannot be traced to a manifest entry was minted by code, which is the one
+// thing this pipeline exists to prevent.
+const orphans = approvedAll.filter((c) => {
+  const s = signoffFor(c);
+  return !s || s.signedOffAt !== c.reviewedAt;
+});
+assert('every approval traces to a manifest entry with a matching date (no orphan approvals)',
+  orphans.length === 0,
+  `${orphans.length} approval(s) with no matching sign-off entry: ${orphans.slice(0, 8).map((c) => c.id).join(',')}`);
+
+// ---- 3b. Nothing is approved anywhere (RETIRES with the first real approval) ----
+// RETIRE THIS BLOCK IN THE SAME COMMIT AS THE FIRST REAL SIGN-OFF. With 0 approvals
+// the eligibility invariant above is vacuously true, so THIS is the assertion
+// currently carrying the weight: it proves the manifest is empty and no code path
+// has invented an approval. Once a human signs something off, this must fail — that
+// is the signal to delete this block and let §3's invariants take over. Do NOT
+// weaken it to keep a build green.
 const approvedCards = CARDS.filter(isApproved);
 assert('NO main-deck card resolves to approved', approvedCards.length === 0, `${approvedCards.length} approved`);
 assert('NO dating phrase claims approved while review incomplete',
