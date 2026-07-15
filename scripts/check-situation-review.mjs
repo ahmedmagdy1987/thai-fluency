@@ -28,6 +28,11 @@ import {
 } from '../src/data/cards.js';
 import { DATING_PHRASES } from '../src/data/datingPhrases.js';
 import { DATING_REVIEW_COMPLETE } from '../src/data/datingContent.js';
+// Primitives for re-deriving the eligibility floor WITHOUT the production
+// predicate — see §3. Importing these is the whole point: the guard must reach
+// the same conclusion by a different route than the code it is guarding.
+import { hasPhonetic } from '../src/lib/phonetics.js';
+import { QUARANTINED_CARD_IDS } from '../src/data/contentFlags.js';
 
 let failures = 0;
 const ok = (name) => console.log(`OK   ${name}`);
@@ -63,10 +68,28 @@ assert('cards with no review field default to pending',
 // floor. Vacuously true today (0 approvals) — that is exactly why the 0-approved
 // assertion is still the thing doing the work, and why both must coexist for now.
 const approvedAll = ALL_CARDS.filter(isApproved);
-const ineligibleApproved = approvedAll.filter((c) => !isEligibleForApproval(c));
+// RE-DERIVED FROM PRIMITIVES ON PURPOSE — do NOT call isEligibleForApproval here.
+// That is the function the pipeline used to DECIDE these approvals, so asking it
+// again only asks the same oracle that made the call: if it wrongly returns true,
+// the stamp and the check are wrong together and the assertion passes anyway.
+// (Verified: with the phonetic gate removed from isEligibleForApproval, 4 empty-ph
+// cards were stamped approved and the old self-referential form still said OK.)
+// Restating the floor independently — hasPhonetic + the quarantine id set +
+// the two needs-review conventions — is what gives this assertion teeth.
+const eligibleIndependently = (c) => hasPhonetic(c)
+  && !QUARANTINED_CARD_IDS.has(c.id)
+  && c.needsReview !== true
+  && c.reviewStatus !== REVIEW_STATE.NEEDS_REVIEW;
+const ineligibleApproved = approvedAll.filter((c) => !eligibleIndependently(c));
 assert('NOTHING INELIGIBLE IS APPROVED (empty ph / quarantined / contradiction / needs-review)',
   ineligibleApproved.length === 0,
   `${ineligibleApproved.length} ineligible card(s) approved: ${ineligibleApproved.slice(0, 8).map((c) => c.id).join(',')}`);
+// The production predicate must AGREE with the independent floor on every card.
+// This is what catches isEligibleForApproval itself drifting, rather than trusting it.
+const floorDrift = ALL_CARDS.filter((c) => isEligibleForApproval(c) !== eligibleIndependently(c));
+assert('isEligibleForApproval agrees with the independently-derived floor on every card',
+  floorDrift.length === 0,
+  `${floorDrift.length} card(s) disagree: ${floorDrift.slice(0, 8).map((c) => c.id).join(',')}`);
 assert('APPROVED_CARDS is exactly the approved set (the export cannot drift from the stamp)',
   APPROVED_CARDS.length === approvedAll.length
   && APPROVED_CARDS.every((c) => isApproved(c)));
