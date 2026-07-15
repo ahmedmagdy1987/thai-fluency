@@ -199,6 +199,58 @@ const SCENES = [
         { name: 'NO Thai shown before answering', pass: !thaiLeak, detail: thaiLeak ? 'THAI LEAK' : 'hidden' },
       ];
     } },
+  // ── Wave 3 (Part B: Situations MVP) rendered proof ────────────────────────
+  // Asserted against the LIVE DOM, not inferred from the model.
+  { name: 'situation-rail-free', url: (t) => harness('situation-rail-free', t),
+    async assert(page) {
+      const rows = await page.locator('.situation-row').count();
+      const html = await page.content();
+      const dating = page.locator('.situation-row', { hasText: 'Dating & relationships' }).first();
+      const datingTxt = (await dating.innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const upNextTxt = (await page.locator('.situation-row-upnext, .situation-row.is-upnext').first().innerText().catch(() => '')).replace(/\s+/g, ' ');
+      // The 7 tagged situations must show a real, non-zero card count.
+      const counts = await page.locator('.situation-chip-count').allInnerTexts().catch(() => []);
+      const nonZero = counts.filter(c => /[1-9]/.test(c)).length;
+      const comingSoon = (html.match(/Coming soon/gi) || []).length;
+      return [
+        { name: 'all 16 situations render (nothing dropped = no gating)', pass: rows === 16, detail: `rows=${rows}` },
+        { name: 'draft badge present (nothing claims approval)', pass: /Draft content — pending native-speaker review/.test(html), detail: 'badge' },
+        { name: 'NOTHING renders as approved', pass: !/Native approved/i.test(html), detail: /Native approved/i.test(html) ? 'APPROVED LEAK' : 'clean' },
+        { name: 'sit-dating is a LOCKED preview for a free partner-path learner', pass: /Super/i.test(datingTxt) && /lock/i.test(await dating.innerHTML().catch(() => '')), detail: `"${datingTxt.slice(0, 70)}"` },
+        { name: 'sit-dating is NOT the up-next lesson', pass: !/Dating & relationships/i.test(upNextTxt), detail: `upNext="${upNextTxt.slice(0, 40)}"` },
+        { name: '7 tagged situations show real card counts', pass: nonZero === 7, detail: `nonZero=${nonZero}` },
+        { name: '9 untagged render "coming soon"', pass: comingSoon >= 9, detail: `comingSoon=${comingSoon}` },
+      ];
+    } },
+  { name: 'situation-rail-super', url: (t) => harness('situation-rail-super', t),
+    async assert(page) {
+      const html = await page.content();
+      const dating = page.locator('.situation-row', { hasText: 'Dating & relationships' }).first();
+      const datingTxt = (await dating.innerText().catch(() => '')).replace(/\s+/g, ' ');
+      return [
+        { name: 'sit-dating still locked for Super (18+ attestation)', pass: /18\+/.test(datingTxt), detail: `"${datingTxt.slice(0, 70)}"` },
+        { name: 'still nothing approved', pass: !/Native approved/i.test(html), detail: 'clean' },
+      ];
+    } },
+  { name: 'identity-path', url: (t) => harness('identity-path', t),
+    async assert(page) {
+      const btns = await page.locator('.skill-level-btn').count();
+      const skip = await page.locator('.onboard-skip-btn').count();
+      const html = await page.content();
+      // engagement.md:94 — the honest promise is "boosted in your order", never
+      // "unlocks" / "your next lesson". Test the CLAIM, not the substring: the
+      // copy legitimately contains "unlocked" inside the negation "Nothing is
+      // locked or unlocked by your answer", which is the disclaimer we want.
+      const disclaimer = /Nothing is locked or\s+unlocked by your answer/i.test(html);
+      const overpromise = /\bunlocks\b/i.test(html) || /we'?ll unlock/i.test(html) || /your next lesson/i.test(html);
+      return [
+        { name: 'the 4 identity paths render', pass: btns === 4, detail: `btns=${btns}` },
+        { name: 'the question is OPTIONAL (skip affordance present)', pass: skip === 1, detail: `skip=${skip}` },
+        { name: 'states the honest scope: reorders, never gates', pass: disclaimer, detail: disclaimer ? 'disclaimer shown' : 'MISSING' },
+        { name: 'makes no affirmative unlock / next-lesson promise', pass: !overpromise, detail: overpromise ? 'OVERPROMISE' : 'honest' },
+      ];
+    } },
+
   { name: 'combo', url: (t) => harness('combo', t),
     async assert(page) {
       const pill = await page.locator('.combo-pill').count();

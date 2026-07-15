@@ -229,6 +229,13 @@ img, svg, video { max-width: 100%; }
 .skill-level-desc { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.3; }
 .skill-level-arrow { color: var(--ink-soft); flex-shrink: 0; }@media (hover: hover) and (pointer: fine) {
 .skill-level-btn:hover .skill-level-arrow { color: var(--jade); }}
+/* Scope note under the optional identity question (IdentityPathStep.jsx). Reads
+   as calm small print, not a disclaimer — the promise it bounds ("reorders, never
+   gates") is the honest one, so it should not look like a warning. */
+.identity-path-note { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.5; margin: var(--sp-3) 0 0; }
+.identity-path-note strong { color: var(--jade); font-weight: 600; }
+.app-root[data-theme="dark"] .identity-path-note strong { color: var(--gold); }
+
 .onboard-or-divider { display: flex; align-items: center; gap: var(--sp-3); margin: var(--sp-4) 0 var(--sp-3); color: var(--ink-soft); font-size: var(--fs-11); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
 .onboard-or-divider::before, .onboard-or-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 .onboard-secondary-btn { background: transparent; border: 1px dashed var(--line-strong); color: var(--ink-soft); border-radius: 999px; padding: var(--sp-2) var(--sp-4); font-family: inherit; font-size: var(--fs-12); font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: var(--sp-1); width: 100%; justify-content: center; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
@@ -1118,6 +1125,49 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 .locked-premium-desc { font-size: var(--fs-14); color: var(--ink-soft); margin: 0 auto var(--sp-2); max-width: 44ch; }
 .locked-premium-note { font-size: var(--fs-12); color: var(--ink-soft); opacity: 0.85; margin: var(--sp-2) auto 0; max-width: 48ch; }
 .locked-premium-cta { margin-top: var(--sp-3); }
+
+/* ===== SITUATION RAIL (the learner's situation order, inside the Learn tab) =====
+   Sits under the stage path, so it reads as secondary — it is a preview of the
+   course by situation, not a second place to start a lesson. Locked rows are
+   dashed + dimmed (the same honest-locked language as .stage-chip-locked-preview
+   above), never hidden: every learner sees all 16, and the identity path only
+   moves rows up and down. The draft chip is unconditional by design. */
+.situation-rail { max-width: 880px; margin: var(--sp-5) auto 0; padding: 0 0 var(--sp-5); }
+.situation-rail-header { margin-bottom: var(--sp-3); }
+.situation-rail-title { display: flex; align-items: center; gap: var(--sp-2); font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin: 0 0 var(--sp-1); }
+.app-root[data-theme="dark"] .situation-rail-title { color: var(--gold); }
+.situation-rail-sub { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.5; margin: 0; max-width: 62ch; }
+.situation-rail-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); counter-reset: none; }
+.situation-row { display: flex; align-items: flex-start; gap: var(--sp-3); background: var(--card-bg); border: 1px solid var(--line); border-radius: 12px; padding: var(--sp-3); }
+.situation-row-locked { border-style: dashed; background: transparent; opacity: 0.75; }
+.situation-row-upnext { border-color: var(--jade); box-shadow: 0 1px 2px rgba(15, 61, 46, 0.04), 0 12px 28px -22px rgba(15, 61, 46, 0.5); }
+.app-root[data-theme="dark"] .situation-row-upnext { border-color: var(--gold); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 30px -20px rgba(0, 0, 0, 0.6); }
+.situation-row-rank { flex-shrink: 0; width: 22px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 600; color: var(--ink-soft); line-height: 1.5; }
+.situation-row-body { flex: 1; min-width: 0; }
+.situation-row-name { display: flex; align-items: center; gap: var(--sp-1); font-family: 'Fraunces', serif; font-size: var(--fs-14); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin-bottom: var(--sp-2); }
+.app-root[data-theme="dark"] .situation-row-name { color: var(--cream); }
+.situation-row-lockicon { color: var(--ink-soft); flex-shrink: 0; }
+.situation-row-meta { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.situation-row-flag { flex-shrink: 0; align-self: center; background: var(--jade); color: var(--cream); font-size: var(--fs-10); font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; padding: var(--sp-1) var(--sp-2); border-radius: 999px; white-space: nowrap; }
+.situation-row-cta { flex-shrink: 0; align-self: center; background: transparent; border: 1px solid var(--gold); color: var(--gold-deep); border-radius: 999px; padding: var(--sp-1) var(--sp-3); font-family: inherit; font-size: var(--fs-11); font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.15s; }@media (hover: hover) and (pointer: fine) {
+.situation-row-cta:hover { background: var(--gold); color: var(--gold-ink); }}
+.app-root[data-theme="dark"] .situation-row-cta { color: var(--gold); }
+.situation-chip { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-10); font-weight: 700; letter-spacing: 0.02em; padding: 2px var(--sp-2); border-radius: 999px; line-height: 1.5; }
+.situation-chip-count { background: color-mix(in srgb, var(--jade) 12%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 26%, var(--line)); }
+.app-root[data-theme="dark"] .situation-chip-count { color: color-mix(in srgb, var(--jade) 70%, #fff); }
+.situation-chip-empty { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line-strong); }
+.situation-chip-soon { background: color-mix(in srgb, var(--ink-soft) 12%, transparent); color: var(--ink-soft); }
+.situation-chip-super { background: var(--gold); color: var(--gold-ink); }
+.situation-chip-adult { background: color-mix(in srgb, var(--brick) 12%, transparent); color: var(--brick); border: 1px solid color-mix(in srgb, var(--brick) 26%, var(--line)); }
+/* The mandatory draft badge. Deliberately never styled as an approval/success
+   state — it is the standing "not yet native-reviewed" mark on every row. */
+.situation-chip-draft { background: transparent; color: var(--gold-deep); border: 1px dashed color-mix(in srgb, var(--gold) 55%, var(--line)); }
+.app-root[data-theme="dark"] .situation-chip-draft { color: color-mix(in srgb, var(--gold) 80%, #fff); }
+.situation-rail-note { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.5; margin: var(--sp-3) 0 0; max-width: 62ch; }
+@media (max-width: 520px) {
+  .situation-row { flex-wrap: wrap; }
+  .situation-row-flag, .situation-row-cta { align-self: flex-start; margin-left: calc(22px + var(--sp-3)); }
+}
 
 /* ===== Dating & Real Talk Thai (optional 18+ premium teaser) ===== */
 .dating-section { max-width: 880px; margin: 0 auto; padding-bottom: var(--sp-5); }

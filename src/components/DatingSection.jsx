@@ -108,24 +108,39 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
     return m;
   }, []);
   // Categories where the selection-screen severity chip would hand over the
-  // answer to a tone question: single distinct phrase-severity AND at least one
-  // tone question. For these the severity chip is neutralized on the category
-  // card until the lesson (which TEACHES the tone) is completed — the same
-  // answer-hygiene pattern as the in-quiz badge gate, not badge removal.
+  // answer to a tone question. The card's chip reads SEVERITY_LABEL[cat.severity]
+  // and a tone answer is SEVERITY_LABEL[subject.severity], so the chip leaks
+  // exactly when some tone question in the category has subject.severity ===
+  // cat.severity — test that directly rather than via the old proxy ("category
+  // has one distinct phrase-severity"). The proxy agreed with the real condition
+  // only while every phrase in a category shared a severity; it silently stopped
+  // covering mild-swears-insults the moment 90058 became 'moderate' (A2), and it
+  // never covered arguments-breakups / casual-slang, whose chip matches one tone
+  // answer despite mixed phrase severities.
+  // Neutralized only until the lesson (which TEACHES the tone) is done, and the
+  // chip is REPLACED by the neutral placeholder — answer-hygiene, not removal.
   const severityLeakCats = useMemo(() => {
-    const toneCats = new Set(DATING_QUESTIONS.filter((q) => q.questionType === 'tone').map((q) => q.cat));
-    const sevByCat = new Map();
-    for (const p of DATING_PHRASES) {
-      if (!sevByCat.has(p.cat)) sevByCat.set(p.cat, new Set());
-      sevByCat.get(p.cat).add(p.severity);
-    }
+    const sevByCat = new Map(DATING_CATEGORIES.map((c) => [c.id, c.severity]));
+    const sevByPhrase = new Map(DATING_PHRASES.map((p) => [p.id, p.severity]));
     const s = new Set();
-    for (const catId of toneCats) {
-      if ((sevByCat.get(catId)?.size || 0) === 1) s.add(catId);
+    for (const q of DATING_QUESTIONS) {
+      if (q.questionType !== 'tone') continue;
+      if (sevByPhrase.get(q.phraseId) === sevByCat.get(q.cat)) s.add(q.cat);
     }
     return s;
   }, []);
   const totalQuestions = DATING_QUESTIONS.length;
+  // Categories that actually SHIP. DATING_CATEGORIES is the section's planned
+  // structure, so an entry can carry a plannedPhrases target while its phrases
+  // are still with the native reviewer ('severity-context-warnings': 8 planned,
+  // 0 shipped — claude-review.md C6). Advertising an empty category in the
+  // locked teaser sells content that isn't there, so both the teaser and the
+  // grid render this list. Derived, not hand-flagged: a category reappears
+  // everywhere the moment it has questions, with no marker left to go stale.
+  const shippedCategories = useMemo(
+    () => DATING_CATEGORIES.filter((c) => (questionsByCat.get(c.id) || []).length > 0),
+    [questionsByCat],
+  );
 
   // Reaching this gated section is an intentional premium tap. Record whether the
   // viewer is locked (upsell impression) or a subscriber (content view).
@@ -279,13 +294,13 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
           <h2 className="locked-premium-title">Unlock Dating &amp; Real Talk with Super</h2>
           <p className="locked-premium-desc">
             An optional, adults-only <strong>interactive learning mode</strong> — {totalQuestions} questions
-            and real-life scenarios across {DATING_CATEGORIES.length} categories: flirting and compliments,
+            and real-life scenarios across {shippedCategories.length} categories: flirting and compliments,
             asking someone out, feelings and relationships, boundaries and consent, polite rejection, and
             getting home safe. Every question comes with tone, severity, and context guidance.
           </p>
 
           <ul className="dating-teaser-list">
-            {DATING_CATEGORIES.map((cat) => (
+            {shippedCategories.map((cat) => (
               <li className="dating-teaser-item" key={cat.id}>
                 <div className="dating-teaser-item-head">
                   <span className="dating-teaser-item-name">{cat.name}</span>
@@ -393,7 +408,7 @@ export default function DatingSection({ stats, onOpenSuper, setTab }) {
         </p>
 
         <section className="dating-catgrid" aria-label="Choose a category">
-          {DATING_CATEGORIES.filter((c) => (questionsByCat.get(c.id) || []).length > 0).map((cat) => {
+          {shippedCategories.map((cat) => {
             const count = questionsByCat.get(cat.id).length;
             const lessonCount = (phrasesByCat.get(cat.id) || []).length;
             const prog = catProgress[cat.id];

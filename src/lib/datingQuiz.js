@@ -8,12 +8,35 @@
 // validator enforces this by scanning datingQuestions.js for Thai characters.
 
 // ── Badge derivations (shared by the UI and validators) ─────────────────────
+// TWO AXES, DELIBERATELY SEPARATE (claude-review.md P1):
+//   • SEVERITY_LABEL (below) = the HANDLING label. Gentle/Casual/Handle with
+//     care grade how much care a phrase needs; 'safety' is off that intensity
+//     grade entirely — it flags TOPIC/RISK (consent, boundaries, getting home)
+//     and is the one band a learner SHOULD reach for. Four labels, one per
+//     phrase, mutually exclusive.
+//   • CATEGORY_REGISTER (further down) = the actual LANGUAGE-REGISTER axis
+//     (Slang / Rude). Separate field, separate badge, separate question.
+// The word "register" therefore belongs to CATEGORY_REGISTER and to nothing
+// else. Tone questions used to ask "what register is it?" over the four
+// SEVERITY_LABEL values, which taught a category error: it made "Safety" an
+// answer to a register question, and left "Gentle" and "Safety" both true of a
+// calmly-spoken consent phrase — two correct options on a graded item. The stem
+// now asks for the handling label the section teaches (TONE_STEM_AXIS), which
+// exactly one of the four satisfies. validateQuestion enforces both halves.
 export const SEVERITY_LABEL = {
   gentle: 'Gentle',
   moderate: 'Casual',
   strong: 'Handle with care',
   safety: 'Safety',
 };
+
+// Canonical wording of the tone question's ASK. Tone stems may vary their
+// subject noun ("this phrase" / "this compliment" / "this exclamation") but
+// must ask this one question. The bank spells its prompts out in full (it is
+// flat data, it imports nothing), so this is the string validateQuestion holds
+// them to — the one place the axis wording is defined, and the reason it cannot
+// quietly drift back onto register.
+export const TONE_STEM_AXIS = 'which of these labels does it carry?';
 
 // Usage guidance derived from the reviewer-set severity. Safety phrases
 // (consent, boundaries, getting home) are exactly the ones a learner SHOULD use.
@@ -161,6 +184,16 @@ export function validateQuestion(q, phraseById, categoryIds) {
       const correct = q.options.find((o) => o.id === q.correctOptionId);
       if (subject && correct && correct.text !== SEVERITY_LABEL[subject.severity]) {
         err(`tone answer "${correct && correct.text}" does not match subject severity "${subject && subject.severity}"`);
+      }
+      // Axis lock (claude-review.md P1). The options are the four SEVERITY_LABEL
+      // handling labels, so the stem must ask for a handling label. Asking "what
+      // register is it?" over them conflates two axes and makes "Gentle" and
+      // "Safety" both defensible for a gently-spoken consent phrase.
+      if (!q.prompt.toLowerCase().includes(TONE_STEM_AXIS)) {
+        err(`tone stem must ask the handling-label question ("… ${TONE_STEM_AXIS}") — the options ARE the handling labels`);
+      }
+      if (/\bregisters?\b/i.test(q.prompt)) {
+        err('tone stem must not say "register" — register is the separate CATEGORY_REGISTER axis (Slang/Rude), not the severity labels');
       }
     }
   }

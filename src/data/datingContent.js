@@ -150,6 +150,13 @@ export const DATING_CATEGORIES = [
     reviewStatus: 'pending',
     handleWithCare: true,
   },
+  // NOT SHIPPED YET: 8 planned, 0 phrases written — populating it needs Thai,
+  // which is the native reviewer's call, so it stays planned-only (claude-review
+  // .md C6). DatingSection renders `shippedCategories` (categories with
+  // questions), so this entry is hidden from BOTH the locked teaser and the
+  // category grid rather than advertising an empty category to a locked user. It
+  // stays in this list because it is real planned structure and reappears
+  // automatically once phrases land — do not delete it to "fix" the count.
   {
     id: 'severity-context-warnings',
     name: 'Severity & context warnings',

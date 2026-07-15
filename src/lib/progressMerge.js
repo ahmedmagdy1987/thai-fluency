@@ -93,10 +93,11 @@ export function mergeProgress(local, cloud) {
 // ── Stats merge ──────────────────────────────────────────────────────────────
 // Field rules, grouped by policy. Anything not listed defaults to CLOUD authority.
 //
-//   CLOUD-authoritative (never raised by local — reward/currency/date/streak):
+//   CLOUD-authoritative (never raised by local — reward/currency/date/streak, plus
+//   account-level preferences that sync through profiles.settings):
 //     totalXp, streak, todayXp, todayDate, lastStudy, lastXpActivityAt,
 //     dailyGoal, dailyGoalsHit, streakFreezes, lastFreezeGrant, lastChallengeDate,
-//     hearts, gems, heartsUpdatedAt, startedStage
+//     hearts, gems, heartsUpdatedAt, startedStage, identityPath
 //   MAX (monotonic, non-rewarding display/aggregate counters — never lose progress):
 //     longestStreak, totalReviews, currentStage, lastSeenMission, tonesQuizBest,
 //     quizzesPassed, perfectQuizzes, challengeAttempts, challengeCorrect,
@@ -105,11 +106,30 @@ export function mergeProgress(local, cloud) {
 //     tonesQuizPassed, tutorialSeen, stage1CelebrationShown
 //   UNION (set-valued learning/state ledgers — completed/unlocked wins):
 //     dialoguesCompleted, knownCardIds, unlockedAchievements
-const STATS_MAX = ['longestStreak', 'totalReviews', 'currentStage', 'lastSeenMission',
+export const STATS_MAX = ['longestStreak', 'totalReviews', 'currentStage', 'lastSeenMission',
   'tonesQuizBest', 'quizzesPassed', 'perfectQuizzes', 'challengeAttempts',
   'challengeCorrect', 'challengeWrong', 'bestChallengeScore', 'bestChallengeTotal'];
-const STATS_OR = ['tonesQuizPassed', 'tutorialSeen', 'stage1CelebrationShown'];
-const STATS_UNION = ['dialoguesCompleted', 'knownCardIds', 'unlockedAchievements'];
+export const STATS_OR = ['tonesQuizPassed', 'tutorialSeen', 'stage1CelebrationShown'];
+export const STATS_UNION = ['dialoguesCompleted', 'knownCardIds', 'unlockedAchievements'];
+
+// The cloud-authoritative class, written out. It is DOCUMENTATION + VALIDATION
+// ONLY and is deliberately NOT read by mergeStats: cloud authority is the
+// DEFAULT-BY-OMISSION of `out = { ...cloud }` below, so a key is cloud-auth
+// exactly by NOT appearing in STATS_MAX / STATS_OR / STATS_UNION. Listing a key
+// here therefore changes no behaviour for any key — it only lets
+// scripts/check-progress-merge.mjs assert the class each field belongs to.
+//
+// `identityPath` (engagement.md §2.1/§9: the onboarding "why are you learning
+// Thai?" answer, one of situations.js PATHS) is class cloud-auth: it is an
+// account-level PREFERENCE synced like voice/viewMode through profiles.settings,
+// never derived from tier and never a reward — so local must not be able to raise
+// it, and MAX/OR/UNION are all meaningless for a path string. Note the omission
+// semantics that make this correct: when cloud has no identityPath, the merged
+// patch omits the key entirely (rather than setting it to undefined), so
+// spreading the patch leaves an anonymous learner's local choice intact.
+export const STATS_CLOUD_AUTH = ['totalXp', 'streak', 'todayXp', 'todayDate', 'lastStudy',
+  'lastXpActivityAt', 'dailyGoal', 'dailyGoalsHit', 'streakFreezes', 'lastFreezeGrant',
+  'lastChallengeDate', 'hearts', 'gems', 'heartsUpdatedAt', 'startedStage', 'identityPath'];
 
 // Merge cloud stats INTO local stats. Cloud is the authority base; local only
 // contributes MAX counters, OR flags, and UNION ledgers. Returns a stats patch to

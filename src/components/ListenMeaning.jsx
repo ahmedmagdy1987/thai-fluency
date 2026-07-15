@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Check, ChevronRight, Ear, RotateCcw, Volume2, X } from 'lucide-react';
 import { CARDS } from '../data/cards.js';
+import { hasPhonetic } from '../lib/phonetics.js';
 import { displayCard } from '../lib/voice.js';
 import { speakThai, ttsAvailable } from '../lib/audio.js';
 import { playCharacterCorrect, playCharacterWrong } from '../lib/sounds.js';
@@ -22,7 +23,9 @@ import ComboBadge from './ComboBadge.jsx';
 // index); shuffle BOTH question order and option order per attempt via
 // Fisher-Yates (never a deterministic index rotation). NEVER spends a heart —
 // this is the free learning/review path, not the Stage Challenge. No new
-// content — any card with `thai` + `en` qualifies.
+// content — any card with `thai` + `en` + a real `ph` qualifies (the `ph`
+// requirement is review finding A3; see LISTEN_POOL below for why it is not
+// optional in an audio-prompted exercise).
 //
 // TTS GATE (documented decision): the whole exercise is audio-first, so when
 // `ttsAvailable()` is false it renders NOTHING (returns null, mirroring
@@ -48,8 +51,23 @@ function shuffle(arr) {
 const normEn = (s) => (s || '').trim().toLowerCase();
 
 // Cards that can back a listen-meaning question: real Thai audio + an English
-// meaning to choose. Computed once (module-level pool never changes).
-const LISTEN_POOL = CARDS.filter((c) => c.thai && c.en);
+// meaning to choose + a romanization to reveal. Computed once (module-level pool
+// never changes).
+//
+// `hasPhonetic` is NOT optional here (review finding A3). This exercise is the
+// one place where the prompt is audio ALONE — no Thai, no romanization, until
+// the learner answers. The reveal is the entire pedagogical payoff: it is where
+// the sound the learner just parsed gets pinned to a spelling and a TONE. A card
+// with an empty `ph` reveals Thai script and nothing else, so the learner hears
+// a tone, guesses a meaning, and is handed no way to check what they heard —
+// audio→English with no pronunciation anchor at all. That is worse than not
+// asking. 335 cards on the live deck are in exactly that state; they are excluded
+// here until a native authors their `ph` (docs/empty-phonetics-review-list.md).
+//
+// Filter on the real field via hasPhonetic — NEVER on `phNeedsGen`/`phReview`,
+// which are trailing line comments in the data and match zero cards at runtime
+// (see src/lib/phonetics.js).
+const LISTEN_POOL = CARDS.filter((c) => c.thai && c.en && hasPhonetic(c));
 
 // Build a fresh round. Question order is shuffled; each question's options are a
 // shuffled mix of the correct card + 3 distractors with DISTINCT English
@@ -93,7 +111,8 @@ export default function ListenMeaning({ voice = 'male', audioRate = 0.9, showCha
   // Audio-first: hide the whole exercise where speech output is unavailable.
   if (!ttsAvailable()) return null;
   // Defensive: too few cards to build a 4-option question (never true on the
-  // real 4,791-card deck, but keeps the component honest if the pool shrinks).
+  // real deck — 4,457 of the 4,780 free cards carry a phonetic — but keeps the
+  // component honest if the pool shrinks).
   if (LISTEN_POOL.length < OPTION_COUNT) return null;
 
   const playCurrent = () => {
@@ -218,9 +237,17 @@ export default function ListenMeaning({ voice = 'male', audioRate = 0.9, showCha
           </>
         ) : (
           // REVEAL after answering: the Thai + romanization the audio was hiding.
+          // The romanization is NOT hidden behind `&&` — that silent drop is the
+          // A3 defect itself. LISTEN_POOL already guarantees a `ph` here, so this
+          // placeholder is unreachable belt-and-braces; if a future change ever
+          // does let an empty-`ph` card in, it says so out loud instead of quietly
+          // teaching a toneless card. Same class/copy as the other honest-absence
+          // surfaces (CardsTab, DialoguesView, PlacementOnboarding) — no new CSS.
           <div className="listen-meaning-reveal">
             <div className="listen-meaning-reveal-thai">{revealed.thai}</div>
-            {revealed.ph && <div className="listen-meaning-reveal-ph">{revealed.ph}</div>}
+            <div className="listen-meaning-reveal-ph">
+              {revealed.ph || <span className="ph-pending">phonetic unavailable</span>}
+            </div>
             <button type="button" className="btn-secondary listen-meaning-hear" onClick={playCurrent}>
               <Volume2 size={15} /> Hear it again
             </button>

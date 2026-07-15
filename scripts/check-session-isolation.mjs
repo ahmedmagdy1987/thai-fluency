@@ -127,6 +127,21 @@ check('anonymous/partial bag reset is safe (no throw)', threw === false);
     canWriteProfileSettings(null, 'user-A', true) === false);
 }
 
+// ---- identityPath is user-scoped state (roadmap.md:295) ---------------------
+// The onboarding identity path rides profiles.settings (App.jsx:138-146), so it
+// is carried by profileSettingsRef and MUST NOT survive an identity change — a
+// learner signing in as someone else must never inherit the previous person's
+// path. resetUserScopedRefs already clears the whole ref; this asserts it, so
+// the guarantee cannot regress silently if that ref is ever restructured.
+{
+  const profileSettingsRef = { current: { identityPath: 'path-partner', voice: 'female' } };
+  resetUserScopedRefs({ profileSettingsRef });
+  check('identityPath does not survive an identity change (roadmap.md:295)',
+    !('identityPath' in profileSettingsRef.current));
+  check('the whole user-scoped profile-settings ref is cleared, not just known keys',
+    Object.keys(profileSettingsRef.current).length === 0);
+}
+
 if (failures > 0) {
   console.error(`\nSession-isolation check FAILED: ${failures} assertion(s) failed.`);
   process.exit(1);

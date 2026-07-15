@@ -2,6 +2,7 @@
 import { IMPORTED_CARDS } from './cards-imported.js';
 import { IMPORTED_CARDS_BATCH2 } from './cards-imported-batch2.js';
 import { STEP2_ADDITIONS, STEP2_OVERRIDES } from './cards-step2.js';
+import { MATURE_CARD_IDS, QUARANTINED_CARD_IDS } from './contentFlags.js';
 
 const RAW_CARDS = [
   {id:1,thai:'ผม',ph:'phǒm',en:'I / me (male)',type:'w',stage:1,cat:'pronouns'},
@@ -696,8 +697,26 @@ const RAW_CARDS = [
 ];
 
 // Apply Step 2 (Phase 2) field overrides — stage redistribution + type/data
-// fixes from scripts/apply-redistribution.js. Originals unchanged.
-export const CARDS = RAW_CARDS.map(c => {
+// fixes from scripts/apply-redistribution.js. Originals unchanged. Then stamp the
+// content flags from contentFlags.js (see that file for the ids and the findings
+// behind them: claude-review.md S1 and C3).
+//
+// ALL_CARDS is the whole deck with flags stamped; CARDS is the FREE deck and
+// excludes both flagged groups. CARDS stays the default export that all 11
+// consumers already import — including PublicLanding.jsx and DemoMode.jsx, which
+// are PRE-AUTH and run no Super or age check — so the gate is safe-by-default and
+// needed zero consumer edits. Anything that wants the excluded cards has to reach
+// for MATURE_CARDS / QUARANTINED_CARDS by name, and a mature surface owes the
+// reader the same 18+/Super standard the Dating pack applies (DatingSection.jsx:135).
+// Asserted by scripts/check-mature-gating.mjs + scripts/check-card-quarantine.mjs.
+export const ALL_CARDS = RAW_CARDS.map(c => {
   const ov = STEP2_OVERRIDES[c.id];
-  return ov ? { ...c, ...ov } : c;
+  const card = ov ? { ...c, ...ov } : c;
+  if (MATURE_CARD_IDS.has(card.id)) return { ...card, mature: true };
+  if (QUARANTINED_CARD_IDS.has(card.id)) return { ...card, quarantined: true };
+  return card;
 });
+
+export const CARDS = ALL_CARDS.filter(c => !c.mature && !c.quarantined);
+export const MATURE_CARDS = ALL_CARDS.filter(c => c.mature);
+export const QUARANTINED_CARDS = ALL_CARDS.filter(c => c.quarantined);

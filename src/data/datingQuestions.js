@@ -126,7 +126,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-intro-4",
     "cat": "introductions-flirting",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90002,
     "options": [
       {
@@ -161,23 +161,23 @@ export const DATING_QUESTIONS = [
     "options": [
       {
         "id": "a",
-        "text": "Yes — it's a standard workplace thank-you."
+        "text": "Yes — nâa-rák is a mild, safe word, so aimed at a colleague's helpfulness it reads as plain workplace warmth."
       },
       {
         "id": "b",
-        "text": "Better not — nâa-rák reads as flirtatious here; a direct thank-you or a kindness compliment fits a coworker better."
+        "text": "Better not — nâa-rák calls the person cute; toward a colleague you barely know that reads as a romantic move."
       },
       {
         "id": "c",
-        "text": "Yes — as long as you end it with the polite particle khráp, a looks compliment suits any workplace situation."
+        "text": "Yes — khráp on the end keeps it respectful, and it praises their help rather than their looks."
       },
       {
         "id": "d",
-        "text": "No — the phrase is rude in any situation."
+        "text": "Better not — nâa-rák is warm enough for work, but it sounds too formal for a favour this small."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "Calling someone nâa-rák (cute, lovely) is sweet in a dating context but can feel like a romantic advance toward a near-stranger at work. With coworkers, thank them directly or praise the helpful act instead.",
+    "explanation": "nâa-rák (cute, endearing) is sweet in a dating context, but it describes the PERSON, not what they did — so toward a near-stranger at work it lands as a romantic advance. Being a mild, safe word doesn't make it a thank-you (a), and khráp only softens delivery: it can't turn a compliment about them into praise of their help (c). It also isn't too formal (d) — the problem is the opposite, it's too affectionate. Thank them directly or praise the helpful act instead.",
     "context": "Appearance and cuteness compliments belong in social and dating settings, not with unfamiliar colleagues.",
     "tags": [
       "judgement",
@@ -336,7 +336,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-apps-3",
     "cat": "apps-meeting-plans",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90018,
     "options": [
       {
@@ -519,7 +519,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-compl-3",
     "cat": "compliments",
     "questionType": "tone",
-    "prompt": "How does this compliment land — what register is it?",
+    "prompt": "How does this compliment land — which of these labels does it carry?",
     "phraseId": 90009,
     "options": [
       {
@@ -701,7 +701,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-rel-2",
     "cat": "relationship-language",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90026,
     "options": [
       {
@@ -950,7 +950,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-bound-3",
     "cat": "boundaries-consent",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90033,
     "options": [
       {
@@ -1196,7 +1196,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-awk-3",
     "cat": "awkward-situations",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90040,
     "options": [
       {
@@ -1356,7 +1356,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-argue-3",
     "cat": "arguments-breakups",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90042,
     "options": [
       {
@@ -1545,7 +1545,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-night-3",
     "cat": "nightlife",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90051,
     "options": [
       {
@@ -1762,7 +1762,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-slang-3",
     "cat": "casual-slang",
     "questionType": "tone",
-    "prompt": "How would this phrase land — what register is it?",
+    "prompt": "How would this phrase land — which of these labels does it carry?",
     "phraseId": 90056,
     "options": [
       {
@@ -1794,7 +1794,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-slang-4",
     "cat": "casual-slang",
     "questionType": "scenario",
-    "prompt": "You picked up 'jing dì' from friends. A senior colleague shares some surprising news — is it a good reaction to use with them?",
+    "prompt": "A senior colleague shares some surprising news — is this a good reaction to use with them?",
     "phraseId": 90054,
     "options": [
       {
@@ -1826,7 +1826,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-slang-5",
     "cat": "casual-slang",
     "questionType": "tone",
-    "prompt": "How would this word land — what register is it?",
+    "prompt": "How would this word land — which of these labels does it carry?",
     "phraseId": 90055,
     "options": [
       {
@@ -1914,7 +1914,7 @@ export const DATING_QUESTIONS = [
     "id": "dq-swear-2",
     "cat": "mild-swears-insults",
     "questionType": "tone",
-    "prompt": "How would this exclamation land — what register is it?",
+    "prompt": "How would this exclamation land — which of these labels does it carry?",
     "phraseId": 90059,
     "options": [
       {

@@ -5,7 +5,11 @@
 // un-graduates, XP is never additively double-counted, and Super can never come
 // from local state. Exits non-zero on any failure.
 
-import { mergeProgress, mergeStats, mergeCloudSettings, mergeCard, mergeMasteryRank } from '../src/lib/progressMerge.js';
+import {
+  mergeProgress, mergeStats, mergeCloudSettings, mergeCard, mergeMasteryRank,
+  STATS_MAX, STATS_OR, STATS_UNION, STATS_CLOUD_AUTH,
+} from '../src/lib/progressMerge.js';
+import { PATHS } from '../src/lib/situations.js';
 
 let failures = 0;
 const check = (label, cond, extra = '') => {
@@ -160,6 +164,49 @@ const card = (o = {}) => ({ ease: 2.5, interval: 0, reviews: 0, lapses: 0, learn
   const merged = mergeStats(local, cloud);
   check('13 mergeStats carries merged masteryRank', merged.masteryRank[10] === 2 && merged.masteryRank[11] === 3);
   check('13 mergeStats never emits tier from mastery merge', !('tier' in merged));
+}
+
+// 14. identityPath (engagement.md §2.1/§9) is class CLOUD-AUTH: an account-level
+//     preference, cloud wins, never MAX/OR/UNION, never a reward, never tier.
+{
+  check('14 identityPath is declared cloud-auth', STATS_CLOUD_AUTH.includes('identityPath'));
+  check('14 identityPath is NOT in MAX / OR / UNION',
+    !STATS_MAX.includes('identityPath') && !STATS_OR.includes('identityPath') && !STATS_UNION.includes('identityPath'));
+  check('14 the cloud-auth class is disjoint from MAX / OR / UNION',
+    STATS_CLOUD_AUTH.every(k => !STATS_MAX.includes(k) && !STATS_OR.includes(k) && !STATS_UNION.includes(k)),
+    STATS_CLOUD_AUTH.filter(k => STATS_MAX.includes(k) || STATS_OR.includes(k) || STATS_UNION.includes(k)).join(','));
+
+  // Cloud wins for every path pairing, and the merged value is always a real path.
+  let cloudWins = true;
+  let alwaysAPath = true;
+  for (const local of PATHS) {
+    for (const cloud of PATHS) {
+      const m = mergeStats({ identityPath: local }, { identityPath: cloud });
+      if (m.identityPath !== cloud) cloudWins = false;
+      if (!PATHS.includes(m.identityPath)) alwaysAPath = false;
+    }
+  }
+  check('14 identityPath = cloud for every local×cloud path pairing', cloudWins);
+  check('14 merged identityPath is always a member of PATHS', alwaysAPath);
+
+  // Class proof by behaviour: MAX would coerce the string (NaN/0), OR would emit a
+  // boolean, UNION an array. A plain cloud string proves none of those ran.
+  const m = mergeStats({ identityPath: 'path-worker' }, { identityPath: 'path-tourist' });
+  check('14 identityPath is never MAX/OR/UNION-merged (stays a plain cloud string)',
+    typeof m.identityPath === 'string' && m.identityPath === 'path-tourist');
+
+  // Cloud-auth is DEFAULT-BY-OMISSION: when cloud has no identityPath the patch
+  // must omit the key entirely (not undefined), so spreading it never clobbers an
+  // anonymous learner's local choice.
+  const noCloud = mergeStats({ identityPath: 'path-expat' }, { totalXp: 5 });
+  check('14 cloud without identityPath omits the key (local preference survives the spread)',
+    !('identityPath' in noCloud));
+  check('14 merged identityPath is a PATHS member or undefined',
+    noCloud.identityPath === undefined || PATHS.includes(noCloud.identityPath));
+
+  // It is a preference, never an entitlement input.
+  const withTier = mergeStats({ identityPath: 'path-partner', tier: 'super' }, { identityPath: 'path-partner', tier: 'free' });
+  check('14 identityPath never carries tier', !('tier' in withTier) && withTier.identityPath === 'path-partner');
 }
 
 if (failures > 0) {

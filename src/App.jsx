@@ -31,6 +31,7 @@ import {
 } from './lib/celebrations.js';
 import { getCourseCompletion } from './lib/courseCompletion.js';
 import { isSuper } from './config/entitlements.js';
+import { PATHS } from './lib/situations.js';
 import {
   effectiveHearts,
   spendHeart,
@@ -93,6 +94,8 @@ import GuidedTutorial from './components/GuidedTutorial.jsx';
 import StageCinematicOverlay from './components/StageCinematicOverlay.jsx';
 import Stage1CompleteCelebration from './components/Stage1CompleteCelebration.jsx';
 import PlacementOnboarding from './components/PlacementOnboarding.jsx';
+import IdentityPathStep from './components/IdentityPathStep.jsx';
+import SituationRail from './components/SituationRail.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import PublicLanding from './components/PublicLanding.jsx';
 import AuthGate from './components/auth/AuthGate.jsx';
@@ -132,6 +135,14 @@ const CLOUD_PROFILE_SETTING_KEYS = [
   'soundEffects',
   'theme',
   'voice',
+  // The onboarding identity path (engagement.md §2.1). It rides profiles.settings
+  // exactly like voice/viewMode because it IS a preference: cloud-authoritative,
+  // never derived from tier, never a reward. That routing is deliberate — the
+  // user_stats table has no column for it and adding one would be a migration.
+  // progressMerge.js STATS_CLOUD_AUTH documents the same class; mergeCloudSettings
+  // gives cloud the win here, and pickCloudProfileSettings OMITS the key when the
+  // cloud has none, so a signed-in device never clobbers a local choice with undefined.
+  'identityPath',
   'firstLessonCompleted',
   'firstLessonProgress',
   'activeMiniUnitId',
@@ -324,6 +335,12 @@ export default function TukTalkThaiApp() {
   const [showProfile, setShowProfile] = useState(() => initialRoute.type === 'profile');
   const [publicPage, setPublicPage] = useState(() => initialRoute.type === 'public' ? initialRoute.page : null);
   const [showStage1Celebration, setShowStage1Celebration] = useState(false);
+  // Placement answers held between the two onboarding screens: PlacementOnboarding
+  // finishes into here, then the optional identity question renders, then both are
+  // committed together by completeOnboarding. Nothing is persisted until the end,
+  // so hasOnboarded still flips exactly once, at the real finish line — a reload
+  // mid-onboarding restarts onboarding, which is already how placement behaves.
+  const [placementResult, setPlacementResult] = useState(null);
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
   const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
@@ -1677,8 +1694,17 @@ export default function TukTalkThaiApp() {
     markCardsKnown([cardId]);
   }, [markCardsKnown]);
 
-  const completeOnboarding = useCallback((startedStage, knownIds, voiceChoice) => {
+  const completeOnboarding = useCallback((startedStage, knownIds, voiceChoice, identityPath) => {
     if (knownIds && knownIds.length) markCardsKnown(knownIds);
+    // WRITE-SITE VALIDATION for identityPath (engagement.md §2.1). This is the
+    // only place a path enters stats, and progressMerge deliberately does NOT
+    // validate the value (it would drag the 4,780-card deck into the sign-in
+    // merge path), so PATHS membership is enforced here or nowhere. Skipping the
+    // question yields no path at all rather than a written 'path-none': the
+    // recommender already falls back to 'path-none' for an absent value, so
+    // omitting keeps "skipped" and "chose the default" honestly distinguishable
+    // and leaves a cloud value free to win on a later sign-in.
+    const path = PATHS.includes(identityPath) ? identityPath : null;
     // Placement respects the chosen level: a learner who already knows Thai and
     // starts above Stage 1 should NOT be forced through the Stage-1 "say hello"
     // starter lesson (the "stuck at the absolute beginning" complaint). For them
@@ -1695,6 +1721,7 @@ export default function TukTalkThaiApp() {
         startedStage,
         currentStage: startedStage,
         voice: voiceChoice || s.voice || DEFAULT_VOICE,
+        ...(path ? { identityPath: path } : {}),
         ...(skipStarterLesson ? { firstLessonCompleted: true } : {}),
       };
       // Placement can satisfy stage-milestone achievements (e.g. "reach Stage 3")
@@ -1716,16 +1743,44 @@ export default function TukTalkThaiApp() {
     }
     // Cloud write (fire-and-forget). Persists onboarding_completed + voice
     // on profiles so the user doesn't re-see placement onboarding on another
-    // device or after sign-out.
+    // device or after sign-out. identityPath rides profiles.settings (the same
+    // JSONB blob updateSettings writes) — merged over the current settings ref,
+    // never replacing it, so this write can't drop a preference set earlier in
+    // the session. Only written when a path was actually chosen: a skip must not
+    // stamp 'path-none' over a value the user set on another device.
     if (session && hasSupabaseConfig && session.user?.email_confirmed_at) {
-      supabase.from('profiles').update({
+      const patch = {
         onboarding_completed: true,
         selected_voice: voiceChoice || DEFAULT_VOICE,
-      }).eq('id', session.user.id).then(({ error }) => {
+      };
+      if (path) {
+        const nextSettings = { ...(profileSettingsRef.current || {}), identityPath: path };
+        profileSettingsRef.current = nextSettings;
+        patch.settings = nextSettings;
+        setProfile(p => (p ? { ...p, settings: nextSettings } : p));
+      }
+      supabase.from('profiles').update(patch).eq('id', session.user.id).then(({ error }) => {
         if (error) console.warn('[App] failed to write onboarding state to cloud', error);
       });
     }
   }, [markCardsKnown, session, progress]);
+
+  // PlacementOnboarding finishes here rather than straight into completeOnboarding
+  // so the ONE optional identity question can render before anything is committed.
+  const handlePlacementComplete = useCallback((startedStage, knownIds, voiceChoice) => {
+    setPlacementResult({ startedStage, knownIds, voiceChoice });
+  }, []);
+
+  // Both exits from the identity question land here — choosing a path and skipping
+  // it are the same commit, one with a path and one without. Skipping is a real
+  // answer (no path → the recommender's 'path-none' default → the plain catalog
+  // order), never a nag that re-asks.
+  const finishOnboarding = useCallback((identityPath) => {
+    const r = placementResult;
+    if (!r) return;
+    setPlacementResult(null);
+    completeOnboarding(r.startedStage, r.knownIds, r.voiceChoice, identityPath);
+  }, [placementResult, completeOnboarding]);
 
   const updateSettings = useCallback((updates) => {
     if (Object.prototype.hasOwnProperty.call(updates, 'soundEffects')) {
@@ -2468,7 +2523,9 @@ export default function TukTalkThaiApp() {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
 
-        <PlacementOnboarding onComplete={completeOnboarding} />
+        {placementResult
+          ? <IdentityPathStep onSelect={finishOnboarding} onSkip={() => finishOnboarding(null)} />
+          : <PlacementOnboarding onComplete={handlePlacementComplete} />}
       </div>
     );
   }
@@ -2566,6 +2623,12 @@ export default function TukTalkThaiApp() {
             </div>
           )}
           {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
+          {/* The situation order lives INSIDE Learn, under the stage path — it is
+              the same journey seen by situation instead of by stage, not a sixth
+              tab (the 5-tab nav is hand-rolled and there is no router). It is a
+              preview rail: no situation lesson flow exists yet, so it informs and
+              promises nothing it cannot deliver. */}
+          {tab === 'learn'  && <SituationRail stats={stats} onOpenSuper={() => handleOpenPremium('dating')} />}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} masteryRank={stats.masteryRank || {}} completedMiniUnits={stats.completedMiniUnits || []} />}

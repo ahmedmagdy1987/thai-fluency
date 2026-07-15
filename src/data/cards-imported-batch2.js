@@ -684,7 +684,15 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5070,thai:"เมียขอหย่า",ph:"",en:"My wife asked for a divorce",type:"s",stage:4,cat:"people"}, // phReview: true, phNeedsGen: true
   {id:5071,thai:"เกือบไปแล้ว",ph:"",en:"That was close!",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5072,thai:"เรื่องน่าขำ",ph:"",en:"A funny story",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
-  {id:5073,thai:"เป็นเมนส์ / มีประจำเดือน",ph:"",en:"I'm having my period",type:"s",stage:4,cat:"sentences-self",note:"Two ways to say this: casual เป็นเมนส์ and more formal มีประจำเดือน."}, // phReview: true, phNeedsGen: true
+  // C4 split (claude-review.md): 5073 stored TWO alternative phrases in one `thai`
+  // field, but a card is one utterance (TTS, flashcard face, any future grading).
+  // Each half now carries ONE of the two ORIGINAL Thai strings verbatim — no Thai
+  // was authored, and ph stays "" on both (phNeedsGen, a native generates it).
+  // Both halves are mature (S1) and gated via contentFlags.js MATURE_CARD_IDS.
+  // 5739 is the next free id above the deck max (5738) and so has no STEP2_OVERRIDES
+  // row; its stage/needsReview are inline to match what the overrides give 5073.
+  {id:5073,thai:"เป็นเมนส์",ph:"",en:"I'm having my period (casual)",type:"s",stage:4,cat:"sentences-self",note:"The casual way to say it. The more formal alternative มีประจำเดือน is card 5739."}, // phReview: true, phNeedsGen: true
+  {id:5739,thai:"มีประจำเดือน",ph:"",en:"I'm having my period (formal)",type:"s",stage:8,cat:"sentences-self",needsReview:true,note:"The more formal way to say it. The casual alternative เป็นเมนส์ is card 5073."}, // phReview: true, phNeedsGen: true
   {id:5074,thai:"จะเล่าคามจริงให้ฟัง",ph:"",en:"I will tell you the truth",type:"s",stage:4,cat:"sentences-daily"}, // phReview: true, phNeedsGen: true
   {id:5075,thai:"อย่าไปโทษเขา",ph:"",en:"Don't blame him",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “อย่าโทษตัวเอง” “Don’t blame yourself”"}, // phReview: true, phNeedsGen: true
   {id:5076,thai:"ลองจินตนาการดู",ph:"",en:"Try to imagine it",type:"s",stage:4,cat:"sentences-daily",note:"Other usage: “ลองคิดดู” “Think about it” or “” “Try it”"}, // phReview: true, phNeedsGen: true
@@ -893,6 +901,15 @@ export const IMPORTED_CARDS_BATCH2 = [
   {id:5279,thai:"ปกติแล้ว...",ph:"bpòk-gà-dtì láaeo…",en:"Normally… / Usually… / Generally… / Typically…",type:"s",stage:2,cat:"sentences-daily"}, // phReview: true
   {id:5280,thai:"ไม่ต้องทอนนะ",ph:"mâi-dtâwng taawn ná",en:"Keep the change.",type:"s",stage:2,cat:"shopping"}, // phReview: true
   {id:5281,thai:"รับอะไรเพิ่มไหม",ph:"ráp à-rai pôem mǎi",en:"Would you like anything else?",type:"s",stage:2,cat:"sentences-questions"}, // phReview: true
+  // C5 (claude-review.md) flagged 5282/5283 + Dating 90014 as a de-dup candidate.
+  // Investigated, KEPT ALL THREE — there is no exact duplicate here:
+  //   5282 คุณดูดี / 5283 คุณดูดีมาก differ by exactly มาก, the intensifier taught
+  //   by card 100. That is a legitimate minimal pair, and deleting either half
+  //   destroys the contrast that makes the other teachable.
+  //   Dating 90014 คุณดูดีมากเลยวันนี้ is a third distinct string in a different,
+  //   18+/Super-gated deck (own id range, own category, no stage), so it never
+  //   collides with the main deck for the same learner.
+  // Overlap is thematic, not a collision. Owner call before any deletion.
   {id:5282,thai:"คุณดูดี",ph:"kun duu-dii",en:"You look good.",type:"s",stage:2,cat:"sentences-daily"}, // phReview: true
   {id:5283,thai:"คุณดูดีมาก",ph:"kun duu-dii mâak",en:"You look great.",type:"s",stage:2,cat:"sentences-daily"}, // phReview: true
   {id:5284,thai:"ขับรถดีๆ (นะ)",ph:"kàp-rót dii-dii ná",en:"Drive safely.",type:"p",stage:2,cat:"sentences-daily"}, // phReview: true

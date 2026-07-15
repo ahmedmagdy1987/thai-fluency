@@ -903,20 +903,32 @@ export const DATING_PHRASES = [
   },
 
   // ── mild-swears-insults (3) — RECOGNITION ONLY, handle with care ──────────
+  // Severity is per-PHRASE, not per-category: the category name caps the band
+  // ("mild swears"), it does not label every member. 90059/90060 are genuinely
+  // 'strong' inside it; 90058 is not (see below).
   {
     id: ID(58),
     cat: 'mild-swears-insults',
     thai: 'บ้าจริง',
     ph: 'bâa jing',
     en: '"Damn it!" / "Oh, come on!" (mild frustration)',
-    severity: 'strong',
+    // claude-review.md C1: this entry read 'strong' → badge "Handle with care" /
+    // "Don't use casually", contradicting its own gloss ("mild frustration"), its
+    // own note ("Mild 'ugh/darn'-level") and its quiz explanation ("far softer
+    // than a real curse"). Three surfaces said mild, one said strong, so the
+    // severity moved to match the mild reading — scripts/check-dating-severity-
+    // consistency.mjs now fails the build if that contradiction returns.
+    // NOT SETTLED: this is a safety-relevant label on un-reviewed content, so the
+    // FINAL severity is the native reviewer's call — 'needs-review' surfaces the
+    // "Needs review" badge until they confirm it (never 'approved' before then).
+    severity: 'moderate',
     example: {
       thai: 'บ้าจริง ลืมกุญแจไว้ที่บ้านอีกแล้ว',
       ph: 'bâa jing, luem gun-jae wái thîi bâan ìik láew',
       en: 'Damn it — I left my keys at home again.',
     },
     note: 'Recognition only. Mild "ugh/darn"-level. Said to yourself, not aimed at a person.',
-    reviewStatus: 'pending',
+    reviewStatus: 'needs-review',
   },
   {
     id: ID(59),

@@ -19,6 +19,8 @@ import MissionCompleteRewardScreen from '../../src/components/MissionCompleteRew
 import StreakRecoveryCard from '../../src/components/StreakRecoveryCard.jsx';
 import MasteryTrack, { MasterySummary } from '../../src/components/MasteryTrack.jsx';
 import SpeakingExercise from '../../src/components/SpeakingExercise.jsx';
+import SituationRail from '../../src/components/SituationRail.jsx';
+import IdentityPathStep from '../../src/components/IdentityPathStep.jsx';
 import { CARDS } from '../../src/data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT } from '../../src/data/miniUnits.js';
 
@@ -175,6 +177,27 @@ function sceneEl() {
     case 'speaking-unsupported':
       // Pass 5: SpeechRecognition removed → the exercise renders NOTHING (returns null).
       return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" /></div>;
+    case 'situation-rail-free':
+      // Wave 3 B2/B3: the partner path boosts sit-dating up the order, but a FREE
+      // learner must still see it as a locked preview — never their next lesson
+      // (engagement.md:94). All 16 render; the 7 tagged carry real card counts.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <SituationRail stats={{ ...freeStats, identityPath: 'path-partner' }} onOpenSuper={noop} />
+        </div>
+      );
+    case 'situation-rail-super':
+      // Same rail for a Super learner: sit-dating stays a locked preview behind the
+      // 18+ attestation, and is still never `upNext`.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <SituationRail stats={{ ...superStats, identityPath: 'path-partner' }} onOpenSuper={noop} />
+        </div>
+      );
+    case 'identity-path':
+      // Wave 3 B1: the ONE optional onboarding question that sets stats.identityPath.
+      // Skipping is a first-class outcome, not a fifth path.
+      return <IdentityPathStep onSelect={noop} onSkip={noop} />;
     default:
       return <div style={{ padding: 40 }}>Unknown scene: {scene}</div>;
   }
