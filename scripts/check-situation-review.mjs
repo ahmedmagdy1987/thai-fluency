@@ -164,10 +164,18 @@ assert('pending/needs-review are drafts (render the badge); approved is not',
 
 // ---- 6. Tagging overlay sanity (non-brittle) ----------------------------------
 const tagged = SITUATIONS.filter((s) => s.tagged).map((s) => s.id).sort();
-const EXPECTED_TAGGED = ['sit-directions', 'sit-food', 'sit-greet', 'sit-housing',
+// A situation is `tagged` IFF it owns ≥1 card. Wave 7 added a per-card tag layer
+// (situationTags.js SITUATION_CARD_TAGS) that populated 7 formerly-empty
+// situations, so the tagged set is now derived, not a hard-coded 7 — but the
+// tagged⟺owns-cards invariant is exactly what keeps it honest.
+assert('a situation is tagged IFF it owns ≥1 card',
+  SITUATIONS.every((s) => s.tagged === (cardsInSituation(s.id).length > 0)),
+  SITUATIONS.filter((s) => s.tagged !== (cardsInSituation(s.id).length > 0)).map((s) => s.id).join(','));
+// The 7 original category-tagged situations must never lose their tag.
+const CORE_TAGGED = ['sit-directions', 'sit-food', 'sit-greet', 'sit-housing',
   'sit-money', 'sit-pharmacy', 'sit-smalltalk'];
-assert('exactly the 7 adequate situations are tagged in Pass 2',
-  JSON.stringify(tagged) === JSON.stringify(EXPECTED_TAGGED), tagged.join(','));
+assert('the 7 core category-tagged situations are still tagged',
+  CORE_TAGGED.every((id) => tagged.includes(id)), tagged.join(','));
 assert('every tagged situation owns > 0 real cards',
   SITUATIONS.filter((s) => s.tagged).every((s) => cardsInSituation(s.id).length > 0));
 assert('every untagged situation owns 0 cards',

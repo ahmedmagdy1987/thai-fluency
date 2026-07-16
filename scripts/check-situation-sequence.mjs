@@ -134,13 +134,17 @@ for (const path of PATHS) {
   ];
 
   // The content signal behind COMING_SOON. `tagged` says "owns cards";
-  // hasTeachableContent says "owns cards we can actually teach". They agree on
-  // today's deck — asserted, not assumed, so a future empty-`ph` situation is
-  // caught rather than advertised.
-  assert('hasTeachableContent agrees with `tagged` on today\'s deck (7 teachable)',
-    SITUATIONS.every((s) => hasTeachableContent(s.id) === s.tagged)
-    && SITUATIONS.filter((s) => hasTeachableContent(s.id)).length === 7,
-    SITUATIONS.filter((s) => hasTeachableContent(s.id)).map((s) => s.id).join(','));
+  // hasTeachableContent says "owns cards we can actually teach". They agree on the
+  // deck — asserted, not assumed, so a future empty-`ph`-only situation is caught
+  // rather than advertised. Wave 7 grew the tagged set from 7 to 14 via per-card
+  // tags; the equivalence is derived, not pinned to a fixed count.
+  assert('hasTeachableContent agrees with `tagged` on every situation',
+    SITUATIONS.every((s) => hasTeachableContent(s.id) === s.tagged),
+    SITUATIONS.filter((s) => hasTeachableContent(s.id) !== s.tagged).map((s) => s.id).join(','));
+  assert('every tagged situation is teachable (owns ≥1 real-phonetic card)',
+    SITUATIONS.filter((s) => s.tagged).length === SITUATIONS.filter((s) => hasTeachableContent(s.id)).length
+    && SITUATIONS.filter((s) => s.tagged).length >= 7,
+    `tagged=${SITUATIONS.filter((s) => s.tagged).length}`);
 
   // A3: the teachable pool NEVER contains an empty-`ph` card, and we never
   // invented one to fill the gap — the pool only ever shrinks.
@@ -197,9 +201,9 @@ for (const path of PATHS) {
           rec.entries.every((e) => e.startCount <= e.teachableCount
             && e.teachableCount <= e.cardCount));
         // The rail partition covers all 16 exactly once: the UI filters the VIEW,
-        // it never loses a situation.
-        const parts = [...rec.startable, ...rec.previews, ...rec.deferred].map((e) => e.sitId);
-        assert(`${tag} ${path}/${tier}: startable+previews+deferred partition all 16 exactly once`,
+        // it never loses a situation. Four buckets since Wave 7 (upcoming added).
+        const parts = [...rec.startable, ...rec.upcoming, ...rec.previews, ...rec.deferred].map((e) => e.sitId);
+        assert(`${tag} ${path}/${tier}: startable+upcoming+previews+deferred partition all 16 exactly once`,
           parts.length === 16 && new Set(parts).size === 16
           && JSON.stringify(sorted(parts)) === JSON.stringify(sorted(SITUATION_IDS)),
           `${parts.length} ids`);
@@ -221,9 +225,16 @@ for (const path of PATHS) {
           rec.deferred.every((e) => !hasTeachableContent(e.sitId) && !e.tagged
             && e.reasons.includes(LOCK_REASON.COMING_SOON) && !isAlwaysPreview(e.sitId)),
           rec.deferred.map((e) => e.sitId).join(','));
-        assert(`${tag} ${path}/${tier}: the 8 collapsed + dating account for all 9 empty situations`,
-          rec.deferred.length === 8 && rec.comingSoon.length === 9,
-          `deferred=${rec.deferred.length} comingSoon=${rec.comingSoon.length}`);
+        // Wave 7 added an `upcoming` bucket (written but stage-locked). The four
+        // buckets — startable, upcoming, previews (dating), deferred (truly empty)
+        // — partition all 16 situations, and only genuinely-empty ones collapse.
+        assert(`${tag} ${path}/${tier}: startable+upcoming+previews+deferred partition all 16`,
+          rec.startable.length + rec.upcoming.length + rec.previews.length + rec.deferred.length === rec.order.length,
+          `${rec.startable.length}+${rec.upcoming.length}+${rec.previews.length}+${rec.deferred.length} vs ${rec.order.length}`);
+        assert(`${tag} ${path}/${tier}: deferred are truly empty; upcoming all own real content`,
+          rec.deferred.every((e) => !hasTeachableContent(e.sitId))
+          && rec.upcoming.every((e) => hasTeachableContent(e.sitId) && !e.startable),
+          `deferred=[${rec.deferred.map((e) => e.sitId).join(',')}] upcoming=${rec.upcoming.length}`);
         // Surfaced rows are ordered by the untouched §3 order — the view filters,
         // it never re-sorts (that would make the identity promise unverifiable).
         const surfaced = rec.entries.filter((e) => e.startable || rec.previews.includes(e))
@@ -235,16 +246,25 @@ for (const path of PATHS) {
     }
   }
 
-  // Every tagged situation is startable for EVERY legal window — otherwise the
-  // rail would show a situation whose Start we suppress, which is the Wave 3
-  // failure in a new costume.
+  // Every tagged situation owns a real, startable pool at the FULL [1-8] window —
+  // its content is reachable, not a phantom tag. (Wave 7's per-card-tagged
+  // situations have NARROW stage ranges — e.g. sit-store is stages 6+8 only — so
+  // they are NOT startable at every window; outside their stages they surface as
+  // `upcoming`, never as a suppressed Start.)
+  assert('every tagged situation has a non-empty startable pool at the full [1-8] window',
+    SITUATIONS.filter((s) => s.tagged).every((s) => situationStartPool(s.id, { startedStage: 1, maxUnlockedStage: 8 }).length > 0),
+    SITUATIONS.filter((s) => s.tagged && situationStartPool(s.id, { startedStage: 1, maxUnlockedStage: 8 }).length === 0).map((s) => s.id).join(','));
+  // At EVERY window, the rail never shows a startable situation whose Start we
+  // suppress (the Wave 3 failure): every `startable` row has a real pool, and
+  // every `upcoming` row genuinely has content, just none in this window.
   for (let lower = 1; lower <= 8; lower++) {
     for (let upper = lower; upper <= 8; upper++) {
       const w = { startedStage: lower, maxUnlockedStage: upper };
-      assert(`window [${lower}-${upper}]: every tagged situation still has a startable pool`,
-        SITUATIONS.filter((s) => s.tagged).every((s) => situationStartPool(s.id, w).length > 0),
-        SITUATIONS.filter((s) => s.tagged && situationStartPool(s.id, w).length === 0)
-          .map((s) => s.id).join(','));
+      const wRec = getSituationRecommendation(FREE, w);
+      assert(`window [${lower}-${upper}]: startable rows have real pools; upcoming rows have content but none in-window`,
+        wRec.startable.every((e) => situationStartPool(e.sitId, w).length > 0)
+        && wRec.upcoming.every((e) => hasTeachableContent(e.sitId) && situationStartPool(e.sitId, w).length === 0),
+        `startable=${wRec.startable.length} upcoming=${wRec.upcoming.length}`);
     }
   }
 
@@ -357,7 +377,7 @@ assert('no review-complete situation has an unapproved card (flag never runs ahe
   // but the SITUATION is still draft (not 100% review-complete), so its readiness
   // stays 'coming-soon' and the rail's mandatory draft badge renders on every row.
   assert('startable ≠ review-complete: every startable situation is still a draft situation',
-    rec.startable.length === 7
+    rec.startable.length >= 7
     && rec.startable.every((e) => e.readiness === 'coming-soon'
       && situationReviewComplete(e.sitId) === false),
     rec.startable.map((e) => e.sitId).join(','));

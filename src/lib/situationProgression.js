@@ -271,7 +271,15 @@ export function getSituationRecommendation(stats, stageWindow = DEFAULT_STAGE_WI
     comingSoon: lockedPreviews.filter((e) => e.reasons.includes(LOCK_REASON.COMING_SOON)),
     startable: entries.filter((e) => e.startable),
     previews: entries.filter((e) => !e.startable && isAlwaysPreview(e.sitId)),
-    deferred: entries.filter((e) => !e.startable && !isAlwaysPreview(e.sitId)),
+    // Written-but-stage-locked (Wave 7): the situation HAS teachable content, just
+    // none in the learner's current stage window (e.g. a stage-1 learner and
+    // sit-admin, whose cards are stage 3-8). Its lessons exist, so it is NOT
+    // collapsed as "not written" — it surfaces as an upcoming row with its real
+    // teachable count and becomes startable as the learner advances.
+    upcoming: entries.filter((e) => !e.startable && !isAlwaysPreview(e.sitId) && hasTeachableContent(e.sitId)),
+    // Truly empty — no teachable content at all. The honest "coming soon, not
+    // written yet" collapsed backlog.
+    deferred: entries.filter((e) => !e.startable && !isAlwaysPreview(e.sitId) && !hasTeachableContent(e.sitId)),
   };
 }
 

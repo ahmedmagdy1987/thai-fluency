@@ -358,14 +358,17 @@ const SCENES = [
       const starts = await page.locator('.situation-row-start').count();
       return [
         { name: 'no dead "No lessons written yet" rows remain', pass: deadRows === 0, detail: `deadRows=${deadRows}` },
-        { name: 'rail collapsed from 16 to the 7 startable + dating preview', pass: rows === 8, detail: `rows=${rows}` },
-        { name: 'the 7 content-owning situations are STARTABLE', pass: starts === 7, detail: `startButtons=${starts}` },
+        // Wave 7 tagged 296 more cards, populating 7 formerly-empty situations, so
+        // the rail now surfaces the original 7 PLUS the newly-content-bearing ones
+        // (as startable when in window, or as `upcoming` rows) + the dating preview.
+        { name: 'rail surfaces the content-bearing situations + dating preview (≥ 8 rows)', pass: rows >= 8, detail: `rows=${rows}` },
+        { name: 'content-owning situations are STARTABLE (≥ 7)', pass: starts >= 7, detail: `startButtons=${starts}` },
         { name: 'draft badge present (nothing claims approval)', pass: /Draft content — pending native-speaker review/.test(html), detail: 'badge' },
         { name: 'NOTHING renders as approved', pass: !/Native approved/i.test(html), detail: /Native approved/i.test(html) ? 'APPROVED LEAK' : 'clean' },
         { name: 'sit-dating is STILL a locked preview (Super-only)', pass: /Super/i.test(datingTxt) && /lock/i.test(await dating.innerHTML().catch(() => '')), detail: `"${datingTxt.slice(0, 60)}"` },
         { name: 'sit-dating is NOT the up-next lesson', pass: !/Dating & relationships/i.test(upNextTxt), detail: `upNext="${upNextTxt.slice(0, 40)}"` },
         { name: 'sit-dating offers NO free Start', pass: !/Start/i.test(datingTxt), detail: 'no start CTA' },
-        { name: 'the 7 show real card counts', pass: nonZero === 7, detail: `nonZero=${nonZero}` },
+        { name: 'startable situations show real card counts (≥ 7)', pass: nonZero >= 7, detail: `nonZero=${nonZero}` },
         { name: 'the remaining 9 are named honestly in ONE collapsed affordance', pass: /More situations|9 (more|of 16)|coming/i.test(html), detail: 'collapse' },
       ];
     } },

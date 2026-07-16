@@ -1,0 +1,86 @@
+[
+  {
+    "id": 4756,
+    "en": "I'm indebted to him (male)",
+    "thaiCurrent": "ผมเป็นหนี้บุคุณเขา",
+    "stage": 8,
+    "situation": "sit-smalltalk",
+    "diagnosisType": "inserted/garbled syllable",
+    "diagnosis": "The cluster \"บุคุณ\" is not a standard word. Likely either \"บุญคุณ\" (a debt of gratitude — a ญ dropped) or a stray \"บุ\" before \"คุณ\". AMBIGUOUS — two plausible targets; the reviewer decides which the sentence intends.",
+    "hardest": true,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 4959,
+    "en": "He just left",
+    "thaiCurrent": "เขาเพึ่งจะไป",
+    "stage": 8,
+    "situation": "untagged",
+    "diagnosisType": "wrong vowel diacritic",
+    "diagnosis": "\"เพึ่ง\" carries สระอึ (U+0E36) where สระอิ (U+0E34) is expected — a single-vowel typo. The card's own note already records the intended reading \"เขาเพิ่งจะไป\"; confirm and apply.",
+    "hardest": false,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 5002,
+    "en": "What should I do then?",
+    "thaiCurrent": "แล้วทีนี้่จะทำยังไง",
+    "stage": 8,
+    "situation": "untagged",
+    "diagnosisType": "double / stacked tone mark",
+    "diagnosis": "\"นี้่\" stacks BOTH ไม้โท (U+0E49) and ไม้เอก (U+0E48) on the same syllable — an invalid double tone mark. One must be removed; confirm which tone is intended.",
+    "hardest": false,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 5074,
+    "en": "I will tell you the truth",
+    "thaiCurrent": "จะเล่าคามจริงให้ฟัง",
+    "stage": 8,
+    "situation": "untagged",
+    "diagnosisType": "dropped consonant",
+    "diagnosis": "\"คาม\" is missing a ว — the intended word for \"truth/matter\" in \"เล่า___จริง\" is \"ความ\". Supply the corrected script.",
+    "hardest": false,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 5084,
+    "en": "I'm trying to gather money",
+    "thaiCurrent": "พยยามรวบรวมเงิน",
+    "stage": 8,
+    "situation": "sit-money",
+    "diagnosisType": "dropped vowel",
+    "diagnosis": "\"พยยาม\" is missing a สระอา — the verb \"to try\" is \"พยายาม\". Supply the corrected script.",
+    "hardest": false,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 5151,
+    "en": "\"I have to finish it quickly”",
+    "thaiCurrent": "ต้องรีบท",
+    "stage": 8,
+    "situation": "untagged",
+    "diagnosisType": "truncation",
+    "diagnosis": "The Thai ends on an orphan \"ท\" (\"ต้องรีบท\") — the sentence is cut off mid-word. NO CLEAR TARGET: what \"finish it quickly\" was meant to say cannot be recovered from the fragment; the reviewer must re-author the full phrase from the English.",
+    "hardest": true,
+    "correctedThai": "",
+    "ph": ""
+  },
+  {
+    "id": 5216,
+    "en": "To tell a secret",
+    "thaiCurrent": "เปิเเผยความลับ",
+    "stage": 8,
+    "situation": "untagged",
+    "diagnosisType": "mojibake (เเ for แ) + dropped consonant",
+    "diagnosis": "Two U+0E40 (เเ) appear where a single แ (U+0E41) belongs, and a ด is missing — \"เปิเเผย\" for the intended \"เปิดเผย\" (to reveal). Supply the corrected script.",
+    "hardest": false,
+    "correctedThai": "",
+    "ph": ""
+  }
+]

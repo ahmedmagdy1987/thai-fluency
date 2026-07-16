@@ -727,6 +727,12 @@ const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 export function situationScopeOf(card) {
   if (!card) return null;
   if (card.situation) return card.situation;
+  // DELIBERATELY category-only — does NOT read the Wave 7 per-card tags. This is
+  // the APPROVAL scope: it must cover only the cards a situation's sign-off
+  // actually reviewed (its category-tagged set at sign-off time). Per-card tags
+  // (situationOf, in situations.js) group cards for the LEARNER, but must never
+  // retroactively pull a newly-tagged card under an existing sign-off and approve
+  // it — the reviewer never vouched for it. Tagging is not review.
   return own(SITUATION_CATEGORY_TAGS, card.cat) ? SITUATION_CATEGORY_TAGS[card.cat] : null;
 }
 

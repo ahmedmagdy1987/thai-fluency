@@ -151,9 +151,30 @@ export default function SituationRail({ stats, startedStage = 1, maxUnlockedStag
         })}
       </ol>
 
-      {/* The collapsed roadmap. One row, not nine. It names the situations so the
-          §3 reweighting stays checkable, and states plainly that they are not
-          written — no count, no Start, no badge, nothing that implies content. */}
+      {/* Written-but-stage-locked (Wave 7): these situations HAVE lessons — a real
+          card count — they just open as the learner advances through the stages.
+          Shown with their counts, NOT collapsed as "not written". */}
+      {rec.upcoming && rec.upcoming.length > 0 && (
+        <div className="situation-upcoming">
+          <h3 className="situation-upcoming-title">Unlocks as you advance</h3>
+          <ul className="situation-upcoming-list">
+            {rec.upcoming.map(e => (
+              <li key={e.sitId} className="situation-upcoming-row">
+                <Lock size={12} className="situation-row-lockicon" aria-hidden="true" />
+                <span className="situation-upcoming-name">{e.name}</span>
+                <span className="situation-upcoming-count">{e.teachableCount} card{e.teachableCount === 1 ? '' : 's'}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="situation-upcoming-note">
+            Written and waiting — they open as you reach their stages. Draft content awaiting native review.
+          </p>
+        </div>
+      )}
+
+      {/* The collapsed roadmap. One row for situations that own NO content yet.
+          It names them so the §3 reweighting stays checkable, and states plainly
+          that they are not written — no count, no Start, no badge. */}
       {rec.deferred.length > 0 && (
         <div className="situation-backlog">
           <h3 className="situation-backlog-title">

@@ -1,0 +1,2689 @@
+[
+  {
+    "id": 5013,
+    "thai": "เสียแรงที่ไว้ใจคุณ",
+    "en": "I'm sorry I trusted you",
+    "situation": "sit-greet",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5015,
+    "thai": "ยินดีรับใช้",
+    "en": "I'm happy to see you",
+    "situation": "sit-greet",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5058,
+    "thai": "ว่างๆ จะมาหา",
+    "en": "I will come to see you when I get a chance",
+    "situation": "sit-greet",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5223,
+    "thai": "ขอโทษที่มาสาย",
+    "en": "I'm sorry I'm late",
+    "situation": "sit-greet",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4855,
+    "thai": "ไม่เอาได้มั้ย",
+    "en": "I don't want it",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4932,
+    "thai": "เราแย่งกันกิน",
+    "en": "We fight to get the food",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4937,
+    "thai": "ปวดฉี่",
+    "en": "I need to pee",
+    "situation": "sit-food",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4944,
+    "thai": "ไม่อยากลองดี",
+    "en": "I don't want to try it",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4946,
+    "thai": "ขอแก้แค้น",
+    "en": "I want revenge",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4967,
+    "thai": "ตามใจคุณ",
+    "en": "I'll let you do what you want",
+    "situation": "sit-food",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4968,
+    "thai": "กินไม่ได้ นอนไม่หลับ",
+    "en": "I can't eat",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4991,
+    "thai": "ไม่อยากคบกับเขา",
+    "en": "I don't want to associate with him",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5019,
+    "thai": "ไม่อยากยุ่งเรื่องชาวบ้าน",
+    "en": "I don't want to intrude into people's business",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5027,
+    "thai": "อยากเจอคนที่รู้ใจ",
+    "en": "I want to meet someone that understands me",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5032,
+    "thai": "อยากหารายได้เสริม",
+    "en": "I want to have additional income",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5048,
+    "thai": "ขอปิดเป็นความลับ",
+    "en": "I want to keep it a secret",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5052,
+    "thai": "เก็บแรงไว้",
+    "en": "I want to build up my strength",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5110,
+    "thai": "อยากได้อะไร บอกได้เลย",
+    "en": "If you want anything, just let me know",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5115,
+    "thai": "ขอลองหน่อย",
+    "en": "I want to try it a little",
+    "situation": "sit-food",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5116,
+    "thai": "ไม่อยากมีเรื่อง",
+    "en": "I don't want to make a scene",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5162,
+    "thai": "ไม่ต้องรอทานข้าว",
+    "en": "Don't wait for me for dinner (lunch, etc)",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5185,
+    "thai": "ไม่อยากบอก กลัวคุณจะเสียใจ",
+    "en": "I don't want to tell you",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5193,
+    "thai": "ทำตามคำสั่ง",
+    "en": "To follow the order",
+    "situation": "sit-food",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5222,
+    "thai": "รสนิยมสูง รายได้ต่ำ",
+    "en": "High taste, low income",
+    "situation": "sit-food",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4880,
+    "thai": "ไม่มีเงินดาวน์",
+    "en": "I have no down payment",
+    "situation": "sit-money",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5040,
+    "thai": "ทีละคน",
+    "en": "One by one",
+    "situation": "sit-money",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5084,
+    "thai": "พยยามรวบรวมเงิน",
+    "en": "I'm trying to gather money",
+    "situation": "sit-money",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 5146,
+    "thai": "ขอให้รวยๆ",
+    "en": "I wish you lots of money",
+    "situation": "sit-money",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5158,
+    "thai": "เงินล่วงหน้า",
+    "en": "Money in advance",
+    "situation": "sit-money",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5169,
+    "thai": "อันเดียวพอ",
+    "en": "One is enough",
+    "situation": "sit-money",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5043,
+    "thai": "เข้ากันไม่ได้",
+    "en": "They don't get along",
+    "situation": "sit-directions",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5214,
+    "thai": "ไปทำบุญที่วัด",
+    "en": "I go to make merit at the temple",
+    "situation": "sit-directions",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4756,
+    "thai": "ผมเป็นหนี้บุคุณเขา",
+    "en": "I'm indebted to him (male)",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 4770,
+    "thai": "ขอหลับแป๊บนึง",
+    "en": "I'd like to take a little nap",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4897,
+    "thai": "เคลียงานอยู่",
+    "en": "I'm finishing up work",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4916,
+    "thai": "คิดแล้วกลุ้ม",
+    "en": "I'm depressed thinking about it",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4928,
+    "thai": "คนหลายใจ",
+    "en": "An unfaithful person",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4934,
+    "thai": "ทำกับมือ",
+    "en": "I made (did) it with my own hands",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4954,
+    "thai": "หนีไปเที่ยว",
+    "en": "She sneaked out to have fun",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4962,
+    "thai": "ยังไม่เข็ด",
+    "en": "“I haven't learned my lesson yet”",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4973,
+    "thai": "ฝีมือตก",
+    "en": "My skill level dropped",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5000,
+    "thai": "ชอบใจลอย",
+    "en": "I'm often absent minded",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5007,
+    "thai": "ท่าทางมีความสุข",
+    "en": "She looks happy",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5009,
+    "thai": "หายป่วยแล้ว",
+    "en": "I'm over my sickness",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5022,
+    "thai": "อยากคบคุณเป็นเพื่อน",
+    "en": "I want to have you as a friend",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5026,
+    "thai": "กลัวถูกแม่ด่า",
+    "en": "I'm afraid my mom will yell at me",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5030,
+    "thai": "หนีตามแฟน",
+    "en": "She ran off with her boyfriend",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5031,
+    "thai": "เบื่อชีวิต",
+    "en": "I'm tired of life",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5033,
+    "thai": "สวยไปหมด",
+    "en": "She is beautiful all over",
+    "situation": "sit-smalltalk",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5045,
+    "thai": "ถูกแฟนทิ้ง",
+    "en": "She has been dumped (by her boyfriend)",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5070,
+    "thai": "เมียขอหย่า",
+    "en": "My wife asked for a divorce",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5073,
+    "thai": "เป็นเมนส์",
+    "en": "I'm having my period (casual)",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5079,
+    "thai": "โมโหหิว",
+    "en": "Angry from hunger",
+    "situation": "sit-smalltalk",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5107,
+    "thai": "ฉันเป็นคนช่างฝัน",
+    "en": "I'm a dreamer (female)",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5118,
+    "thai": "งานนี้สนุกแน่",
+    "en": "It's going to be a fun party",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5134,
+    "thai": "ได้ยินกับหู",
+    "en": "I heard it with my own ears",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5137,
+    "thai": "ไม่ใช่ความผิดฉัน",
+    "en": "It's not my fault (female)",
+    "situation": "sit-smalltalk",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5139,
+    "thai": "ผู้ชายหน้าโง่",
+    "en": "Stupid man",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5141,
+    "thai": "จะพาแฟนไปด้วย",
+    "en": "I will take my boyfriend with me",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5155,
+    "thai": "กำลังยืดเส้นยืดสาย",
+    "en": "I'm stretching",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5180,
+    "thai": "ซ้อมร้องเพลงอยู่",
+    "en": "I'm practicing singing",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5224,
+    "thai": "หนังเรื่องนี้มันมาก",
+    "en": "This movie is really fun",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5739,
+    "thai": "มีประจำเดือน",
+    "en": "I'm having my period (formal)",
+    "situation": "sit-smalltalk",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4755,
+    "thai": "เราจะเหมารถไป",
+    "en": "We will rent a car and a driver",
+    "situation": "sit-housing",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4935,
+    "thai": "จ่ายค่าเช่า",
+    "en": "To pay rent",
+    "situation": "sit-housing",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4940,
+    "thai": "อยู่เฝ้าบ้าน",
+    "en": "I'm staying home to guard the house",
+    "situation": "sit-housing",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5020,
+    "thai": "ไปคุยกันที่บ้านดีกว่า",
+    "en": "Let's discuss it at home",
+    "situation": "sit-housing",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5062,
+    "thai": "จะพาไปส่งบ้าน",
+    "en": "I will take you home",
+    "situation": "sit-housing",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5160,
+    "thai": "เสร็จธุระแล้วรีบกลับบ้าน",
+    "en": "Hurry home after you are done (with business, etc)?",
+    "situation": "sit-housing",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5173,
+    "thai": "ชอบนั่งริมหน้าต่าง",
+    "en": "I like to sit by the window",
+    "situation": "sit-housing",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4895,
+    "thai": "หูอื้อ",
+    "en": "Stuffed up ears (e.g. in an airplane, high altitude)",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4929,
+    "thai": "คิดจนหัวปั่น",
+    "en": "My head is spinning from thinking too much",
+    "situation": "sit-pharmacy",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4942,
+    "thai": "คุณตัวร้อน",
+    "en": "You have a fever",
+    "situation": "sit-pharmacy",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4947,
+    "thai": "เธอเป็นลม",
+    "en": "She fainted",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4984,
+    "thai": "รีบไปรีบมา",
+    "en": "Go and come back soon",
+    "situation": "sit-pharmacy",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4994,
+    "thai": "หูหนวก",
+    "en": "Deaf",
+    "situation": "sit-pharmacy",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4995,
+    "thai": "ตาบอด",
+    "en": "Blind",
+    "situation": "sit-pharmacy",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5113,
+    "thai": "รองเท้ากัด",
+    "en": "My shoes hurt my feet",
+    "situation": "sit-pharmacy",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5189,
+    "thai": "จะเอาเงินไปรักษาแม่",
+    "en": "I will take the money to cure my mother",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5192,
+    "thai": "อย่าเผลอก็แล้วกัน",
+    "en": "Watch your back",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5197,
+    "thai": "เขาเป็นปอดบวม",
+    "en": "He has pneumonia",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5204,
+    "thai": "ท้องเสีย",
+    "en": "To have diarrhea",
+    "situation": "sit-pharmacy",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5080,
+    "thai": "เราเสียลูกค้า",
+    "en": "We lost a customer",
+    "situation": "sit-work",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5090,
+    "thai": "งานต้องมาก่อน",
+    "en": "Work must come first",
+    "situation": "sit-work",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5091,
+    "thai": "ค่าจ้างงวดแรก",
+    "en": "First payment for the work",
+    "situation": "sit-work",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5102,
+    "thai": "พนักงานชั่วคราว",
+    "en": "A temporary worker\"employee",
+    "situation": "sit-work",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5108,
+    "thai": "เขตอันตราย",
+    "en": "It's a danger zone",
+    "situation": "sit-emergency",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4732,
+    "thai": "แป๊บนึง",
+    "en": "Just one moment",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4733,
+    "thai": "อะไรอย่างเงี้ยะ",
+    "en": "Something like that",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4734,
+    "thai": "ทำปุ๊บ เสร็จปั๊บ",
+    "en": "As soon as I do it, it's done",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4735,
+    "thai": "มันไม่คุ้ม",
+    "en": "It's not worth it",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4737,
+    "thai": "พอดีเอกับเขา",
+    "en": "I just happened to run into him",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4752,
+    "thai": "เขาพูดภาษาพื้นๆ",
+    "en": "He uses basic, common language",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4753,
+    "thai": "ทำไปเรื่อยๆ",
+    "en": "Keep doing it",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4772,
+    "thai": "โอ้โห",
+    "en": "Wow!",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4777,
+    "thai": "อย่ายุ่งได้มั้ย",
+    "en": "Can you not interfere?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4778,
+    "thai": "บอกตรงๆ",
+    "en": "I'll be straight with you",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4781,
+    "thai": "คุณนอนละเมอ",
+    "en": "You talked in your sleep",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4783,
+    "thai": "อย่างอนไปหน่อยเลย",
+    "en": "Don't get too upset",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4796,
+    "thai": "ไปเแป๊บเดียวก็ถึง",
+    "en": "We can get there in no time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4804,
+    "thai": "คืออย่างงี้นะ",
+    "en": "Let me say it this way",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4806,
+    "thai": "ขับรถปาดซ้าย ปาดขวา",
+    "en": "To fishtail on the road",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4808,
+    "thai": "ทุกซอก ทุกมุม",
+    "en": "Every nook and cranny",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4810,
+    "thai": "นั่นน่ะสิ",
+    "en": "I agree with you",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4815,
+    "thai": "เรารู้จักกันมาก่อนรึเปล่า",
+    "en": "Have we met before?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4817,
+    "thai": "ไม่ทำเด็ดขาด",
+    "en": "I won't do it by any means",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4822,
+    "thai": "ต้องดีแน่ๆ",
+    "en": "It must be good",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4825,
+    "thai": "หาไม่ได้ง่ายๆ",
+    "en": "It's not that easy to find",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4827,
+    "thai": "เขาชอบพูดเพ้อเจ้อ",
+    "en": "He likes to babble",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4842,
+    "thai": "รวมหัวกันโกง",
+    "en": "They got together to cheat",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4858,
+    "thai": "ไม่ย่อท้อ",
+    "en": "Not giving up",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4872,
+    "thai": "หมั่นไส้",
+    "en": "I dislike it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4873,
+    "thai": "เรื่องมันเป็นยังงี้",
+    "en": "This is how the story goes",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4882,
+    "thai": "ไม่ดีมั้ง",
+    "en": "I don't think that's a good idea",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4891,
+    "thai": "หุบปาก",
+    "en": "Shut up",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4896,
+    "thai": "พูดดังๆหน่อย",
+    "en": "Can you speak up?",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4898,
+    "thai": "มีลางสังหรณ์",
+    "en": "I have a hunch",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4900,
+    "thai": "มีเยอะแยะ",
+    "en": "There's plenty",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4930,
+    "thai": "คุณฝีมือดี",
+    "en": "You have good skills",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4931,
+    "thai": "ห้ามเข้า",
+    "en": "No entry",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4933,
+    "thai": "ยังไม่ถึงเดือน",
+    "en": "It hasn't been a month",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4936,
+    "thai": "ดำปิ๊ดปี๋",
+    "en": "As black as charcoal",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4938,
+    "thai": "นึกว่าคุณไม่ชอบ",
+    "en": "I thought you didn't like it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4939,
+    "thai": "ไม่นานขนาดนั้น",
+    "en": "It doesn't take that long",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4941,
+    "thai": "บอกแล้วไง",
+    "en": "I told you so",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4943,
+    "thai": "ว่าแต่คุณล่ะ",
+    "en": "And what about yourself?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4945,
+    "thai": "ไม่บอกก็รู้",
+    "en": "I knew it without being told",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4948,
+    "thai": "ก่าเขาจะมาก็ดึกแล้ว",
+    "en": "It's going to be late by the time he arrives",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4949,
+    "thai": "ไม่เห็นจริงๆ",
+    "en": "I really didn't see it",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4950,
+    "thai": "น่าสงสาร",
+    "en": "He is pitiful",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4951,
+    "thai": "ดีขนาดนั้นเลยเหรอ",
+    "en": "Is it really that good?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4952,
+    "thai": "รู้ไม่ทันคุณ",
+    "en": "You tricked me",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4953,
+    "thai": "ไว้ใจไม่ได้",
+    "en": "He can't be trusted",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4955,
+    "thai": "กลางวันแสกๆ",
+    "en": "During broad daylight",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4956,
+    "thai": "ได้เวลาแล้ว",
+    "en": "It's time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4957,
+    "thai": "สอบตก",
+    "en": "To fail the exam",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4958,
+    "thai": "ยกมือขึ้น",
+    "en": "Hands up!",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4959,
+    "thai": "เขาเพึ่งจะไป",
+    "en": "He just left",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 4960,
+    "thai": "นักพนันมืออาชีพ",
+    "en": "A professional gambler",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4961,
+    "thai": "แอบดู",
+    "en": "To peek at something",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4963,
+    "thai": "ไม่รู้จะทำไง",
+    "en": "I don't know what I should do",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4964,
+    "thai": "ทำแรงเกินไป",
+    "en": "You did it too harshly",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4965,
+    "thai": "หัวเด็ดตีนขาด ยังไงก็ไม่ทำ",
+    "en": "I won't do it no matter what",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4966,
+    "thai": "ทำหลบๆซ่อนๆ",
+    "en": "To do something secretly",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4969,
+    "thai": "ขึ้นๆ ลงๆ",
+    "en": "Up and down",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 4970,
+    "thai": "ไหนๆ ก็ไหนๆ",
+    "en": "Let's get over it (Let bygones be bygones)",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4971,
+    "thai": "ปากหวาน",
+    "en": "You're very complimentary",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4972,
+    "thai": "ไม่มียางอาย",
+    "en": "You have no shame at all",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4974,
+    "thai": "สักวัน",
+    "en": "One day",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4975,
+    "thai": "จะทำให้ได้",
+    "en": "I will make it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4976,
+    "thai": "เขาเองเหรอ",
+    "en": "Oh, is it him?",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4977,
+    "thai": "อดไม่ได้",
+    "en": "I can't help it",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4978,
+    "thai": "คืนดีกันแล้ว",
+    "en": "They reconciled",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4979,
+    "thai": "ตามคุณไม่ทัน",
+    "en": "I can't keep up with you",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4980,
+    "thai": "อยู่กันสองต่อสอง",
+    "en": "To be alone just the two of us (them)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4981,
+    "thai": "ขอแก้ตัว",
+    "en": "Give me a chance to correct myself",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4982,
+    "thai": "นอนทั้งวันทั้งคืน",
+    "en": "To sleep all day and all night",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4983,
+    "thai": "แกล้งโง่หรือโง่จริงๆ",
+    "en": "Are you pretending or are you really stupid?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4985,
+    "thai": "อิจฉาตาร้อน",
+    "en": "Green with envy",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4986,
+    "thai": "ดูท่าทางไม่ค่อยดี",
+    "en": "It doesn't look very good",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4987,
+    "thai": "ผมไม่เกี่ยว",
+    "en": "I have nothing to do with this (male)",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4988,
+    "thai": "มีเรื่องด่วน",
+    "en": "There is an urgent matter",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4989,
+    "thai": "เอาเป็นว่า...",
+    "en": "So let's decide that...",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 4990,
+    "thai": "ขอบอกก่อนว่า...",
+    "en": "I want to tell you ahead of time that...",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4992,
+    "thai": "เขาชอบนินทา",
+    "en": "She likes to gossip",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4993,
+    "thai": "เป็นใบ้",
+    "en": "To be dumb",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4996,
+    "thai": "กำลังแพ้ท้อง",
+    "en": "She is having morning sickness",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4997,
+    "thai": "ขอนั่งด้วยคนได้มั้ย",
+    "en": "May I sit here with you?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 4998,
+    "thai": "ปรับความเข้าใจ",
+    "en": "To try to make up",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 4999,
+    "thai": "เขาไม่พูดสักคำ",
+    "en": "He didn't even say a word",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5001,
+    "thai": "จริงเหรอ",
+    "en": "Is it really?",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5002,
+    "thai": "แล้วทีนี้่จะทำยังไง",
+    "en": "What should I do then?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 5003,
+    "thai": "มีพิรุธ",
+    "en": "That's suspicious",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5004,
+    "thai": "ยังมีอีกเยอะ",
+    "en": "There's still plenty left",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5005,
+    "thai": "ที่เหลือ",
+    "en": "The remaining",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5006,
+    "thai": "บ้ารึเปล่า",
+    "en": "Are you crazy?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5008,
+    "thai": "ใช้ได้มั้ย",
+    "en": "Will this work?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5010,
+    "thai": "ถ้าไม่ได้คุณ ฉันคงแย่",
+    "en": "Without you, I would have been in real trouble (female)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5011,
+    "thai": "มันธรรมดา",
+    "en": "This is normal",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5012,
+    "thai": "โสดแต่ไม่สด",
+    "en": "She (I/You/They/He) is single, but not a virgin",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5014,
+    "thai": "ขอสงบสติอารมณ์",
+    "en": "Give me time to calm down",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5016,
+    "thai": "มันเป็นกฏ",
+    "en": "It's a rule",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5017,
+    "thai": "เขาไม่สมประกอบ",
+    "en": "He's not all there",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5018,
+    "thai": "ไปไหนกันมา",
+    "en": "Where have you all been?",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5021,
+    "thai": "ทำไมพึ่งจะบอก",
+    "en": "Why didn't you tell me before?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5023,
+    "thai": "มีแต่ปัญหา",
+    "en": "There's nothing, but problems",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5024,
+    "thai": "เดือนหน้านายจะขึ้นเงินให้",
+    "en": "Next month my boss will give me a raise",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5025,
+    "thai": "เปิดอีเมล์ดูรึยัง",
+    "en": "Have you opened your email?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5028,
+    "thai": "เรื่องอยู่บนข่าวหน้าหนึ่ง",
+    "en": "The story is on the front page",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5029,
+    "thai": "ดูแลตัวเองให้ดี",
+    "en": "Take good care of yourself",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5034,
+    "thai": "เผลอไม่ได้",
+    "en": "You can't be careless",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5035,
+    "thai": "ไม่ไหวแล้ว",
+    "en": "I can't take it anymore",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5036,
+    "thai": "เรียนต่อ",
+    "en": "To continue one's study",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5037,
+    "thai": "ต้องมีอะไรแน่ๆ",
+    "en": "There must be something (going on) for sure",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5038,
+    "thai": "แทบจะบ้า",
+    "en": "I almost went crazy",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5039,
+    "thai": "เร็วๆเข้า",
+    "en": "Hurry up",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5042,
+    "thai": "ทำได้ไง",
+    "en": "How did you do it?",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5044,
+    "thai": "ตื่นได้แล้ว",
+    "en": "Wake up!",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5046,
+    "thai": "ทำตามสัญญา",
+    "en": "To do as promised",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5047,
+    "thai": "เราเป็นเนื้อคู่กัน",
+    "en": "We are soulmates",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5049,
+    "thai": "กล้าพูด",
+    "en": "Dare to speak",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5051,
+    "thai": "มันจะดีเหรอ",
+    "en": "Do you think it will be good?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5053,
+    "thai": "ดูแต่ตา",
+    "en": "Just look",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5055,
+    "thai": "อย่าหลงเชื่อ",
+    "en": "Don't fall for it and believe them",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5056,
+    "thai": "ไม่รู้จะทำยังไง",
+    "en": "I don't know what to do",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5057,
+    "thai": "หัวอกเดียวกัน",
+    "en": "To be in the same boat",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5059,
+    "thai": "พูดอย่าง ทำอย่าง",
+    "en": "Say one thing, but do another",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5060,
+    "thai": "เขามาตั้งแต่หัวค่ำ",
+    "en": "He's been here since early evening",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5061,
+    "thai": "ตายเป็นตาย",
+    "en": "I don't care if I have to die for it",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5063,
+    "thai": "ปฎิเสธไม่ได้",
+    "en": "I can't refuse",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5064,
+    "thai": "เขาไม่โทรหาตั้งนาน",
+    "en": "He hasn't called in a long time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5065,
+    "thai": "ไม่น่าพูดเลย",
+    "en": "I shouldn't have said that",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5066,
+    "thai": "นี่มันเรื่องส่วนตัว",
+    "en": "This is a personal matter",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5067,
+    "thai": "ไม่ได้ตั้งใจ",
+    "en": "I didn't mean it",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5068,
+    "thai": "คุณเป็นต้นเหตุ",
+    "en": "You are the cause",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5069,
+    "thai": "หาทางแก้ไข",
+    "en": "To find a way to solve the problem",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5071,
+    "thai": "เกือบไปแล้ว",
+    "en": "That was close!",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5072,
+    "thai": "เรื่องน่าขำ",
+    "en": "A funny story",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5074,
+    "thai": "จะเล่าคามจริงให้ฟัง",
+    "en": "I will tell you the truth",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 5075,
+    "thai": "อย่าไปโทษเขา",
+    "en": "Don't blame him",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5076,
+    "thai": "ลองจินตนาการดู",
+    "en": "Try to imagine it",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5077,
+    "thai": "ทำยังงี้ไม่ถูก",
+    "en": "Doing this is not right",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5078,
+    "thai": "ผมผิดข้อหาอะไร",
+    "en": "What are the charges against me? (male)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5081,
+    "thai": "จะไม่ยอมให้คุณทำกับฉันยังงี้",
+    "en": "I won't let you do this to me (female)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5082,
+    "thai": "ซึ้งแล้วใช่มั้ย",
+    "en": "You appreciate it now, don't you?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5083,
+    "thai": "เขาติดคุกอยู่",
+    "en": "He is in jail",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5085,
+    "thai": "ครานี้ซวยแน่",
+    "en": "You won't be lucky this time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5086,
+    "thai": "คุณชอบเถียง",
+    "en": "You like to argue",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5087,
+    "thai": "ต้องจัดการให้เร็วที่สุด",
+    "en": "This has to be taken care of as soon as possible",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5088,
+    "thai": "มักมากในกาม",
+    "en": "To be lustful",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5089,
+    "thai": "แค้นต้องชำระ",
+    "en": "Revenge that must by paid",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5092,
+    "thai": "ผมต้องลงโทษคุณ",
+    "en": "I have to punish you (male)",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5093,
+    "thai": "คุณหวังมากเกินไป",
+    "en": "You expect too much",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5094,
+    "thai": "เดินทางข้ามน้ำข้ามทะเล",
+    "en": "To travel across the ocean",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5095,
+    "thai": "อะไรกันนักกันหนา",
+    "en": "What are you all doing this for\"!",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5096,
+    "thai": "ผมโดนหักหลัง",
+    "en": "I have been double\"crossed (male)",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5097,
+    "thai": "หายโกรธรึยัง",
+    "en": "Have you stopped being mad?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5098,
+    "thai": "เธอท้องได้สามเดือน",
+    "en": "She is three months pregnant",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5099,
+    "thai": "ฉันจะไม่ลืมบุญคุณ",
+    "en": "I will not forget your kindness (female)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5100,
+    "thai": "คุณเป็นใครกันแน่",
+    "en": "Who are you really?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5101,
+    "thai": "ไม่มีอะไรสำคัญกว่านี้",
+    "en": "There's nothing more important that this",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5103,
+    "thai": "คุณหมายถึงอะไร",
+    "en": "What do you mean?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5104,
+    "thai": "ทำไมไม่บอกให้รู้ก่อน",
+    "en": "Why didn't you let me know first?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5105,
+    "thai": "ได้ประโยชน์อะไร",
+    "en": "What good will come of this?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5106,
+    "thai": "ใครรับผิดชอบ",
+    "en": "Who is responsible?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5109,
+    "thai": "เขาทำงานแบบไม่ลืมหูลืมตา",
+    "en": "He works as if he didn't care about anything else",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5111,
+    "thai": "เลยเวลานัดแล้ว",
+    "en": "It's past the appointment time",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5112,
+    "thai": "จะอธิบายยังไงดี",
+    "en": "How can I explain?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5114,
+    "thai": "ทำแล้วก็ไม่ดีขึ้น",
+    "en": "It won't get any better (even if I do it)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5117,
+    "thai": "หวงไว้ทำไม",
+    "en": "Why are you possessive of that?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5119,
+    "thai": "ไปก่อนนะ",
+    "en": "I have to go now",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5120,
+    "thai": "มานานรึยัง",
+    "en": "Have you been here long?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5121,
+    "thai": "ทีหลังอย่าทำ",
+    "en": "Don't do it next time",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5122,
+    "thai": "ไปได้แล้ว",
+    "en": "You may go now",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5123,
+    "thai": "ต้องพิสูจน์ให้เห็น",
+    "en": "I have to prove it",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5124,
+    "thai": "ตั้งหน้าตั้งตารอ",
+    "en": "To look forward to seeing someone or something",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5125,
+    "thai": "ตัวแทนจากบริษัท",
+    "en": "A representative from the company",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5126,
+    "thai": "แบบนี้แหล่ะ ดีแล้ว",
+    "en": "It's good the way it is",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5127,
+    "thai": "คิดถึงใจจะขาด",
+    "en": "I miss you so much it hurts",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5128,
+    "thai": "เดินเร็วๆ หน่อยไม่ได้เหรอ",
+    "en": "Can't you walk a little faster?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5129,
+    "thai": "ติดลม",
+    "en": "To get carried away doing something",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5130,
+    "thai": "ชื่นใจจังเลย",
+    "en": "That's refreshing",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5131,
+    "thai": "ไม่ต้องบอกก็รู้",
+    "en": "I know it without you telling me",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5132,
+    "thai": "ทำใจไม่ได้",
+    "en": "I can't accept what happened",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5133,
+    "thai": "มีแค่นี้เอง",
+    "en": "That's all we have",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5135,
+    "thai": "ได้เสียกันแล้ว",
+    "en": "They already had sex",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5136,
+    "thai": "มันไม่เหมาะ",
+    "en": "It's not appropriate",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5138,
+    "thai": "มาตั้งแต่เมื่อไร",
+    "en": "When did you get here?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5140,
+    "thai": "มันไม่ใช่ของง่าย",
+    "en": "It's not an easy thing",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5142,
+    "thai": "แน่นะ",
+    "en": "It's time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5143,
+    "thai": "ถึงเวลาแล้ว",
+    "en": "It's time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5144,
+    "thai": "ออกรถ",
+    "en": "Drive!",
+    "situation": "untagged",
+    "stage": 4,
+    "ph": ""
+  },
+  {
+    "id": 5145,
+    "thai": "จะอยู่อีกนานมั้ย",
+    "en": "Are you staying here much longer?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5147,
+    "thai": "เป็นคนละคน",
+    "en": "She is a different person from before",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5148,
+    "thai": "เสียวไส้",
+    "en": "That's scary",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5149,
+    "thai": "จะให้ทำยังไง",
+    "en": "How do you want me to do it?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5150,
+    "thai": "นอนก่อนเลย",
+    "en": "\"Go ahead and sleep\" (I will follow you later)",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5151,
+    "thai": "ต้องรีบท",
+    "en": "\"I have to finish it quickly”",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 5152,
+    "thai": "เลือกไม่ถูก",
+    "en": "I can't choose",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5153,
+    "thai": "ตายเป็นผี",
+    "en": "To die and become a ghost",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5154,
+    "thai": "เขาทนอยู่",
+    "en": "He forces himself to stay",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5156,
+    "thai": "เอาไว้คราวหน้าก็แล้วกัน",
+    "en": "Let's do it next time",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5157,
+    "thai": "ทีละเล็ก ทีละน้อย",
+    "en": "Little by little",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5159,
+    "thai": "รับไม่ได้",
+    "en": "It's not acceptable",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5161,
+    "thai": "ทำเป็นไม่รู้ไม่ชี้",
+    "en": "To pretend not to know",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5163,
+    "thai": "มองตาค้าง",
+    "en": "To look at something and be stunned",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5164,
+    "thai": "สักพักใหญ่ๆ",
+    "en": "\"In a long while\" (As opposed to ‘a little while’)",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5165,
+    "thai": "ธุรกิจเฟื่องฟู",
+    "en": "The business is flourishing",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5166,
+    "thai": "ต้องทำให้ได้",
+    "en": "I have to make it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5167,
+    "thai": "อย่าหาเรื่อง",
+    "en": "Don't cause yourself trouble",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5168,
+    "thai": "ทำเปนไม่รูู้ไม่เห็น",
+    "en": "To pretend that one can't see and doesn't know",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5170,
+    "thai": "ไม่ชอบนั่งเฉยๆ",
+    "en": "I don't to sit doing nothing",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5171,
+    "thai": "จะดูลายมือให้",
+    "en": "I will read your palm",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5172,
+    "thai": "ไม่เข้ากับบรรยากาศ",
+    "en": "It's not appropriate for the location",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5174,
+    "thai": "โดนเล่นงาน",
+    "en": "To be reprimanded, criticized or attacked",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5175,
+    "thai": "จู่ๆ ก็ได้เจอ",
+    "en": "I met him (it/you/they/etc) by accident",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5176,
+    "thai": "อย่าไปกวนเขา",
+    "en": "Don't bother him",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5177,
+    "thai": "ต้องระวังเป็นพิเศษ",
+    "en": "We have to be especially careful",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5178,
+    "thai": "บริการที่ยอดเยี่ยม",
+    "en": "An excellent service",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5179,
+    "thai": "ให้รางวัลกับตัวเอง",
+    "en": "To give oneself a reward",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5181,
+    "thai": "เล่นละครเก่ง",
+    "en": "She is good at faking it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5182,
+    "thai": "ไม่ใช่ความผิดของใคร",
+    "en": "It's nobody's fault",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5183,
+    "thai": "ดวงเป็นตัวกำหนด",
+    "en": "Destiny sets it",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5184,
+    "thai": "จำเป็นต้องทำ",
+    "en": "It was necessary that I did it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5186,
+    "thai": "ทุกอย่างจะจบลงด้วยดี",
+    "en": "It's all going to work out fine",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5187,
+    "thai": "เล่าให้ฟังหน่อย",
+    "en": "Can you tell me about it?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5188,
+    "thai": "จะไปไหนก็ไป",
+    "en": "Go fly a kite",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5190,
+    "thai": "ดูหมอ",
+    "en": "To have one's fortune told",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5191,
+    "thai": "ต้องหาวิธี",
+    "en": "I have to find a way",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5194,
+    "thai": "อย่าให้ใครรู้",
+    "en": "Don't let anyone know",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5195,
+    "thai": "เอาแต่ใจตัวเอง",
+    "en": "She only wants it her way",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5196,
+    "thai": "แกล้งทำ",
+    "en": "To pretend to do something",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5198,
+    "thai": "อย่าให้มันเกินเลย",
+    "en": "Don't go overboard",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5199,
+    "thai": "แน่ใจหรือว่าดี",
+    "en": "Are you sure it's good?",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5200,
+    "thai": "เบาๆด้วย",
+    "en": "Keep it quiet",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5201,
+    "thai": "คุณตบตาฉัน",
+    "en": "You tricked me (female)",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5202,
+    "thai": "บรรยากาศเป็นใจ",
+    "en": "\"The condition inspires it\" (sexual contact or act)",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5203,
+    "thai": "บอกมาเดี๋ยวนี้นะ",
+    "en": "Tell me now!",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5205,
+    "thai": "ตัวใครตัวมัน",
+    "en": "To be on one's own",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5206,
+    "thai": "ตอแหล",
+    "en": "Liar!",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5207,
+    "thai": "ท่าทางไม่ดี",
+    "en": "It doesn't look good",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5208,
+    "thai": "คงไม่ใช่เรื่องสำคัญ",
+    "en": "It shouldn't be that important",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5209,
+    "thai": "ท่าดี ทีเลว",
+    "en": "Good look, bad performance",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5210,
+    "thai": "ต้องเปิดตำรา",
+    "en": "I have to consult the book",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5211,
+    "thai": "เขาหน้าเหมือนคุณ",
+    "en": "He looks like you",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5212,
+    "thai": "รอนานมั้ย",
+    "en": "Have you waited long?",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5213,
+    "thai": "จะไม่ให้ใครรู้",
+    "en": "I won't let anyone know",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5215,
+    "thai": "ถามอะไรหน่อยได้มั้ย",
+    "en": "Can I ask you something?",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5216,
+    "thai": "เปิเเผยความลับ",
+    "en": "To tell a secret",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": "",
+    "corruptedThai": true
+  },
+  {
+    "id": 5217,
+    "thai": "ทำแล้วสบายใจ",
+    "en": "I feel good after I do it",
+    "situation": "untagged",
+    "stage": 7,
+    "ph": ""
+  },
+  {
+    "id": 5218,
+    "thai": "ไม่นึกเลย",
+    "en": "I never thought so",
+    "situation": "untagged",
+    "stage": 5,
+    "ph": ""
+  },
+  {
+    "id": 5219,
+    "thai": "พูดอีก ก็ถูกอีก",
+    "en": "You say it again, you are right again",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5220,
+    "thai": "ทะลึ่ง",
+    "en": "That's impertinent",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  },
+  {
+    "id": 5221,
+    "thai": "ลืมหมดแล้ว",
+    "en": "I forgot everything",
+    "situation": "untagged",
+    "stage": 6,
+    "ph": ""
+  },
+  {
+    "id": 5225,
+    "thai": "มันไม่ยากอย่างที่คิด",
+    "en": "It's not as difficult as you think",
+    "situation": "untagged",
+    "stage": 8,
+    "ph": ""
+  }
+]

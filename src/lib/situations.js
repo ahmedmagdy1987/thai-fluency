@@ -19,7 +19,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { CARDS } from '../data/cards.js';
-import { SITUATION_CATEGORY_TAGS } from '../data/situationTags.js';
+import { SITUATION_CATEGORY_TAGS, SITUATION_CARD_TAGS } from '../data/situationTags.js';
 import {
   reviewStatusOf, isApproved, situationReviewComplete, SITUATION_REVIEW_COMPLETE,
 } from './reviewStatus.js';
@@ -30,6 +30,11 @@ const CATS_BY_SITUATION = {};
 for (const [cat, sit] of Object.entries(SITUATION_CATEGORY_TAGS)) {
   (CATS_BY_SITUATION[sit] || (CATS_BY_SITUATION[sit] = [])).push(cat);
 }
+// Situations that own at least one PER-CARD tag (Wave 7). A situation is `tagged`
+// (owns cards) if it has a category OR any per-card tag — so the per-card overlay
+// populates situations that no whole category maps to (sit-admin, sit-transport,
+// sit-emergency, sit-work, sit-store, sit-market, sit-formal).
+const CARD_TAGGED_SITS = new Set(Object.values(SITUATION_CARD_TAGS));
 
 // Content-readiness tier (curriculum.md §4.2), independent of approval state:
 //   'adequate' — enough taggable candidates today (the 7 tagged in Pass 2);
@@ -76,7 +81,7 @@ export const SITUATIONS = SITUATION_BASE.map((s, i) => {
     order: i + 1,               // 1-based §2 order
     cats,                        // categories tagged to this situation (may be [])
     content: CONTENT_TIER[s.id], // curriculum.md §4.2 tier
-    tagged: cats.length > 0,     // overlay assigns cards to it today
+    tagged: cats.length > 0 || CARD_TAGGED_SITS.has(s.id), // overlay (category or per-card) assigns cards to it
   });
 });
 
@@ -156,8 +161,9 @@ export function getSituationOrder(path = 'path-none') {
 // `cat` via the overlay. Returns null when the card's category is not yet tagged.
 export function situationOf(card) {
   if (!card) return null;
-  if (card.situation) return card.situation;
-  return SITUATION_CATEGORY_TAGS[card.cat] || null;
+  if (card.situation) return card.situation;                 // authored inline (most specific)
+  if (SITUATION_CARD_TAGS[card.id]) return SITUATION_CARD_TAGS[card.id]; // Wave 7 per-card tag
+  return SITUATION_CATEGORY_TAGS[card.cat] || null;          // category overlay
 }
 
 // All existing cards tagged to a situation (curriculum.md §4.4 getSituationVocab:
