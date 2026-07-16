@@ -91,6 +91,18 @@ const ADULT_ONLY = Object.freeze(['sit-dating']);
 // stages silently, which is not.
 export const DEFAULT_STAGE_WINDOW = Object.freeze({ startedStage: 1, maxUnlockedStage: 1 });
 
+// A first recommended session should be a real lesson, not a 2-card teaser. The
+// recommender steers `upNext` to the highest-priority situation whose in-window
+// startable pool can fill at least this many cards (a fresh tourist's top-ranked
+// situations — food/money/directions — own only ~2 stage-1 cards each, which read
+// as a broken session; greet/pharmacy own 18/9). A smaller situation is still
+// startable from the rail, just not offered as the learner's FIRST session.
+//   • 8 sits just under the 10-card daily new-card limit, so the first lesson
+//     fills a day without exceeding it.
+//   • This RE-STAGES the choice only: it authors no Thai and never widens the
+//     stage window (doing so would leak locked-stage vocab and break stage unlock).
+export const MIN_FIRST_SESSION_SIZE = 8;
+
 // Cards in a situation this flow could teach ANY learner (phonetic filter only).
 // Learner-independent — the situation's real teachable size.
 export function situationTeachableCards(sitId) {
@@ -246,10 +258,15 @@ export function getSituationRecommendation(stats, stageWindow = DEFAULT_STAGE_WI
     path,
     order,
     entries,
-    // upNext must be LAUNCHABLE, not merely unlocked: it is offered as "your
-    // next lesson", so a situation we could not actually start would make the
-    // recommender itself the thing that lies.
-    upNext: entries.find((e) => e.startable) || null,
+    // upNext must be LAUNCHABLE, not merely unlocked: it is offered as "your next
+    // lesson", so a situation we could not actually start would make the
+    // recommender itself the thing that lies. It is also steered to a REAL first
+    // session (>= MIN_FIRST_SESSION_SIZE in-window cards) so a fresh tourist gets a
+    // content-rich lesson instead of a 2-card teaser; falls back to any startable
+    // situation so a learner whose only open situations are small still gets one.
+    upNext: entries.find((e) => e.startable && e.startCount >= MIN_FIRST_SESSION_SIZE)
+      || entries.find((e) => e.startable)
+      || null,
     lockedPreviews,
     comingSoon: lockedPreviews.filter((e) => e.reasons.includes(LOCK_REASON.COMING_SOON)),
     startable: entries.filter((e) => e.startable),

@@ -256,7 +256,13 @@ function getRouteForPath(pathname) {
   if (path === '/profile') return { type: 'profile', path };
   if (path === '/settings') return { type: 'settings', path };
   if (path === '/get-started') return { type: 'landing', path };
-  if (path === '/demo') return { type: 'demo', path };
+  // /demo is RETIRED (B1): DemoMode saved nothing and dead-ended in the removed
+  // signup wall, while the anonymous-first flow now gives a full free lesson + XP.
+  // The route redirects to the get-started landing (the anonymous first-lesson
+  // entry). DemoMode.jsx is kept in the repo for a one-line revert (restore the
+  // `{ type: 'demo', path }` return + the CTAs). No route now yields type:'demo',
+  // so demoMode never turns on and DemoMode never renders.
+  if (path === '/demo') return { type: 'landing', path: '/get-started' };
   // Password-recovery landing: the redirectTo of the reset email (see
   // ForgotPassword.jsx / ResetPassword.jsx).
   if (path === '/reset-password') return { type: 'reset-password', path };
@@ -404,7 +410,12 @@ export default function TukTalkThaiApp() {
   // Drives the "Activating your Super…" toast while the checkout-return effect
   // polls the webhook-written entitlement (see SuperActivationNotice.jsx).
   const [superActivation, setSuperActivation] = useState(null);
-  const [cloudReady, setCloudReady] = useState(false);     // true once cloud has been synced into local state
+  const [cloudReady, setCloudReady] = useState(false);     // true once cloud init RESOLVED (success OR failure) — unblocks UI/entitlement/loading gates
+  // true ONLY after a SUCCESSFUL cloud init (empty-cloud seed or local↔cloud merge).
+  // The periodic uploader gates on THIS, not cloudReady: a FAILED init sets
+  // cloudReady=true (to unblock the app) but leaves this false, so a stale local
+  // write can never clobber a returning user's cloud xp/streak/gems/progress (B3).
+  const [cloudInitOk, setCloudInitOk] = useState(false);
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
   const cloudSyncTimer = useRef(null);
   const cloudInitClaimRef = useRef(null);                   // user-scoped cloud-init claim (see sessionLocks.js)
@@ -527,6 +538,7 @@ export default function TukTalkThaiApp() {
       setProgress({});
       setStats(DEFAULT_STATS);
       setCloudReady(false);
+      setCloudInitOk(false);   // a new identity must earn its own successful init before uploading
     }
     resetUserScopedRefs({
       reviewLocksRef,
@@ -801,13 +813,11 @@ export default function TukTalkThaiApp() {
     return () => clearTimeout(t);
   }, [stats.theme]);
 
+  // RETIRED (B1): startDemo launched the old save-nothing DemoMode. Its callers
+  // (landing CTAs + the AuthGate guest button) now call handleGetStarted, and the
+  // /demo route redirects to get-started, so demoMode never turns on. Kept (unused)
+  // so restoring DemoMode is a one-line revert of the route + the CTA wiring.
   const startDemo = useCallback(() => {
-    // Push a dedicated /demo history entry ON TOP of the current screen (the
-    // /welcome auth gate the demo is launched from) without touching the entries
-    // beneath it. Browser/mobile Back then returns to /welcome, then /get-started,
-    // preserving the real journey; the popstate -> applyRouteState path turns demo
-    // mode off on the way out. The visible "Back to home" still jumps straight to
-    // the landing via handleExitDemo.
     writeRoute('/demo');
     applyRouteState(getRouteForPath('/demo'));
   }, [applyRouteState]);
@@ -924,6 +934,7 @@ export default function TukTalkThaiApp() {
     await supabase.auth.signOut();
     setProfile(null);
     setCloudReady(false);
+    setCloudInitOk(false);   // signed out → disarm the uploader until a fresh successful init
     // Server-of-truth: this device is no longer authorized. Wipe local cache
     // so the next session starts clean from the cloud (or from a fresh demo).
     await clearState();
@@ -992,6 +1003,7 @@ export default function TukTalkThaiApp() {
           if (!cancelled) {
             setStats(s => ({ ...s, ...ent }));
             setCloudReady(true);
+            setCloudInitOk(true);   // empty-cloud seed succeeded → safe to upload from here
           }
         } else {
           // M2 merge: never REPLACE local state with cloud — combine both so
@@ -1015,10 +1027,13 @@ export default function TukTalkThaiApp() {
             });
           });
           setCloudReady(true);
+          setCloudInitOk(true);   // local↔cloud merge succeeded → local now reflects cloud, safe to upload
         }
       } catch (e) {
         console.warn('[App] cloud init failed', e);
         // Fall back to local-only mode; user can retry by signing out and back in.
+        // cloudReady unblocks the app, but cloudInitOk stays FALSE so the periodic
+        // uploader never overwrites the (unmerged) cloud with stale local values.
         if (!cancelled) setCloudReady(true);
       } finally {
         // Identity-checked release: a stale init finishing late can never free a
@@ -1034,7 +1049,12 @@ export default function TukTalkThaiApp() {
   // whenever local state changes. Only fires after cloud init has resolved
   // (which itself only fires for email-confirmed users).
   useEffect(() => {
-    if (!session || !cloudReady || !loaded || !hasSupabaseConfig) return;
+    // B3: gate on cloudInitOk (SUCCESSFUL init), not cloudReady (RESOLVED init).
+    // uploadStats is a whole-row upsert (cloudStorage.js) that REPLACES the cloud
+    // user_stats row; after a FAILED init local was never merged with cloud, so
+    // firing it would clobber a returning user's cloud xp/streak/gems. cloudInitOk
+    // is true only after a successful seed/merge, so local safely reflects cloud.
+    if (!session || !cloudInitOk || !loaded || !hasSupabaseConfig) return;
     if (!session.user?.email_confirmed_at) return;
     if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current);
     cloudSyncTimer.current = setTimeout(async () => {
@@ -1048,7 +1068,7 @@ export default function TukTalkThaiApp() {
       }
     }, 2500);
     return () => { if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current); };
-  }, [progress, stats, session, cloudReady, loaded]);
+  }, [progress, stats, session, cloudInitOk, loaded]);
 
   useEffect(() => {
     if (loaded && !demoMode) saveState({ progress, stats });
@@ -2688,7 +2708,7 @@ export default function TukTalkThaiApp() {
         )}
         <AuthGate
           initialScreen={authInitialScreen}
-          onTryDemo={startDemo}
+          onTryDemo={handleGetStarted}
           onAuthSuccess={handleAuthSuccess}
           onOpenPublicPage={handleNavigatePath}
           onScreenChange={(screen) => writeRoute(screen === 'signin' || screen === 'forgot' ? '/sign-in' : '/welcome')}

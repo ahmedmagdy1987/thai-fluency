@@ -32,7 +32,7 @@ import {
   getSituationRecommendation, getSituationProgressState, situationTestPool,
   isSituationTestable, lockReasons, LOCK_REASON, situationStartPool,
   situationTeachableCards, hasTeachableContent, isAlwaysPreview,
-  DEFAULT_STAGE_WINDOW,
+  DEFAULT_STAGE_WINDOW, MIN_FIRST_SESSION_SIZE,
 } from '../src/lib/situationProgression.js';
 import { isTaught, taughtCardIds } from '../src/lib/mastery.js';
 import { isApproved } from '../src/lib/reviewStatus.js';
@@ -88,16 +88,17 @@ for (const path of PATHS) {
     assert(`${path}/${tier}: up next is offerable and comes from order`,
       !!rec.upNext && rec.upNext.offerable && rec.order.includes(rec.upNext.sitId));
     // "Resolves past" (engagement.md:94): everything ranked ABOVE up next is
-    // locked — the recommender skips it, it never deletes it. Stated against
-    // `startable` rather than `lockedPreviews`, because upNext is now the first
-    // LAUNCHABLE situation: an offerable-but-unstartable entry above it would
-    // still be legitimately skipped, and asserting via lockedPreviews would
-    // wrongly fail on it.
+    // skipped, never deleted. upNext is the first LAUNCHABLE AND substantial
+    // situation (>= MIN_FIRST_SESSION_SIZE), so a higher-ranked entry is skipped
+    // for one of two legitimate reasons: it is not startable, OR it is startable
+    // but too small to be a first session (a 2-card teaser is deferred, not
+    // offered first). Either way it stays in `order` — nothing is dropped.
     const upIdx = rec.upNext ? rec.order.indexOf(rec.upNext.sitId) : rec.order.length;
-    assert(`${path}/${tier}: recommender resolves PAST higher-ranked locks (never deletes them)`,
+    assert(`${path}/${tier}: recommender resolves PAST higher-ranked situations (never deletes them)`,
       rec.order.slice(0, upIdx).every((id) => {
         const e = rec.entries.find((x) => x.sitId === id);
-        return e && !e.startable && rec.order.includes(id);
+        return e && rec.order.includes(id)
+          && (!e.startable || e.startCount < MIN_FIRST_SESSION_SIZE);
       }));
   }
 }
@@ -330,12 +331,18 @@ for (const path of PATHS) {
     }));
 }
 
-// ---- 5. Nothing is approved — not even what we recommend ----------------------
-assert('NO situation readiness is "ready" (nothing approved to surface)',
+// ---- 5. Approvals have landed, but the RAIL still gates on the flag ------------
+// The first native sign-off approved eligible cards (2026-07-16), but no situation
+// is 100% approved (every tagged one has empty-`ph` holdouts), so no flag flips —
+// situationReadiness therefore stays 'coming-soon' and the rail keeps its draft
+// badge. These assertions prove the rail never runs ahead of full sign-off.
+assert('NO situation readiness is "ready" (none is 100% review-complete yet)',
   SITUATIONS.every((s) => situationReadiness(s.id) === 'coming-soon'));
-assert('NO situation is review-complete', SITUATION_IDS.every((id) => situationReviewComplete(id) === false));
-assert('NO card in any situation resolves approved',
-  SITUATION_IDS.every((id) => cardsInSituation(id).every((c) => !isApproved(c))));
+assert('NO situation is review-complete (none is 100% approved)',
+  SITUATION_IDS.every((id) => situationReviewComplete(id) === false));
+assert('no review-complete situation has an unapproved card (flag never runs ahead of approval)',
+  SITUATION_IDS.every((id) => !situationReviewComplete(id)
+    || cardsInSituation(id).every((c) => isApproved(c))));
 {
   const rec = getSituationRecommendation(FREE);
   assert('every recommended entry carries readiness coming-soon (draft badge stays)',
@@ -345,14 +352,14 @@ assert('NO card in any situation resolves approved',
     rec.upNext.offerable === true && situationReadiness(rec.upNext.sitId) === 'coming-soon',
     rec.upNext.sitId);
   // The new signal must not become a back door to approval. `startable` says
-  // "we can teach you these cards today"; it says NOTHING about native review,
-  // and every startable situation is still draft (so the rail's mandatory draft
-  // badge renders on every surfaced row).
-  assert('startable ≠ approved: every startable situation is still draft content',
+  // "we can teach you these cards today"; it says NOTHING about native review.
+  // A startable situation may now hold approved CARDS (post-2026-07-16 sign-off),
+  // but the SITUATION is still draft (not 100% review-complete), so its readiness
+  // stays 'coming-soon' and the rail's mandatory draft badge renders on every row.
+  assert('startable ≠ review-complete: every startable situation is still a draft situation',
     rec.startable.length === 7
     && rec.startable.every((e) => e.readiness === 'coming-soon'
-      && situationReviewComplete(e.sitId) === false
-      && cardsInSituation(e.sitId).every((c) => !isApproved(c))),
+      && situationReviewComplete(e.sitId) === false),
     rec.startable.map((e) => e.sitId).join(','));
   assert('every SURFACED row (startable + previews) is draft, so the badge always renders',
     [...rec.startable, ...rec.previews].every((e) => e.readiness === 'coming-soon'));

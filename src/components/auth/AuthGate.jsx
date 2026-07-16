@@ -4,11 +4,10 @@ import SignIn from './SignIn.jsx';
 import ForgotPassword from './ForgotPassword.jsx';
 import { SITE_CONFIG } from '../../config/site.js';
 
-// Three-button entry: Create account, Sign in, or Try a quick demo.
-// "Try a quick demo" is ONE anonymous entry — a 5-card DemoMode preview
-// (rendered at the App level when onTryDemo flips that mode on). It is no longer
-// the only anonymous path: the anonymous-first Get Started flow now drops a
-// visitor straight into a full first lesson without this gate.
+// Three-button entry: Create account, Sign in, or Try a free lesson.
+// The third button (onTryDemo) launches the full anonymous first lesson — the
+// old 5-card DemoMode is retired (B1). onTryDemo is wired to handleGetStarted at
+// the App level; DemoMode.jsx stays in the repo for a one-line revert.
 export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome', onScreenChange, onOpenPublicPage }) {
   const [screen, setScreen] = useState(initialScreen);
   const [prefilledEmail, setPrefilledEmail] = useState('');
@@ -65,7 +64,7 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
         </div>
         <h1 className="auth-welcome-title">Ready for your first lesson?</h1>
         <p className="auth-welcome-sub">
-          Save your progress with a free account, or try a quick demo first. Every lesson opens with a simple, friendly explanation.
+          Save your progress with a free account, or try a free lesson first. Every lesson opens with a simple, friendly explanation.
         </p>
 
         <div className="auth-welcome-bullets">
@@ -91,10 +90,10 @@ export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'we
             I already have an account
           </button>
         </div>
-        {/* "(5 cards)" miscounted the demo (3 flashcards + quick check +
-            mini-lesson) — match the landing's accurate phrasing instead. */}
+        {/* DemoMode retired (B1): this now launches the full anonymous first
+            lesson (onTryDemo → handleGetStarted), not the old save-nothing demo. */}
         <button className="auth-guest-link" onClick={onTryDemo}>
-          Try a quick demo — no account needed
+          Try a free lesson — no account needed
         </button>
         <button type="button" className="auth-guest-link auth-back-home-link" onClick={() => openPublicPage('/get-started')}>
           Back to home

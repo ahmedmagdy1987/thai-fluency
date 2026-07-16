@@ -423,6 +423,12 @@ img, svg, video { max-width: 100%; }
 .srs-card-cat { font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--fs-10); }
 .srs-card-new-badge { background: var(--gold); color: var(--jade); padding: 3px var(--sp-2); border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: var(--fs-10); }
 .srs-card-interval { color: var(--stone); font-family: 'JetBrains Mono', monospace; font-size: var(--fs-11); }
+/* Per-card native-review badge: "Native approved" (jade) once a human signs off,
+   or the mandatory draft label (muted) while pending/needs-review. */
+.srs-card-review { display: inline-flex; align-items: center; gap: 4px; padding: 3px var(--sp-2); border-radius: 999px; font-size: var(--fs-10); font-weight: 700; line-height: 1.2; max-width: 100%; }
+.srs-card-review-approved { background: color-mix(in srgb, var(--jade) 14%, transparent); color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 30%, transparent); }
+.srs-card-review-approved::before { content: "✓"; font-weight: 900; }
+.srs-card-review-draft { background: color-mix(in srgb, var(--stone) 12%, transparent); color: var(--stone); border: 1px solid var(--line); font-weight: 600; }
 .srs-card-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: var(--fs-56); font-weight: 600; color: var(--jade); text-align: center; line-height: 1.1; margin: var(--sp-2) 0; word-break: break-word; }
 .srs-card-ph-front { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-18); font-weight: 600; color: var(--brick); text-align: center; margin-bottom: var(--sp-4); letter-spacing: 0.01em; }
 .srs-card-front-body { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }

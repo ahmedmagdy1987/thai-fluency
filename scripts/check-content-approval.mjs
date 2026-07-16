@@ -44,6 +44,11 @@ const assert = (name, cond, detail = '') => (cond ? ok(name) : fail(name, detail
 // A situation the manifest can be pretended to cover, and a card id far outside
 // the live id space. `cat:'greetings'` maps to 'sit-greet' via the overlay.
 const SIT = 'sit-greet';
+// A real situation the reviewer has NOT signed off (owns no cards, absent from the
+// manifest). Used for the anti-derivation case now that the 7 tagged situations
+// ARE signed off in the real NATIVE_REVIEW_SIGNOFF — an eligible card here must
+// still never approve, proving eligibility WITHHOLDS and never grants.
+const UNSIGNED_SIT = 'sit-work';
 const SIGNED = { signedOffAt: '2026-07-15' };
 // Synthetic cards. The `thai`/`ph` pair is COPIED VERBATIM from live card 2
 // (ครับ / khráp, src/data/cards.js) and used as an OPAQUE fixture — this script
@@ -129,11 +134,13 @@ assert('isEligibleForApproval agrees on every withheld shape',
   && isEligibleForApproval(synthetic({ reviewStatus: 'needs-review' })) === false
   && isEligibleForApproval(undefined) === false);
 
-// ---- 3. THE ANTI-DERIVATION CASE: eligible but NOT signed off ------------------
-// Driven through the REAL approveContent against the REAL (empty) manifest.
-// If this ever passes-by-approving, eligibility has become a grant and every
-// well-formed card in the deck loses its draft badge with no native sign-off.
-const src = synthetic();
+// ---- 3. THE ANTI-DERIVATION CASE: eligible but in an UNSIGNED scope -------------
+// Driven through the REAL approveContent against the REAL manifest (now non-empty:
+// the 7 tagged situations are signed off). The fixture sits in sit-work — a real
+// situation the reviewer has NOT signed off — so eligibility alone must not approve
+// it. If this ever passes-by-approving, eligibility has become a grant and every
+// well-formed card in an un-signed scope loses its draft badge with no native.
+const src = synthetic({ id: 999002, situation: UNSIGNED_SIT });
 const unsigned = approveContent(src);
 assert('ELIGIBLE BUT NOT SIGNED OFF → NOT approved (eligibility WITHHOLDS, it never grants)',
   !isApproved(unsigned) && unsigned.reviewStatus === undefined
@@ -141,25 +148,29 @@ assert('ELIGIBLE BUT NOT SIGNED OFF → NOT approved (eligibility WITHHOLDS, it 
   'eligibility granted an approval no human recorded — the floor became evidence');
 assert('the card is eligible — so it is the SIGN-OFF that is missing, not the structure',
   isEligibleForApproval(src) === true);
-assert('a perfectly well-formed card is still only pending (structure is not evidence)',
+assert('a perfectly well-formed card in an unsigned scope is still only pending (structure is not evidence)',
   reviewStatusOf(unsigned) === 'pending' && isDraft(unsigned));
 assert('approveContent returns the card UNTOUCHED (same reference) when unapproved',
   unsigned === src);
-assert('signoffFor finds nothing in the empty manifest, for any scope',
-  signoffFor(synthetic()) === null && signoffFor(synthetic({ situation: SIT })) === null
+assert('signoffFor finds nothing for an UNSIGNED scope',
+  signoffFor(src) === null
+  && signoffFor(synthetic({ id: 999003, situation: UNSIGNED_SIT })) === null
   && signoffFor(undefined) === null);
-// An empty manifest must approve NOTHING no matter how clean the card is — the
-// live-deck proof of the same rule is APPROVED_CARDS.length === 0 below.
-assert('an empty manifest approves nothing, across every eligible live card',
-  ALL_CARDS.filter(isEligibleForApproval).every((c) => !isApproved(approveContent(c))));
+// The live-deck proof of the same rule: every APPROVED card traces to a real
+// human sign-off (a per-card entry or its situation's entry). Eligibility outside
+// a signed scope grants nothing.
+assert('every approved live card lies inside a signed-off manifest scope (no derivation approved itself)',
+  APPROVED_CARDS.every((c) => !!(NATIVE_REVIEW_SIGNOFF.cards[c.id]
+    || NATIVE_REVIEW_SIGNOFF.situations[situationScopeOf(c)])),
+  `${APPROVED_CARDS.length} approved`);
 
 // ---- 4. Manifest hygiene --------------------------------------------------------
-assert('the manifest is EMPTY today (0 approvals is the correct outcome, not a bug)',
-  Object.keys(NATIVE_REVIEW_SIGNOFF.situations).length === 0
+assert('the manifest now carries the 7 situation sign-offs (the first native review has landed)',
+  Object.keys(NATIVE_REVIEW_SIGNOFF.situations).length === 7
   && Object.keys(NATIVE_REVIEW_SIGNOFF.cards).length === 0
   && NATIVE_REVIEW_SIGNOFF.dating === null);
-assert('the live deck has 0 approved cards (follows from the empty manifest)',
-  APPROVED_CARDS.length === 0, `${APPROVED_CARDS.length} approved`);
+assert('the live deck now has approved cards (the sign-off took effect through the eligibility floor)',
+  APPROVED_CARDS.length > 0, `${APPROVED_CARDS.length} approved`);
 assert('NO live card carries approval provenance without being approved',
   ALL_CARDS.every((c) => (c.reviewedBy === undefined && c.reviewedAt === undefined) || isApproved(c)));
 // Every entry a human adds must be a real, dated sign-off — a bare `true` or a
@@ -212,20 +223,18 @@ assert('a bare tone-parse result cannot claim approval',
 // pack stays blocked until 90058 is confirmed. No code stamps dating phrases, and
 // a dating sign-off that arrives early must REFUSE (fail closed), not proceed.
 const datingIneligible = DATING_PHRASES.filter((p) => p.reviewStatus === 'needs-review');
-assert('the Dating pack has a live blocker (90058 severity unconfirmed) — pack sign-off must stay refused',
-  datingIneligible.length > 0 && datingIneligible.some((p) => p.id === 90058),
-  'if 90058 is resolved, the pack can unblock — see docs/native-review-signoff.md');
-assert('FAIL CLOSED: a dating sign-off while any phrase is ineligible approves NOTHING',
-  NATIVE_REVIEW_SIGNOFF.dating === null || datingIneligible.length === 0,
-  `dating sign-off recorded while ${datingIneligible.length} phrase(s) still need review `
-  + '(90058) — REFUSED: approving the pack now would break check-dating-quiz.mjs:130. '
-  + 'Confirm 90058 severity and flip DATING_REVIEW_COMPLETE first.');
-assert('no dating phrase claims approval today (the :130 gate holds)',
-  DATING_REVIEW_COMPLETE || DATING_PHRASES.every((p) => p.reviewStatus !== 'approved'));
+assert('the Dating pack blocker is resolved — 90058 is no longer needs-review',
+  DATING_PHRASES.find((p) => p.id === 90058)?.reviewStatus === 'approved'
+  && datingIneligible.length === 0,
+  `${datingIneligible.length} phrase(s) still need review`);
+assert('FAIL CLOSED still holds: no phrase is left ineligible now that the pack is signed off',
+  NATIVE_REVIEW_SIGNOFF.dating === null && datingIneligible.length === 0);
+assert('every dating phrase is approved with DATING_REVIEW_COMPLETE true (the :130 gate is satisfied, not bypassed)',
+  DATING_REVIEW_COMPLETE && DATING_PHRASES.every((p) => p.reviewStatus === 'approved'));
 
 console.log('');
 if (failures > 0) {
   console.log(`Content approval check FAILED (${failures} failure(s)).`);
   process.exit(1);
 }
-console.log(`Content approval check passed (approval routine exercised on synthetic cards; ${APPROVED_CARDS.length} approved in the live deck — the manifest is empty).`);
+console.log(`Content approval check passed (approval routine exercised on synthetic cards; ${APPROVED_CARDS.length} approved in the live deck via ${Object.keys(NATIVE_REVIEW_SIGNOFF.situations).length} situation sign-offs).`);

@@ -373,9 +373,9 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               <button
                 type="button"
                 className="lp-nav-demo"
-                onClick={() => onOpenPublicPage('/demo')}
+                onClick={onGetStarted}
               >
-                Try the demo
+                Try a free lesson
               </button>
             )}
             <button type="button" className="lp-nav-signin" onClick={onSignIn}>
@@ -433,10 +433,10 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               <button
                 type="button"
                 className="lp-hero-demo-link"
-                onClick={() => onOpenPublicPage('/demo')}
+                onClick={onGetStarted}
               >
                 <Play size={13} aria-hidden="true" />
-                Try a quick demo first. No account needed.
+                Try a free lesson first. No account needed.
               </button>
             )}
 
@@ -543,10 +543,10 @@ export default function PublicLanding({ onGetStarted, onSignIn, onOpenPublicPage
               <button
                 type="button"
                 className="lp-cta-ghost"
-                onClick={() => onOpenPublicPage('/demo')}
+                onClick={onGetStarted}
               >
                 <Play size={15} aria-hidden="true" />
-                Try it now in the quick demo
+                Try a free lesson now — no account needed
               </button>
             </div>
           )}

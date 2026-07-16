@@ -31,7 +31,7 @@ export const DATING_SECTION = {
   minAge: 18,
   matureLanguage: true,
   optional: true,
-  reviewStatus: 'pending',
+  reviewStatus: 'approved',
   // Respect / safety framing shown above the content.
   safetyNote:
     'For adults learning to communicate respectfully. Covers consent, boundaries, and ' +
@@ -64,7 +64,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.GENTLE,
     sampleIntents: ['Is this seat taken?', 'You have a lovely smile', 'Can I buy you a coffee?', 'I’d like to see you again'],
     plannedPhrases: 14,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'apps-meeting-plans',
@@ -73,7 +73,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.GENTLE,
     sampleIntents: ['Want to grab dinner this week?', 'Let’s meet somewhere public', 'What time works for you?', 'I’m running ten minutes late'],
     plannedPhrases: 12,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'compliments',
@@ -82,7 +82,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.GENTLE,
     sampleIntents: ['You look great tonight', 'I love your sense of humor', 'You’re really easy to talk to'],
     plannedPhrases: 10,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'relationship-language',
@@ -91,7 +91,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.MODERATE,
     sampleIntents: ['Are we exclusive?', 'I really like you', 'Meet my friends?', 'What are we?'],
     plannedPhrases: 14,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'boundaries-consent',
@@ -100,7 +100,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.SAFETY,
     sampleIntents: ['Is this okay?', 'No, I don’t want to', 'Please stop', 'I’m not comfortable with that', 'Let’s slow down'],
     plannedPhrases: 16,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'awkward-situations',
@@ -109,7 +109,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.MODERATE,
     sampleIntents: ['I think there’s been a misunderstanding', 'I’d rather just be friends', 'Sorry, I’m seeing someone'],
     plannedPhrases: 12,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'arguments-breakups',
@@ -118,7 +118,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.MODERATE,
     sampleIntents: ['We need to talk', 'I think we should break up', 'I need some space', 'Let’s not make this ugly'],
     plannedPhrases: 12,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'nightlife',
@@ -127,7 +127,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.MODERATE,
     sampleIntents: ['Two beers, please', 'I’ll get this round', 'I’m heading home', 'Can you call me a taxi?', 'I’ve had enough to drink'],
     plannedPhrases: 14,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'casual-slang',
@@ -136,7 +136,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.MODERATE,
     sampleIntents: ['That’s so cool', 'No way!', 'Seriously?', 'My friend / bro', 'lol / haha (in text)'],
     plannedPhrases: 16,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: 'mild-swears-insults',
@@ -147,7 +147,7 @@ export const DATING_CATEGORIES = [
     // never ships slurs or harassment language.
     sampleIntents: ['Mild “damn / shoot”-level exclamation', 'Light teasing insult between friends', 'Recognizing when something is rude'],
     plannedPhrases: 8,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
     handleWithCare: true,
   },
   // NOT SHIPPED YET: 8 planned, 0 phrases written — populating it needs Thai,
@@ -164,7 +164,7 @@ export const DATING_CATEGORIES = [
     severity: DATING_SEVERITY.SAFETY,
     sampleIntents: ['Politeness level of a phrase', 'Who can say this (and to whom)', 'Situations where it’s inappropriate'],
     plannedPhrases: 8,
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 ];
 
@@ -172,4 +172,4 @@ export const DATING_CATEGORIES = [
 // false, Super subscribers still see the draft phrases behind an honest "Draft —
 // pending native review" banner (the section is Super-gated, not hidden). Flip
 // per the native-review doc once content is approved to drop the draft banner.
-export const DATING_REVIEW_COMPLETE = false;
+export const DATING_REVIEW_COMPLETE = true;

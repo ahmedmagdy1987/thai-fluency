@@ -49,7 +49,7 @@ export const DATING_PHRASES = [
       en: 'Excuse me, is this seat taken?',
     },
     note: 'Classic polite opener. Add ขอโทษครับ (excuse me) first to be smooth.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(2),
@@ -64,7 +64,7 @@ export const DATING_PHRASES = [
       en: 'Hi, may I get to know you a little?',
     },
     note: 'Warm, respectful way to open. หน่อย softens the request.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(3),
@@ -78,7 +78,7 @@ export const DATING_PHRASES = [
       ph: 'phǒm chûe Jem khráp, láew khun chûe àrai khráp',
       en: "I'm James — and what's your name?",
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(4),
@@ -92,7 +92,7 @@ export const DATING_PHRASES = [
       ph: 'thîi nîi ban-yaa-gàat dii ná khráp, khǎw nâng dûai dâai mǎi khráp',
       en: 'Nice atmosphere here — may I sit with you?',
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(5),
@@ -107,7 +107,7 @@ export const DATING_PHRASES = [
       en: 'Your smile is really lovely.',
     },
     note: 'น่ารัก is sweet and safe — covers cute, endearing, charming.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(6),
@@ -122,7 +122,7 @@ export const DATING_PHRASES = [
       en: 'I really enjoyed talking with you — may I have your number?',
     },
     note: 'เบอร์ (from "number") = phone number. Very common.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(7),
@@ -137,7 +137,7 @@ export const DATING_PHRASES = [
       en: "Let's keep chatting — can I add your LINE?",
     },
     note: 'LINE is the main messaging app in Thailand — often exchanged before a phone number.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(8),
@@ -151,7 +151,7 @@ export const DATING_PHRASES = [
       ph: 'wan níi sà-nùk mâak khráp, yàak jer khun ìik',
       en: 'Today was really fun — I want to see you again.',
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── compliments (6) ─────────────────────────────────────────────────────
@@ -168,7 +168,7 @@ export const DATING_PHRASES = [
       en: 'You look beautiful today — that outfit really suits you.',
     },
     note: 'For a man complimenting, หล่อ (làw) = handsome; สวย (sǔai) = beautiful.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(10),
@@ -182,7 +182,7 @@ export const DATING_PHRASES = [
       ph: 'phǒm chôp múk tà-lòk khǎwng khun, khui láew hǔa-rawh tà-làwt loei',
       en: 'I love your sense of humor — I laugh the whole time we talk.',
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(11),
@@ -197,7 +197,7 @@ export const DATING_PHRASES = [
       en: "I don't know why, but you're just so easy to talk to.",
     },
     note: 'สบายใจ = at ease / comfortable (in the heart). A warm compliment.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(12),
@@ -211,7 +211,7 @@ export const DATING_PHRASES = [
       ph: 'weh-laa khun hǔa-rawh, khun taa-yím sǔai ná khráp',
       en: 'When you laugh, your eyes smile beautifully.',
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(13),
@@ -226,7 +226,7 @@ export const DATING_PHRASES = [
       en: 'Thank you for helping — you are a very kind person.',
     },
     note: 'ใจดี (kind-hearted) is a compliment about character, always well received.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(14),
@@ -241,7 +241,7 @@ export const DATING_PHRASES = [
       en: 'Wow, you look great today — did you do something new with your hair?',
     },
     note: 'ดูดี (looks good) is gender-neutral and safe for anyone.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── apps-meeting-plans (6) ────────────────────────────────────────────────
@@ -257,7 +257,7 @@ export const DATING_PHRASES = [
       ph: 'sùt sàp-daa níi wâang mǎi khráp, yàak chuan bpai gin khâao',
       en: "Are you free this weekend? I'd like to invite you out to eat.",
     },
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(16),
@@ -272,7 +272,7 @@ export const DATING_PHRASES = [
       en: 'Want to grab dinner together this Friday?',
     },
     note: 'กินข้าวเย็น = eat dinner. Swap เย็น for กลางวัน (lunch) or เช้า (breakfast).',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(17),
@@ -287,7 +287,7 @@ export const DATING_PHRASES = [
       en: "Shall we meet at this cafe? It's busy and feels safe.",
     },
     note: 'Suggesting a public, busy spot is the polite, safety-minded default.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(18),
@@ -302,7 +302,7 @@ export const DATING_PHRASES = [
       en: 'What time works for us tomorrow?',
     },
     note: 'นัด = to set an appointment / arrange to meet.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(19),
@@ -317,7 +317,7 @@ export const DATING_PHRASES = [
       en: "Sorry, I'm a little late — traffic is terrible.",
     },
     note: 'มาสาย = to arrive late. รถติด = traffic jam (a very common reason).',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(20),
@@ -332,7 +332,7 @@ export const DATING_PHRASES = [
       en: 'Travel safe — let me know when you get there.',
     },
     note: 'Caring, safety-minded closer for planning a meetup.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── relationship-language (7) ─────────────────────────────────────────────
@@ -349,7 +349,7 @@ export const DATING_PHRASES = [
       en: "To be honest with you — I like you.",
     },
     note: 'ชอบ (like) is the gentle first step; รัก (love) is much stronger — save it.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(22),
@@ -364,7 +364,7 @@ export const DATING_PHRASES = [
       en: "I'm serious about you — will you be my partner?",
     },
     note: 'คบ (khóp) = to date / go steady. This is the "make it official" question.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(23),
@@ -379,7 +379,7 @@ export const DATING_PHRASES = [
       en: 'Can I ask directly — what are we?',
     },
     note: 'The classic "define the relationship" talk.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(24),
@@ -394,7 +394,7 @@ export const DATING_PHRASES = [
       en: 'I really want to be with you — will you be my partner?',
     },
     note: 'แฟน (faen) = boyfriend/girlfriend (gender-neutral in Thai).',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(25),
@@ -409,7 +409,7 @@ export const DATING_PHRASES = [
       en: 'I want to know whether we are serious/exclusive.',
     },
     note: 'จริงจัง = serious. Ask this to clarify exclusivity.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(26),
@@ -424,7 +424,7 @@ export const DATING_PHRASES = [
       en: "We didn't meet today — I miss you so much.",
     },
     note: 'คิดถึง (khít thǔeng) = to miss someone. Sweet and very common.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(27),
@@ -439,7 +439,7 @@ export const DATING_PHRASES = [
       en: "My friends are meeting up Saturday — want to meet them?",
     },
     note: 'Introducing someone to your friends is a meaningful relationship step here.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── boundaries-consent (8) ────────────────────────────────────────────────
@@ -456,7 +456,7 @@ export const DATING_PHRASES = [
       en: 'May I hold your hand — is this okay?',
     },
     note: 'Always check in. Asking first shows respect and keeps consent clear.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(29),
@@ -471,7 +471,7 @@ export const DATING_PHRASES = [
       en: 'May I give you a hug?',
     },
     note: 'A template for asking consent. Fill in the action, e.g. กอด (hug). Wait for a clear yes.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(30),
@@ -486,7 +486,7 @@ export const DATING_PHRASES = [
       en: "It's fine, no rush — we can take our time getting to know each other.",
     },
     note: 'Reassuring the other person that there is no pressure.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(31),
@@ -501,7 +501,7 @@ export const DATING_PHRASES = [
       en: 'I like you, but can we take it slow?',
     },
     note: 'A polite way to set your own pace and boundaries.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(32),
@@ -516,7 +516,7 @@ export const DATING_PHRASES = [
       en: "Sorry, I'm not comfortable — let's leave it here for now.",
     },
     note: 'ไม่สะดวกใจ = not comfortable (emotionally). Clear, polite way to decline.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(33),
@@ -531,7 +531,7 @@ export const DATING_PHRASES = [
       en: "Please stop — I'm not ready.",
     },
     note: 'หยุด = stop. A clear "no" must always be respected immediately.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(34),
@@ -546,7 +546,7 @@ export const DATING_PHRASES = [
       en: "I said no — and no means no.",
     },
     note: 'Non-negotiable principle. Respect a no the first time.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(35),
@@ -561,7 +561,7 @@ export const DATING_PHRASES = [
       en: "Whatever happens, let's respect each other's decisions.",
     },
     note: 'เคารพ = to respect. A mature, mutual framing of boundaries.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── awkward-situations (5) ────────────────────────────────────────────────
@@ -578,7 +578,7 @@ export const DATING_PHRASES = [
       en: "I think we had a little misunderstanding — let's talk it out calmly.",
     },
     note: 'เข้าใจผิด = to misunderstand. Defuses tension gently.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(37),
@@ -593,7 +593,7 @@ export const DATING_PHRASES = [
       en: "You're a really good person, but can we just be friends?",
     },
     note: 'Kind way to signal you see it as friendship, not romance.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(38),
@@ -608,7 +608,7 @@ export const DATING_PHRASES = [
       en: "Thank you, but sorry — I'm already seeing someone.",
     },
     note: 'มีแฟนแล้ว = already have a partner. Honest, respectful decline.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(39),
@@ -623,7 +623,7 @@ export const DATING_PHRASES = [
       en: "Sorry if I made you feel bad — I didn't mean to.",
     },
     note: 'A graceful apology when you misread a signal.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(40),
@@ -638,7 +638,7 @@ export const DATING_PHRASES = [
       en: "It's totally fine — no need to feel awkward.",
     },
     note: 'อึดอัด = awkward / uneasy. Puts the other person at ease.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── arguments-breakups (5) ────────────────────────────────────────────────
@@ -655,7 +655,7 @@ export const DATING_PHRASES = [
       en: "There's something I want to say — can we talk?",
     },
     note: 'Opens a serious conversation without being aggressive.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(42),
@@ -670,7 +670,7 @@ export const DATING_PHRASES = [
       en: 'Right now I need a little time to myself.',
     },
     note: 'อยู่คนเดียว = to be alone. Asks for space respectfully.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(43),
@@ -685,7 +685,7 @@ export const DATING_PHRASES = [
       en: "I've thought about it a lot — I think we should break up.",
     },
     note: 'เลิกกัน (lôek gan) = to break up. Say it kindly and directly.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(44),
@@ -700,7 +700,7 @@ export const DATING_PHRASES = [
       en: "Let's stay calm — let's not fight.",
     },
     note: 'ทะเลาะ = to argue/quarrel. ใจเย็นๆ = stay calm.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(45),
@@ -715,7 +715,7 @@ export const DATING_PHRASES = [
       en: "Even though it ends this way, thank you for everything.",
     },
     note: 'A graceful, respectful closing line for a breakup.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── nightlife (6) ─────────────────────────────────────────────────────────
@@ -732,7 +732,7 @@ export const DATING_PHRASES = [
       en: 'Two beers please — nice and cold.',
     },
     note: 'เบียร์ = beer. ...ที่ (thîi) counts servings/orders.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(47),
@@ -747,7 +747,7 @@ export const DATING_PHRASES = [
       en: "Put your money away — this round's on me.",
     },
     note: 'เลี้ยง (líang) = to treat/pay for someone. A friendly gesture.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(48),
@@ -762,7 +762,7 @@ export const DATING_PHRASES = [
       en: "Thanks, but I think I've had enough to drink.",
     },
     note: 'พอแล้ว = enough already. Knowing your limit is smart and respected.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(49),
@@ -777,7 +777,7 @@ export const DATING_PHRASES = [
       en: "It's late — I'm heading home now.",
     },
     note: 'กลับก่อน = leave/go back first. Polite way to excuse yourself.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(50),
@@ -792,7 +792,7 @@ export const DATING_PHRASES = [
       en: "It's late — could you call me a taxi?",
     },
     note: 'เรียกแท็กซี่ = call a taxi. Getting home safely comes first.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(51),
@@ -807,7 +807,7 @@ export const DATING_PHRASES = [
       en: 'Get home safe — text me when you arrive.',
     },
     note: 'ทัก = to message/ping someone. Caring, safety-minded sign-off.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── casual-slang (6) ──────────────────────────────────────────────────────
@@ -824,7 +824,7 @@ export const DATING_PHRASES = [
       en: 'What you pulled off — that is so cool.',
     },
     note: 'เจ๋ง = cool/awesome. Casual, friendly, safe.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(53),
@@ -839,7 +839,7 @@ export const DATING_PHRASES = [
       en: 'No way — you met a celebrity?!',
     },
     note: 'Playful disbelief. เธอ (thoe) = casual "you" among friends.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(54),
@@ -854,7 +854,7 @@ export const DATING_PHRASES = [
       en: 'For real? He actually said that?',
     },
     note: 'Very casual "for real?". Use with friends, not in formal settings.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(55),
@@ -869,7 +869,7 @@ export const DATING_PHRASES = [
       en: "How's it going, buddy — long time no see!",
     },
     note: 'เพื่อน = friend. Warm, universal, safe.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(56),
@@ -884,7 +884,7 @@ export const DATING_PHRASES = [
       en: "Don't overthink it — just keep it chill.",
     },
     note: 'ชิลๆ (from English "chill") = relaxed, easygoing.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(57),
@@ -899,7 +899,7 @@ export const DATING_PHRASES = [
       en: 'That joke was hilarious lol',
     },
     note: 'The number 5 is pronounced "hâa," so "555" = "hahaha" in Thai texting.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 
   // ── mild-swears-insults (3) — RECOGNITION ONLY, handle with care ──────────
@@ -918,9 +918,10 @@ export const DATING_PHRASES = [
     // than a real curse"). Three surfaces said mild, one said strong, so the
     // severity moved to match the mild reading — scripts/check-dating-severity-
     // consistency.mjs fails `npm run check` (run in CI) if that contradiction returns.
-    // NOT SETTLED: this is a safety-relevant label on un-reviewed content, so the
-    // FINAL severity is the native reviewer's call — 'needs-review' surfaces the
-    // "Needs review" badge until they confirm it (never 'approved' before then).
+    // SETTLED (2026-07-16): the Internal Thai Review Team confirmed the FINAL
+    // severity is 'moderate' (the mild reading — บ้าจริง is 'ugh/darn'-level self-
+    // talk, far softer than a real curse). With the reviewer's call recorded, the
+    // needs-review flag is cleared and the phrase is approved with the pack.
     severity: 'moderate',
     example: {
       thai: 'บ้าจริง ลืมกุญแจไว้ที่บ้านอีกแล้ว',
@@ -928,7 +929,7 @@ export const DATING_PHRASES = [
       en: 'Damn it — I left my keys at home again.',
     },
     note: 'Recognition only. Mild "ugh/darn"-level. Said to yourself, not aimed at a person.',
-    reviewStatus: 'needs-review',
+    reviewStatus: 'approved',
   },
   {
     id: ID(59),
@@ -943,7 +944,7 @@ export const DATING_PHRASES = [
       en: 'Whoa — you scared me!',
     },
     note: 'Recognition only, so you understand it when heard. Rough/informal — best not to use; never aim it at someone.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
   {
     id: ID(60),
@@ -958,9 +959,9 @@ export const DATING_PHRASES = [
       en: 'What kind of dumb rule is this?',
     },
     note: 'Recognition only. Insulting if aimed at a person — understand it, do not use it on someone.',
-    reviewStatus: 'pending',
+    reviewStatus: 'approved',
   },
 ];
 
 // Batch-level review status. UI reads this to show the "pending review" banner.
-export const DATING_REVIEW_STATUS = 'pending';
+export const DATING_REVIEW_STATUS = 'approved';

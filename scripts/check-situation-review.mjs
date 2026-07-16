@@ -115,29 +115,46 @@ assert('every approval traces to a manifest entry with a matching date (no orpha
   orphans.length === 0,
   `${orphans.length} approval(s) with no matching sign-off entry: ${orphans.slice(0, 8).map((c) => c.id).join(',')}`);
 
-// ---- 3b. Nothing is approved anywhere (RETIRES with the first real approval) ----
-// RETIRE THIS BLOCK IN THE SAME COMMIT AS THE FIRST REAL SIGN-OFF. With 0 approvals
-// the eligibility invariant above is vacuously true, so THIS is the assertion
-// currently carrying the weight: it proves the manifest is empty and no code path
-// has invented an approval. Once a human signs something off, this must fail — that
-// is the signal to delete this block and let §3's invariants take over. Do NOT
-// weaken it to keep a build green.
+// ---- 3b. First native sign-off has landed — the POSITIVE invariants ------------
+// RETIRED (2026-07-16): the "nothing is approved yet" block that carried the weight
+// while the manifest was empty. The first real sign-off happened in the same commit
+// that deleted it — exactly as its header instructed. §3 above now does the real
+// work (it proves nothing INELIGIBLE is approved, re-derived from primitives); the
+// assertions here prove the RIGHT things ARE approved and that no completion flag
+// was flipped ahead of its approvals. Do NOT relax these to keep a build green.
 const approvedCards = CARDS.filter(isApproved);
-assert('NO main-deck card resolves to approved', approvedCards.length === 0, `${approvedCards.length} approved`);
-assert('NO dating phrase claims approved while review incomplete',
-  DATING_REVIEW_COMPLETE || DATING_PHRASES.every((p) => p.reviewStatus !== 'approved'));
-assert('NO situation is review-complete yet',
-  SITUATION_IDS.every((id) => situationReviewComplete(id) === false));
-assert('NO situation readiness is "ready" (nothing approved to surface)',
+assert('main-deck approvals exist (the first native sign-off has landed)',
+  approvedCards.length > 0, `${approvedCards.length} approved`);
+// Flag honesty: a situation may claim SITUATION_REVIEW_COMPLETE only when 100% of
+// its cards are approved. Every tagged situation still has empty-`ph` holdouts, so
+// none flips today — this asserts none was flipped while any card is unapproved.
+const flagRunsAhead = SITUATION_IDS.filter((id) =>
+  situationReviewComplete(id) && cardsInSituation(id).some((c) => !isApproved(c)));
+assert('every review-complete situation has 100% of its cards approved (flag never runs ahead of approval)',
+  flagRunsAhead.length === 0, flagRunsAhead.join(','));
+// A situation is 'ready' to surface approved content only when its flag is true;
+// no situation is 100% today, so all stay 'coming-soon' and keep the draft badge.
+assert('no situation surfaces as "ready" while any of its cards is unapproved',
   SITUATIONS.every((s) => situationReadiness(s.id) === 'coming-soon'));
+// The Dating pack is all-or-nothing: the flag is honest only if every phrase is
+// approved. It is now legitimately true (90058 resolved → all 60 eligible+approved).
+assert('DATING_REVIEW_COMPLETE ⟹ every dating phrase is approved',
+  !DATING_REVIEW_COMPLETE || DATING_PHRASES.every((p) => p.reviewStatus === 'approved'));
+assert('the Dating pack is approved (flag true AND all 60 phrases approved)',
+  DATING_REVIEW_COMPLETE && DATING_PHRASES.every((p) => p.reviewStatus === 'approved'));
 
 // ---- 4. Situation completion flags --------------------------------------------
 const keys = Object.keys(SITUATION_REVIEW_COMPLETE);
 assert('SITUATION_REVIEW_COMPLETE has all 16 canonical situations in §2 order',
   keys.length === 16 && JSON.stringify(keys) === JSON.stringify(SITUATION_IDS), JSON.stringify(keys));
-assert('every SITUATION_REVIEW_COMPLETE flag is false',
-  Object.values(SITUATION_REVIEW_COMPLETE).every((v) => v === false));
-assert('DATING_REVIEW_COMPLETE mirrors situation flags (false)', DATING_REVIEW_COMPLETE === false);
+assert('every SITUATION_REVIEW_COMPLETE flag is a boolean',
+  Object.values(SITUATION_REVIEW_COMPLETE).every((v) => typeof v === 'boolean'));
+// Flag→approval honesty is enforced in §3b (flagRunsAhead). No situation is 100%
+// approved today, so all 16 flags are still false — asserted here so a premature
+// flip is caught, not by hard-coding "false" (which would fight the first real flip).
+assert('no situation flag is true while the situation has unapproved cards',
+  SITUATION_IDS.every((id) => !situationReviewComplete(id)
+    || cardsInSituation(id).every((c) => isApproved(c))));
 
 // ---- 5. Mandatory draft badge -------------------------------------------------
 assert('draft badge label matches the foundation string exactly',
@@ -164,4 +181,4 @@ if (failures > 0) {
   console.log(`Situation review check FAILED (${failures} failure(s)).`);
   process.exit(1);
 }
-console.log(`Situation review check passed (${SITUATIONS.length} situations, ${CARDS.length} cards, 0 approved).`);
+console.log(`Situation review check passed (${SITUATIONS.length} situations, ${CARDS.length} cards, ${CARDS.filter(isApproved).length} approved).`);

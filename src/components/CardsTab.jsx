@@ -21,6 +21,22 @@ import { faceIsEnglishFirst } from '../lib/attemptDirection.js';
 import RateBtn from './RateBtn.jsx';
 import CharacterCoach from './CharacterCoach.jsx';
 import CardDirectionToggle from './CardDirectionToggle.jsx';
+import { reviewStatusOf, reviewBadge } from '../lib/reviewStatus.js';
+
+// The mandatory content-review badge for a single card. Approved cards (a named
+// native reviewer signed off — reviewStatus.js) show "Native approved" and drop
+// the draft label; pending/needs-review cards keep the mandatory draft badge
+// (FOUNDATION §9). Reads the card's own reviewStatus, so it can never claim
+// approval a human did not grant.
+function CardReviewBadge({ card }) {
+  if (!card) return null;
+  const badge = reviewBadge(reviewStatusOf(card));
+  return (
+    <span className={`srs-card-review srs-card-review-${badge.isDraft ? 'draft' : 'approved'}`} title={badge.label}>
+      {badge.label}
+    </span>
+  );
+}
 
 // The card flip is 550ms in CSS; 3400ms keeps the reveal prompt readable
 // for roughly 2.8s after the back face settles, then returns to resting.
@@ -570,6 +586,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
             >
               <div className="srs-card-meta">
                 {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
+                <CardReviewBadge card={card} />
                 <div className="srs-card-meta-right">
                   {isNew && <span className="srs-card-new-badge">new</span>}
                   {!isNew && cardState && <span className="srs-card-interval">{cardState.learning ? 'learning' : `${cardState.interval}d interval`}</span>}
@@ -636,6 +653,7 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
             <div className="srs-card srs-card-face srs-card-face-back" aria-hidden={!revealed}>
               <div className="srs-card-back-meta">
                 {cat && <span className="srs-card-cat" style={{ color: cat.color }}>{cat.icon} {cat.name}</span>}
+                <CardReviewBadge card={card} />
                 {/* Rendered only after reveal: the hidden flip face must never
                     hold a focusable button that could speak the Thai answer
                     early (keyboard users could Tab to it otherwise). */}

@@ -21,14 +21,20 @@
 //
 // ── THE APPROVAL RULE (do not violate) ───────────────────────────────────────
 // 'approved' is NEVER derived, defaulted, or inferred. It exists ONLY when a
-// HUMAN — the named native-speaker reviewer (REVIEWER_OF_RECORD below; that
-// reviewer now EXISTS and is named, but has signed off on NOTHING yet) —
-// explicitly sets `reviewStatus:'approved'`
-// on an item AND flips that item's situation flag in SITUATION_REVIEW_COMPLETE
-// (or DATING_REVIEW_COMPLETE for the Dating pack). Until then, absence of a
-// status means 'pending', never 'approved'. `reviewStatusOf` can therefore only
-// ever RETURN 'approved' if a human already wrote it into the data — this module
-// itself marks nothing approved.
+// HUMAN — the named native-speaker reviewer (REVIEWER_OF_RECORD below) — records
+// a sign-off, on two tracks that both trace to that human:
+//   • Main deck: the reviewer adds a situation (or per-card) entry to the manifest
+//     src/data/nativeReviewSignoff.js; src/data/cards.js then stamps
+//     `reviewStatus:'approved'` on each SIGNED-OFF card that also clears the
+//     eligibility floor. The situation's SITUATION_REVIEW_COMPLETE flag is a
+//     SEPARATE, coarser signal (see below) — a card can be approved before its
+//     whole situation completes.
+//   • Dating pack: the reviewer sets each phrase's `reviewStatus:'approved'` in
+//     datingPhrases.js and flips DATING_REVIEW_COMPLETE (all-or-nothing).
+// The Internal Thai Review Team completed its review on 2026-07-16 (first native
+// sign-off). Absence of a status still means 'pending', never 'approved', and
+// `reviewStatusOf` can only RETURN 'approved' where a human already wrote it —
+// this module marks nothing approved.
 //
 // ── HOW THE HUMAN RECORDS THAT DECISION: THE MANIFEST ────────────────────────
 // The reviewer's "explicit set" is made ONCE, in ONE machine-readable place:
@@ -46,8 +52,11 @@
 // the human sign-off is the evidence, and eligibility may only ever WITHHOLD an
 // approval the human already granted — it can never grant one.
 //     approved  ⟺  (signed off in the manifest)  AND  (eligible)
-// The manifest is EMPTY today, so 0 items are approved. That is the CORRECT
-// outcome, not a bug to fix.
+// As of 2026-07-16 the manifest signs off the 7 content-bearing situations, so
+// their eligible cards are approved (946) while the empty-`ph` (335) and
+// quarantined (7) holdouts stay 'needs-review' — withheld by the floor until a
+// human supplies the missing Thai. That withholding is the floor doing its one
+// job, not a bug.
 //
 // ── DERIVATIONS ARE NEVER APPROVALS ──────────────────────────────────────────
 // Auto-derived content is a transform of source content, not a native sign-off,
@@ -154,12 +163,19 @@ export function reviewBadge(status) {
 // ── Per-situation review completion flag ─────────────────────────────────────
 // Mirrors `DATING_REVIEW_COMPLETE = false` (src/data/datingContent.js:168) with
 // one entry per canonical situation (FOUNDATION README §2; curriculum.md §5.3).
-// EVERY value is `false` and stays false until the NAMED native reviewer flips
-// the specific situation after signing off — a human action, never code here.
+// A value flips to `true` only when the NAMED native reviewer confirms 100% of the
+// situation is approved — a human action, never code here. EVERY value is still
+// `false` today: each of the 7 signed-off situations retains a few empty-`ph`
+// holdouts, so none is 100% yet (they wait on the missing Thai, not on review).
 //
-// The gate (extends check-dating-quiz's existing invariant to all situations):
-//   No item in situation S may resolve to 'approved' while
-//   SITUATION_REVIEW_COMPLETE[S] === false.
+// WHAT THE FLAG MEANS (not a per-card gate):
+//   SITUATION_REVIEW_COMPLETE[S] === true  ⟹  every card in S is approved.
+// It gates situationReadiness (whether S may surface as a 'ready', badge-free unit),
+// NOT per-card approval — individual eligible cards are approved via the manifest
+// and may carry 'approved' before the whole situation completes. The flip-never-
+// ahead-of-approval direction is enforced by check-situation-review.mjs
+// (flagRunsAhead); the Dating pack's DATING_REVIEW_COMPLETE is the same idea,
+// all-or-nothing over its 60 phrases.
 //
 // The 16 ids are the canonical situation ids VERBATIM from FOUNDATION README §2,
 // in §2 order. `situations.js` owns the same id list; the validator

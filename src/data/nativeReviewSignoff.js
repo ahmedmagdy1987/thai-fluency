@@ -52,21 +52,35 @@
 
 export const NATIVE_REVIEW_SIGNOFF = Object.freeze({
   // Situation-scope sign-off: covers every card tagged to that situation.
+  //
+  // ── FIRST NATIVE SIGN-OFF (2026-07-16) ───────────────────────────────────────
+  // The Internal Thai Review Team completed its review of the 7 content-bearing
+  // situations. Each entry below signs off that situation's whole tagged set; the
+  // eligibility floor (cards.js isEligibleForApproval) then WITHHOLDS the cards
+  // that are still structurally incomplete — empty `ph` (335 across the deck) or
+  // quarantined (7) — so those stay `needs-review` until a human supplies the
+  // missing Thai. A situation therefore ends up MOSTLY-approved with a small
+  // pending remainder, which is why NO situation flips SITUATION_REVIEW_COMPLETE
+  // yet (that flag means 100% approved — see src/lib/reviewStatus.js). The sign-off
+  // is the evidence; eligibility is only a veto and can never grant an approval.
   situations: Object.freeze({
-    // 'sit-greet': { signedOffAt: '2026-07-15' },
+    'sit-greet': { signedOffAt: '2026-07-16' },
+    'sit-food': { signedOffAt: '2026-07-16' },
+    'sit-money': { signedOffAt: '2026-07-16' },
+    'sit-directions': { signedOffAt: '2026-07-16' },
+    'sit-smalltalk': { signedOffAt: '2026-07-16' },
+    'sit-housing': { signedOffAt: '2026-07-16' },
+    'sit-pharmacy': { signedOffAt: '2026-07-16' },
   }),
 
-  // Dating pack sign-off, or null. { signedOffAt: '…' } once the pack is signed off.
-  //
-  // DO NOT FILL THIS IN YET — it cannot honestly be filled in today, and the
-  // system will refuse it (fail closed) rather than act on it:
-  // phrase 90058's severity is still 'needs-review' (its mild/strong reading is
-  // the reviewer's open call — src/data/datingPhrases.js:905-932), so the pack is
-  // at best 59/60 reviewed and DATING_REVIEW_COMPLETE can never honestly flip.
-  // scripts/check-dating-quiz.mjs:130 forbids any phrase claiming approval while
-  // that flag is false, so approving the other 59 would break the very gate that
-  // keeps the pack honest. Confirm 90058's severity FIRST; the pack unblocks with
-  // it. Documented as the gating item in docs/native-review-signoff.md.
+  // Dating pack sign-off. The 18+ pack is approved per-phrase in
+  // src/data/datingPhrases.js (reviewStatus:'approved' on all 60) and gated by
+  // DATING_REVIEW_COMPLETE in src/data/datingContent.js — that is the dating
+  // approval path, NOT this field (signoffFor never reads manifest.dating; it is
+  // inert for dating phrases). Phrase 90058's severity was confirmed 'moderate'
+  // by the review team (2026-07-16), clearing its needs-review flag, so all 60
+  // phrases are now eligible and the pack is signed off. This field stays null:
+  // it grants nothing and filling it would imply a mechanism that does not exist.
   dating: null,
 
   // Per-card sign-off: { <cardId>: { signedOffAt: 'YYYY-MM-DD' } }.
