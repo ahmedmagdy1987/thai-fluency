@@ -797,7 +797,8 @@ export function approveContent(card, manifest = NATIVE_REVIEW_SIGNOFF) {
 // needed zero consumer edits. Anything that wants the excluded cards has to reach
 // for MATURE_CARDS / QUARANTINED_CARDS by name, and a mature surface owes the
 // reader the same 18+/Super standard the Dating pack applies (DatingSection.jsx:135).
-// Asserted by scripts/check-mature-gating.mjs + scripts/check-card-quarantine.mjs.
+// Asserted by scripts/check-mature-gating.mjs + scripts/check-card-quarantine.mjs
+// (run in CI via `npm run check` — see .github/workflows/validate.yml).
 export const ALL_CARDS = RAW_CARDS.map(c => {
   const ov = STEP2_OVERRIDES[c.id];
   let card = ov ? { ...c, ...ov } : c;

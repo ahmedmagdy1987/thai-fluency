@@ -55,6 +55,10 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
   // counts down to a completion state instead of looping forever on non-due
   // replays (which never re-schedule out of view).
   const stageReviewAllotmentRef = useRef({ key: null, ids: [] });
+  // A situation "Practice" with nothing new left to teach replays its already-
+  // learned pool (frozen once, due first) so "N cards ready" is honest. Same
+  // one-pass countdown mechanism as Stage Review (via sessionReviewedRef).
+  const situationReplayAllotmentRef = useRef({ key: null, ids: [] });
   const sessionReviewedRef = useRef(new Set());
   const sessionKey = sessionScope?.type === 'mission'
     ? `mission:${sessionScope.missionId}`
@@ -140,15 +144,45 @@ export default function CardsTab({ progress, reviewOne, markCardKnown, dailyNewL
     // The session resets when the Cards tab is re-entered (CardsTab remounts)
     // or the session scope changes (sessionKey).
     if (newAllotmentRef.current.key !== sessionKey) {
-      newAllotmentRef.current = {
-        key: sessionKey,
-        ids: getNewCards(
-          progress,
-          newCandidates,
-          missionCardIds ? newCandidates.length : dailyNewLimit
-        ).map(c => c.id),
-      };
+      const frozenNewIds = getNewCards(
+        progress,
+        newCandidates,
+        missionCardIds ? newCandidates.length : dailyNewLimit
+      ).map(c => c.id);
+      newAllotmentRef.current = { key: sessionKey, ids: frozenNewIds };
+
+      // Situation "Practice" replay (sessionScope.allowReplay — set only by
+      // handleStartSituationCards). When a situation has nothing new left to
+      // teach this learner, its Start would otherwise open onto an empty queue
+      // the instant nothing is due, while the rail still advertises "N cards
+      // ready" (the progress-blind pool size). Freeze a one-pass replay of the
+      // seen pool (due first, then the rest) so the session actually serves
+      // those N cards and counts down honestly. Decided ONCE per session so a
+      // fresh learner who simply finishes their new cards still completes — the
+      // replay only engages when there was nothing new to begin with. XP is
+      // already 0 for non-due replays (App.reviewOne isDueReview gate).
+      let replayIds = [];
+      if (sessionScope?.allowReplay && frozenNewIds.length === 0) {
+        const seen = filteredCards.filter(c => safeProgress[c.id]);
+        const dueSeen = getDueCards(progress, seen, now);
+        const dueIds = new Set(dueSeen.map(c => c.id));
+        replayIds = [...dueSeen, ...seen.filter(c => !dueIds.has(c.id))].map(c => c.id);
+      }
+      situationReplayAllotmentRef.current = { key: sessionKey, ids: replayIds };
     }
+
+    // A frozen situation replay owns the whole session: serve its pool, dropping
+    // cards handled this session so the single pass counts down to completion.
+    if (
+      situationReplayAllotmentRef.current.key === sessionKey &&
+      situationReplayAllotmentRef.current.ids.length > 0
+    ) {
+      return situationReplayAllotmentRef.current.ids
+        .filter(id => !sessionReviewedRef.current.has(id))
+        .map(id => CARD_BY_ID.get(id))
+        .filter(Boolean);
+    }
+
     // Only allotment cards still unseen remain queued; a rated new card drops
     // out and is NOT replaced — that is what makes the remaining count fall.
     const newOnes = newAllotmentRef.current.ids

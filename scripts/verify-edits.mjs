@@ -32,3 +32,12 @@ for (const e of log) {
   }
 }
 console.log(`Quote-count mismatches: ${qmismatch}`);
+
+// A changed backslash/quote count means the content-integrity fix altered escape
+// structure it was supposed to preserve — a real regression, so fail (and
+// `npm run check`) instead of just printing it.
+if (mismatches > 0 || qmismatch > 0) {
+  console.error(`\nEdit-integrity check FAILED: ${mismatches} backslash + ${qmismatch} quote mismatch(es).`);
+  process.exit(1);
+}
+console.log('\nEdit-integrity check passed.');

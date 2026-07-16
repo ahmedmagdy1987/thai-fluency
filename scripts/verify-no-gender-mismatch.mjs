@@ -40,3 +40,11 @@ for (const c of CARDS) {
     console.log(`  id ${c.id}  thai="${c.thai}"  en="${c.en}"`);
   }
 }
+
+// A Thai/English gender contradiction teaches a wrong particle, so this is a
+// guard: fail the build (and `npm run check`) if any mismatch is present.
+if (issues.length > 0) {
+  console.error(`\nGender-mismatch check FAILED: ${issues.length} card(s) disagree between Thai and English.`);
+  process.exit(1);
+}
+console.log('\nGender-mismatch check passed.');

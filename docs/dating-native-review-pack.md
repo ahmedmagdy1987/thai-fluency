@@ -1,7 +1,7 @@
 # Dating & Real Talk Thai — Native Review Pack
 
-**Generated:** 2026-07-07 · regenerate with `node scripts/write-dating-review-pack.mjs`
-**Scope:** all 60 draft phrases + 50 linked quiz questions of the 18+ Super section.
+**Generated:** 2026-07-16 · regenerate with `node scripts/write-dating-review-pack.mjs`
+**Scope:** all 60 draft phrases + 65 linked quiz questions of the 18+ Super section.
 **Status:** EVERY ITEM IS DRAFT — reviewStatus: pending. Nothing may be marked approved in the app until this pack is returned by a native Thai reviewer and the statuses in `src/data/datingPhrases.js` are updated from it.
 
 ## How to review
@@ -17,9 +17,9 @@ For each phrase, please check:
 
 Fill the verdict line under each phrase: check ONE box, and use the notes line for corrections (corrected Thai/phonetics welcome).
 
-## Priority items (9 phrases carry ⚠ QA flags)
+## Priority items (10 phrases carry ⚠ QA flags)
 
-An internal QA pass raised specific questions on these phrases — please start here: **90009**, **90010**, **90012**, **90013**, **90042**, **90046**, **90052**, **90059**, **90060**. Each flag appears under its phrase below.
+An internal QA pass raised specific questions on these phrases — please start here: **90009**, **90010**, **90012**, **90013**, **90042**, **90046**, **90052**, **90058**, **90059**, **90060**. Each flag appears under its phrase below.
 
 ---
 
@@ -83,7 +83,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Category | Introductions & flirting (introductions-flirting) |
 | Example | ผมชื่อเจมส์ครับ แล้วคุณชื่ออะไรครับ — phǒm chûe Jem khráp, láew khun chûe àrai khráp — I'm James — and what's your name? |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-intro-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -103,7 +103,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Category | Introductions & flirting (introductions-flirting) |
 | Example | ที่นี่บรรยากาศดีนะครับ ขอนั่งด้วยได้ไหมครับ — thîi nîi ban-yaa-gàat dii ná khráp, khǎw nâng dûai dâai mǎi khráp — Nice atmosphere here — may I sit with you? |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-intro-n2 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -186,7 +186,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Category | Introductions & flirting (introductions-flirting) |
 | Example | วันนี้สนุกมากครับ อยากเจอคุณอีก — wan níi sà-nùk mâak khráp, yàak jer khun ìik — Today was really fun — I want to see you again. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-intro-n3 (context) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -318,7 +318,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Caring, safety-minded closer for planning a meetup. |
 | Example | เดินทางปลอดภัยนะครับ ถึงแล้วบอกด้วย — doen thaang bplàwt-phai ná khráp, thǔeng láew bàwk dûai — Travel safe — let me know when you get there. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-apps-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -368,7 +368,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Category | Compliments (compliments) |
 | Example | ผมชอบมุกตลกของคุณ คุยแล้วหัวเราะตลอดเลย — phǒm chôp múk tà-lòk khǎwng khun, khui láew hǔa-rawh tà-làwt loei — I love your sense of humor — I laugh the whole time we talk. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-compl-n1 (meaning) |
 | Review status | pending |
 
 > ⚠ **QA flag for reviewer:** Example phonetics: หัวเราะ is romanized "hǔa-rawh" (mid tone on the final syllable) — should เราะ be high tone, i.e. "hǔa-ráwh"? Please confirm the correct tone marks.
@@ -437,7 +437,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | ใจดี (kind-hearted) is a compliment about character, always well received. |
 | Example | ขอบคุณที่ช่วยนะครับ คุณเป็นคนใจดีมาก — khàwp khun thîi chûai ná khráp, khun pen khon jai dee mâak — Thank you for helping — you are a very kind person. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-compl-n2 (usage) |
 | Review status | pending |
 
 > ⚠ **QA flag for reviewer:** Romanization consistency: ดี is written "dee" here ("jai dee") but "dii" everywhere else in the pack (duu dii, dii mǎi). Please pick one spelling — the app will standardize the pack to your choice.
@@ -551,7 +551,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | แฟน (faen) = boyfriend/girlfriend (gender-neutral in Thai). |
 | Example | ผมอยากอยู่กับคุณจริงๆ คุณเป็นแฟนผมได้ไหม — phǒm yàak yùu gàp khun jing jing, khun pen faen phǒm dâai mǎi — I really want to be with you — will you be my partner? |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-rel-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -614,7 +614,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Introducing someone to your friends is a meaningful relationship step here. |
 | Example | เสาร์นี้เพื่อนผมนัดกัน ไปเจอเพื่อนๆ ผมไหม — sǎo níi phûean phǒm nát gan, bpai jer phûean phûean phǒm mǎi — My friends are meeting up Saturday — want to meet them? |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-rel-n2 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -642,7 +642,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Always check in. Asking first shows respect and keeps consent clear. |
 | Example | ผมขอจับมือได้ไหม แบบนี้โอเคไหมครับ — phǒm khǎw jàp mue dâai mǎi, bàep níi oh-keh mǎi khráp — May I hold your hand — is this okay? |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-bound-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -684,7 +684,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Reassuring the other person that there is no pressure. |
 | Example | ไม่เป็นไร ไม่ต้องรีบ ค่อยๆ ทำความรู้จักกันก็ได้ — mâi pen rai, mâi tâwng rîip, khâwy khâwy tham khwaam rúu-jàk gan gâw dâai — It's fine, no rush — we can take our time getting to know each other. |
 | Speaker note | Particle-neutral as written |
-| Linked questions | (none yet) |
+| Linked questions | dq-bound-n2 (context) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -789,7 +789,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | เคารพ = to respect. A mature, mutual framing of boundaries. |
 | Example | ไม่ว่าจะยังไง เราเคารพการตัดสินใจของกันและกันนะ — mâi wâa jà yang-ngai, rao khao-róp gaan tàt-sǐn jai khǎwng gan láe gan ná — Whatever happens, let's respect each other's decisions. |
 | Speaker note | Particle-neutral as written |
-| Linked questions | (none yet) |
+| Linked questions | dq-bound-n3 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -930,7 +930,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Opens a serious conversation without being aggressive. |
 | Example | มีเรื่องอยากบอก เราคุยกันหน่อยได้ไหม — mii rûeang yàak bàwk, rao khui gan nàwy dâai mǎi — There's something I want to say — can we talk? |
 | Speaker note | Particle-neutral as written |
-| Linked questions | (none yet) |
+| Linked questions | dq-argue-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -1046,7 +1046,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | เบียร์ = beer. ...ที่ (thîi) counts servings/orders. |
 | Example | ขอเบียร์สองที่ครับ เย็นๆ นะครับ — khǎw bia sǎwng thîi khráp, yen yen ná khráp — Two beers please — nice and cold. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-night-n1 (meaning) |
 | Review status | pending |
 
 > ⚠ **QA flag for reviewer:** Classifier check: is "khǎw bia sǎwng thîi" natural for ordering beer? ที่ usually counts food portions/seats — should beer be ขวด (khùat, bottle) or แก้ว (gâew, glass)? The note also teaches the ที่-counts-servings pattern; both would need your correction.
@@ -1111,7 +1111,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | กลับก่อน = leave/go back first. Polite way to excuse yourself. |
 | Example | ดึกแล้ว ผมกลับก่อนนะครับ — dùek láew, phǒm glàp gàwn ná khráp — It's late — I'm heading home now. |
 | Speaker note | Male-polite form (ผม / ครับ); female speakers swap to ค่ะ / ฉัน |
-| Linked questions | (none yet) |
+| Linked questions | dq-night-n2 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -1206,7 +1206,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Context note | Playful disbelief. เธอ (thoe) = casual "you" among friends. |
 | Example | ไม่จริงน่า เธอเจอดาราด้วยเหรอ — mâi jing nâa, thoe jer daa-raa dûai rǒe — No way — you met a celebrity?! |
 | Speaker note | Particle-neutral as written |
-| Linked questions | (none yet) |
+| Linked questions | dq-slang-n1 (meaning) |
 | Review status | pending |
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
@@ -1312,16 +1312,18 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Thai | บ้าจริง |
 | Phonetic | bâa jing |
 | English | "Damn it!" / "Oh, come on!" (mild frustration) |
-| Tone label | Handle with care |
-| Severity | strong |
-| Usage guidance | Don’t use casually |
+| Tone label | Casual |
+| Severity | moderate |
+| Usage guidance | Use carefully |
 | Category | Mild swear words & insults (mild-swears-insults) |
 | Context note | Recognition only. Mild "ugh/darn"-level. Said to yourself, not aimed at a person. |
 | Example | บ้าจริง ลืมกุญแจไว้ที่บ้านอีกแล้ว — bâa jing, luem gun-jae wái thîi bâan ìik láew — Damn it — I left my keys at home again. |
 | Warning shown | Recognition only: this is rough-edged frustration talk. Learn to understand it when you hear it, but as a learner it's safer not to use it — and never direct it at a person. |
 | Speaker note | Particle-neutral as written |
 | Linked questions | dq-swear-1 (meaning) |
-| Review status | pending |
+| Review status | needs-review |
+
+> ⚠ **QA flag for reviewer:** THIS IS THE ONE ITEM CURRENTLY BLOCKING SIGN-OFF OF THE ENTIRE PACK. บ้าจริง is glossed "Damn it! / Oh, come on! (mild frustration)", its context note says mild "ugh/darn"-level, and its quiz explanation calls it "far softer than a real curse" — three surfaces read mild. An earlier data entry marked it 'strong' ("Handle with care"), contradicting all three; that contradiction was resolved DOWN to severity:'moderate' with reviewStatus:'needs-review' pending your decision (never 'approved' before it). Please confirm the FINAL severity band for บ้าจริง: gentle (safe self-talk), moderate (use carefully), or strong (recognition-only). Because this item stays needs-review, DATING_REVIEW_COMPLETE cannot honestly flip, so confirming it is what unblocks sign-off for all 60 phrases — please prioritise it.
 
 **Native reviewer verdict:**  ☐ Approve as-is  ·  ☐ Change (write correction below)  ·  ☐ Reject (explain below)
 
@@ -1340,7 +1342,7 @@ An internal QA pass raised specific questions on these phrases — please start 
 | Category | Mild swear words & insults (mild-swears-insults) |
 | Context note | Recognition only, so you understand it when heard. Rough/informal — best not to use; never aim it at someone. |
 | Example | เชี่ย ตกใจหมดเลย — chîa, tòk-jai mòt loei — Whoa — you scared me! |
-| Warning shown | Recognition only: understand it when you hear it, but avoid saying it yourself, and never aim it at someone. · Rough informal exclamation — do not adopt it into your own speech, and never direct it at a person. |
+| Warning shown | Recognition only: understand it when you hear it, but avoid saying it yourself, and never aim it at someone. · Recognition only — understand it when you hear it, but as a learner keep it out of your own speech. |
 | Speaker note | Particle-neutral as written |
 | Linked questions | dq-swear-2 (tone), dq-swear-3 (scenario) |
 | Review status | pending |

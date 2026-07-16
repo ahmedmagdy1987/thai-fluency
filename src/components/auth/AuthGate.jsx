@@ -5,9 +5,10 @@ import ForgotPassword from './ForgotPassword.jsx';
 import { SITE_CONFIG } from '../../config/site.js';
 
 // Three-button entry: Create account, Sign in, or Try a quick demo.
-// "Try a quick demo" is the only anonymous path — limited to 5 cards via
-// the DemoMode component (rendered separately at the App level when the
-// onTryDemo callback flips that mode on).
+// "Try a quick demo" is ONE anonymous entry — a 5-card DemoMode preview
+// (rendered at the App level when onTryDemo flips that mode on). It is no longer
+// the only anonymous path: the anonymous-first Get Started flow now drops a
+// visitor straight into a full first lesson without this gate.
 export default function AuthGate({ onTryDemo, onAuthSuccess, initialScreen = 'welcome', onScreenChange, onOpenPublicPage }) {
   const [screen, setScreen] = useState(initialScreen);
   const [prefilledEmail, setPrefilledEmail] = useState('');

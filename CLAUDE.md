@@ -97,8 +97,8 @@ All styles live in `src/styles/app.css`. The file is roughly organized:
 ## Known issues / TODO
 
 - Audio uses browser TTS only. Quality varies by device. Plan to add real audio (Fiverr or ElevenLabs) when scaling up content.
-- Total card count is 645. Target is ~3,000 words + 1,000 sentences = ~4,000 cards.
-- Stages 5-8 are still light on content — biggest opportunity is filling these.
+- Total card count is ~4,780 in the free deck (4,792 incl. the 5 mature + 7 quarantined cards held out of it). The original ~4,000-card target has been met and passed.
+- Content is now back-loaded, not front-loaded: cards grow per stage from ~150 (stage 1) to ~980 (stage 8), so stages 5-8 hold ~70% of the deck — the opposite of the old "stages 5-8 are light" note. The thinner area now is early-stage *tourist situation* sessions (a stage-1 tourist gets only a couple of cards), which is an owner content-authoring decision, not a gap in the stage decks.
 - Reading practice section not yet built. Writing practice deprioritized indefinitely.
 
 ## Don't do

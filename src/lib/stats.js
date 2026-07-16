@@ -160,6 +160,19 @@ export function migrateStats(stats) {
 
 const STREAK_DAY_MS = 24 * 60 * 60 * 1000;
 
+// Whole-day gap between two LOCAL date keys (YYYY-MM-DD). Both keys already come
+// from getLocalDateKey, so parsing BOTH as UTC midnight cancels the offset and
+// yields the exact calendar-day difference regardless of the runner's timezone.
+// The previous code diffed `new Date(lastStudyKey)` (parsed as UTC midnight)
+// against `Date.now()` (a real instant) — a mixed basis that read a 2-day gap as
+// 3 for users west of UTC at certain hours, silently voiding their streak freeze.
+function daysBetweenLocalKeys(fromKey, toKey) {
+  const from = Date.parse(`${fromKey}T00:00:00Z`);
+  const to = Date.parse(`${toKey}T00:00:00Z`);
+  if (Number.isNaN(from) || Number.isNaN(to)) return null;
+  return Math.round((to - from) / STREAK_DAY_MS);
+}
+
 // Pure streak-rollover decision, shared by grantXp. Keys on `lastStudy` (the last
 // day XP was actually earned) — NOT `todayDate`, which the day-rollover effect
 // pre-sets to today on load before the user studies. Returns the new streak and
@@ -168,16 +181,17 @@ const STREAK_DAY_MS = 24 * 60 * 60 * 1000;
 //   • studied yesterday      → +1.
 //   • gap ≤ 2 days + freeze  → +1, freeze consumed.
 //   • longer gap / no freeze → reset to 1.
-export function computeStreak(s, today, yesterday, nowMs = Date.now()) {
+export function computeStreak(s, today, yesterday) {
   if ((s.lastStudy || null) === today) {
     return { streak: s.streak || 0, usedFreeze: false };
   }
   if (s.lastStudy === yesterday) {
     return { streak: (s.streak || 0) + 1, usedFreeze: false };
   }
-  const daysSince = s.lastStudy
-    ? Math.floor((nowMs - new Date(s.lastStudy).getTime()) / STREAK_DAY_MS)
-    : 999;
+  // Day gap computed key-to-key on one consistent (UTC) basis — never against
+  // Date.now() — so the freeze window is identical in every timezone.
+  const gap = s.lastStudy ? daysBetweenLocalKeys(s.lastStudy, today) : null;
+  const daysSince = gap == null ? 999 : gap;
   if (daysSince <= 2 && (s.streakFreezes || 0) > 0) {
     return { streak: (s.streak || 0) + 1, usedFreeze: true };
   }

@@ -917,7 +917,7 @@ export const DATING_PHRASES = [
     // own note ("Mild 'ugh/darn'-level") and its quiz explanation ("far softer
     // than a real curse"). Three surfaces said mild, one said strong, so the
     // severity moved to match the mild reading — scripts/check-dating-severity-
-    // consistency.mjs now fails the build if that contradiction returns.
+    // consistency.mjs fails `npm run check` (run in CI) if that contradiction returns.
     // NOT SETTLED: this is a safety-relevant label on un-reviewed content, so the
     // FINAL severity is the native reviewer's call — 'needs-review' surfaces the
     // "Needs review" badge until they confirm it (never 'approved' before then).

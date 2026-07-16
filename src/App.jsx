@@ -369,8 +369,11 @@ export default function TukTalkThaiApp() {
   // can never "undo" user A's review into their own progress.
   const [lastReviewSnapshot, setLastReviewSnapshot] = useState(null);
 
-  // Auth state. Anonymous access is gated to a 5-card demo (DemoMode); the
-  // only paths to the full app are sign-in or sign-up.
+  // Auth state. Anonymous users now enter a FULL first lesson without signing up
+  // (the Get Started / anonymous-first path — see showAuthGate below and
+  // handleGetStarted); sign-in / sign-up exist to SAVE and sync that progress to
+  // the cloud, not to unlock the app. DemoMode is a separate, now-legacy 5-card
+  // preview (owner-decision: keep as a preview or retire), NOT the only anon path.
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [authReady, setAuthReady] = useState(!hasSupabaseConfig);
@@ -2237,6 +2240,11 @@ export default function TukTalkThaiApp() {
         name: mission.name,
         total: mission.total,
         cardIds: mission.cardIds || [],
+        // Only situation "Practice" sessions opt into the already-learned replay
+        // (CardsTab): a situation the learner already finished should re-serve its
+        // cards rather than open onto an empty queue while the rail advertises "N
+        // ready". Mini-unit / Today missions never set this, so they are unchanged.
+        allowReplay: !!mission.allowReplay,
       },
     });
   }, [handleSetTab]);
@@ -2309,6 +2317,11 @@ export default function TukTalkThaiApp() {
       name: sit.name,
       total: cardIds.length,
       cardIds,
+      // A situation with nothing new left to teach must still serve its cards on
+      // "Practice" (as a non-due replay) so the rail's "N cards ready" is honest
+      // instead of opening onto "Mission complete". Non-due replays earn 0 XP
+      // (reviewOne's isDueReview gate), so this re-practice farms nothing.
+      allowReplay: true,
     });
   }, [handleStartMissionCards, stats.startedStage, maxUnlockedStage]);
 
@@ -2862,7 +2875,12 @@ export default function TukTalkThaiApp() {
           onDismiss={() => setSuperActivation(null)}
         />
       )}
-      {!celebration && achievementToast && (
+      {/* !rewardScreen matches the sibling modals below (SaveProgressAsk,
+          StreakRecoveryCard): a Goal-Crusher achievement can fire the same tick
+          as the mission payoff (60 XP clears the 50-XP daily goal), and both use
+          the same full-screen .reward-screen-backdrop — without this guard two
+          backdrops stack. The achievement waits for the reward screen to close. */}
+      {!celebration && !rewardScreen && achievementToast && (
         <AchievementUnlockedModal achievement={achievementToast} onContinue={handleAchievementToastClose} />
       )}
       {showStage1Celebration && (

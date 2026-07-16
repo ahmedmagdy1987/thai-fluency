@@ -1,0 +1,76 @@
+name: Validate
+
+# Runs the web build and the FULL validator suite (npm run check → all 25
+# check-*.mjs + 3 verify-*.mjs) on every push/PR to master, and FAILS the
+# workflow if any validator fails. Before this, the 28 guards only ran when a
+# human remembered to; now a red check blocks the change.
+#
+# No Thai content is authored, nothing is approved, no secrets are needed — the
+# validators are hermetic and read only committed data. The public frontend env
+# values are provided as repo VARIABLES so the build embeds them (build still
+# succeeds with empty values).
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Web build
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ vars.VITE_SUPABASE_KEY }}
+          VITE_ONESIGNAL_APP_ID: ${{ vars.VITE_ONESIGNAL_APP_ID }}
+        run: npm run build
+
+      - name: Run all validators
+        run: npm run check
+
+  # Runs the SAME validator suite under several west-of-UTC timezones so the
+  # streak-freeze timezone bug (a 2-day gap read as 3, voiding the freeze) can
+  # never regress unseen: check-quest-logic.mjs failed in exactly these zones
+  # before the stats.js fix. GitHub runners default to UTC, so without this the
+  # regression would be invisible in CI.
+  validators-across-timezones:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tz:
+          - America/Anchorage
+          - America/Adak
+          - Pacific/Honolulu
+          - America/Los_Angeles
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run all validators (TZ=${{ matrix.tz }})
+        env:
+          TZ: ${{ matrix.tz }}
+        run: npm run check

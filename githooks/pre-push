@@ -1,0 +1,19 @@
+#!/bin/sh
+# Opt-in local guard: run the full validator suite before every push so a red
+# check is caught before it reaches CI. NOT enabled automatically (no husky, no
+# git-config side effects on install). Enable once per clone with:
+#
+#   git config core.hooksPath githooks
+#
+# Disable with: git config --unset core.hooksPath
+#
+# Mirrors what .github/workflows/validate.yml runs in CI (npm run check).
+
+echo "pre-push: running npm run check ..."
+npm run check
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo "pre-push: validators failed — push aborted. Fix or run 'git push --no-verify' to override." >&2
+  exit 1
+fi
+exit 0

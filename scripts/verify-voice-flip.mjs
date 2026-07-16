@@ -83,3 +83,11 @@ for (const c of femaleSample) {
   console.log(`    in male voice mode:   ${male.thai}  |  ${male.ph}  |  ${male.en}`);
   console.log(`    in female voice mode: ${female.thai}  |  ${female.ph}  |  ${female.en}`);
 }
+
+// A broken male→female flip ships a wrong-gender card, so this is a real guard,
+// not a report: fail the build (and `npm run check`) if any flip is broken.
+if (badFlips > 0) {
+  console.error(`\nVoice-flip check FAILED: ${badFlips} card(s) did not flip cleanly to female form.`);
+  process.exit(1);
+}
+console.log('\nVoice-flip check passed.');
