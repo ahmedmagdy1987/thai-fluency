@@ -2086,6 +2086,25 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 /* Sections */
 .learn-section { display: flex; flex-direction: column; gap: var(--sp-3); }
 .learn-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; }
+/* ── DE-CLUTTER: collapsible secondary sections ──────────────────────────────
+   Learn's long secondary blocks (the 8-stage journey, the mission rail, the
+   situation rail) are <details> closed by default so ONE primary action leads the
+   screen. Nothing is removed — the summary keeps the orientation visible and the
+   full content is one tap away. Native <details>: no JS, keyboard + SR friendly. */
+.learn-collapse { border: 1px solid var(--line); border-radius: 16px; background: var(--card-bg); padding: var(--sp-3) var(--sp-4); }
+.learn-collapse[open] { padding-bottom: var(--sp-4); }
+.learn-collapse-summary { display: flex; align-items: center; gap: var(--sp-2); cursor: pointer; list-style: none; user-select: none; }
+.learn-collapse-summary::-webkit-details-marker { display: none; }
+.learn-collapse-title { font-family: 'Fraunces', serif; font-size: var(--fs-16); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; }
+.learn-collapse-meta { flex: 1; min-width: 0; font-size: var(--fs-12); color: var(--stone); text-align: right; }
+.learn-collapse-chev { flex-shrink: 0; color: var(--ink-soft); transition: transform 0.18s; }
+.learn-collapse[open] .learn-collapse-chev { transform: rotate(180deg); }
+.learn-collapse[open] .learn-collapse-summary { margin-bottom: var(--sp-3); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--line); }
+.learn-collapse-summary:focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; border-radius: 8px; }
+/* The rail brings its own <section> chrome; inside a collapse, drop the double frame. */
+.learn-collapse-rail .situation-rail { margin: 0; }
+.learn-collapse-rail .situation-rail-header { display: none; }
+@media (prefers-reduced-motion: reduce) { .learn-collapse-chev { transition: none; } }
 .learn-section-title { font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin: 0; }
 .learn-section-meta { font-size: var(--fs-12); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
 .learn-journey-summary { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; text-transform: none; letter-spacing: 0; }
@@ -2892,7 +2911,10 @@ button.character-coach-portrait { cursor: pointer; }
 
 /* Bonus: borrowed "Words You Already Know" teaser + modal content */
 .learn-bonus-section { margin-top: var(--sp-1); }
-.learn-bonus-card { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: var(--sp-4) var(--sp-4); border: 1px solid color-mix(in srgb, var(--gold) 38%, var(--line)); border-radius: 16px; background: linear-gradient(120deg, color-mix(in srgb, var(--gold) 12%, var(--card-bg)), var(--card-bg) 70%); color: var(--ink); font-family: inherit; text-align: left; cursor: pointer; box-shadow: 0 10px 26px rgba(15, 61, 46, 0.07); transition: border-color 0.15s, box-shadow 0.15s; }
+/* DE-EMPHASIZED (de-clutter): this secondary bonus promo was a full gold-gradient
+   card with a drop shadow, competing with the one primary action. Now a quiet,
+   compact row — same button, same content, same behaviour, just not shouting. */
+.learn-bonus-card { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: var(--sp-3) var(--sp-3); border: 1px solid var(--line); border-radius: 12px; background: var(--card-bg); color: var(--ink-soft); font-family: inherit; text-align: left; cursor: pointer; transition: border-color 0.15s; }
 @media (hover: hover) and (pointer: fine) {
   .learn-bonus-card:hover { border-color: var(--gold); box-shadow: 0 12px 30px color-mix(in srgb, var(--gold) 22%, transparent); }
 }
@@ -3249,6 +3271,10 @@ button.character-coach-portrait { cursor: pointer; }
 .quiz-hearts-gate-copy { font-size: var(--fs-14); color: var(--ink-soft); line-height: 1.5; margin: 0; max-width: 400px; }
 .quiz-hearts-gate-regen { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 600; color: var(--jade); background: var(--cream-warm); border: 1px solid var(--line); border-radius: 999px; padding: var(--sp-1) var(--sp-3); }
 .app-root[data-theme="dark"] .quiz-hearts-gate-regen { background: rgba(232, 228, 217, 0.05); }
+/* Mid-session pause notice: the Challenge is held, not lost. Only rendered when a
+   session is actually in progress, so the promise is always true. */
+.quiz-hearts-gate-resume { font-size: var(--fs-13); line-height: 1.5; color: var(--ink); background: color-mix(in srgb, var(--jade) 8%, transparent); border: 1px solid color-mix(in srgb, var(--jade) 24%, var(--line)); border-radius: 12px; padding: var(--sp-2) var(--sp-3); max-width: 400px; }
+.quiz-hearts-gate-resume strong { color: var(--jade); }
 .quiz-hearts-gate-regen strong { color: var(--gold); }
 .quiz-hearts-gate-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: center; margin-top: var(--sp-1); }
 .quiz-hearts-gate-actions .btn-primary,

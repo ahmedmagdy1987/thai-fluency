@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, ChevronRight, Clock, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, Clock, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
 import { STAGES, MISSIONS } from '../data/taxonomy.js';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter } from '../data/stageCharacters.js';
@@ -283,13 +283,18 @@ export default function LearnPath({
         </div>
       </section>
 
-      {/* Mission rail — only while inside Stage 1 */}
+      {/* Mission rail — only while inside Stage 1.
+          DE-CLUTTER (collapsed by default): this panel restates the mission the
+          Continue hero at the top already launches, then adds a 6-node rail. Its
+          headline progress stays visible in the summary; the card, bar, stats and
+          every mission node are unchanged inside. Nothing removed. */}
       {inMissionView && currentMission && missionState && (
-        <section className="learn-section">
-          <div className="learn-section-header">
-            <h2 className="learn-section-title">Mission {currentMission.id}: {currentMission.name}</h2>
-            <span className="learn-section-meta">Stage 1: Survival Thai</span>
-          </div>
+        <details className="learn-section learn-collapse">
+          <summary className="learn-collapse-summary">
+            <span className="learn-collapse-title">Mission {currentMission.id}: {currentMission.name}</span>
+            <span className="learn-collapse-meta">{Math.round(currentMission.seenPct || 0)}% · Stage 1: Survival Thai</span>
+            <ChevronDown size={18} className="learn-collapse-chev" aria-hidden="true" />
+          </summary>
           <div className="learn-mission-card" style={{ '--mission-color': currentMission.color }}>
             <div className="learn-mission-icon">{currentMission.icon}</div>
             <div className="learn-mission-body">
@@ -335,18 +340,23 @@ export default function LearnPath({
               );
             })}
           </div>
-        </section>
+        </details>
       )}
 
-      {/* The 8-stage path — every stage has a character */}
-      <section className="learn-section">
-        <div className="learn-section-header">
-          <h2 className="learn-section-title">Your Thai journey</h2>
-          <span className="learn-section-meta learn-journey-summary">
-            <span>{STAGES.length} stages</span>
-            <span>{MINI_UNITS.length} guided lessons</span>
+      {/* The 8-stage path — every stage has a character.
+          DE-CLUTTER (collapsed by default): the full 8-stage list is the single
+          biggest block on this screen and competed with the one primary action at
+          the top. NOTHING is removed — every stage row, character, progress and
+          lock state is unchanged and one tap away; the summary keeps the
+          orientation ("Stage X of 8") visible while it is closed. */}
+      <details className="learn-section learn-collapse">
+        <summary className="learn-collapse-summary">
+          <span className="learn-collapse-title">Your Thai journey</span>
+          <span className="learn-collapse-meta">
+            Stage {currentStageId} of {STAGES.length} · {MINI_UNITS.length} guided lessons
           </span>
-        </div>
+          <ChevronDown size={18} className="learn-collapse-chev" aria-hidden="true" />
+        </summary>
 
         <ol className="learn-path-list" role="list">
           {stageState && stageState.stages.map((S, idx) => {
@@ -449,7 +459,7 @@ export default function LearnPath({
             );
           })}
         </ol>
-      </section>
+      </details>
 
       <div className="learn-footnote">
         <Sparkles size={14} />

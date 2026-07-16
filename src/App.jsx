@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 import { CARDS } from './data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
@@ -2866,7 +2867,22 @@ export default function TukTalkThaiApp() {
               tab (the 5-tab nav is hand-rolled and there is no router). It is a
               preview rail: no situation lesson flow exists yet, so it informs and
               promises nothing it cannot deliver. */}
-          {tab === 'learn'  && <SituationRail stats={stats} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} onOpenSuper={() => handleOpenPremium('dating')} onStartSituation={handleStartSituationCards} />}
+          {/* DE-CLUTTER: the rail is a long secondary list (16 situations + the
+              upcoming/backlog blocks) that competed with Learn's one primary
+              action. Collapsed by default HERE (at the Learn layout level, not
+              inside SituationRail) so the component itself — and the viz harness
+              that renders it in isolation — is untouched. Nothing is removed: the
+              whole rail, every count, badge and Start, is one tap away. */}
+          {tab === 'learn' && (
+            <details className="learn-collapse learn-collapse-rail">
+              <summary className="learn-collapse-summary">
+                <span className="learn-collapse-title">Your situation order</span>
+                <span className="learn-collapse-meta">Real-life situations, ordered for you</span>
+                <ChevronDown size={18} className="learn-collapse-chev" aria-hidden="true" />
+              </summary>
+              <SituationRail stats={stats} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} onOpenSuper={() => handleOpenPremium('dating')} onStartSituation={handleStartSituationCards} />
+            </details>
+          )}
           {tab === 'today'  && <TodayTab stats={dashboardStats} fullStats={stats} setTab={handleSetTab} stageState={stageState} missionState={missionState} voice={voice} viewMode={viewMode} onStartMissionCards={handleStartMissionCards} />}
           {tab === 'cards'  && <CardsTab progress={progress} reviewOne={reviewOne} markCardKnown={markCardKnown} dailyNewLimit={stats.dailyNewLimit} voice={voice} viewMode={viewMode} cardDirection={cardDirection} onChangeCardDirection={setCardDirection} startedStage={stats.startedStage || 1} maxUnlockedStage={maxUnlockedStage} audioRate={audioRate} audioAutoPlay={!!stats.audioAutoPlay} showCharacters={stats.showCharacters !== false} undoLastReview={undoLastReview} lastReviewSnapshot={lastReviewSnapshot} sessionScope={cardSession} setTab={handleSetTab} stageState={stageState} />}
           {tab === 'browse' && <BrowseTab progress={progress} maxUnlockedStage={maxUnlockedStage} recordDialogueComplete={recordDialogueComplete} dialoguesCompleted={stats.dialoguesCompleted || []} voice={voice} viewMode={viewMode} audioRate={audioRate} masteryRank={stats.masteryRank || {}} completedMiniUnits={stats.completedMiniUnits || []} />}

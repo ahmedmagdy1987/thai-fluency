@@ -85,13 +85,20 @@ export default function QuizTab({
   const [poolError, setPoolError] = useState(null);
   const checkLockedRef = useRef(false);
 
-  // "Out of hearts" gate: only relevant on the intro screen (no active session),
-  // for free users at 0 effective hearts. Super users are never gated. Mid-
-  // session play is never interrupted — a heart hitting 0 during a Challenge
-  // still lets the current round finish.
+  // "Out of hearts" gate: applies to free users at 0 effective hearts BOTH on the
+  // intro AND mid-session. Super users are never gated.
+  //
+  // WAS intro-only ("mid-session play is never interrupted"), which made hearts
+  // decorative once a Challenge had started: a user could hit 0 on question 3 and
+  // answer the rest for free. The gate only bit on the NEXT start. Now the gate is
+  // session-wide — the moment hearts reach 0 the session STOPS and the conversion
+  // surface takes over. Session state (questions/idx/score) stays in component
+  // state and is NOT reset, so this only changes what RENDERS: when a heart
+  // returns (regen / gems / Super) the gate clears and the SAME question resumes
+  // with the score intact. Progress is never lost, and play is never free.
   const onIntro = questions.length === 0;
-  const gateEligible = !isSuper && onIntro;
-  // Tick once a second while a free user sits on the intro out of hearts, so the
+  const gateEligible = !isSuper;
+  // Tick once a second while a free user is out of hearts, so the
   // regen count stays live and the gate SELF-CLEARS the moment a heart refills —
   // no page refresh needed (the `hearts` prop can be a stale snapshot).
   const [nowTick, setNowTick] = useState(() => Date.now());
@@ -265,6 +272,72 @@ export default function QuizTab({
     coach.react('speaking', { duration: 1400 });
   };
 
+  // The out-of-hearts conversion surface. Rendered on the intro (no session yet)
+  // AND mid-session, where it PAUSES the Challenge instead of ending it: session
+  // state is untouched, so clearing the gate resumes the same question. `resume`
+  // is passed only mid-session, so the "progress is saved" promise is only made
+  // when it is actually true.
+  const renderHeartsGate = (resume = null) => (
+    <div className="quiz-hearts-gate" role="group" aria-label="Out of hearts">
+      <div className="quiz-hearts-gate-icon" aria-hidden="true"><Heart size={30} /></div>
+      <div className="quiz-hearts-gate-title">Out of hearts</div>
+      <p className="quiz-hearts-gate-copy">
+        Hearts are only used in the Challenge. Your practice and lessons are always free —
+        keep learning while your hearts refill.
+      </p>
+      {resume && (
+        <div className="quiz-hearts-gate-resume" role="status">
+          Your Challenge is paused and saved — you'll pick up at{' '}
+          <strong>question {resume.at} of {resume.total}</strong>, {resume.score} correct so far.
+        </div>
+      )}
+      <div className="quiz-hearts-gate-regen">
+        {regen && regen.nextRegenMs > 0
+          ? <>Next heart in <strong>{formatCountdown(regen.nextRegenMs)}</strong></>
+          : 'A heart is ready — you can play now.'}
+      </div>
+      <div className="quiz-hearts-gate-actions">
+        {/* This is the app's most important conversion surface, so Super
+            is the PRIMARY CTA (intent 'quiz' is captured by the caller so
+            checkout returns here). Gem refill is the secondary path. */}
+        {onOpenSuper && (
+          <button type="button" className="btn-primary quiz-hearts-gate-super" onClick={() => onOpenSuper()}>
+            <Crown size={14} aria-hidden="true" /> Go unlimited with Super
+          </button>
+        )}
+        {onRefillHearts && (
+          <button
+            type="button"
+            className="btn-secondary quiz-hearts-gate-refill"
+            onClick={() => onRefillHearts()}
+            disabled={!canAffordRefill}
+            title={canAffordRefill ? `Refill hearts for ${REFILL_COST_GEMS} gems` : `Need ${REFILL_COST_GEMS} gems to refill`}
+          >
+            <Gem size={14} aria-hidden="true" /> Refill ({REFILL_COST_GEMS} gems)
+          </button>
+        )}
+        {/* Rewarded-ad slot — HIDDEN until an ad unit is configured
+            (VITE_REWARDED_AD_UNIT), like the social/donation gates. No ad
+            network is integrated here (owner decision). */}
+        {hasActiveAdSlot() && onWatchAd && (
+          <button type="button" className="btn-secondary quiz-hearts-gate-ad" onClick={() => onWatchAd()}>
+            <Play size={14} aria-hidden="true" /> Watch an ad for a heart
+          </button>
+        )}
+      </div>
+      {!canAffordRefill && (
+        <div className="quiz-hearts-gate-hint">
+          You have {gems} gem{gems === 1 ? '' : 's'}. Earn more by hitting your daily goal and passing Challenges.
+        </div>
+      )}
+      {setTab && (
+        <button type="button" className="quiz-hearts-gate-practice" onClick={() => setTab('cards')}>
+          You can still learn and review for free →
+        </button>
+      )}
+    </div>
+  );
+
   if (questions.length === 0) {
     return (
       <div className="tab-content quiz-mode">
@@ -316,60 +389,7 @@ export default function QuizTab({
               <span className="quiz-hearts-status-text">{heartsLive}/{HEART_MAX}</span>
             </div>
           )}
-          {outOfHearts ? (
-            <div className="quiz-hearts-gate" role="group" aria-label="Out of hearts">
-              <div className="quiz-hearts-gate-icon" aria-hidden="true"><Heart size={30} /></div>
-              <div className="quiz-hearts-gate-title">Out of hearts</div>
-              <p className="quiz-hearts-gate-copy">
-                Hearts are only used in the Challenge. Your practice and lessons are always free —
-                keep learning while your hearts refill.
-              </p>
-              <div className="quiz-hearts-gate-regen">
-                {regen && regen.nextRegenMs > 0
-                  ? <>Next heart in <strong>{formatCountdown(regen.nextRegenMs)}</strong></>
-                  : 'A heart is ready — you can play now.'}
-              </div>
-              <div className="quiz-hearts-gate-actions">
-                {/* This is the app's most important conversion surface, so Super
-                    is the PRIMARY CTA (intent 'quiz' is captured by the caller so
-                    checkout returns here). Gem refill is the secondary path. */}
-                {onOpenSuper && (
-                  <button type="button" className="btn-primary quiz-hearts-gate-super" onClick={() => onOpenSuper()}>
-                    <Crown size={14} aria-hidden="true" /> Go unlimited with Super
-                  </button>
-                )}
-                {onRefillHearts && (
-                  <button
-                    type="button"
-                    className="btn-secondary quiz-hearts-gate-refill"
-                    onClick={() => onRefillHearts()}
-                    disabled={!canAffordRefill}
-                    title={canAffordRefill ? `Refill hearts for ${REFILL_COST_GEMS} gems` : `Need ${REFILL_COST_GEMS} gems to refill`}
-                  >
-                    <Gem size={14} aria-hidden="true" /> Refill ({REFILL_COST_GEMS} gems)
-                  </button>
-                )}
-                {/* Rewarded-ad slot — HIDDEN until an ad unit is configured
-                    (VITE_REWARDED_AD_UNIT), like the social/donation gates. No ad
-                    network is integrated here (owner decision). */}
-                {hasActiveAdSlot() && onWatchAd && (
-                  <button type="button" className="btn-secondary quiz-hearts-gate-ad" onClick={() => onWatchAd()}>
-                    <Play size={14} aria-hidden="true" /> Watch an ad for a heart
-                  </button>
-                )}
-              </div>
-              {!canAffordRefill && (
-                <div className="quiz-hearts-gate-hint">
-                  You have {gems} gem{gems === 1 ? '' : 's'}. Earn more by hitting your daily goal and passing Challenges.
-                </div>
-              )}
-              {setTab && (
-                <button type="button" className="quiz-hearts-gate-practice" onClick={() => setTab('cards')}>
-                  You can still learn and review for free →
-                </button>
-              )}
-            </div>
-          ) : stageReady ? (
+          {outOfHearts ? renderHeartsGate() : stageReady ? (
             <div className="quiz-mode-direction-grid">
               {Object.entries(QUESTION_TYPES).map(([id, config]) => (
                 <button key={id} className="quiz-mode-direction-btn" onClick={() => startQuiz(id)}>
@@ -415,6 +435,30 @@ export default function QuizTab({
             <button className="btn-primary" onClick={() => startQuiz(type)}><RotateCcw size={14} /> Try again</button>
             <button className="btn-secondary" onClick={resetQuiz}>Change stage or direction</button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // MID-SESSION HEARTS GATE. Hearts hit 0 while a Challenge is in progress: the
+  // session PAUSES here rather than letting the user answer on for free (the old
+  // behaviour, which made hearts decorative once a session had started). Placed
+  // AFTER the `done` branch so a finished Challenge still shows its results, and
+  // BEFORE the question render so the next question is unreachable without a
+  // heart. Nothing is reset — questions/idx/score stay in state, so when a heart
+  // arrives (regen tick, gem refill, or Super) this branch simply stops matching
+  // and the SAME question re-renders with the score intact.
+  //
+  // `!checked` matters: a heart is only ever spent by answering WRONG, which sets
+  // checked=true. Gating on the checked question would yank the screen away before
+  // the user sees the feedback for the answer they just PAID a heart for. So the
+  // answered question finishes normally; the gate lands on the NEXT (unanswered)
+  // question — which is exactly the one they cannot have for free.
+  if (outOfHearts && !checked) {
+    return (
+      <div className="tab-content quiz-mode">
+        <div className="quiz-mode-intro">
+          {renderHeartsGate({ at: idx + 1, total: questions.length, score })}
         </div>
       </div>
     );

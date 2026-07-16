@@ -249,13 +249,22 @@
 
 /* ===== Test-mode notices (honest "no real charge yet") ===== */
 .pl-testmode-banner {
-  display: flex; align-items: center; gap: var(--sp-2);
-  margin: var(--sp-3) auto 0; padding: var(--sp-3) var(--sp-4); border-radius: 12px;
-  background: color-mix(in srgb, var(--gold) 14%, var(--card-bg));
-  border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
-  color: var(--ink); font-size: var(--fs-12); line-height: 1.45;
+  /* Breathing room on BOTH sides. This used to be `margin: var(--sp-3) auto 0` —
+     zero bottom margin — so the notice sat flush against the full-bleed .pl-hero
+     gradient directly below it and read as cramped/overlapping. It is a calm aside,
+     not a hero element: generous space above and below, a readable measure rather
+     than a full-width stretch, and a softer gold so it informs without shouting. */
+  display: flex; align-items: flex-start; gap: var(--sp-2);
+  margin: clamp(var(--sp-4), 3vw, var(--sp-6)) auto clamp(var(--sp-4), 3vw, var(--sp-6));
+  max-width: 640px;
+  padding: var(--sp-3) var(--sp-4); border-radius: 12px;
+  background: color-mix(in srgb, var(--gold) 8%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, var(--line));
+  color: var(--ink-soft); font-size: var(--fs-12); line-height: 1.5; text-align: left;
 }
-.pl-testmode-banner svg { color: color-mix(in srgb, var(--gold) 60%, var(--ink)); flex: 0 0 auto; }
+.pl-testmode-banner strong { color: var(--ink); }
+/* Align the icon to the FIRST LINE, not the centre of a wrapped two-line block. */
+.pl-testmode-banner svg { color: color-mix(in srgb, var(--gold) 60%, var(--ink)); flex: 0 0 auto; margin-top: 2px; }
 .sco-testmode-note {
   margin: var(--sp-3) 0 0; padding: var(--sp-2) var(--sp-3); border-radius: 10px;
   background: color-mix(in srgb, var(--gold) 12%, var(--card-bg));
