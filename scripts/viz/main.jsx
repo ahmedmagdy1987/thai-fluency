@@ -21,8 +21,12 @@ import MasteryTrack, { MasterySummary } from '../../src/components/MasteryTrack.
 import SpeakingExercise from '../../src/components/SpeakingExercise.jsx';
 import SituationRail from '../../src/components/SituationRail.jsx';
 import IdentityPathStep from '../../src/components/IdentityPathStep.jsx';
+import LearnPath from '../../src/components/LearnPath.jsx';
 import { CARDS } from '../../src/data/cards.js';
-import { STAGE_1_MINI_UNIT_PILOT } from '../../src/data/miniUnits.js';
+import { STAGE_1_MINI_UNIT_PILOT, MINI_UNITS, getMiniUnitsForStage } from '../../src/data/miniUnits.js';
+import { getStageState, getMissionState } from '../../src/lib/state.js';
+import { getMiniUnitProgressState } from '../../src/lib/miniUnitSequence.js';
+import { getCourseCompletion } from '../../src/lib/courseCompletion.js';
 
 const params = new URLSearchParams(location.search);
 const scene = params.get('scene') || 'dating-teaser';
@@ -59,6 +63,65 @@ const stageState = {
 
 function AppRoot({ children }) {
   return <div className="app-root" data-theme={theme} style={{ minHeight: '100vh' }}>{children}</div>;
+}
+
+// ── Learn trail scenes: REAL state, REAL libs ────────────────────────────────
+// Props are computed through the actual unlock logic (getStageState /
+// getMissionState / getMiniUnitProgressState / getCourseCompletion), never
+// hand-faked, so what renders is what the app derives. Handlers record to
+// window.* so Playwright can assert the wiring (launch / lock / tab).
+function buildLearnProps({ completed = [], progress = {} } = {}) {
+  const lpStats = {
+    ...freeStats,
+    startedStage: 1,
+    hasOnboarded: true,
+    tutorialSeen: true,
+    firstLessonCompleted: true,
+    completedMiniUnits: completed,
+    miniUnitProgress: null,
+    dailyGoal: 50,
+    todayXp: 20,
+  };
+  return {
+    stats: lpStats,
+    fullStats: lpStats,
+    dashboardStats: { due: 3, seen: Object.keys(progress).length, newAvail: 10 },
+    stageState: getStageState(lpStats, progress),
+    missionState: getMissionState(progress),
+    courseCompletion: getCourseCompletion(MINI_UNITS, completed),
+    setTab: (tab, opts) => { window.__LAST_TAB__ = { tab, opts: opts || null }; },
+    onStartMiniUnit: (unitId) => { window.__LAST_START__ = unitId; },
+    onLockedFeature: (S) => { window.__LOCKED_FEATURE__ = S ? S.id : null; },
+    onStartMissionCards: (m) => { window.__LAST_MISSION__ = m ? m.id : null; },
+  };
+}
+
+// Elephant-move scene: local state + a viz-only sim button that appends the
+// CURRENT unit id to completedMiniUnits — exactly the write App.jsx's
+// completion handler performs — so the real LearnPath re-derives and the
+// coach travels to the new current node.
+function LearnTrailMoveScene() {
+  const s1Units = getMiniUnitsForStage(1);
+  const [completed, setCompleted] = React.useState(() => s1Units.slice(0, 2).map(u => u.unitId));
+  const simulateComplete = () => {
+    setCompleted(c => {
+      const seq = getMiniUnitProgressState(s1Units, c, null);
+      return seq.currentUnitId ? [...new Set([...c, seq.currentUnitId])] : c;
+    });
+  };
+  return (
+    <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+      <button
+        type="button"
+        id="viz-sim-complete"
+        style={{ position: 'fixed', top: 4, right: 4, zIndex: 999 }}
+        onClick={simulateComplete}
+      >
+        simulate lesson completion
+      </button>
+      <LearnPath {...buildLearnProps({ completed })} />
+    </div>
+  );
 }
 
 function sceneEl() {
@@ -213,6 +276,67 @@ function sceneEl() {
       // Wave 3 B1: the ONE optional onboarding question that sets stats.identityPath.
       // Skipping is a first-class outcome, not a fifth path.
       return <IdentityPathStep onSelect={noop} onSkip={noop} />;
+    case 'learn-trail-fresh':
+      // Zigzag trail, day one: node 1 current (coach there), rest locked.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <LearnPath {...buildLearnProps({ completed: [], progress: {} })} />
+        </div>
+      );
+    case 'learn-trail-mid':
+      // Mid-stage: 2 lessons complete, node 3 current, 2 locked — all three
+      // node states on one screen, coach at the frontier.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <LearnPath {...buildLearnProps({ completed: getMiniUnitsForStage(1).slice(0, 2).map(u => u.unitId) })} />
+        </div>
+      );
+    case 'learn-trail-move':
+      // Elephant travel: sim button appends the current unit to
+      // completedMiniUnits (the exact completion write) → coach slides on.
+      return <LearnTrailMoveScene />;
+    case 'learn-trail-course-end': {
+      // The all-stages-complete end state: every card seen + every unit done.
+      // getStageState keeps currentStage at 8; the Stage-8 review-only session
+      // must stay one tap away (reachability parity with the old stage row).
+      const allProgress = {};
+      for (const c of CARDS) allProgress[c.id] = { reps: 3, interval: 30, ease: 2.4, due: Date.now() };
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <LearnPath {...buildLearnProps({
+            completed: MINI_UNITS.map(u => u.unitId),
+            progress: allProgress,
+          })} />
+        </div>
+      );
+    }
+    case 'learn-trail-deep':
+      // Auto-scroll proof: Stage 2 with 8/10 done puts the current node
+      // ~1100px down the trail — the load must land on it.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <LearnPath {...buildLearnProps({
+            completed: [
+              ...getMiniUnitsForStage(1).map(u => u.unitId),
+              ...getMiniUnitsForStage(2).slice(0, 8).map(u => u.unitId),
+            ],
+            progress: stage1Progress,
+          })} />
+        </div>
+      );
+    case 'learn-trail-stage2':
+      // Stage transition: ALL stage-1 cards seen + all 5 stage-1 units done →
+      // the REAL getStageState advances currentStage to 2, the trail redraws
+      // with Stage 2's 10 nodes, Stage 1 collapses to a ✓ marker above, and
+      // Stage 3 previews locked below.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+          <LearnPath {...buildLearnProps({
+            completed: getMiniUnitsForStage(1).map(u => u.unitId),
+            progress: stage1Progress,
+          })} />
+        </div>
+      );
     default:
       return <div style={{ padding: 40 }}>Unknown scene: {scene}</div>;
   }

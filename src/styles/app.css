@@ -2047,24 +2047,17 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .learn-course-complete-actions .btn-primary,
 .learn-course-complete-actions .btn-secondary { padding: var(--sp-2) var(--sp-4); font-size: var(--fs-14); }
 
-.learn-continue { position: relative; display: grid; grid-template-columns: 96px 1fr 28px; align-items: center; gap: var(--sp-4); background: linear-gradient(135deg, var(--jade) 0%, var(--jade-soft) 100%); color: var(--cream); border-radius: 18px; padding: var(--sp-5) var(--sp-5) var(--sp-5); overflow: hidden; cursor: pointer; transition: transform 0.18s, box-shadow 0.18s; }
-.learn-continue::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 110% -10%, rgba(255, 217, 132, 0.28) 0%, transparent 55%), radial-gradient(circle at -10% 110%, rgba(255, 217, 132, 0.14) 0%, transparent 60%); }
-.learn-continue:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(15, 61, 46, 0.25); }
-.learn-continue-character { position: relative; width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--learn-char-accent, var(--gold)) 0%, rgba(255,255,255,0.04) 70%); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 -8px 16px rgba(0,0,0,0.18); flex-shrink: 0; }
-.learn-continue-character-emoji { font-size: var(--fs-48); line-height: 1; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18)); }
-.learn-continue-character-shadow { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 60%; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.18); filter: blur(6px); }
-.learn-continue-body { position: relative; min-width: 0; }
-.learn-continue-eyebrow { font-size: var(--fs-11); font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); margin-bottom: var(--sp-2); }
-.learn-continue-cta { font-family: 'Fraunces', serif; font-size: var(--fs-28); font-weight: 500; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: var(--sp-1); }
-.learn-continue-sub { font-size: var(--fs-12); line-height: 1.45; color: rgba(245, 240, 229, 0.82); max-width: 52ch; }
-.learn-continue-sub strong { color: var(--gold); font-weight: 600; }
-.learn-continue-arrow { position: relative; color: var(--gold); }
-@media (min-width: 640px) {
-  .learn-continue { grid-template-columns: 120px 1fr 36px; padding: var(--sp-5) var(--sp-6); }
-  .learn-continue-character { width: 108px; height: 108px; }
-  .learn-continue-character-emoji { font-size: var(--fs-64); }
-  .learn-continue-cta { font-size: var(--fs-28); }
-}
+/* Slim continue strip — a compact utility row, deliberately quieter than the
+   trail's current node (which is the screen's one big primary action). Same
+   behavior + label logic as the old hero, restyled small. */
+.learn-continue-slim { display: flex; align-items: center; gap: var(--sp-3); background: var(--card-bg); border: 1px solid var(--line-strong); border-left: 4px solid var(--learn-char-accent, var(--jade)); border-radius: 14px; padding: var(--sp-2) var(--sp-3); cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; min-height: 52px; }
+.learn-continue-slim:hover { border-color: var(--jade); box-shadow: 0 6px 18px rgba(15, 61, 46, 0.10); }
+.learn-continue-slim:focus-visible { outline: 3px solid var(--gold-deep); outline-offset: 2px; }
+.learn-continue-slim-emoji { font-size: var(--fs-22); line-height: 1; flex-shrink: 0; }
+.learn-continue-slim-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.learn-continue-slim-eyebrow { font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.learn-continue-slim-label { font-size: var(--fs-14); font-weight: 700; color: var(--jade); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.learn-continue-slim-arrow { color: var(--gold); flex-shrink: 0; }
 
 /* Daily goal card (learn-specific to avoid clashing with TodayTab's variant) */
 .learn-goal-card { display: grid; grid-template-columns: 100px 1fr; gap: var(--sp-4); align-items: center; background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: var(--sp-4) var(--sp-4); }
@@ -2132,50 +2125,125 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .learn-mission-node-locked { opacity: 0.45; }
 .learn-mission-node-locked .learn-mission-node-icon { background: transparent; border: 1px dashed var(--line-strong); }
 
-/* Stage path nodes */
-.learn-path-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0; }
-.learn-path-node { position: relative; padding-left: var(--sp-6); }
-.learn-path-connector { position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--line); border-radius: 2px; }
-.learn-path-connector[data-first="true"] { top: 50%; }
-.learn-path-node:last-child .learn-path-connector { bottom: 50%; }
-.learn-path-node-btn { display: grid; grid-template-columns: 72px 1fr 24px; gap: var(--sp-3); align-items: center; width: 100%; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: var(--sp-3) var(--sp-4); margin: var(--sp-2) 0; cursor: pointer; font-family: inherit; text-align: left; color: var(--ink); transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; }
-.learn-path-node-btn:disabled { cursor: not-allowed; opacity: 0.6; }
-.learn-path-node-btn:not(:disabled):hover { transform: translateY(-1px); border-color: var(--stage-color, var(--jade)); box-shadow: 0 8px 24px rgba(15, 61, 46, 0.08); }
-.learn-path-character { position: relative; width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--char-accent, var(--gold)) 80%, white 20%) 0%, color-mix(in srgb, var(--char-accent, var(--gold)) 30%, transparent 70%) 70%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.15); z-index: 1; }
-.learn-path-character-emoji { font-size: var(--fs-28); line-height: 1; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.18)); display: flex; align-items: center; justify-content: center; color: white; }
-.learn-path-info { min-width: 0; }
-.learn-path-eyebrow { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-1); }
-.learn-path-stage-num { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); }
-.learn-path-current-tag { background: var(--gold); color: var(--jade); font-size: var(--fs-10); font-weight: 700; padding: 2px var(--sp-2); border-radius: 999px; letter-spacing: 0.05em; text-transform: uppercase; }
-.learn-path-done-tag { background: var(--jade); color: var(--cream); font-size: var(--fs-10); font-weight: 700; padding: 2px var(--sp-2); border-radius: 999px; letter-spacing: 0.05em; text-transform: uppercase; }
-.learn-path-name { font-family: 'Fraunces', serif; font-size: var(--fs-16); font-weight: 600; color: var(--jade); letter-spacing: -0.01em; margin-bottom: 2px; }
-.learn-path-desc { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.4; margin-bottom: var(--sp-2); }
-.learn-path-meta { display: flex; gap: var(--sp-2); flex-wrap: wrap; font-size: var(--fs-11); margin-bottom: var(--sp-2); }
-.learn-path-character-name { color: var(--ink); font-weight: 600; }
-.learn-path-progress-text { color: var(--ink-soft); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+/* Kept building blocks reused by the trail's stage markers */
 .learn-path-bar { height: 5px; background: var(--track); border-radius: 999px; overflow: hidden; }
 .learn-path-bar-fill { height: 100%; background: linear-gradient(90deg, var(--stage-color, var(--jade)) 0%, var(--char-accent, var(--gold)) 100%); border-radius: 999px; transition: width 0.6s ease; }
-.learn-path-empty-note { font-size: var(--fs-11); color: var(--ink-soft); font-style: italic; }
-.learn-path-arrow { color: var(--ink-soft); display: flex; align-items: center; justify-content: center; }
-.learn-path-node-current .learn-path-node-btn { border-color: var(--stage-color, var(--jade)); box-shadow: 0 10px 28px rgba(15, 61, 46, 0.10); }
-.learn-path-node-done .learn-path-node-btn { background: var(--cream-warm); }
-.app-root[data-theme="dark"] .learn-path-node-done .learn-path-node-btn { background: rgba(91, 175, 124, 0.06); }
-.learn-path-node-locked .learn-path-node-btn { background: transparent; border-style: dashed; }
-.learn-path-node-locked .learn-path-character { background: rgba(15, 61, 46, 0.05); box-shadow: none; }
-.learn-path-node-locked .learn-path-character-emoji { color: var(--ink-soft); }
-.learn-path-node-empty .learn-path-character { background: rgba(15, 61, 46, 0.06); }
-.learn-path-locked-note { margin-top: var(--sp-2); display: flex; flex-direction: column; gap: 2px; max-width: 100%; padding: var(--sp-2) var(--sp-3); border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--ink-soft); background: var(--cream-warm); line-height: 1.35; }
 .learn-path-locked-main { font-size: var(--fs-12); font-weight: 800; color: var(--ink); letter-spacing: 0.01em; }
 .learn-path-locked-sub { font-size: var(--fs-11); font-weight: 600; }
-.learn-path-locked-super { font-size: var(--fs-10); font-weight: 600; opacity: 0.72; }
+
+/* ── LEARN TRAIL — the zigzag stepped path ──────────────────────────────────
+   The current stage's mini-units as a serpentine trail of circular lesson
+   nodes down a winding spine (Duolingo-style), the stage coach standing at
+   the current node. Node status classes map 1:1 to miniUnitSequence.js
+   ('complete' | 'current' | 'locked') — presentation only, no gameplay. */
+.learn-trail { position: relative; }
+.learn-trail-track { position: relative; width: 100%; max-width: 440px; margin: 0 auto; }
+.learn-trail-line { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.learn-trail-line-base { fill: none; stroke: var(--track); stroke-width: 6px; stroke-linecap: round; stroke-linejoin: round; }
+.learn-trail-line-done { fill: none; stroke: var(--jade); stroke-width: 6px; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+
+/* Nodes — absolutely positioned circles on the spine, DOM order = path order
+   so keyboard focus walks the trail top to bottom. */
+.learn-trail-node { position: absolute; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); width: 132px; background: transparent; border: none; padding: 0; margin: 0; cursor: pointer; font-family: inherit; text-align: center; color: var(--ink); z-index: 2; }
+.learn-trail-node:focus-visible { outline: none; }
+/* --gold-deep passes the 3:1 non-text focus-contrast minimum in light theme
+   (plain --gold is ~2.2:1 on white) and flips to a bright gold in dark. */
+.learn-trail-node:focus-visible .learn-trail-node-circle { outline: 3px solid var(--gold-deep); outline-offset: 3px; }
+.learn-trail-node-circle { display: grid; place-items: center; width: 66px; height: 66px; border-radius: 50%; border: 3px solid var(--line-strong); background: var(--card-bg); color: var(--ink-soft); box-shadow: 0 4px 0 rgba(15, 61, 46, 0.14), 0 8px 18px rgba(15, 61, 46, 0.10); transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+.learn-trail-node:hover .learn-trail-node-circle { transform: translateY(-2px); }
+.learn-trail-node-label { display: flex; flex-direction: column; align-items: center; gap: 1px; max-width: 132px; }
+.learn-trail-node-num { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); }
+.learn-trail-node-title { font-size: var(--fs-12); font-weight: 600; color: var(--ink); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.learn-trail-node-action { margin-top: 2px; background: var(--jade); color: var(--card-bg); font-size: var(--fs-11); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px var(--sp-3); border-radius: 999px; }
+.learn-trail-node-meta { font-size: var(--fs-10); color: var(--ink-soft); font-weight: 600; }
+
+/* Completed — filled jade + check, replayable. */
+.learn-trail-node-complete .learn-trail-node-circle { background: var(--jade); border-color: var(--jade); color: var(--card-bg); box-shadow: 0 4px 0 color-mix(in srgb, var(--jade) 55%, black 45%), 0 8px 18px rgba(15, 61, 46, 0.16); }
+.learn-trail-node-complete .learn-trail-node-title { color: var(--ink-soft); }
+
+/* Current — the one big primary action: enlarged gold ring + pulse. */
+.learn-trail-node-current .learn-trail-node-circle { width: 78px; height: 78px; background: var(--jade); border-color: var(--gold); border-width: 4px; color: var(--card-bg); box-shadow: 0 5px 0 color-mix(in srgb, var(--jade) 55%, black 45%), 0 12px 26px rgba(15, 61, 46, 0.24); animation: trail-pulse 2.2s ease-in-out infinite; }
+.learn-trail-node-current .learn-trail-node-title { font-weight: 700; color: var(--jade); }
+@keyframes trail-pulse {
+  0%, 100% { box-shadow: 0 5px 0 color-mix(in srgb, var(--jade) 55%, black 45%), 0 12px 26px rgba(15, 61, 46, 0.24), 0 0 0 0 color-mix(in srgb, var(--gold) 55%, transparent); }
+  50% { box-shadow: 0 5px 0 color-mix(in srgb, var(--jade) 55%, black 45%), 0 12px 26px rgba(15, 61, 46, 0.24), 0 0 0 12px transparent; }
+}
+
+/* Locked — muted, still focusable/tappable so the gentle hint can answer. */
+.learn-trail-node-locked { cursor: pointer; }
+.learn-trail-node-locked .learn-trail-node-circle { background: var(--cream-warm); border-style: dashed; border-color: var(--line-strong); color: var(--stone); box-shadow: none; }
+.learn-trail-node-locked .learn-trail-node-title { color: var(--stone); }
+.app-root[data-theme="dark"] .learn-trail-node-locked .learn-trail-node-circle { background: rgba(232, 228, 217, 0.04); }
+
+/* Gentle locked hint bubble. Tokens self-invert in dark theme (--ink flips
+   light, --cream flips dark), so ONE rule stays readable in both themes —
+   no dark override (a hardcoded one previously rendered black-on-black). */
+.learn-trail-hint { position: absolute; transform: translateX(-50%); z-index: 3; max-width: min(240px, calc(100% - 8px)); background: var(--ink); color: var(--cream); font-size: var(--fs-12); font-weight: 600; line-height: 1.35; padding: var(--sp-2) var(--sp-3); border-radius: 12px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); }
+
+/* The coach travels the trail: absolutely positioned above the current node,
+   sliding there when the frontier moves. Decorative (aria-hidden). */
+.learn-trail-coach { position: absolute; transform: translate(-50%, -100%); z-index: 1; pointer-events: none; transition: top 0.8s cubic-bezier(0.24, 0.9, 0.32, 1.2), left 0.8s cubic-bezier(0.24, 0.9, 0.32, 1.2); }
+.learn-trail-coach .character-coach-img { width: 84px; height: auto; }
+.learn-trail-coach .character-coach-ground { width: 56px; }
+
+/* Stage markers — compact collapsed rows for earlier / later stages. */
+.learn-trail-earlier, .learn-trail-later { display: flex; flex-direction: column; gap: var(--sp-2); }
+.learn-trail-later { margin-top: var(--sp-2); }
+.learn-trail-stage { border: 1px solid var(--line); border-radius: 12px; background: var(--card-bg); padding: var(--sp-2) var(--sp-3); }
+.learn-trail-stage-summary { display: flex; align-items: center; gap: var(--sp-2); cursor: pointer; list-style: none; user-select: none; min-height: 36px; }
+.learn-trail-stage-summary::-webkit-details-marker { display: none; }
+.learn-trail-stage-summary:focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; border-radius: 8px; }
+.learn-trail-stage[open] .learn-trail-stage-summary { margin-bottom: var(--sp-2); padding-bottom: var(--sp-2); border-bottom: 1px solid var(--line); }
+.learn-trail-stage[open] .learn-collapse-chev { transform: rotate(180deg); }
+.learn-trail-stage-badge { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: color-mix(in srgb, var(--char-accent, var(--gold)) 22%, transparent); color: var(--ink); font-size: var(--fs-14); flex-shrink: 0; }
+.learn-trail-stage-done .learn-trail-stage-badge { background: var(--jade); color: var(--card-bg); }
+.learn-trail-stage-locked .learn-trail-stage-badge { background: var(--cream-warm); border: 1px dashed var(--line-strong); color: var(--stone); }
+.app-root[data-theme="dark"] .learn-trail-stage-locked .learn-trail-stage-badge { background: rgba(232, 228, 217, 0.04); }
+.learn-trail-stage-title { font-size: var(--fs-13); font-weight: 700; color: var(--ink); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.learn-trail-stage-locked .learn-trail-stage-title { color: var(--stone); }
+.learn-trail-stage-meta { font-size: var(--fs-11); font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.learn-trail-stage-body { display: flex; flex-direction: column; gap: var(--sp-2); }
+.learn-trail-stage-note { display: flex; flex-direction: column; gap: 4px; padding: var(--sp-2) var(--sp-3); border: 1px dashed var(--line-strong); border-radius: 10px; background: var(--cream-warm); color: var(--ink-soft); }
+.app-root[data-theme="dark"] .learn-trail-stage-note { background: rgba(232, 228, 217, 0.04); }
+.learn-trail-mini-list { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.learn-trail-mini { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-11); font-weight: 600; padding: var(--sp-1) var(--sp-2); border-radius: 999px; border: 1px solid var(--line); max-width: 100%; }
+.learn-trail-mini span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.learn-trail-mini-done { background: color-mix(in srgb, var(--jade) 10%, var(--card-bg)); border-color: color-mix(in srgb, var(--jade) 35%, var(--line)); color: var(--jade); cursor: pointer; font-family: inherit; }
+.learn-trail-mini-done:hover { border-color: var(--jade); }
+.learn-trail-mini-done:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.learn-trail-mini-off { background: transparent; border-style: dashed; color: var(--stone); }
+.learn-trail-stage-action { display: inline-flex; align-items: center; gap: var(--sp-1); align-self: flex-start; background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; padding: var(--sp-1) var(--sp-3); min-height: 32px; font-family: inherit; font-size: var(--fs-12); font-weight: 700; color: var(--jade); cursor: pointer; transition: border-color 0.15s; }
+.learn-trail-stage-action:hover { border-color: var(--jade); }
+.learn-trail-stage-action:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.app-root[data-theme="dark"] .learn-trail-stage-action { background: rgba(232, 228, 217, 0.05); }
+
+/* Review action for a COMPLETE current stage (all-stages-done end state) */
+.learn-trail-current-review { align-self: center; margin: var(--sp-2) auto 0; display: flex; }
+
+/* Next-stage preview at the foot of the trail */
+.learn-trail-next { display: flex; align-items: center; gap: var(--sp-3); width: 100%; max-width: 440px; margin: var(--sp-3) auto 0; background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: var(--sp-3) var(--sp-4); cursor: pointer; font-family: inherit; text-align: left; color: var(--ink); transition: border-color 0.15s, box-shadow 0.15s; }
+.learn-trail-next:hover { border-color: var(--jade); box-shadow: 0 8px 20px rgba(15, 61, 46, 0.08); }
+.learn-trail-next:focus-visible { outline: 3px solid var(--gold-deep); outline-offset: 2px; }
+.learn-trail-next-locked { border-style: dashed; border-color: var(--line-strong); background: var(--cream-warm); }
+.app-root[data-theme="dark"] .learn-trail-next-locked { background: rgba(232, 228, 217, 0.04); }
+.learn-trail-next-badge { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--track); color: var(--stone); font-size: var(--fs-20); flex-shrink: 0; }
+.learn-trail-next-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.learn-trail-next-eyebrow { font-size: var(--fs-10); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); }
+.learn-trail-next-title { font-family: 'Fraunces', serif; font-size: var(--fs-16); font-weight: 600; color: var(--jade); }
+.learn-trail-next-locked .learn-trail-next-title { color: var(--ink-soft); }
+.learn-trail-next-sub { font-size: var(--fs-11); font-weight: 600; color: var(--ink-soft); line-height: 1.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-trail-coach { transition: none; }
+  .learn-trail-node-current .learn-trail-node-circle { animation: none; }
+  .learn-trail-node:hover .learn-trail-node-circle { transform: none; }
+}
 
 /* Mobile UX pass: demo footer links stack cleanly; quiz feedback keeps the
    correct-answer text and its speaker button on one tidy, wrapping row. */
 .demo-footer-links { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); }
 .quiz-mode-feedback-pair { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
 .quiz-feedback-speaker { flex: 0 0 auto; }
-.app-root[data-theme="dark"] .learn-path-locked-note { background: rgba(232, 228, 217, 0.04); }
-.learn-path-done-note { margin-top: var(--sp-2); font-size: var(--fs-11); color: var(--jade); font-weight: 600; line-height: 1.4; }
 
 .learn-footnote { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4); background: var(--cream-warm); border: 1px dashed var(--line-strong); border-radius: 12px; font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.45; }
 .learn-footnote svg { color: var(--gold); flex-shrink: 0; }
@@ -2737,36 +2805,6 @@ button.character-coach-portrait { cursor: pointer; }
   .character-coach-state-wrong .character-coach-img { opacity: 0.92; }
 }
 
-/* Stage 1 guided mini-unit pilot */
-.learn-miniunit-list { display: flex; flex-direction: column; gap: var(--sp-2); }
-.learn-miniunit-card { display: grid; grid-template-columns: 52px 1fr auto; gap: var(--sp-3); align-items: center; background: var(--card-bg); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 14px; padding: var(--sp-4) var(--sp-4); }
-/* Sequential-unlock states: complete (jade), current (gold), locked (muted). */
-.learn-miniunit-card-current { border-left-color: var(--gold); }
-.learn-miniunit-card-complete { border-left-color: var(--jade); }
-.learn-miniunit-card-complete .learn-miniunit-icon { background: color-mix(in srgb, var(--jade) 16%, transparent); }
-.learn-miniunit-card-locked { border-left-color: var(--line-strong); opacity: 0.72; }
-.learn-miniunit-card-locked .learn-miniunit-icon { background: color-mix(in srgb, var(--ink-soft) 12%, transparent); color: var(--ink-soft); }
-.learn-miniunit-card-locked .learn-miniunit-title { color: var(--ink-soft); }
-.learn-miniunit-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--jade); }
-.learn-miniunit-body { min-width: 0; }
-.learn-miniunit-eyebrow { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-10); text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); font-weight: 700; margin-bottom: var(--sp-1); }
-.learn-miniunit-badge { display: inline-flex; align-items: center; padding: 2px var(--sp-2); border-radius: 999px; font-size: var(--fs-10); letter-spacing: 0.1em; font-weight: 800; }
-.learn-miniunit-badge-current { background: color-mix(in srgb, var(--gold) 22%, transparent); color: var(--gold); }
-.learn-miniunit-badge-complete { background: color-mix(in srgb, var(--jade) 18%, transparent); color: var(--jade); }
-.learn-miniunit-badge-locked { background: color-mix(in srgb, var(--ink-soft) 14%, transparent); color: var(--ink-soft); }
-.learn-miniunit-num { color: var(--ink-soft); font-weight: 700; }
-.learn-miniunit-title { font-family: 'Fraunces', serif; font-size: var(--fs-18); font-weight: 600; color: var(--jade); margin: 0 0 var(--sp-1); line-height: 1.2; }
-.learn-miniunit-copy { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.45; margin: 0 0 var(--sp-2); }
-.learn-miniunit-meta { display: flex; gap: var(--sp-2); flex-wrap: wrap; font-size: var(--fs-11); color: var(--ink-soft); font-weight: 600; }
-.learn-miniunit-meta span { display: inline-flex; align-items: center; gap: var(--sp-1); }
-.learn-miniunit-btn { border: none; border-radius: 999px; padding: var(--sp-2) var(--sp-3); background: var(--jade); color: var(--cream); font-family: inherit; font-size: var(--fs-12); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: var(--sp-1); white-space: nowrap; }
-.learn-miniunit-btn:disabled { background: color-mix(in srgb, var(--ink-soft) 22%, transparent); color: var(--ink-soft); cursor: not-allowed; }
-.learn-miniunit-card-complete .learn-miniunit-btn { background: transparent; color: var(--jade); border: 1px solid color-mix(in srgb, var(--jade) 40%, var(--line)); }
-@media (hover: hover) and (pointer: fine) {
-  .learn-miniunit-btn:hover:not(:disabled) { background: var(--jade-soft); }
-  .learn-miniunit-card-complete .learn-miniunit-btn:hover { background: color-mix(in srgb, var(--jade) 10%, transparent); }
-}
-
 .firstlesson-root { width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: var(--sp-5); background: radial-gradient(circle at top left, rgba(201, 169, 97, 0.16), transparent 34%), var(--cream); }
 .firstlesson-shell { width: min(720px, 100%); display: flex; flex-direction: column; gap: var(--sp-4); }
 .firstlesson-brand { display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-1); align-self: center; color: var(--jade); }
@@ -3076,7 +3114,6 @@ button.character-coach-portrait { cursor: pointer; }
 .app-root[data-theme="dark"] .sb-tile { background: rgba(232, 228, 217, 0.06); }
 .app-root[data-theme="dark"] .sb-tile-placed { background: rgba(255, 255, 255, 0.04); }
 
-.app-root[data-theme="dark"] .learn-miniunit-card,
 .app-root[data-theme="dark"] .learn-journey-summary span,
 .app-root[data-theme="dark"] .miniunit-hero,
 .app-root[data-theme="dark"] .miniunit-panel,
@@ -3092,8 +3129,7 @@ button.character-coach-portrait { cursor: pointer; }
 .app-root[data-theme="dark"] .miniunit-card-thai,
 .app-root[data-theme="dark"] .miniunit-question-prompt,
 .app-root[data-theme="dark"] .miniunit-title,
-.app-root[data-theme="dark"] .miniunit-panel-title,
-.app-root[data-theme="dark"] .learn-miniunit-title { color: var(--jade); }
+.app-root[data-theme="dark"] .miniunit-panel-title { color: var(--jade); }
 .app-root[data-theme="dark"] .miniunit-card-en { color: #f2eee5; }
 .app-root[data-theme="dark"] .miniunit-option-selected { background: rgba(224, 189, 122, 0.13); }
 
@@ -3101,8 +3137,6 @@ button.character-coach-portrait { cursor: pointer; }
   .learn-section-header { align-items: flex-start; gap: var(--sp-2); }
   .learn-journey-summary { width: 100%; gap: var(--sp-1); }
   .learn-journey-summary span { flex: 1 1 140px; justify-content: center; }
-  .learn-miniunit-card { grid-template-columns: 44px 1fr; align-items: flex-start; padding: var(--sp-3); }
-  .learn-miniunit-btn { grid-column: 1 / -1; justify-content: center; width: 100%; }
   .miniunit-hero,
   .miniunit-panel,
   .miniunit-practice-card,
@@ -3242,8 +3276,9 @@ button.character-coach-portrait { cursor: pointer; }
    deliberate Super upsell stays the existing throttled SuperUpgradePrompt on
    explicit tap — no new popups, nothing spammy.
    ========================================================================== */
-.learn-path-node-locked .learn-path-character { filter: grayscale(1); }
-.learn-path-node-locked .learn-path-character-emoji { opacity: 0.75; }
+.learn-trail-node-locked .learn-trail-node-circle { filter: grayscale(1); }
+.learn-trail-stage-locked .learn-trail-stage-badge,
+.learn-trail-next-locked .learn-trail-next-badge { filter: grayscale(1); }
 .learn-mission-node-locked { filter: grayscale(0.95); }
 .level-pill-locked { filter: grayscale(1); }
 /* Shop character cards are preview/locked today: gray the portrait so they

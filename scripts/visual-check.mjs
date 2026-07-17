@@ -142,6 +142,43 @@ const SCENES = [
         { name: 'progress SURVIVES declining the account', pass: !!stats && (stats.totalXp || 0) >= 60, detail: `totalXp=${stats ? stats.totalXp : 'null'}` },
       ];
     } },
+  // REAL-app proof: a genuine first-lesson completion (not a seeded state)
+  // lands on Learn with the pilot node complete and the coach at lesson 2.
+  { name: 'learn-trail-real', url: (t) => route('/', t), public: true,
+    async act(page) {
+      await anonOnboard(page); await anonRunFirstLesson(page);
+      await page.locator('button', { hasText: 'Keep going without an account' }).first().click().catch(() => {});
+      await page.waitForTimeout(900);
+      for (let i = 0; i < 4; i++) {
+        const modal = page.locator('.reward-screen-panel:visible .reward-continue-btn').first();
+        if (!(await modal.count())) break;
+        await modal.click({ timeout: 2500 }).catch(() => {});
+        await page.waitForTimeout(700);
+      }
+      // First-run coach-mark tutorial sits over Learn for a brand-new user —
+      // skip it (its own .tut-skip affordance) so the trail underneath is
+      // assertable.
+      const skip = page.locator('.tut-skip').first();
+      if (await skip.count()) {
+        await skip.click().catch(() => {});
+        await page.waitForTimeout(500);
+      }
+    },
+    async assert(page) {
+      const done = await page.locator('.learn-trail-node-complete').count();
+      const current = await page.locator('.learn-trail-node-current').count();
+      const curNum = (await page.locator('.learn-trail-node-current .learn-trail-node-num').innerText().catch(() => ''));
+      const coach = await page.locator('.learn-trail-coach .character-coach-img').count();
+      const coachBox = await page.locator('.learn-trail-coach').boundingBox();
+      const curBox = await page.locator('.learn-trail-node-current').boundingBox();
+      const aligned = !!(coachBox && curBox &&
+        Math.abs((coachBox.x + coachBox.width / 2) - (curBox.x + curBox.width / 2)) < 14);
+      return [
+        { name: 'REAL first-lesson completion marks node 1 complete', pass: done >= 1, detail: `done=${done}` },
+        { name: 'the frontier moved to Lesson 2 after the real completion', pass: current === 1 && /Lesson 2/i.test(curNum), detail: `cur="${curNum}"` },
+        { name: 'the elephant stands at the new current node (real flow)', pass: coach === 1 && aligned, detail: `coach=${coach} aligned=${aligned}` },
+      ];
+    } },
   // ── Auth flows must all still work (forceAuthGate wins) ───────────────────
   { name: 'auth-signin', url: (t) => route('/sign-in', t), public: true,
     async assert(page) {
@@ -344,6 +381,7 @@ const SCENES = [
     async assert(page) {
       const rows = await page.locator('.situation-row').count();
       const html = await page.content();
+      const bodyTxt = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
       const dating = page.locator('.situation-row', { hasText: 'Dating & relationships' }).first();
       const datingTxt = (await dating.innerText().catch(() => '')).replace(/\s+/g, ' ');
       const upNextTxt = (await page.locator('.situation-row-upnext, .situation-row.is-upnext').first().innerText().catch(() => '')).replace(/\s+/g, ' ');
@@ -363,8 +401,14 @@ const SCENES = [
         // (as startable when in window, or as `upcoming` rows) + the dating preview.
         { name: 'rail surfaces the content-bearing situations + dating preview (≥ 8 rows)', pass: rows >= 8, detail: `rows=${rows}` },
         { name: 'content-owning situations are STARTABLE (≥ 7)', pass: starts >= 7, detail: `startButtons=${starts}` },
-        { name: 'draft badge present (nothing claims approval)', pass: /Draft content — pending native-speaker review/.test(html), detail: 'badge' },
-        { name: 'NOTHING renders as approved', pass: !/Native approved/i.test(html), detail: /Native approved/i.test(html) ? 'APPROVED LEAK' : 'clean' },
+        // RENDERED text only (innerText) — page.content() also serializes the
+        // dev-injected stylesheet, whose app.css comment contains the literal
+        // "Native approved" and silently satisfied/broke html-based regexes.
+        // The rail's contract (SituationRail.jsx header): it NEVER renders an
+        // approved state — situation-level readiness stays draft-badged even
+        // though 946 cards are legitimately approved per-card since Wave 6.
+        { name: 'draft badge RENDERED (unsigned content never claims approval)', pass: bodyTxt.includes('Draft content — pending native-speaker review'), detail: 'badge' },
+        { name: 'rail contract: NEVER renders an approved claim (leak guard)', pass: !/Native approved/i.test(bodyTxt), detail: /Native approved/i.test(bodyTxt) ? 'APPROVED LEAK' : 'clean' },
         { name: 'sit-dating is STILL a locked preview (Super-only)', pass: /Super/i.test(datingTxt) && /lock/i.test(await dating.innerHTML().catch(() => '')), detail: `"${datingTxt.slice(0, 60)}"` },
         { name: 'sit-dating is NOT the up-next lesson', pass: !/Dating & relationships/i.test(upNextTxt), detail: `upNext="${upNextTxt.slice(0, 40)}"` },
         { name: 'sit-dating offers NO free Start', pass: !/Start/i.test(datingTxt), detail: 'no start CTA' },
@@ -379,9 +423,10 @@ const SCENES = [
       // A stage-1 learner must never be promised cards outside the unlocked window.
       const nums = counts.map(c => parseInt(c, 10)).filter(Number.isFinite);
       const maxCount = nums.length ? Math.max(...nums) : 0;
+      const bodyTxt = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
       return [
         { name: 'stage-1 learner sees only stage-window content (no stage-8 leak)', pass: maxCount > 0 && maxCount < 130, detail: `counts=[${nums.join(',')}]` },
-        { name: 'still nothing approved', pass: !/Native approved/i.test(html), detail: 'clean' },
+        { name: 'rail contract: NEVER renders an approved claim (leak guard)', pass: !/Native approved/i.test(bodyTxt) && bodyTxt.includes('Draft content — pending native-speaker review'), detail: /Native approved/i.test(bodyTxt) ? 'APPROVED LEAK' : 'clean+badged' },
       ];
     } },
   // Part C: prove Start ACTUALLY LAUNCHES, in the real app (the harness stubs it).
@@ -431,9 +476,10 @@ const SCENES = [
       const html = await page.content();
       const dating = page.locator('.situation-row', { hasText: 'Dating & relationships' }).first();
       const datingTxt = (await dating.innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const bodyTxt = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
       return [
         { name: 'sit-dating still locked for Super (18+ attestation)', pass: /18\+/.test(datingTxt), detail: `"${datingTxt.slice(0, 70)}"` },
-        { name: 'still nothing approved', pass: !/Native approved/i.test(html), detail: 'clean' },
+        { name: 'rail contract: NEVER renders an approved claim (leak guard)', pass: !/Native approved/i.test(bodyTxt) && bodyTxt.includes('Draft content — pending native-speaker review'), detail: /Native approved/i.test(bodyTxt) ? 'APPROVED LEAK' : 'clean+badged' },
       ];
     } },
   { name: 'identity-path', url: (t) => harness('identity-path', t),
@@ -452,6 +498,164 @@ const SCENES = [
         { name: 'the question is OPTIONAL (skip affordance present)', pass: skip === 1, detail: `skip=${skip}` },
         { name: 'states the honest scope: reorders, never gates', pass: disclaimer, detail: disclaimer ? 'disclaimer shown' : 'MISSING' },
         { name: 'makes no affirmative unlock / next-lesson promise', pass: !overpromise, detail: overpromise ? 'OVERPROMISE' : 'honest' },
+      ];
+    } },
+
+  // ── Learn zigzag stepped path (rendered proof) ─────────────────────────────
+  { name: 'learn-trail-fresh', url: (t) => harness('learn-trail-fresh', t),
+    async assert(page) {
+      const nodes = await page.locator('.learn-trail-node').count();
+      const current = await page.locator('.learn-trail-node-current').count();
+      const locked = await page.locator('.learn-trail-node-locked').count();
+      const complete = await page.locator('.learn-trail-node-complete').count();
+      const line = await page.locator('.learn-trail-line-base').count();
+      const slim = await page.locator('.learn-continue-slim').count();
+      const oldHero = await page.locator('.learn-continue').count();
+      const primaryChips = await page.locator('.learn-trail-node-action').count();
+      const coachImg = await page.locator('.learn-trail-coach .character-coach-img').count();
+      const coachBox = await page.locator('.learn-trail-coach').boundingBox();
+      const curBox = await page.locator('.learn-trail-node-current').boundingBox();
+      const aligned = !!(coachBox && curBox &&
+        Math.abs((coachBox.x + coachBox.width / 2) - (curBox.x + curBox.width / 2)) < 14 &&
+        coachBox.y < curBox.y);
+      // Zigzag: consecutive node centers must NOT share one x (serpentine).
+      const xs = [];
+      for (const b of await page.locator('.learn-trail-node').all()) {
+        const bb = await b.boundingBox();
+        if (bb) xs.push(Math.round(bb.x + bb.width / 2));
+      }
+      const zigzag = new Set(xs).size >= 3;
+      return [
+        { name: 'stage 1 renders 5 lesson nodes', pass: nodes === 5, detail: `nodes=${nodes}` },
+        { name: 'day one: 1 current + 4 locked + 0 complete', pass: current === 1 && locked === 4 && complete === 0, detail: `cur=${current} lock=${locked} done=${complete}` },
+        { name: 'visible path line connects the nodes', pass: line === 1, detail: `line=${line}` },
+        { name: 'nodes zigzag (≥3 distinct x-centers)', pass: zigzag, detail: `xs=${[...new Set(xs)].join(',')}` },
+        { name: 'elephant coach art at the current node (above, centered)', pass: coachImg === 1 && aligned, detail: `img=${coachImg} aligned=${aligned}` },
+        { name: 'ONE primary action chip (the current node)', pass: primaryChips === 1, detail: `chips=${primaryChips}` },
+        { name: 'continue is a slim strip, old hero gone', pass: slim === 1 && oldHero === 0, detail: `slim=${slim} hero=${oldHero}` },
+      ];
+    } },
+  { name: 'learn-trail-mid', url: (t) => harness('learn-trail-mid', t),
+    async assert(page) {
+      const counts = {
+        complete: await page.locator('.learn-trail-node-complete').count(),
+        current: await page.locator('.learn-trail-node-current').count(),
+        locked: await page.locator('.learn-trail-node-locked').count(),
+      };
+      const doneLine = await page.locator('.learn-trail-line-done').count();
+      const curId = await page.locator('.learn-trail-node-current').getAttribute('data-unit-id');
+      // Locked tap → gentle hint, no crash, no launch.
+      await page.locator('.learn-trail-node-locked').last().click();
+      await page.waitForTimeout(250);
+      const hint = await page.locator('.learn-trail-hint').count();
+      const hintTxt = (await page.locator('.learn-trail-hint').innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const lockedLaunched = await page.evaluate(() => window.__LAST_START__ || null);
+      const stillAlive = await page.locator('.learn-trail-node').count();
+      // Completed tap → THAT unit replays. Current tap → the SAME unit launches.
+      const completedNode = page.locator('.learn-trail-node-complete').first();
+      const completedId = await completedNode.getAttribute('data-unit-id');
+      await completedNode.click();
+      const replayId = await page.evaluate(() => window.__LAST_START__ || null);
+      await page.locator('.learn-trail-node-current').click();
+      const startedId = await page.evaluate(() => window.__LAST_START__ || null);
+      return [
+        { name: 'all three states on screen (2 done / 1 current / 2 locked)', pass: counts.complete === 2 && counts.current === 1 && counts.locked === 2, detail: JSON.stringify(counts) },
+        { name: 'progress overlay traces the completed segment', pass: doneLine === 1, detail: `doneLine=${doneLine}` },
+        { name: 'locked tap → gentle hint, NOT a launch, NOT a crash', pass: hint === 1 && /Finish the earlier lessons first/i.test(hintTxt) && lockedLaunched === null && stillAlive === 5, detail: `hint="${hintTxt.slice(0, 48)}" launched=${lockedLaunched}` },
+        { name: 'completed node tap replays EXACTLY that lesson', pass: !!replayId && replayId === completedId && replayId !== curId, detail: `replay=${replayId} expected=${completedId}` },
+        { name: 'current node tap launches the CURRENT lesson', pass: startedId === curId, detail: `started=${startedId} expected=${curId}` },
+      ];
+    } },
+  { name: 'learn-trail-move', url: (t) => harness('learn-trail-move', t),
+    async act(page) {
+      // Document-space position (getBoundingClientRect + scrollY): the frontier
+      // move also auto-scrolls the page, so viewport-relative boxes would hide
+      // the coach's real travel down the trail.
+      this._before = await page.evaluate(() => {
+        const el = document.querySelector('.learn-trail-coach');
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width / 2 + window.scrollX, y: r.top + window.scrollY };
+      });
+      this._beforeCur = await page.locator('.learn-trail-node-current').getAttribute('data-unit-id');
+      await page.locator('#viz-sim-complete').click();
+      await page.waitForTimeout(1300); // let the 0.8s travel transition land
+    },
+    async assert(page) {
+      const after = await page.evaluate(() => {
+        const coach = document.querySelector('.learn-trail-coach');
+        const cur = document.querySelector('.learn-trail-node-current');
+        const cr = coach.getBoundingClientRect();
+        const nr = cur ? cur.getBoundingClientRect() : null;
+        return {
+          coach: { x: cr.left + cr.width / 2 + window.scrollX, y: cr.top + window.scrollY },
+          node: nr ? { x: nr.left + nr.width / 2 + window.scrollX, y: nr.top + window.scrollY } : null,
+        };
+      });
+      const afterCur = await page.locator('.learn-trail-node-current').getAttribute('data-unit-id');
+      const coachAt = await page.locator('.learn-trail-coach').getAttribute('data-coach-at');
+      const movedDown = !!(this._before && after.coach.y > this._before.y + 60);
+      const aligned = !!(after.node && Math.abs(after.coach.x - after.node.x) < 14);
+      return [
+        { name: 'completing the lesson advances the frontier', pass: !!afterCur && afterCur !== this._beforeCur, detail: `${this._beforeCur} → ${afterCur}` },
+        { name: 'the elephant MOVED down the path to the new current node', pass: movedDown && aligned && coachAt === afterCur, detail: `docY ${Math.round(this._before?.y ?? -1)}→${Math.round(after.coach.y)} aligned=${aligned} coachAt=${coachAt}` },
+      ];
+    } },
+  { name: 'learn-trail-stage2', url: (t) => harness('learn-trail-stage2', t),
+    async assert(page) {
+      const nodes = await page.locator('.learn-trail-node').count();
+      const header = (await page.locator('.learn-section-title').first().innerText().catch(() => ''));
+      const doneMarkers = await page.locator('.learn-trail-stage-done').count();
+      const s1Summary = (await page.locator('.learn-trail-stage-done .learn-trail-stage-summary').first().innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const next = (await page.locator('.learn-trail-next').innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const nextLocked = await page.locator('.learn-trail-next-locked').count();
+      const laterLocked = await page.locator('.learn-trail-stage-locked').count();
+      // Expand the Stage 1 marker: completed lessons replayable inside.
+      await page.locator('.learn-trail-stage-done .learn-trail-stage-summary').first().click();
+      await page.waitForTimeout(200);
+      const replayChips = await page.locator('.learn-trail-stage-done .learn-trail-mini-done').count();
+      const reviewBtn = (await page.locator('.learn-trail-stage-done .learn-trail-stage-action').first().innerText().catch(() => ''));
+      return [
+        { name: 'stage transition: trail now shows Stage 2 (10 nodes)', pass: nodes === 10 && /Stage 2 lessons/.test(header), detail: `nodes=${nodes} header="${header}"` },
+        { name: 'Stage 1 collapsed to a compact ✓ marker above', pass: doneMarkers === 1 && /Stage 1/.test(s1Summary) && /Complete/.test(s1Summary), detail: `"${s1Summary.slice(0, 50)}"` },
+        { name: 'next stage previewed LOCKED at the bottom (Stage 3)', pass: /Stage 3/.test(next) && nextLocked === 1 && /Opens when Stage 2 is complete/.test(next), detail: `"${next.slice(0, 70)}"` },
+        { name: 'later stages are compact locked markers (4-8 = 5)', pass: laterLocked === 5, detail: `later=${laterLocked}` },
+        { name: 'expanded Stage 1 offers lesson replays + stage review', pass: replayChips === 5 && /Review Stage 1/.test(reviewBtn), detail: `replays=${replayChips} btn="${reviewBtn.slice(0, 40)}"` },
+      ];
+    } },
+  { name: 'learn-trail-course-end', url: (t) => harness('learn-trail-course-end', t),
+    async assert(page) {
+      // All 8 stages complete: the CURRENT (final) stage's review-only session
+      // must remain reachable — the review found the marker buckets skip the
+      // current stage, so a dedicated review action now covers the end state.
+      const banner = await page.locator('.learn-course-complete').count();
+      const review = page.locator('.learn-trail-current-review');
+      const reviewCount = await review.count();
+      const reviewTxt = (await review.innerText().catch(() => '')).replace(/\s+/g, ' ');
+      await review.click().catch(() => {});
+      const lastTab = await page.evaluate(() => window.__LAST_TAB__ || null);
+      const scopeOk = !!(lastTab && lastTab.tab === 'cards' && lastTab.opts &&
+        lastTab.opts.sessionScope && lastTab.opts.sessionScope.type === 'stageReview' &&
+        lastTab.opts.sessionScope.stageId === 8);
+      const earlierDone = await page.locator('.learn-trail-stage-done').count();
+      const celebrating = await page.locator('.learn-trail-coach .character-coach-state-celebrating, .learn-trail-coach.character-coach-state-celebrating, .learn-trail-coach [class*="celebrating"]').count();
+      return [
+        { name: 'course-complete banner shows', pass: banner === 1, detail: `banner=${banner}` },
+        { name: 'Stage 8 review stays one tap away (Review Stage 8 action)', pass: reviewCount === 1 && /Review Stage 8/.test(reviewTxt), detail: `"${reviewTxt.slice(0, 50)}"` },
+        { name: 'it launches the REAL stageReview session scoped to Stage 8', pass: scopeOk, detail: JSON.stringify(lastTab && lastTab.opts) },
+        { name: 'stages 1-7 collapsed as complete markers', pass: earlierDone === 7, detail: `done=${earlierDone}` },
+        { name: 'coach celebrates at the end of the finished path', pass: celebrating >= 1, detail: `celebrating=${celebrating}` },
+      ];
+    } },
+  { name: 'learn-trail-deep', url: (t) => harness('learn-trail-deep', t),
+    async assert(page) {
+      // Auto-scroll: the current node sits ~1100px down the Stage 2 trail; on
+      // load it must be scrolled into the viewport ("land on what's next").
+      const vp = page.viewportSize();
+      const cur = await page.locator('.learn-trail-node-current').boundingBox();
+      const inView = !!(cur && cur.y >= 0 && cur.y + cur.height <= vp.height);
+      const scrolled = await page.evaluate(() => window.scrollY);
+      return [
+        { name: 'current lesson auto-scrolled into view on load', pass: inView && scrolled > 100, detail: `y=${Math.round(cur?.y ?? -1)} scrollY=${Math.round(scrolled)} vp=${vp.height}` },
       ];
     } },
 

@@ -1,18 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, ChevronRight, ChevronDown, Clock, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
-import { STAGES, MISSIONS } from '../data/taxonomy.js';
+import React, { useEffect, useRef, useState } from 'react';
+import { BookOpen, ChevronRight, ChevronDown, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
-import { getStageCharacter } from '../data/stageCharacters.js';
-import { getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
+import { getStageCharacter, resolveCoachIdForStage } from '../data/stageCharacters.js';
+import { getMiniUnitsForStage, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { BORROWED_WORDS } from '../data/borrowedWords.js';
 import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
+import CharacterCoach from './CharacterCoach.jsx';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 import BorrowedWordsBonus from './BorrowedWordsBonus.jsx';
 
-// New primary learning view. Renders the 8-stage path with a per-stage
-// character, plus a Stage-1 mission rail while the user is still in S1.
-// All progress, unlock, and current-stage logic is read from state.js
-// (stageState / missionState) — no new gameplay rules.
+// Primary learning view — the stepped path. The current stage's mini-units
+// render as a zigzag (serpentine) trail of lesson nodes with the stage coach
+// travelling to the current node; earlier stages collapse to compact markers
+// above the trail and the next stage previews below it.
+//
+// VISUAL redesign only. All progress, unlock, and current-stage logic is read
+// unchanged from state.js (stageState / missionState) and
+// miniUnitSequence.js (getMiniUnitProgressState) — no new gameplay rules, no
+// new unlock rules, no economy changes. Node status is EXACTLY the sequence
+// lib's 'complete' | 'current' | 'locked'.
+
+// ── Trail geometry (presentation constants only) ────────────────────────────
+// Serpentine x-centers (in % of track width), cycling per node index so the
+// eye follows a winding S down the spine: center → right → center → left.
+const TRAIL_X_PATTERN = [50, 76, 50, 24];
+const TRAIL_ROW_H = 116;      // px per node row (circle + label)
+const TRAIL_TOP_PAD = 96;     // headroom so the coach fits above node 1
+const TRAIL_NODE_R = 33;      // node circle radius (66px hit target)
+
+const prefersReducedMotion = () => {
+  try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  catch { return false; }
+};
+
 export default function LearnPath({
   stats,
   fullStats,
@@ -48,9 +68,9 @@ export default function LearnPath({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [showBorrowed]);
+
   const due = dashboardStats?.due || 0;
   const seen = dashboardStats?.seen ?? 0;
-  const newAvail = dashboardStats?.newAvail ?? 0;
   const goal = fullStats?.dailyGoal || DEFAULT_DAILY_GOAL;
   const todayXp = fullStats?.todayXp || 0;
   const goalPct = Math.min(100, Math.round((todayXp / goal) * 100));
@@ -87,9 +107,8 @@ export default function LearnPath({
     : (currentStage ? `Stage ${currentStage.id}: ${currentStage.name}` : 'Survival Thai');
 
   const stageCharacter = currentStage ? getStageCharacter(currentStage.id) : getStageCharacter(1);
+
   // Guided mini-units for the CURRENT stage (data-driven, sequential unlock).
-  // Any stage that ships mini-units shows its path; stages without units fall
-  // back to the existing mission/stage UI.
   const currentStageId = stageState?.currentStage || 1;
   const currentStageMiniUnits = getMiniUnitsForStage(currentStageId);
   // "Continue" only when there is genuinely mid-flow saved progress (a unit the
@@ -98,12 +117,83 @@ export default function LearnPath({
   const midFlowUnitId = (savedUnitProgress?.step && savedUnitProgress.step !== 'intro' && savedUnitProgress.step !== 'complete')
     ? savedUnitProgress.unitId
     : null;
+  const completedMiniUnits = fullStats?.completedMiniUnits || [];
   const miniUnitSequence = getMiniUnitProgressState(
     currentStageMiniUnits,
-    fullStats?.completedMiniUnits || [],
+    completedMiniUnits,
     midFlowUnitId,
   );
-  const showMiniUnits = !!(onStartMiniUnit && stageState && miniUnitSequence.units.length > 0);
+  const showTrail = !!(onStartMiniUnit && stageState && miniUnitSequence.units.length > 0);
+
+  // The path coach for this stage — the SAME character resolution the lessons
+  // themselves use (MiniUnitFlow), so the mascot on the trail is the mascot in
+  // the lesson. Stage 1 = Chang the elephant.
+  const coachId = resolveCoachIdForStage(currentStageId);
+
+  // ── Trail node geometry (pure presentation over the sequence state) ───────
+  const trailNodes = miniUnitSequence.units.map((u, i) => ({
+    ...u,
+    index: i,
+    x: TRAIL_X_PATTERN[i % TRAIL_X_PATTERN.length],
+    y: TRAIL_TOP_PAD + i * TRAIL_ROW_H + TRAIL_NODE_R,
+  }));
+  const currentTrailIdx = trailNodes.findIndex(n => n.isCurrent);
+  // The current node stacks extra content (action chip + meta); when it is the
+  // LAST node, reserve tail room so it never paints over the next-stage card.
+  const lastIsCurrent = trailNodes.length > 0 && currentTrailIdx === trailNodes.length - 1;
+  const trackHeight = trailNodes.length > 0
+    ? TRAIL_TOP_PAD + trailNodes.length * TRAIL_ROW_H + (lastIsCurrent ? 72 : 8)
+    : 0;
+  // The coach sits at the current node; when the stage path is complete it
+  // celebrates at the last node.
+  const coachTrailIdx = currentTrailIdx >= 0 ? currentTrailIdx : trailNodes.length - 1;
+  const coachNode = trailNodes[coachTrailIdx] || null;
+
+  // The winding path line, as SVG polylines in a 0–100 × px coordinate space
+  // (preserveAspectRatio="none" + non-scaling strokes keep it crisp at any
+  // width). Base line spans every node; the "done" overlay traces progress up
+  // to the coach's node.
+  const lineD = trailNodes.map((n, i) => `${i === 0 ? 'M' : 'L'} ${n.x} ${n.y}`).join(' ');
+  const doneD = coachTrailIdx > 0
+    ? trailNodes.slice(0, coachTrailIdx + 1).map((n, i) => `${i === 0 ? 'M' : 'L'} ${n.x} ${n.y}`).join(' ')
+    : '';
+
+  // Gentle hint when a locked node is tapped — never a dead-end, never a
+  // crash. Stored as { index, ts } so RE-tapping the same node produces a new
+  // object, re-arming the hide timer (a bare index would bail out of the
+  // state update and let the first timer hide the bubble mid-read).
+  const [lockedHint, setLockedHint] = useState(null);
+  useEffect(() => {
+    if (lockedHint == null) return undefined;
+    const t = window.setTimeout(() => setLockedHint(null), 3200);
+    return () => window.clearTimeout(t);
+  }, [lockedHint]);
+
+  // Land the user on "what do I do next": auto-scroll the current node into
+  // view on load / when the frontier moves. Runs after App's scroll-to-top on
+  // tab change; mirrors the GuidedTutorial scroll pattern.
+  const currentNodeRef = useRef(null);
+  useEffect(() => {
+    const el = currentNodeRef.current;
+    if (!el) return undefined;
+    const t = window.setTimeout(() => {
+      try {
+        el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      } catch {
+        try { el.scrollIntoView(); } catch { /* older browsers: stay at top */ }
+      }
+    }, 140);
+    return () => window.clearTimeout(t);
+  }, [miniUnitSequence.currentUnitId, currentStageId]);
+
+  // Stage groupings around the current stage. All lock/complete state comes
+  // straight from stageState (state.js) — markers only redraw it.
+  const allStages = stageState ? stageState.stages : [];
+  const earlierStages = allStages.filter(S => S.id < currentStageId);
+  const nextStage = allStages.find(S => S.id === currentStageId + 1) || null;
+  const laterStages = allStages.filter(S => S.id > currentStageId + 1);
+  const completedSet = new Set(completedMiniUnits);
+
   const startCards = () => {
     if (inMissionView && currentMission && onStartMissionCards) {
       onStartMissionCards(currentMission);
@@ -115,11 +205,101 @@ export default function LearnPath({
     setTab('cards', { sessionScope: { type: 'learn' } });
   };
 
+  // Tapping a stage marker keeps EXACTLY the old stage-row behavior:
+  // locked → gentle locked-feature hint; complete → stage review session
+  // (review-only, never advances); otherwise → learning session.
+  const openStage = (S) => {
+    if (!S.unlocked) {
+      onLockedFeature && onLockedFeature(S);
+      return;
+    }
+    if (S.id === 1 && inMissionView && currentMission && onStartMissionCards) {
+      onStartMissionCards(currentMission);
+      return;
+    }
+    if (S.complete) {
+      setTab('cards', { sessionScope: { type: 'stageReview', stageId: S.id, stageName: S.name } });
+      return;
+    }
+    setTab('cards', { sessionScope: { type: 'learn' } });
+  };
+
+  // Compact expandable marker for a non-current stage (earlier or later).
+  const renderStageMarker = (S, { locked = false } = {}) => {
+    const character = getStageCharacter(S.id);
+    const isDone = S.complete;
+    const stageUnits = getMiniUnitsForStage(S.id);
+    return (
+      <details className={`learn-trail-stage${isDone ? ' learn-trail-stage-done' : ''}${locked ? ' learn-trail-stage-locked' : ''}`} key={S.id}>
+        <summary className="learn-trail-stage-summary">
+          <span className="learn-trail-stage-badge" aria-hidden="true" style={{ '--stage-color': S.color, '--char-accent': character.accent }}>
+            {locked ? <Lock size={14} /> : isDone ? <Check size={15} /> : character.placeholderEmoji}
+          </span>
+          <span className="learn-trail-stage-title">Stage {S.id}: {S.name}</span>
+          <span className="learn-trail-stage-meta">
+            {locked ? 'Locked' : isDone ? 'Complete' : (S.total > 0 ? `${S.seen}/${S.total} learned` : 'More lessons planned')}
+          </span>
+          <ChevronDown size={16} className="learn-collapse-chev" aria-hidden="true" />
+        </summary>
+        <div className="learn-trail-stage-body">
+          {locked ? (
+            <div className="learn-trail-stage-note">
+              <span className="learn-path-locked-main">Locked</span>
+              <span className="learn-path-locked-sub">Complete earlier stages to unlock. Every stage is free.</span>
+              <button type="button" className="learn-trail-stage-action" onClick={() => onLockedFeature && onLockedFeature(S)}>
+                What&apos;s in Stage {S.id}?
+              </button>
+            </div>
+          ) : (
+            <>
+              {stageUnits.length > 0 && (
+                <div className="learn-trail-mini-list">
+                  {stageUnits.map(u => (
+                    completedSet.has(u.unitId) ? (
+                      <button
+                        key={u.unitId}
+                        type="button"
+                        className="learn-trail-mini learn-trail-mini-done"
+                        onClick={() => onStartMiniUnit && onStartMiniUnit(u.unitId)}
+                        aria-label={`Replay ${u.title} (completed lesson, review anytime)`}
+                      >
+                        <Check size={12} aria-hidden="true" /> <span>{u.title}</span>
+                      </button>
+                    ) : (
+                      <span
+                        key={u.unitId}
+                        className="learn-trail-mini learn-trail-mini-off"
+                        title="Not completed — new lessons continue on your current stage."
+                      >
+                        {u.title}
+                      </span>
+                    )
+                  ))}
+                </div>
+              )}
+              <button type="button" className="learn-trail-stage-action" onClick={() => openStage(S)}>
+                {isDone
+                  ? `Review Stage ${S.id} (review only, due cards earn XP)`
+                  : `Practice Stage ${S.id} words`}
+                <ChevronRight size={14} aria-hidden="true" />
+              </button>
+              {!isDone && S.total > 0 && (
+                <div className="learn-trail-stage-progressline">
+                  <div className="learn-path-bar"><div className="learn-path-bar-fill" style={{ width: `${S.seenPct}%` }} /></div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </details>
+    );
+  };
+
   return (
     <div className="tab-content learn-path">
       {/* Course-complete state — shown when every guided mini-unit across all
-          stages is done. The stage/unit path below is intentionally NOT hidden,
-          so users can keep reviewing any completed unit. */}
+          stages is done. The trail below is intentionally NOT hidden, so users
+          can keep reviewing any completed unit. */}
       {courseComplete && (
         <section className="learn-course-complete" role="status">
           <div className="learn-course-complete-icon" aria-hidden="true"><Sparkles size={26} /></div>
@@ -138,9 +318,12 @@ export default function LearnPath({
         </section>
       )}
 
-      {/* Continue banner — anchored CTA into the actual lesson flow */}
+      {/* Slim continue strip — the compact session affordance. The trail's
+          CURRENT NODE below is the screen's one big primary action; this strip
+          keeps the existing card-session behavior (mission cards in Stage 1,
+          learning sessions after) reachable without competing visually. */}
       <section
-        className="learn-continue"
+        className="learn-continue-slim"
         data-tutorial="path"
         style={{ '--learn-char-accent': stageCharacter.accent }}
         onClick={startCards}
@@ -148,91 +331,184 @@ export default function LearnPath({
         tabIndex={0}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startCards(); } }}
       >
-        <div className="learn-continue-character" aria-hidden="true">
-          <span className="learn-continue-character-emoji">{stageCharacter.placeholderEmoji}</span>
-          <span className="learn-continue-character-shadow" />
-        </div>
-        <div className="learn-continue-body">
-          <div className="learn-continue-eyebrow">{continueSubtitle}</div>
-          <div className="learn-continue-cta">{ctaLabel}</div>
-          <div className="learn-continue-sub">
-            Guided by <strong>{stageCharacter.name}</strong>. {stageCharacter.vibe}
-          </div>
-        </div>
-        <div className="learn-continue-arrow"><ChevronRight size={26} /></div>
+        <span className="learn-continue-slim-emoji" aria-hidden="true">{stageCharacter.placeholderEmoji}</span>
+        <span className="learn-continue-slim-body">
+          <span className="learn-continue-slim-eyebrow">{continueSubtitle}</span>
+          <span className="learn-continue-slim-label">{ctaLabel}</span>
+        </span>
+        <ChevronRight size={18} className="learn-continue-slim-arrow" aria-hidden="true" />
       </section>
 
-      {/* Guided mini-units — the Stage 1 beginner path (sequential unlock). */}
-      {showMiniUnits && (
-        <section className="learn-section">
-          <div className="learn-section-header">
-            <h2 className="learn-section-title">Stage {currentStageId} lessons</h2>
-            <span className="learn-section-meta">
-              {miniUnitSequence.pathComplete
-                ? `Stage ${currentStageId} path complete`
-                : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} lessons complete`}
-            </span>
+      {/* ── The stepped path ─────────────────────────────────────────────── */}
+      <section className="learn-section learn-trail" aria-label={`Stage ${currentStageId} lesson path`}>
+        {/* Completed / earlier stages — compact markers, expandable. */}
+        {earlierStages.length > 0 && (
+          <div className="learn-trail-earlier">
+            {earlierStages.map(S => renderStageMarker(S))}
           </div>
-          {basics && (
-            <button type="button" className="learn-basics-link" onClick={() => setShowBasics(true)}>
-              <BookOpen size={14} /> Open Thai basics
-            </button>
-          )}
-          <div className="learn-miniunit-list">
-            {miniUnitSequence.units.map((u, idx) => {
-              const status = u.status; // 'complete' | 'current' | 'locked'
+        )}
+
+        <div className="learn-section-header">
+          <h2 className="learn-section-title">Stage {currentStageId} lessons</h2>
+          <span className="learn-section-meta">
+            {miniUnitSequence.pathComplete
+              ? `Stage ${currentStageId} path complete`
+              : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} lessons complete`}
+          </span>
+        </div>
+        {basics && (
+          <button type="button" className="learn-basics-link" onClick={() => setShowBasics(true)}>
+            <BookOpen size={14} /> Open Thai basics
+          </button>
+        )}
+
+        {/* The zigzag trail: nodes alternate down a winding spine, connected
+            by the path line; the stage coach travels to the current node. */}
+        {showTrail && (
+          <div className="learn-trail-track" style={{ height: trackHeight }}>
+            <svg
+              className="learn-trail-line"
+              viewBox={`0 0 100 ${trackHeight}`}
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d={lineD} className="learn-trail-line-base" vectorEffect="non-scaling-stroke" />
+              {doneD && <path d={doneD} className="learn-trail-line-done" vectorEffect="non-scaling-stroke" />}
+            </svg>
+
+            {coachNode && (
+              <div
+                className="learn-trail-coach"
+                style={{ left: `${coachNode.x}%`, top: coachNode.y - TRAIL_NODE_R + 6 }}
+                aria-hidden="true"
+                data-coach-at={coachNode.unitId}
+              >
+                <CharacterCoach
+                  characterId={coachId}
+                  state={miniUnitSequence.pathComplete ? 'celebrating' : 'idle'}
+                  className="learn-trail-coach-inner"
+                />
+              </div>
+            )}
+
+            {trailNodes.map((u) => {
+              const status = u.status; // 'complete' | 'current' | 'locked' — straight from miniUnitSequence.js
               const locked = status === 'locked';
-              const badge = status === 'complete' ? 'Complete' : status === 'current' ? 'Current' : 'Locked';
+              const isCurrent = status === 'current';
               const note = status === 'complete'
                 ? 'Completed. Review anytime.'
-                : status === 'current'
+                : isCurrent
                   ? 'Continue your path.'
                   : 'Complete the previous lesson to unlock.';
               const action = status === 'complete'
                 ? 'Review'
-                : status === 'current'
+                : isCurrent
                   ? (u.inProgress ? 'Continue' : 'Start')
                   : 'Locked';
               return (
-                <section
-                  key={u.unitId}
-                  className={`learn-miniunit-card learn-miniunit-card-${status}`}
-                  aria-disabled={locked || undefined}
-                >
-                  <div className="learn-miniunit-icon" aria-hidden="true">
-                    {status === 'complete' ? <Check size={22} /> : status === 'locked' ? <Lock size={20} /> : <BookOpen size={24} />}
-                  </div>
-                  <div className="learn-miniunit-body">
-                    <div className="learn-miniunit-eyebrow">
-                      <span className={`learn-miniunit-badge learn-miniunit-badge-${status}`}>{badge}</span>
-                      <span className="learn-miniunit-num">Lesson {idx + 1}</span>
-                    </div>
-                    <h2 className="learn-miniunit-title">{u.title}</h2>
-                    <p className="learn-miniunit-copy">{locked ? note : u.subtitle}</p>
-                    {!locked && (
-                      <div className="learn-miniunit-meta">
-                        <span><Clock size={13} /> {u.estimatedMinutes} min</span>
-                        <span>{u.vocabCardIds.length} cards</span>
-                        {u.sentenceBuilder && <span>Sentence builder</span>}
-                      </div>
-                    )}
-                  </div>
+                <React.Fragment key={u.unitId}>
                   <button
                     type="button"
-                    className="learn-miniunit-btn"
-                    onClick={locked ? undefined : () => onStartMiniUnit(u.unitId)}
-                    disabled={locked}
-                    aria-label={locked ? `${u.title}, locked. ${note}` : `${action} ${u.title}`}
+                    ref={isCurrent ? currentNodeRef : undefined}
+                    className={`learn-trail-node learn-trail-node-${status}`}
+                    style={{ left: `${u.x}%`, top: u.y - TRAIL_NODE_R }}
+                    data-status={status}
+                    data-unit-id={u.unitId}
+                    // No aria-disabled: a locked node still performs an action
+                    // (the gentle hint), and its locked state is announced in
+                    // the label — so it is operable, not disabled.
+                    aria-label={locked
+                      ? `Lesson ${u.index + 1}: ${u.title}, locked. ${note}`
+                      : `${action} lesson ${u.index + 1}: ${u.title}`}
                     title={locked ? note : undefined}
+                    onClick={locked
+                      ? () => setLockedHint({ index: u.index, ts: Date.now() })
+                      : () => onStartMiniUnit(u.unitId)}
                   >
-                    {locked ? <><Lock size={14} /> Locked</> : <>{action} <ChevronRight size={16} /></>}
+                    <span className="learn-trail-node-circle" aria-hidden="true">
+                      {status === 'complete' ? <Check size={26} /> : locked ? <Lock size={20} /> : <BookOpen size={26} />}
+                    </span>
+                    <span className="learn-trail-node-label">
+                      <span className="learn-trail-node-num">Lesson {u.index + 1}</span>
+                      <span className="learn-trail-node-title">{u.title}</span>
+                      {isCurrent && (
+                        <span className="learn-trail-node-action">{action}</span>
+                      )}
+                      {isCurrent && (
+                        <span className="learn-trail-node-meta">
+                          {u.estimatedMinutes} min · {u.vocabCardIds.length} cards{u.sentenceBuilder ? ' · builder' : ''}
+                        </span>
+                      )}
+                    </span>
                   </button>
-                </section>
+                  {lockedHint && lockedHint.index === u.index && (
+                    <div
+                      className="learn-trail-hint"
+                      role="status"
+                      // clamp() keeps the bubble inside the track on narrow
+                      // screens — a side-column (24%/76%) node's hint would
+                      // otherwise clip at the viewport edge.
+                      style={{ left: `clamp(120px, ${u.x}%, calc(100% - 120px))`, top: u.y + TRAIL_NODE_R + 6 }}
+                    >
+                      Finish the earlier lessons first — complete Lesson {u.index} to unlock this one.
+                    </div>
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
-        </section>
-      )}
+        )}
+
+        {/* When the CURRENT stage itself is complete (the all-stages-done end
+            state — getStageState keeps currentStage at the last stage), the
+            old screen's "Tap to review Stage N" must stay reachable: offer the
+            same review-only stage session here. */}
+        {currentStage && currentStage.id === currentStageId && currentStage.complete && (
+          <button
+            type="button"
+            className="learn-trail-stage-action learn-trail-current-review"
+            onClick={() => openStage(currentStage)}
+          >
+            Review Stage {currentStage.id} (review only, due cards earn XP)
+            <ChevronRight size={14} aria-hidden="true" />
+          </button>
+        )}
+
+        {/* Next stage — previewed at the bottom of the trail; opens when the
+            current stage completes. Same behavior as the old stage row. */}
+        {nextStage && (
+          <button
+            type="button"
+            className={`learn-trail-next${nextStage.unlocked ? '' : ' learn-trail-next-locked'}`}
+            onClick={() => openStage(nextStage)}
+            // No aria-disabled: when locked this button still performs an
+            // action (the locked-stage explanation), and the locked state is
+            // announced in the label — operable, not disabled.
+            aria-label={`Stage ${nextStage.id}: ${nextStage.name}${nextStage.unlocked ? '' : ' (locked)'}`}
+          >
+            <span className="learn-trail-next-badge" aria-hidden="true">
+              {nextStage.unlocked ? getStageCharacter(nextStage.id).placeholderEmoji : <Lock size={18} />}
+            </span>
+            <span className="learn-trail-next-body">
+              <span className="learn-trail-next-eyebrow">Up next</span>
+              <span className="learn-trail-next-title">Stage {nextStage.id}: {nextStage.name}</span>
+              <span className="learn-trail-next-sub">
+                {nextStage.unlocked
+                  ? 'Unlocked — keep going.'
+                  : `Opens when Stage ${currentStageId} is complete. Every stage is free.`}
+              </span>
+            </span>
+          </button>
+        )}
+
+        {/* The rest of the journey — compact locked markers, expandable. */}
+        {laterStages.length > 0 && (
+          <div className="learn-trail-later">
+            {laterStages.map(S => renderStageMarker(S, { locked: !S.unlocked }))}
+          </div>
+        )}
+      </section>
 
       {/* Bonus: borrowed "Words You Already Know" — optional, no XP, no progress */}
       <section className="learn-section learn-bonus-section">
@@ -285,7 +561,7 @@ export default function LearnPath({
 
       {/* Mission rail — only while inside Stage 1.
           DE-CLUTTER (collapsed by default): this panel restates the mission the
-          Continue hero at the top already launches, then adds a 6-node rail. Its
+          continue strip at the top already launches, then adds a 6-node rail. Its
           headline progress stays visible in the summary; the card, bar, stats and
           every mission node are unchanged inside. Nothing removed. */}
       {inMissionView && currentMission && missionState && (
@@ -342,124 +618,6 @@ export default function LearnPath({
           </div>
         </details>
       )}
-
-      {/* The 8-stage path — every stage has a character.
-          DE-CLUTTER (collapsed by default): the full 8-stage list is the single
-          biggest block on this screen and competed with the one primary action at
-          the top. NOTHING is removed — every stage row, character, progress and
-          lock state is unchanged and one tap away; the summary keeps the
-          orientation ("Stage X of 8") visible while it is closed. */}
-      <details className="learn-section learn-collapse">
-        <summary className="learn-collapse-summary">
-          <span className="learn-collapse-title">Your Thai journey</span>
-          <span className="learn-collapse-meta">
-            Stage {currentStageId} of {STAGES.length} · {MINI_UNITS.length} guided lessons
-          </span>
-          <ChevronDown size={18} className="learn-collapse-chev" aria-hidden="true" />
-        </summary>
-
-        <ol className="learn-path-list" role="list">
-          {stageState && stageState.stages.map((S, idx) => {
-            const character = getStageCharacter(S.id);
-            const isCurrent = S.id === stageState.currentStage;
-            const isLocked = !S.unlocked;
-            const isDone = S.complete;
-            const isEmpty = S.total === 0;
-            const cls = [
-              'learn-path-node',
-              isCurrent && 'learn-path-node-current',
-              isDone && 'learn-path-node-done',
-              isLocked && 'learn-path-node-locked',
-              isEmpty && 'learn-path-node-empty',
-            ].filter(Boolean).join(' ');
-
-            const onClick = () => {
-              if (isLocked) {
-                onLockedFeature && onLockedFeature(S);
-                return;
-              }
-              if (S.id === 1 && inMissionView && currentMission && onStartMissionCards) {
-                onStartMissionCards(currentMission);
-                return;
-              }
-              // A completed stage never re-teaches new cards: open a Stage
-              // Review session scoped to that stage's already-seen cards. Due
-              // cards earn review XP; non-due replays earn 0. It never advances
-              // stage progress. An active/incomplete stage starts a learning
-              // session instead.
-              if (isDone) {
-                setTab('cards', { sessionScope: { type: 'stageReview', stageId: S.id, stageName: S.name } });
-                return;
-              }
-              setTab('cards', { sessionScope: { type: 'learn' } });
-            };
-
-            return (
-              <li
-                key={S.id}
-                className={cls}
-                style={{ '--stage-color': S.color, '--char-accent': character.accent }}
-              >
-                <div className="learn-path-connector" aria-hidden="true" data-first={idx === 0 || undefined} />
-                <button
-                  type="button"
-                  className="learn-path-node-btn"
-                  onClick={onClick}
-                  aria-disabled={isLocked}
-                  aria-label={`Stage ${S.id}: ${S.name}${isLocked ? ' (locked)' : isDone ? ' (complete, tap to review)' : ''}`}
-                >
-                  <div className="learn-path-character" aria-hidden="true">
-                    <span className="learn-path-character-emoji">
-                      {isLocked
-                        ? <Lock size={20} />
-                        : (isDone ? <Check size={22} /> : character.placeholderEmoji)}
-                    </span>
-                  </div>
-                  <div className="learn-path-info">
-                    <div className="learn-path-eyebrow">
-                      <span className="learn-path-stage-num">Stage {S.id}</span>
-                      {isCurrent && <span className="learn-path-current-tag">Now</span>}
-                      {isDone && <span className="learn-path-done-tag">Complete</span>}
-                    </div>
-                    <div className="learn-path-name">{S.name}</div>
-                    <div className="learn-path-desc">{S.desc}</div>
-                    <div className="learn-path-meta">
-                      <span className="learn-path-character-name">{character.placeholderEmoji} {character.name}</span>
-                      {!isEmpty && (
-                        <span className="learn-path-progress-text">
-                          {S.seen}/{S.total} learned · {S.mature} mastered through review
-                        </span>
-                      )}
-                    </div>
-                    {!isEmpty && (
-                      <div className="learn-path-bar">
-                        <div className="learn-path-bar-fill" style={{ width: `${S.seenPct}%` }} />
-                      </div>
-                    )}
-                    {isDone && !isEmpty && (
-                      <div className="learn-path-done-note">
-                        Stage {S.id} complete. Every word learned. Tap to review Stage {S.id} (review only, due cards earn XP).
-                      </div>
-                    )}
-                    {isEmpty && (
-                      <div className="learn-path-empty-note">More lessons planned</div>
-                    )}
-                    {isLocked && (
-                      <div className="learn-path-locked-note">
-                        <span className="learn-path-locked-main">Locked</span>
-                        <span className="learn-path-locked-sub">Complete earlier stages to unlock. Every stage is free.</span>
-                      </div>
-                    )}
-                  </div>
-                  {!isLocked && (
-                    <span className="learn-path-arrow" aria-hidden="true"><ChevronRight size={20} /></span>
-                  )}
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </details>
 
       <div className="learn-footnote">
         <Sparkles size={14} />
