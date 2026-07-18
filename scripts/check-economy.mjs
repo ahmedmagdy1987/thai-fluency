@@ -29,6 +29,8 @@ assert('(a) the intro renders the out-of-hearts gate instead of a start control'
   quiz.includes('outOfHearts ?') && quiz.includes('quiz-hearts-gate'));
 assert('(a) the gate always offers a free way forward (never a dead end)',
   quiz.includes('quiz-hearts-gate-practice') && /learn and review for free/.test(quiz));
+// The MID-SESSION hearts gate (stop at 0 hearts between questions, resume on
+// refill) is pinned by its own validator: scripts/check-hearts-midsession.mjs.
 
 // ── (b) learning / review NEVER costs a heart ───────────────────────────────
 const cards = read('src/components/CardsTab.jsx');
