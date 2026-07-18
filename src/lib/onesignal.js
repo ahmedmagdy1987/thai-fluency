@@ -48,9 +48,18 @@ async function ensureLoaded() {
       await OneSignal.init({
         appId: APP_ID,
         // Worker lives at /OneSignalSDKWorker.js (public/ folder, copied to
-        // dist root by Vite). That's OneSignal v16's default path, so no
-        // serviceWorkerPath override is needed. OneSignal's SW coexists with
-        // our vite-plugin-pwa SW — separate scripts, both at scope '/'.
+        // dist root by Vite). It MUST NOT share scope '/' with the
+        // vite-plugin-pwa worker: the browser allows exactly ONE service-worker
+        // registration per scope, so two scripts at '/' alternate-replace each
+        // other — whichever registered last wins, killing either offline
+        // caching or push depending on timing (the pre-Wave-10 intermittent
+        // breakage). A dedicated sub-scope is OneSignal's documented
+        // coexistence setup: push events are delivered to the registration
+        // regardless of scope, while sw.js keeps '/' for fetch/offline.
+        // (A worker script at the root may claim any scope at or below '/',
+        // so no Service-Worker-Allowed header is needed.)
+        serviceWorkerPath: 'OneSignalSDKWorker.js',
+        serviceWorkerParam: { scope: '/push/onesignal/' },
         promptOptions: {
           slidedown: {
             prompts: [{

@@ -11,8 +11,11 @@ export default defineConfig({
       // OneSignal's worker lives at public/OneSignalSDKWorker.js — it ships
       // separately from this PWA SW. Merging it via workbox.importScripts
       // didn't work in production (OneSignal v16 still tried to fetch its own
-      // worker path and 404'd). Two SWs coexist: OneSignal owns push, ours
-      // owns offline caching.
+      // worker path and 404'd). The two SWs coexist ONLY because they hold
+      // different scopes: this worker owns '/' (offline caching), OneSignal's
+      // is registered at '/push/onesignal/' (see src/lib/onesignal.js init —
+      // one registration per scope is a hard browser rule, so same-scope
+      // "coexistence" is impossible and used to break both intermittently).
       manifest: {
         name: 'Tuk Talk Thai',
         short_name: 'Tuk Talk',

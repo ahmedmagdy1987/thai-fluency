@@ -54,6 +54,7 @@ import { supabase, hasSupabaseConfig } from './lib/supabase.js';
 import { getCapturedAuthError, hadRecoveryTokens, friendlyAuthErrorMessage, stripAuthErrorParams } from './lib/authCallback.js';
 import { awardReward, serverRewardsActive, REWARD_EVENTS, rewardKeys } from './lib/serverRewards.js';
 import { resetUserScopedRefs, claimCloudInit, releaseCloudInit, shouldWipeLocalOnIdentityChange, canWriteProfileSettings } from './lib/sessionLocks.js';
+import { createSyncScheduler } from './lib/syncScheduler.js';
 import {
   hasOneSignalConfig,
   initOneSignal,
@@ -418,7 +419,9 @@ export default function TukTalkThaiApp() {
   // write can never clobber a returning user's cloud xp/streak/gems/progress (B3).
   const [cloudInitOk, setCloudInitOk] = useState(false);
   const [profileChecked, setProfileChecked] = useState(!hasSupabaseConfig); // true after profile fetch resolves (skipped if no Supabase)
-  const cloudSyncTimer = useRef(null);
+  const syncSchedulerRef = useRef(null);                    // debounced uploader w/ flush-on-hide (lib/syncScheduler.js)
+  if (syncSchedulerRef.current === null) syncSchedulerRef.current = createSyncScheduler();
+  const cloudInitRetryAtRef = useRef(0);                    // last failed-init retry attempt (ms epoch)
   const cloudInitClaimRef = useRef(null);                   // user-scoped cloud-init claim (see sessionLocks.js)
   const cloudReadyRef = useRef(false);                      // mirrors cloudReady for the identity-change wipe check
   const prevUserIdRef = useRef(undefined);                  // previous authenticated user id, for identity-change detection
@@ -553,6 +556,10 @@ export default function TukTalkThaiApp() {
       profileSettingsRef,
       cloudInitClaimRef,
     });
+    // Wave 10: a departed user's pending upload thunk must never fire for the
+    // next identity — reset (not cancel) drops the thunk and the dirty flag.
+    syncSchedulerRef.current.reset();
+    cloudInitRetryAtRef.current = 0;
     // Per-user attempt/undo/overlay state must not cross identities either: a
     // stale undo snapshot could splice user A's card state (and its XP delta)
     // into user B's progress, a stale card session could resume A's mission
@@ -1057,19 +1064,82 @@ export default function TukTalkThaiApp() {
     // is true only after a successful seed/merge, so local safely reflects cloud.
     if (!session || !cloudInitOk || !loaded || !hasSupabaseConfig) return;
     if (!session.user?.email_confirmed_at) return;
-    if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current);
-    cloudSyncTimer.current = setTimeout(async () => {
+    const userId = session.user.id;
+    // Wave 10: the debounce lives in lib/syncScheduler.js so the flush-on-hide
+    // timing is testable in node. Every state change re-schedules with a fresh
+    // thunk, so a flush always uploads the LATEST progress/stats.
+    syncSchedulerRef.current.schedule(async () => {
       try {
-        await uploadProgress(session.user.id, progress);
-        await uploadStats(session.user.id, stats);
+        await uploadProgress(userId, progress);
+        await uploadStats(userId, stats);
         const achs = stats.unlockedAchievements || [];
-        if (achs.length > 0) await uploadAchievements(session.user.id, achs);
+        if (achs.length > 0) await uploadAchievements(userId, achs);
       } catch (e) {
         console.warn('[App] cloud sync failed', e);
+        throw e;   // keep the scheduler dirty so retry / flush-on-hide try again
       }
-    }, 2500);
-    return () => { if (cloudSyncTimer.current) clearTimeout(cloudSyncTimer.current); };
+    });
+    // Unmount/dep-change cleanup drops TIMERS only (cancel, not reset): the
+    // dirty flag and thunk survive so a page-hide flush can still land the
+    // final write. schedule() on the next change replaces the thunk anyway.
+    return () => { syncSchedulerRef.current.cancel(); };
   }, [progress, stats, session, cloudInitOk, loaded]);
+
+  // Wave 10 flush-on-hide: the 2.5s debounce had a data-loss window — close the
+  // app within it (the typical quick streak-saving session, or iOS backgrounding
+  // which suspends timers) and the final upload never fired, so the next
+  // launch's cloud-authoritative merge visibly rolled back XP/streak/gems.
+  // visibilitychange→hidden is the reliable page-lifecycle signal on mobile
+  // Safari and Android Chrome; pagehide is the desktop/bfcache belt-and-braces.
+  // 'online' additionally flushes a dirty write the moment connectivity
+  // returns. Listeners are mount-once; the scheduler ref always holds the
+  // latest thunk. This changes WHEN the upload runs — merge policy untouched.
+  useEffect(() => {
+    const flush = () => { syncSchedulerRef.current.flush(); };
+    const onVisibility = () => { if (document.visibilityState === 'hidden') flush(); };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', flush);
+    window.addEventListener('online', flush);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', flush);
+      window.removeEventListener('online', flush);
+    };
+  }, []);
+
+  // Wave 10 re-arm: a failed cloud init used to disarm sync for the ENTIRE
+  // session (cloudInitOk stays false and the init effect never re-fires because
+  // cloudReady is true), so everything earned after an offline launch was lost
+  // to the next launch's merge. Now, while in the failed-init state, connectivity
+  // or visibility returning re-arms by clearing cloudReady — which simply
+  // re-runs the UNCHANGED init effect above (download → merge → arm, claim-
+  // guarded and identity-safe). Same code path as a fresh launch; the merge
+  // policy and its cloud-authoritative anti-forgery rules are untouched.
+  // Gated on firstLessonCompleted so the !cloudReady boot gate (which only
+  // applies pre-first-lesson) can never swap a new user's first lesson for a
+  // boot screen mid-retry. Min 15s between attempts; passive 60s heartbeat.
+  useEffect(() => {
+    if (!session || !loaded || !hasSupabaseConfig) return;
+    if (!cloudReady || cloudInitOk) return;          // only the failed-init state
+    if (!session.user?.email_confirmed_at) return;
+    if (!stats.firstLessonCompleted) return;
+    const maybeRetry = () => {
+      const now = Date.now();
+      if (now - (cloudInitRetryAtRef.current || 0) < 15000) return;
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+      cloudInitRetryAtRef.current = now;
+      setCloudReady(false);   // re-fires the init effect; nothing else changes
+    };
+    const onVisibility = () => { if (document.visibilityState === 'visible') maybeRetry(); };
+    window.addEventListener('online', maybeRetry);
+    document.addEventListener('visibilitychange', onVisibility);
+    const heartbeat = setInterval(maybeRetry, 60000);
+    return () => {
+      window.removeEventListener('online', maybeRetry);
+      document.removeEventListener('visibilitychange', onVisibility);
+      clearInterval(heartbeat);
+    };
+  }, [session, loaded, cloudReady, cloudInitOk, stats.firstLessonCompleted]);
 
   useEffect(() => {
     if (loaded && !demoMode) saveState({ progress, stats });
