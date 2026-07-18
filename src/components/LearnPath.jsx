@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronRight, ChevronDown, Lock, Check, Sparkles, Flame, Gift, Zap, X } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, Lock, Check, Sparkles, Flame, Gift, Zap, X, Layers } from 'lucide-react';
 import { DEFAULT_DAILY_GOAL, XP_REWARDS } from '../data/gamification.js';
 import { getStageCharacter, resolveCoachIdForStage } from '../data/stageCharacters.js';
 import { getMiniUnitsForStage, STAGE_1_MINI_UNIT_PILOT } from '../data/miniUnits.js';
 import { BORROWED_WORDS } from '../data/borrowedWords.js';
-import { getMiniUnitProgressState } from '../lib/miniUnitSequence.js';
+import { getStagePathSteps, STEP_KIND } from '../lib/stagePath.js';
 import CharacterCoach from './CharacterCoach.jsx';
 import ThaiBasicsPrimer from './ThaiBasicsPrimer.jsx';
 import BorrowedWordsBonus from './BorrowedWordsBonus.jsx';
@@ -14,11 +14,18 @@ import BorrowedWordsBonus from './BorrowedWordsBonus.jsx';
 // travelling to the current node; earlier stages collapse to compact markers
 // above the trail and the next stage previews below it.
 //
-// VISUAL redesign only. All progress, unlock, and current-stage logic is read
-// unchanged from state.js (stageState / missionState) and
-// miniUnitSequence.js (getMiniUnitProgressState) — no new gameplay rules, no
-// new unlock rules, no economy changes. Node status is EXACTLY the sequence
-// lib's 'complete' | 'current' | 'locked'.
+// All progress, unlock, and current-stage logic is read unchanged from
+// state.js (stageState / missionState) and lib/stagePath.js — no new gameplay
+// rules, no new unlock rules, no economy changes. Node status comes verbatim
+// from the step list.
+//
+// Wave 11: the trail renders lib/stagePath.js's step list, which is the SAME
+// list scripts/check-stage-path-visibility.mjs asserts the unlock condition
+// against. That list ends with the stage's WORDS step — the card requirement
+// that actually opens the next stage. Before this, the trail showed only the
+// guided lessons and declared "path complete" when they were done, while the
+// gate silently required every card in the stage: a learner could finish 100%
+// of the visible path and stay locked out with no visible reason.
 
 // ── Trail geometry (presentation constants only) ────────────────────────────
 // Serpentine x-centers (in % of track width), cycling per node index so the
@@ -117,34 +124,41 @@ export default function LearnPath({
     ? savedUnitProgress.unitId
     : null;
   const completedMiniUnits = fullStats?.completedMiniUnits || [];
-  const miniUnitSequence = getMiniUnitProgressState(
-    currentStageMiniUnits,
-    completedMiniUnits,
-    midFlowUnitId,
-  );
-  const showTrail = !!(onStartMiniUnit && stageState && miniUnitSequence.units.length > 0);
+  // Wave 11: the path's steps come from lib/stagePath.js — the SAME function
+  // the visibility validator asserts against — so what the trail shows is by
+  // construction what unlocking requires. It appends the stage's card
+  // requirement (previously an invisible condition that left users completing
+  // every lesson and still locked out) as the path's final step.
+  const stagePath = getStagePathSteps(currentStageId, { stageState, stats: fullStats || {} });
+  const miniUnitSequence = stagePath.sequence;
+  const showTrail = !!(onStartMiniUnit && stageState && stagePath.steps.length > 0);
 
   // The path coach for this stage — the SAME character resolution the lessons
   // themselves use (MiniUnitFlow), so the mascot on the trail is the mascot in
   // the lesson. Stage 1 = Chang the elephant.
   const coachId = resolveCoachIdForStage(currentStageId);
 
-  // ── Trail node geometry (pure presentation over the sequence state) ───────
-  const trailNodes = miniUnitSequence.units.map((u, i) => ({
-    ...u,
+  // ── Trail node geometry (pure presentation over the step list) ────────────
+  const trailNodes = stagePath.steps.map((step, i) => ({
+    ...step,
     index: i,
     x: TRAIL_X_PATTERN[i % TRAIL_X_PATTERN.length],
     y: TRAIL_TOP_PAD + i * TRAIL_ROW_H + TRAIL_NODE_R,
   }));
-  const currentTrailIdx = trailNodes.findIndex(n => n.isCurrent);
+  const currentTrailIdx = trailNodes.findIndex(n => n.status === 'current');
   // The current node stacks extra content (action chip + meta); when it is the
   // LAST node, reserve tail room so it never paints over the next-stage card.
+  const lastNode = trailNodes[trailNodes.length - 1] || null;
   const lastIsCurrent = trailNodes.length > 0 && currentTrailIdx === trailNodes.length - 1;
+  // The words step stacks a progress bar on top of the action chip + meta, so
+  // it needs a little more tail room than a lesson node does.
+  const lastIsUnfinishedWords = !!lastNode && lastNode.kind === STEP_KIND.WORDS && lastNode.status !== 'complete';
   const trackHeight = trailNodes.length > 0
-    ? TRAIL_TOP_PAD + trailNodes.length * TRAIL_ROW_H + (lastIsCurrent ? 72 : 8)
+    ? TRAIL_TOP_PAD + trailNodes.length * TRAIL_ROW_H + (lastIsUnfinishedWords ? 104 : lastIsCurrent ? 72 : 8)
     : 0;
-  // The coach sits at the current node; when the stage path is complete it
-  // celebrates at the last node.
+  // The coach sits at the current node; when every step is satisfied it
+  // celebrates at the last node. (It no longer celebrates on a "finished"
+  // lesson trail while the stage's word work is still outstanding.)
   const coachTrailIdx = currentTrailIdx >= 0 ? currentTrailIdx : trailNodes.length - 1;
   const coachNode = trailNodes[coachTrailIdx] || null;
 
@@ -183,7 +197,7 @@ export default function LearnPath({
       }
     }, 140);
     return () => window.clearTimeout(t);
-  }, [miniUnitSequence.currentUnitId, currentStageId]);
+  }, [miniUnitSequence.currentUnitId, stagePath.wordsStep?.status, currentStageId]);
 
   // Stage groupings around the current stage. All lock/complete state comes
   // straight from stageState (state.js) — markers only redraw it.
@@ -264,6 +278,14 @@ export default function LearnPath({
             <>
               {stageUnits.length > 0 && (
                 <div className="learn-trail-mini-list">
+                  {/* Wave 11: an INCOMPLETE lesson of an unlocked stage is now
+                      startable here. It used to render as an inert <span>, so
+                      once the frontier moved past a stage its unfinished
+                      lessons became permanently unreachable — which also made
+                      Course Complete (all 96 lessons) impossible for anyone
+                      who learned cards faster than lessons, and for every
+                      placement user. Locked stages keep the inert preview
+                      above; only unlocked stages get buttons. */}
                   {stageUnits.map(u => (
                     completedSet.has(u.unitId) ? (
                       <button
@@ -276,13 +298,15 @@ export default function LearnPath({
                         <Check size={12} aria-hidden="true" /> <span>{u.title}</span>
                       </button>
                     ) : (
-                      <span
+                      <button
                         key={u.unitId}
-                        className="learn-trail-mini learn-trail-mini-off"
-                        title="Not completed — new lessons continue on your current stage."
+                        type="button"
+                        className="learn-trail-mini learn-trail-mini-todo"
+                        onClick={() => onStartMiniUnit && onStartMiniUnit(u.unitId)}
+                        aria-label={`Start ${u.title} (Stage ${S.id} lesson, not completed yet)`}
                       >
-                        {u.title}
-                      </span>
+                        <BookOpen size={12} aria-hidden="true" /> <span>{u.title}</span>
+                      </button>
                     )
                   ))}
                 </div>
@@ -361,9 +385,15 @@ export default function LearnPath({
         <div className="learn-section-header">
           <h2 className="learn-section-title">Stage {currentStageId} lessons</h2>
           <span className="learn-section-meta">
-            {miniUnitSequence.pathComplete
-              ? `Stage ${currentStageId} path complete`
-              : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} lessons complete`}
+            {/* Wave 11: "path complete" now means EVERY step is done — lessons
+                AND the stage's words. It used to fire on lessons alone, which
+                is what told users the path was finished while the next stage
+                stayed locked. */}
+            {stagePath.allSatisfied
+              ? `Stage ${currentStageId} complete`
+              : (miniUnitSequence.pathComplete && stagePath.wordsStep
+                  ? `Lessons done · ${stagePath.wordsStep.remaining} words to go`
+                  : `${miniUnitSequence.completedCount}/${miniUnitSequence.totalCount} lessons complete`)}
           </span>
         </div>
         {basics && (
@@ -396,16 +426,66 @@ export default function LearnPath({
               >
                 <CharacterCoach
                   characterId={coachId}
-                  state={miniUnitSequence.pathComplete ? 'celebrating' : 'idle'}
+                  state={stagePath.allSatisfied ? 'celebrating' : 'idle'}
                   className="learn-trail-coach-inner"
                 />
               </div>
             )}
 
             {trailNodes.map((u) => {
-              const status = u.status; // 'complete' | 'current' | 'locked' — straight from miniUnitSequence.js
+              const status = u.status; // lessons: 'complete'|'current'|'locked' (miniUnitSequence.js); words: +'pending'
               const locked = status === 'locked';
               const isCurrent = status === 'current';
+              const isWords = u.kind === STEP_KIND.WORDS;
+
+              // The WORDS step: the stage's card requirement, now a visible
+              // node instead of a hidden unlock condition. Never locked —
+              // learning the stage's words is allowed at any point — and
+              // tapping it opens the learning session that satisfies it.
+              if (isWords) {
+                const wordsAction = status === 'complete' ? 'Review' : (u.seen > 0 ? 'Continue' : 'Start');
+                return (
+                  <button
+                    key={u.id}
+                    type="button"
+                    ref={isCurrent ? currentNodeRef : undefined}
+                    className={`learn-trail-node learn-trail-node-words learn-trail-node-${status}`}
+                    style={{ left: `${u.x}%`, top: u.y - TRAIL_NODE_R }}
+                    data-status={status}
+                    data-step-id={u.id}
+                    aria-label={status === 'complete'
+                      ? `All ${u.total} Stage ${currentStageId} words learned. Review anytime.`
+                      : `${wordsAction} learning the rest of Stage ${currentStageId}: ${u.seen} of ${u.total} words learned, ${u.remaining} to go. This is what opens the next stage.`}
+                    onClick={startCards}
+                  >
+                    <span className="learn-trail-node-circle" aria-hidden="true">
+                      {status === 'complete' ? <Check size={26} /> : <Layers size={26} />}
+                    </span>
+                    <span className="learn-trail-node-label">
+                      <span className="learn-trail-node-num">All words</span>
+                      <span className="learn-trail-node-title">
+                        {status === 'complete'
+                          ? `All ${u.total} words learned`
+                          : `Learn all ${u.total} Stage ${currentStageId} words`}
+                      </span>
+                      {status !== 'complete' && (
+                        <span className="learn-trail-node-wordsbar" aria-hidden="true">
+                          <span className="learn-trail-node-wordsbar-fill" style={{ width: `${u.pct}%` }} />
+                        </span>
+                      )}
+                      {status !== 'complete' && (
+                        <span className="learn-trail-node-action">{wordsAction}</span>
+                      )}
+                      <span className="learn-trail-node-meta">
+                        {status === 'complete'
+                          ? 'Stage complete — next stage open'
+                          : `${u.seen}/${u.total} learned · ${u.remaining} to go`}
+                      </span>
+                    </span>
+                  </button>
+                );
+              }
+
               const note = status === 'complete'
                 ? 'Completed. Review anytime.'
                 : isCurrent
@@ -414,17 +494,17 @@ export default function LearnPath({
               const action = status === 'complete'
                 ? 'Review'
                 : isCurrent
-                  ? (u.inProgress ? 'Continue' : 'Start')
+                  ? (u.unit.inProgress ? 'Continue' : 'Start')
                   : 'Locked';
               return (
-                <React.Fragment key={u.unitId}>
+                <React.Fragment key={u.id}>
                   <button
                     type="button"
                     ref={isCurrent ? currentNodeRef : undefined}
                     className={`learn-trail-node learn-trail-node-${status}`}
                     style={{ left: `${u.x}%`, top: u.y - TRAIL_NODE_R }}
                     data-status={status}
-                    data-unit-id={u.unitId}
+                    data-unit-id={u.id}
                     // No aria-disabled: a locked node still performs an action
                     // (the gentle hint), and its locked state is announced in
                     // the label — so it is operable, not disabled.
@@ -434,7 +514,7 @@ export default function LearnPath({
                     title={locked ? note : undefined}
                     onClick={locked
                       ? () => setLockedHint({ index: u.index, ts: Date.now() })
-                      : () => onStartMiniUnit(u.unitId)}
+                      : () => onStartMiniUnit(u.id)}
                   >
                     <span className="learn-trail-node-circle" aria-hidden="true">
                       {status === 'complete' ? <Check size={26} /> : locked ? <Lock size={20} /> : <BookOpen size={26} />}
@@ -447,7 +527,7 @@ export default function LearnPath({
                       )}
                       {isCurrent && (
                         <span className="learn-trail-node-meta">
-                          {u.estimatedMinutes} min · {u.vocabCardIds.length} cards{u.sentenceBuilder ? ' · builder' : ''}
+                          {u.unit.estimatedMinutes} min · {u.unit.vocabCardIds.length} cards{u.unit.sentenceBuilder ? ' · builder' : ''}
                         </span>
                       )}
                     </span>

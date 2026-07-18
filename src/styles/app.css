@@ -1907,6 +1907,11 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .app-root[data-theme="dark"] .topstats-pill-streak { color: #E0AD7B; border-color: rgba(224, 173, 123, 0.35); }
 .app-root[data-theme="dark"] .topstats-pill-xp { color: var(--jade); }
 .topstats-hearts-of { opacity: 0.6; font-weight: 600; margin-left: 1px; }
+/* Regen countdown next to the hearts chip (Wave 11) — deliberately quiet:
+   monospaced so the digits don't jitter, dimmed, and only present while a
+   heart is actually on its way. Hidden on small phones with the other
+   secondary chip text so the header can never overflow. */
+.topstats-hearts-regen { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-10); font-weight: 600; opacity: 0.62; margin-left: var(--sp-1); white-space: nowrap; }
 .topstats-label { font-weight: 600; opacity: 0.72; letter-spacing: 0.01em; }
 .topstats-val { font-weight: 700; }
 @media (max-width: 540px) {
@@ -1919,6 +1924,7 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
   .topstats-pill svg { width: 11px; height: 11px; }
   .topstats-icon-emoji { font-size: var(--fs-12); }
   .topstats-hearts-of,
+  .topstats-hearts-regen,
   .topstats-due-label,
   .topstats-label { display: none; }
 }
@@ -2159,6 +2165,21 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 }
 
 /* Locked — muted, still focusable/tappable so the gentle hint can answer. */
+/* ── The WORDS step (Wave 11) ───────────────────────────────────────────────
+   The stage's card requirement as a first-class trail node: the step that
+   actually opens the next stage. Gold-rimmed so it reads as the stage's
+   destination rather than another lesson, and never "locked" — learning the
+   stage's words is allowed at any point. `pending` = visible and startable but
+   not yet the frontier (lessons still outstanding). */
+.learn-trail-node-words .learn-trail-node-circle { border-color: var(--gold); color: var(--gold-deep); background: var(--cream-warm); }
+.learn-trail-node-words.learn-trail-node-pending .learn-trail-node-circle { border-style: dashed; }
+.learn-trail-node-words.learn-trail-node-pending .learn-trail-node-title { color: var(--ink-soft); }
+.learn-trail-node-words.learn-trail-node-complete .learn-trail-node-circle { background: var(--jade); border-color: var(--jade); color: var(--card-bg); }
+.learn-trail-node-wordsbar { display: block; width: 96px; height: 5px; margin: 3px auto 0; border-radius: 999px; background: var(--line); overflow: hidden; }
+.learn-trail-node-wordsbar-fill { display: block; height: 100%; border-radius: 999px; background: var(--gold-deep); transition: width 0.3s ease-out; }
+.app-root[data-theme="dark"] .learn-trail-node-words .learn-trail-node-circle { background: rgba(232, 228, 217, 0.05); }
+.app-root[data-theme="dark"] .learn-trail-node-words.learn-trail-node-complete .learn-trail-node-circle { background: var(--jade); }
+
 .learn-trail-node-locked { cursor: pointer; }
 .learn-trail-node-locked .learn-trail-node-circle { background: var(--cream-warm); border-style: dashed; border-color: var(--line-strong); color: var(--stone); box-shadow: none; }
 .learn-trail-node-locked .learn-trail-node-title { color: var(--stone); }
@@ -2201,6 +2222,12 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
 .learn-trail-mini-done:hover { border-color: var(--jade); }
 .learn-trail-mini-done:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .learn-trail-mini-off { background: transparent; border-style: dashed; color: var(--stone); }
+/* Startable (not-yet-completed) lesson of an unlocked earlier stage — Wave 11.
+   Dashed like the locked-stage preview, but interactive: it is a real way back
+   into a lesson the frontier moved past. */
+.learn-trail-mini-todo { background: transparent; border-style: dashed; border-color: var(--line-strong); color: var(--ink-soft); cursor: pointer; font-family: inherit; }
+.learn-trail-mini-todo:hover { border-color: var(--jade); color: var(--jade); }
+.learn-trail-mini-todo:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .learn-trail-stage-action { display: inline-flex; align-items: center; gap: var(--sp-1); align-self: flex-start; background: var(--cream-warm); border: 1px solid var(--line-strong); border-radius: 999px; padding: var(--sp-1) var(--sp-3); min-height: 32px; font-family: inherit; font-size: var(--fs-12); font-weight: 700; color: var(--jade); cursor: pointer; transition: border-color 0.15s; }
 .learn-trail-stage-action:hover { border-color: var(--jade); }
 .learn-trail-stage-action:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
@@ -3277,6 +3304,7 @@ button.character-coach-portrait { cursor: pointer; }
 .quiz-hearts-status .quiz-heart-full { color: #E0445C; }
 .quiz-hearts-status .quiz-heart-empty { color: var(--line-strong); }
 .quiz-hearts-status-text { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 700; color: var(--ink-soft); margin-left: var(--sp-1); }
+.quiz-hearts-status-regen { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-11); font-weight: 600; color: var(--ink-soft); opacity: 0.75; margin-left: var(--sp-2); }
 
 .quiz-hearts-gate { max-width: 480px; margin: var(--sp-1) auto 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-2); padding: var(--sp-5) var(--sp-5); border: 1px solid color-mix(in srgb, #E0445C 32%, var(--line)); border-radius: 18px; background: var(--card-bg); box-shadow: 0 12px 34px rgba(15, 61, 46, 0.08); }
 .app-root[data-theme="dark"] .quiz-hearts-gate { box-shadow: none; }
@@ -3328,6 +3356,7 @@ button.character-coach-portrait { cursor: pointer; }
 .shop-item-status-count { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-12); font-weight: 700; color: var(--ink-soft); margin-left: var(--sp-1); }
 .shop-item-status-super { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-12); font-weight: 700; color: var(--gold); }
 .shop-item-reason { font-size: var(--fs-12); color: var(--ink-soft); line-height: 1.4; }
+.shop-item-regen { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-11); font-weight: 600; color: var(--jade); opacity: 0.85; margin-top: 2px; }
 .shop-item-buy { flex: 0 0 auto; align-self: center; min-width: 84px; justify-content: center; white-space: nowrap; }
 .shop-upsell { display: grid; grid-template-columns: 48px 1fr auto; gap: var(--sp-3); align-items: center; background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, var(--card-bg)) 0%, var(--card-bg) 70%); border: 1px solid color-mix(in srgb, var(--gold) 40%, var(--line)); border-radius: 14px; padding: var(--sp-3) var(--sp-4); }
 .shop-upsell-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--gold); color: var(--gold-ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }

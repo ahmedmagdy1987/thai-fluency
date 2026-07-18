@@ -1939,6 +1939,17 @@ export default function TukTalkThaiApp() {
     // every later stage stays locked and unlocks only by finishing the one before
     // it. Beginners (Stage 1) keep the full polished first-lesson experience.
     const skipStarterLesson = startedStage > 1;
+    // Wave 11: a placement above Stage 1 also credits the guided lessons of the
+    // stages the learner placed OUT of. Without this, those lessons stayed
+    // permanently incomplete while their stages sat behind the frontier, so
+    // getCourseCompletion (which requires all 96) could never be satisfied and
+    // the Course Complete milestone was unreachable for every placement user.
+    // Crediting matches what placement asserts (they already know this level),
+    // grants NO XP (the reward path is handleMiniUnitProgressChange, not this
+    // write) and never touches the current stage's own lessons.
+    const placedOutUnitIds = startedStage > 1
+      ? MINI_UNITS.filter(u => (u.stageId || 1) < startedStage).map(u => u.unitId)
+      : [];
     setStats(s => {
       const next = {
         ...s,
@@ -1948,6 +1959,9 @@ export default function TukTalkThaiApp() {
         voice: voiceChoice || s.voice || DEFAULT_VOICE,
         ...(path ? { identityPath: path } : {}),
         ...(skipStarterLesson ? { firstLessonCompleted: true } : {}),
+        ...(placedOutUnitIds.length > 0
+          ? { completedMiniUnits: [...new Set([...(s.completedMiniUnits || []), ...placedOutUnitIds])] }
+          : {}),
       };
       // Placement can satisfy stage-milestone achievements (e.g. "reach Stage 3")
       // just by starting there — those are not earned through play. Record them
