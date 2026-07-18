@@ -69,7 +69,21 @@ export default function MobileNav({
     };
   }, [moreOpen]);
 
-  const moreActive = MORE.some(m => m.id === tab);
+  // tab === 'plans' is the embedded-Plans sentinel (App.jsx): the Plans page
+  // lives behind the More sheet's Go Super entry, so More is the active slot.
+  const moreActive = MORE.some(m => m.id === tab) || tab === 'plans';
+
+  // Wave 10: the sheet used to survive crossing the 1024px breakpoint and
+  // floated over the desktop layout (where this nav is display:none). Close it
+  // the moment the desktop media query matches.
+  useEffect(() => {
+    if (!moreOpen || typeof window.matchMedia !== 'function') return;
+    const mq = window.matchMedia('(min-width: 1024px)');
+    if (mq.matches) { setMoreOpen(false); return; }
+    const onChange = (e) => { if (e.matches) setMoreOpen(false); };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [moreOpen]);
 
   return (
     <>
@@ -127,14 +141,14 @@ export default function MobileNav({
                 );
               })}
               {isSuper ? (
-                <div className="mobile-more-item mobile-more-item-super-active" aria-label="You have Super">
+                <div className={`mobile-more-item mobile-more-item-super-active${tab === 'plans' ? ' mobile-more-item-active' : ''}`} aria-label="You have Super">
                   <Crown size={22} />
                   <span>Super ✓</span>
                 </div>
               ) : (
                 <button
                   type="button"
-                  className="mobile-more-item mobile-more-item-super"
+                  className={`mobile-more-item mobile-more-item-super${tab === 'plans' ? ' mobile-more-item-active' : ''}`}
                   onClick={() => { setMoreOpen(false); onOpenSuper && onOpenSuper(); }}
                 >
                   <Crown size={22} />

@@ -368,7 +368,7 @@ export default function FirstLessonFlow({
                 />
               </div>
             )}
-            <div className="firstlesson-eyebrow">Stage {unit.stageId} mini-unit</div>
+            <div className="firstlesson-eyebrow">Stage {unit.stageId} lesson</div>
             <h1 className="firstlesson-title">{unit.title}</h1>
             <p className="firstlesson-copy">
               {unit.subtitle || 'We will guide you through a short lesson, then unlock the rest.'}

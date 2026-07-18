@@ -158,6 +158,10 @@ export const MISSIONS = [
     icon: '👑',
     color: '#0F3D2E',
     goal: 'Review challenge. Connectors, common verbs, fluency particles to lock in mastery before Stage 2.',
-    celebration: '👑 Survival Thai complete. You can handle real Thailand. The full 4,752-card path is unlocked.',
+    // {deckCount} is replaced at render time with the live CARDS.length
+    // (App.jsx mission-reward subtitle) — a literal count here went stale
+    // (said 4,752 while the deck was 4,780) and taxonomy.js must not import
+    // the deck it describes.
+    celebration: '👑 Survival Thai complete. You can handle real Thailand. The full {deckCount}-card path is unlocked.',
   },
 ];

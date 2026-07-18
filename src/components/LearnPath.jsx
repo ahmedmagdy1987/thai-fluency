@@ -41,7 +41,6 @@ export default function LearnPath({
   missionState,
   setTab,
   onStartMiniUnit,
-  onLockedFeature,
   onStartMissionCards,
   courseCompletion,
 }) {
@@ -206,13 +205,11 @@ export default function LearnPath({
   };
 
   // Tapping a stage marker keeps EXACTLY the old stage-row behavior:
-  // locked → gentle locked-feature hint; complete → stage review session
-  // (review-only, never advances); otherwise → learning session.
+  // locked → no-op (the marker body already previews the stage's lessons);
+  // complete → stage review session (review-only, never advances);
+  // otherwise → learning session.
   const openStage = (S) => {
-    if (!S.unlocked) {
-      onLockedFeature && onLockedFeature(S);
-      return;
-    }
+    if (!S.unlocked) return;
     if (S.id === 1 && inMissionView && currentMission && onStartMissionCards) {
       onStartMissionCards(currentMission);
       return;
@@ -246,9 +243,22 @@ export default function LearnPath({
             <div className="learn-trail-stage-note">
               <span className="learn-path-locked-main">Locked</span>
               <span className="learn-path-locked-sub">Complete earlier stages to unlock. Every stage is free.</span>
-              <button type="button" className="learn-trail-stage-action" onClick={() => onLockedFeature && onLockedFeature(S)}>
-                What&apos;s in Stage {S.id}?
-              </button>
+              {/* Wave 10: this used to be a "What's in Stage N?" button that
+                  opened a Super upsell (and did nothing at all for Super
+                  users). Answer the question instead: the stage's REAL lesson
+                  titles and card count — honest by construction, since titles
+                  come from the units' own hand-picked card sets. */}
+              {stageUnits.length > 0 && (
+                <div className="learn-trail-mini-list" aria-label={`Lessons in Stage ${S.id}`}>
+                  {stageUnits.map(u => (
+                    <span key={u.unitId} className="learn-trail-mini learn-trail-mini-off">{u.title}</span>
+                  ))}
+                </div>
+              )}
+              <span className="learn-path-locked-sub">
+                {S.total > 0 ? `${S.total} words and phrases` : 'Content'}
+                {stageUnits.length > 0 ? ` · ${stageUnits.length} guided lessons` : ''} — free once unlocked.
+              </span>
             </div>
           ) : (
             <>

@@ -5,9 +5,9 @@ import { CARDS } from './data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay, saveSuperIntent, loadSuperIntent, clearSuperIntent } from './lib/storage.js';
+import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay, saveSuperIntent, loadSuperIntent, clearSuperIntent, loadTtsHintDismissed, saveTtsHintDismissed } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
-import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender } from './lib/audio.js';
+import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender, onNoThaiVoice } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
 import { DEFAULT_STATS, dateKeyFromValue, getLocalDateKey, hasStatsLearningActivity, migrateStats, previousLocalDateKey, startStudyDay, computeStreak } from './lib/stats.js';
 import { evaluateDailyQuests } from './lib/dailyQuests.js';
@@ -355,6 +355,10 @@ export default function TukTalkThaiApp() {
   const [activeMiniUnitId, setActiveMiniUnitId] = useState(null);
   const [cardSession, setCardSession] = useState(null);
   const [showFirstLessonUnlock, setShowFirstLessonUnlock] = useState(false);
+  // Wave 10: honest no-Thai-voice hint. audio.js notifies (once per session)
+  // when the web engine has voices loaded but none of them is Thai — audio
+  // would otherwise fail silently on that device. Dismissal persists.
+  const [showTtsHint, setShowTtsHint] = useState(false);
   const [rewardScreen, setRewardScreen] = useState(null);
   // The anonymous "save your progress" ask (engagement.md §1.3): { xpEarned,
   // streak } captured from the reward screen the learner just dismissed, or null.
@@ -1105,6 +1109,15 @@ export default function TukTalkThaiApp() {
     return () => { syncSchedulerRef.current.cancel(); };
   }, [progress, stats, session, cloudInitOk, loaded]);
 
+  // Wave 10: subscribe once to audio.js's no-Thai-voice signal. Gated on the
+  // persisted dismissal so the hint shows at most once ever per device.
+  useEffect(() => {
+    const unsubscribe = onNoThaiVoice(() => {
+      if (!loadTtsHintDismissed()) setShowTtsHint(true);
+    });
+    return unsubscribe;
+  }, []);
+
   // Wave 10 flush-on-hide: the 2.5s debounce had a data-loss window — close the
   // app within it (the typical quick streak-saving session, or iOS backgrounding
   // which suspends timers) and the final upload never fired, so the next
@@ -1521,7 +1534,9 @@ export default function TukTalkThaiApp() {
           setRewardScreen({
             id: `mission-${justFinished.id}-${Date.now()}`,
             title: `Mission ${justFinished.id} Complete`,
-            subtitle: justFinished.celebration,
+            // {deckCount} → live free-deck size (taxonomy strings must not
+            // carry a literal count — the old hardcoded 4,752 went stale).
+            subtitle: (justFinished.celebration || '').replace('{deckCount}', CARDS.length.toLocaleString('en-US')),
             xpEarned: MISSION_REWARD_XP,
             streak: stats.streak || 0,
             nextStep: cur > MISSIONS.length ? 'Stage 2' : `Mission ${cur}`,
@@ -1915,7 +1930,10 @@ export default function TukTalkThaiApp() {
     // Placement respects the chosen level: a learner who already knows Thai and
     // starts above Stage 1 should NOT be forced through the Stage-1 "say hello"
     // starter lesson (the "stuck at the absolute beginning" complaint). For them
-    // we mark the guided pilot done and drop them straight onto their chosen
+    // we set firstLessonCompleted so the starter-lesson gate is skipped (note:
+    // the pilot UNIT itself is not added to completedMiniUnits — course
+    // completion still counts it, a known assessment finding awaiting the
+    // progression-ladder reconciliation) and drop them onto their chosen
     // stage, where that stage's own first mission still guides them. The curated
     // path is untouched: getStageState keeps maxUnlockedStage at startedStage, so
     // every later stage stays locked and unlocks only by finishing the one before
@@ -2141,13 +2159,6 @@ export default function TukTalkThaiApp() {
     setSaveProgressAsk(null);
   }, []);
 
-  const handleLockedFeature = useCallback(() => {
-    // The user intentionally tapped a locked/premium surface → always offer (skips
-    // the daily cap), and record the tap for the upgrade funnel.
-    trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'locked-stage' });
-    requestSuperPrompt('locked', { intentional: true });
-  }, [requestSuperPrompt]);
-
   const firstLessonCompleted = !!stats.firstLessonCompleted;
 
   // Highest-intent push-permission ask: fire ONCE, right after the learner
@@ -2308,7 +2319,7 @@ export default function TukTalkThaiApp() {
           id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
           title: stagePathNowComplete
             ? `Stage ${completedUnit.stageId} Path Complete`
-            : 'Mini-Unit Complete',
+            : 'Lesson Complete',
           subtitle: stagePathNowComplete
             ? `You finished every guided lesson in Stage ${completedUnit.stageId}. That is a real milestone.`
             : 'You finished a guided lesson and checked your recall.',
@@ -2445,7 +2456,8 @@ export default function TukTalkThaiApp() {
   //     (review finding A3 — a card session shows the phonetic, and we never
   //     synthesize one) and clamps to the learner's unlocked stage window. That
   //     clamp is load-bearing: the mission scope filters by explicit cardIds and
-  //     so BYPASSES the stage window (CardsTab.jsx:106-114), and every situation
+  //     so BYPASSES the stage window (the learn/practice scope filter in
+  //     CardsTab.jsx), and every situation
   //     spans stages 1-8 — unclamped, starting sit-greet would teach a brand-new
   //     learner stage-8 vocabulary and break sequential stage unlock;
   //   • an empty pool starts nothing rather than opening an empty session — the
@@ -2472,9 +2484,16 @@ export default function TukTalkThaiApp() {
     });
   }, [handleStartMissionCards, stats.startedStage, maxUnlockedStage]);
 
+  // Wave 10: the dashboard deck is bounded on BOTH sides to match the serving
+  // window every session actually uses (CardsTab practice/learn and the
+  // situation pools all filter stage >= startedStage — CardsTab.jsx). With
+  // only the upper bound, placement-known cards BELOW startedStage became
+  // phantom due reviews: counted in every badge/CTA, servable in no session,
+  // and the "clear your due cards" quest was permanently unfinishable. Count
+  // what we can actually serve.
   const eligibleCards = useMemo(
-    () => CARDS.filter(c => (c.stage || 1) <= maxUnlockedStage),
-    [maxUnlockedStage]
+    () => CARDS.filter(c => (c.stage || 1) >= (stats.startedStage || 1) && (c.stage || 1) <= maxUnlockedStage),
+    [maxUnlockedStage, stats.startedStage]
   );
   const dashboardStats = useMemo(() => getStats(progress, eligibleCards), [progress, eligibleCards]);
 
@@ -2554,12 +2573,12 @@ export default function TukTalkThaiApp() {
         const showSuper = !isSuper(stats) && !hasCelebrated(ids, superCtaId(today));
         markCelebrated(showSuper ? [courseId, superCtaId(today)] : courseId);
         awardXp(REWARD_EVENTS.COURSE_COMPLETED, rewardKeys.course(), COURSE_COMPLETE_XP);
-        setRewardScreen(null);   // suppress the per-unit "Mini-Unit Complete" screen
+        setRewardScreen(null);   // suppress the per-unit "Lesson Complete" screen
         setQuestToasts([]);      // overlay supersedes any lingering quest toast
         setCelebration({
           eyebrow: 'Course Complete',
           title: 'Course Complete',
-          subtitle: `You completed the Tuk Talk Thai path: ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} mini-units, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
+          subtitle: `You completed the Tuk Talk Thai path: ${courseCompletion.stagesComplete} stages, ${courseCompletion.completedUnits} lessons, ${courseCompletion.buildersCompleted} sentence builders. Keep your streak alive!`,
           xpEarned: COURSE_COMPLETE_XP,
           characterId: resolveCoachIdForStage(8),
           primaryLabel: 'Review due cards',
@@ -2938,8 +2957,11 @@ export default function TukTalkThaiApp() {
   }
 
   return (
+    // Wave 10: while Plans renders in-shell, no ordinary tab is the active
+    // surface — the sentinel 'plans' keeps every nav item un-highlighted and
+    // lights up the Go Super entry instead (SidebarNav/MobileNav).
     <AppShell
-      tab={tab}
+      tab={embedPlansInShell ? 'plans' : tab}
       setTab={handleSetTab}
       stats={stats}
       dashboardStats={dashboardStats}
@@ -2994,7 +3016,17 @@ export default function TukTalkThaiApp() {
               <button type="button" onClick={() => setShowFirstLessonUnlock(false)}>Got it</button>
             </div>
           )}
-          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onLockedFeature={handleLockedFeature} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
+          {showTtsHint && (
+            <div className="firstlesson-unlock-note tts-hint-note" role="status">
+              <span>
+                No Thai voice was found on this device, so audio may be silent or
+                sound wrong. Chrome or Edge — or installing a Thai voice in your
+                system settings — fixes it.
+              </span>
+              <button type="button" onClick={() => { saveTtsHintDismissed(); setShowTtsHint(false); }}>Got it</button>
+            </div>
+          )}
+          {tab === 'learn'  && <LearnPath stats={stats} fullStats={stats} dashboardStats={dashboardStats} stageState={stageState} missionState={missionState} setTab={handleSetTab} onStartMiniUnit={handleStartMiniUnit} onStartMissionCards={handleStartMissionCards} courseCompletion={courseCompletion} />}
           {/* The situation order lives INSIDE Learn, under the stage path — it is
               the same journey seen by situation instead of by stage, not a sixth
               tab (the 5-tab nav is hand-rolled and there is no router). It is a

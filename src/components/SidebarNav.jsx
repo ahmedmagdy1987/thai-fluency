@@ -87,13 +87,17 @@ export default function SidebarNav({
       <div className="sidebar-group-label">Explore</div>
       <nav className="sidebar-group">
         {EXPLORE.map(e => <Item key={e.id} entry={e} />)}
+        {/* tab === 'plans' is the embedded-Plans sentinel (App.jsx): while the
+            Plans page fills the shell, the Super entry is the active item —
+            previously the PREVIOUS tab stayed highlighted, a wrong-highlight
+            defect from the Wave 10 assessment. */}
         {isSuper ? (
-          <div className="sidebar-item sidebar-item-super-active" aria-label="You have Super">
+          <div className={`sidebar-item sidebar-item-super-active${tab === 'plans' ? ' sidebar-item-active' : ''}`} aria-label="You have Super">
             <Crown size={18} strokeWidth={2} />
             <span className="sidebar-item-label">Super ✓</span>
           </div>
         ) : (
-          <button type="button" className="sidebar-item sidebar-item-super" onClick={onOpenSuper}>
+          <button type="button" className={`sidebar-item sidebar-item-super${tab === 'plans' ? ' sidebar-item-active' : ''}`} onClick={onOpenSuper}>
             <Crown size={18} strokeWidth={1.8} />
             <span className="sidebar-item-label">Go Super</span>
           </button>

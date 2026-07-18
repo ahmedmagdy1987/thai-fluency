@@ -1,6 +1,8 @@
-import React from 'react';
-import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Lock } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Target, Flame, BookOpen, CheckCircle2, Sparkles, Lock, Trophy } from 'lucide-react';
 import { evaluateDailyQuests } from '../lib/dailyQuests.js';
+import { checkAchievements } from '../lib/state.js';
+import AchievementsModal from './AchievementsModal.jsx';
 
 // Phase 1 quests read real stats where available, but they do not spend
 // rewards or mutate quest state. Lesson flow remains the source of progress.
@@ -103,6 +105,37 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
 
   const completed = quests.filter(q => q.done).length;
 
+  // Achievements collection browser (Wave 10). Before this, AchievementsModal
+  // was reachable only from the auth-gated Profile page and the orphaned
+  // /today route — an ANONYMOUS learner could earn achievements but never
+  // browse them again. Quests is the gamification home and is in the nav for
+  // everyone, so the collection lives here too (also rendered in the
+  // stage-locked state below, where stage-1 anonymous learners actually are).
+  const [showAchievements, setShowAchievements] = useState(false);
+  const achievements = useMemo(() => checkAchievements(stats || {}, progress || {}), [stats, progress]);
+  const unlockedIds = useMemo(() => achievements.filter(a => a.unlocked).map(a => a.id), [achievements]);
+
+  const achievementsCard = (
+    <article className="quest-card quests-achievements-card" style={{ '--quest-color': '#C9A961' }}>
+      <div className="quest-card-icon" aria-hidden="true"><Trophy size={22} /></div>
+      <div className="quest-card-body">
+        <div className="quest-card-title">Achievements</div>
+        <div className="quest-card-desc">{unlockedIds.length} of {achievements.length} unlocked</div>
+      </div>
+      <button type="button" className="quest-card-cta" onClick={() => setShowAchievements(true)}>
+        View all
+      </button>
+    </article>
+  );
+
+  const achievementsModal = showAchievements ? (
+    <AchievementsModal
+      achievements={achievements}
+      unlocked={unlockedIds}
+      onClose={() => setShowAchievements(false)}
+    />
+  ) : null;
+
   if (locked) {
     return (
       <div className="tab-content quests-screen">
@@ -122,6 +155,10 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
             </button>
           </div>
         </section>
+        {/* Achievements are NOT stage-gated — they unlock from the first lesson
+            onward, so the browser stays reachable while quests are locked. */}
+        <div className="quests-list" role="list">{achievementsCard}</div>
+        {achievementsModal}
       </div>
     );
   }
@@ -168,7 +205,9 @@ export default function QuestsScreen({ stats, dashboardStats, progress, setTab, 
             )}
           </article>
         ))}
+        {achievementsCard}
       </div>
+      {achievementsModal}
     </div>
   );
 }

@@ -259,7 +259,7 @@ export default function MiniUnitFlow({
     if (step === 'complete' && !completedSoundRef.current) {
       completedSoundRef.current = true;
       playCelebration();
-      coach.react('celebrating', { duration: 2200, message: 'Mini-unit complete.' });
+      coach.react('celebrating', { duration: 2200, message: 'Lesson complete.' });
     }
   }, [step]);
 
@@ -378,7 +378,7 @@ export default function MiniUnitFlow({
               <CharacterCoach
                 characterId={coachId}
                 state={coach.state}
-                message={coach.message || 'Ready for a guided mini-unit?'}
+                message={coach.message || 'Ready for a guided lesson?'}
                 compact
               />
             </div>
@@ -539,7 +539,7 @@ export default function MiniUnitFlow({
             </div>
           </div>
           <button type="button" className="btn-primary miniunit-primary" onClick={() => setStep('complete')}>
-            Finish mini-unit <ChevronRight size={16} />
+            Finish lesson <ChevronRight size={16} />
           </button>
         </section>
       )}
@@ -547,7 +547,7 @@ export default function MiniUnitFlow({
       {step === 'complete' && (
         <section className="miniunit-complete">
           <div className="miniunit-complete-icon"><Sparkles size={48} /></div>
-          <div className="miniunit-eyebrow">Mini-unit complete</div>
+          <div className="miniunit-eyebrow">Lesson complete</div>
           <h2 className="miniunit-title">{missionRecap?.headline || 'Nice! You learned a focused set of Thai words and a sentence.'}</h2>
           {missionRecap?.lead && <p className="miniunit-sub miniunit-recap-lead">{missionRecap.lead}</p>}
           {Array.isArray(missionRecap?.achievements) && missionRecap.achievements.length > 0 && (

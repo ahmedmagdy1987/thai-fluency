@@ -29,7 +29,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
   const currentStage = stageState ? stageState.stages.find(S => S.id === stageState.currentStage) || stageState.stages[stageState.stages.length - 1] : null;
 
   // Mission view kicks in while user is in Stage 1 and S1 isn't complete.
-  // Past S1 (or S1 complete): show normal stage view. This hides "4,752"
+  // Past S1 (or S1 complete): show normal stage view. This hides the full-deck total
   // from beginners until they've earned the reveal.
   const inMissionView = !!(missionState && stageState && stageState.currentStage === 1 && !missionState.stage1Complete);
   const currentMission = missionState ? missionState.missions.find(m => m.id === missionState.currentMission) : null;
@@ -179,7 +179,7 @@ export default function TodayTab({ stats, fullStats, setTab, stageState, mission
         </div>
       )}
 
-      {/* Stats grid — show S1-only numbers in mission view to avoid leaking the 4,752 total */}
+      {/* Stats grid — show S1-only numbers in mission view to avoid leaking the full-deck total */}
       <div className="stat-grid">
         <div className="stat-card">
           <div className="stat-icon"><Target size={18} /></div>

@@ -101,6 +101,28 @@ export function saveAdultConfirmed() {
   } catch (e) { /* silent fail - confirmation just won't persist */ }
 }
 
+// One-time "no Thai voice on this device" hint (Wave 10). Device-scoped: the
+// missing voice is a property of the device/browser, and the hint should never
+// nag twice once dismissed.
+const TTS_HINT_KEY = 'thai-fluency-tts-hint-v1';
+
+export function loadTtsHintDismissed() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(TTS_HINT_KEY) === 'dismissed';
+    }
+  } catch (e) { /* private mode - silent fail */ }
+  return false;
+}
+
+export function saveTtsHintDismissed() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(TTS_HINT_KEY, 'dismissed');
+    }
+  } catch (e) { /* silent fail - hint may show again next session */ }
+}
+
 // Per-category LESSON completion for the Dating & Real Talk section. The
 // interactive quiz for a category is gated behind finishing that category's
 // ungraded lesson at least once; this records which category lessons are done.

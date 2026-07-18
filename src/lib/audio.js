@@ -176,6 +176,27 @@ function _speakNative(text, rate) {
 // looks idle to it) and they would play back to back, or even out of order.
 let _webSpeakGen = 0;
 
+// Wave 10: no-Thai-voice detection. On web, a device with SpeechSynthesis but
+// no Thai voice used to fail SILENTLY — the utterance went to the engine's
+// default (usually English) voice, which typically produces silence or
+// gibberish for Thai script, and every speaker button still looked functional.
+// The first speak attempt that resolves voices and finds no Thai one notifies
+// listeners (at most once per session) so the app can show an honest hint
+// instead of appearing broken. Playback still proceeds exactly as before.
+let _noThaiVoiceNotified = false;
+const _noThaiVoiceListeners = new Set();
+
+export function onNoThaiVoice(cb) {
+  _noThaiVoiceListeners.add(cb);
+  return () => _noThaiVoiceListeners.delete(cb);
+}
+
+function _notifyNoThaiVoice() {
+  if (_noThaiVoiceNotified) return;
+  _noThaiVoiceNotified = true;
+  _noThaiVoiceListeners.forEach((cb) => { try { cb(); } catch (_) { /* ignore */ } });
+}
+
 // Web playback via SpeechSynthesis. Resolves on end/error and always within a
 // safety timeout so a silent/stuck engine never leaves a caller hanging.
 function _speakWeb(text, rate) {
@@ -190,6 +211,8 @@ function _speakWeb(text, rate) {
 
     const doSpeak = () => {
       try {
+        // Voices are loaded but none of them is Thai → surface the hint once.
+        if (_voicesReady && !_cachedThaiVoice) _notifyNoThaiVoice();
         const myGen = ++_webSpeakGen;
         if (synth.paused) synth.resume();
         // Only cancel when something is actually queued/playing. cancel() tears
