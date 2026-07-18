@@ -96,8 +96,7 @@ img, svg, video { max-width: 100%; }
 .app-root[data-theme="dark"] .setting-toggle-btn,
 .app-root[data-theme="dark"] .reveal-btn,
 .app-root[data-theme="dark"] .rate-btn { background: var(--card-bg); }
-.app-root[data-theme="dark"] .app-header { background: var(--header-bg); }
-.app-root[data-theme="dark"] .app-nav { background: var(--header-bg); border-top-color: var(--line); }.app-root[data-theme="dark"] .srs-card-face-back,
+.app-root[data-theme="dark"] .srs-card-face-back,
 .app-root[data-theme="dark"] .browse-tab-active,
 .app-root[data-theme="dark"] .guide-tab-active,
 .app-root[data-theme="dark"] .tone-example-cell,
@@ -284,7 +283,6 @@ img, svg, video { max-width: 100%; }
 .thai-font { font-family: 'Noto Sans Thai', sans-serif; }
 .display-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
 .mono-font { font-family: 'JetBrains Mono', monospace; }
-.app-header { position: sticky; top: 0; z-index: 50; background: rgba(245, 240, 229, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
 .header-inner { max-width: 900px; margin: 0 auto; padding: var(--sp-3) var(--sp-4); display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); }
 .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
 .brand-en { font-family: 'Fraunces', serif; font-size: var(--fs-18); color: var(--jade); font-weight: 700; line-height: 1; letter-spacing: 0; }
@@ -294,21 +292,12 @@ img, svg, video { max-width: 100%; }
 .due-pill { background: var(--brick); color: var(--cream); cursor: pointer; transition: transform 0.15s; }@media (hover: hover) and (pointer: fine) {
 .due-pill:hover { transform: scale(1.05); }}
 .streak-pill { background: var(--cream-warm); border: 1px solid var(--gold); color: var(--ink); }
-.app-main { flex: 1; width: 100%; max-width: 900px; margin: 0 auto; padding: var(--sp-4) var(--sp-4) 100px; }
 .tab-content { animation: fadeIn 0.3s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.app-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--line); padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-around; z-index: 50; }
-.nav-btn { flex: 1; background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--sp-2) var(--sp-1); cursor: pointer; color: var(--stone); transition: color 0.2s; font-family: inherit; border-radius: 8px; }@media (hover: hover) and (pointer: fine) {
-.nav-btn:hover { color: var(--jade-soft); }}
-.nav-btn-active { color: var(--jade); }
-.nav-btn-icon-wrap { position: relative; }
-.nav-btn-label { font-size: var(--fs-10); font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
-.nav-btn-active .nav-btn-label { font-weight: 600; }
-.nav-badge { position: absolute; top: -4px; right: -8px; background: var(--brick); color: var(--cream); font-size: var(--fs-10); font-weight: 700; padding: 1px var(--sp-1); border-radius: 999px; min-width: 16px; text-align: center; line-height: 1.4; }
-@media (min-width: 768px) { .app-nav { background: rgba(245, 240, 229, 0.92); justify-content: center; gap: var(--sp-1); } .nav-btn { flex: 0 0 auto; flex-direction: row; gap: var(--sp-2); padding: var(--sp-2) var(--sp-4); }
-.nav-btn-label { font-size: var(--fs-12); text-transform: none; letter-spacing: 0; }
-.app-main { padding-bottom: 100px; }
-}
+/* (Wave 10) The legacy pre-shell nav layer — .app-header/.app-main/.app-nav,
+   .nav-btn*, .nav-badge and their media rules — was deleted: no JSX has
+   rendered those classes since AppShell/SidebarNav/MobileNav replaced it
+   (NavBtn.jsx and auth/UserMenu.jsx were deleted with it). */
 .dash-greeting { margin-bottom: var(--sp-5); }
 .dash-greeting-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: var(--fs-28); font-weight: 600; color: var(--jade); margin-bottom: var(--sp-1); }
 .dash-greeting-ph { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-14); font-weight: 600; color: var(--brick); margin-bottom: var(--sp-2); }
@@ -1790,7 +1779,7 @@ to { opacity: 1; transform: translateX(-50%) translateY(0); }
 /* Locked preview chip for the next-stage teaser in Browse */
 .stage-chip-locked-preview { display: inline-flex; align-items: center; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3); border: 1px dashed var(--line); border-radius: 999px; background: transparent; color: var(--ink-soft); font-size: var(--fs-12); font-weight: 500; cursor: default; opacity: 0.7; }
 
-/* Stage 1 completion celebration modal — the big reveal of the full 4,752-card path */
+/* Stage 1 completion celebration modal — the big reveal of the full deck */
 .s1-complete-overlay { position: fixed; inset: 0; background: rgba(15, 61, 46, 0.78); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: var(--sp-4); z-index: 9999; animation: s1FadeIn 0.4s ease; }
 @keyframes s1FadeIn { from { opacity: 0; } to { opacity: 1; } }
 .s1-complete-modal { background: var(--cream); border-radius: 20px; padding: var(--sp-6) var(--sp-5); max-width: 460px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.35); border: 1px solid var(--gold); animation: s1PopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -2511,16 +2500,6 @@ button.topstats-pill:hover { transform: translateY(-1px); border-color: var(--go
   .leaderboard-preview-row { grid-template-columns: 28px 36px minmax(0, 1fr) auto; }
   .leaderboard-preview-xp { grid-column: 3 / -1; }
 }
-
-/* ============================================================
-   Safety net: hide the original .app-nav / .app-header when the
-   shell is active. Some components still render with the old
-   shell (placement onboarding, profile, auth gate) and we must
-   not clobber those — so the rules only apply when wrapped in
-   .app-shell-root.
-   ============================================================ */
-.app-shell-root .app-header,
-.app-shell-root .app-nav { display: none; }
 
 /* ============================================================
    CHARACTER COACH — production assets, reduced-motion safe

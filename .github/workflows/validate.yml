@@ -1,9 +1,10 @@
 name: Validate
 
-# Runs the web build and the FULL validator suite (npm run check → all 25
-# check-*.mjs + 3 verify-*.mjs) on every push/PR to master, and FAILS the
-# workflow if any validator fails. Before this, the 28 guards only ran when a
-# human remembered to; now a red check blocks the change.
+# Runs the web build and the FULL validator suite (npm run check → EVERY
+# check-*.mjs + verify-*.mjs, auto-discovered by scripts/check-all.mjs — no
+# count is hardcoded here because the set grows) on every push/PR to master,
+# and FAILS the workflow if any validator fails. Before this, the guards only
+# ran when a human remembered to; now a red check blocks the change.
 #
 # No Thai content is authored, nothing is approved, no secrets are needed — the
 # validators are hermetic and read only committed data. The public frontend env

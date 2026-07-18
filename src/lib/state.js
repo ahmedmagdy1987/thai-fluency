@@ -17,7 +17,10 @@ import { WORD_LOOKUP } from '../data/lookup.js';
 // never re-locked after this change (do-not-regress safeguard).
 //
 // Stages below the user's placement-test startedStage are always considered
-// unlocked (auto-matured from the placement test or below the known floor).
+// UNLOCKED (maxUnlockedStage starts at startedStage). They are NOT auto-matured:
+// placement writes progress only for the sampled cards the user ticked as known
+// (App.jsx markCardsKnown), so the rest of a skipped stage's cards stay unseen.
+// (Wave 10 corrected this comment — the old "auto-matured" claim was false.)
 export function getStageState(stats, progress) {
   const safeProgress = progress && typeof progress === 'object' ? progress : {};
   const startedStage = stats.startedStage || 1;

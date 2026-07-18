@@ -15,18 +15,18 @@ Firefox, in-app webviews, Capacitor APK).
 
 ---
 
-## 0. VERIFIED GROUND TRUTH (canonical numbers — supersede any stale in-repo string)
+## 0. VERIFIED GROUND TRUTH (corrected 2026-07-18 — Wave 10; recompute before trusting, numbers drift)
 
 | Fact | Canonical value | Note / stale sources to ignore |
 |---|---|---|
-| Total cards | **4,791** | `taxonomy.js:161` says "4,752"; CLAUDE.md says "645 / ids ~960" — both STALE. |
-| Cards by type | **w:3267, g:28, p:247, s:1249** | `p` (phrases) exist only in stage 1 (10) + stage 8 (237); stages 2–7 have zero. |
-| Cards by stage | **1:150 2:269 3:423 4:575 5:701 6:804 7:877 8:992** | 8 stages, sequential unlock. |
-| Mini-units | **96** (`MINI_UNITS.length`) | Brief's "97" is **off by one**; the pilot is already inside the array. |
-| Dating phrases | **60**, all `reviewStatus:'pending'` | Across **10** of 11 planned categories (`severity-context-warnings` has 0). Brief's "11" is planned, not populated. |
-| Dating questions | **65** (`DATING_QUESTIONS`) | Brief's "60" is the phrase count, not the question count. |
-| Main-deck review flag | `needsReview:true` on **95** cards (boolean only) | There is **NO `reviewStatus` field** on the 4,791 cards. Two separate review conventions exist (see §9). |
-| Validators | **18 `check-*.mjs` + 3 `verify-*.mjs`** = 21 | Not wired into `package.json`; run by the external harness. Most use a **fixed file allowlist** (see §8). |
+| Total cards | **4,792** (`ALL_CARDS`; free deck `CARDS` = **4,780** — 5 mature + 7 quarantined held out) | This table previously said 4,791 — itself stale. User-facing copy must compute from `CARDS.length` (the old hardcoded "4,752" shipped stale). |
+| Cards by type | **w:3267, g:28, p:247, s:1250** | `p` (phrases) exist only in stage 1 (10) + stage 8 (237); stages 2–7 have zero. |
+| Cards by stage | **1:150 2:269 3:423 4:575 5:701 6:804 7:877 8:993** | 8 stages, sequential unlock. Max card id **5739**; id space is NOT contiguous (`check-card-id-uniqueness` guards collisions). |
+| Mini-units | **96** (`MINI_UNITS.length`) | User-facing name is "lesson"; `mini-unit` is internal. The pilot is already inside the array. |
+| Dating phrases | **60**, all `reviewStatus:'approved'` (since Wave 6) | Across **10** of 11 planned categories (`severity-context-warnings` has 0). |
+| Dating questions | **65** (`DATING_QUESTIONS`) | The "60" figure is the phrase count, not the question count. |
+| Main-deck review state | `needsReview:true` on **96** cards; **946** cards carry `reviewStatus:'approved'` (stamped by the manifest + eligibility floor in `cards.js`) | The old "NO reviewStatus field / 95 cards" rows predate the Wave 4-6 approval pipeline. |
+| Validators | **ALL `check-*.mjs` + `verify-*.mjs`**, auto-discovered by `scripts/check-all.mjs` (30 at this correction) | WIRED: `npm run check` runs them all and CI (`validate.yml`) runs the suite on every push/PR across several timezones. The old "21, not wired" row was doubly stale. |
 
 ---
 

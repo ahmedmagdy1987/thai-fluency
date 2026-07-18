@@ -72,10 +72,13 @@ export const XP_REWARDS = {
 
 export const DEFAULT_DAILY_GOAL = 50;
 
-// % of a mission's cards that must be mature (interval ≥ 21d) before the next
-// mission unlocks. Beginner-friendly threshold — keeps momentum, prevents wall.
+// LEGACY stage-complete fallback threshold. Despite the historical name, this
+// does NOT gate mission unlocks — missions unlock when the previous mission's
+// cards are all SEEN (lib/state.js getMissionState). Its only live use is the
+// do-not-regress fallback in getStageState: a stage also counts complete when
+// ≥ this share of its cards is mature (interval ≥ 21d), so users who unlocked
+// under the old mastery rule are never re-locked. (Wave 10 corrected this
+// comment — the old one described logic that never shipped — and removed the
+// dead, never-imported STAGE_1_COMPLETE_THRESHOLD.)
 export const MISSION_UNLOCK_THRESHOLD = 0.70;
-
-// % of Stage 1 mission cards mastered = Survival Thai complete (reveals full deck)
-export const STAGE_1_COMPLETE_THRESHOLD = 0.70;
 

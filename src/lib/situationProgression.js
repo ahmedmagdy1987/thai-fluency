@@ -83,7 +83,9 @@ const ADULT_ONLY = Object.freeze(['sit-dating']);
 //      handing it a situation's whole pool would teach a fresh stage-1 learner
 //      stage-8 vocabulary and silently break sequential stage unlock. The window
 //      is the learner's existing [startedStage, maxUnlockedStage], reproduced
-//      from the Cards-tab rule (CardsTab.jsx:109-114); situations reweight ORDER,
+//      from the Cards-tab stage-window rule (the learn/practice scope filter in
+//      CardsTab.jsx — cited by rule, not line, since line numbers drift);
+//      situations reweight ORDER,
 //      they were never a licence to jump the stage ladder.
 //
 // FAIL CLOSED: an omitted window means stage 1 only. A caller that forgets the
