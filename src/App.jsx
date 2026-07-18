@@ -437,6 +437,15 @@ export default function TukTalkThaiApp() {
   // marketing page); it never gates anything, so a stale `false` just shows the
   // landing — the pre-existing behaviour.
   const startedLocallyRef = useRef(false);
+  // Wave 10 Back-trap fix (see applyRouteState / handleStartMiniUnit):
+  // updateSettings mirrored into a ref so the []-dep applyRouteState can clear
+  // the persisted lesson pointer; persistedMiniUnitRef mirrors whether that
+  // pointer is set (avoids a no-op settings write on every navigation);
+  // miniUnitHistoryEntryRef tracks the sentinel history entry pushed on lesson
+  // start so exit paths can consume it instead of leaving Back one step stale.
+  const updateSettingsRef = useRef(() => {});
+  const persistedMiniUnitRef = useRef(null);
+  const miniUnitHistoryEntryRef = useRef(false);
   const celebrationsArmedRef = useRef(false);               // celebrations fire only after the first settled pass (baseline)
   const courseCompleteAtArmingRef = useRef(false);          // true if the course was ALREADY complete at baseline → never retro-celebrate
   const reviewLocksRef = useRef(new Set());
@@ -602,6 +611,17 @@ export default function TukTalkThaiApp() {
   const applyRouteState = useCallback((route) => {
     setActiveMiniUnitId(null);
     setCardSession(null);
+    // Wave 10 Back-trap fix: clearing only the LOCAL lesson state left
+    // stats.activeMiniUnitId behind, and the resume effect re-hydrated the
+    // lesson immediately after every popstate — so browser Back looked dead
+    // inside a guided lesson, silently ate a history entry, and the second
+    // press ejected the user from the site. A route navigation is an explicit
+    // exit: clear the persisted resume pointer too. Reload-resume is untouched
+    // (a reload never runs applyRouteState; the pointer survives it).
+    miniUnitHistoryEntryRef.current = false;
+    if (persistedMiniUnitRef.current) {
+      updateSettingsRef.current({ activeMiniUnitId: null });
+    }
 
     // Only /reset-password shows the password-recovery screen; navigating
     // anywhere else always leaves it.
@@ -1334,12 +1354,19 @@ export default function TukTalkThaiApp() {
     return () => { cancelled = true; unsubChange(); };
   }, [session?.user?.id, isEmailConfirmed, profile?.onesignal_player_id, profile?.timezone]);
 
-  // Smart permission prompt: ask AFTER the user has completed placement
-  // onboarding (so it doesn't fire on first visit while they're still
-  // figuring out the app). Fires at most once per session via a ref guard AND a
-  // durable flag, so it never double-nags alongside the post-first-lesson ask.
+  // Smart permission prompt (returning/placed users). Wave 10: this used to
+  // gate only on stats.hasOnboarded, which flips true at the placement commit —
+  // so the SDK slidedown fired 2.5s INTO the first lesson (or over the guided
+  // tutorial), and because it burned the durable flag first, it permanently
+  // disarmed the intended highest-intent post-first-lesson ask below
+  // (maybePromptPushAfterFirstLesson). Now it also requires the first lesson
+  // AND the tutorial to be behind the user, so for the standard signup funnel
+  // the post-first-lesson ask is the one that fires; this effect only covers
+  // users who arrived past both (e.g. placement skippers on a later session).
+  // Still at most once ever via the per-session ref + durable flag.
   useEffect(() => {
     if (!session || !isEmailConfirmed || !hasOneSignalConfig || !stats.hasOnboarded) return;
+    if (!stats.firstLessonCompleted || !stats.tutorialSeen) return;
     if (notificationPromptFired.current || hasFiredPushPrompt()) return;
     if (profile?.onesignal_player_id) return; // already subscribed
     notificationPromptFired.current = true;
@@ -1353,7 +1380,7 @@ export default function TukTalkThaiApp() {
       } catch { /* ignore */ }
     }, 2500);
     return () => clearTimeout(t);
-  }, [session?.user?.id, isEmailConfirmed, stats.hasOnboarded, profile?.onesignal_player_id]);
+  }, [session?.user?.id, isEmailConfirmed, stats.hasOnboarded, stats.firstLessonCompleted, stats.tutorialSeen, profile?.onesignal_player_id]);
 
   const grantXp = useCallback((amount) => {
     setStats(s => {
@@ -1987,6 +2014,12 @@ export default function TukTalkThaiApp() {
     });
   }, [session]);
 
+  // Wave 10 Back-trap fix: mirror updateSettings and the persisted lesson
+  // pointer into refs so the []-dep applyRouteState can clear the pointer on
+  // navigation without re-subscribing popstate (same idiom as startedLocallyRef).
+  useEffect(() => { updateSettingsRef.current = updateSettings; }, [updateSettings]);
+  useEffect(() => { persistedMiniUnitRef.current = stats.activeMiniUnitId || null; }, [stats.activeMiniUnitId]);
+
   // Central upgrade-prompt rules (no dark patterns). A prompt is either an
   // automatic value-based reminder (intentional:false) or a response to the user
   // intentionally tapping a premium feature (intentional:true).
@@ -2226,6 +2259,16 @@ export default function TukTalkThaiApp() {
         };
     setActiveMiniUnitId(unitId);
     updateSettings({ activeMiniUnitId: unitId, miniUnitProgress: currentProgress });
+    // Wave 10: push a sentinel history entry (same URL) so the FIRST browser
+    // Back inside the lesson pops back to this tab and closes the lesson via
+    // applyRouteState, instead of leaving the page. Exit paths that don't go
+    // through Back consume the sentinel (handleExitMiniUnit backs over it;
+    // tab switches replace it) so history never gains a stale extra step.
+    try {
+      window.history.pushState({ tttMiniUnit: unitId }, '',
+        window.location.pathname + window.location.search + window.location.hash);
+      miniUnitHistoryEntryRef.current = true;
+    } catch { /* history API unavailable — Back simply behaves as before */ }
   }, [stats.miniUnitProgress, updateSettings]);
 
   const handleMiniUnitProgressChange = useCallback((progressUpdate) => {
@@ -2283,6 +2326,12 @@ export default function TukTalkThaiApp() {
   const handleExitMiniUnit = useCallback(() => {
     setActiveMiniUnitId(null);
     updateSettings({ activeMiniUnitId: null });
+    // Consume the sentinel entry pushed on lesson start, so the next Back
+    // after an X-exit goes where the user expects instead of a stale no-op.
+    if (miniUnitHistoryEntryRef.current) {
+      miniUnitHistoryEntryRef.current = false;
+      try { window.history.back(); } catch { /* ignore */ }
+    }
   }, [updateSettings]);
 
   const handleFinishMiniUnitAndOpen = useCallback((nextTab) => {
@@ -2293,7 +2342,10 @@ export default function TukTalkThaiApp() {
     setShowSettings(false);
     setPublicPage(null);
     setTab(nextTab);
-    writeRoute(routePathForTab(nextTab));
+    // Replace the lesson's sentinel entry (if any) rather than stacking on it.
+    const consumeSentinel = miniUnitHistoryEntryRef.current;
+    miniUnitHistoryEntryRef.current = false;
+    writeRoute(routePathForTab(nextTab), { replace: consumeSentinel });
   }, [updateSettings]);
 
   useEffect(() => {
@@ -2316,7 +2368,11 @@ export default function TukTalkThaiApp() {
     setShowSettings(false);
     setPublicPage(null);
     setTab(nextTab);
-    writeRoute(routePathForTab(nextTab), { replace: !!options.replace });
+    // A tab switch during a lesson replaces the lesson's sentinel entry so
+    // history doesn't keep a duplicate step under the new tab.
+    const consumeSentinel = miniUnitHistoryEntryRef.current;
+    miniUnitHistoryEntryRef.current = false;
+    writeRoute(routePathForTab(nextTab), { replace: !!options.replace || consumeSentinel });
   }, [activeMiniUnitId, firstLessonCompleted, requestSuperPrompt, stageState?.maxUnlockedStage, updateSettings]);
 
   const handleStartMissionCards = useCallback((mission) => {
@@ -2479,8 +2535,15 @@ export default function TukTalkThaiApp() {
       }
     }
 
-    // Level 3 — one overlay at a time.
-    if (!celebration) {
+    // Level 3 — one overlay at a time. Wave 10: also wait for an open reward
+    // screen. Only the course branch used to clear rewardScreen; the stage /
+    // streak / all-quests branches fired regardless, stacking two full-screen
+    // aria-modal `.reward-screen-backdrop`s (the exact state the achievement
+    // guard below calls a bug). The ledger conditions (`!hasCelebrated`) stay
+    // true while we wait, and rewardScreen is in this effect's deps, so the
+    // celebration fires naturally the moment the reward is dismissed — queued,
+    // not dropped.
+    if (!celebration && !rewardScreen) {
       // Highest priority: the global "Course Complete" milestone. Fires once
       // (durable ledger ID), suppresses any smaller stage/mini-unit feedback,
       // and grants a one-time +250 XP bonus guarded by the same ledger ID so it
@@ -2584,7 +2647,7 @@ export default function TukTalkThaiApp() {
         });
       }
     }
-  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, courseCompletion, awardXp, markCelebrated, handleSetTab, handleOpenPremium]);
+  }, [loaded, cloudReady, session, stageState, dashboardStats, progress, stats, celebration, rewardScreen, courseCompletion, awardXp, markCelebrated, handleSetTab, handleOpenPremium]);
 
   const voice = stats.voice || DEFAULT_VOICE;
   const viewMode = stats.viewMode || DEFAULT_VIEW_MODE;
@@ -2972,7 +3035,12 @@ export default function TukTalkThaiApp() {
           onClose={() => setQuestToasts(q => q.slice(1))}
         />
       )}
-      {celebration && (
+      {/* Wave 10: full-screen reward-family surfaces are mutually exclusive at
+          render time — Stage-1 celebration > celebration > reward screen (the
+          priority the old z-index accident produced, now made structural).
+          The lower-priority surface keeps its state and appears when the one
+          above it is dismissed; nothing is dropped. */}
+      {celebration && !showStage1Celebration && (
         <CelebrationOverlay {...celebration} />
       )}
       {superActivation && (
@@ -2995,7 +3063,7 @@ export default function TukTalkThaiApp() {
       {showSettings && (
         <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} onEntitlementRefresh={handleEntitlementRefresh} onReplayTutorial={() => { updateSettings({ tutorialSeen: false }); handleCloseSettings(); handleSetTab('learn'); }} />
       )}
-      {rewardScreen && (
+      {rewardScreen && !showStage1Celebration && !celebration && (
         <MissionCompleteRewardScreen
           {...rewardScreen}
           onContinue={handleRewardContinue}
