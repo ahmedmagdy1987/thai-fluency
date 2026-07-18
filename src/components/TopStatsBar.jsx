@@ -1,6 +1,7 @@
 import React from 'react';
 import { Flame, Zap, Heart, Gem } from 'lucide-react';
 import { HEART_MAX } from '../lib/economy.js';
+import { useHeartRegen } from '../hooks/useHeartRegen.js';
 
 // Header stats bar: streak + XP + due-count are joined by the REAL hearts + gems
 // economy (migration 009). Hearts are Challenge-only "lives" (see economy.js);
@@ -20,9 +21,13 @@ export default function TopStatsBar({ stats, dashboardStats, hearts, isSuper = f
   // Effective hearts come from AppShell (regenerated + Super-aware). Fall back
   // to a safe full value if omitted, and clamp the numeric display to HEART_MAX.
   const heartsVal = Number.isFinite(hearts) ? Math.max(0, Math.min(HEART_MAX, hearts)) : HEART_MAX;
+  // Wave 11: regen has always run below the cap, but the countdown only ever
+  // appeared on the out-of-hearts gate. Show it here too, wherever hearts are
+  // displayed, so a user at 4/5 can see a heart is coming and when.
+  const regen = useHeartRegen(stats, isSuper);
   const heartsAria = isSuper
     ? 'Hearts: unlimited with Super'
-    : `Hearts: ${heartsVal} of ${HEART_MAX}`;
+    : `Hearts: ${heartsVal} of ${HEART_MAX}${regen.countdown ? `. Next heart in ${regen.countdown}` : ''}`;
 
   return (
     <div className="topstats-bar" data-tutorial="stats">
@@ -39,7 +44,9 @@ export default function TopStatsBar({ stats, dashboardStats, hearts, isSuper = f
       )}
       <div
         className="topstats-pill topstats-pill-hearts"
-        title={isSuper ? 'Unlimited hearts with Super' : 'Hearts for the Challenge'}
+        title={isSuper
+          ? 'Unlimited hearts with Super'
+          : (regen.countdown ? `Hearts for the Challenge — next heart in ${regen.countdown}` : 'Hearts for the Challenge')}
         aria-label={heartsAria}
       >
         <Heart size={13} aria-hidden="true" />
@@ -50,6 +57,11 @@ export default function TopStatsBar({ stats, dashboardStats, hearts, isSuper = f
           <span className="topstats-val">
             {heartsVal}<span className="topstats-hearts-of">/{HEART_MAX}</span>
           </span>
+        )}
+        {/* Quiet, non-intrusive: a small monospaced timer that only exists
+            while a heart is actually on its way. Not a nag — information. */}
+        {!isSuper && regen.countdown && (
+          <span className="topstats-hearts-regen" aria-hidden="true">+1 in {regen.countdown}</span>
         )}
       </div>
       <div

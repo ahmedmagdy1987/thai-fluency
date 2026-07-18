@@ -1,6 +1,7 @@
 import React from 'react';
 import { Gem, Heart, Crown, Check, Snowflake } from 'lucide-react';
 import { HEART_MAX, REFILL_COST_GEMS, FREEZE_COST_GEMS } from '../lib/economy.js';
+import { useHeartRegen } from '../hooks/useHeartRegen.js';
 
 // The Shop is REAL and minimal — it only wires what the columns support
 // (migration 009: user_stats.hearts / gems / streak_freezes). Gems are the FREE
@@ -8,8 +9,12 @@ import { HEART_MAX, REFILL_COST_GEMS, FREEZE_COST_GEMS } from '../lib/economy.js
 // buying streak freezes — so gems are never a circular hearts-only currency
 // (E4). Hearts are Challenge-only "lives"; the free learning path is never gated
 // by gems. A small upsell points Super at /plans. No fake balances or prices.
-export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = false, streakFreezes = 0, onRefillHearts, onBuyFreeze, onOpenSuper }) {
+export default function ShopScreen({ stats, hearts = HEART_MAX, gems = 0, isSuper = false, streakFreezes = 0, onRefillHearts, onBuyFreeze, onOpenSuper }) {
   const heartsFull = isSuper || hearts >= HEART_MAX;
+  // Wave 11: the free way to get a heart back is to wait — say so here, where
+  // the paid way (gems) is being offered. Refilling is a choice, not the only
+  // route, and the countdown makes that honest.
+  const regen = useHeartRegen(stats, isSuper);
   const canAfford = gems >= REFILL_COST_GEMS;
   const canAffordFreeze = gems >= FREEZE_COST_GEMS;
   const freezeReason = canAffordFreeze
@@ -75,6 +80,9 @@ export default function ShopScreen({ hearts = HEART_MAX, gems = 0, isSuper = fal
               )}
             </div>
             <div className="shop-item-reason">{refillReason}</div>
+            {!isSuper && regen.countdown && (
+              <div className="shop-item-regen">Next heart free in {regen.countdown}</div>
+            )}
           </div>
           <button
             type="button"

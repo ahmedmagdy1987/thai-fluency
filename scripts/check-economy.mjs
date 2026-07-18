@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { FEATURES, FEATURE_STATUS, TIERS } from '../src/config/entitlements.js';
-import { HEART_MAX, HEART_REGEN_MIN, FREEZE_COST_GEMS, buyStreakFreezeWithGems } from '../src/lib/economy.js';
+import { HEART_MAX, HEART_REGEN_MIN, FREEZE_COST_GEMS, buyStreakFreezeWithGems, spendHeart, effectiveHearts, regenState } from '../src/lib/economy.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
@@ -64,6 +64,37 @@ assert('(d) /plans does not mark the (live) hearts benefit as "soon"',
   && !/label: 'Hearts in the Challenge'[^}]*planned: true/.test(plans));
 assert('(d) /plans advertises unlimited hearts as a Super benefit',
   /[Uu]nlimited hearts/.test(plans));
+
+// ── (e) REGEN ACCRUES BELOW THE CAP, not only at zero (Wave 11) ─────────────
+// The owner reported that regen "only seems to exist at 0 hearts". It was a
+// DISPLAY gap — accrual has always run below the cap — but nothing pinned that
+// rule, so a future "only regen when empty" tweak would have silently turned a
+// display bug into a real economy loss. These assertions run the real economy
+// functions over a simulated timeline.
+const T0 = Date.parse('2026-01-01T12:00:00.000Z');
+const MIN = 60 * 1000;
+const at = (mins) => T0 + mins * MIN;
+// One heart lost at T0 (5 -> 4), never reaching zero.
+const afterOneLoss = spendHeart({ hearts: HEART_MAX, gems: 0, heartsUpdatedAt: new Date(T0).toISOString() }, T0);
+assert('(e) spending a heart stamps the regen clock (not only the zero-th spend)',
+  afterOneLoss.hearts === HEART_MAX - 1 && !!afterOneLoss.heartsUpdatedAt,
+  JSON.stringify(afterOneLoss));
+assert('(e) a heart regenerates below the cap WITHOUT ever reaching zero',
+  effectiveHearts(afterOneLoss, false, at(HEART_REGEN_MIN)) === HEART_MAX
+  && effectiveHearts(afterOneLoss, false, at(HEART_REGEN_MIN - 1)) === HEART_MAX - 1,
+  `t-1min=${effectiveHearts(afterOneLoss, false, at(HEART_REGEN_MIN - 1))} t=${effectiveHearts(afterOneLoss, false, at(HEART_REGEN_MIN))}`);
+assert('(e) the countdown is live below the cap (a UI can always show "next heart in")',
+  regenState(afterOneLoss, at(0)).nextRegenMs > 0
+  && regenState(afterOneLoss, at(HEART_REGEN_MIN - 1)).nextRegenMs > 0
+  && regenState(afterOneLoss, at(HEART_REGEN_MIN - 1)).nextRegenMs <= MIN,
+  JSON.stringify(regenState(afterOneLoss, at(HEART_REGEN_MIN - 1))));
+assert('(e) a FULL heart bar has nothing pending (no phantom countdown)',
+  regenState({ hearts: HEART_MAX, gems: 0, heartsUpdatedAt: new Date(T0).toISOString() }, at(999)).nextRegenMs === 0);
+// The rate and cap themselves must not drift.
+assert('(e) regen rate and cap unchanged (1 heart per 30 min, cap 5)',
+  HEART_MAX === 5 && HEART_REGEN_MIN === 30);
+// (The DISPLAY side of this — every hearts surface being able to show the
+// countdown — is pinned by scripts/check-heart-regen-visibility.mjs.)
 
 // ── Config sanity ───────────────────────────────────────────────────────────
 assert('heart config present and sane (cap + regen minutes)',

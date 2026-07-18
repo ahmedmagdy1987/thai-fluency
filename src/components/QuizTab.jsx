@@ -98,12 +98,16 @@ export default function QuizTab({
   // with the score intact. Progress is never lost, and play is never free.
   const onIntro = questions.length === 0;
   const gateEligible = !isSuper;
-  // Tick once a second while a free user is out of hearts, so the
-  // regen count stays live and the gate SELF-CLEARS the moment a heart refills —
-  // no page refresh needed (the `hearts` prop can be a stale snapshot).
+  // Tick once a second while a free user is BELOW the heart cap, so the regen
+  // count stays live and the gate SELF-CLEARS the moment a heart refills — no
+  // page refresh needed (the `hearts` prop can be a stale snapshot).
+  // Wave 11: the tick used to run only at 0 hearts, so between 1 and 4 hearts
+  // the displayed count was frozen at the last unrelated render and the intro
+  // could show a stale value; regen itself always ran (economy.js gates on
+  // `stored < HEART_MAX`), it simply wasn't shown.
   const [nowTick, setNowTick] = useState(() => Date.now());
   useEffect(() => {
-    if (!gateEligible || hearts > 0) return undefined;
+    if (!gateEligible || hearts >= HEART_MAX) return undefined;
     const t = setInterval(() => setNowTick(Date.now()), 1000);
     return () => clearInterval(t);
   }, [gateEligible, hearts]);
@@ -387,6 +391,11 @@ export default function QuizTab({
                 />
               ))}
               <span className="quiz-hearts-status-text">{heartsLive}/{HEART_MAX}</span>
+              {/* The countdown is no longer exclusive to the out-of-hearts
+                  gate: below the cap, say when the next heart lands. */}
+              {regen && regen.nextRegenMs > 0 && heartsLive < HEART_MAX && (
+                <span className="quiz-hearts-status-regen">+1 in {formatCountdown(regen.nextRegenMs)}</span>
+              )}
             </div>
           )}
           {outOfHearts ? renderHeartsGate() : stageReady ? (
