@@ -22,6 +22,10 @@ import SpeakingExercise from '../../src/components/SpeakingExercise.jsx';
 import SituationRail from '../../src/components/SituationRail.jsx';
 import IdentityPathStep from '../../src/components/IdentityPathStep.jsx';
 import LearnPath from '../../src/components/LearnPath.jsx';
+import SuperActivationNotice from '../../src/components/SuperActivationNotice.jsx';
+import CelebrationOverlay from '../../src/components/CelebrationOverlay.jsx';
+import { MAX_BANKED_FREEZES } from '../../src/lib/economy.js';
+import { getStagePathSteps } from '../../src/lib/stagePath.js';
 import { CARDS } from '../../src/data/cards.js';
 import { STAGE_1_MINI_UNIT_PILOT, MINI_UNITS, getMiniUnitsForStage } from '../../src/data/miniUnits.js';
 import { getStageState, getMissionState } from '../../src/lib/state.js';
@@ -156,6 +160,65 @@ function sceneEl() {
             onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
         </div>
       );
+    // ── WAVE 12 scenes ──────────────────────────────────────────────────────
+    case 'shop-super':
+      // A Super user has unlimited hearts, so the refill item must render as
+      // INCLUDED — never priced at 50 gems, which is what shipped.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto' }}>
+          <ShopScreen stats={superStats} hearts={5} gems={120} isSuper streakFreezes={2}
+            onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
+        </div>
+      );
+    case 'shop-freeze-cap':
+      // At MAX_BANKED_FREEZES the freeze item is unavailable WITH A REASON —
+      // never a silent no-op, and never an unbounded 31-purchase run.
+      return (
+        <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto' }}>
+          <ShopScreen stats={freeStats} hearts={3} gems={900} isSuper={false}
+            streakFreezes={MAX_BANKED_FREEZES}
+            onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
+        </div>
+      );
+    case 'super-activation-pending':
+      return <SuperActivationNotice status="pending" onDismiss={noop} onRefresh={noop} />;
+    case 'super-activation-slow':
+      return <SuperActivationNotice status="slow" onDismiss={noop} onRefresh={noop} />;
+    case 'super-activation-timeout':
+      return <SuperActivationNotice status="timeout" onDismiss={noop} onRefresh={noop} />;
+    case 'super-celebration':
+      // The celebration is now bound to the ENTITLEMENT landing, so it fires
+      // however long the webhook takes — including after navigating away.
+      return (
+        <CelebrationOverlay
+          eyebrow="Welcome to Super"
+          title="You’re now Super! 🎉"
+          subtitle="Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!"
+          primaryLabel="Let’s go"
+          onPrimary={noop}
+        />
+      );
+    case 'reward-lessons-done': {
+      // ROOT CAUSE 2: every guided lesson of stage 1 done, stage CARDS still
+      // outstanding. The old build titled this "Stage 1 Path Complete" while the
+      // trail said "words to go". It must now name what was actually finished.
+      const units = getMiniUnitsForStage(1);
+      const statsAfter = { completedMiniUnits: units.map(u => u.unitId) };
+      const stateAfter = getStageState(statsAfter, {});
+      const path = getStagePathSteps(1, { stageState: stateAfter, stats: statsAfter });
+      return (
+        <MissionCompleteRewardScreen
+          title={path.allSatisfied ? 'Stage 1 Path Complete' : 'Stage 1 Lessons Complete'}
+          subtitle={path.allSatisfied
+            ? 'You finished every step in Stage 1. That is a real milestone.'
+            : `Every guided lesson in Stage 1 is done. ${path.wordsStep.remaining} more words to finish the stage.`}
+          xpEarned={20}
+          streak={5}
+          nextStep={path.allSatisfied ? 'Keep going in Learn' : 'Learn the remaining words'}
+          onContinue={noop}
+        />
+      );
+    }
     case 'settings':
       return <SettingsModal stats={superStats} updateSettings={noop} onClose={noop} onOpenPublicPage={noop}
         onEntitlementRefresh={noop} onReplayTutorial={noop} />;

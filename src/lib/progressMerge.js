@@ -9,9 +9,15 @@
 //   • Merging NEVER grants a reward. It only combines already-earned state; XP is
 //     awarded exclusively through the gameplay reward paths, never at load. So a
 //     merge can never create a reward_event or bump XP by itself.
-//   • XP / currency / streak / today stay CLOUD-authoritative — local values are
-//     never added on top (no double-count) and a forged-high local value can never
-//     raise them.
+//   • XP stays CLOUD-authoritative unconditionally — local values are never added
+//     on top (no double-count) and a forged-high local value can never raise it.
+//   • Currency / purchased goods / streak / today are CLOUD-authoritative too,
+//     EXCEPT when the cloud row is provably stale (isCloudStatsStale): a row that
+//     has not advanced since this device last synced cannot contain the user's
+//     latest actions, so it must not overwrite them. Staleness is judged on the
+//     server-written `user_stats.updated_at`, which a client cannot forge, and the
+//     server-side `guard_user_stats` trigger still clamps every write. See
+//     lib/statsFieldPolicy.js for why this opens no forgery hole.
 //   • Super/entitlement is NOT handled here at all. Tier comes only from
 //     subscriptions.super_until (applied separately by the caller). Merged output
 //     deliberately omits tier/superUntil so local can never grant Super.
@@ -19,7 +25,25 @@
 //     counts and lapse history never decrease, a graduated card never un-graduates,
 //     and completed lessons/achievements are unioned (completed/unlocked wins).
 
+import {
+  FIELD_CLASS, STATS_FIELD_POLICY, OWNED_FIELDS, fieldsOfClass,
+} from './statsFieldPolicy.js';
+
 function num(v) { return Number.isFinite(v) ? v : 0; }
+
+// Fields present on either side that nobody registered in statsFieldPolicy.js.
+// They resolve as OWNED (protective) so an unregistered field can never be
+// silently destroyed by a stale cloud row — the failure mode is "too careful",
+// never "lost the user's data". check-merge-staleness.mjs fails CI on any such
+// field, so this path should stay empty in practice.
+function unregisteredFieldsIn(local, cloud) {
+  const out = [];
+  for (const k of new Set([...Object.keys(local || {}), ...Object.keys(cloud || {})])) {
+    if (k === 'cloudUpdatedAt') continue;   // transport metadata, not user state
+    if (!(k in STATS_FIELD_POLICY)) out.push(k);
+  }
+  return out;
+}
 function unionIds(a, b) {
   return [...new Set([...(Array.isArray(a) ? a : []), ...(Array.isArray(b) ? b : [])])];
 }
@@ -91,51 +115,89 @@ export function mergeProgress(local, cloud) {
 }
 
 // ── Stats merge ──────────────────────────────────────────────────────────────
-// Field rules, grouped by policy. Anything not listed defaults to CLOUD authority.
+// Field rules live in ONE place: lib/statsFieldPolicy.js. NOTHING is classified
+// by omission any more — that default was the Wave 12 root cause. An unregistered
+// field resolves as OWNED (protective), and check-merge-staleness.mjs fails CI if
+// any reachable field is missing from the registry.
 //
-//   CLOUD-authoritative (never raised by local — reward/currency/date/streak, plus
-//   account-level preferences that sync through profiles.settings):
-//     totalXp, streak, todayXp, todayDate, lastStudy, lastXpActivityAt,
-//     dailyGoal, dailyGoalsHit, streakFreezes, lastFreezeGrant, lastChallengeDate,
-//     hearts, gems, heartsUpdatedAt, startedStage, identityPath
-//   MAX (monotonic, non-rewarding display/aggregate counters — never lose progress):
-//     longestStreak, totalReviews, currentStage, lastSeenMission, tonesQuizBest,
-//     quizzesPassed, perfectQuizzes, challengeAttempts, challengeCorrect,
-//     challengeWrong, bestChallengeScore, bestChallengeTotal
-//   OR (sticky once-true milestones):
-//     tonesQuizPassed, tutorialSeen, stage1CelebrationShown
-//   UNION (set-valued learning/state ledgers — completed/unlocked wins):
-//     dialoguesCompleted, knownCardIds, unlockedAchievements
-export const STATS_MAX = ['longestStreak', 'totalReviews', 'currentStage', 'lastSeenMission',
-  'tonesQuizBest', 'quizzesPassed', 'perfectQuizzes', 'challengeAttempts',
-  'challengeCorrect', 'challengeWrong', 'bestChallengeScore', 'bestChallengeTotal'];
-export const STATS_OR = ['tonesQuizPassed', 'tutorialSeen', 'stage1CelebrationShown'];
-export const STATS_UNION = ['dialoguesCompleted', 'knownCardIds', 'unlockedAchievements'];
-
-// The cloud-authoritative class, written out. It is DOCUMENTATION + VALIDATION
-// ONLY and is deliberately NOT read by mergeStats: cloud authority is the
-// DEFAULT-BY-OMISSION of `out = { ...cloud }` below, so a key is cloud-auth
-// exactly by NOT appearing in STATS_MAX / STATS_OR / STATS_UNION. Listing a key
-// here therefore changes no behaviour for any key — it only lets
-// scripts/check-progress-merge.mjs assert the class each field belongs to.
+// The classes are CLOUD / MAX / OR / UNION / OWNED / DEVICE; see the registry for
+// what each means and for the per-field rationale.
 //
-// `identityPath` (engagement.md §2.1/§9: the onboarding "why are you learning
-// Thai?" answer, one of situations.js PATHS) is class cloud-auth: it is an
-// account-level PREFERENCE synced like voice/viewMode through profiles.settings,
-// never derived from tier and never a reward — so local must not be able to raise
-// it, and MAX/OR/UNION are all meaningless for a path string. Note the omission
-// semantics that make this correct: when cloud has no identityPath, the merged
-// patch omits the key entirely (rather than setting it to undefined), so
-// spreading the patch leaves an anonymous learner's local choice intact.
-export const STATS_CLOUD_AUTH = ['totalXp', 'streak', 'todayXp', 'todayDate', 'lastStudy',
-  'lastXpActivityAt', 'dailyGoal', 'dailyGoalsHit', 'streakFreezes', 'lastFreezeGrant',
-  'lastChallengeDate', 'hearts', 'gems', 'heartsUpdatedAt', 'startedStage', 'identityPath'];
+// DERIVED from the registry — lib/statsFieldPolicy.js is the single source of
+// truth for field classes. These exports remain for the validators and for
+// readability at the call sites below; they are no longer independently edited,
+// so the lists and the policy can never drift apart (Wave 12, root cause 2).
+export const STATS_MAX = fieldsOfClass(FIELD_CLASS.MAX);
+export const STATS_OR = fieldsOfClass(FIELD_CLASS.OR);
+export const STATS_UNION = fieldsOfClass(FIELD_CLASS.UNION);
 
-// Merge cloud stats INTO local stats. Cloud is the authority base; local only
-// contributes MAX counters, OR flags, and UNION ledgers. Returns a stats patch to
-// spread over the current stats. Never includes tier/superUntil (entitlement is
-// applied separately by the caller). `cloud` is the object from downloadStats().
-export function mergeStats(local, cloud) {
+// The cloud-authoritative class — cloud wins EVEN WHEN THE ROW IS STALE. This is
+// now a real behavioural class, not documentation: it is the set the staleness
+// fallback deliberately does NOT touch, so it is the anti-forgery core.
+// `totalXp` and `lastXpActivityAt` are here because earned XP is the highest-value
+// forgery target; `identityPath` and `dailyGoal` are account-level PREFERENCES
+// (engagement.md §2.1/§9), never rewards, so local must not raise them.
+//
+// Note the omission semantics that keep preferences safe: when cloud has no
+// identityPath the merged patch omits the key entirely (rather than setting it to
+// undefined), so spreading the patch leaves an anonymous learner's choice intact.
+//
+// Currency, purchased goods, the live streak and today's progress are NO LONGER in
+// this class — they are OWNED (see statsFieldPolicy.js), which is what stops a
+// stale row from destroying a completed purchase.
+export const STATS_CLOUD_AUTH = fieldsOfClass(FIELD_CLASS.CLOUD);
+
+// The user-owned class: cloud wins normally, LOCAL wins when the cloud row is
+// provably stale. Re-exported so validators can assert the class of each field.
+export const STATS_OWNED = OWNED_FIELDS;
+
+// ── Staleness (Wave 12, root cause 1) ────────────────────────────────────────
+// THE CLASS OF BUG THIS KILLS: the merge had no concept of which side was newer,
+// so a cloud row from before the user's latest actions silently overwrote them.
+// A completed purchase (930 gems → 31 streak freezes) was destroyed exactly this
+// way when an old row was merged back in during entitlement activation.
+//
+// The signal is `user_stats.updated_at`. It is written by the server trigger
+// `set_user_stats_updated_at` (supabase/schema.sql:235-238 → set_updated_at()
+// does `new.updated_at = now()`), so it is SERVER time and a client cannot forge
+// it — whatever the client sends is overwritten. downloadStats already fetches it
+// (`select('*')`); it is now surfaced as `cloudUpdatedAt`.
+//
+// The cloud row is STALE for this device when BOTH hold:
+//   (a) this device has local writes it has not yet successfully uploaded, and
+//   (b) the cloud row has NOT advanced since this device last synced.
+// (b) is what keeps another device's newer write authoritative: if the row moved,
+// it is not stale and cloud authority applies unchanged.
+//
+// `sync` is { dirty: boolean, lastSyncedCloudUpdatedAt: string|null }. When it is
+// absent (anonymous, or no watermark recorded yet) the answer is FALSE — the
+// conservative, pre-Wave-12 behaviour.
+export function isCloudStatsStale(cloud, sync) {
+  if (!sync || !sync.dirty) return false;              // nothing local to protect
+  const seen = sync.lastSyncedCloudUpdatedAt || null;
+  if (!seen) return false;                             // never synced → cannot compare
+  const cloudAt = (cloud && cloud.cloudUpdatedAt) || null;
+  if (!cloudAt) return false;                          // no server timestamp → don't guess
+  const cloudMs = Date.parse(cloudAt);
+  const seenMs = Date.parse(seen);
+  if (!Number.isFinite(cloudMs) || !Number.isFinite(seenMs)) return false;
+  // Row has not advanced past what we already merged → it cannot hold our writes.
+  return cloudMs <= seenMs;
+}
+
+// Merge cloud stats INTO local stats. Cloud is the authority base; local
+// contributes MAX counters, OR flags, UNION ledgers, and — when the cloud row is
+// provably STALE — the OWNED fields (currency, purchased goods, live streak,
+// today's progress). Returns a stats patch to spread over the current stats.
+// Never includes tier/superUntil (entitlement is applied separately by the
+// caller). `cloud` is the object from downloadStats(); `sync` is the local sync
+// watermark (see lib/syncWatermark.js).
+//
+// Field classes live in ONE place — lib/statsFieldPolicy.js. Nothing is
+// classified by omission any more, and an UNREGISTERED field resolves as OWNED
+// (protective) rather than cloud-authoritative, so a field nobody remembered to
+// register can no longer be silently destroyed.
+export function mergeStats(local, cloud, sync = null) {
   const l = local && typeof local === 'object' ? local : {};
   const c = cloud && typeof cloud === 'object' ? cloud : {};
   // Start from cloud so every cloud-authoritative field wins by default.
@@ -143,6 +205,19 @@ export function mergeStats(local, cloud) {
   for (const k of STATS_MAX) out[k] = Math.max(num(l[k]), num(c[k]));
   for (const k of STATS_OR) out[k] = !!l[k] || !!c[k];
   for (const k of STATS_UNION) out[k] = unionIds(l[k], c[k]);
+
+  // Stale cloud row → OWNED fields fall back to local, which is strictly newer.
+  // Absolute local values are taken (never deltas), so this is idempotent: a
+  // merge that runs twice cannot double-apply a spend or double-grant a purchase.
+  if (isCloudStatsStale(c, sync)) {
+    const ownedNow = new Set([...OWNED_FIELDS, ...unregisteredFieldsIn(l, c)]);
+    for (const k of ownedNow) {
+      if (k in l && l[k] !== undefined) out[k] = l[k];
+    }
+  }
+  // The server timestamp is transport metadata, not user state — never persist it
+  // into the stats blob.
+  delete out.cloudUpdatedAt;
   // Mastery overlay: per-card MAX merge (monotonic, non-rewarding). Only emit a
   // merged map when either side actually has one, so untouched stats stay clean.
   if ((l.masteryRank && typeof l.masteryRank === 'object') || (c.masteryRank && typeof c.masteryRank === 'object')) {

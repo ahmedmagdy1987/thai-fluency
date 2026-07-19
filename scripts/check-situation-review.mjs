@@ -8,10 +8,12 @@
 //     quarantined, has an internal contradiction, or is flagged needs-review;
 //   • every approved item is traceable to a manifest entry (no orphan approvals)
 //     and carries reviewedBy === REVIEWER_OF_RECORD plus a reviewedAt date;
-//   • NOTHING resolves to 'approved' anywhere (no main-deck card, no dating
-//     phrase, no situation) — the named reviewer exists but has signed off nothing;
-//   • SITUATION_REVIEW_COMPLETE holds all 16 canonical situations (§2 order) and
-//     every flag is false; DATING_REVIEW_COMPLETE mirrors it (false);
+//   • approvals EXIST and are earned: main-deck cards resolve to 'approved' only
+//     where a situation sign-off in nativeReviewSignoff.js also clears the
+//     eligibility floor, and the Dating pack is approved as a whole pack;
+//   • SITUATION_REVIEW_COMPLETE holds all 16 canonical situations (§2 order); its
+//     flags mean "100% of this situation is approved" and are still all false,
+//     because every situation retains some withheld (empty-`ph`/quarantined) cards;
 //   • the mandatory draft badge string is exact;
 //   • the situation tagging overlay is the 7 adequate situations, disjoint.
 

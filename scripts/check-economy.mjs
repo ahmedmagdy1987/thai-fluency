@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { FEATURES, FEATURE_STATUS, TIERS } from '../src/config/entitlements.js';
-import { HEART_MAX, HEART_REGEN_MIN, FREEZE_COST_GEMS, buyStreakFreezeWithGems, spendHeart, effectiveHearts, regenState } from '../src/lib/economy.js';
+import { HEART_MAX, HEART_REGEN_MIN, FREEZE_COST_GEMS, MAX_BANKED_FREEZES, buyStreakFreezeWithGems, freezePurchaseState, spendHeart, effectiveHearts, regenState } from '../src/lib/economy.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
@@ -52,6 +52,41 @@ assert('(c) buyStreakFreezeWithGems deducts gems and grants a freeze',
   patch && patch.gems === 100 - FREEZE_COST_GEMS && patch.streakFreezes === 1, JSON.stringify(patch));
 assert('(c) Super does NOT grant gems (no Super-only gem bonus in entitlements)',
   !/gem/i.test(JSON.stringify(FEATURES)));
+
+// â”€â”€ (f) WAVE 12: gem spends are CAPPED and CONFIRMED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// The owner banked 31 streak freezes in one sitting â€” 31 unconfirmed clicks,
+// 930 gems. At that level the streak can never break, which destroys both the
+// loss-aversion mechanic (engagement.md Â§5) and the freeze's role as the honest
+// bridge to Super (engagement.md Â§5.3). The cap and the confirmation are now
+// invariants, enforced in the PURCHASE PATH rather than in a disabled attribute.
+{
+  assert('(f) a banked-freeze ceiling exists and sits above the free auto-grant floor of 2',
+    Number.isFinite(MAX_BANKED_FREEZES) && MAX_BANKED_FREEZES > 2,
+    `MAX_BANKED_FREEZES=${MAX_BANKED_FREEZES}`);
+  assert('(f) the ceiling is enforced by the purchase function, not just the UI',
+    buyStreakFreezeWithGems({ gems: 9999, streakFreezes: MAX_BANKED_FREEZES }) === null);
+  assert('(f) buying is still possible one below the ceiling (the gem sink survives)',
+    buyStreakFreezeWithGems({ gems: 9999, streakFreezes: MAX_BANKED_FREEZES - 1 }) !== null);
+  // A user who already exceeds the ceiling keeps their balance â€” a cap must never
+  // confiscate something already paid for.
+  assert('(f) the ceiling never REDUCES an existing balance',
+    buyStreakFreezeWithGems({ gems: 9999, streakFreezes: MAX_BANKED_FREEZES + 26 }) === null);
+  // At the cap the button is unavailable WITH A REASON â€” never a silent no-op.
+  const capped = freezePurchaseState({ gems: 9999, streakFreezes: MAX_BANKED_FREEZES });
+  assert('(f) at the cap the Shop states an honest reason (no silent no-op)',
+    capped.canBuy === false && capped.atCap === true && /maximum/i.test(capped.reason), capped.reason);
+  const poor = freezePurchaseState({ gems: 0, streakFreezes: 0 });
+  assert('(f) when unaffordable the Shop states the real shortfall',
+    poor.canBuy === false && poor.atCap === false && poor.reason.includes(String(FREEZE_COST_GEMS)), poor.reason);
+  // Every gem spend is confirmed before it happens.
+  assert('(f) the Shop confirms gem spends before charging (two-step BuyButton)',
+    /function BuyButton/.test(shop) && /confirming/.test(shop) && /Cancel/.test(shop));
+  assert('(f) both gem sinks route through the confirming button',
+    (shop.match(/<BuyButton/g) || []).length >= 2);
+  // A Super user is never shown a price for hearts they already have unlimited of.
+  assert('(f) the Shop does not offer a heart refill for sale to a Super user',
+    /isSuper \? \(/.test(shop) && /shop-item-included/.test(shop));
+}
 
 // ── (d) advertised Super benefits exist + no live benefit marked "soon" ─────
 const liveSuper = Object.values(FEATURES).filter(f => f.access === TIERS.SUPER && f.status === FEATURE_STATUS.AVAILABLE).map(f => f.id);

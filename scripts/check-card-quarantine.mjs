@@ -3,7 +3,7 @@
 // Seven cards carry suspected Thai orthographic corruption — stray/doubled combining
 // marks, truncation, a field contradicted by its own note. Nobody but a native may
 // correct them, so until then they must not be TAUGHT: quarantine excludes them from
-// `CARDS` (what all 11 consumers import) while keeping them in ALL_CARDS so the
+// `CARDS` (what every consumer imports) while keeping them in ALL_CARDS so the
 // reviewer can still find them.
 //
 // Proves, on every run:

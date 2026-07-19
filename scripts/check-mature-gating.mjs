@@ -1,7 +1,7 @@
 // Validation for the mature-content gate on the main deck (claude-review.md S1).
 //
 // The one rule this script exists to enforce: a card flagged mature must NEVER be
-// reachable in the free, ungated deck. `CARDS` is what all 11 consumers import —
+// reachable in the free, ungated deck. `CARDS` is what every consumer imports —
 // two of them (PublicLanding.jsx, DemoMode.jsx) render PRE-AUTH with no Super and
 // no age check — so "reachable in CARDS" means "reachable by a minor".
 //

@@ -154,9 +154,10 @@ const ALWAYS_PREVIEW = Object.freeze(['sit-dating']);
 export const isAlwaysPreview = (sitId) => ALWAYS_PREVIEW.includes(sitId);
 
 // Every reason this situation cannot be THIS learner's next free lesson. Empty
-// array = offerable. Note what is NOT in here: review status. The whole deck is
-// draft (reviewStatus.js: nothing is approved, no situation is review-complete),
-// so gating on approval would return "coming soon" for all 16 forever. Draft
+// array = offerable. Note what is NOT in here: review status. No situation is
+// review-complete yet (every SITUATION_REVIEW_COMPLETE flag is false, even though
+// part of the deck is now approved), so gating on approval would return
+// "coming soon" for all 16 until whole situations clear the floor. Draft
 // content ships WITH the mandatory draft badge — that is the UI's contract, not a
 // lock — while hasTeachableContent() is the approval-INDEPENDENT signal for
 // "does this situation own any real cards we can actually teach at all?".
@@ -164,9 +165,10 @@ export const isAlwaysPreview = (sitId) => ALWAYS_PREVIEW.includes(sitId);
 // COMING_SOON keys off hasTeachableContent, not the weaker `tagged`: a situation
 // whose every card lacks a phonetic owns cards we cannot teach, and calling that
 // anything but "no lessons yet" would advertise a Start that dies on arrival.
-// The two agree on today's deck (all 7 tagged situations hold 90+ phonetic
-// cards), so this is a tightening, not a behaviour change — check-situation-
-// sequence asserts the equivalence rather than trusting it.
+// The two agree on today's deck — but do NOT re-derive that from a card count:
+// the tagged set has grown well past the original 7 and several tagged situations
+// hold only a handful of phonetic cards. check-situation-sequence asserts the
+// equivalence executably rather than trusting any number written here.
 export function lockReasons(sitId, stats) {
   const s = getSituation(sitId);
   if (!s) return [LOCK_REASON.COMING_SOON]; // unknown id → fail closed

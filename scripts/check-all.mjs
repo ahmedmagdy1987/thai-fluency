@@ -6,8 +6,10 @@
 // forgot to run it.
 //
 // WHAT IS IN THE SET, AND WHAT IS DELIBERATELY NOT:
-//   • check-*.mjs   — the 25 invariant guards (each exits 1 on a violation).
-//   • verify-*.mjs  — the 3 content guards (now also exit 1 on a violation).
+//   • check-*.mjs   — the invariant guards (each exits 1 on a violation).
+//   • verify-*.mjs  — the content guards (also exit 1 on a violation).
+// Counts are deliberately NOT written here: the set is auto-discovered from disk
+// and printed at run time, so any number in this comment could only go stale.
 // EXCLUDED on purpose (they are not pass/fail invariant guards):
 //   • fix-*/apply-*/import-*/write-*/audit-* — they MUTATE files or emit reports.
 //   • smoke-production-routes.mjs — needs a live URL (run in the post-deploy step).

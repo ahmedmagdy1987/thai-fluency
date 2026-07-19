@@ -1,6 +1,6 @@
 // toneFromPh — pure, zero-dependency phonetic-diacritic -> tone parser.
 //
-// The main deck (src/data/cards.js, 4,791 cards) stores tone ONLY as the
+// The main deck (src/data/cards.js, see ALL_CARDS) stores tone ONLY as the
 // diacritic on the romanized `ph` field (per CLAUDE.md "Data conventions"):
 //
 //     a-grave = low   a-acute = high   a-circumflex = falling

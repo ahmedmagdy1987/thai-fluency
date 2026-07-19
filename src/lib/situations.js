@@ -184,9 +184,10 @@ export const SITUATION_CARD_COUNTS = Object.freeze(
 // ── Readiness gate (curriculum.md §4.3) ──────────────────────────────────────
 // A situation is 'ready' (surfaceable as the free "up next") ONLY when its
 // native reviewer has flipped its SITUATION_REVIEW_COMPLETE flag AND it owns
-// ≥ 8 APPROVED vocab cards + ≥ 1 APPROVED sentence card. Because nothing is
-// approved yet (reviewStatus.js: no card resolves to 'approved'; every situation
-// flag is false), this returns 'coming-soon' for ALL 16 situations today. It
+// ≥ 8 APPROVED vocab cards + ≥ 1 APPROVED sentence card. This returns
+// 'coming-soon' for ALL 16 situations today because every SITUATION_REVIEW_COMPLETE
+// flag is still false, so the function short-circuits BEFORE the approved-card
+// counts matter. (Approved cards do now exist — the flags are what gate this.) It
 // will flip to 'ready' only after a human native-speaker sign-off — never by
 // derivation. Order (§2) says WHERE a situation belongs; readiness says WHETHER
 // it can be surfaced yet.

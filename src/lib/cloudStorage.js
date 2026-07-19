@@ -108,10 +108,17 @@ export async function uploadStats(userId, stats) {
   // cards_seen / cards_mastered are denormalized aggregates — let the DB
   // hold them at their defaults; we can compute fresh values from
   // user_progress when needed.
-  const { error } = await supabase
+  // Wave 12: return the SERVER-written updated_at of the row we just wrote. It is
+  // set by the `set_user_stats_updated_at` trigger (supabase/schema.sql:235-238),
+  // never by us, and it is what lets the next merge tell a stale cloud row from a
+  // fresh one (lib/syncWatermark.js + progressMerge.isCloudStatsStale).
+  const { data, error } = await supabase
     .from('user_stats')
-    .upsert(row, { onConflict: 'user_id' });
+    .upsert(row, { onConflict: 'user_id' })
+    .select('updated_at')
+    .maybeSingle();
   if (error) throw error;
+  return (data && data.updated_at) || null;
 }
 
 export async function downloadStats(userId) {
@@ -158,6 +165,13 @@ export async function downloadStats(userId) {
     hearts: Number.isFinite(data.hearts) ? data.hearts : 5,
     gems: Number.isFinite(data.gems) ? data.gems : 0,
     heartsUpdatedAt: data.hearts_updated_at || null,
+    // Wave 12 — TRANSPORT METADATA, not user state. The server-written row
+    // timestamp (schema.sql:84, maintained by the set_user_stats_updated_at
+    // trigger). mergeStats reads it to decide whether this row can possibly hold
+    // the user's latest actions, and deletes it from the merged patch so it never
+    // lands in the stats blob. A client cannot forge it: the trigger overwrites
+    // whatever value is sent.
+    cloudUpdatedAt: data.updated_at || null,
   };
 }
 

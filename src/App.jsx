@@ -5,7 +5,7 @@ import { CARDS } from './data/cards.js';
 import { ACHIEVEMENTS, XP_REWARDS, DEFAULT_DAILY_GOAL } from './data/gamification.js';
 
 import { reviewCard, getStats, DAY_MS } from './lib/srs.js';
-import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay, saveSuperIntent, loadSuperIntent, clearSuperIntent, loadTtsHintDismissed, saveTtsHintDismissed } from './lib/storage.js';
+import { loadState, saveState, clearState, loadRushGuard, saveRushGuard, loadReviewXpDay, saveReviewXpDay, saveSuperIntent, loadSuperIntent, clearSuperIntent, loadTtsHintDismissed, saveTtsHintDismissed, saveSuperCelebrationPending, loadSuperCelebrationPending, clearSuperCelebrationPending } from './lib/storage.js';
 import { DEFAULT_VOICE, DEFAULT_VIEW_MODE, DEFAULT_CARD_DIRECTION } from './lib/voice.js';
 import { DEFAULT_AUDIO_RATE, BEGINNER_AUDIO_RATE, setPreferredVoiceGender, onNoThaiVoice } from './lib/audio.js';
 import { getStageState, getMissionState, checkAchievements } from './lib/state.js';
@@ -77,6 +77,7 @@ import {
   updateProfile,
 } from './lib/cloudStorage.js';
 import { mergeProgress, mergeStats, mergeCloudSettings } from './lib/progressMerge.js';
+import { markStatsDirty, markStatsSynced, recordMergedCloudUpdatedAt, clearSyncWatermark, syncWatermarkFor } from './lib/syncWatermark.js';
 
 import AppShell from './components/AppShell.jsx';
 import LearnPath from './components/LearnPath.jsx';
@@ -118,6 +119,12 @@ import FirstLessonFlow from './components/FirstLessonFlow.jsx';
 import SuperUpgradePrompt from './components/SuperUpgradePrompt.jsx';
 import DatingSection from './components/DatingSection.jsx';
 import { getMiniUnit, getMiniUnitsForStage, MINI_UNITS, STAGE_1_MINI_UNIT_PILOT } from './data/miniUnits.js';
+// The ONE definition of what a stage path contains and when it is complete.
+// Never recompute stage-path completion locally — see lib/stagePath.js.
+import { getStagePathSteps } from './lib/stagePath.js';
+// The ONE full-screen surface precedence policy. Never hand-write `&& !other`
+// exclusion chains — add a row to the registry instead.
+import { resolveActiveSurface } from './lib/surfaceRegistry.js';
 import { initNativeUi } from './lib/native.js';
 
 // First-run coach-mark tutorial steps. Each targets a real [data-tutorial=...]
@@ -970,6 +977,9 @@ export default function TukTalkThaiApp() {
     // Server-of-truth: this device is no longer authorized. Wipe local cache
     // so the next session starts clean from the cloud (or from a fresh demo).
     await clearState();
+    // The sync watermark describes THIS device's relationship to THIS user's
+    // cloud row — it must never survive into another identity's session.
+    clearSyncWatermark();
     try {
       localStorage.removeItem('tuk-talk-thai-demo-mode');
       localStorage.removeItem('tuk-talk-thai-demo-idx');
@@ -1046,8 +1056,14 @@ export default function TukTalkThaiApp() {
           // Neither step grants a reward or replays XP. Entitlement (`ent`) is
           // applied last and is the ONLY source of tier/Super. See lib/progressMerge.js.
           setProgress(p => mergeProgress(p, safeCloudProgress));
+          // Wave 12 root cause 1: hand the merge this device's sync watermark so
+          // it can tell a STALE cloud row (one that cannot contain our unsynced
+          // writes) from a genuinely newer one. Without this the merge had no
+          // concept of which side was newer and a stale row silently destroyed
+          // completed purchases. See lib/progressMerge.isCloudStatsStale.
+          const syncMark = syncWatermarkFor(session.user.id);
           setStats(s => {
-            const merged = mergeStats(s, cloudStatsData || {});
+            const merged = mergeStats(s, cloudStatsData || {}, syncMark);
             return migrateStats({
               ...s,
               ...merged,
@@ -1058,6 +1074,10 @@ export default function TukTalkThaiApp() {
               unlockedAchievements: [...new Set([...(merged.unlockedAchievements || []), ...(cloudAchs || [])])],
             });
           });
+          // Remember the row version we just merged, so the NEXT merge can tell
+          // whether the cloud has advanced since (another device writing) or is
+          // still the same row we already consumed (stale for us).
+          recordMergedCloudUpdatedAt(session.user.id, (cloudStatsData || {}).cloudUpdatedAt);
           setCloudReady(true);
           setCloudInitOk(true);   // local↔cloud merge succeeded → local now reflects cloud, safe to upload
         }
@@ -1095,7 +1115,12 @@ export default function TukTalkThaiApp() {
     syncSchedulerRef.current.schedule(async () => {
       try {
         await uploadProgress(userId, progress);
-        await uploadStats(userId, stats);
+        // uploadStats returns the SERVER-written updated_at of the row it wrote.
+        // Recording it here is the acknowledgement half of the staleness scheme:
+        // local is now clean, and the next merge knows exactly which row version
+        // already contains our writes.
+        const cloudUpdatedAt = await uploadStats(userId, stats);
+        markStatsSynced(userId, cloudUpdatedAt);
         const achs = stats.unlockedAchievements || [];
         if (achs.length > 0) await uploadAchievements(userId, achs);
       } catch (e) {
@@ -1175,8 +1200,14 @@ export default function TukTalkThaiApp() {
   }, [session, loaded, cloudReady, cloudInitOk, stats.firstLessonCompleted]);
 
   useEffect(() => {
-    if (loaded && !demoMode) saveState({ progress, stats });
-  }, [progress, stats, loaded, demoMode]);
+    if (loaded && !demoMode) {
+      saveState({ progress, stats });
+      // Wave 12: every local write marks the device dirty. Cleared only by a
+      // SUCCESSFUL uploadStats. This is what tells the next merge that a cloud
+      // row which has not advanced cannot possibly hold these writes.
+      if (session?.user?.id) markStatsDirty(session.user.id);
+    }
+  }, [progress, stats, loaded, demoMode, session]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -1240,6 +1271,48 @@ export default function TukTalkThaiApp() {
   // entitlement with bounded retries (~30s); on success we celebrate, on
   // timeout we show a calm "taking longer than usual" note (the payment has
   // already succeeded — the next full load re-reads the entitlement anyway).
+  // ── WAVE 12: the Super celebration is bound to the ENTITLEMENT, not the poll ──
+  // Previously the celebration lived inside the post-checkout poll's success
+  // branch, so it could only fire if the webhook landed inside a ~30s window.
+  // Slower activation (the owner's took ~3 minutes) switched Super on silently
+  // through the cloud-init merge with no acknowledgement at all.
+  //
+  // Now a flag is set at checkout return and this effect watches the tier itself.
+  // Whichever path applies it — the poll, the cloud-init merge, a manual refresh,
+  // or a completely new session tomorrow — the payer is congratulated exactly
+  // once, then the flag is cleared. Navigating away no longer costs the moment.
+  useEffect(() => {
+    if (!loaded || demoMode) return;
+    if (!superActive) return;                       // entitlement has not landed yet
+    if (!loadSuperCelebrationPending()) return;     // nothing owed
+    clearSuperCelebrationPending();                 // exactly once
+    trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
+    // Intent-aware return: if the payer started checkout from a specific surface
+    // (e.g. the Dating lock), send them THERE on "continue" instead of dropping
+    // everyone on Learn. Dating's own 18+ gate handles the age confirmation, so
+    // this is never a dead end. No intent → stay on Learn.
+    const returnIntent = loadSuperIntent();
+    clearSuperIntent();
+    const returnTab = SUPER_INTENT_TABS.has(returnIntent) ? returnIntent : null;
+    setSuperActivation(null);   // the wait is over; the celebration replaces it
+    setCelebration({
+      eyebrow: 'Welcome to Super',
+      title: 'You’re now Super! 🎉',
+      // Name the LIVE benefits so the payer knows what they just unlocked
+      // (both are enforced today: Dating gate + effectiveHearts → ∞).
+      subtitle: 'Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
+      primaryLabel: returnTab ? SUPER_INTENT_LABEL[returnTab] : 'Let’s go',
+      onPrimary: () => { setCelebration(null); if (returnTab) handleSetTab(returnTab); },
+    });
+    try {
+      if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        new Notification('Welcome to Super! 🎉', {
+          body: 'Your Super plan is active — Dating & Real Talk and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
+        });
+      }
+    } catch { /* ignore */ }
+  }, [superActive, loaded, demoMode, handleSetTab]);
+
   // Client-side polling only; the webhook remains the sole entitlement writer.
   // Runs at most once per load; needs a confirmed session to read the
   // (RLS-guarded) subscriptions row.
@@ -1257,6 +1330,10 @@ export default function TukTalkThaiApp() {
     // sets cloudReady, so the poll can never deadlock behind it.
     if (!cloudReady) return undefined;
     superSuccessHandled.current = true;
+    // Mark the celebration owed BEFORE polling. From here on it is bound to the
+    // entitlement landing, so however long the webhook takes — and whichever path
+    // finally applies the tier — the payer gets their moment exactly once.
+    saveSuperCelebrationPending();
     let cancelled = false;
 
     const stripParams = () => {
@@ -1268,14 +1345,29 @@ export default function TukTalkThaiApp() {
       } catch { /* ignore */ }
     };
 
-    const SUPER_POLL_INTERVAL_MS = 2000;
-    const SUPER_POLL_MAX_ATTEMPTS = 15; // ≈30s including request time
+    // WAVE 12 — the wait is now matched to how long activation ACTUALLY takes.
+    // The old window was 15 x 2s ≈ 30s; the owner's webhook landed at ~3 minutes,
+    // so the poll gave up, showed a terminal "slow" note, and handed activation to
+    // the cloud-init merge — which had no celebration (and, before root cause 1,
+    // destroyed his gems on the way). Now:
+    //   • polling continues for ~6 minutes with a gentle backoff,
+    //   • the UI NEVER shows a plain FREE plan while a payment is settling,
+    //   • and the celebration is bound to the entitlement landing (see the
+    //     pending-celebration effect below), not to this loop finishing — so it
+    //     fires even if the user navigates away or the tab is closed and reopened.
+    const SUPER_POLL_STEPS_MS = [
+      1000, 1000, 2000, 2000, 2000, 3000, 3000, 5000, 5000, 5000,
+      10000, 10000, 15000, 15000, 20000, 20000, 30000, 30000, 30000, 30000,
+      30000, 30000, 30000, 30000, 30000, 30000,
+    ]; // ≈ 6 minutes total
+    const SLOW_AFTER_MS = 30000;   // when to soften the copy to "taking longer"
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     (async () => {
+      const startedAt = Date.now();
       let becameSuper = false;
       setSuperActivation({ status: 'pending' });
-      for (let attempt = 0; attempt < SUPER_POLL_MAX_ATTEMPTS && !cancelled; attempt++) {
+      for (let attempt = 0; attempt <= SUPER_POLL_STEPS_MS.length && !cancelled; attempt++) {
         try {
           const ent = await downloadEntitlement(session.user.id);
           if (ent && ent.tier === 'super') {
@@ -1289,37 +1381,22 @@ export default function TukTalkThaiApp() {
           // Transient read failure — keep polling; the webhook may still land.
           console.warn('[App] entitlement poll after checkout failed', e);
         }
-        if (attempt < SUPER_POLL_MAX_ATTEMPTS - 1) await sleep(SUPER_POLL_INTERVAL_MS);
+        if (cancelled) return;
+        // Soften the copy once we pass the "usually instant" window, but KEEP
+        // POLLING — the payment has succeeded, so the honest state is "still
+        // activating", never "free".
+        if (Date.now() - startedAt > SLOW_AFTER_MS) setSuperActivation({ status: 'slow' });
+        const wait = SUPER_POLL_STEPS_MS[attempt];
+        if (wait === undefined) break;
+        await sleep(wait);
       }
       if (cancelled) return;
-      setSuperActivation(becameSuper ? null : { status: 'slow' });
+      // Success is announced by the pending-celebration effect (bound to the
+      // entitlement, not to this loop). Here we only resolve the status strip.
+      setSuperActivation(becameSuper ? null : { status: 'timeout' });
       if (becameSuper) {
-        // Funnel: server-confirmed Super after the checkout return. Fired once
-        // (the handler is guarded by superSuccessHandled). Safe/non-PII.
+        // Funnel: server-confirmed Super after the checkout return. Safe/non-PII.
         trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
-        // Intent-aware return: if the payer started checkout from a specific
-        // surface (e.g. the Dating lock), send them THERE on "continue" instead
-        // of dropping everyone on Learn. Dating's own 18+ gate handles the age
-        // confirmation, so this is never a dead end. No intent → stay on Learn.
-        const returnIntent = loadSuperIntent();
-        clearSuperIntent();
-        const returnTab = SUPER_INTENT_TABS.has(returnIntent) ? returnIntent : null;
-        setCelebration({
-          eyebrow: 'Welcome to Super',
-          title: 'You’re now Super! 🎉',
-          // Name the LIVE benefits so the payer knows what they just unlocked
-          // (both are enforced today: Dating gate + effectiveHearts → ∞).
-          subtitle: 'Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
-          primaryLabel: returnTab ? SUPER_INTENT_LABEL[returnTab] : 'Let’s go',
-          onPrimary: () => { setCelebration(null); if (returnTab) handleSetTab(returnTab); },
-        });
-        try {
-          if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-            new Notification('Welcome to Super! 🎉', {
-              body: 'Your Super plan is active — Dating & Real Talk and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!',
-            });
-          }
-        } catch { /* ignore */ }
       }
       stripParams();
     })();
@@ -2323,30 +2400,58 @@ export default function TukTalkThaiApp() {
       const courseNowComplete = getCourseCompletion(MINI_UNITS, updates.completedMiniUnits).courseComplete;
       if (!courseNowComplete) {
         // Completing the stage's LAST guided unit reads as a bigger milestone
-        // than a normal mission recap. Derived purely from existing progress
-        // state; any lookup miss falls back to the standard screen.
+        // than a normal mission recap.
+        //
+        // WAVE 12, ROOT CAUSE 2 — this used to recompute "the stage path is
+        // complete" locally, from the LESSON list only:
+        //     stageUnits.every(u => updates.completedMiniUnits.includes(u.unitId))
+        // That is a second, independent definition of a fact lib/stagePath.js
+        // already owns, and it disagreed with it: with every lesson done but
+        // stage cards outstanding, this screen announced "Stage N Path Complete"
+        // while the Learn trail simultaneously rendered "… words to go" from
+        // getStagePathSteps. The gate (state.js getStageState) was never wrong —
+        // the duplicate derivation was. Now there is one source of truth, so the
+        // two surfaces cannot contradict each other again.
         const completedUnit = getMiniUnit(progressUpdate.unitId);
-        const stageUnits = completedUnit ? getMiniUnitsForStage(completedUnit.stageId) : [];
-        const stagePathNowComplete = stageUnits.length > 0 &&
-          stageUnits.every(u => updates.completedMiniUnits.includes(u.unitId));
+        const nextStats = { ...stats, ...updates };
+        const stagePathAfter = completedUnit
+          ? getStagePathSteps(completedUnit.stageId, { stageState, stats: nextStats })
+          : null;
+        const stagePathNowComplete = !!stagePathAfter && stagePathAfter.allSatisfied;
+        // Lessons done but cards outstanding is a real, nameable milestone — just
+        // not "path complete". Say exactly what was finished, and what remains.
+        const lessonsAllDone = !!stagePathAfter
+          && stagePathAfter.lessonSteps.length > 0
+          && stagePathAfter.lessonSteps.every(s => s.satisfied);
+        const wordsRemaining = stagePathAfter?.wordsStep?.remaining || 0;
         setRewardScreen({
           id: `mini-unit-${progressUpdate.unitId}-${Date.now()}`,
+          // Three honest states, all read from the ONE canonical path model:
+          //   path complete  → every visible step satisfied (lessons AND words)
+          //   lessons done   → lessons finished, stage cards still outstanding
+          //   lesson done    → an ordinary lesson in the middle of the path
           title: stagePathNowComplete
             ? `Stage ${completedUnit.stageId} Path Complete`
-            : 'Lesson Complete',
+            : lessonsAllDone
+              ? `Stage ${completedUnit.stageId} Lessons Complete`
+              : 'Lesson Complete',
           subtitle: stagePathNowComplete
-            ? `You finished every guided lesson in Stage ${completedUnit.stageId}. That is a real milestone.`
-            : 'You finished a guided lesson and checked your recall.',
+            ? `You finished every step in Stage ${completedUnit.stageId}. That is a real milestone.`
+            : lessonsAllDone
+              ? `Every guided lesson in Stage ${completedUnit.stageId} is done. ${wordsRemaining} more ${wordsRemaining === 1 ? 'word' : 'words'} to finish the stage.`
+              : 'You finished a guided lesson and checked your recall.',
           xpEarned: MINI_UNIT_REWARD_XP,
           streak: stats.streak || 0,
-          nextStep: stagePathNowComplete ? 'Keep going in Learn' : 'Review or Challenge',
+          nextStep: stagePathNowComplete
+            ? 'Keep going in Learn'
+            : lessonsAllDone ? 'Learn the remaining words' : 'Review or Challenge',
           characterId: resolveCoachIdForStage(completedUnit?.stageId || 1),
           superPromptReason: 'mini-unit',
         });
       }
     }
     updateSettings(updates);
-  }, [grantXp, stats.completedMiniUnits, stats.builderRewardedUnits, stats.streak, updateSettings]);
+  }, [grantXp, stats, stageState, updateSettings]);
 
   const handleExitMiniUnit = useCallback(() => {
     setActiveMiniUnitId(null);
@@ -2703,6 +2808,29 @@ export default function TukTalkThaiApp() {
   // user's saved speed is faster. A slower saved speed is respected.
   const beginnerAudioRate = Math.min(audioRate, BEGINNER_AUDIO_RATE);
   const activeMiniUnit = activeMiniUnitId ? getMiniUnit(activeMiniUnitId) : null;
+
+  // ── WAVE 12, ROOT CAUSE 3: the ONE exclusion decision ──────────────────────
+  // Each atom below contributes only "do I WANT the screen?" (its own eligibility
+  // — never "is some other surface up?"). lib/surfaceRegistry.js turns that into
+  // exactly one winner, so two full-screen surfaces cannot stack by construction.
+  // A loser keeps its state and renders as soon as it wins: queued, not dropped.
+  const tutorialWants = tab === 'learn' && !publicPage && loaded && !demoMode
+    && !activeMiniUnit && !stats.tutorialSeen && !showSettings && !showProfile
+    && !showFirstLessonUnlock;
+  const surfacesPresent = {
+    stage1Celebration: showStage1Celebration,
+    stageCinematic: stageCinematic && getStageCinematic(stageCinematic.stageId),
+    celebration,
+    rewardScreen,
+    achievementToast,
+    saveProgressAsk: saveProgressAsk && anonymousLearner,
+    streakRecovery,
+    upgradePrompt,
+    guidedTutorial: tutorialWants,
+    superActivation,
+    questToasts: questToasts.length > 0,
+  };
+  const activeSurface = resolveActiveSurface(surfacesPresent);
 
   // A signed-in, confirmed user viewing /plans gets it rendered INSIDE the app
   // shell (sidebar + header + bottom nav) so upgrading feels native — not like
@@ -3081,35 +3209,32 @@ export default function TukTalkThaiApp() {
           onClose={() => setQuestToasts(q => q.slice(1))}
         />
       )}
-      {/* Wave 10: full-screen reward-family surfaces are mutually exclusive at
-          render time — Stage-1 celebration > celebration > reward screen (the
-          priority the old z-index accident produced, now made structural).
-          The lower-priority surface keeps its state and appears when the one
-          above it is dismissed; nothing is dropped. */}
-      {celebration && !showStage1Celebration && (
+      {/* WAVE 12, ROOT CAUSE 3 — every full-screen surface below renders on
+          `activeSurface === '<id>'` and NOTHING else. The precedence lives in
+          lib/surfaceRegistry.js as one ordered list; there are no pairwise
+          `&& !otherThing` chains left to forget. A suppressed surface keeps its
+          state and appears the moment the one above it closes — queued, never
+          dropped. Adding a surface = adding a row to the registry. */}
+      {activeSurface === 'celebration' && (
         <CelebrationOverlay {...celebration} />
       )}
       {superActivation && (
         <SuperActivationNotice
           status={superActivation.status}
           onDismiss={() => setSuperActivation(null)}
+          onRefresh={handleEntitlementRefresh}
         />
       )}
-      {/* !rewardScreen matches the sibling modals below (SaveProgressAsk,
-          StreakRecoveryCard): a Goal-Crusher achievement can fire the same tick
-          as the mission payoff (60 XP clears the 50-XP daily goal), and both use
-          the same full-screen .reward-screen-backdrop — without this guard two
-          backdrops stack. The achievement waits for the reward screen to close. */}
-      {!celebration && !rewardScreen && achievementToast && (
+      {activeSurface === 'achievementToast' && (
         <AchievementUnlockedModal achievement={achievementToast} onContinue={handleAchievementToastClose} />
       )}
-      {showStage1Celebration && (
+      {activeSurface === 'stage1Celebration' && (
         <Stage1CompleteCelebration onClose={() => setShowStage1Celebration(false)} />
       )}
       {showSettings && (
         <SettingsModal stats={stats} updateSettings={updateSettings} onClose={handleCloseSettings} onOpenPublicPage={handleNavigatePath} onEntitlementRefresh={handleEntitlementRefresh} onReplayTutorial={() => { updateSettings({ tutorialSeen: false }); handleCloseSettings(); handleSetTab('learn'); }} />
       )}
-      {rewardScreen && !showStage1Celebration && !celebration && (
+      {activeSurface === 'rewardScreen' && (
         <MissionCompleteRewardScreen
           {...rewardScreen}
           onContinue={handleRewardContinue}
@@ -3120,7 +3245,7 @@ export default function TukTalkThaiApp() {
           anonymousLearner re-check is what makes this self-healing: the instant
           a session exists (they signed up, or signed in in another tab) the ask
           disappears on its own rather than hanging over the app. */}
-      {saveProgressAsk && anonymousLearner && !rewardScreen && (
+      {activeSurface === 'saveProgressAsk' && (
         <SaveProgressAsk
           xpEarned={saveProgressAsk.xpEarned}
           streak={saveProgressAsk.streak}
@@ -3128,7 +3253,7 @@ export default function TukTalkThaiApp() {
           onContinueWithout={handleSaveProgressDecline}
         />
       )}
-      {streakRecovery && !rewardScreen && (
+      {activeSurface === 'streakRecovery' && (
         <StreakRecoveryCard
           bestStreak={streakRecovery.bestStreak}
           gems={stats.gems || 0}
@@ -3136,7 +3261,7 @@ export default function TukTalkThaiApp() {
           onBuyFreeze={() => { handleBuyFreeze(); setStreakRecovery(null); }}
         />
       )}
-      {upgradePrompt && (
+      {activeSurface === 'upgradePrompt' && (
         <SuperUpgradePrompt
           reason={upgradePrompt.reason}
           onClose={() => {
@@ -3147,7 +3272,7 @@ export default function TukTalkThaiApp() {
         />
       )}
 
-      {stageCinematic && (() => {
+      {activeSurface === 'stageCinematic' && (() => {
         const clip = getStageCinematic(stageCinematic.stageId);
         if (!clip) return null;
         return (
@@ -3165,15 +3290,13 @@ export default function TukTalkThaiApp() {
         );
       })()}
 
-      {/* !saveProgressAsk joins the overlay exclusions for the same reason as
-          !rewardScreen: the tutorial's dim layer is z-index 1200 with
-          pointer-events:auto, while the ask (like the reward screen) sits on the
-          260 backdrop — so without this the tutorial would paint straight over
-          the conversion ask and swallow BOTH of its buttons, trapping the
-          anonymous learner on a screen they cannot answer. Verified in Chromium. */}
-      {tab === 'learn' && !publicPage && loaded && !demoMode && !activeMiniUnit && !stats.tutorialSeen
-        && !celebration && !rewardScreen && !saveProgressAsk && !showSettings && !showProfile
-        && !showStage1Celebration && !upgradePrompt && !achievementToast && !showFirstLessonUnlock && (
+      {/* The tutorial's own eligibility (right tab, loaded, not mid-lesson, not
+          yet seen) is folded into `tutorialWants` above; the registry then decides
+          whether it may actually own the screen. Its dim layer is z-index 1200
+          with pointer-events:auto, so co-rendering with any 260-backdrop modal
+          would swallow that modal's buttons — the registry now makes that
+          impossible rather than relying on an eleven-term negation chain. */}
+      {activeSurface === 'guidedTutorial' && (
         <GuidedTutorial
           steps={TUTORIAL_STEPS}
           onFinish={() => updateSettings({ tutorialSeen: true })}

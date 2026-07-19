@@ -8,14 +8,14 @@ code. Where this doc and the FOUNDATION disagree, the FOUNDATION wins.
 **What this doc adds:** the five specs each say *what* to build and *why it is legal*; none
 says *in what order*. This orders everything by **dependency** first, then by
 **impact-per-effort**, and for each pass states: what it delivers, what it depends on (the
-honest prerequisites), what could BREAK (which of the 21 validators / live systems it
+honest prerequisites), what could BREAK (which validators / live systems it
 touches), and what needs the OWNER.
 
-**Ground truth reused (FOUNDATION §0):** 4,791 cards (`w:3267 g:28 p:247 s:1249`; stages
+**Ground truth reused (FOUNDATION §0):** `ALL_CARDS` cards (counts move — read the export; stages
 `150/269/423/575/701/804/877/992`); **96** `MINI_UNITS` (83 with a `sentenceBuilder`);
 **95** `needsReview:true` cards (no `reviewStatus` field on the main deck); **60** dating
 phrases all `reviewStatus:'pending'` across **10** populated categories; **65**
-`DATING_QUESTIONS`; `DATING_REVIEW_COMPLETE = false`; **21 validators** (18 `check-*.mjs` +
+`DATING_QUESTIONS`; `DATING_REVIEW_COMPLETE` (now true); **the auto-discovered validator suite** (`check-*.mjs` +
 3 `verify-*.mjs`), run by the external harness, most using a **fixed file allowlist**.
 
 **The two named critical-path prerequisites (from the brief), both located in Pass 2:**
@@ -103,11 +103,11 @@ by any validator and must not edit a single existing card byte.
   web → `!!(window.SpeechRecognition || window.webkitSpeechRecognition)`. Zero deps.
 - **`lib/situations.js` spine** (`curriculum.md §4.4`): the `SITUATIONS` catalog (16 IDs,
   `base`, `cats`, `content` tier — all verbatim from FOUNDATION §2), an empty
-  `SITUATION_TAGS` side-map keyed by `cardId` (so the 4,791 cards stay byte-identical), and
+  `SITUATION_TAGS` side-map keyed by `cardId` (so the cards stay byte-identical), and
   `situationReadiness(sitId)`.
 - **`toneFromPh(ph)` parser** (`curriculum.md §8`, FOUNDATION §5): pure, zero-dep
   `à→tone-low á→tone-high â→tone-falling ǎ→tone-rising`, unmarked→`tone-mid`. Lets later
-  passes attach a leak-free tone drill to any of the 4,791 cards (audio from `card.thai`, a
+  passes attach a leak-free tone drill to any card (audio from `card.thai`, a
   separate source from the written answer).
 
 **Depends on:** nothing.

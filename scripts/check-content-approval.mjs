@@ -1,8 +1,10 @@
 // Validation for the manifest-driven content-approval routine (src/data/cards.js).
 //
-// WHY THIS EXISTS: nothing is approved today (the sign-off manifest is empty), so
-// every live assertion about approval is vacuously true and the approval routine
-// itself is never exercised by the real deck. It would ship untested, and the
+// WHY THIS EXISTS: the real manifest exercises only the paths its own sign-offs
+// reach. This drives the approval routine with SYNTHETIC inputs so the branches
+// the live deck never hits (ineligible sign-offs, empty scopes, malformed entries)
+// are still covered. The real deck DOES approve cards today — see
+// check-situation-review.mjs for the live counts. It would ship untested, and the
 // first time a human signs something off is the worst possible time to discover
 // the intersection was wired backwards. So this script DRIVES the pure functions
 // with SYNTHETIC card objects — never mutating the deck — and proves:

@@ -196,6 +196,46 @@ export function loadSuperIntent() {
   return null;
 }
 
+// ── Pending Super celebration (Wave 12) ─────────────────────────────────────
+// The "you're now Super" celebration used to fire ONLY on the post-checkout poll
+// succeeding within ~30s. A webhook slower than that (the owner's took ~3 min)
+// meant Super switched on silently, via the cloud-init merge, with no celebration
+// at all — the payer got nothing to mark the purchase.
+//
+// This flag is set the moment Stripe returns and is cleared only when the
+// celebration has actually been SHOWN. It is therefore bound to the ENTITLEMENT
+// LANDING, not to the poll: whenever tier flips to super — this tick, three
+// minutes later, after navigating away, or on the next launch — the celebration
+// fires exactly once.
+const SUPER_CELEBRATION_KEY = 'thai-fluency-super-celebration-pending-v1';
+
+export function saveSuperCelebrationPending() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(SUPER_CELEBRATION_KEY, JSON.stringify({ at: Date.now() }));
+    }
+  } catch { /* ignore */ }
+}
+
+export function loadSuperCelebrationPending() {
+  try {
+    if (typeof localStorage === 'undefined') return false;
+    const raw = localStorage.getItem(SUPER_CELEBRATION_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    // Expire after 7 days so an abandoned checkout can never celebrate much later.
+    if (!parsed || typeof parsed.at !== 'number') return false;
+    if (Date.now() - parsed.at > 7 * 24 * 60 * 60 * 1000) return false;
+    return true;
+  } catch { return false; }
+}
+
+export function clearSuperCelebrationPending() {
+  try {
+    if (typeof localStorage !== 'undefined') localStorage.removeItem(SUPER_CELEBRATION_KEY);
+  } catch { /* ignore */ }
+}
+
 export function clearSuperIntent() {
   try { if (typeof localStorage !== 'undefined') localStorage.removeItem(SUPER_INTENT_KEY); } catch (e) { /* silent */ }
 }

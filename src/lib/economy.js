@@ -155,18 +155,68 @@ export function grantHeart(stats, now = Date.now()) {
   };
 }
 
+// ── The banked-freeze ceiling (Wave 12) ─────────────────────────────────────
+// WHY A CAP EXISTS AT ALL: the freeze is the app's loss-aversion mechanic AND,
+// per engagement.md §5.3, "the honest bridge between the free economy and Super".
+// Both roles die at scale. The owner reached 31 banked freezes in one sitting
+// (31 unconfirmed clicks, 930 gems) — at that point the streak can never break,
+// so there is no loss to be averse to, and Super's planned perk (a MONTHLY
+// streak-freeze, engagement.md:184 / monetization.md §3.1) is worth nothing to
+// someone holding a decade of protection.
+//
+// WHY 5:
+//   • The design's own ceiling for banked freezes is 2 — the free weekly
+//     auto-grant stops there (monetization.md:101, "free floor — do not remove").
+//     A purchase ceiling must sit ABOVE that or the gem sink is pointless, and
+//     monetization.md:102 says the sink "must remain".
+//   • 5 is 2.5x the free floor: buying is meaningfully better than waiting, which
+//     is what makes it a real conversion surface rather than a formality.
+//   • A freeze covers a gap of <= 2 days (stats.js computeStreak), so 5 banked is
+//     a holiday's worth of protection — generous, but not immunity.
+//   • It matches HEART_MAX, the app's existing small-ceiling idiom.
+//
+// The free auto-grant's own ceiling (2) is deliberately UNCHANGED here — raising
+// it would hand free users more protection and shrink the very sink this cap is
+// protecting. See App.jsx's grant effect.
+export const MAX_BANKED_FREEZES = 5;
+
 // Buy ONE streak freeze with gems. Pure: returns a stats PATCH, or null when the
-// user can't afford it. This is the SECOND gem sink (besides heart refills) — it
-// is what keeps gems from being a circular currency that only ever buys hearts
-// (E4): a Super user with unlimited hearts still has a real use for earned gems.
+// user can't afford it OR is already at the banked ceiling. This is the SECOND
+// gem sink (besides heart refills) — it is what keeps gems from being a circular
+// currency that only ever buys hearts (E4): a Super user with unlimited hearts
+// still has a real use for earned gems.
+//
+// THE CAP IS ENFORCED HERE, in the purchase path — not in the Shop's disabled
+// attribute. A UI-only cap is not a cap: every other entry point (the streak
+// recovery card, a future surface, a replayed click) would bypass it.
 export function buyStreakFreezeWithGems(stats) {
   const gems = rawGems(stats);
-  if (gems < FREEZE_COST_GEMS) return null; // can't afford
-  const freezes = Number.isFinite(stats?.streakFreezes) ? Math.max(0, stats.streakFreezes) : 0;
+  const freezes = bankedFreezes(stats);
+  if (freezes >= MAX_BANKED_FREEZES) return null; // already fully stocked
+  if (gems < FREEZE_COST_GEMS) return null;       // can't afford
   return {
     gems: gems - FREEZE_COST_GEMS,
     streakFreezes: freezes + 1,
   };
+}
+
+// Null-safe reader for the banked-freeze count.
+export function bankedFreezes(stats) {
+  return Number.isFinite(stats?.streakFreezes) ? Math.max(0, stats.streakFreezes) : 0;
+}
+
+// Can the user buy a freeze right now, and if not, WHY. The Shop renders the
+// reason verbatim so the button is never a silent no-op.
+export function freezePurchaseState(stats) {
+  const gems = rawGems(stats);
+  const freezes = bankedFreezes(stats);
+  if (freezes >= MAX_BANKED_FREEZES) {
+    return { canBuy: false, atCap: true, reason: `You're fully stocked — ${MAX_BANKED_FREEZES} freezes is the maximum you can bank. Use one and you can buy another.` };
+  }
+  if (gems < FREEZE_COST_GEMS) {
+    return { canBuy: false, atCap: false, reason: `You need ${FREEZE_COST_GEMS} gems. You have ${gems}.` };
+  }
+  return { canBuy: true, atCap: false, reason: `Spend ${FREEZE_COST_GEMS} gems to bank a streak freeze — it saves your streak on a missed day.` };
 }
 
 // Award gems. Pure: returns a stats PATCH ({ gems }). Non-positive amounts are

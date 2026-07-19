@@ -4,7 +4,7 @@
 
 **Owns:** foundation §1 (exercise-type catalog), §5 drill mechanics, the Web-Speech gate + paid-scoring upgrade seam.
 
-**Scope discipline:** Zero application code. Interface signatures and data-shape sketches only. Every "buildable-now" means "fits the existing stack + 21 validators," not "already built." Data shapes below are documentation sketches — the app is **not** TypeScript (CLAUDE.md); `interface`/`type` blocks are for precision only and would ship as plain JS object literals.
+**Scope discipline:** Zero application code. Interface signatures and data-shape sketches only. Every "buildable-now" means "fits the existing stack + the validator suite," not "already built." Data shapes below are documentation sketches — the app is **not** TypeScript (CLAUDE.md); `interface`/`type` blocks are for precision only and would ship as plain JS object literals.
 
 ---
 
@@ -155,7 +155,7 @@ Every new artifact any of these exercises consumes (situation cards, register va
              mean:str, thai:str }
   ```
   Canonical tone IDs are `tone-mid`, `tone-low`, `tone-falling`, `tone-high`, `tone-rising` (foundation §5). The existing data uses the bare values `mid/low/falling/high/rising` (matching `TONES` in `reference.js:3-9` and the grading `tone === q.tone`, `TonesQuizSection.jsx:20-23,50`); a `tone-` prefix is the **display/analytics ID**, mapped 1:1 to the stored value — do not rename the stored field (would break `check-quiz-shuffle.mjs:50`).
-  To attach a tone drill to any of the 4,791 main-deck cards (which store tone only as `ph` diacritics), derive the tone with a **diacritic→tone parser** (pure JS, zero deps): `à→low á→high â→falling ǎ→rising`, unmarked→`mid` (CLAUDE.md conventions; foundation §5). Audio still comes from `card.thai`, a **separate source from the written answer**, so the audio can never leak the answer.
+  To attach a tone drill to any main-deck card (they store tone only as `ph` diacritics), derive the tone with a **diacritic→tone parser** (pure JS, zero deps): `à→low á→high â→falling ǎ→rising`, unmarked→`mid` (CLAUDE.md conventions; foundation §5). Audio still comes from `card.thai`, a **separate source from the written answer**, so the audio can never leak the answer.
 - **UI behaviour — the REDESIGN that fixes the leak:** today the prompt prints `q.syl` (the romanized syllable *with its diacritic*), and the diacritic **is** the answer key — `TonesQuizSection.jsx:96` renders `{q.syl}` above the tone options. The redesign: during the question, **hide the written Thai diacritic AND the romanization**; the prompt is a **play button only** (`speakThai(q.thai)`, already wired at `TonesQuizSection.jsx:101-105`). `syl`/`thai`/`mean` reveal **only after answering** (they already reappear in the feedback block, lines 129-139). Preserve the protected copy string **"Ear training"** (`TonesQuizSection.jsx:41`; `check-pedagogy-regression`) and add/keep a **"Hidden until you answer"**-style placeholder for the suppressed prompt (that exact string is already protected via `datingQuiz.js:83`).
 - **Grading:** by tone value — keep `tone === q.tone` (`TonesQuizSection.jsx:20-23,50`), never index. Keep the two shuffle patterns the scanner asserts verbatim: `[...TONE_QUIZ_ITEMS].sort(() => Math.random() ...)` for questions (line 15) and `useMemo(() => {... Math.random() ...}, [idx])` for the five tone options (lines 80-84) — `check-quiz-shuffle.mjs:46-51` matches these by regex.
 - **Hearts:** **never.**

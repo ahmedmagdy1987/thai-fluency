@@ -24,11 +24,17 @@
 // which the trail renders verbatim, and lib/state.js, which owns the gate), so
 // this cannot drift from either the UI or the rule.
 
+import { readFileSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
 import { CARDS } from '../src/data/cards.js';
 import { STAGES } from '../src/data/taxonomy.js';
 import { MINI_UNITS, getMiniUnitsForStage } from '../src/data/miniUnits.js';
 import { getStageState } from '../src/lib/state.js';
 import { getStagePathSteps, STEP_KIND } from '../src/lib/stagePath.js';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 let failures = 0;
 const ok = (n) => console.log(`OK   ${n}`);
@@ -130,6 +136,104 @@ const renderableUnitIds = new Set(STAGES.flatMap((S) => getMiniUnitsForStage(S.i
 const orphanUnits = MINI_UNITS.filter((u) => !renderableUnitIds.has(u.unitId)).map((u) => u.unitId);
 assert('every mini-unit belongs to a stage the trail can render (Course Complete reachable)',
   orphanUnits.length === 0, `orphans: ${orphanUnits.join(',')}`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WAVE 12, ROOT CAUSE 2 — NO SECOND DEFINITION OF "THE STAGE PATH IS COMPLETE".
+//
+// Wave 11 made lib/stagePath.js canonical, but App.jsx kept its OWN derivation
+// for the reward screen — `stageUnits.every(u => completed.includes(u.unitId))`,
+// lessons only, words step ignored. So the reward screen announced "Stage N Path
+// Complete" in the same moment the trail rendered "… words to go". The gate was
+// right; the duplicate derivation lied.
+//
+// Two guards below: (A) simulate the REWARD SCREEN itself — the surface the old
+// validator never modelled — and (B) statically ban the duplicate-derivation
+// shape anywhere outside the canonical module.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── (A) Reward-screen simulation ────────────────────────────────────────────
+// Replays App.jsx handleMiniUnitProgressChange's decision for the owner's exact
+// state: every guided lesson of a stage done, stage cards still outstanding.
+for (const S of STAGES) {
+  const units = getMiniUnitsForStage(S.id);
+  if (units.length === 0) continue;
+  const cards = stageCards(S.id);
+  if (cards.length === 0) continue;
+
+  // All lessons complete, NO cards seen — the state that used to lie.
+  const statsLessonsOnly = { completedMiniUnits: units.map((u) => u.unitId) };
+  const stateLessonsOnly = getStageState(statsLessonsOnly, {});
+  const pathLessonsOnly = getStagePathSteps(S.id, { stageState: stateLessonsOnly, stats: statsLessonsOnly });
+
+  const lessonsAllDone = pathLessonsOnly.lessonSteps.length > 0
+    && pathLessonsOnly.lessonSteps.every((s) => s.satisfied);
+  assert(`stage ${S.id}: reward screen — all lessons ARE recognised as done`,
+    lessonsAllDone === true);
+  // THE REGRESSION: the reward screen's "path complete" flag is allSatisfied,
+  // so with cards outstanding it must be FALSE.
+  assert(`stage ${S.id}: reward screen does NOT claim "Path Complete" while words remain`,
+    pathLessonsOnly.allSatisfied === false,
+    `allSatisfied=${pathLessonsOnly.allSatisfied} wordsRemaining=${pathLessonsOnly.wordsStep?.remaining}`);
+  assert(`stage ${S.id}: reward screen can state how many words remain`,
+    (pathLessonsOnly.wordsStep?.remaining || 0) > 0);
+
+  // The reward screen and the trail must agree — they now read the same object.
+  const gateOpen = (stateLessonsOnly.stages.find((s) => s.id === S.id) || {}).complete === true;
+  assert(`stage ${S.id}: reward screen agrees with the unlock gate`,
+    pathLessonsOnly.allSatisfied === gateOpen,
+    `path=${pathLessonsOnly.allSatisfied} gate=${gateOpen}`);
+
+  // Everything done → the reward screen MAY claim Path Complete, and the gate agrees.
+  const statsAll = { completedMiniUnits: units.map((u) => u.unitId) };
+  const stateAll = getStageState(statsAll, seeAll(cards));
+  const pathAll = getStagePathSteps(S.id, { stageState: stateAll, stats: statsAll });
+  const gateAll = (stateAll.stages.find((s) => s.id === S.id) || {}).complete === true;
+  assert(`stage ${S.id}: with lessons AND words done the reward screen may claim Path Complete`,
+    pathAll.allSatisfied === true && gateAll === true,
+    `path=${pathAll.allSatisfied} gate=${gateAll}`);
+}
+
+// ── (B) No duplicate derivation outside the canonical module ────────────────
+// The banned shape is "decide stage-path completion from the lesson list alone":
+// an `.every(...)` over a stage's units tested against completedMiniUnits.
+{
+  const SRC_DIRS = ['src'];
+  const files = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.(js|jsx)$/.test(e.name)) files.push(p);
+    }
+  };
+  for (const d of SRC_DIRS) walk(join(ROOT, d));
+
+  const CANONICAL = join(ROOT, 'src', 'lib', 'stagePath.js');
+  const offenders = [];
+  for (const f of files) {
+    if (f === CANONICAL) continue;                       // the canonical module may derive it
+    const src = readFileSync(f, 'utf8');
+    const lines = src.split(/\r?\n/);
+    lines.forEach((line, i) => {
+      if (line.trim().startsWith('//') || line.trim().startsWith('*')) return;   // comments may describe it
+      // getMiniUnitsForStage(...) result tested with .every(... completedMiniUnits ...)
+      const everyOverUnits = /\.every\(\s*\(?\s*\w+\s*\)?\s*=>[^)]*completedMiniUnits/.test(line)
+        || /\.every\(\s*\(?\s*\w+\s*\)?\s*=>[^)]*completed(Units|MiniUnits)?\.includes/.test(line);
+      if (everyOverUnits) offenders.push(`${f.replace(ROOT + '\\', '').replace(ROOT + '/', '')}:${i + 1}: ${line.trim().slice(0, 120)}`);
+    });
+  }
+  assert('no file outside lib/stagePath.js derives stage-path completion from the lesson list',
+    offenders.length === 0,
+    offenders.length ? `\n      ${offenders.join('\n      ')}` : '');
+
+  // And the reward screen must actually CALL the canonical module.
+  const app = readFileSync(join(ROOT, 'src', 'App.jsx'), 'utf8');
+  assert('App.jsx imports the canonical stage-path module',
+    /from '\.\/lib\/stagePath\.js'/.test(app));
+  assert("App.jsx's reward screen decides Path Complete from getStagePathSteps(...).allSatisfied",
+    /stagePathNowComplete\s*=\s*!!stagePathAfter\s*&&\s*stagePathAfter\.allSatisfied/.test(app),
+    'the reward screen must read allSatisfied, not recompute completion');
+}
 
 console.log('');
 if (failures > 0) {

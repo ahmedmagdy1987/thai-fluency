@@ -27,7 +27,7 @@ Solo-owner project, live in production with real users possible at any time. Mon
 - `src/lib/*.js` — non-UI logic (SRS, storage, state derivations, economy, merge policy, sync scheduler, audio, speech)
 - `src/config/*.js` — site constants (`site.js`), entitlements/prices (`entitlements.js`), Stripe publishable-key plumbing (`stripe.js`)
 - `src/hooks/*.js` — small shared hooks
-- `scripts/check-*.mjs` / `verify-*.mjs` — the validator suite; `npm run check` runs ALL of them via `check-all.mjs` (auto-discovered — currently 30) and CI runs the same set across several timezones
+- `scripts/check-*.mjs` / `verify-*.mjs` — the validator suite; `npm run check` runs ALL of them via `check-all.mjs` (auto-discovered, so the count is whatever is on disk — it prints the number it found) and CI runs the same set across several timezones
 
 ## Data conventions
 

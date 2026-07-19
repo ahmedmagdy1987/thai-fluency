@@ -208,7 +208,7 @@ TONE_QUIZ_ITEMS` (24 minimal pairs, each carrying a **discrete `tone` field** + 
 
 **How tone drills attach to content:** the deck stores tone **only** as `ph` diacritics
 (`à á â ǎ` = low/high/falling/rising; unmarked = mid). Only the 24 `TONE_QUIZ_ITEMS` carry a
-first-class `tone` label. To attach a tone drill to any of the 4,791 cards, derive tone from `ph` via a
+first-class `tone` label. To attach a tone drill to any card, derive tone from `ph` via a
 **diacritic→tone parser** (pure JS, zero new deps); audio comes from `card.thai` (a separate source, so
 the audio never leaks the written answer). Tone mastery is a **parallel track, never an advance gate**.
 
@@ -280,7 +280,7 @@ Dating pack — never pedagogy, never a mastery gate.*
 
 ## 8. CONSTRAINT MAP
 
-21 validators (18 `check-*` + 3 `verify-*`) bind the blueprint. Most static-scan validators use a
+The validator suite (auto-discovered by `check-all.mjs`, which prints the count it finds) binds the blueprint. Most static-scan validators use a
 **fixed file allowlist** — a new exercise in a new file would slip the scan, but the **intent still
 binds**: the blueprint must **add new screens to these scan arrays**, not exploit the gap.
 
@@ -326,7 +326,7 @@ must NEVER ship as approved.**
 - **Two conventions exist today** and must be unified in the blueprint's vocabulary:
   main deck = `needsReview:true` boolean on **95** cards (no `reviewStatus` field anywhere in
   `cards.js`); Dating = `reviewStatus:'pending'` on **all 60** phrases + 11 categories, with
-  `DATING_REVIEW_COMPLETE = false`.
+  `DATING_REVIEW_COMPLETE` (true since the 2026-07-16 sign-off).
 - **Canonical review-status vocabulary (new):** `pending` (default) · `needs-review` · `approved`.
   Legacy `needsReview:true` maps to `needs-review`; Dating `pending` stays `pending`. **`approved`
   requires a named native-reviewer sign-off** (an `owner-launch-inputs` item still open).

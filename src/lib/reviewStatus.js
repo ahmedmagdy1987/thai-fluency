@@ -9,15 +9,18 @@
 // this file; this file never depends on `situations.js`.
 //
 // ── THE TWO LEGACY CONVENTIONS THIS UNIFIES ──────────────────────────────────
-//   1. Main deck (src/data/cards.js): a boolean `needsReview:true` on 95 cards.
-//      There is NO `reviewStatus` field anywhere on the 4,791 cards.
-//   2. Dating pack (src/data/datingPhrases.js): a string `reviewStatus:'pending'`
-//      on all 60 phrases, gated by `DATING_REVIEW_COMPLETE = false`.
+//   1. Main deck (src/data/cards.js): a boolean `needsReview:true` on legacy
+//      cards, PLUS an explicit `reviewStatus:'approved'` that approveContent()
+//      stamps on every card covered by a situation sign-off which also clears the
+//      eligibility floor. Counts are deliberately NOT written here — they move.
+//      Compute them from ALL_CARDS / APPROVED_CARDS.
+//   2. Dating pack (src/data/datingPhrases.js): a string `reviewStatus` on all 60
+//      phrases — all 'approved' since the 2026-07-16 sign-off — gated by
+//      `DATING_REVIEW_COMPLETE` in src/data/datingContent.js.
 //
 // The adapter below (`reviewStatusOf`) maps BOTH onto one vocabulary WITHOUT
-// rewriting a single card: the 95 legacy `needsReview:true` cards resolve to
+// rewriting a single card: legacy `needsReview:true` cards resolve to
 // 'needs-review'; everything with no status resolves to the default 'pending'.
-// No byte of cards.js changes.
 //
 // ── THE APPROVAL RULE (do not violate) ───────────────────────────────────────
 // 'approved' is NEVER derived, defaulted, or inferred. It exists ONLY when a
@@ -119,7 +122,7 @@ export const DRAFT_BADGE_LABEL = 'Draft content — pending native-speaker revie
 // Byte-safe adapter: resolve any content item to a canonical review status
 // WITHOUT editing the item.
 //   • explicit `reviewStatus` (Dating phrases, future authored cards) wins;
-//   • legacy `needsReview:true` (95 main-deck cards) → 'needs-review';
+//   • legacy `needsReview:true` (main-deck cards) → 'needs-review';
 //   • everything else → 'pending' (the default — absence never means approved).
 // This is the ONLY place the two legacy conventions are reconciled.
 export function reviewStatusOf(item) {
@@ -161,7 +164,7 @@ export function reviewBadge(status) {
 }
 
 // ── Per-situation review completion flag ─────────────────────────────────────
-// Mirrors `DATING_REVIEW_COMPLETE = false` (src/data/datingContent.js:168) with
+// Mirrors `DATING_REVIEW_COMPLETE` (src/data/datingContent.js) with
 // one entry per canonical situation (FOUNDATION README §2; curriculum.md §5.3).
 // A value flips to `true` only when the NAMED native reviewer confirms 100% of the
 // situation is approved — a human action, never code here. EVERY value is still

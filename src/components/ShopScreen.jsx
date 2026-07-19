@@ -1,7 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Gem, Heart, Crown, Check, Snowflake } from 'lucide-react';
-import { HEART_MAX, REFILL_COST_GEMS, FREEZE_COST_GEMS } from '../lib/economy.js';
+import { HEART_MAX, REFILL_COST_GEMS, FREEZE_COST_GEMS, MAX_BANKED_FREEZES, freezePurchaseState } from '../lib/economy.js';
 import { useHeartRegen } from '../hooks/useHeartRegen.js';
+
+// Two-step confirmation for any gem spend (Wave 12). Gems are earned over days;
+// spending them was previously a single unconfirmed click, which is how 31
+// freezes (930 gems) left in one sitting. The confirm step states the exact cost
+// and what the user ends up with, so no spend is ever a surprise.
+function BuyButton({ label, cost, disabled, onConfirm, confirmTitle, confirmBody }) {
+  const [confirming, setConfirming] = useState(false);
+  if (disabled) {
+    return (
+      <button type="button" className="btn-primary shop-item-buy" disabled>
+        {label}
+      </button>
+    );
+  }
+  if (!confirming) {
+    return (
+      <button
+        type="button"
+        className="btn-primary shop-item-buy"
+        onClick={() => setConfirming(true)}
+      >
+        {label}
+      </button>
+    );
+  }
+  return (
+    <div className="shop-item-confirm" role="group" aria-label={confirmTitle}>
+      <div className="shop-item-confirm-text">
+        <strong>{confirmTitle}</strong>
+        <span>{confirmBody}</span>
+      </div>
+      <div className="shop-item-confirm-actions">
+        <button
+          type="button"
+          className="btn-primary shop-item-confirm-yes"
+          onClick={() => { setConfirming(false); onConfirm && onConfirm(); }}
+        >
+          <Gem size={13} aria-hidden="true" /> Spend {cost}
+        </button>
+        <button
+          type="button"
+          className="btn-secondary shop-item-confirm-no"
+          onClick={() => setConfirming(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // The Shop is REAL and minimal — it only wires what the columns support
 // (migration 009: user_stats.hearts / gems / streak_freezes). Gems are the FREE
@@ -16,10 +66,11 @@ export default function ShopScreen({ stats, hearts = HEART_MAX, gems = 0, isSupe
   // route, and the countdown makes that honest.
   const regen = useHeartRegen(stats, isSuper);
   const canAfford = gems >= REFILL_COST_GEMS;
-  const canAffordFreeze = gems >= FREEZE_COST_GEMS;
-  const freezeReason = canAffordFreeze
-    ? `Spend ${FREEZE_COST_GEMS} gems to bank a streak freeze — it saves your streak on a missed day.`
-    : `You need ${FREEZE_COST_GEMS} gems. You have ${gems}.`;
+  // The cap and its reason come from the ECONOMY, not from local UI arithmetic —
+  // the same function the purchase path enforces, so the button and the rule can
+  // never disagree (Wave 12, root cause 2).
+  const freeze = freezePurchaseState({ gems, streakFreezes });
+  const freezeReason = freeze.reason;
   // The refill item is disabled when the user is Super (already unlimited),
   // already full, or can't afford it — each with an honest reason line.
   const refillDisabled = isSuper || heartsFull || !canAfford;
@@ -84,18 +135,25 @@ export default function ShopScreen({ stats, hearts = HEART_MAX, gems = 0, isSupe
               <div className="shop-item-regen">Next heart free in {regen.countdown}</div>
             )}
           </div>
-          <button
-            type="button"
-            className="btn-primary shop-item-buy"
-            onClick={() => onRefillHearts && onRefillHearts()}
-            disabled={refillDisabled}
-          >
-            {heartsFull && !isSuper ? (
-              <><Check size={14} aria-hidden="true" /> Full</>
-            ) : (
-              <><Gem size={14} aria-hidden="true" /> {REFILL_COST_GEMS}</>
-            )}
-          </button>
+          {/* Wave 12: a Super user has unlimited hearts, so this item is NOT a
+              purchase for them — showing "50 gems" priced something they can
+              never need. It renders as satisfied, not for sale. */}
+          {isSuper ? (
+            <div className="shop-item-included" aria-label="Included with Super">
+              <Crown size={14} aria-hidden="true" /> Included
+            </div>
+          ) : (
+            <BuyButton
+              label={heartsFull
+                ? <><Check size={14} aria-hidden="true" /> Full</>
+                : <><Gem size={14} aria-hidden="true" /> {REFILL_COST_GEMS}</>}
+              cost={REFILL_COST_GEMS}
+              disabled={refillDisabled}
+              confirmTitle={`Refill hearts for ${REFILL_COST_GEMS} gems?`}
+              confirmBody={`You'll go to ${HEART_MAX}/${HEART_MAX} hearts and have ${Math.max(0, gems - REFILL_COST_GEMS)} gems left.`}
+              onConfirm={() => onRefillHearts && onRefillHearts()}
+            />
+          )}
         </article>
 
         <article className="shop-item">
@@ -108,18 +166,22 @@ export default function ShopScreen({ stats, hearts = HEART_MAX, gems = 0, isSupe
               A freeze protects your streak on a day you can’t study. You also earn one free every 7 study days.
             </div>
             <div className="shop-item-status">
-              <span className="shop-item-status-count"><Snowflake size={13} aria-hidden="true" /> {streakFreezes} banked</span>
+              <span className="shop-item-status-count">
+                <Snowflake size={13} aria-hidden="true" /> {streakFreezes} of {MAX_BANKED_FREEZES} banked
+              </span>
             </div>
             <div className="shop-item-reason">{freezeReason}</div>
           </div>
-          <button
-            type="button"
-            className="btn-primary shop-item-buy"
-            onClick={() => onBuyFreeze && onBuyFreeze()}
-            disabled={!canAffordFreeze}
-          >
-            <Gem size={14} aria-hidden="true" /> {FREEZE_COST_GEMS}
-          </button>
+          <BuyButton
+            label={freeze.atCap
+              ? <><Check size={14} aria-hidden="true" /> Full</>
+              : <><Gem size={14} aria-hidden="true" /> {FREEZE_COST_GEMS}</>}
+            cost={FREEZE_COST_GEMS}
+            disabled={!freeze.canBuy}
+            confirmTitle={`Buy a streak freeze for ${FREEZE_COST_GEMS} gems?`}
+            confirmBody={`You'll have ${streakFreezes + 1} of ${MAX_BANKED_FREEZES} banked and ${Math.max(0, gems - FREEZE_COST_GEMS)} gems left.`}
+            onConfirm={() => onBuyFreeze && onBuyFreeze()}
+          />
         </article>
 
         {!isSuper && (

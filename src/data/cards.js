@@ -762,7 +762,7 @@ export function isEligibleForApproval(card) {
 // card's situation sign-off — a narrower scope is a more specific human decision.
 //
 // `manifest` defaults to the real sign-off file and is a parameter ONLY so the
-// validator can drive this with a synthetic manifest (nothing is approved today,
+// validator can drive this with a synthetic manifest (which reaches branches the
 // so the real one exercises no branch — see scripts/check-content-approval.mjs).
 // Production has exactly one caller and it passes no manifest.
 export function signoffFor(card, manifest = NATIVE_REVIEW_SIGNOFF) {
@@ -797,8 +797,8 @@ export function approveContent(card, manifest = NATIVE_REVIEW_SIGNOFF) {
 // (it must run LAST — the eligibility floor reads the `quarantined` flag).
 //
 // ALL_CARDS is the whole deck with flags stamped; CARDS is the FREE deck and
-// excludes both flagged groups. CARDS stays the default export that all 11
-// consumers already import — including PublicLanding.jsx and DemoMode.jsx, which
+// excludes both flagged groups. CARDS stays the default export that every
+// consumer already imports — including PublicLanding.jsx and DemoMode.jsx, which
 // are PRE-AUTH and run no Super or age check — so the gate is safe-by-default and
 // needed zero consumer edits. Anything that wants the excluded cards has to reach
 // for MATURE_CARDS / QUARANTINED_CARDS by name, and a mature surface owes the
@@ -818,7 +818,9 @@ export const MATURE_CARDS = ALL_CARDS.filter(c => c.mature);
 export const QUARANTINED_CARDS = ALL_CARDS.filter(c => c.quarantined);
 
 // Cards a named human has signed off on AND that clear the eligibility floor.
-// EMPTY today — the manifest is empty, so nothing is approved. That is the
-// CORRECT outcome, not a bug: it means no card has had its draft badge removed
-// without a native vouching for the Thai. Exported for validators / reporting.
+// 946 cards approved today (2026-07-16) via the 7 situation sign-offs in
+// nativeReviewSignoff.js. The eligibility floor still WITHHOLDS the structurally
+// incomplete holdouts (335 empty-`ph`, 7 quarantined), so no card ever loses its
+// draft badge without a native vouching for the Thai. The live count is asserted
+// by check-situation-review.mjs — never trust this number, compute it.
 export const APPROVED_CARDS = ALL_CARDS.filter(isApproved);

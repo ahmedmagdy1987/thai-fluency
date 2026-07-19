@@ -4,7 +4,7 @@
 // The as-built deck groups cards by part of speech inside a stage (taxonomy.js
 // CATEGORIES / STAGES), not by real-world situation. FOUNDATION README §2
 // restores the situation-first intent as a NEW TAGGING LAYER over the existing
-// cards. Rather than edit the 4,791 cards to add a `situation` field (which would
+// cards. Rather than edit every card to add a `situation` field (which would
 // churn check-mini-units / verify-voice-flip / verify-no-gender-mismatch across
 // the whole deck for zero pedagogical gain — curriculum.md §1), this overlay maps
 // each EXISTING taxonomy category to a canonical situation id.
@@ -13,7 +13,9 @@
 // this file contains ZERO Thai — only category ids and situation ids. Every card
 // stays byte-identical.
 //
-// SCOPE (Pass 2): only the ~7 "adequate raw pool" situations are tagged today
+// SCOPE: Pass 2 tagged only the ~7 "adequate raw pool" situations; the Wave 7
+// per-card layer lower in this file widened that considerably (see
+// SITUATION_CARD_TAGS). Do not read this paragraph as the file's current scope —
 // (curriculum.md §4.2 tier 1) — the ones with enough taggable candidates that the
 // work is re-tag/re-unit/re-review, not authoring. The category → situation map
 // is 1:1 (each category maps to exactly ONE situation), which is unambiguous for
@@ -27,14 +29,16 @@
 // per-cardId tagging or an authored inline `situation` field on new cards
 // (curriculum.md §4.2 "shared pools still need disjoint tagging"). Until then,
 // `shopping` is assigned to `sit-money` (its highest-`base` claimant among the
-// ready set), and `sit-store`/`sit-market` remain untagged ("thin" tier).
+// ready set). NOTE: sit-store and sit-market were untagged when this was written;
+// the Wave 7 per-card layer below now tags both, so this limitation is resolved.
 //
 // New AUTHORED cards do NOT need an entry here — they carry a `situation` field
 // inline, and situationOf() prefers that field over this overlay.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // taxonomy.js category id  →  canonical FOUNDATION §2 situation id.
-// Only the 7 "ready" (adequate-pool) situations are populated in Pass 2.
+// Only the 7 "ready" (adequate-pool) situations are populated IN THIS MAP.
+// (SITUATION_CARD_TAGS below covers more — this sentence is about this map only.)
 export const SITUATION_CATEGORY_TAGS = Object.freeze({
   // sit-greet  (127 cards)
   greetings: 'sit-greet',
