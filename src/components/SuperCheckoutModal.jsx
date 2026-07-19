@@ -23,6 +23,9 @@ import { trackEvent, ANALYTICS_EVENTS } from '../lib/analytics.js';
 export default function SuperCheckoutModal({ plan = 'monthly', alreadySuper = false, onClose }) {
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error' | 'unconfigured' | 'already-super'
   const [errorMsg, setErrorMsg] = useState('');
+  // Set when the server's already-subscribed guard (409) fires, so the catch
+  // below can distinguish "you're already subscribed" from a real failure.
+  const alreadySubscribedRef = useRef(false);
   const mountRef = useRef(null);
   const checkoutRef = useRef(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -67,7 +70,20 @@ export default function SuperCheckoutModal({ plan = 'monthly', alreadySuper = fa
           const { data, error } = await supabase.functions.invoke('create-checkout-session', {
             body: { plan, returnUrl: window.location.origin },
           });
-          if (error) throw error;
+          // WAVE 13 item B: the Edge Function now rejects a second checkout for an
+          // already-entitled user with 409. That is a SUCCESS from the user's point
+          // of view — they are subscribed — so surface the friendly "no need to pay
+          // again" state rather than a generic failure. supabase-js wraps non-2xx
+          // in a FunctionsHttpError whose body must be read to see the code.
+          if (error) {
+            let code = null;
+            try { code = (await error.context?.json?.())?.error ?? null; } catch { /* not JSON */ }
+            if (code === 'already_subscribed') {
+              alreadySubscribedRef.current = true;
+              throw new Error('__already_subscribed__');
+            }
+            throw error;
+          }
           if (!data?.clientSecret) throw new Error('Checkout could not be started. Please try again.');
           return data.clientSecret;
         };
@@ -87,6 +103,11 @@ export default function SuperCheckoutModal({ plan = 'monthly', alreadySuper = fa
         }
       } catch (e) {
         if (cancelled) return;
+        // A 409 from the already-subscribed guard is not an error state.
+        if (alreadySubscribedRef.current || e?.message === '__already_subscribed__') {
+          setStatus('already-super');
+          return;
+        }
         setErrorMsg(e?.message ? String(e.message) : 'Something went wrong starting checkout.');
         setStatus('error');
       }

@@ -100,11 +100,26 @@ export const UPSELL_COPY = {
 };
 
 // ─── Entitlement checks ──────────────────────────────────────────────────────
-// Tier is server-authoritative: cloudStorage.downloadEntitlement() reads
-// subscriptions.super_until (written only by the Stripe webhook) and, when it is
-// in the future, sets stats.tier = 'super'. The client cannot forge it — the
-// subscriptions table is read-only to clients (RLS: authenticated SELECT-own,
-// no write policy). A paid user resolves to SUPER; everyone else to FREE.
+// Tier ORIGINATES server-side: cloudStorage.downloadEntitlement() reads
+// subscriptions.super_until (written only by service_role — the Stripe webhook,
+// plus cancel-subscription's optimistic mirror) and, when it is in the future,
+// sets stats.tier = 'super'. A paid user resolves to SUPER; everyone else FREE.
+//
+// WHAT IS AND IS NOT FORGERY-PROOF (Wave 13 item K — the old claim here, "the
+// client cannot forge it", was FALSE as written):
+//   • The SERVER ROW is unforgeable. RLS grants authenticated SELECT on its own
+//     row and no write policy at all, so no client can grant itself entitlement
+//     anywhere another device or the server would ever see it. Wave 12 also
+//     strips tier/superUntil from every stats merge (lib/progressMerge.js), so a
+//     forged local value can never propagate to the cloud.
+//   • The LOCAL `stats.tier` these functions read is just a string in
+//     localStorage. Editing it in devtools unlocks the client-side gates until
+//     the next successful cloud init overwrites it (and indefinitely for an
+//     anonymous/offline user, who never runs one).
+// That is inherent to a gate evaluated on the client: all gated content already
+// ships in the JS bundle, so the gate is a UX boundary, not a security boundary.
+// The things that DO cost money — checkout, entitlement, cancellation — are all
+// server-side and are not affected by a forged local tier.
 export function getTier(stats) {
   return stats && stats.tier === TIERS.SUPER ? TIERS.SUPER : TIERS.FREE;
 }

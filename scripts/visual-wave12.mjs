@@ -1,4 +1,4 @@
-// Wave 12 RENDERED PROOF — real headless Chromium, both themes, desktop + 375px.
+﻿// Wave 12 RENDERED PROOF â€” real headless Chromium, both themes, desktop + 375px.
 // Every visual claim in the Wave 12 report is backed by one of these DOM reads.
 //
 // Usage: node scripts/visual-wave12.mjs [baseUrl]   (default http://localhost:5173)
@@ -27,7 +27,7 @@ const THEMES = ['light', 'dark'];
 let failures = 0;
 const check = (label, cond, extra = '') => {
   if (cond) console.log(`  OK   ${label}`);
-  else { failures += 1; console.error(`  FAIL ${label}${extra ? ' — ' + extra : ''}`); }
+  else { failures += 1; console.error(`  FAIL ${label}${extra ? ' â€” ' + extra : ''}`); }
 };
 
 const browser = await chromium.launch();
@@ -50,11 +50,11 @@ for (const theme of THEMES) {
   for (const vp of VIEWPORTS) {
     console.log(`\n=== ${theme} / ${vp.name} ===`);
 
-    // ── Purchase confirmation (root cause: unconfirmed gem spends) ───────────
+    // â”€â”€ Purchase confirmation (root cause: unconfirmed gem spends) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('shop', theme, vp, async (page) => {
       const freezeBuy = page.locator('.shop-item').filter({ hasText: 'streak freeze' }).locator('.shop-item-buy');
       check('shop: freeze item offers a buy button', await freezeBuy.count() > 0);
-      // A single click must NOT spend — it must ask first.
+      // A single click must NOT spend â€” it must ask first.
       await freezeBuy.first().click();
       await page.waitForTimeout(200);
       const confirm = page.locator('.shop-item-confirm');
@@ -70,7 +70,7 @@ for (const theme of THEMES) {
         await page.locator('.shop-item-confirm').count() === 0);
     });
 
-    // ── Freeze cap: unavailable WITH a reason, never a silent no-op ──────────
+    // â”€â”€ Freeze cap: unavailable WITH a reason, never a silent no-op â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('shop-freeze-cap', theme, vp, async (page) => {
       const item = page.locator('.shop-item').filter({ hasText: 'streak freeze' });
       const reason = await item.locator('.shop-item-reason').innerText();
@@ -82,7 +82,7 @@ for (const theme of THEMES) {
       check('cap: the banked count is shown against the ceiling', /of \d+ banked/.test(status), status);
     });
 
-    // ── Shop for a Super user: not-needed, not purchasable ───────────────────
+    // â”€â”€ Shop for a Super user: not-needed, not purchasable â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('shop-super', theme, vp, async (page) => {
       const refill = page.locator('.shop-item').filter({ hasText: 'Refill hearts' });
       check('super: the refill item is NOT offered for sale', await refill.locator('.shop-item-buy').count() === 0);
@@ -92,7 +92,7 @@ for (const theme of THEMES) {
       check('super: it says why', /unlimited hearts with Super/i.test(body));
     });
 
-    // ── Activation states: never a silent free plan ──────────────────────────
+    // â”€â”€ Activation states: never a silent free plan â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('super-activation-pending', theme, vp, async (page) => {
       const t = await page.locator('.super-activation-toast').innerText();
       check('activation/pending: says it is activating', /Activating your Super/i.test(t), t.replace(/\n/g, ' ').slice(0, 90));
@@ -109,14 +109,14 @@ for (const theme of THEMES) {
       check('activation/timeout: never implies a free plan', !/\bfree\b/i.test(t));
     });
 
-    // ── The Super celebration (bound to the entitlement landing) ─────────────
+    // â”€â”€ The Super celebration (bound to the entitlement landing) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('super-celebration', theme, vp, async (page) => {
       const t = await page.locator('.reward-screen-backdrop').innerText();
       check('celebration: welcomes the payer to Super', /now Super/i.test(t), t.replace(/\n/g, ' ').slice(0, 80));
       check('celebration: names the live benefits', /Dating/i.test(t) && /unlimited hearts/i.test(t));
     });
 
-    // ── Root cause 2: the reward screen no longer overclaims ─────────────────
+    // â”€â”€ Root cause 2: the reward screen no longer overclaims â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     await scene('reward-lessons-done', theme, vp, async (page) => {
       const t = await page.locator('.reward-screen-backdrop').innerText();
       check('reward: does NOT claim "Path Complete" while words remain',
@@ -125,7 +125,35 @@ for (const theme of THEMES) {
       check('reward: states how many words remain', /\d+ more words/i.test(t), t.replace(/\n/g, ' ').slice(0, 110));
     });
 
-    // ── Root cause 3: never two full-screen surfaces at once ─────────────────
+    // â”€â”€ WAVE 13 G: the Go Super CTA is not payable while a purchase settles â”€â”€
+    await scene('plans-purchase-pending', theme, vp, async (page) => {
+      const payable = await page.locator('.pl-plan-premium .pl-plan-cta').count();
+      check('G: NO payable "Go Super" CTA while a purchase is pending', payable === 0, `found ${payable}`);
+      const blocked = page.locator('.pl-plan-blocked');
+      check('G: both Super cards show the blocked state', await blocked.count() === 2, `found ${await blocked.count()}`);
+      const t = await blocked.first().innerText();
+      check('G: it says the payment went through', /payment went through/i.test(t), t.replace(/\n/g, ' ').slice(0, 100));
+      check('G: it tells the user not to pay again', /no need to pay again/i.test(t));
+      check('G: it says activation is automatic', /automatically/i.test(t));
+    });
+
+    // â”€â”€ WAVE 13 H: /plans refuses to sell to an unconfirmed-email session â”€â”€â”€â”€
+    await scene('plans-unconfirmed-email', theme, vp, async (page) => {
+      const payable = await page.locator('.pl-plan-premium .pl-plan-cta').count();
+      check('H: NO payable CTA for an unconfirmed email', payable === 0, `found ${payable}`);
+      const t = await page.locator('.pl-plan-blocked').first().innerText();
+      check('H: it asks the user to confirm their email', /confirm your email/i.test(t), t.replace(/\n/g, ' ').slice(0, 100));
+      check('H: it says where to look', /inbox/i.test(t));
+    });
+
+    // Control: a normal free user must STILL be able to buy.
+    await scene('plans-normal', theme, vp, async (page) => {
+      const payable = await page.locator('.pl-plan-premium .pl-plan-cta').count();
+      check('CONTROL: a normal signed-in free user still gets payable CTAs', payable === 2, `found ${payable}`);
+      check('CONTROL: no blocked state is shown', await page.locator('.pl-plan-blocked').count() === 0);
+    });
+
+    // â”€â”€ Root cause 3: never two full-screen surfaces at once â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     for (const s of ['super-celebration', 'reward-lessons-done', 'streak-recovery']) {
       await scene(s, theme, vp, async (page) => {
         const modals = await page.locator('[aria-modal="true"]').count();

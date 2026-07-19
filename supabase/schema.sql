@@ -282,13 +282,14 @@ create table if not exists public.subscriptions (
 );
 
 comment on table public.subscriptions is
-  'Server-authoritative Super entitlement. Written ONLY by the billing webhook (service_role). Clients read their own row. super_until is the single truth for Super access across web/iOS/Android.';
+  'Server-authoritative Super entitlement. Written by service_role ONLY: primarily the stripe-webhook Edge Function, plus cancel-subscription which optimistically mirrors a scheduled cancel (the webhook then re-confirms it). Clients can never write it — RLS grants SELECT on their own row only. super_until is the single truth for Super access across web/iOS/Android.';
 
 alter table public.subscriptions enable row level security;
 
 -- Tight privileges: authenticated users may SELECT (RLS restricts to own row);
 -- no INSERT/UPDATE/DELETE grant, so clients can never forge entitlement.
--- service_role bypasses RLS and is the sole writer (the webhook).
+-- service_role bypasses RLS and is the only writer: stripe-webhook (primary) and
+-- cancel-subscription (optimistic mirror of a scheduled cancel).
 revoke all on public.subscriptions from anon, authenticated;
 grant select on public.subscriptions to authenticated;
 

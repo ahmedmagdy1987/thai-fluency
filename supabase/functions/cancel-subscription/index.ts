@@ -4,6 +4,16 @@
 // but Super access stays LIVE until the paid period ends. Optimistically mirrors
 // the flag + period end into public.subscriptions (the webhook also confirms it).
 //
+// NOTE (Wave 13 item K): this makes the function a SECOND service_role writer of
+// public.subscriptions alongside stripe-webhook. Earlier comments here and in
+// schema.sql claimed the webhook was the sole writer — it is not. Stripe stays the
+// source of truth; the webhook event that follows re-confirms whatever is written
+// here. Clients still cannot write the table at all (RLS grants SELECT only).
+//
+// The subscription id is looked up SERVER-SIDE from the caller's own row and is
+// never read from the request body — that is what makes this IDOR-safe. Do not
+// change it to accept an id from the client.
+//
 // Env (Supabase Edge Function secrets): STRIPE_SECRET_KEY, SUPABASE_URL,
 // SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY (all provided / set already).
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
@@ -44,11 +54,12 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
       { auth: { persistSession: false } },
     );
-    const { data: sub } = await admin
+    const { data: sub, error: readError } = await admin
       .from("subscriptions")
-      .select("stripe_subscription_id, super_until")
+      .select("stripe_subscription_id, stripe_customer_id, super_until")
       .eq("user_id", user.id)
       .maybeSingle();
+    if (readError) throw readError;
 
     if (!sub?.stripe_subscription_id) return json({ error: "no_active_subscription" }, 400, origin);
 
@@ -57,12 +68,61 @@ Deno.serve(async (req) => {
       ? new Date(updated.current_period_end * 1000).toISOString()
       : sub.super_until;
 
-    await admin
+    // ── WAVE 13: ORPHANED-SUBSCRIPTION DETECTION ─────────────────────────────
+    // public.subscriptions holds ONE row per user (user_id primary key), so it can
+    // record only ONE stripe_subscription_id. Before item B existed, a user could
+    // end up with two live subscriptions; this cancel path reaches only the one in
+    // the row, leaving the other billing with no in-app way to stop it.
+    //
+    // We do NOT auto-cancel the extras: cancelling a subscription the user did not
+    // ask us to cancel is an irreversible billing action taken on a guess, and the
+    // customer records may legitimately differ (e.g. a family sharing a card). What
+    // we CAN do safely is DETECT and report, so an orphan stops being invisible.
+    // Detection is best-effort and must never fail the user's cancellation.
+    let otherLiveSubscriptions: string[] = [];
+    try {
+      if (sub.stripe_customer_id) {
+        const list = await stripe.subscriptions.list({
+          customer: sub.stripe_customer_id,
+          status: "active",
+          limit: 10,
+        });
+        otherLiveSubscriptions = list.data
+          .filter((s) => s.id !== sub.stripe_subscription_id && !s.cancel_at_period_end)
+          .map((s) => s.id);
+      }
+      if (otherLiveSubscriptions.length > 0) {
+        console.error(
+          `[cancel-subscription] ORPHANED SUBSCRIPTIONS for user ${user.id}: ` +
+          `${otherLiveSubscriptions.join(", ")} are still live after cancelling ` +
+          `${sub.stripe_subscription_id}. These are NOT reachable from the app and ` +
+          `must be cancelled manually in the Stripe dashboard.`,
+        );
+      }
+    } catch (e) {
+      console.warn("[cancel-subscription] orphan detection failed (non-fatal):", String((e as Error)?.message ?? e));
+    }
+
+    // WAVE 13 item F — this write used to discard its error and return ok:true
+    // regardless, so the user could be told "canceled" while the row was unchanged.
+    // Stripe is the source of truth and the webhook re-confirms, but the response
+    // must not claim something we did not do.
+    const { error: writeError } = await admin
       .from("subscriptions")
       .update({ cancel_at_period_end: true, current_period_end: periodEnd, super_until: periodEnd })
       .eq("user_id", user.id);
+    if (writeError) throw writeError;
 
-    return json({ ok: true, cancel_at_period_end: true, super_until: periodEnd }, 200, origin);
+    console.log(`[cancel-subscription] CANCEL_SCHEDULED user=${user.id} sub=${sub.stripe_subscription_id} until=${periodEnd}`);
+
+    return json({
+      ok: true,
+      cancel_at_period_end: true,
+      super_until: periodEnd,
+      // Surfaced so the client can tell the user to contact support rather than
+      // silently leaving them subscribed to something they think they cancelled.
+      other_live_subscriptions: otherLiveSubscriptions.length,
+    }, 200, origin);
   } catch (e) {
     return json({ error: String((e as Error)?.message ?? e) }, 500, origin);
   }

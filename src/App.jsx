@@ -78,6 +78,9 @@ import {
 } from './lib/cloudStorage.js';
 import { mergeProgress, mergeStats, mergeCloudSettings } from './lib/progressMerge.js';
 import { markStatsDirty, markStatsSynced, recordMergedCloudUpdatedAt, clearSyncWatermark, syncWatermarkFor } from './lib/syncWatermark.js';
+// Durable, owner-visible purchase telemetry (Wave 13 item I). Degrades silently
+// until supabase/migrations/20260720120000_billing_events.sql is applied.
+import { recordBillingEvent, BILLING_EVENTS } from './lib/billingEvents.js';
 
 import AppShell from './components/AppShell.jsx';
 import LearnPath from './components/LearnPath.jsx';
@@ -423,6 +426,10 @@ export default function TukTalkThaiApp() {
   // Drives the "Activating your Super…" toast while the checkout-return effect
   // polls the webhook-written entitlement (see SuperActivationNotice.jsx).
   const [superActivation, setSuperActivation] = useState(null);
+  // WAVE 13 item G — "this device has paid and is waiting for the entitlement".
+  // Seeded from the persisted flag so a reload mid-activation still suppresses the
+  // payable CTA (the flag survives a refresh; component state would not).
+  const [superPurchasePending, setSuperPurchasePending] = useState(() => loadSuperCelebrationPending());
   const [cloudReady, setCloudReady] = useState(false);     // true once cloud init RESOLVED (success OR failure) — unblocks UI/entitlement/loading gates
   // true ONLY after a SUCCESSFUL cloud init (empty-cloud seed or local↔cloud merge).
   // The periodic uploader gates on THIS, not cloudReady: a FAILED init sets
@@ -1286,7 +1293,12 @@ export default function TukTalkThaiApp() {
     if (!superActive) return;                       // entitlement has not landed yet
     if (!loadSuperCelebrationPending()) return;     // nothing owed
     clearSuperCelebrationPending();                 // exactly once
+    setSuperPurchasePending(false);                 // the CTA may be offered again
     trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
+    // Wave 13 item I: durable, owner-visible record that this purchase actually
+    // delivered access. Pairs with the webhook's ENTITLEMENT log line, so a
+    // charge with no matching activation becomes visible instead of silent.
+    recordBillingEvent(session?.user?.id, BILLING_EVENTS.SUBSCRIPTION_ACTIVATED, { tier: 'super' });
     // Intent-aware return: if the payer started checkout from a specific surface
     // (e.g. the Dating lock), send them THERE on "continue" instead of dropping
     // everyone on Learn. Dating's own 18+ gate handles the age confirmation, so
@@ -1334,6 +1346,10 @@ export default function TukTalkThaiApp() {
     // entitlement landing, so however long the webhook takes — and whichever path
     // finally applies the tier — the payer gets their moment exactly once.
     saveSuperCelebrationPending();
+    // WAVE 13 item G: from this moment the Go Super CTA must not be payable. The
+    // pending flag — not isSuper(stats) — is what closes the window in which a
+    // confused payer could buy a SECOND subscription.
+    setSuperPurchasePending(true);
     let cancelled = false;
 
     const stripParams = () => {
@@ -1366,6 +1382,7 @@ export default function TukTalkThaiApp() {
     (async () => {
       const startedAt = Date.now();
       let becameSuper = false;
+      let slowRecorded = false;
       setSuperActivation({ status: 'pending' });
       for (let attempt = 0; attempt <= SUPER_POLL_STEPS_MS.length && !cancelled; attempt++) {
         try {
@@ -1385,7 +1402,11 @@ export default function TukTalkThaiApp() {
         // Soften the copy once we pass the "usually instant" window, but KEEP
         // POLLING — the payment has succeeded, so the honest state is "still
         // activating", never "free".
-        if (Date.now() - startedAt > SLOW_AFTER_MS) setSuperActivation({ status: 'slow' });
+        if (Date.now() - startedAt > SLOW_AFTER_MS && !slowRecorded) {
+          setSuperActivation({ status: 'slow' });
+          slowRecorded = true;
+          recordBillingEvent(session.user.id, BILLING_EVENTS.ACTIVATION_SLOW, { elapsedMs: Date.now() - startedAt });
+        }
         const wait = SUPER_POLL_STEPS_MS[attempt];
         if (wait === undefined) break;
         await sleep(wait);
@@ -1394,6 +1415,11 @@ export default function TukTalkThaiApp() {
       // Success is announced by the pending-celebration effect (bound to the
       // entitlement, not to this loop). Here we only resolve the status strip.
       setSuperActivation(becameSuper ? null : { status: 'timeout' });
+      if (!becameSuper) {
+        // Wave 13 item I: a payment that never activated within the whole window
+        // is the single most important thing for the owner to be able to see.
+        recordBillingEvent(session.user.id, BILLING_EVENTS.ACTIVATION_TIMEOUT, { waitedMs: Date.now() - startedAt });
+      }
       if (becameSuper) {
         // Funnel: server-confirmed Super after the checkout return. Safe/non-PII.
         trackEvent(ANALYTICS_EVENTS.SUBSCRIPTION_ACTIVATED, {});
@@ -2839,6 +2865,18 @@ export default function TukTalkThaiApp() {
   const embedPlansInShell = publicPage === 'plans'
     && hasSupabaseConfig && !!session && isEmailConfirmed && authReady && !demoMode;
 
+  // WAVE 13 items G + H — why the Super CTA may not be payable right now.
+  //   'pending'     — this device completed checkout and the entitlement has not
+  //                   landed yet. isSuper(stats) is still false during that window,
+  //                   which is exactly why the old isSuper-based guards missed it
+  //                   and a second subscription could be bought.
+  //   'unconfirmed' — a session exists but the email is not confirmed. The /plans
+  //                   branch below returns BEFORE the PendingConfirmation gate, so
+  //                   this page is reachable in that state; it must not sell.
+  const superCtaBlockedReason = superPurchasePending
+    ? 'pending'
+    : (hasSupabaseConfig && !!session && !isEmailConfirmed ? 'unconfirmed' : null);
+
   if (publicPage && !embedPlansInShell) {
     return (
       <div className="app-root" data-theme={stats.theme || 'light'} data-view-mode={viewMode}>
@@ -2846,6 +2884,7 @@ export default function TukTalkThaiApp() {
           <PlansPage
             isAuthed={!!session}
             isSuperUser={superActive}
+            blockedReason={superCtaBlockedReason}
             onNavigate={handleNavigatePath}
             onGetStarted={handleGetStarted}
             onSignIn={() => openAuthGate('signin')}
@@ -3118,6 +3157,7 @@ export default function TukTalkThaiApp() {
       {embedPlansInShell ? (
         <PlansPage
           embedded
+          blockedReason={superCtaBlockedReason}
           isAuthed
           isSuperUser={superActive}
           onNavigate={handleNavigatePath}

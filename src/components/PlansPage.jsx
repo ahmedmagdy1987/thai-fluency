@@ -12,6 +12,8 @@ import {
   Heart,
   Gift,
   CloudUpload,
+  Loader2,
+  Mail,
 } from 'lucide-react';
 import { STAGES } from '../data/taxonomy.js';
 import { MINI_UNITS } from '../data/miniUnits.js';
@@ -132,7 +134,7 @@ function PlanPriceTag({ plan }) {
   return <div className="pl-plan-price"><span className="pl-plan-amount">${plan.price}</span><span className="pl-plan-period">per {plan.period}</span></div>;
 }
 
-export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = false, onGetStarted, onSignIn, embedded = false, onBack }) {
+export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = false, onGetStarted, onSignIn, embedded = false, onBack, blockedReason = null }) {
   const [checkoutPlan, setCheckoutPlan] = useState(null); // 'monthly' | 'yearly' | null
   // eslint-disable-next-line react-hooks/exhaustive-deps -- one plans_viewed per visit
   useEffect(() => { trackEvent(ANALYTICS_EVENTS.PLANS_VIEWED, { authed: !!isAuthed }); }, []);
@@ -174,6 +176,9 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
       if (onNavigate) onNavigate('/settings');
       return;
     }
+    // Wave 13 G/H: defense in depth behind the CTA swap below. A pending purchase
+    // or an unconfirmed email must never reach a payable checkout.
+    if (blockedReason) return;
     trackEvent(ANALYTICS_EVENTS.PREMIUM_FEATURE_TAPPED, { source: 'plans-page', plan });
     if (isAuthed) setCheckoutPlan(plan);
     else if (onGetStarted) onGetStarted();
@@ -190,6 +195,30 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
       </button>
     </div>
   );
+
+  // ── WAVE 13 items G + H: one honest "you cannot buy right now" surface ─────
+  // G — THE DOUBLE-CHARGE MOTIVE. Every previous guard read isSuper(stats), which
+  // is FALSE for the minutes between paying and the webhook landing — precisely
+  // when a confused payer is most likely to press Go Super again. A second press
+  // created a second Stripe customer, a second subscription and a second recurring
+  // charge. `blockedReason` is driven by a PENDING-PURCHASE flag instead, so the
+  // CTA is unavailable from the moment Stripe returns until the entitlement lands.
+  // H — the same surface covers an unconfirmed-email session, which could reach
+  // this page because the /plans branch renders before the confirmation gate.
+  const blockedCta = blockedReason ? (
+    <div className="pl-plan-blocked" role="status">
+      <span className="pl-plan-blocked-chip">
+        {blockedReason === 'pending'
+          ? <><Loader2 size={15} className="pl-plan-blocked-spin" aria-hidden="true" /> Activating your Super…</>
+          : <><Mail size={15} aria-hidden="true" /> Confirm your email first</>}
+      </span>
+      <span className="pl-plan-blocked-note">
+        {blockedReason === 'pending'
+          ? 'Your payment went through — Super switches on automatically, usually within a few minutes. No need to pay again.'
+          : 'Check your inbox for the confirmation link, then you can subscribe.'}
+      </span>
+    </div>
+  ) : null;
 
   return (
     <main className={`pl-page${embedded ? ' pl-page-embedded' : ''}`}>
@@ -323,7 +352,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
             </div>
             <PlanPriceTag plan={PLANS.superMonthly} />
             <p className="pl-plan-blurb">{PLANS.superMonthly.tagline} Everything in Free, plus:</p>
-            {isSuperUser ? alreadySuperCta : (
+            {isSuperUser ? alreadySuperCta : blockedCta || (
               <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('monthly')}>
                 {isAuthed ? 'Go Super' : 'Sign up to go Super'}
                 <ArrowRight size={17} aria-hidden="true" />
@@ -345,7 +374,7 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
             </div>
             <PlanPriceTag plan={PLANS.superYearly} />
             <p className="pl-plan-blurb">{PLANS.superYearly.tagline} Everything in Super Monthly, billed yearly.</p>
-            {isSuperUser ? alreadySuperCta : (
+            {isSuperUser ? alreadySuperCta : blockedCta || (
               <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startSuper('yearly')}>
                 {isAuthed ? 'Choose yearly' : 'Sign up for yearly'}
               </button>

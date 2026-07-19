@@ -203,8 +203,33 @@ export async function downloadEntitlement(userId) {
   // nulls super_until and used to downgrade a PAYING customer to Free (refund /
   // chargeback risk — B5). This is the task's "active OR (canceled AND
   // period_end > now())" rule, resolved entirely client-side (read-only; RLS
-  // still owns the truth). It only ever GRANTS access it can prove was paid for,
-  // so it can never over-entitle beyond current_period_end.
+  // still owns the truth).
+  //
+  // ⚠️ WAVE 13 ITEM J — KNOWN, DELIBERATELY UNCHANGED, NEEDS TEST-MODE PROOF.
+  // The line below this block used to claim "it can never over-entitle beyond
+  // current_period_end". That is the wrong invariant: a FUTURE current_period_end
+  // does not prove the period was PAID. Stripe advances current_period_end when it
+  // ISSUES a renewal invoice, before that invoice is paid — so a subscription that
+  // goes past_due → dunning exhausted → canceled can land here with
+  // status='canceled' AND a future current_period_end, and this rule would then
+  // grant Super for a period nobody paid for (bounded: ≤ one billing period, and
+  // only the two enforced benefits — Dating + unlimited hearts).
+  //
+  // It is NOT tightened here because the fix and the bug look identical from the
+  // data: a legitimate cancel-at-period-end user ALSO has status 'canceled' with a
+  // future period end, and breaking their paid access is worse than the leak.
+  // Distinguishing them needs a real dunning run, which could not be performed
+  // (no Stripe CLI on the build machine).
+  //
+  // TO RESOLVE (owner, Stripe test mode):
+  //   1. stripe listen --forward-to <webhook url>
+  //   2. Create a test subscription with card 4000 0000 0000 0341 (payment fails
+  //      after attach), let dunning exhaust so the subscription cancels.
+  //   3. Inspect the resulting public.subscriptions row.
+  //   • If status='canceled' with current_period_end IN THE FUTURE → the leak is
+  //     real: narrow line 209 to `cancelAtPeriodEnd` only (drop `|| status ===
+  //     'canceled'`), which keeps scheduled-cancel access and closes the leak.
+  //   • If current_period_end is in the PAST → there is no leak; leave as is.
   const activeBySuperUntil = !!(superUntil && new Date(superUntil) > now);
   const isCanceled = cancelAtPeriodEnd || status === 'canceled';
   const activeByRemainingPaidTime = isCanceled && !!(periodEnd && new Date(periodEnd) > now);

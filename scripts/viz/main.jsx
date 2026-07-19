@@ -23,6 +23,7 @@ import SituationRail from '../../src/components/SituationRail.jsx';
 import IdentityPathStep from '../../src/components/IdentityPathStep.jsx';
 import LearnPath from '../../src/components/LearnPath.jsx';
 import SuperActivationNotice from '../../src/components/SuperActivationNotice.jsx';
+import PlansPage from '../../src/components/PlansPage.jsx';
 import CelebrationOverlay from '../../src/components/CelebrationOverlay.jsx';
 import { MAX_BANKED_FREEZES } from '../../src/lib/economy.js';
 import { getStagePathSteps } from '../../src/lib/stagePath.js';
@@ -180,6 +181,19 @@ function sceneEl() {
             onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
         </div>
       );
+    // ── WAVE 13 scenes ──────────────────────────────────────────────────────
+    case 'plans-purchase-pending':
+      // G: the payer has completed checkout and the entitlement has not landed.
+      // The CTA must NOT be payable — this is the window that produced double
+      // subscriptions, because every old guard read isSuper(stats) (still false).
+      return <PlansPage isAuthed isSuperUser={false} blockedReason="pending" onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
+    case 'plans-unconfirmed-email':
+      // H: a session exists but the email is unconfirmed. /plans renders before
+      // the confirmation gate, so it must refuse to sell here.
+      return <PlansPage isAuthed isSuperUser={false} blockedReason="unconfirmed" onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
+    case 'plans-normal':
+      // Control: a normal signed-in free user still gets a payable CTA.
+      return <PlansPage isAuthed isSuperUser={false} blockedReason={null} onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
     case 'super-activation-pending':
       return <SuperActivationNotice status="pending" onDismiss={noop} onRefresh={noop} />;
     case 'super-activation-slow':
