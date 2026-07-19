@@ -57,14 +57,45 @@ export function recordBillingEvent(userId, name, props = {}) {
   try {
     if (!hasSupabaseConfig || !userId || !ALLOWED.has(name)) return;
     // Deliberately not awaited — a purchase must never wait on telemetry.
-    supabase
+    const query = supabase
       .from('billing_events')
-      .insert({ user_id: userId, name, props: sanitize(props) })
-      .then(({ error }) => {
-        if (error && import.meta?.env?.DEV) {
-          // Expected until the migration is applied; noisy only in dev.
-          console.debug('[billingEvents] not recorded:', error.message);
-        }
-      }, () => { /* swallow */ });
-  } catch { /* telemetry must never break the app */ }
+      .insert({ user_id: userId, name, props: sanitize(props) });
+
+    // ── WAVE 15 HARDENING — this call sits on the post-payment return path ────
+    // The previous version used `.then(onFulfilled, onRejected)`. That is NOT
+    // fully safe: `.then(f, r)` routes only the ORIGINAL promise's rejection to
+    // `r`. If `f` itself throws — e.g. destructuring `{ error }` from a value
+    // that is undefined — the resulting promise rejects with NOTHING attached to
+    // it, producing an unhandled rejection on the most sensitive screen in the
+    // product. Chained `.catch()` covers the handler as well as the request, and
+    // the handler body is itself wrapped so it cannot throw in the first place.
+    //
+    // Everything is swallowed on purpose: a missing table (the current
+    // production state — the migration is unapplied), an RLS rejection, an
+    // offline device, a 4xx/5xx, a malformed body. Telemetry NEVER surfaces to a
+    // customer who has just paid.
+    Promise.resolve(query)
+      .then((res) => {
+        try {
+          const error = res && res.error;
+          if (error) log('not recorded:', error.message || error);
+        } catch { /* never let the handler throw */ }
+      })
+      .catch((e) => { log('insert failed:', e && e.message ? e.message : e); });
+  } catch (e) {
+    // Synchronous failure (client not constructed, etc.) — same contract.
+    log('skipped:', e && e.message ? e.message : e);
+  }
+}
+
+// Dev-only console noise. In production this is silent: a customer must never
+// see a telemetry problem, and the owner reads billing truth from the Edge
+// Function logs, not the browser console.
+function log(...args) {
+  try {
+    if (import.meta && import.meta.env && import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.debug('[billingEvents]', ...args);
+    }
+  } catch { /* ignore */ }
 }

@@ -1,12 +1,12 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// TEMPORAL DEAD ZONE guard — "does the app actually boot?" as a static check.
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TEMPORAL DEAD ZONE guard â€” "does the app actually boot?" as a static check.
 //
 // THE BUG THIS EXISTS TO PREVENT (it took production down):
 // a hook in a React component read a `const` declared HUNDREDS of lines further
 // down the same component:
 //
-//     useEffect(() => { … superActive … }, [superActive, …]);   // line 1291
-//     …
+//     useEffect(() => { â€¦ superActive â€¦ }, [superActive, â€¦]);   // line 1291
+//     â€¦
 //     const superActive = isSuper(stats);                        // line 1856
 //
 // A hook's DEPENDENCY ARRAY is an ordinary expression evaluated inline during
@@ -23,7 +23,7 @@
 // It pairs with scripts/smoke-boot.mjs, which proves the built app boots in a real
 // browser. This one tells you WHICH binding is wrong; that one tells you THAT the
 // app is broken.
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -78,7 +78,7 @@ for (const file of files) {
   const code = blankNonCode(raw);
   const lines = code.split(/\r?\n/);
 
-  // Component bodies: `export default function X(` … through end of file, and
+  // Component bodies: `export default function X(` â€¦ through end of file, and
   // `function X(` at column 0. We only need the outermost function's own scope.
   const compStarts = [];
   lines.forEach((l, i) => {
@@ -97,6 +97,15 @@ for (const file of files) {
       if (m && !decls.has(m[1])) decls.set(m[1], i);
     }
 
+    // Everything from the component's own `return (` onward is JSX evaluated
+    // DURING RENDER, so a forward reference there is just as fatal as one in a
+    // dependency array. Wave 15: the original check only looked at dep arrays,
+    // which is why a render-time read could still ship.
+    let renderStart = Infinity;
+    for (let i = start; i <= end; i++) {
+      if (/^ {2}return \(/.test(lines[i])) { renderStart = i; break; }
+    }
+
     for (const [name, declLine] of decls) {
       // Match the BINDING only, never a property of the same name: `stats.foo`
       // and `q.cat` are reads of `stats` / `q`, not of `foo` / `cat`. Without the
@@ -106,22 +115,33 @@ for (const file of files) {
       for (let i = start; i < declLine; i++) {
         const line = lines[i];
         if (!re.test(line)) continue;
-        // A nested function that merely CLOSES OVER the name is fine — it runs
-        // later. What is fatal is a read during render: a hook dependency array,
-        // or a bare component-scope expression.
-        const isDepArray = /^\s*\}\s*,\s*\[/.test(line) || /\],?\s*\)\s*;?\s*$/.test(line) && /\[/.test(line);
-        const inDepArrayLine = /\}\s*,\s*\[[^\]]*\b/.test(line);
-        if (inDepArrayLine || isDepArray) {
-          findings.push({
-            file: relative(ROOT, file).replace(/\\/g, '/'),
-            name,
-            useLine: i + 1,
-            declLine: declLine + 1,
-            kind: 'hook dependency array',
-            text: raw.split(/\r?\n/)[i].trim().slice(0, 110),
-          });
-          break;
-        }
+
+        // FATAL class 1 â€” a hook dependency array is an expression evaluated
+        // inline during render.
+        const inDepArray = /\}\s*,\s*\[[^\]]*\b/.test(line) || (/\],?\s*\)\s*;?\s*$/.test(line) && /\[/.test(line));
+        // FATAL class 2 â€” anything inside the component's JSX return.
+        const inRender = i >= renderStart;
+        // FATAL class 3 â€” a component-scope const/let initialised from it, or a
+        // bare call, both of which run immediately during render.
+        const immediateBinding = /^ {2}(?:const|let)\s+[\w$]+\s*=/.test(line) || /^ {2}[\w$]+\(/.test(line);
+        // A name in PARAMETER position ((cat) =>, unction f(cat)) is a new
+        // binding that shadows, not a read of the outer one.
+        const isParam = new RegExp(`\\(\\s*(?:[\\w$]+\\s*,\\s*)*${name}\\s*(?:,[^)]*)?\\)\\s*=>`).test(line)
+          || new RegExp(`function\\s*[\\w$]*\\s*\\([^)]*\\b${name}\\b`).test(line);
+        if (isParam) continue;
+
+        if (!inDepArray && !inRender && !immediateBinding) continue;   // closure â€” safe
+        findings.push({
+          file: relative(ROOT, file).replace(/\\/g, '/'),
+          name,
+          useLine: i + 1,
+          declLine: declLine + 1,
+          kind: inDepArray ? 'hook dependency array'
+            : inRender ? 'JSX render (evaluated every render)'
+              : 'component-scope expression',
+          text: raw.split(/\r?\n/)[i].trim().slice(0, 110),
+        });
+        break;
       }
     }
   }
@@ -129,7 +149,7 @@ for (const file of files) {
 
 if (findings.length) {
   failures = findings.length;
-  console.error('TDZ FORWARD REFERENCES FOUND — these throw during render:\n');
+  console.error('TDZ FORWARD REFERENCES FOUND â€” these throw during render:\n');
   for (const f of findings) {
     console.error(`  ${f.file}:${f.useLine}  reads '${f.name}' but it is declared at line ${f.declLine}`);
     console.error(`      via a ${f.kind}: ${f.text}`);
