@@ -1288,9 +1288,26 @@ export default function TukTalkThaiApp() {
   // Whichever path applies it — the poll, the cloud-init merge, a manual refresh,
   // or a completely new session tomorrow — the payer is congratulated exactly
   // once, then the flag is cleared. Navigating away no longer costs the moment.
+  //
+  // ── WAVE 14 BOOT-CRASH FIX ─────────────────────────────────────────────────
+  // This effect used to read `superActive`, which is declared ~500 lines BELOW
+  // (`const superActive = isSuper(stats)`). A `const` cannot be read above its
+  // declaration, and a hook's DEPENDENCY ARRAY is an ordinary expression
+  // evaluated inline during render — so `[superActive, …]` threw
+  // "Cannot access 'superActive' before initialization" on EVERY render, taking
+  // the whole app into the ErrorBoundary. It shipped in Wave 12 and was invisible
+  // because nothing in CI ever booted the built app.
+  //
+  // The fix is to derive the entitlement HERE from `stats`, the state this effect
+  // already depends on, instead of reaching forward to a later binding. isSuper()
+  // is a pure one-line read (config/entitlements.js), so this is the same value —
+  // it simply no longer depends on where in the file the other const happens to
+  // sit. Nothing below is changed: `superActive` remains the single value used by
+  // the render tree.
+  const superActiveForCelebration = isSuper(stats);
   useEffect(() => {
     if (!loaded || demoMode) return;
-    if (!superActive) return;                       // entitlement has not landed yet
+    if (!superActiveForCelebration) return;         // entitlement has not landed yet
     if (!loadSuperCelebrationPending()) return;     // nothing owed
     clearSuperCelebrationPending();                 // exactly once
     setSuperPurchasePending(false);                 // the CTA may be offered again
@@ -1323,7 +1340,15 @@ export default function TukTalkThaiApp() {
         });
       }
     } catch { /* ignore */ }
-  }, [superActive, loaded, demoMode, handleSetTab]);
+    // `handleSetTab` is deliberately NOT a dependency. It is declared ~1,200 lines
+    // below, and a dependency array is evaluated DURING RENDER — naming it here
+    // threw "Cannot access 'handleSetTab' before initialization" and crashed the
+    // app (the second half of the Wave 14 boot crash). Referencing it inside the
+    // callback above is safe: that closure is created when the effect RUNS, long
+    // after every const in the body has initialised. This effect must fire when
+    // the entitlement lands, not when a callback identity changes, so its absence
+    // from the deps is also semantically correct.
+  }, [superActiveForCelebration, loaded, demoMode]);
 
   // Client-side polling only; the webhook remains the sole entitlement writer.
   // Runs at most once per load; needs a confirmed session to read the
