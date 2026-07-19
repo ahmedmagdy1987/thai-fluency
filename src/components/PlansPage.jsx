@@ -334,8 +334,14 @@ export default function PlansPage({ onNavigate, isAuthed = false, isSuperUser = 
             </div>
             <PlanPriceTag plan={PLANS.free} />
             <p className="pl-plan-blurb">{PLANS.free.tagline} Everything you need to start speaking Thai, from your first lesson.</p>
+            {/* WAVE 16: the page used to contradict itself — both Super cards
+                said "You're already Super" while this one still claimed Free was
+                "Your plan". For a Super user the free tier is INCLUDED, not
+                their plan, so say that instead of implying they are on it. */}
             <button type="button" className="pl-cta-primary pl-plan-cta" onClick={startFree}>
-              {isAuthed ? 'Your plan — keep learning' : PLANS.free.cta}
+              {isSuperUser
+                ? 'Included with Super — keep learning'
+                : (isAuthed ? 'Your plan — keep learning' : PLANS.free.cta)}
               <ArrowRight size={17} aria-hidden="true" />
             </button>
             <ul className="pl-plan-list">

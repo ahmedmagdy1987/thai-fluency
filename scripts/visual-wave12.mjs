@@ -153,6 +153,17 @@ for (const theme of THEMES) {
       check('CONTROL: no blocked state is shown', await page.locator('.pl-plan-blocked').count() === 0);
     });
 
+    // ── WAVE 16: the plans page must not contradict itself for a Super user ──
+    await scene('plans-super-user', theme, vp, async (page) => {
+      const body = await page.locator('.pl-plans-grid').innerText();
+      check('super/plans: both Super cards say already Super',
+        (body.match(/already Super/gi) || []).length >= 2);
+      check('super/plans: the FREE card no longer claims to be their plan',
+        !/Your plan/i.test(body), body.replace(/\s+/g, ' ').slice(0, 180));
+      check('super/plans: the free tier is shown as included with Super',
+        /Included with Super/i.test(body));
+    });
+
     // â”€â”€ Root cause 3: never two full-screen surfaces at once â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     for (const s of ['super-celebration', 'reward-lessons-done', 'streak-recovery']) {
       await scene(s, theme, vp, async (page) => {

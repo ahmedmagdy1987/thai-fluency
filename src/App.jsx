@@ -288,6 +288,39 @@ function getCurrentRoute() {
   return getRouteForPath(window.location.pathname);
 }
 
+// ─── CHECKOUT RETURN, CAPTURED BEFORE THE ROUTER CAN DESTROY IT ──────────────
+// THE BUG THIS FIXES (two real purchases lost their celebration):
+// Stripe returns the payer to `/?super=success&session_id=…`. `/` is not a known
+// route, so getRouteForPath falls through to `{ path: '/learn', unknown: true }`
+// and the boot router immediately calls `writeRoute('/learn', {replace:true})`
+// (App.jsx, the authReady effect). writeRoute passes a BARE PATH to
+// history.replaceState, so the query string — the entire signal that a payment
+// just happened — is silently discarded.
+//
+// That redirect fires on `authReady`, which resolves early. The checkout-return
+// poll is gated on `cloudReady` (added in Wave 12 so the entitlement read cannot
+// be clobbered), which resolves much later. By the time the poll ran,
+// window.location.search was already empty, so it returned at its very first
+// check: no "Activating…" state, no pending flag, and therefore no celebration —
+// for EVERY paying customer.
+//
+// The fix is to stop depending on the URL surviving. This reads the params ONCE,
+// synchronously, at module scope — before React renders, before any effect, and
+// before any router code can run. Nothing downstream can take it away.
+function readCheckoutReturn() {
+  if (typeof window === 'undefined') return { isReturn: false, sessionId: null };
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      isReturn: params.get('super') === 'success',
+      sessionId: params.get('session_id') || null,
+    };
+  } catch {
+    return { isReturn: false, sessionId: null };
+  }
+}
+const CHECKOUT_RETURN = readCheckoutReturn();
+
 function routePathForTab(tab) {
   return TAB_ROUTES[tab] || '/learn';
 }
@@ -1348,7 +1381,40 @@ export default function TukTalkThaiApp() {
     // after every const in the body has initialised. This effect must fire when
     // the entitlement lands, not when a callback identity changes, so its absence
     // from the deps is also semantically correct.
-  }, [superActiveForCelebration, loaded, demoMode]);
+    // `superPurchasePending` is in the deps for an ORDERING reason, not because
+    // the body reads it. This effect is declared ABOVE the early checkout-return
+    // effect that WRITES the pending flag, and React runs effects in declaration
+    // order — so on the first commit after a checkout return this effect checks
+    // `loadSuperCelebrationPending()` before the flag exists, finds nothing owed,
+    // and never re-runs (its other deps are unchanged). The celebration was then
+    // silently lost on the return itself. The early effect also calls
+    // setSuperPurchasePending(true), so listing it here guarantees a re-run on
+    // the very next commit, when the flag IS present. (Caught by the seeded
+    // celebration scenario in scripts/smoke-entry-urls.mjs.)
+  }, [superActiveForCelebration, loaded, demoMode, superPurchasePending]);
+
+  // ── EARLY ACKNOWLEDGEMENT of a checkout return ────────────────────────────
+  // Runs as soon as a session exists — deliberately NOT gated on cloudReady,
+  // which resolves seconds later. Two reasons:
+  //
+  //  1. VISIBILITY. The payer previously stared at an unchanged page for the
+  //     whole of cloud init with no indication anything was happening. The
+  //     "Activating your Super…" strip now appears immediately on return.
+  //  2. DURABILITY. saveSuperCelebrationPending() records that a celebration is
+  //     OWED at the earliest possible moment. If the user reloads, navigates
+  //     away, or closes the tab mid-activation, the flag has already been
+  //     persisted, so the celebration still fires whenever the tier lands.
+  //     Previously the flag was only written once the poll started, so anything
+  //     that stopped the poll also silently cancelled the celebration.
+  useEffect(() => {
+    if (!CHECKOUT_RETURN.isReturn) return;
+    if (!session || !hasSupabaseConfig) return;
+    saveSuperCelebrationPending();
+    setSuperPurchasePending(true);
+    // Only show the strip if the entitlement has not already landed; if it has,
+    // the celebration effect takes over on this same tick.
+    setSuperActivation(prev => (prev || (isSuper(stats) ? null : { status: 'pending' })));
+  }, [session?.user?.id, stats.tier]);
 
   // Client-side polling only; the webhook remains the sole entitlement writer.
   // Runs at most once per load; needs a confirmed session to read the
@@ -1356,8 +1422,10 @@ export default function TukTalkThaiApp() {
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     if (superSuccessHandled.current) return undefined;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('super') !== 'success') return undefined;
+    // Read the CAPTURED value, never window.location.search: the router rewrites
+    // the URL to /learn on authReady and drops the query long before this effect's
+    // cloudReady gate opens. See CHECKOUT_RETURN above.
+    if (!CHECKOUT_RETURN.isReturn) return undefined;
     if (!session || !isEmailConfirmed || !hasSupabaseConfig) return undefined; // wait until we can read the row
     // Wait for cloud init to finish first: it reads the entitlement ONCE at its
     // start and applies it last into setStats — if that (possibly pre-webhook,

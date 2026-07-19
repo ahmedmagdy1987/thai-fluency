@@ -1,8 +1,8 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// ENTRY-URL BOOT SMOKE — every URL the app parses on boot must not crash.
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ENTRY-URL BOOT SMOKE â€” every URL the app parses on boot must not crash.
 //
 // WHY THIS EXISTS: Wave 14 added a boot smoke, and it only ever loaded "/". The
-// post-checkout return URL — `/?super=success&session_id=…` — takes a completely
+// post-checkout return URL â€” `/?super=success&session_id=â€¦` â€” takes a completely
 // different branch (an entitlement poll, an activation toast, telemetry writes),
 // and it crashed into the ErrorBoundary for EVERY PAYING CUSTOMER while the boot
 // smoke stayed green. A boot test that only tests the front door is not a boot
@@ -14,11 +14,11 @@
 //
 // The backend mock matters as much as the URLs: `billing_events` is served as
 // 404 / 42P01 ("relation does not exist") because THAT IS THE STATE PRODUCTION IS
-// IN — the migration has not been applied. The app must be correct in that state.
+// IN â€” the migration has not been applied. The app must be correct in that state.
 //
 // Usage: node scripts/smoke-entry-urls.mjs            # against ./dist
 //        node scripts/smoke-entry-urls.mjs <baseUrl>  # against a deployed URL
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
@@ -71,7 +71,12 @@ const check = (label, cond, extra = '') => {
   else { failures += 1; console.error(`    FAIL ${label}${extra ? '\n           ' + extra : ''}`); }
 };
 
-const IGNORE = [/data:font\/woff2/i, /chrome-extension:/i, /React DevTools/i, /onesignal/i];
+// Network noise from unmocked assets / third parties is not an app error. App
+// errors (uncaught exceptions, TDZ, render failures) are still fatal below.
+const IGNORE = [
+  /data:font\/woff2/i, /chrome-extension:/i, /React DevTools/i, /onesignal/i,
+  /Failed to load resource/i, /net::ERR_/i,
+];
 const isNoise = t => IGNORE.some(re => re.test(t));
 
 async function mockBackend(ctx, { entitlement }) {
@@ -118,8 +123,36 @@ async function mockBackend(ctx, { entitlement }) {
 // Every URL the app special-cases on boot.
 const ENTRY_URLS = [
   { name: 'plain app', url: '/', ent: FREE_ENTITLEMENT },
-  { name: 'CHECKOUT RETURN (free → poll)', url: '/?super=success&session_id=cs_test_b1Ckw0GcjVZLKn90YcWsxr2MfM8vpdzurPyvyidYVY4IlZWf2dQB72zSLI', ent: FREE_ENTITLEMENT, expectUi: /Activating your Super|Still activating/i },
-  { name: 'CHECKOUT RETURN (entitlement already live → celebration)', url: '/?super=success&session_id=cs_test_abc', ent: SUPER_ENTITLEMENT, expectUi: /now Super/i },
+  { name: 'CHECKOUT RETURN (free â†’ poll)', url: '/?super=success&session_id=cs_test_b1Ckw0GcjVZLKn90YcWsxr2MfM8vpdzurPyvyidYVY4IlZWf2dQB72zSLI', ent: FREE_ENTITLEMENT, expectUi: /Activating your Super|Still activating/i },
+  // THE CELEBRATION, proved two ways â€” both the states a real payer passes through.
+  //
+  // (a) The entitlement is already live when they land back from Stripe: the
+  //     celebration must fire on the return itself.
+  {
+    name: 'CELEBRATION â€” entitlement live on the checkout return',
+    url: '/?super=success&session_id=cs_test_abc',
+    ent: SUPER_ENTITLEMENT, seedTier: 'super',
+    expectUi: /now Super/i,
+  },
+  // (b) The webhook landed AFTER they navigated away / closed the tab. On the
+  //     next load there are NO url params at all â€” only the persisted
+  //     "celebration owed" flag plus the now-live entitlement. This is the exact
+  //     case the owner hit twice, and the case Wave 13 claimed worked.
+  {
+    name: 'CELEBRATION â€” owed from a previous session, entitlement now live, NO url params',
+    url: '/',
+    ent: SUPER_ENTITLEMENT, seedTier: 'super',
+    seedKeys: { 'thai-fluency-super-celebration-pending-v1': JSON.stringify({ at: Date.now() }) },
+    expectUi: /now Super/i,
+  },
+  // (c) Control: entitlement live but NOTHING owed â†’ the celebration must NOT
+  //     fire. Without this, (a) and (b) could pass by celebrating on every load.
+  {
+    name: 'CONTROL â€” Super user, nothing owed, must NOT celebrate',
+    url: '/',
+    ent: SUPER_ENTITLEMENT, seedTier: 'super',
+    expectNotUi: /now Super/i,
+  },
   { name: 'checkout return, no session_id', url: '/?super=success', ent: FREE_ENTITLEMENT },
   { name: 'checkout cancelled', url: '/?super=cancelled', ent: FREE_ENTITLEMENT },
   { name: 'password recovery', url: '/#access_token=x&refresh_token=y&type=recovery', ent: FREE_ENTITLEMENT },
@@ -133,19 +166,20 @@ const ENTRY_URLS = [
 ];
 
 console.log(`\nEntry-URL boot smoke: ${base}`);
-console.log(`(billing_events is mocked as MISSING — the current production state)\n`);
+console.log(`(billing_events is mocked as MISSING â€” the current production state)\n`);
 
 const browser = await chromium.launch();
 for (const entry of ENTRY_URLS) {
   const ctx = await browser.newContext();
   // Seed BOTH the session AND an onboarded local state. Without hasOnboarded the
   // app early-returns to the onboarding screen before any overlay renders, so the
-  // checkout-return branch is never reached — which is exactly how an earlier
+  // checkout-return branch is never reached â€” which is exactly how an earlier
   // version of this test passed while proving nothing.
-  await ctx.addInitScript(([authKey, sess, stateKey, state]) => {
+  await ctx.addInitScript(([authKey, sess, stateKey, state, extraKeys]) => {
     try {
       localStorage.setItem(authKey, JSON.stringify(sess));
       localStorage.setItem(stateKey, JSON.stringify(state));
+      for (const [k, v] of Object.entries(extraKeys || {})) localStorage.setItem(k, v);
     } catch { /* ignore */ }
   }, ['tuk-talk-thai-auth', SESSION, 'thai-fluency-state-v1', {
     progress: {},
@@ -154,8 +188,13 @@ for (const entry of ENTRY_URLS) {
       startedStage: 1, currentStage: 1, totalXp: 120, streak: 3,
       gems: 40, hearts: 5, voice: 'male', theme: 'light',
       celebrationBaselineDone: true, stage1CelebrationShown: true,
+      // Scenarios that need the entitlement ALREADY APPLIED seed it here. This
+      // is how the celebration binding is proved without depending on cloud
+      // init completing against a mock â€” the state it produces is what matters,
+      // not the code path that produced it.
+      ...(entry.seedTier ? { tier: entry.seedTier } : {}),
     },
-  }]);
+  }, entry.seedKeys || {}]);
   await mockBackend(ctx, { entitlement: entry.ent });
 
   const page = await ctx.newPage();
@@ -176,12 +215,24 @@ for (const entry of ENTRY_URLS) {
   // app to cloudReady=true with a mocked backend (the cloud-init IIFE does not
   // settle against the mock), so the checkout-return POLL does not start here.
   // That is a KNOWN HARNESS LIMITATION, reported loudly rather than silently
-  // passed — a green test that never enters the path it claims to cover is how
+  // passed â€” a green test that never enters the path it claims to cover is how
   // this class of bug shipped twice. The crash assertions above ARE meaningful
   // and do cover this URL; only the deeper "did the poll start" claim is unmet.
   if (entry.expectUi) {
-    if (entry.expectUi.test(body)) console.log(`    OK   the branch really ran: ${entry.expectUi}`);
-    else console.log(`    NOTE the poll branch did not start in this harness (known limitation — see comment); crash coverage above still applies`);
+    // Celebration scenarios are seeded so they do NOT depend on cloud init
+    // completing â€” they are hard assertions, not best-effort notes.
+    if (/^CELEBRATION/.test(entry.name)) {
+      check(`the celebration FIRED: ${entry.expectUi}`, entry.expectUi.test(body),
+        body.replace(/\s+/g, ' ').slice(0, 200));
+    } else if (entry.expectUi.test(body)) {
+      console.log(`    OK   the branch really ran: ${entry.expectUi}`);
+    } else {
+      console.log(`    NOTE the poll branch did not start in this harness (known limitation â€” see comment); crash coverage above still applies`);
+    }
+  }
+  if (entry.expectNotUi) {
+    check(`must NOT show: ${entry.expectNotUi}`, !entry.expectNotUi.test(body),
+      body.replace(/\s+/g, ' ').slice(0, 200));
   }
   await ctx.close();
 }
@@ -191,4 +242,4 @@ if (srv) srv.close();
 
 console.log('');
 if (failures > 0) { console.error(`Entry-URL smoke FAILED (${failures}).`); process.exit(1); }
-console.log('Entry-URL smoke passed — every entry URL boots without the ErrorBoundary.');
+console.log('Entry-URL smoke passed â€” every entry URL boots without the ErrorBoundary.');

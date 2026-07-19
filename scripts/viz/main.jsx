@@ -1,4 +1,4 @@
-// Visual-verification harness — mounts a single real component inside an
+﻿// Visual-verification harness â€” mounts a single real component inside an
 // .app-root wrapper (so all CSS tokens + dark theme resolve) for Playwright to
 // screenshot / drive. NOT part of the production build; only Vite dev serves it.
 import React from 'react';
@@ -51,8 +51,8 @@ const superStats = { tier: 'super', hearts: 5, gems: 200, streak: 3, totalXp: 50
 const freeStats = { tier: 'free', hearts: 5, gems: 60, streak: 3, totalXp: 500, totalReviews: 40 };
 const zeroHeartStats = { tier: 'free', hearts: 0, gems: 10, heartsUpdatedAt: new Date(Date.now() - 5 * 60 * 1000).toISOString() };
 // Canceled-but-still-paid Super (auto-renew OFF, period NOT ended): the provider
-// set status='canceled' with cancel_at_period_end=false and a FUTURE super_until —
-// the B5 copy edge. Copy must read "Super — active until <date>. Auto-renew is
+// set status='canceled' with cancel_at_period_end=false and a FUTURE super_until â€”
+// the B5 copy edge. Copy must read "Super â€” active until <date>. Auto-renew is
 // off." with NO Cancel button.
 const canceledPaidStats = { tier: 'super', status: 'canceled', cancelAtPeriodEnd: false, superUntil: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(), hearts: 5, gems: 200, streak: 3, totalXp: 500, totalReviews: 40 };
 
@@ -70,7 +70,7 @@ function AppRoot({ children }) {
   return <div className="app-root" data-theme={theme} style={{ minHeight: '100vh' }}>{children}</div>;
 }
 
-// ── Learn trail scenes: REAL state, REAL libs ────────────────────────────────
+// â”€â”€ Learn trail scenes: REAL state, REAL libs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Props are computed through the actual unlock logic (getStageState /
 // getMissionState / getMiniUnitProgressState / getCourseCompletion), never
 // hand-faked, so what renders is what the app derives. Handlers record to
@@ -102,8 +102,8 @@ function buildLearnProps({ completed = [], progress = {} } = {}) {
 }
 
 // Elephant-move scene: local state + a viz-only sim button that appends the
-// CURRENT unit id to completedMiniUnits — exactly the write App.jsx's
-// completion handler performs — so the real LearnPath re-derives and the
+// CURRENT unit id to completedMiniUnits â€” exactly the write App.jsx's
+// completion handler performs â€” so the real LearnPath re-derives and the
 // coach travels to the new current node.
 function LearnTrailMoveScene() {
   const s1Units = getMiniUnitsForStage(1);
@@ -135,7 +135,7 @@ function sceneEl() {
       return <DatingSection stats={freeStats} onOpenSuper={noop} setTab={noop} />;
     case 'dating-lesson':
     case 'dating-quiz':
-      // Super + 18+ confirmed → lands on the category selector.
+      // Super + 18+ confirmed â†’ lands on the category selector.
       try { localStorage.setItem('thai-fluency-dating-adult-v1', JSON.stringify({ confirmedAt: Date.now() })); } catch {}
       return <DatingSection stats={superStats} onOpenSuper={noop} setTab={noop} />;
     case 'quiz-challenge':
@@ -161,10 +161,10 @@ function sceneEl() {
             onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
         </div>
       );
-    // ── WAVE 12 scenes ──────────────────────────────────────────────────────
+    // â”€â”€ WAVE 12 scenes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     case 'shop-super':
       // A Super user has unlimited hearts, so the refill item must render as
-      // INCLUDED — never priced at 50 gems, which is what shipped.
+      // INCLUDED â€” never priced at 50 gems, which is what shipped.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto' }}>
           <ShopScreen stats={superStats} hearts={5} gems={120} isSuper streakFreezes={2}
@@ -172,7 +172,7 @@ function sceneEl() {
         </div>
       );
     case 'shop-freeze-cap':
-      // At MAX_BANKED_FREEZES the freeze item is unavailable WITH A REASON —
+      // At MAX_BANKED_FREEZES the freeze item is unavailable WITH A REASON â€”
       // never a silent no-op, and never an unbounded 31-purchase run.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -181,16 +181,20 @@ function sceneEl() {
             onRefillHearts={noop} onBuyFreeze={noop} onOpenSuper={noop} />
         </div>
       );
-    // ── WAVE 13 scenes ──────────────────────────────────────────────────────
+    // â”€â”€ WAVE 13 scenes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     case 'plans-purchase-pending':
       // G: the payer has completed checkout and the entitlement has not landed.
-      // The CTA must NOT be payable — this is the window that produced double
+      // The CTA must NOT be payable â€” this is the window that produced double
       // subscriptions, because every old guard read isSuper(stats) (still false).
       return <PlansPage isAuthed isSuperUser={false} blockedReason="pending" onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
     case 'plans-unconfirmed-email':
       // H: a session exists but the email is unconfirmed. /plans renders before
       // the confirmation gate, so it must refuse to sell here.
       return <PlansPage isAuthed isSuperUser={false} blockedReason="unconfirmed" onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
+    case 'plans-super-user':
+      // WAVE 16: for a Super user the page must not contradict itself — the Free
+      // card said "Your plan" while both Super cards said "You're already Super".
+      return <PlansPage isAuthed isSuperUser blockedReason={null} onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
     case 'plans-normal':
       // Control: a normal signed-in free user still gets a payable CTA.
       return <PlansPage isAuthed isSuperUser={false} blockedReason={null} onNavigate={noop} onGetStarted={noop} onSignIn={noop} />;
@@ -202,13 +206,13 @@ function sceneEl() {
       return <SuperActivationNotice status="timeout" onDismiss={noop} onRefresh={noop} />;
     case 'super-celebration':
       // The celebration is now bound to the ENTITLEMENT landing, so it fires
-      // however long the webhook takes — including after navigating away.
+      // however long the webhook takes â€” including after navigating away.
       return (
         <CelebrationOverlay
           eyebrow="Welcome to Super"
-          title="You’re now Super! 🎉"
-          subtitle="Your Super plan is active — the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!"
-          primaryLabel="Let’s go"
+          title="Youâ€™re now Super! ًںژ‰"
+          subtitle="Your Super plan is active â€” the 18+ Dating & Real Talk section and unlimited hearts are unlocked. Thank you for supporting Tuk Talk Thai!"
+          primaryLabel="Letâ€™s go"
           onPrimary={noop}
         />
       );
@@ -237,7 +241,7 @@ function sceneEl() {
       return <SettingsModal stats={superStats} updateSettings={noop} onClose={noop} onOpenPublicPage={noop}
         onEntitlementRefresh={noop} onReplayTutorial={noop} />;
     case 'settings-canceled':
-      // B5: canceled-but-paid Super — expect "Super — active until <date>. Auto-
+      // B5: canceled-but-paid Super â€” expect "Super â€” active until <date>. Auto-
       // renew is off." and NO Cancel button in the Plan & Billing section.
       return <SettingsModal stats={canceledPaidStats} updateSettings={noop} onClose={noop} onOpenPublicPage={noop}
         onEntitlementRefresh={noop} onReplayTutorial={noop} />;
@@ -263,7 +267,7 @@ function sceneEl() {
         </div>
       );
     case 'listen-meaning':
-      // Pass 1: new audio→English MCQ.
+      // Pass 1: new audioâ†’English MCQ.
       return (
         <div className="tab-content" style={{ maxWidth: 640, margin: '0 auto', padding: 16 }}>
           <ListenMeaning voice="male" audioRate={0.9} showCharacters />
@@ -295,7 +299,7 @@ function sceneEl() {
       // Pass 3: honest, non-shaming streak-break recovery with the gem-freeze bridge.
       return <StreakRecoveryCard bestStreak={12} gems={50} onStudyNow={noop} onBuyFreeze={noop} />;
     case 'mastery': {
-      // Pass 4: the mastery overlay — per-card 4-dot track + aggregate summary.
+      // Pass 4: the mastery overlay â€” per-card 4-dot track + aggregate summary.
       const cards = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
       const progress = { 1: {}, 2: {}, 4: {} };
       const masteryRank = { 1: 2, 2: 1, 3: 3 };
@@ -315,14 +319,14 @@ function sceneEl() {
       // Pass 5: the gated speaking drill where the browser supports SpeechRecognition.
       return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" audioRate={0.9} showCharacters /></div>;
     case 'speaking-unsupported':
-      // Pass 5: SpeechRecognition removed → the exercise renders NOTHING (returns null).
+      // Pass 5: SpeechRecognition removed â†’ the exercise renders NOTHING (returns null).
       return <div className="tab-content" style={{ maxWidth: 520, margin: '24px auto', padding: 16 }}><SpeakingExercise voice="male" /></div>;
     case 'situation-rail-free':
       // Wave 3 B2/B3 + Wave 4 C: the partner path boosts sit-dating up the order,
-      // but a FREE learner must still see it as a locked preview — never their next
+      // but a FREE learner must still see it as a locked preview â€” never their next
       // lesson (engagement.md:94). Wave 4: the 9 zero-content situations are no
       // longer dead rows, and the ones with content are startable.
-      // onStartSituation MUST be passed — the rail deliberately renders no Start
+      // onStartSituation MUST be passed â€” the rail deliberately renders no Start
       // without it (an affordance that lies is worse than no affordance).
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
@@ -342,7 +346,7 @@ function sceneEl() {
     case 'situation-rail-stage1':
       // A FRESH stage-1 learner: situations are CROSS-STAGE tags, so the rail must
       // only promise what the unlocked stage window can actually teach. Counts here
-      // are honestly small — that is the point, not a bug.
+      // are honestly small â€” that is the point, not a bug.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
           <SituationRail stats={{ ...freeStats, identityPath: 'path-tourist' }} startedStage={1} maxUnlockedStage={1}
@@ -361,7 +365,7 @@ function sceneEl() {
         </div>
       );
     case 'learn-trail-mid':
-      // Mid-stage: 2 lessons complete, node 3 current, 2 locked — all three
+      // Mid-stage: 2 lessons complete, node 3 current, 2 locked â€” all three
       // node states on one screen, coach at the frontier.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
@@ -370,7 +374,7 @@ function sceneEl() {
       );
     case 'learn-trail-move':
       // Elephant travel: sim button appends the current unit to
-      // completedMiniUnits (the exact completion write) → coach slides on.
+      // completedMiniUnits (the exact completion write) â†’ coach slides on.
       return <LearnTrailMoveScene />;
     case 'learn-trail-course-end': {
       // The all-stages-complete end state: every card seen + every unit done.
@@ -389,7 +393,7 @@ function sceneEl() {
     }
     case 'learn-trail-deep':
       // Auto-scroll proof: Stage 2 with 8/10 done puts the current node
-      // ~1100px down the trail — the load must land on it.
+      // ~1100px down the trail â€” the load must land on it.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
           <LearnPath {...buildLearnProps({
@@ -402,9 +406,9 @@ function sceneEl() {
         </div>
       );
     case 'learn-trail-stage2':
-      // Stage transition: ALL stage-1 cards seen + all 5 stage-1 units done →
+      // Stage transition: ALL stage-1 cards seen + all 5 stage-1 units done â†’
       // the REAL getStageState advances currentStage to 2, the trail redraws
-      // with Stage 2's 10 nodes, Stage 1 collapses to a ✓ marker above, and
+      // with Stage 2's 10 nodes, Stage 1 collapses to a âœ“ marker above, and
       // Stage 3 previews locked below.
       return (
         <div className="tab-content" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
