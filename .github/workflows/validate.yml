@@ -44,6 +44,22 @@ jobs:
       - name: Run all validators
         run: npm run check
 
+      # Static boot guards: the app must actually start. These load the BUILT
+      # bundle in headless Chromium and fail if it crashes on any entry URL — the
+      # floor the validators cannot be (they never mount the app).
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Boot + entry-URL smoke
+        run: npm run smoke
+
+      # The journey suite: the whole app driven through complete user journeys,
+      # asserting real outcomes (progress persisted, stage unlocked, celebration
+      # fired, hearts gate appeared). Every runtime failure of the last month is a
+      # journey here. Mutation-proven to catch the boot TDZ and the celebration bug.
+      - name: E2E journeys
+        run: npm run e2e
+
   # Runs the SAME validator suite under several west-of-UTC timezones so the
   # streak-freeze timezone bug (a 2-day gap read as 3, voiding the freeze) can
   # never regress unseen: check-quest-logic.mjs failed in exactly these zones
