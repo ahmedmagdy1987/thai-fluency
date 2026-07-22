@@ -33,6 +33,33 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The build tolerates empty public env values, but the APP does not: without
+      # VITE_SUPABASE_URL/KEY it renders "CONFIGURATION ERROR - App not properly
+      # configured" instead of the app. The validators are hermetic so they still
+      # pass, and the boot smoke still sees "real content" — so the first thing that
+      # actually fails is an entry-URL celebration assertion, which reads as a
+      # product bug rather than a missing setting. That is what made this job red
+      # from a763878 (the commit that added the browser tier) onward. Fail loudly
+      # and early instead, naming the exact fix.
+      - name: Check the public frontend env vars are configured
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ vars.VITE_SUPABASE_KEY }}
+        run: |
+          missing=""
+          [ -z "$VITE_SUPABASE_URL" ] && missing="$missing VITE_SUPABASE_URL"
+          [ -z "$VITE_SUPABASE_KEY" ] && missing="$missing VITE_SUPABASE_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository VARIABLES:$missing"
+            echo "The browser tier (smoke / e2e) cannot pass without them: the app"
+            echo "renders its CONFIGURATION ERROR screen instead of booting."
+            echo "Fix: Settings > Secrets and variables > Actions > Variables tab,"
+            echo "and add them as repository variables (they are PUBLIC values -"
+            echo "the same ones already embedded in the deployed bundle). Not secrets."
+            exit 1
+          fi
+          echo "public frontend env vars are present"
+
       - name: Web build
         env:
           NODE_OPTIONS: --max-old-space-size=4096
