@@ -587,6 +587,18 @@ export default function TukTalkThaiApp() {
     const nextUserId = session?.user?.id || null;
     const prevUserId = prevUserIdRef.current;
     prevUserIdRef.current = nextUserId;
+    // The sync watermark is USER-SCOPED and must never outlive its identity.
+    // clearSyncWatermark() used to run only in handleSignOut, so an identity change
+    // WITHOUT an explicit sign-out (token revocation, refresh failure, remote
+    // sign-out) left user A's watermark on the device. The next local write then
+    // re-labels it with B's id — markStatsDirty spreads the stored record and only
+    // rewrites userId — which defeats syncWatermarkFor's identity guard. B's genuine
+    // cloud row is then judged STALE and B's real stats (gems, streak, xp, freezes)
+    // are replaced by whatever is local. Cleared on ANY real identity change, NOT
+    // gated on cloudReady like the wipe below, because the contamination does not
+    // need cloudReady. Never on mount (prevUserId is undefined) and never on a token
+    // refresh (same id), so a legitimate watermark still survives a reload.
+    if (prevUserId && prevUserId !== nextUserId) clearSyncWatermark();
     // Identity-change local wipe (M2): if a signed-in user whose CLOUD data was
     // loaded is replaced by a DIFFERENT identity (or none) without handleSignOut
     // running — token revocation, refresh failure, remote sign-out — the departed
@@ -1135,7 +1147,19 @@ export default function TukTalkThaiApp() {
       }
     })();
     return () => { cancelled = true; };
-  }, [session, loaded, cloudReady]);
+    // Keyed on the user IDENTITY, not the session OBJECT. supabase-js hands us a
+    // NEW session object on every auth event (INITIAL_SESSION, TOKEN_REFRESHED …),
+    // and depending on the object re-ran this effect mid-flight: the cleanup set
+    // `cancelled = true`, so the run holding the cloud-init claim threw its
+    // already-downloaded cloud row away at the `if (cancelled) return` above, while
+    // every re-run was turned away by claimCloudInit because the first run had not
+    // released yet. Net effect: the cloud merge silently never happened, cloudReady
+    // and cloudInitOk stayed false, and the user kept local-only state with their
+    // real cloud stats sitting untouched on the server. The id and the confirmation
+    // flag are the only session fields this effect reads, and both are stable for a
+    // given identity, so this still re-runs on a REAL identity change and no longer
+    // on token churn.
+  }, [session?.user?.id, session?.user?.email_confirmed_at, loaded, cloudReady]);
 
   // Periodic cloud sync: debounced uploads of progress + stats + achievements
   // whenever local state changes. Only fires after cloud init has resolved

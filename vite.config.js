@@ -31,6 +31,19 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         // Do not answer navigations from the precache.
         navigateFallback: null,
+        // ...and do not PRECACHE the HTML in the first place. navigateFallback:null
+        // only removes the NavigationRoute; it does not stop workbox's PrecacheRoute
+        // from matching. That route is registered FIRST and resolves a bare '/' to
+        // 'index.html' via its own defaults (directoryIndex:'index.html',
+        // cleanURLs:true), and the router answers with the FIRST matching route — so
+        // '/' , the start_url and what typing the domain gets, was still served
+        // CACHE-FIRST while every other navigation was network-first. That left the
+        // front door "one version behind per launch": exactly the delivery channel
+        // that kept a paying customer on the crashing Wave 14 bundle. Dropping
+        // index.html from the precache manifest sends '/' through the NetworkFirst
+        // route below like every other navigation. Offline still works: that route's
+        // 'html-shell' runtime cache holds the last good copy.
+        globIgnores: ['**/index.html'],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.mode === 'navigate',

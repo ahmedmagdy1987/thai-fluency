@@ -62,7 +62,20 @@ function write(next) {
 export function markStatsDirty(userId = null) {
   const cur = loadSyncWatermark();
   if (cur.dirty && cur.userId === (userId || cur.userId)) return cur;
-  return write({ ...cur, dirty: true, userId: userId || cur.userId });
+  // A watermark belongs to ONE user. When this write is for a DIFFERENT identity
+  // than the stored one, the stored cloud timestamp describes SOMEONE ELSE'S row.
+  // Carrying it forward under the new id would launder it past syncWatermarkFor's
+  // identity guard (which only neutralises a watermark whose userId still differs),
+  // and the new user's genuine cloud row would then be judged STALE — destroying
+  // their real stats. Drop it: a null timestamp means "cannot compare", which is
+  // the conservative, pre-Wave-12 answer.
+  const foreignIdentity = !!(userId && cur.userId && cur.userId !== userId);
+  return write({
+    ...cur,
+    dirty: true,
+    userId: userId || cur.userId,
+    lastSyncedCloudUpdatedAt: foreignIdentity ? null : cur.lastSyncedCloudUpdatedAt,
+  });
 }
 
 // An uploadStats call SUCCEEDED. The cloud row now reflects everything local had
@@ -71,9 +84,13 @@ export function markStatsDirty(userId = null) {
 // unavailable we keep the previous watermark rather than guessing.
 export function markStatsSynced(userId, cloudUpdatedAt) {
   const cur = loadSyncWatermark();
+  // Same identity rule as markStatsDirty: never inherit a timestamp recorded for a
+  // different user. Falling back to `cur` across an identity boundary would re-label
+  // the departed user's row version as this user's.
+  const foreignIdentity = !!(userId && cur.userId && cur.userId !== userId);
   return write({
     dirty: false,
-    lastSyncedCloudUpdatedAt: cloudUpdatedAt || cur.lastSyncedCloudUpdatedAt || null,
+    lastSyncedCloudUpdatedAt: cloudUpdatedAt || (foreignIdentity ? null : cur.lastSyncedCloudUpdatedAt) || null,
     userId: userId || cur.userId || null,
   });
 }
@@ -83,7 +100,16 @@ export function markStatsSynced(userId, cloudUpdatedAt) {
 export function recordMergedCloudUpdatedAt(userId, cloudUpdatedAt) {
   if (!cloudUpdatedAt) return loadSyncWatermark();
   const cur = loadSyncWatermark();
-  return write({ ...cur, lastSyncedCloudUpdatedAt: cloudUpdatedAt, userId: userId || cur.userId || null });
+  // Same identity rule as markStatsDirty/markStatsSynced, so all three writers obey
+  // it uniformly: a record left by a DIFFERENT user carries that user's `dirty`
+  // flag. Inheriting it would let this user claim unsynced writes they never made,
+  // and so judge their OWN cloud row stale on the next merge.
+  const foreignIdentity = !!(userId && cur.userId && cur.userId !== userId);
+  return write({
+    ...(foreignIdentity ? { dirty: false } : cur),
+    lastSyncedCloudUpdatedAt: cloudUpdatedAt,
+    userId: userId || cur.userId || null,
+  });
 }
 
 // Identity change / sign-out. A watermark belongs to one user on one device.

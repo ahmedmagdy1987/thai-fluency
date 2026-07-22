@@ -53,12 +53,73 @@ jobs:
       - name: Boot + entry-URL smoke
         run: npm run smoke
 
+      # Core-flow smoke (landing / learn / plans / privacy, then entering the app).
+      # It starts its own static server over ./dist, so it needs no dev server.
+      - name: Core-flow smoke
+        run: npm run flows
+
       # The journey suite: the whole app driven through complete user journeys,
       # asserting real outcomes (progress persisted, stage unlocked, celebration
       # fired, hearts gate appeared). Every runtime failure of the last month is a
       # journey here. Mutation-proven to catch the boot TDZ and the celebration bug.
       - name: E2E journeys
         run: npm run e2e
+
+      # RENDERED component proofs. Unlike the smokes these mount components through
+      # scripts/viz/index.html, which is served by the DEV server, so one is started
+      # here. visual-wave12.mjs is the ONLY assertion of the Wave 13 pending-CTA
+      # suppression and the Super/Free non-contradiction — it was in no npm script
+      # and no workflow, so both could have regressed with CI fully green.
+      # Server + proofs in ONE step: a backgrounded process is not guaranteed to
+      # outlive the step that started it.
+      - name: Rendered proofs (Wave 12)
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ vars.VITE_SUPABASE_KEY }}
+          VITE_ONESIGNAL_APP_ID: ${{ vars.VITE_ONESIGNAL_APP_ID }}
+        run: |
+          npm run dev -- --port 5173 --strictPort &
+          DEV_PID=$!
+          trap 'kill $DEV_PID 2>/dev/null || true' EXIT
+          up=0
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:5173/ >/dev/null; then up=1; echo "dev server up after ${i}s"; break; fi
+            sleep 1
+          done
+          if [ "$up" != "1" ]; then echo "dev server did not come up within 60s"; exit 1; fi
+          npm run visual:wave12
+          # NB: `npm run visual` (visual-check.mjs) is deliberately NOT run here — it
+          # is a long full-surface sweep, not a targeted guard. Run it locally.
+
+  # POST-DEPLOY verification against the LIVE site. Deliberately workflow_dispatch
+  # only: on a push it would be checking the PREVIOUS deploy (Vercel has not
+  # finished building the new one), so a green run would mean nothing and a red one
+  # would blame the wrong commit. Run it from the Actions tab once Vercel reports
+  # the deploy is live. The journeys intercept the backend, so they exercise the
+  # deployed BUNDLE without touching the real database.
+  post-deploy:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Production route smoke (status + content-type)
+        run: npm run routes:prod
+
+      - name: Journeys against production
+        run: npm run e2e:prod
 
   # Runs the SAME validator suite under several west-of-UTC timezones so the
   # streak-freeze timezone bug (a 2-day gap read as 3, voiding the freeze) can

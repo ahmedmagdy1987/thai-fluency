@@ -20,6 +20,11 @@ import { chromium } from 'playwright';
 import {
   startServer, createRunner, makeUser, makeSession, seed, mockBackend, ONBOARDED_STATS, dismissOverlays,
 } from './lib/journeyHarness.mjs';
+// The REAL deck, so a "completed stage 1" seed is the actual stage-1 card ids and
+// not a guessed numeric range. getStageState (src/lib/state.js:34) unlocks stage 2
+// only when EVERY stage-1 card has been seen, so a seed that misses even one card
+// silently proves nothing.
+import { CARDS } from '../src/data/cards.js';
 
 const target = process.argv.slice(2).find((a) => a.startsWith('http')) || null;
 const { server, url: localUrl } = target ? { server: null, url: null } : await startServer();
@@ -104,30 +109,71 @@ await journey('A6 super user — Super benefits are live across the app', 'payin
   await t.step('the heart refill is Included, not for sale', await t.page.locator('.shop-item-included').count() > 0 && await t.page.locator('.shop-item').filter({ hasText: 'Refill hearts' }).locator('.shop-item-buy').count() === 0);
   await t.page.goto(base + '/dating', { waitUntil: 'networkidle' }); await settle(t.page, 900);
   await t.step('the Dating section is reachable and not the locked teaser', !/Unlock .* with Super/i.test(await t.body()));
-}, { seedOpts: seedSuper() });
+  // Entitlement is SERVER-authoritative: App.jsx applies `ent` last and it is the
+  // only source of tier/Super, so a locally seeded tier is overwritten by the
+  // subscriptions row. Without this mockOpts the mock returns NO subscription and
+  // this journey silently tests a FREE user. (It only ever passed because the cloud
+  // merge was being cancelled before `ent` was applied -- see the cloud-init dep fix.)
+}, { seedOpts: seedSuper(), mockOpts: { entitlement: 'super' } });
 
 // ── A10 · Dating is LOCKED for a free user ──
+// These assertions used to run /18\+/ and /Super/i against the WHOLE page text --
+// but SidebarNav renders "Dating 18+" (SidebarNav.jsx:39) and "Go Super"
+// (SidebarNav.jsx:102) on every page for every free user, so both matched no matter
+// what the Dating surface did. Everything is now scoped to the locked teaser itself
+// (DatingSection.jsx:288-336), which is rendered ONLY for a non-Super user.
 await journey('A10 dating — locked for a free user behind Super + 18+', 'normal user', async (t) => {
   await t.page.goto(base + '/dating', { waitUntil: 'networkidle' }); await settle(t.page, 1000);
-  const body = await t.body();
-  await t.step('the 18+ marking is shown', /18\+/.test(body));
-  await t.step('a Super upsell / lock is present (content not freely readable)', /Super/i.test(body));
+  const lock = t.page.locator('.dating-locked');
+  await t.step('the locked teaser is what a free user gets (not the unlocked section)',
+    await lock.count() > 0, (await t.body()).slice(0, 160));
+  const lockText = await lock.first().innerText().catch(() => '');
+  await t.step('the 18+ marking is on the LOCK itself',
+    /18\+/.test(lockText), lockText.slice(0, 160));
+  await t.step('the lock carries the Super upsell CTA',
+    /Unlock .*with Super/i.test(lockText), lockText.slice(0, 160));
+  // NB: the hero (.dating-hero, .dating-badge-18) renders for locked users too
+  // (DatingSection.jsx:286) -- only these are unlocked-only surfaces.
+  await t.step('the paid surface is absent — no interactive Dating content is reachable',
+    await t.page.locator('.dating-catgrid, .dating-phrase-thai, .dating-lesson-card, .dating-question-card').count() === 0);
+  // DatingSection.jsx:27 promises "No unreviewed Thai is shown" to locked users.
+  // Escapes, not literal Thai, so the assertion cannot be silently mangled.
+  await t.step('no Thai script leaks into the locked teaser',
+    !/[\u0E00-\u0E7F]/.test(lockText), lockText.slice(0, 160));
 }, { seedOpts: seedFree() });
 
 // ── A4 · Stage unlock: all stage-1 cards seen → stage 2 becomes reachable ──
+// The assertion used to be `/Stage 2/.test(body) || !(await t.boundaryShowing())` --
+// an OR with "did not crash", so it could NEVER fail; and the seed wrote ids 1..200
+// of which only 57 are actually stage-1 cards, so stage 1 was never complete. Both
+// halves are fixed: the seed is derived from the real deck, and the assertion stands
+// alone. Mutation-proven by seeding one card short.
+const STAGE_1_IDS = CARDS.filter((c) => (c.stage || 1) === 1).map((c) => c.id);
+const seenProgress = (ids) => Object.fromEntries(
+  ids.map((id) => [id, { interval: 1, reviews: 1, lapses: 0, nextDue: Date.now() + 864e5 }]),
+);
 await journey('A4 stage unlock — completing stage 1 opens stage 2', 'normal user', async (t) => {
-  await t.page.goto(base + '/quiz', { waitUntil: 'networkidle' }); await settle(t.page, 1200);
-  // Seeded state has all 150 stage-1 cards seen (see seedOpts). The challenge
-  // screen and learn trail should reflect a maxUnlockedStage of 2.
-  const body = await t.body();
-  await t.step('the app reflects more than one unlocked stage', /Stage 2|Stage\s*2/.test(body) || !(await t.boundaryShowing()), body.slice(0, 120));
-  await t.page.goto(base + '/learn', { waitUntil: 'networkidle' }); await settle(t.page, 1000);
-  await t.step('the learn trail renders without error at stage 2', !(await t.boundaryShowing()));
+  await t.page.goto(base + '/learn', { waitUntil: 'networkidle' }); await settle(t.page, 1500);
+  await dismissOverlays(t.page);
+  // The trail renders EVERY stage, so "Stage 2 appears" proves nothing — a LOCKED
+  // stage 2 is on the page too. These three all flip when stage 1 is one card short
+  // (verified: section title "Stage 1 lessons", no done stage, stage 2 locked).
+  const textsOf = (sel) => t.page.locator(sel).allInnerTexts().catch(() => []);
+  const done = await textsOf('.learn-trail-stage-done .learn-trail-stage-title');
+  const section = await textsOf('.learn-section-title');
+  const locked = await textsOf('.learn-trail-stage-locked .learn-trail-stage-title');
+  await t.step('stage 1 is marked COMPLETE on the trail',
+    done.some((s) => /Stage 1:/.test(s)), `done=${JSON.stringify(done)}`);
+  await t.step('the lesson section has advanced to stage 2',
+    section.some((s) => /Stage 2 lessons/i.test(s)), `section=${JSON.stringify(section)}`);
+  await t.step('stage 2 is NOT among the locked stages',
+    !locked.some((s) => /Stage 2:/.test(s)), `locked=${JSON.stringify(locked)}`);
 }, {
-  seedOpts: (() => {
-    const prog = {}; for (let id = 1; id <= 200; id++) prog[id] = { interval: 1, reviews: 1, lapses: 0, nextDue: Date.now() + 864e5 };
-    return { session: makeSession(makeUser()), state: { progress: prog, stats: ONBOARDED_STATS({ currentStage: 2 }) } };
-  })(),
+  seedOpts: {
+    session: makeSession(makeUser()),
+    // EVERY real stage-1 card seen -- the actual unlock condition (state.js:34).
+    state: { progress: seenProgress(STAGE_1_IDS), stats: ONBOARDED_STATS({ currentStage: 1 }) },
+  },
 });
 
 // ── A6h · Hearts: at 0 the graded Challenge is GATED (the historical "hearts don't stop" bug) ──
@@ -201,6 +247,11 @@ await journey('C2 failure mode — Supabase 401 does not crash the app', 'edge c
 await journey('C3 failure mode — billing_events missing does not crash the checkout return', 'paying user', async (t) => {
   await t.page.goto(base + '/?super=success&session_id=cs_test_x', { waitUntil: 'networkidle' }); await settle(t.page, 2500);
   await t.step('the payment return survives the missing telemetry table', !(await t.boundaryShowing()));
+  // "Did not crash" is too weak on its own: a swallowed telemetry error could still
+  // abort the activation silently. Assert the payment path actually COMPLETED -- the
+  // entitlement is live and the celebration fired -- with the table absent.
+  await t.step('the checkout return still COMPLETED (celebration fired) with the table absent',
+    /now Super/i.test(await t.body()), (await t.body()).slice(0, 160));
 }, { seedOpts: seedSuper(), mockOpts: { entitlement: 'super', billingEventsMissing: true } });
 
 // ── C4 · localStorage throws (private mode / quota) — the app still boots ──
@@ -217,6 +268,58 @@ await journey('C5 failure mode — an old-schema saved state migrates without cr
   // A deliberately minimal, old-shaped blob: no unlockedAchievements, no tier, no
   // heartsUpdatedAt, no cinematicsWatched — the fields Waves 12-16 added.
   seedOpts: { session: makeSession(makeUser()), state: { progress: { 1: { interval: 1, reviews: 1 } }, stats: { hasOnboarded: true, xp: 50, streak: 2 } } },
+});
+
+// ── A11 · Cross-identity: a departed user's sync watermark must not destroy this user's stats ──
+// The Wave 12 watermark is how the merge tells a STALE cloud row from a fresh one,
+// and it is USER-SCOPED. clearSyncWatermark() only ever ran in handleSignOut, so an
+// identity change without an explicit sign-out -- token revocation, refresh failure,
+// remote sign-out, or simply a second account on a shared device -- left user A's
+// watermark behind. markStatsDirty then re-labelled it with B's id (it spread the
+// stored record and rewrote only userId), defeating syncWatermarkFor's identity
+// guard. B's GENUINE cloud row was then judged stale and the OWNED fields fell back
+// to local, so B's real gems/streak were replaced by whatever this device held.
+//
+// B's local state is deliberately empty and B's cloud row is rich, so the two
+// outcomes are unambiguous:
+//   bug present -> row judged stale -> OWNED fields fall back to local -> gems 0
+//   bug fixed   -> row is not stale -> cloud is authoritative          -> gems 1200
+const DEPARTED_USER_ID = '00000000-0000-4000-8000-0000000000ff';
+await journey("A11 cross-identity — a departed user's watermark cannot destroy this user's stats", 'normal user', async (t) => {
+  await t.page.goto(base + '/learn', { waitUntil: 'networkidle' }); await settle(t.page, 2800);
+  await dismissOverlays(t.page);
+  const gems = (await t.page.locator('.topstats-pill-gems .topstats-val').first().innerText().catch(() => '')).trim();
+  const streak = (await t.page.locator('.topstats-pill-streak .topstats-val').first().innerText().catch(() => '')).trim();
+  await t.step('the stats bar rendered (the merge ran and the app is showing real numbers)',
+    gems !== '' || streak !== '', `gems="${gems}" streak="${streak}"`);
+  await t.step("this user's cloud GEMS survived the departed user's watermark",
+    gems === '1200', `gems pill read "${gems}" -- 0 means the merge judged a genuine cloud row stale`);
+  await t.step("this user's cloud STREAK survived",
+    streak === '40', `streak pill read "${streak}"`);
+}, {
+  seedOpts: {
+    session: makeSession(makeUser()),   // user B -- the CURRENT identity
+    // B has nothing locally: this device belonged to A.
+    state: { progress: {}, stats: ONBOARDED_STATS({ gems: 0, streak: 0, streakFreezes: 0 }) },
+    extraKeys: {
+      // User A's watermark, left behind. Its timestamp is NEWER than B's cloud row,
+      // which is exactly what makes B's row look "stale" once the id is re-labelled.
+      'thai-fluency-sync-watermark-v1': JSON.stringify({
+        dirty: false,
+        lastSyncedCloudUpdatedAt: new Date(Date.now() + 3600e3).toISOString(),
+        userId: DEPARTED_USER_ID,
+      }),
+    },
+  },
+  mockOpts: {
+    // B's GENUINE cloud row (snake_case: the columns downloadStats reads,
+    // src/lib/cloudStorage.js:132-175). updated_at is OLDER than A's watermark.
+    stats: {
+      total_xp: 98000, current_streak: 40, longest_streak: 40, gems: 1200,
+      streak_freezes: 3, hearts: 5, current_stage: 1, started_stage: 1,
+      tutorial_seen: true, updated_at: new Date(Date.now() - 864e5).toISOString(),
+    },
+  },
 });
 
 const { fail } = report();

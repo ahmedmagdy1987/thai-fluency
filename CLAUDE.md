@@ -28,6 +28,7 @@ Solo-owner project, live in production with real users possible at any time. Mon
 - `src/config/*.js` — site constants (`site.js`), entitlements/prices (`entitlements.js`), Stripe publishable-key plumbing (`stripe.js`)
 - `src/hooks/*.js` — small shared hooks
 - `scripts/check-*.mjs` / `verify-*.mjs` — the validator suite; `npm run check` runs ALL of them via `check-all.mjs` (auto-discovered, so the count is whatever is on disk — it prints the number it found) and CI runs the same set across several timezones
+- `scripts/smoke-*.mjs`, `scripts/journeys.mjs`, `scripts/lib/journeyHarness.mjs` — the RUNTIME tier (see Testing below): the validators read code, these drive the built app in a real browser
 
 ## Data conventions
 
@@ -68,6 +69,42 @@ Used to auto-generate word-by-word breakdowns under sentence cards. Multi-word p
 - **No prop drilling more than 2 levels** — if it goes deeper, refactor or use context (we don't have any contexts yet, but it's fine to add one if needed)
 - **The main state blob is batched** via the single `saveState({ progress, stats })` call in App.jsx — don't write the main state from components. Auxiliary device-scoped keys (demo flag, prompt-fired flags, analytics ring buffer, dating ledgers, TTS hint) go through helpers in `lib/storage.js` where possible; a handful of legacy literals still live in App.jsx/analytics.js — don't add new raw `localStorage` calls.
 - **Invariants are validator-enforced.** Economy rules (hearts graded-only, Super grants no gems), Super + 18+ gates, Dating lesson→quiz sequencing and its Thai→English-only lock, content-approval eligibility (nothing empty-`ph`/quarantined approved), card-id uniqueness, and more — `npm run check` must stay green; add a validator when you add an invariant.
+
+## Testing
+
+Two tiers. The validators READ code; the runtime tier RUNS the app. Every serious
+defect of the last month was a runtime failure the validators could not see, so a
+change that touches boot, routing, auth, sync or the payment path needs both.
+
+```bash
+npm run check      # all check-*/verify-* validators (hermetic, no browser, no network)
+npm run build      # the runtime tier below tests ./dist, so BUILD FIRST
+npm run smoke      # boot smoke + entry-URL smoke — the app must start on every entry URL
+npm run flows      # core-flow smoke (landing / learn / plans / privacy + entering the app)
+npm run e2e        # the journey suite: whole app driven through complete journeys
+npm run e2e:prod   # the SAME journeys against https://www.tuktalkthai.com (post-deploy)
+npm run routes:prod # HTTP status/content-type sweep of the production routes
+```
+
+**Prerequisite (once per machine):** the smoke and journey scripts drive real
+Chromium via Playwright. The browser binary is NOT installed by `npm install`:
+
+```bash
+npx playwright install chromium
+```
+
+Without it every browser script dies with "Executable doesn't exist". CI does this
+explicitly (`.github/workflows/validate.yml`).
+
+- **`npm run e2e` does not build.** It tests whatever is in `./dist`, so run
+  `npm run build` first or you are testing a stale bundle.
+- **`e2e:prod` intercepts the backend**, so it exercises the deployed *bundle*
+  without touching the real database — it does not verify the deployed backend.
+- **Assertions must be able to fail.** Two journeys once ORed a real check with
+  "did not crash", and one asserted whole-page text that the nav renders on every
+  page — both passed no matter what the feature did. Scope assertions to the
+  surface under test, and prove a new guard by mutating the fix and watching it
+  go red.
 
 ## Common tasks
 
